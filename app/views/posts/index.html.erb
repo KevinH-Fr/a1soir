@@ -6,9 +6,9 @@
   <% @posts.each do |post| %>
     <%= render post %>
     <p>
-      <%= link_to "Show this post", post %>
+      <%= link_to "Afficher", post, class:"btn btn-primary" %>
     </p>
   <% end %>
 </div>
 
-<%= link_to "New post", new_post_path, class:"btn btn-warning" %>
+<%= link_to "Nouveau", new_post_path, class:"btn btn-warning" %>
