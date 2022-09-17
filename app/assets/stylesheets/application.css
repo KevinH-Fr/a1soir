@@ -2,6 +2,7 @@ body {
     background-color: rgb(50, 50, 50);
 }
 
-h1, h2, p, div {
+h1, h2, p, div, li, ul, a {
     color: rgb(255, 255, 255);
 }
+
