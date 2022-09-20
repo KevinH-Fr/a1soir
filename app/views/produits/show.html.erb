@@ -2,6 +2,8 @@
 
 <%= render @produit %>
 
+<%= image_tag(@produit.image1, style: "width: 400px; display: block", class: "img-fluid rounded") if @produit.image1.attached? %> <br>
+
 <div>
   <%= link_to "Edit this produit", edit_produit_path(@produit) %> |
   <%= link_to "Back to produits", produits_path %>

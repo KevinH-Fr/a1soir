@@ -11,5 +11,3 @@ require("@rails/activestorage").start()
 //= require jquery_ujs
 //= require jquery
 //= require Chart.min
-
-
