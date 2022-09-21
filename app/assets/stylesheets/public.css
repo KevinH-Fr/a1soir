@@ -1,0 +1,13 @@
+/*
+
+ *= require_self
+ */
+
+body {
+    background-color: rgb(255, 255, 255);
+}
+
+h1, h2, p, div, li, ul, a {
+    color: rgb(0, 0, 0);
+}
+

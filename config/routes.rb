@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
+  
   resources :produits
   resources :clients
   resources :posts
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  
+   root 'accueil#index' 
+   get 'accueil_admin', to: 'accueil_admin#index'
 
-  # Defines the root path route ("/")
-   root 'welcome#index'
-   
 end
