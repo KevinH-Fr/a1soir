@@ -9,14 +9,20 @@
  
   </head>
 
-  <header>  
-     <%= render partial: "welcome_public/header" %>
+  <header> 
+    <div class="container">
+      <%= render partial: "welcome_public/header" %>
+    </div>
   </header>
 
-  <body>
-    <%= render partial: "shared/navbarPublic" %>
+  <body class="d-flex flex-column min-vh-100">
+     <%= render partial: "shared/navbarPublic" %>
     <div class="container">
       <%= yield %>
     </div>
   </body>
+
+ <footer class="mt-auto", style="margin: 5px;">
+    <%= link_to "admin", "/accueil_admin", class:"btn btn-sm btn-dark" %> 
+  </footer>
 </html>

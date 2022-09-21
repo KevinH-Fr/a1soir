@@ -1,18 +1,20 @@
 
-<nav class="navbar navbar-expand-lg bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Accueil</a>
-    <button class="navbar-toggler bg-red" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <%= link_to "Robes de Soirées", root_path %>
-        <%= link_to "Robes de Mariées", root_path %>
-        <%= link_to "Costumes Hommes", root_path %>
-        <%= link_to "Accessoires", root_path %>
-        <%= link_to "Costumes & Déguisements", root_path %>
-      </div>
-    </div>
-  </div>
-</nav>
+<div class="text-center">
+  <ul>
+    <li style="display:inline">
+      <%= link_to "Robes de Soirées", clients_path, class:"btn btn-sm", style:"color: white; background-color: rgb(204, 46, 102); margin:4px;" %>
+     </li>
+     <li style="display:inline">
+       <%= link_to "Robes de Mariées", produits_path, class:"btn btn-sm", style:"color: white; background-color: rgb(204, 46, 102); margin:4px;" %>
+     </li>
+     <li style="display:inline">
+       <%= link_to "Costumes Hommes", root_path, class:"btn btn-sm", style:"color: white; background-color: rgb(204, 46, 102); margin:4px;" %>
+     </li>
+     <li style="display:inline">
+       <%= link_to "Accessoires", root_path, class:"btn btn-sm", style:"color: white; background-color: rgb(204, 46, 102); margin:4px;" %>
+     </li>
+     <li style="display:inline">
+       <%= link_to "Costumes & Déguisements", root_path, class:"btn btn-sm", style:"color: white; background-color: rgb(204, 46, 102); margin:4px;" %>
+     </li>
+  </ul>
+</div>
