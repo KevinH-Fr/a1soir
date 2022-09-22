@@ -20,12 +20,14 @@
   </head>
 
   <body>
-   
-    <%= render partial: "shared/navbar" %>
-    
-    <div class="container">
-      <%= yield %>
-    </div>
-
+    <header> 
+      <%= render partial: "shared/navbar" %>
+    </header>
+    <main> 
+      <%= render partial: "layouts/alerts" %>
+      <div class="container">
+        <%= yield %>
+      </div>
+    </main>
   </body>
 </html>
