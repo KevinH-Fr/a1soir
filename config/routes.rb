@@ -6,5 +6,7 @@ Rails.application.routes.draw do
   
    root 'accueil#index' 
    get 'accueil_admin', to: 'accueil_admin#index'
+   get 'contact', to: 'accueil#contact'
+   get 'boutique', to: 'accueil#boutique'
 
 end
