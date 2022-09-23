@@ -4,22 +4,17 @@
   <% @produits.each do | produit| %> 
     <tr>
       <td> 
-        <% if produit.image1.attached? %> 
-        <strong> image attachée </strong>
-          <%= image_tag(produit.image1, style: "width: 100px; display: block", 
-                class: "img-fluid rounded")  %>  
-        <% else %>
-           <strong> pas d'image attachée </strong>
-          <%= image_tag("no_photo.png", style: "width: 100px; display: block", 
-                class: "img-fluid rounded")  %>  
-        <% end %>
+        <%= image_tag(produit.default_image, style: "width: 100px; display: block", 
+                class: "img-fluid rounded")   %> </td>
       </td> 
       <td> <%= produit.nom %> </td>
       <td> <%= produit.description %> </td>
+    
+
+
+
 
     </tr>
   <% end %>
 </table> 
 
-
- <%= image_tag 'no_photo.png', alt: 'icon', width: '20' %>

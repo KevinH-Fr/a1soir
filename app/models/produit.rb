@@ -1,5 +1,6 @@
 class Produit < ApplicationRecord
     has_one_attached :image1
+    
 
     enum categories: ["Robes de soirées", "Robes de mariées", "Costumes hommes", "Accessoires", "Costumes et déguisements"]
 
@@ -8,6 +9,17 @@ class Produit < ApplicationRecord
     scope :categorie_costumes_hommes, -> { where("categorie = ?", "Costumes hommes") }
     scope :categorie_accessoires, -> { where("categorie = ?", "Accessoires") }
     scope :categorie_costumes_deguisements, -> { where("categorie = ?", "Costumes et déguisements") }
+
+    def full_name
+        "n°#{id} | #{nom} "
+    end
+
+    def default_image
+        if self.image1.filename.to_s.length > 0 
+            image1
+        else
+            "no_photo.png"
+        end
+    end
+
 end
-
-
