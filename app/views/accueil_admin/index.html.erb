@@ -1,1 +1,15 @@
-<h1>  index accueil admin </h1>
+
+<% if user_signed_in? %>
+
+    <div class="text-center">
+    <h3> Dashboard </h3>
+    </div>
+    <hr>
+
+    <%= render "menuAccueil" %>
+
+    <%= render "fonctionsRapides" %>
+
+<% else %>
+  <%= render partial: "demandeConnexion" %>
+<% end %>

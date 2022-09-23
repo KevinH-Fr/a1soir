@@ -1,14 +1,3 @@
-<p style="color: green"><%= notice %></p>
+<%= render partial:"liste" %>
 
-<h1>Clients</h1>
-
-<div id="clients">
-  <% @clients.each do |client| %>
-    <%= render client %>
-    <p>
-      <%= link_to "Show this client", client %>
-    </p>
-  <% end %>
-</div>
-
-<%= link_to "New client", new_client_path %>
+<%= link_to "Nouveau client", new_client_path, class:"btn btn-sm btn-primary" %>
