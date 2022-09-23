@@ -17,6 +17,11 @@
   </div>
 
   <div>
+    <%= form.label :categorie, style: "display: block" %>
+    <%= form.select(:categorie, Produit.categories.keys, {include_blank: true}) %>
+  </div>
+
+  <div>
     <%= form.label :prix, style: "display: block" %>
     <%= form.text_field :prix %>
   </div>
