@@ -8,5 +8,8 @@ Rails.application.routes.draw do
    get 'accueil_admin', to: 'accueil_admin#index'
    get 'contact', to: 'accueil#contact'
    get 'boutique', to: 'accueil#boutique'
+   get 'robes_mariees', to: 'accueil#mariees'
+   get 'costumes_hommes', to: 'accueil#costumes'
+   
 
 end

@@ -1,0 +1,10 @@
+<h5>Costumes hommes</h5>
+
+<table class="table table-light text-center">
+  <% @produits.each do | produit| %> 
+    <tr>
+      <td> <%= produit.id %> </td>
+      <td> <%= produit.nom %> </td>
+    </tr>
+  <% end %>
+</table> 
