@@ -9,6 +9,10 @@ class AccueilController < ApplicationController
       @produits = Produit.categorie_costumes_hommes.showed_vitrine
     end
 
+    def soirees
+      @produits = Produit.categorie_robes_soirees.showed_vitrine
+    end
+
     def index
     end
   
