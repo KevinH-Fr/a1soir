@@ -32,6 +32,15 @@ h1, h2, p, div, li, ul, a {
     width:100%;
   }
 
+.img-big {
+    max-width: 350px;
+    width:100%;
+  }
+
 .img-centered {
     text-align: center;
+}
+
+.verysmall-text {
+    font-size: xx-small;
 }
