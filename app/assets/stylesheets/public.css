@@ -31,3 +31,7 @@ h1, h2, p, div, li, ul, a {
     max-width: 50px;
     width:100%;
   }
+
+.img-centered {
+    text-align: center;
+}

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
    get 'robes_mariees', to: 'accueil#mariees'
    get 'robes_soirees', to: 'accueil#soirees'
    get 'costumes_hommes', to: 'accueil#costumes'
+   get 'plan', to: 'accueil#plan'
    
 
 end
