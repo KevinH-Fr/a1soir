@@ -1,7 +1,13 @@
 class Produit < ApplicationRecord
     has_one_attached :image1
-    
+    has_one_attached :qr_code
 
+    after_create :generate_qr
+
+    def generate_qr
+        GenerateQr.call(self)
+    end
+    
     enum categories: ["Robes de soirées", "Robes de mariées", "Costumes hommes", "Accessoires", "Costumes et déguisements"]
 
     scope :showed_vitrine, -> { where("vitrine = ?", true) }
@@ -11,8 +17,6 @@ class Produit < ApplicationRecord
     scope :categorie_costumes_hommes, -> { where("categorie = ?", "Costumes hommes") }
     scope :categorie_accessoires, -> { where("categorie = ?", "Accessoires") }
     scope :categorie_costumes_deguisements, -> { where("categorie = ?", "Costumes et déguisements") }
-
-
 
     def full_name
         "n°#{id} | #{nom} "
