@@ -18,23 +18,15 @@
     <div class="container-fluid">
       <%= render partial: "accueil/header" %>
     </div>
-      
   </header>
 
-  <body>
-    
+  <body class="d-flex flex-column min-vh-100">
     <div class="container-fluid">
-      
       <%= yield %>
     </div>
-   
   </body>
 
- <footer>
-    <div class="container-fluid">
+  <footer class="mt-auto">  
       <%= render partial: "accueil/footer" %>
-    </div>
-     
-
  </footer>
 </html>
