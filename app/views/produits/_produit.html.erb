@@ -5,6 +5,19 @@
   </p>
 
   <p>
+    <strong>Image:</strong>
+   <%= image_tag(produit.image1, style:"width: 200px") if produit.image1.attached? %> 
+
+  </p>
+
+  <p>
+    <strong>QRcode:</strong>
+    <%= image_tag(produit.qr_code, style:"width: 100px") if produit.qr_code.attached? %> 
+
+  </p>
+
+   <td> 
+  <p>
     <strong>Categorie:</strong>
     <%= produit.categorie %>
   </p>

@@ -18,9 +18,6 @@
             <%= image_tag(produit.default_image, style: "display: block", 
                class: "img-fluid rounded") %>
             </td> 
-
-            <td> <%= image_tag(produit.qr_code) if produit.qr_code.attached? %> </td>
-
             <td> <%= produit.nom %> </td>
             <td> <%= produit.description %> </td>
             <td> <%= image_tag(produit.statut_vitrine, style: "width: 20px; display: block", 
