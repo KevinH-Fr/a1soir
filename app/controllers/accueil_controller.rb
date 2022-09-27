@@ -13,6 +13,14 @@ class AccueilController < ApplicationController
       @produits = Produit.categorie_robes_soirees.showed_vitrine
     end
 
+    def accessoires
+      @produits = Produit.categorie_accessoires.showed_vitrine
+    end
+
+    def deguisements
+      @produits = Produit.categorie_costumes_deguisements.showed_vitrine
+    end
+
     def index
     end
   

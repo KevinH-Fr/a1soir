@@ -15,7 +15,7 @@
         <% @produits.each do | produit | %>
           <td> <%= produit.id %> </td>
           <td> 
-            <%= image_tag(produit.default_image, style: "display: block", 
+            <%= image_tag(produit.default_image, style: "width: 80px; display: block", 
                class: "img-fluid rounded") %>
             </td> 
             <td> <%= produit.nom %> </td>
