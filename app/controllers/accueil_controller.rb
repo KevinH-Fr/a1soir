@@ -22,6 +22,7 @@ class AccueilController < ApplicationController
     end
 
     def index
+      @label = Label.last.principale
     end
   
   end

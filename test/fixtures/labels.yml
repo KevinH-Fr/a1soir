@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  principale: MyText
+  soiree: MyText
+  mariee: MyText
+  homme: MyText
+  accessoire: MyText
+  deguisement: MyText
+
+two:
+  principale: MyText
+  soiree: MyText
+  mariee: MyText
+  homme: MyText
+  accessoire: MyText
+  deguisement: MyText

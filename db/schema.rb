@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_23_173710) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_27_160758) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,10 +42,32 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_23_173710) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "annonces", force: :cascade do |t|
+    t.text "principale"
+    t.text "soiree"
+    t.text "mariee"
+    t.text "homme"
+    t.text "accessoire"
+    t.text "deguisement"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "clients", force: :cascade do |t|
     t.string "nom"
     t.string "mail"
     t.text "commentaires"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "labels", force: :cascade do |t|
+    t.text "principale"
+    t.text "soiree"
+    t.text "mariee"
+    t.text "homme"
+    t.text "accessoire"
+    t.text "deguisement"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

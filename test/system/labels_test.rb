@@ -1,0 +1,51 @@
+require "application_system_test_case"
+
+class LabelsTest < ApplicationSystemTestCase
+  setup do
+    @label = labels(:one)
+  end
+
+  test "visiting the index" do
+    visit labels_url
+    assert_selector "h1", text: "Labels"
+  end
+
+  test "should create label" do
+    visit labels_url
+    click_on "New label"
+
+    fill_in "Accessoire", with: @label.accessoire
+    fill_in "Deguisement", with: @label.deguisement
+    fill_in "Homme", with: @label.homme
+    fill_in "Mariee", with: @label.mariee
+    fill_in "Principale", with: @label.principale
+    fill_in "Soiree", with: @label.soiree
+    click_on "Create Label"
+
+    assert_text "Label was successfully created"
+    click_on "Back"
+  end
+
+  test "should update Label" do
+    visit label_url(@label)
+    click_on "Edit this label", match: :first
+
+    fill_in "Accessoire", with: @label.accessoire
+    fill_in "Deguisement", with: @label.deguisement
+    fill_in "Homme", with: @label.homme
+    fill_in "Mariee", with: @label.mariee
+    fill_in "Principale", with: @label.principale
+    fill_in "Soiree", with: @label.soiree
+    click_on "Update Label"
+
+    assert_text "Label was successfully updated"
+    click_on "Back"
+  end
+
+  test "should destroy Label" do
+    visit label_url(@label)
+    click_on "Destroy this label", match: :first
+
+    assert_text "Label was successfully destroyed"
+  end
+end
