@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   devise_for :users
   resources :produits
   resources :clients
@@ -15,5 +16,6 @@ Rails.application.routes.draw do
    get 'costumes_deguisements', to: 'accueil#deguisements'
    get 'plan', to: 'accueil#plan'
    
+   get 'search', to: 'search#index'
 
 end
