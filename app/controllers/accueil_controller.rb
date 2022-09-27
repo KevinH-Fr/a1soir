@@ -11,6 +11,7 @@ class AccueilController < ApplicationController
 
     def soirees
       @produits = Produit.categorie_robes_soirees.showed_vitrine
+      @label = Label.last.soiree
     end
 
     def accessoires
