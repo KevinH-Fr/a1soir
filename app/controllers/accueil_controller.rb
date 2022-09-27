@@ -11,7 +11,9 @@ class AccueilController < ApplicationController
 
     def soirees
       @produits = Produit.categorie_robes_soirees.showed_vitrine
-      @label = Label.last.soiree
+      if Label.last.present?
+        @label = Label.last.soiree
+      end
     end
 
     def accessoires
@@ -23,7 +25,9 @@ class AccueilController < ApplicationController
     end
 
     def index
-      @label = Label.last.principale
+      if Label.last.present?
+        @label = Label.last.principale
+      end
     end
   
   end

@@ -6,8 +6,10 @@
 <div class="table-responsive">
   <table class="table">
     <th> <%= image_tag("logo.jpg", border: 0, width: 70) %> </th>
-    <th>  <%= render "labelPrincipale" %></th> <%# message label paramétré par user %>
-  </table>
+      <% if @label.present? %> <%# message label paramétré par user %>
+      <th>  <%= render "labelPrincipale" %></th>   
+      <% end %>
+    </table>
 </div>
 
 
