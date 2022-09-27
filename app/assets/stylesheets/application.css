@@ -11,3 +11,22 @@ h1, h2, p, div, li, ul, a {
     color: rgb(255, 255, 255);
 }
 
+.btn-creer{
+    background-color: green;
+    color: rgb(255, 255, 255);
+}
+
+.btn-afficher{
+    background-color: rgb(18, 30, 136);
+    color: rgb(255, 255, 255);
+}
+
+.btn-retour{
+    background-color: rgb(27, 27, 29);
+    color: rgb(255, 255, 255);
+}
+
+.btn-supprimer{
+    background-color: rgb(163, 54, 30);
+    color: rgb(255, 255, 255);
+}
