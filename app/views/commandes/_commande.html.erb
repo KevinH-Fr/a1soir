@@ -14,13 +14,4 @@
     <%= Client.find(commande.client_id).full_name if commande.client_id.present? %>
   </p>
 
-  <p>
-    <strong>Articles:</strong> <br>
-    <% if Article.find_by(commande_id: commande.id).present? %>
-     id article: <%= Article.find_by(commande_id: commande).id %> <br>
-     id produit: <%= Article.find_by(commande_id: commande).produit_id %>
-     
-    <% end %>
-  </p>
-
 </div>

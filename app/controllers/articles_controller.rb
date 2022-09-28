@@ -9,7 +9,7 @@ class ArticlesController < ApplicationController
   end
 
   def new
-    @article = Article.new
+    @article = Article.new article_params
     @commande =  params[:commandeId]
   end
 
@@ -57,6 +57,6 @@ class ArticlesController < ApplicationController
     end
 
     def article_params
-      params.require(:article).permit(:quantite, :commande_id, :produit_id)
+      params.fetch(:article, {}).permit(:quantite, :commande_id, :produit_id)
     end
 end

@@ -26,7 +26,6 @@
       <%= form.select :title, Post.titles, {include_blank: true}, { data: { action: "change->form-element#remotesubmit"}} %>
     </div>
 
-
   <%= turbo_frame_tag :content_field do %>
     <%= post.passcode_protected? %>
     <% if post.passcode_protected? %>
