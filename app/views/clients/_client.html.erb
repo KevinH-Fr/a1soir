@@ -1,17 +1,10 @@
 <div id="<%= dom_id client %>">
-  <p>
-    <strong>Nom:</strong>
-    <%= client.nom %>
-  </p>
 
-  <p>
-    <strong>Mail:</strong>
-    <%= client.mail %>
-  </p>
-
-  <p>
-    <strong>Commentaires:</strong>
-    <%= client.commentaires %>
-  </p>
-
+<div class="card text-bg-dark mb-3" style="max-width: 18rem;">
+  <div class="card-header border-light"> <%= client.nom %> </div>
+    <div class="card-body">
+      <h5 class="card-title"> mail: <%= client.mail %></h5>
+      <p class="card-text"> commentaires: <%= client.commentaires %></p>
+    </div>
+  </div>
 </div>
