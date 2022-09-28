@@ -3,6 +3,10 @@
 <%= render @commande %>
 
 <div>
+  <%= link_to "Nouvel article", new_article_path(commandeId: @commande), class:"btn btn-sm btn-primary" %>
+</div>
+
+<div>
   <%= link_to "Edit this commande", edit_commande_path(@commande) %> |
   <%= link_to "Back to commandes", commandes_path %>
 

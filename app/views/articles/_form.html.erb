@@ -18,15 +18,19 @@
 
   <div>
     <%= form.label :commande_id, style: "display: block" %>
-    <%= form.text_field :commande_id %>
+    <%= form.select :commande_id, Commande.all.collect { |c| [ c.nom, c.id ] },
+                     include_blank: true,
+                     selected: @commande
+                     %>
+
   </div>
 
   <div>
     <%= form.label :produit_id, style: "display: block" %>
     <%= form.text_field :produit_id %>
-  </div>
-
+  </div> <hr>
+ 
   <div>
-    <%= form.submit %>
+    <%= form.submit "Valider", class:'btn btn-sm btn-success' %>
   </div>
 <% end %>

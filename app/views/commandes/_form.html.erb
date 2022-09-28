@@ -23,10 +23,11 @@
 
   <div>
     <%= form.label :montant, style: "display: block" %>
-    <%= form.text_field :montant %>
+    <%= form.text_field :montant, value: 1 %>
+    
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div> <br>
+    <%= form.submit 'Valider', class:'btn btn-sm btn-success' %>
   </div>
 <% end %>
