@@ -2,7 +2,6 @@
   <% if article.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(article.errors.count, "error") %> prohibited this article from being saved:</h2>
-
       <ul>
         <% article.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -19,16 +18,11 @@
   <div>
     <%= form.label :commande_id, style: "display: block" %>
     <%= form.select :commande_id, Commande.all.collect { |c| [ c.nom, c.id ] },
-                     include_blank: true,
-                     selected: @commande
-                     %>
-
+                     include_blank: true, selected: @commande %>
   </div>
 
-  <div>
-    <%= form.label :produit_id, style: "display: block" %>
-    <%= form.text_field :produit_id %>
-  </div> <hr>
+  
+  <hr>
  
   <div>
     <%= form.submit "Valider", class:'btn btn-sm btn-success' %>

@@ -16,15 +16,28 @@
     <%= form.text_field :name %>
   </div>
 
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
-  </div>
+  <%# bouton caché validation produit lié %>
 
-  <div>
-    <%= form.label :content, style: "display: block" %>
-    <%= form.text_area :content %>
-  </div>
+    <div data-controller="form-element">
+    <%= form.button "Validate", formaction: new_post_path, formmethod: :get, data: { turbo_frame: :content_field, form_element_target: "submitbtn" } %>
+
+    <div>
+      <%= form.label :title, style: "display: block" %>
+      <%= form.select :title, Post.titles, {include_blank: true}, { data: { action: "change->form-element#remotesubmit"}} %>
+    </div>
+
+
+  <%= turbo_frame_tag :content_field do %>
+    <%= post.passcode_protected? %>
+    <% if post.passcode_protected? %>
+      <div>
+        <%= form.label :content, style: "display: block" %>
+        <%= form.text_area :content %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <br>  
 
   <div>
     <%= form.submit "Créer", class: 'btn btn-success' %>
