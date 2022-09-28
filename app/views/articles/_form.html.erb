@@ -21,6 +21,12 @@
                      include_blank: true, selected: @commande %>
   </div>
 
+  <div>
+    <%= form.label :produit_id, style: "display: block" %>
+   <%= form.select :produit_id, Produit.all.collect { |p| [ p.nom, p.id ] },
+                     include_blank: true, selected: @produit %>
+  </div>
+
   
   <hr>
  

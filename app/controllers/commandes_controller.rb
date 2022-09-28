@@ -6,6 +6,7 @@ class CommandesController < ApplicationController
   end
 
   def show
+    @articles = Article.commande_courante(@commande)
   end
 
   def new
@@ -51,12 +52,10 @@ class CommandesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_commande
       @commande = Commande.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def commande_params
       params.require(:commande).permit(:nom, :montant, :client_id)
     end
