@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_28_132912) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_28_143717) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -51,6 +51,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_28_132912) do
     t.text "deguisement"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "articles", force: :cascade do |t|
+    t.integer "quantite"
+    t.bigint "commande_id"
+    t.bigint "produit_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commande_id"], name: "index_articles_on_commande_id"
+    t.index ["produit_id"], name: "index_articles_on_produit_id"
   end
 
   create_table "clients", force: :cascade do |t|
@@ -113,5 +123,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_28_132912) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "articles", "commandes"
+  add_foreign_key "articles", "produits"
   add_foreign_key "commandes", "clients"
 end
