@@ -1,0 +1,17 @@
+<div id="<%= dom_id commande %>">
+  <p>
+    <strong>Nom:</strong>
+    <%= commande.nom %>
+  </p>
+
+  <p>
+    <strong>Montant:</strong>
+    <%= commande.montant %>
+  </p>
+
+    <p>
+    <strong>Client:</strong>
+    <%= Client.find(commande.client_id).full_name if commande.client_id.present? %>
+  </p>
+
+</div>

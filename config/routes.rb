@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
-  resources :labels
+
 
   devise_for :users
   resources :produits
   resources :clients
   resources :posts
   resources :annonces
+  resources :commandes
+  resources :labels
   
   # partie publique
    root 'accueil#index' 
