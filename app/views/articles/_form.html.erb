@@ -28,13 +28,24 @@
     <%= form.select :produit_id, Produit.all.collect { |p| [ p.nom, p.id ] }, {include_blank: true}, { data: { action: "change->form-element#remotesubmit"}} %>
   </div>
 
- <%= turbo_frame_tag :quantite_field do %>
-    <%= article.produit_id.present? %>
+ <%= turbo_frame_tag :quantite_field do %> 
+ <% if article.produit_id.present? %> 
+    <hr>
+    <% articleId = article.produit_id %>
+    <%= Produit.find(articleId).full_name %>
+ <% end %>
+
+ <hr>
+
   <div>
     <%= form.label :quantite, style: "display: block" %>
     <%= form.number_field :quantite %>
   </div>
 <% end %>
+
+
+<%# liste des produits pour selection %>
+  <%= render "listeSelection" %>
 
   <hr>
  
