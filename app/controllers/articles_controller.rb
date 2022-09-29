@@ -51,6 +51,15 @@ class ArticlesController < ApplicationController
     end
   end
 
+
+  def toggle_selectProduit
+    @commandeId = 3
+    redirect_to new_article_path(commandeId: @commandeId, produitId: 12),
+    notice: "test notif selection produit n°  |"  "commande n°#{@commandeId}"
+
+  end
+
+
   private
      def set_article
       @article = Article.find(params[:id])

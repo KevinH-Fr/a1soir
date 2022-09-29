@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
-  resources :articles
 
+
+  resources :articles do
+    member do
+      get :toggle_selectProduit
+    end 
+  end
 
   devise_for :users
   resources :produits

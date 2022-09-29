@@ -14,14 +14,17 @@
         <% @produits.each do | produit | %>
           <td> <%= produit.id %> </td>
           <td> 
-            <%= image_tag(produit.default_image, style: "width: 80px; display: block", 
+            <%= image_tag(produit.default_image, style: "width: 50px; display: block", 
                class: "img-fluid rounded") %>
             </td> 
             <td> <%= produit.nom %> </td>
             <td> <%= produit.description %> </td>
-            <td> <%= link_to '', produit, class:"fa-solid fa-eye btn btn-primary btn-sm" %>  </td>
+            <td> <%= link_to '', toggle_selectProduit_article_path(produit), class:"fa-solid fa-cart-plus btn btn-primary btn-sm" %>  </td>
          </tr>
         <% end %>
       </tbody>
   </table>
+
+  <strong> selection active : </strong> <br>
+  
 </div>
