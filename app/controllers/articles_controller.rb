@@ -19,6 +19,8 @@ class ArticlesController < ApplicationController
   end
 
   def edit
+    @commandeId = params[:commandeId]
+    @produitId = params[:produitId]
   end
 
   def create

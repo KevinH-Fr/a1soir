@@ -12,12 +12,14 @@
 
   <div>
     <% form.label :commande_id, style: "display: block" %>
-    <%#= form.select :commande_id, Commande.all.collect { |c| [ c.nom, c.id ] },
+
+
+
+     <%#= form.select :commande_id, Commande.all.collect { |c| [ c.nom, c.id ] },
                      include_blank: true, selected: @commandeId %>
 
-    <%= form.hidden_field(:commande_id, value: @commandeId) %>
+      <%= form.hidden_field(:commande_id, value: @commandeId) %>
 
-      
   </div>
 
   <div>
