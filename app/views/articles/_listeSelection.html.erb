@@ -19,12 +19,8 @@
             </td> 
             <td> <%= produit.nom %> </td>
             <td> <%= produit.description %> </td>
-            <td> <%#= link_to '', toggle_selectProduit_article_path(produit), class:"fa-solid fa-cart-plus btn btn-secondary btn-sm" %>  </td>
-            
-               <td> <%= link_to '', new_article_path(commandeId: session[:commandeId], produitId: produit), class:"fa-solid fa-cart-plus btn btn-primary btn-sm"  %>  </td>
-  
-            <td> <%#= link_to "with foo", current_page?(paid: true) %> </td>
-
+            <%#= link_to '', toggle_selectProduit_article_path(produit), class:"fa-solid fa-cart-plus btn btn-secondary btn-sm" %> 
+            <td> <%= link_to '', new_article_path(commandeId: session[:commandeId], produitId: produit), class:"fa-solid fa-cart-plus btn btn-primary btn-sm"  %>  </td>
          </tr>
         <% end %>
       </tbody>

@@ -4,6 +4,6 @@
 
 <div>
   <%= link_to "Editer", edit_article_path(@article), class:"btn btn-sm btn-primary" %> |
-  <%= link_to "Retour", articles_path, class:"btn btn-sm btn-secondary" %>
+  <%= link_to "Retour", commande_path(@article.commande_id), class:"btn btn-sm btn-secondary" %>
   <%= button_to "Supprimer", @article, method: :delete, class:"btn btn-sm btn-danger", style:"margin-top: 2px" %>
 </div>
