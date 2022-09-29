@@ -5,6 +5,8 @@
 <%= render "listeArticles" %>
 
 <div>
+  <%#= link_to "choisir produit", "listeSelection", class:"btn btn-sm btn-primary" %>
+
   <%= link_to "Nouvel article", new_article_path(commandeId: @commande), class:"btn btn-sm btn-primary" %>
 </div>
 <br>

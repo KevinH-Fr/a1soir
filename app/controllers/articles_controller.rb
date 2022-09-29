@@ -10,7 +10,12 @@ class ArticlesController < ApplicationController
 
   def new
     @article = Article.new article_params
-    @commande =  params[:commandeId]
+
+    @commandeId = params[:commandeId]
+    session[:commandeId] = params[:commandeId]
+
+    @produitId = params[:produitId]
+    session[:produitId] = params[:produitId]
   end
 
   def edit
@@ -53,9 +58,11 @@ class ArticlesController < ApplicationController
 
 
   def toggle_selectProduit
-    @commandeId = 3
-    redirect_to new_article_path(commandeId: @commandeId, produitId: 12),
-    notice: "test notif selection produit n°  |"  "commande n°#{@commandeId}"
+    @commandeId = session[:commandeId]
+    @produitId =  session[:produitId]
+
+    redirect_to new_article_path(commandeId: @commandeId, produitId: @produitId),
+    notice: "test notif selection produit n°#{@produitId} |"  "commande n°#{@commandeId}"
 
   end
 

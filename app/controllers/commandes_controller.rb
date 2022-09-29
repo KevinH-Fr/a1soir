@@ -10,7 +10,7 @@ class CommandesController < ApplicationController
   end
 
   def new
-    @commande = Commande.new
+    @commande = Commande.new commande_params
   end
 
   def edit

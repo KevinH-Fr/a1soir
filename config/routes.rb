@@ -30,5 +30,6 @@ Rails.application.routes.draw do
    get 'accueil_admin', to: 'accueil_admin#index'
    get 'search', to: 'search#index'
    get 'marketing', to: 'accueil_admin#marketing'
+   get 'listeSelection', to: 'accueil_admin#listeSelection'
 
 end
