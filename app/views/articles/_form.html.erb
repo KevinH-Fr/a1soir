@@ -36,9 +36,12 @@
     <hr>
     <% articleId = article.produit_id %>
     <%= Produit.find(articleId).full_name %>
+
  <% end %>
 
- <%= render "produitLie" %>
+ <% if @produitId.present? %> 
+     <%= render "produitLie" %>
+<% end %>
 
  <hr>
 

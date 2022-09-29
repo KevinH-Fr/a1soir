@@ -22,6 +22,16 @@ class Produit < ApplicationRecord
         "n°#{id} | #{nom} "
     end
 
+    def full_details
+       # "n°#{id} | nom #{nom} "
+        {
+            id: id,
+            nom: nom,
+            description: description,
+            image: image1
+          }
+    end
+
     def default_image
         if self.image1.filename.to_s.length > 0 
             image1
