@@ -6,11 +6,12 @@ class Article < ApplicationRecord
 
   scope :commande_courante, ->  (commande_courante) { where("commande_id = ?", commande_courante)}
 
- # after_initialize :set_defaults
+  after_initialize :set_defaults
 
- # def set_defaults
- #   self.quantite ||= 1
- # end
+  def set_defaults
+    self.quantite ||= 1
+    
+  end
 
 
 end
