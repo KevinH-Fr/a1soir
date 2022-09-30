@@ -13,6 +13,7 @@ class PostsController < ApplicationController
   end
 
   def edit
+    @quantites = [1, 2]
   end
 
   def create
@@ -56,6 +57,6 @@ class PostsController < ApplicationController
     end
 
     def post_params
-      params.fetch(:post, {}).permit(:name, :title, :content)
+      params.fetch(:post, {}).permit(:name, :title, :content, :quantite)
     end
 end

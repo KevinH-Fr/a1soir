@@ -9,7 +9,7 @@ class ArticlesController < ApplicationController
   end
 
   def new
-    @article = Article.new article_params
+    @article = Article.new(article_params)
 
     @commandeId = params[:commandeId]
     session[:commandeId] = params[:commandeId]

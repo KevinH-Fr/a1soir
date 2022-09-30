@@ -31,33 +31,47 @@
    <%= link_to 'Annuler selection', new_article_path(commandeId: @commandeId), class:"btn btn-outline-danger btn-sm" %>
  <br> <br>
 
-<div class="card mb-3 text-bg-dark">
-  <div class="card-body">
-   <%= simple_form_for [@article], html: { class: 'form-horizontal' }, wrapper: :horizontal_form do |f| %>
-   <%= f.error_notification %>
-
-  <div class="form-inputs">
-
-    <%= f.input :quantite %>
-    <%= f.input :prix, :input_html => {:value => Produit.find(@produitId).prix} %>
-    <%#= Produit.find(@produitId).prix %>
-    <%= f.input :total %>
-  </div>
-  <div class="form-actions">
-    <%= f.button :submit, "Valider", class:'btn btn-sm btn-success' %>
-  </div>
 <% end %>
 
+  <div>
+      <%= form.label :prix, style: "display: block" %>
+      <%= form.number_field :prix %>
   </div>
-</div>
 
-<% end %>
 
- <hr>
+ <%# bouton caché validation quantite %>
+  <div data-controller="form-element">
+    <%= form.button "Validate", formaction: new_article_path, formmethod: :get, data: { turbo_frame: :total_field, form_element_target: "submitbtn" } %>
+    <div>
+      <%= form.label :quantite, style: "display: block" %>
+      <%= form.number_field :quantite, { data: { action: "change->form-element#remotesubmit"}} %>
+    </div>
 
-<%# liste des produits pour selection %>
-<% if @produitId.nil? %> 
-  <%= render "listeSelection" %>
-<% end %>
+  <%= turbo_frame_tag :total_field do %>
+      <div>
+        <%= form.label :total, style: "display: block" %>
+        <%= form.number_field :total %> <br> <br>
+
+       test quantite:  <%= valQuantite = form.object.quantite %> <br>
+       test prix:  <%= valPrix = form.object.prix %> <br> <br>
+  
+       <% if valQuantite.present? && valPrix.present? %>
+        test total = <%= valQuantite * valPrix %>
+       <% end %>
+      
+
+      </div>
+  <% end %>
+
+  <hr>
+
+    <div>
+    <%= form.submit "Créer", class: 'btn btn-success' %>
+  </div>
+
+  <%# liste des produits pour selection %>
+  <% if @produitId.nil? %> 
+    <%= render "listeSelection" %>
+  <% end %>
  
 <% end %>

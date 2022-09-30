@@ -1,4 +1,5 @@
-  <%= render "infosCommande" %>
+  
+<%= render "infosCommande" %>
 
 <h1>Nouvel article</h1>
 
@@ -6,5 +7,6 @@
 
 
 <div>
-  <%= link_to "Retour", commande_path(@commandeId), class:"btn btn-sm btn-secondary", style:"margin-top: 4px" %>
+  <% @commandeId = session[:commandeId] %>
+  <%#= link_to "Retour", commande_path(@commandeId), class:"btn btn-sm btn-secondary", style:"margin-top: 4px" %>
 </div>

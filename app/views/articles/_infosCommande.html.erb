@@ -1,10 +1,12 @@
   
+  <% if @commandeId.present? %>
     <strong>Détails commande:</strong> <hr> 
     <% @commandeId %> 
     <% clientId = Commande.find(@commandeId).client_id %>
     commande: <%= Commande.find(@commandeId).full_name %> <br>
     client: <%= Client.find(clientId).full_name %> <br>
     date commande: <%= Commande.find(@commandeId).created_at %> <br>
-
+    
+ <% end %>
     <hr>
   

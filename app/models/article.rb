@@ -2,13 +2,15 @@ class Article < ApplicationRecord
   belongs_to :commande
   belongs_to :produit
 
+ # enum quantite: {1 => 1, 2 => 2, 3 => 3}
+
   scope :commande_courante, ->  (commande_courante) { where("commande_id = ?", commande_courante)}
 
-  after_initialize :set_defaults
+ # after_initialize :set_defaults
 
-  def set_defaults
-    self.quantite ||= 1
-  end
+ # def set_defaults
+ #   self.quantite ||= 1
+ # end
 
 
 end

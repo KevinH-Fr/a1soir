@@ -8,5 +8,8 @@ class Post < ApplicationRecord
         published: 'published',
         passcode_protected: 'passcode_protected'
     }
-    
+
+
+
+
 end

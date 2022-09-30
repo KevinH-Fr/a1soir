@@ -36,6 +36,24 @@
     <% end %>
   <% end %>
 
+
+  <div data-controller="form-element">
+    <%= form.button "Validate", formaction: new_post_path, formmethod: :get, data: { turbo_frame: :montant_field, form_element_target: "submitbtn" } %>
+    <div>
+      <%= form.label :quantite, style: "display: block" %>
+      <%= form.number_field :quantite, { data: { action: "change->form-element#remotesubmit"}} %>
+    </div>
+
+  <%= turbo_frame_tag :montant_field do %>
+      <div>
+        <%= form.label :montant, style: "display: block" %>
+        <%= form.number_field :montant %>
+
+       test quantite:  <%= form.object.quantite %>
+      </div>
+  <% end %>
+
+
   <br>  
 
   <div>
