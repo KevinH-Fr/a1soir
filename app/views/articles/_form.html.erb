@@ -12,12 +12,8 @@
 
   <div>
     <% form.label :commande_id, style: "display: block" %>
-
-
-
      <%#= form.select :commande_id, Commande.all.collect { |c| [ c.nom, c.id ] },
                      include_blank: true, selected: @commandeId %>
-
       <%= form.hidden_field(:commande_id, value: @commandeId) %>
 
   </div>
@@ -30,14 +26,16 @@
 
   </div>
 
+
 <% if @produitId.present? %> 
   <%= render "produitLie" %>
   <%= link_to 'Annuler selection', new_article_path(commandeId: @commandeId), class:"btn btn-outline-danger btn-sm" %>
  <br> <br>
+
  <div>
     <%= form.label :quantite, style: "display: block" %>
     <%= form.number_field :quantite %>
-  </div> <br>
+  </div> 
 <% end %>
 
  <hr>
@@ -47,7 +45,6 @@
   <%= render "listeSelection" %>
 <% end %>
 
-  <hr>
  
   <div>
     <%= form.submit "Valider", class:'btn btn-sm btn-success' %>

@@ -3,16 +3,16 @@
   <%= render partial: "accueil/reseaux" %>
 </div>
 
-<div class="row justify-content-center text-center">
-  <ul>
-    <li style="display:inline">
-     <%= link_to "Boutique", "boutique", class:"btn btn-sm", style:"color: white; background-color: rgb(204, 46, 102);" %>  
-     </li>
-     <li style="display:inline">
-        <small class="verysmall-text">Copyright Autour d’un soir - 2022 </small>
-     </li>
-     <li style="display:inline">
+<div class="container">
+    <table class="table table-responsive">
+      <td class="text-center"> 
+        <%= link_to "Boutique", "boutique", class:"btn btn-sm", style:"color: white; background-color: rgb(204, 46, 102);" %>  
+     </td>
+    <td class="text-center"> 
+        <small class="verysmall-text">Copyright Autour d’un soir</small>
+     </td>
+    <td class="text-center"> 
       <%= link_to "admin", "/accueil_admin", class:"btn btn-sm btn-outline-dark" %>
-     </li>
-  </ul>
+     </td>
+  </table>
 </div>
