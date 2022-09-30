@@ -37,8 +37,10 @@
    <%= f.error_notification %>
 
   <div class="form-inputs">
+
     <%= f.input :quantite %>
-    <%= f.input :prix %>
+    <%= f.input :prix, :input_html => {:value => Produit.find(@produitId).prix} %>
+    <%#= Produit.find(@produitId).prix %>
     <%= f.input :total %>
   </div>
   <div class="form-actions">
@@ -49,16 +51,6 @@
   </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
 <% end %>
 
  <hr>
@@ -67,6 +59,5 @@
 <% if @produitId.nil? %> 
   <%= render "listeSelection" %>
 <% end %>
-
  
 <% end %>
