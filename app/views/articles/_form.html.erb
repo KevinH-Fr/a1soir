@@ -26,16 +26,39 @@
 
   </div>
 
-
-<% if @produitId.present? %> 
-  <%= render "produitLie" %>
-  <%= link_to 'Annuler selection', new_article_path(commandeId: @commandeId), class:"btn btn-outline-danger btn-sm" %>
+ <% if @produitId.present? %> 
+   <%= render "produitLie" %>
+   <%= link_to 'Annuler selection', new_article_path(commandeId: @commandeId), class:"btn btn-outline-danger btn-sm" %>
  <br> <br>
 
- <div>
-    <%= form.label :quantite, style: "display: block" %>
-    <%= form.number_field :quantite %>
-  </div> 
+<div class="card mb-3 text-bg-dark">
+  <div class="card-body">
+   <%= simple_form_for [@article], html: { class: 'form-horizontal' }, wrapper: :horizontal_form do |f| %>
+   <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :quantite %>
+    <%= f.input :prix %>
+    <%= f.input :total %>
+  </div>
+  <div class="form-actions">
+    <%= f.button :submit, "Valider", class:'btn btn-sm btn-success' %>
+  </div>
+<% end %>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 <% end %>
 
  <hr>
@@ -46,7 +69,4 @@
 <% end %>
 
  
-  <div>
-    <%= form.submit "Valider", class:'btn btn-sm btn-success' %>
-  </div>
 <% end %>

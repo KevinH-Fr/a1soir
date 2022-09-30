@@ -18,6 +18,7 @@ gem "devise", "~> 4.8"
 gem "rqrcode", "~> 2.1"
 gem "chunky_png", "~> 1.4"
 gem "ransack", "~> 3.2"
+gem 'simple_form'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
