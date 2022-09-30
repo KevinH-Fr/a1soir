@@ -2,7 +2,23 @@ class ProduitsController < ApplicationController
   before_action :set_produit, only: %i[ show edit update destroy ]
 
   def index
-    @produits = Produit.all
+    categorieVal = params[:categorieVal]
+    if categorieVal.present?
+      @produits = Produit.categorie_selected(categorieVal)
+    else
+      @produits = Produit.all 
+    end
+
+    @categories = Produit.distinct.pluck(:categorie)
+
+
+    qVal = params[:q]
+    if qVal.present?
+      @q = Produit.ransack(params[:q])
+      @produits = @q.result(distinct: true)
+    end 
+
+      
   end
 
   def show
