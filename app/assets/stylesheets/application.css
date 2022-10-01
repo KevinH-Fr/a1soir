@@ -1,8 +1,9 @@
 /*
 
+ *= require_tree .
  *= require_self
  */
-
+ 
 body {
     background-color: rgb(50, 50, 50);
 }
@@ -65,3 +66,11 @@ h1, h2, p, div, li, ul, a {
    /* font-family: 'Glyphicons Halflings'; */
 
  }
+
+
+ #notice{
+    background-color: green;
+    color: white;
+    padding: 6px;
+    border-radius: 6px;
+  }

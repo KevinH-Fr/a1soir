@@ -30,12 +30,17 @@
       <%= render partial: "shared/navbar" %>
     </header>
     <main> 
-      <%= render partial: "layouts/alerts" %>
+      <div id="flash" style="position:absolute; z-index: 2; right: 10px;">
+          <%= render partial: "layouts/flash" %>
+      </div>
+
+      <%#= render partial: "layouts/alerts" %>
       <div class="container">
         <%= yield %>
       </div>
     </main>
   </body>
+
 
 
 
