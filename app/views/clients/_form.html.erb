@@ -11,17 +11,24 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :nom, style: "display: block" %>
-    <%= form.text_field :nom %>
-  </div>
 
-  <div>
-    <%= form.label :mail, style: "display: block" %>
-    <%= form.text_field :mail %>
-  </div>
+  <div class="card mb-3 text-bg-dark">
+  <div class="card-body">
 
-  <div>
-    <%= form.submit %>
+
+    <div class="mb-3">
+      <%= form.label :nom, { class: "form-label"} %>
+      <%= form.text_field :nom, { class: "form-control", placeholder: "nom" } %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :mail, { class: "form-label"} %>
+      <%= form.text_area :mail, { class: "form-control", placeholder: "mail" } %>
+    </div>
+
+    <%= form.submit "Valider", class: "btn btn-primary" %>
+
   </div>
+</div>
+
 <% end %>

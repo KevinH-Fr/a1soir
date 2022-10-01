@@ -1,3 +1,4 @@
+<p style="color: green"><%= notice %></p>
 
 <div id="new_client">
   <%= render partial: "clients/form", locals: { client: Client.new } %>
@@ -6,15 +7,9 @@
 <h3>Clients</h3>  
 
  <%#= render "choixCategorie" %>
-
  <%#= render "search" %>
-<div id="clients">
-  <% @clients.each do |client| %>
-    <%= render client %>
-    <p>
-      <%= link_to "Show this client", client %>
-    </p>
-  <% end %>
-</div>
 
-<%= link_to "Nouveau client", new_client_path, class:"btn btn-sm btn-primary" %>
+<div id="clients">
+  <%= render @clients %>
+
+<%#= link_to "Nouveau client", new_client_path, class:"btn btn-sm btn-primary" %>
