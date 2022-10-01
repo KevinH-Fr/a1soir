@@ -3,6 +3,10 @@ class ClientsController < ApplicationController
 
   def index
     @clients = Client.all
+
+    @q = Client.ransack(params[:q])
+    @clients = @q.result(distinct: true)
+
   end
 
   def show

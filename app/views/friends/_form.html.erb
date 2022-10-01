@@ -1,0 +1,32 @@
+
+<%= form_with(model: friend) do |f| %>
+  <% if friend.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(friend.errors.count, "error") %> prohibited this friend from being saved:</h2>
+
+      <ul>
+        <% friend.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div class="card mb-3 text-bg-dark">
+  <div class="card-body">
+
+    <div class="mb-3">
+      <%= f.label :title, { class: "form-label"} %>
+      <%= f.text_field :title, { class: "form-control", placeholder: "title" } %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :body, { class: "form-label"} %>
+      <%= f.text_field :body, { class: "form-control", placeholder: "body" } %>
+    </div>
+
+    <%= f.submit "Valider", class: "btn btn-primary" %>
+
+  </div>
+</div>
+<% end %>
