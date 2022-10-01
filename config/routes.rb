@@ -2,16 +2,26 @@ Rails.application.routes.draw do
   resources :messages
   resources :friends
 
-
   resources :articles do
     member do
       get :toggle_selectProduit
     end 
   end
 
+
+  resources :clients do
+    member do
+      post :edit
+    end
+  end
+
+
+
   devise_for :users
   resources :produits
-  resources :clients
+
+
+
   resources :posts
   resources :annonces
   resources :commandes

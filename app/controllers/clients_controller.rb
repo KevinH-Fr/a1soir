@@ -17,6 +17,11 @@ class ClientsController < ApplicationController
   end
 
   def edit
+    respond_to do |format|
+      format.turbo_stream do  
+        render turbo_stream: turbo_stream.update(@client, partial: "clients/form", locals: {client: @client})
+      end
+    end
   end
 
   def create
@@ -54,9 +59,21 @@ class ClientsController < ApplicationController
   def update
     respond_to do |format|
       if @client.update(client_params)
+
+        format.turbo_stream do  
+          render turbo_stream: turbo_stream.update(@client, partial: "clients/client", locals: {client: @client})
+        end
+
+
+
         format.html { redirect_to client_url(@client), notice: "Client was successfully updated." }
         format.json { render :show, status: :ok, location: @client }
       else
+
+        format.turbo_stream do  
+          render turbo_stream: turbo_stream.update(@client, partial: "clients/form", locals: {client: @client})
+        end
+        
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @client.errors, status: :unprocessable_entity }
       end
