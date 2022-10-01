@@ -26,8 +26,9 @@ class FriendsController < ApplicationController
     respond_to do |format|
       if @friend.save
         format.turbo_stream do
-          render turbo_stream:
+          render turbo_stream: [
             turbo_stream.prepend("friends", partial: "friends/friend", locals: {friend: @friend})
+          ]
         end
         format.html { redirect_to friend_url(@friend), notice: "Friend was successfully created." }
         format.json { render :show, status: :created, location: @friend }
