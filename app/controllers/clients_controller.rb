@@ -31,8 +31,6 @@ class ClientsController < ApplicationController
           render turbo_stream: [
             turbo_stream.update("new_client", partial: "clients/form", locals: {client: Client.new }),
             turbo_stream.prepend("clients", partial: "clients/client", locals: {client: @client }),
-           # turbo_stream.update("clients", partial: "index", locals: {client: Client.all }),
-           # turbo_stream.append('clients', partial: 'client', locals: { client: @client }),
             turbo_stream.update("flash", partial: "layouts/flash")
           ]
         end
@@ -69,6 +67,7 @@ class ClientsController < ApplicationController
     @client.destroy
 
     respond_to do |format|
+      format.turbo_stream {render turbo_stream: turbo_stream.remove(@client) }
       format.html { redirect_to clients_url, notice: "Client was successfully destroyed." }
       format.json { head :no_content }
     end
