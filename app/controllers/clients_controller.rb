@@ -36,6 +36,7 @@ class ClientsController < ApplicationController
           render turbo_stream: [
             turbo_stream.update("new_client", partial: "clients/form", locals: {client: Client.new }),
             turbo_stream.prepend("clients", partial: "clients/client", locals: {client: @client }),
+            turbo_stream.update("client_counter", Client.count),
             turbo_stream.update("flash", partial: "layouts/flash")
           ]
         end
@@ -64,8 +65,6 @@ class ClientsController < ApplicationController
           render turbo_stream: turbo_stream.update(@client, partial: "clients/client", locals: {client: @client})
         end
 
-
-
         format.html { redirect_to client_url(@client), notice: "Client was successfully updated." }
         format.json { render :show, status: :ok, location: @client }
       else
@@ -73,7 +72,7 @@ class ClientsController < ApplicationController
         format.turbo_stream do  
           render turbo_stream: turbo_stream.update(@client, partial: "clients/form", locals: {client: @client})
         end
-        
+
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @client.errors, status: :unprocessable_entity }
       end
@@ -83,8 +82,18 @@ class ClientsController < ApplicationController
   def destroy
     @client.destroy
 
+    flash.now[:notice] = "#{@client.id} deleted at #{Time.zone.now}"
+
     respond_to do |format|
-      format.turbo_stream {render turbo_stream: turbo_stream.remove(@client) }
+
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.remove(@client),
+          turbo_stream.update("client_counter", Client.count),
+          turbo_stream.update("flash", partial: "layouts/flash")
+        ]
+      end
+
       format.html { redirect_to clients_url, notice: "Client was successfully destroyed." }
       format.json { head :no_content }
     end
