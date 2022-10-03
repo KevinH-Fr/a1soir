@@ -3,10 +3,16 @@ class AccueilController < ApplicationController
 
     def mariees
       @produits = Produit.categorie_robes_mariees.showed_vitrine
+      if Label.last.present?
+        @label = Label.last.mariee
+      end
     end
 
     def costumes
       @produits = Produit.categorie_costumes_hommes.showed_vitrine
+      if Label.last.present?
+        @label = Label.last.homme
+      end
     end
 
     def soirees
@@ -18,10 +24,16 @@ class AccueilController < ApplicationController
 
     def accessoires
       @produits = Produit.categorie_accessoires.showed_vitrine
+      if Label.last.present?
+        @label = Label.last.accessoire
+      end
     end
 
     def deguisements
       @produits = Produit.categorie_costumes_deguisements.showed_vitrine
+      if Label.last.present?
+        @label = Label.last.deguisement
+      end
     end
 
     def index
