@@ -1,6 +1,9 @@
 
 <h5> AUTOUR D’UN SOIR </h5>
 
+<%# renvoi valeur depuis Model Texte edité par admin %>
+<%= Texte.last.content %>
+
 <div> 
     <%= render "accueil/adresse" %> 
 </div>
@@ -13,4 +16,5 @@
     <%= render "accueil/map" %> 
  </div>
 <br>
+
 
