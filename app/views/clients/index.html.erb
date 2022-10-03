@@ -1,14 +1,17 @@
 
-<div id="new_client">
-  <%= render partial: "clients/form", locals: { client: Client.new } %>
-</div>
-
-<h3>
- Clients
+<h3> Clients </h3>  
   <span id="client_counter">
-    <%= Client.count %>
+   nombre: <%= Client.count %>
   </span>
-</h3>  
+
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Nouveau client
+</button>
+<hr>
+
 
  <%#= render "choixCategorie" %>
  <%#= render "search" %>
@@ -18,15 +21,54 @@
 
 <%#= link_to "Nouveau client", new_client_path, class:"btn btn-sm btn-primary" %>
 
-
 <div data-controller="dropdown">
-  <button data-action="click->dropdown#openDropdown" data-dropdown-target="openButton">
-    open dropdown
-  </button>
-   <button data-action="click->dropdown#closeDropdown" data-dropdown-target="closeButton">
-    close dropdown
-  </button>
+  <div role="button" data-action="click->dropdown#openDropdown" data-dropdown-target="openButton">
+      click to open 
+  </div>
+  <div role="button" data-action="click->dropdown#closeDropdown" data-dropdown-target="closeButton">
+      click to close 
+  </div>
+  
   <div data-dropdown-target="dropdownContent">
     <strong>  test show hide </strong>
+  </div>
+
+</div>
+
+
+<div data-controller="nouveau">
+  <div role="button" data-action="click->nouveau#openNouveau" data-nouveau-target="openButton">
+      click to open 
+  </div>
+  <div role="button" data-action="click->nouveau#closeNouveau" data-nouveau-target="closeButton">
+      click to close 
+  </div>
+  <div data-nouveau-target="nouveauContent">
+    <%= render "modal" %>
+   
+  </div>
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="new_client">
+          <%= render partial: "clients/form", locals: { client: Client.new } %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
   </div>
 </div>
