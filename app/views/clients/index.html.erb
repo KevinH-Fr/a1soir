@@ -17,3 +17,16 @@
   <%= render @clients %>
 
 <%#= link_to "Nouveau client", new_client_path, class:"btn btn-sm btn-primary" %>
+
+
+<div data-controller="dropdown">
+  <button data-action="click->dropdown#openDropdown" data-dropdown-target="openButton">
+    open dropdown
+  </button>
+   <button data-action="click->dropdown#closeDropdown" data-dropdown-target="closeButton">
+    close dropdown
+  </button>
+  <div data-dropdown-target="dropdownContent">
+    <strong>  test show hide </strong>
+  </div>
+</div>
