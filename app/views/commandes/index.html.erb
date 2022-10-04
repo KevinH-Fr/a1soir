@@ -1,7 +1,8 @@
 <h1>Commandes</h1>
 
 <div id="commandes">
-  <%= render "liste" %>
+  <%#= render "liste" %>
+  <%= render @commandes %>
 </div>
 
 <%= link_to "Nouvelle commande", new_commande_path, class:"btn btn-sm btn-primary" %>

@@ -3,8 +3,13 @@
 
 <h1>Nouvel article</h1>
 
-<%= render "form", article: @article %>
-
+<%#= render "form", article: @article %>
+  <%# liste des produits pour selection %>
+  <% if @produitId.nil? %> 
+    <%= render "listeSelection" %>
+  <% else %>
+    <%= render "form", article: @article %>
+  <% end %>
 
 <div>
   <% @commandeId = session[:commandeId] %>

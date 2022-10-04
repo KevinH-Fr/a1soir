@@ -60,7 +60,12 @@
      <% valPrix = form.object.prix %>
      
      <% if valQuantite.present? && valPrix.present? %>
+      <strong> quantite et prix present</strong>
        <% valTotal = valQuantite * valPrix %>
+     <% else %>
+      <%# valQuantite = article.quantite %> 
+      <%# valPrix = Produit.find(@produitId).prix %>
+       <%# valTotal = valQuantite * valPrix %>
      <% end %>
 
       <div>
@@ -76,9 +81,6 @@
     <%= form.submit "Créer", class: 'btn btn-success' %>
   </div>
 
-  <%# liste des produits pour selection %>
-  <% if @produitId.nil? %> 
-    <%= render "listeSelection" %>
-  <% end %>
+
  
 <% end %>

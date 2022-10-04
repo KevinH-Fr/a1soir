@@ -10,7 +10,7 @@ class Article < ApplicationRecord
 
   def set_defaults
     self.quantite ||= 1
-    
+    self.total ||= 50
   end
 
 
