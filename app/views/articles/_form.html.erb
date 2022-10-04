@@ -12,8 +12,8 @@
 
   <div>
     <% form.label :commande_id, style: "display: block" %>
-      <%#= form.select :commande_id, Commande.all.collect { |c| [ c.nom, c.id ] },  include_blank: true, selected: @commandeId %>
-      <%= form.hidden_field(:commande_id, value: @commandeId) %>
+    <%#= form.select :commande_id, Commande.all.collect { |c| [ c.nom, c.id ] },  include_blank: true, selected: @commandeId %>
+    <%= form.hidden_field(:commande_id, value: @commandeId) %>
   </div>
 
   <div>
@@ -22,44 +22,54 @@
     <%= form.hidden_field(:produit_id, value: @produitId) %>
   </div>
 
- <% if @produitId.present? %> 
-   <%= render "produitLie" %>
-   <%= link_to 'Annuler selection', new_article_path(commandeId: @commandeId), class:"btn btn-outline-danger btn-sm" %> <br> <br>
-<% end %>
-
-<br>
-  test produitId: <%= @produitId  %> <br>
-  valprix produit: <%#= valPrixProduit = Produit.find(@produitId).prix %><br>
-  test quantite: <%= valQuantite = 1 %><br>
-  test total: <%#= valTotal = valPrixProduit * valQuantite %><br>
-
-  test var: <%= testvar = @testvar %> <br>
-  test var: <%= @quantite %><br>
-  test var: <%= @valPrix %><br>
-
-<br>
-<hr>
-    <div>
-      <%= form.label :quantite, style: "display: block" %>
-      <%= form.number_field :quantite, value: @quantite  %>
-
-      <%= form.label :prix, style: "display: block" %>
-      <%= form.number_field :prix, value: @valPrix %>
-
-    </div>
-
-  <% if @quantite.present? && @valPrix.present? %>
-    <% valTotal =  @quantite * @valPrix  %>
-  <% else %>
-    <% valTotal =  0  %>
+  <% if @produitId.present? %> 
+    <%= render "produitLie" %>
+    <%= link_to 'Annuler selection', new_article_path(commandeId: @commandeId), class:"btn btn-outline-danger btn-sm" %> <br> <br>
   <% end %>
 
+  <br>
+    test produitId: <%= @produitId  %> <br>
+    valprix produit: <%#= valPrixProduit = Produit.find(@produitId).prix %><br>
+    test quantite: <%= valQuantite = 1 %><br>
+    test total: <%#= valTotal = valPrixProduit * valQuantite %><br>
+
+    test var: <%= testvar = @testvar %> <br>
+    test var: <%= @quantite %><br>
+    test var: <%= @valPrix %><br>
+
+  <br>
+  <hr>
+
+  <div data-controller="form-element">
+    <%= form.button "Validate", formaction: new_article_path(commandeId: @commandeId, produitId: @produitId), 
+                              formmethod: :get, 
+                                data: { turbo_frame: :total_field, form_element_target: "submitbtn" } %>
     <div>
-      <%= form.label :total, style: "display: block" %>
-      <%= form.number_field :total, value: valTotal %> <br> 
+      <%= form.label :quantite, style: "display: block" %>
+      <%= form.number_field :quantite, { data: { action: "change->form-element#remotesubmit"}} %>
     </div>
+    <div>
+      <%= form.label :prix, style: "display: block" %>
+      <%= form.number_field :prix, { data: { action: "change->form-element#remotesubmit"},  value: @valPrix} %>
+    </div>
+  </div>
+
+  <%= turbo_frame_tag :total_field do %>
+
+    <div>
+      
+   test quantite:  <%= valQuantite = form.object.quantite %>
+   test valprix:  <%= valPrix = form.object.prix.to_d %>
 
 
+      <%= form.label :total, style: "display: block" %>
+      <%= form.number_field :total, value:  valQuantite * valPrix %>
+      <br>
+       
+
+    </div>
+  <% end %>
+        
   <hr>
 
   <div>

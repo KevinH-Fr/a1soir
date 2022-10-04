@@ -9,7 +9,7 @@ class ArticlesController < ApplicationController
   end
 
   def new
-    @article = Article.new(article_params)
+    @article = Article.new article_params
 
     @commandeId = params[:commandeId]
     session[:commandeId] = params[:commandeId]
@@ -20,7 +20,18 @@ class ArticlesController < ApplicationController
     @testvar = 'var depuis controller new'
 
     @quantite = 1
-    @valPrix = Produit.find(@produitId).prix
+    
+    if @produitId.present?
+     @valPrix = Produit.find(@produitId).prix
+    else
+      @valPrix = 0
+    end 
+    
+    if @quantite.present? && @valPrix.present? 
+      @valTotal =  @quantite * @valPrix 
+    else
+      @valTotal = 0  
+    end
   
   end
 
@@ -32,6 +43,13 @@ class ArticlesController < ApplicationController
 
     @quantite = Article.find(@article.id).quantite
     @valPrix = Article.find(@article.id).prix
+
+    if @quantite.present? && @valPrix.present? 
+      @valTotal =  @quantite * @valPrix 
+    else
+      @valTotal = 0  
+    end
+
   end
 
   def create

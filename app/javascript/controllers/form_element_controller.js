@@ -5,7 +5,9 @@ export default class extends Controller {
 
   static targets = ["submitbtn"]
   connect() {
-    this.submitbtnTarget.hidden = true
+    this.submitbtnTarget.hidden = false
+    this.submitbtnTarget.click()
+    console.log('hello from stimulus form element controller')
   } 
 
   remotesubmit() {
