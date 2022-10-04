@@ -56,6 +56,6 @@ class TextesController < ApplicationController
     end
 
     def texte_params
-      params.require(:texte).permit(:titre, :content)
+      params.require(:texte).permit(:titre, :content, :contact, :horaire, :boutique)
     end
 end
