@@ -16,11 +16,22 @@ class ArticlesController < ApplicationController
 
     @produitId = params[:produitId]
     session[:produitId] = params[:produitId]
+
+    @testvar = 'var depuis controller new'
+
+    @quantite = 1
+    @valPrix = Produit.find(@produitId).prix
+  
   end
 
   def edit
     @commandeId = params[:commandeId]
     @produitId = params[:produitId]
+
+    @testvar = 'var depuis controller edit'
+
+    @quantite = Article.find(@article.id).quantite
+    @valPrix = Article.find(@article.id).prix
   end
 
   def create
