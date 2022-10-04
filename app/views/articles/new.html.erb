@@ -5,11 +5,18 @@
 
 <%#= render "form", article: @article %>
   <%# liste des produits pour selection %>
-  <%# if @produitId.nil? %> 
+  <% unless @produitId.present? %> 
     <%= render "listeSelection" %>
-  <%# else %>
+  <% end %>
+
     <%= render "form", article: @article %>
-  <%# end %>
+
+
+
+
+
+
+
 
 <div>
   <% @commandeId = session[:commandeId] %>

@@ -4,14 +4,11 @@
    nombre: <%= Client.count %>
   </span>
 
-
-
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
   Nouveau client
 </button>
 <hr>
-
 
  <%#= render "choixCategorie" %>
  <%#= render "search" %>
@@ -28,13 +25,10 @@
   <div role="button" data-action="click->dropdown#closeDropdown" data-dropdown-target="closeButton">
       click to close 
   </div>
-  
   <div data-dropdown-target="dropdownContent">
     <strong>  test show hide </strong>
   </div>
-
 </div>
-
 
 <div data-controller="nouveau">
   <div role="button" data-action="click->nouveau#openNouveau" data-nouveau-target="openButton">
@@ -45,11 +39,8 @@
   </div>
   <div data-nouveau-target="nouveauContent">
     <%= render "modal" %>
-   
   </div>
 </div>
-
-
 
 
 <!-- Modal -->
