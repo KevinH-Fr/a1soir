@@ -1,18 +1,18 @@
 
  <strong> Clients</strong>
- nb: <%= Client.count %>
- <%= link_to "", new_client_path, class:"fa-solid fa-plus btn btn-sm btn-primary" %>
-
-
+   nb: <%= Client.count %>
 
 <%= render "clients/search" %>
 
  <table class="table table-primary table-striped table-bordered table-hover">
     <tbody class="table-light">
       <tr>
-        <% @clients.each do | client | %>
+        <% @clients.limit(6).each do | client | %>
           <td> <%= link_to client.nom, client_path(client), class:"text-dark fs-6" %> </td>
         </tr> 
         <% end %>
     </tbody>
  </table>
+
+ <%= link_to "Nouveau client", new_client_path, class:"btn btn-sm btn-primary" %>
+
