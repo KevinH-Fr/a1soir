@@ -3,6 +3,7 @@ class ArticlesController < ApplicationController
 
   def index
     @articles = Article.all
+
   end
 
   def show
@@ -32,6 +33,35 @@ class ArticlesController < ApplicationController
     else
       @valTotal = 0  
     end
+
+
+    categorieVal = params[:categorieVal]
+    if categorieVal.present?
+      @produits = Produit.categorie_selected(categorieVal)
+    else
+      @produits = Produit.all 
+    end
+    @categories = Produit.distinct.pluck(:categorie)
+
+    qVal = params[:q]
+    if qVal.present?
+      @q = Produit.ransack(params[:q])
+      @produits = @q.result(distinct: true)
+    end 
+    
+    couleurVal = params[:couleurVal]
+    if couleurVal.present?
+      @produits = Produit.couleur_selected(couleurVal)
+    else
+      @produits = Produit.all 
+    end
+    @couleurs = Produit.distinct.pluck(:couleur)
+
+    qVal = params[:q]
+    if qVal.present?
+      @q = Produit.ransack(params[:q])
+      @produits = @q.result(distinct: true)
+    end 
   
   end
 

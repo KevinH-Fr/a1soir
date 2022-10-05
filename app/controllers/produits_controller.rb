@@ -8,9 +8,7 @@ class ProduitsController < ApplicationController
     else
       @produits = Produit.all 
     end
-
     @categories = Produit.distinct.pluck(:categorie)
-
 
     qVal = params[:q]
     if qVal.present?
@@ -73,6 +71,6 @@ class ProduitsController < ApplicationController
     end
 
     def produit_params
-      params.require(:produit).permit(:nom, :prix, :description, :categorie, :image1, :vitrine)
+      params.require(:produit).permit(:nom, :prix, :description, :categorie, :couleur, :image1, :vitrine)
     end
 end

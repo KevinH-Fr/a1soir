@@ -10,6 +10,8 @@ class Produit < ApplicationRecord
     
     enum categories: ["Robes de soirées", "Robes de mariées", "Costumes hommes", "Accessoires", "Costumes et déguisements"]
 
+    enum couleurs: ["Bleu", "Blanc", "Rouge"]
+
     scope :showed_vitrine, -> { where("vitrine = ?", true) }
 
     scope :categorie_robes_soirees, -> { where("categorie = ?", "Robes de soirées") } # categorie 1
@@ -20,6 +22,7 @@ class Produit < ApplicationRecord
 
 
     scope :categorie_selected, ->  (categorieVal) { where("categorie = ?", categorieVal)}
+    scope :couleur_selected, ->  (couleurVal) { where("couleur = ?", couleurVal)}
 
     def full_name
         "n°#{id} | #{nom} "

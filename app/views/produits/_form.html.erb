@@ -21,6 +21,11 @@
     <%= form.select(:categorie, Produit.categories.keys, {include_blank: true}) %>
   </div>
 
+    <div>
+    <%= form.label :couleur, style: "display: block" %>
+    <%= form.select(:couleur, Produit.couleurs.keys, {include_blank: true}) %>
+  </div>
+
   <div>
     <%= form.label :prix, style: "display: block" %>
     <%= form.text_field :prix %>

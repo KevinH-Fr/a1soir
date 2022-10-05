@@ -1,0 +1,17 @@
+
+  Categories | 
+  <% @categories.each do |categorie| %>
+    <%= link_to "#{categorie}", url_for(commandeId: session[:commandeId], categorieVal: categorie), class:"btn btn-sm btn-secondary", :method => :post %> 
+  <% end %>
+  <% @categorie = params[:categorieVal]%>
+  <br>  <br>
+
+  Couleur | 
+  <% @couleurs.each do |couleur| %>
+  <% if couleur.present? %>
+      <%= link_to "#{couleur}", url_for(commandeId: session[:commandeId], couleurVal: couleur), class:"btn btn-sm btn-secondary", :method => :post %> 
+    <% end %>
+  <% end %>
+  <% @couleur = params[:couleurVal]%>
+ 
+<hr/> 

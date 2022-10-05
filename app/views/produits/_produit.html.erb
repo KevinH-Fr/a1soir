@@ -10,6 +10,7 @@
           <h5 class="card-title"> <%= produit.nom %></h5>
           <p class="card-text"> <%= produit.description %></p>
           <p class="card-text"> <%= produit.categorie %></p>
+          <p class="card-text"> <%= produit.couleur %></p>
           <p class="card-text"> <%= produit.prix %></p>
           <p> <%= image_tag(produit.qr_code, style:"width: 100px") if produit.qr_code.attached? %> </p>
         </div>
