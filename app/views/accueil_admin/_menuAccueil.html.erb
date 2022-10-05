@@ -1,36 +1,18 @@
 
- <%= render "clients/liste" %>
+<div class="container border border-light">
+  <div class="row">
+    <div class="col">
+       <%= render "clients/liste" %>
+    </div>
+    <div class="col-6">
+       <%= render "boutonsActions" %>
+    </div>
+    <div class="col">
+       <%= render "clients/liste" %>
+    </div>
+  </div>
+</div>
 
-        <div class="table-responsive">
-        <table class="table table-dark text-center">
-            <tr>
-                <td>
-                    <%= link_to image_tag("icons/clients_ico.png", border: 0, width: 50), clients_path, class:"navbar-brand" %> <br>
-                    <h5> Clients </h5>
-                </td>
-                <td>
-                    <%= link_to image_tag("icons/produits_ico.png", border: 0, width: 50), produits_path, class:"navbar-brand" %> <br>
-                    <h5> Produits </h5>
-                </td>
 
-                <td>
-                    <%= link_to image_tag("icons/commandes_ico.png", border: 0, width: 50), commandes_path, class:"navbar-brand" %> <br>
-                    <h5> Commandes </h5>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <%= link_to image_tag("icons/calendrier_ico.png", border: 0, width: 50), root_path, class:"navbar-brand" %> <br>
-                    <h5> Calendrier </h5>
-                </td>
-                <td>
-                    <%= link_to image_tag("icons/finances_ico.png", border: 0, width: 50), root_path, class:"navbar-brand" %> <br>
-                    <h5> Analyses </h5>
-                </td>
-                <td>
-                    <%= link_to image_tag("icons/marketing_ico.png", border: 0, width: 50), "marketing", class:"navbar-brand" %> <br>
-                    <h5> Marketing </h5>
-                </td>
-            </tr>
-        </table> 
-        </div>   
+
+       
