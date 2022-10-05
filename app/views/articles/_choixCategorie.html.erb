@@ -6,12 +6,14 @@
   <% @categorie = params[:categorieVal]%>
   <br>  <br>
 
-  Couleur | 
-  <% @couleurs.each do |couleur| %>
-  <% if couleur.present? %>
-      <%= link_to "#{couleur}", url_for(commandeId: session[:commandeId], couleurVal: couleur), class:"btn btn-sm btn-secondary", :method => :post %> 
+  <% if @categorie.present? %>
+    Couleur | 
+    <% @couleurs.each do |couleur| %>
+      <% if couleur.present? %>
+        <%= link_to "#{couleur}", url_for(commandeId: session[:commandeId],  categorieVal: @categorie, couleurVal: couleur), class:"btn btn-sm btn-secondary", :method => :post %> 
+      <% end %>
     <% end %>
-  <% end %>
-  <% @couleur = params[:couleurVal]%>
- 
+    <% @couleur = params[:couleurVal]%>
+ <% end %>
+
 <hr/> 

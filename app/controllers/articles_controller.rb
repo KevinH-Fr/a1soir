@@ -36,8 +36,14 @@ class ArticlesController < ApplicationController
 
 
     categorieVal = params[:categorieVal]
+    couleurVal = params[:couleurVal]
+
     if categorieVal.present?
       @produits = Produit.categorie_selected(categorieVal)
+      @couleurs = Produit.categorie_selected(categorieVal).distinct.pluck(:couleur)
+        if couleurVal.present?
+          @produits = Produit.categorie_selected(categorieVal).couleur_selected(couleurVal)
+        end
     else
       @produits = Produit.all 
     end
@@ -48,20 +54,7 @@ class ArticlesController < ApplicationController
       @q = Produit.ransack(params[:q])
       @produits = @q.result(distinct: true)
     end 
-    
-    couleurVal = params[:couleurVal]
-    if couleurVal.present?
-      @produits = Produit.couleur_selected(couleurVal)
-    else
-      @produits = Produit.all 
-    end
-    @couleurs = Produit.distinct.pluck(:couleur)
 
-    qVal = params[:q]
-    if qVal.present?
-      @q = Produit.ransack(params[:q])
-      @produits = @q.result(distinct: true)
-    end 
   
   end
 
