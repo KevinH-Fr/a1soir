@@ -1,13 +1,18 @@
+  <div class="row align-items-center text-center">
+    <div class="col">
+      <h3> Clients </h3> 
+      <span id="client_counter">
+        nombre: <%= Client.count %>
+        </span> <br>  
+    </div>
+    <div class="col">
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Nouveau client
+      </button>
+    </div>
+  </div>
 
-<h3> Clients </h3>  
-  <span id="client_counter">
-   nombre: <%= Client.count %>
-  </span>
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Nouveau client
-</button>
 <hr>
 
  <%#= render "choixCategorie" %>

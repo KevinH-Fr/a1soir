@@ -23,7 +23,12 @@
 
     <div class="mb-3">
       <%= form.label :mail, { class: "form-label"} %>
-      <%= form.text_area :mail, { class: "form-control", placeholder: "mail" } %>
+      <%= form.text_field :mail, { class: "form-control", placeholder: "mail" } %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :commentaires, { class: "form-label"} %>
+      <%= form.text_area :commentaires, { class: "form-control", placeholder: "commentaires" } %>
     </div>
 
     <%= form.submit "Valider", class: "btn btn-primary" %>
