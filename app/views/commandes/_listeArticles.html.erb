@@ -6,8 +6,9 @@
         <tr>
           <th style="text-align: center;">#</th>
           <th colspan="2">produit</th>
-          <th>quantité</th>
+          <th class="text-center">quantité</th>
           <th>prix</th>
+          <th>total</th>
           <th colspan=3> Actions</th>
         </tr>
       </thead>
@@ -20,8 +21,9 @@
                class: "img-fluid rounded") %> 
             </td>
             <td> <%= Produit.find(article.produit_id).nom %> </td>
-            <td> <%= article.quantite %> </td>
-            <td></td>
+            <td class="text-center"> <%= article.quantite %> </td>
+            <td class="text-end"> <%= article.prix %> </td>
+            <td class="text-end"> <%= article.total %> </td>
             <td> <%= link_to '', article, class:"fa-solid fa-eye btn btn-primary btn-sm" %>  </td>
             <td> <%= button_to '', article, class:"fa-solid fa-trash-can btn btn-danger btn-sm", method: :delete, :onclick => "return confirm('Sûr ?')" %>  </td> 
             <td> <%= link_to "", edit_article_path(article, produitId: article.produit_id, commandeId: article.commande_id), class:"fa-regular fa-pen-to-square btn btn-secondary btn-sm" %> </td> 
@@ -29,15 +31,17 @@
         <% end %>
       </tbody>
 
-      <tfoot class="table-dark">
+      <tfoot class="table-dark fs-bold">
         <tr>
           <td colspan=3>  
             totaux
           </td>
-          <td>
+          <td class="text-center">
             <%= Article.where(commande_id: @commande).sum(:quantite) %>
           </td>
-          <td>
+          <td></td>
+          <td class="text-end">
+            <%= Article.where(commande_id: @commande).sum(:total) %>
           </td>
           <td colspan=3>
           </td>

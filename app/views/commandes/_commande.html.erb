@@ -1,9 +1,9 @@
 <div id="<%= dom_id commande %>">
 
-<div class="card text-bg-dark mb-3" style="max-width: 18rem;">
+<div class="card text-bg-dark mb-3" style="max-width: 36rem">
   <div class="card-header border-light">  <%= commande.nom %> </div>
     <div class="card-body">
-      <h5 class="card-title"> client:  <%= Client.find(commande.client_id).full_name if commande.client_id.present? %> </h5>
+      <p class="card-text"> client:  <%= Client.find(commande.client_id).full_name if commande.client_id.present? %> </p>
       <p class="card-text"> montant: <%= commande.montant %></p>
     </div>
     <div class="card-footer border-light">
