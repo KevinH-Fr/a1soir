@@ -6,46 +6,36 @@
         </span> <br>  
     </div>
     <div class="col">
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Nouveau client
-      </button>
+   
     </div>
   </div>
 
 <hr>
 
- <%#= render "choixCategorie" %>
  <div class="card text-bg-dark mb-3 mx-auto" style="max-width: 36rem;">
    <%= render "search" %>
-</div>
+ </div>
+
+    <div data-controller="nouveau", class="mx-auto" style="max-width: 36rem;">
+      <div role="button" data-action="click->nouveau#openNouveau" data-nouveau-target="openNouveau", class="btn btn-sm btn-success", style="inline;">
+        Nouveau client
+      </div>
+      <div role="button" data-action="click->nouveau#closeNouveau" data-nouveau-target="closeNouveau", class="btn btn-sm btn-danger", style="inline;">
+        Fermer nouveau
+      </div>
+      <hr>
+      <div id="new_client">
+        <div data-nouveau-target="nouveauContent">
+          <%= render partial: "clients/form", locals: {client: Client.new} %>
+        </div>
+      </div>
+  </div>
 
 <div id="clients">
   <%= render @clients %>
 </div>
 
 
+ <%#= render "modal" %>
 
-<!-- Modal -->
-<div class="modal fade text-dark" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog bg-success">
-    <div class="modal-content text-dark bg-secondary">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">Nouveau client</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div id="new_client">
-          <%= render partial: "clients/form", locals: { client: Client.new } %>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">
-        
-        </button>
-        
-      </div>
-    </div>
-  </div>
-</div>
+

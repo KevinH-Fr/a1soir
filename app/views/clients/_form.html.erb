@@ -27,9 +27,7 @@
         <%= form.label :commentaires, { class: "form-label"} %>
         <%= form.text_area :commentaires, { class: "form-control", placeholder: "commentaires" } %>
       </div>
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-        <%= form.submit "Valider" %>
-     </button>
+      <%= form.submit "Valider", class: "btn btn-primary" %>
   </div>
 </div>
 

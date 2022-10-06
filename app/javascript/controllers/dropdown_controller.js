@@ -7,7 +7,8 @@ export default class extends Controller {
   connect() {
     this.dropdownContentTarget.hidden = true
     this.closeButtonTarget.hidden = true
-    console.log("hello from stiumuls controller")
+
+    console.log("hello from stiumuls controller test")
   }
 
   openDropdown() {
@@ -21,4 +22,5 @@ export default class extends Controller {
     this.openButtonTarget.hidden = false
     this.closeButtonTarget.hidden = true
   }
+
 }
