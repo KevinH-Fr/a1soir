@@ -37,11 +37,11 @@
             totaux
           </td>
           <td class="text-center">
-            <%= Article.where(commande_id: @commande).sum(:quantite) %>
+            <%= Article.commande_courante(@commande).compte_articles %>
           </td>
           <td></td>
           <td class="text-end">
-            <%= Article.where(commande_id: @commande).sum(:total) %>
+            <%= Article.commande_courante(@commande).sum_articles %>
           </td>
           <td colspan=3>
           </td>

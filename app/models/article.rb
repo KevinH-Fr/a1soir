@@ -5,6 +5,9 @@ class Article < ApplicationRecord
  # enum quantite: {1 => 1, 2 => 2, 3 => 3}
 
   scope :commande_courante, ->  (commande_courante) { where("commande_id = ?", commande_courante)}
+  scope :sum_articles, -> {sum('total')}
+  scope :compte_articles, -> {sum('quantite')}
+
 
   after_initialize :set_defaults
 
