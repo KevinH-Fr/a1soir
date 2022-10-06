@@ -3,6 +3,9 @@ class CommandesController < ApplicationController
 
   def index
     @commandes = Commande.all
+
+    @q = Commande.ransack(params[:q])
+    @commandes = @q.result(distinct: true)
   end
 
   def show
