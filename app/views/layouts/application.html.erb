@@ -26,7 +26,7 @@
 
   <body>
     <header> 
-      <%= render partial: "shared/navbar" %>
+        <%= render partial: "shared/navbar" %>
     </header>
     <main> 
       <div id="flash" style="position:absolute; z-index: 2; right: 10px;">
@@ -34,7 +34,7 @@
       </div>
 
       <%#= render partial: "layouts/alerts" %>
-      <div class="container">
+      <div class="container-fluid">
         <%#= Time.zone.now %>
         <%= yield %>
       </div>
