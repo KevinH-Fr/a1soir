@@ -1,45 +1,47 @@
 
+
 <div class="container-fluid">
    <div class="row">
-    <div class="col mx-2">
-      <div> 
-         <%= render "clients/liste" %>
-      </div> 
-    </div>
+      <div class="col mx-1 text-truncate">
+        <div class=""> 
+           <%= render "clients/liste" %>
+        </div> 
+      </div>
+    
     <div class="col-6">
      <h5 class="bg-dark text-center"> Menu</h5>
        <div class="row row-cols-2">
-        <div class="d-grid gap-4">
+        <div class="d-grid gap-2">
           <div class="bg-dark border text-center pt-2">
             <%= link_to image_tag("icons/clients_ico.png", border: 0, width: 40), clients_path, class:"img-fluid rounded-start" %> 
-            <h5 class="bg-dark text-center pt-2"> Clients</h5>
+            <h6 class="bg-dark text-center pt-2"> Clients</h6>
             <p><small class="text-muted"> nb: <%= Client.count %></small></p>
           </div>
           <div class="bg-dark border text-center pt-2">
             <%= link_to image_tag("icons/produits_ico.png", border: 0, width: 40), clients_path, class:"img-fluid rounded-start" %> 
-            <h5 class="bg-dark text-center pt-2"> Produits</h5>
+            <h6 class="bg-dark text-center pt-2"> Produits</h6>
             <p><small class="text-muted"> nb: <%= Produit.count %></small></p>
           </div>
           <div class="bg-dark border text-center pt-2">
             <%= link_to image_tag("icons/commandes_ico.png", border: 0, width: 40), clients_path, class:"img-fluid rounded-start" %> 
-            <h5 class="bg-dark text-center pt-2"> Commandes</h5>
+            <h6 class="bg-dark text-center pt-2"> Commandes</h6>
             <p><small class="text-muted"> nb: <%= Commande.count %></small></p>
         </div>
         </div>
-         <div class="d-grid gap-4">
+         <div class="d-grid gap-2">
           <div class="bg-dark border text-center pt-2">
             <%= link_to image_tag("icons/calendrier_ico.png", border: 0, width: 40), clients_path, class:"img-fluid rounded-start" %> 
-            <h5 class="bg-dark text-center pt-2"> Calendrier</h5>
+            <h6 class="bg-dark text-center pt-2"> Calendrier</h6>
             <p><small class="text-muted"> nb: <%#= Client.count %></small></p>
         </div>
           <div class="bg-dark border text-center pt-2">
             <%= link_to image_tag("icons/finances_ico.png", border: 0, width: 40), clients_path, class:"img-fluid rounded-start" %> 
-            <h5 class="bg-dark text-center pt-2"> Finances</h5>
+            <h6 class="bg-dark text-center pt-2"> Finances</h6>
             <p><small class="text-muted"> nb: <%#= Client.count %></small></p>
         </div>
           <div class="bg-dark border text-center pt-2">
             <%= link_to image_tag("icons/marketing_ico.png", border: 0, width: 40), clients_path, class:"img-fluid rounded-start" %> 
-            <h5 class="bg-dark text-center pt-2"> Marketing</h5>
+            <h6 class="bg-dark text-center pt-2"> Marketing</h6>
             <p><small class="text-muted"> nb: <%#= Client.count %></small></p>
         </div>
         </div>
@@ -56,8 +58,8 @@
          </div>
        </div>
      </div>
-     <div class="col mx-2">
-      <div> 
+     <div class="col mx-1 text-truncate">
+      <div class=""> 
          <%= render "clients/liste" %>
       </div> 
     </div>
