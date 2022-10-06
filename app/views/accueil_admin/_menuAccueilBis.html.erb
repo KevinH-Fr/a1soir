@@ -18,29 +18,29 @@
             <p><small class="text-muted"> nb: <%= Client.count %></small></p>
           </div>
           <div class="bg-dark border text-center pt-2">
-            <%= link_to image_tag("icons/produits_ico.png", border: 0, width: 40), clients_path, class:"img-fluid rounded-start" %> 
+            <%= link_to image_tag("icons/produits_ico.png", border: 0, width: 40), produits_path, class:"img-fluid rounded-start" %> 
             <h6 class="bg-dark text-center pt-2"> Produits</h6>
             <p><small class="text-muted"> nb: <%= Produit.count %></small></p>
           </div>
           <div class="bg-dark border text-center pt-2">
-            <%= link_to image_tag("icons/commandes_ico.png", border: 0, width: 40), clients_path, class:"img-fluid rounded-start" %> 
+            <%= link_to image_tag("icons/commandes_ico.png", border: 0, width: 40), commandes_path, class:"img-fluid rounded-start" %> 
             <h6 class="bg-dark text-center pt-2"> Commandes</h6>
             <p><small class="text-muted"> nb: <%= Commande.count %></small></p>
         </div>
         </div>
          <div class="d-grid gap-2">
           <div class="bg-dark border text-center pt-2">
-            <%= link_to image_tag("icons/calendrier_ico.png", border: 0, width: 40), clients_path, class:"img-fluid rounded-start" %> 
+            <%= link_to image_tag("icons/calendrier_ico.png", border: 0, width: 40), root_path, class:"img-fluid rounded-start" %> 
             <h6 class="bg-dark text-center pt-2"> Calendrier</h6>
             <p><small class="text-muted"> nb: <%#= Client.count %></small></p>
         </div>
           <div class="bg-dark border text-center pt-2">
-            <%= link_to image_tag("icons/finances_ico.png", border: 0, width: 40), clients_path, class:"img-fluid rounded-start" %> 
+            <%= link_to image_tag("icons/finances_ico.png", border: 0, width: 40), root_path, class:"img-fluid rounded-start" %> 
             <h6 class="bg-dark text-center pt-2"> Finances</h6>
             <p><small class="text-muted"> nb: <%#= Client.count %></small></p>
         </div>
           <div class="bg-dark border text-center pt-2">
-            <%= link_to image_tag("icons/marketing_ico.png", border: 0, width: 40), clients_path, class:"img-fluid rounded-start" %> 
+            <%= link_to image_tag("icons/marketing_ico.png", border: 0, width: 40), marketing_path, class:"img-fluid rounded-start" %> 
             <h6 class="bg-dark text-center pt-2"> Marketing</h6>
             <p><small class="text-muted"> nb: <%#= Client.count %></small></p>
         </div>

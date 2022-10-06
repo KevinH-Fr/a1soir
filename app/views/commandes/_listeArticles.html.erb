@@ -28,6 +28,22 @@
         </tr> 
         <% end %>
       </tbody>
+
+      <tfoot class="table-dark">
+        <tr>
+          <td colspan=3>  
+            totaux
+          </td>
+          <td>
+            <%= Article.where(commande_id: @commande).sum(:quantite) %>
+          </td>
+          <td>
+          </td>
+          <td colspan=3>
+          </td>
+        </tr>
+        
+      </tfoot>
     </table>
 
            
