@@ -37,28 +37,28 @@
     <div>
       
     <%# if @produitId.present? %> 
-        <%= form.label :quantite, style: "display: block" %>
-        <%= form.number_field :quantite, { data: { action: "change->form-element#remotesubmit"}} %>
+        <%= form.label :quantite, class:"bg-secondary m-2 p-1", style: "width: 125px; display: inline-block" %>
+        <%= form.number_field :quantite, { data: { action: "change->form-element#remotesubmit"}, class:"text-center"} %>
       </div>
       <div>
-        <%= form.label :prix, style: "display: block" %>
-        <%= form.number_field :prix, { data: { action: "change->form-element#remotesubmit"},  value: @valPrix} %>
+        <%= form.label :prix, class:"bg-secondary m-2 p-1", style: "width: 125px; display: inline-block" %>
+        <%= form.number_field :prix, { data: { action: "change->form-element#remotesubmit"},  value: @valPrix, class:"text-center"} %>
       </div>
      <% end %>
     </div>
 
     <%= turbo_frame_tag :total_field do %>
-      <% valQuantite = form.object.quantite %>
-      <% valPrix = form.object.prix.to_d %>
-      <% produitId = form.object.produit_id %>
-          <% if produitId.present? %> 
-            <%= form.label :total, style: "display: block" %>
-            <%= form.number_field :total, value:  valQuantite * valPrix %>
-          <div> <br>
-            <%= form.submit "Créer", class: 'btn btn-success' %>
+        <% valQuantite = form.object.quantite %>
+        <% valPrix = form.object.prix.to_d %>
+        <% produitId = form.object.produit_id %>
+            <% if produitId.present? %> 
+              <%= form.label :total, class:"bg-secondary m-2 p-1", style: "width: 125px; display: inline-block" %>
+              <%= form.number_field :total, value:  valQuantite * valPrix, class:"text-center bg-primary" %>
+            <div> <br>
+              <%= form.submit "Créer", class: 'btn btn-success' %>
+            </div>
+            <% end %>  
           </div>
-          <% end %>  
-        </div>
     <% end %>
    </div>
   </div>
