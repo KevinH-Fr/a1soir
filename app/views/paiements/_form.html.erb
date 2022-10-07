@@ -10,17 +10,19 @@
       </ul>
     </div>
   <% end %>
+
+ <div>
+   <% form.label :commande_id, style: "display: block" %>
+   <%= form.hidden_field(:commande_id, value: @commandeId) %>
+ </div>
+
   <div>
-    <%= form.label :typepaiement, style: "display: block" %>
-    <%= form.text_field :typepaiement %>
+    <%= form.label :type, style: "display: block" %>
+    <%= form.select(:typepaiement, Paiement.typePaiements.keys, {include_blank: true}) %>
   </div>
   <div>
     <%= form.label :montant, style: "display: block" %>
     <%= form.text_field :montant %>
-  </div>
-  <div>
-    <%= form.label :commande_id, style: "display: block" %>
-    <%= form.select :commande_id, Commande.all.collect { |c| [ c.nom, c.id ] },  include_blank: true, selected: @commandeId %>
   </div>
 
   <div> <br>
