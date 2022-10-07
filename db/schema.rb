@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_05_114454) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_07_145315) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -116,6 +116,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_05_114454) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "paiements", force: :cascade do |t|
+    t.string "typepaiement"
+    t.decimal "montant"
+    t.bigint "commande_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "nature"
+    t.index ["commande_id"], name: "index_paiements_on_commande_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.string "name"
     t.string "title"
@@ -159,4 +169,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_05_114454) do
   add_foreign_key "articles", "commandes"
   add_foreign_key "articles", "produits"
   add_foreign_key "commandes", "clients"
+  add_foreign_key "paiements", "commandes"
 end

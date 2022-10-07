@@ -8,13 +8,11 @@ class Article < ApplicationRecord
   scope :sum_articles, -> {sum('total')}
   scope :compte_articles, -> {sum('quantite')}
 
-
   after_initialize :set_defaults
 
   def set_defaults
     self.quantite ||= 1
     self.total ||= 50
   end
-
 
 end

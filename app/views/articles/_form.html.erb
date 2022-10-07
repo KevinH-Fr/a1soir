@@ -39,6 +39,7 @@
     <%# if @produitId.present? %> 
         <%= form.label :quantite, class:"bg-secondary m-2 p-1", style: "width: 125px; display: inline-block" %>
         <%= form.number_field :quantite, { data: { action: "change->form-element#remotesubmit"}, class:"text-center"} %>
+     
       </div>
       <div>
         <%= form.label :prix, class:"bg-secondary m-2 p-1", style: "width: 125px; display: inline-block" %>

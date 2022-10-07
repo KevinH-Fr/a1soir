@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :paiements
   resources :textes
   resources :messages
   resources :friends
@@ -6,6 +7,7 @@ Rails.application.routes.draw do
   resources :articles do
     member do
       get :toggle_selectProduit
+      get :toggle_increaseQuantite
     end 
   end
 

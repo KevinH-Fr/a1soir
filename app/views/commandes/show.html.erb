@@ -1,21 +1,15 @@
-
 <br>
-
-<%= render @commande %>
-
-<div>
-  <%#= link_to "Editer", edit_commande_path(@commande), class:"btn btn-sm btn-primary" %> 
-  <%#= link_to "Retour", commandes_path, class:"btn btn-sm btn-secondary" %>
-  <%#= button_to "Supprimer", @commande, method: :delete, class:"btn btn-sm btn-danger", style:"margin-top: 2px" %>
-</div>
-
+<%= render @commande %> 
 <hr>
-
 <%= render "listeArticles" %>
-
 <div>
   <%= link_to "Nouvel article", new_article_path(commandeId: @commande), class:"btn btn-sm btn-primary" %>
 </div>
 <br>
+<hr>
+<%= render "listePaiements" %>
 
-
+<div>
+  <%= link_to "Nouveau paiement", new_paiement_path(commandeId: @commande), class:"btn btn-sm btn-primary" %>
+</div>
+<br>

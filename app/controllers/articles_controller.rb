@@ -35,6 +35,7 @@ class ArticlesController < ApplicationController
     end
 
 
+
     categorieVal = params[:categorieVal]
     couleurVal = params[:couleurVal]
 
@@ -90,10 +91,12 @@ class ArticlesController < ApplicationController
   end
 
   def update
+
     respond_to do |format|
       if @article.update(article_params)
         format.html { redirect_to article_url(@article), notice: "Article was successfully updated." }
         format.json { render :show, status: :ok, location: @article }
+        @article.save
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @article.errors, status: :unprocessable_entity }
@@ -119,7 +122,6 @@ class ArticlesController < ApplicationController
     notice: "test notif selection produit n°#{@produitId} |"  "commande n°#{@commandeId}"
 
   end
-
 
   private
      def set_article
