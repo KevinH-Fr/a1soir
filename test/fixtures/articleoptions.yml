@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  commande: one
+  nature: MyString
+  description: MyText
+  prix: 9.99
+  caution: 9.99
+  taille: MyString
+
+two:
+  commande: two
+  nature: MyString
+  description: MyText
+  prix: 9.99
+  caution: 9.99
+  taille: MyString

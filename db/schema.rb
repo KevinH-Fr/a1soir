@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_07_145315) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_10_132152) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -61,6 +61,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_07_145315) do
     t.text "deguisement"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "articleoptions", force: :cascade do |t|
+    t.string "nature"
+    t.text "description"
+    t.decimal "prix"
+    t.decimal "caution"
+    t.string "taille"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "article_id"
+    t.index ["article_id"], name: "index_articleoptions_on_article_id"
   end
 
   create_table "articles", force: :cascade do |t|
@@ -146,6 +158,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_07_145315) do
     t.string "couleur"
   end
 
+  create_table "sousarticles", force: :cascade do |t|
+    t.bigint "article_id", null: false
+    t.string "nature"
+    t.text "description"
+    t.decimal "prix"
+    t.decimal "caution"
+    t.string "taille"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_sousarticles_on_article_id"
+  end
+
   create_table "textes", force: :cascade do |t|
     t.string "titre"
     t.datetime "created_at", null: false
@@ -166,8 +190,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_07_145315) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "articleoptions", "articles"
   add_foreign_key "articles", "commandes"
   add_foreign_key "articles", "produits"
   add_foreign_key "commandes", "clients"
   add_foreign_key "paiements", "commandes"
+  add_foreign_key "sousarticles", "articles"
 end

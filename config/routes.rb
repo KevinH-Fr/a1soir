@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :sousarticles
+  resources :articleoptions
   resources :paiements
   resources :textes
   resources :messages

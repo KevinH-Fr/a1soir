@@ -1,0 +1,46 @@
+
+<%= form_with(model: sousarticle) do |form| %>
+  <% if sousarticle.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(sousarticle.errors.count, "error") %> prohibited this sousarticle from being saved:</h2>
+
+      <ul>
+        <% sousarticle.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+  
+   <%#= form.number_field :commande_id %>
+     <%#= form.select :commande_id, Commande.all.collect { |c| [ c.nom, c.id ] },  include_blank: true, selected: @commandeId %>
+ 
+  </div>
+    <div>
+    <%= form.label :article_id, style: "display: block" %>
+    <%#= form.number_field :article_id %>
+    <%= form.select :article_id, Article.all.collect { |a| [ a.id, a.id ] },  include_blank: true %>
+  </div>
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.text_field :description %>
+  </div>
+  <div>
+    <%= form.label :prix, style: "display: block" %>
+    <%= form.number_field :prix %>
+  </div>
+  <div>
+    <%= form.label :caution, style: "display: block" %>
+    <%= form.number_field :caution %>
+  </div>
+  <div>
+    <%= form.label :taille, style: "display: block" %>
+    <%= form.text_field :taille %>
+  </div>
+
+  <div>
+    <%= form.submit "Créer", class: 'btn btn-success' %>
+  </div>
+<% end %>
