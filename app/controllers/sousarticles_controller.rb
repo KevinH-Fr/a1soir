@@ -10,9 +10,11 @@ class SousarticlesController < ApplicationController
 
   def new
     @sousarticle = Sousarticle.new
+    @articleId = params[:articleId]
   end
 
   def edit
+    @articleId = params[:articleId]
   end
 
   def create

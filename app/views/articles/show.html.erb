@@ -1,5 +1,3 @@
-<p style="color: green"><%= notice %></p>
-
 <%= render @article %>
 <div>
   <%= link_to "Editer", edit_article_path(@article), class:"btn btn-sm btn-primary" %> |
@@ -7,11 +5,8 @@
   <%= button_to "Supprimer", @article, method: :delete, class:"btn btn-sm btn-danger", style:"margin-top: 2px" %>
 </div>
 
-
-
 <h1> sous articles</h1>
 <%= render "sousarticles/listesousarticlesLies" %>
 <%= link_to "Nouveau sous article", new_sousarticle_path %>
 
 <br>
-

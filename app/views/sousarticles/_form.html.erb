@@ -12,17 +12,17 @@
     </div>
   <% end %>
 
-  <div>
-  
-   <%#= form.number_field :commande_id %>
-     <%#= form.select :commande_id, Commande.all.collect { |c| [ c.nom, c.id ] },  include_blank: true, selected: @commandeId %>
- 
-  </div>
     <div>
-    <%= form.label :article_id, style: "display: block" %>
-    <%#= form.number_field :article_id %>
-    <%= form.select :article_id, Article.all.collect { |a| [ a.id, a.id ] },  include_blank: true %>
+    <% form.label :article_id, style: "display: block" %>
+    <%#= form.select :article_id, Article.all.collect { |a| [ a.id, a.id ] },  include_blank: true %>
+    <%= form.hidden_field(:article_id, value: @articleId) %>
   </div>
+
+  <div>
+    <%= form.label :nature, style: "display: block" %>
+    <%= form.select(:nature, Sousarticle.natures.keys, {include_blank: true}) %>
+  </div>
+
   <div>
     <%= form.label :description, style: "display: block" %>
     <%= form.text_field :description %>
@@ -38,7 +38,7 @@
   <div>
     <%= form.label :taille, style: "display: block" %>
     <%= form.text_field :taille %>
-  </div>
+  </div> <br>
 
   <div>
     <%= form.submit "Créer", class: 'btn btn-success' %>
