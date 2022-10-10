@@ -1,32 +1,38 @@
 <div id="<%= dom_id sousarticle %>">
-  <p>
-    <strong>Article:</strong>
-    <%= sousarticle.article_id %>
-  </p>
 
-  <p>
-    <strong>Nature:</strong>
-    <%= sousarticle.nature %>
-  </p>
-
-  <p>
-    <strong>Description:</strong>
-    <%= sousarticle.description %>
-  </p>
-
-  <p>
-    <strong>Prix:</strong>
-    <%= sousarticle.prix %>
-  </p>
-
-  <p>
-    <strong>Caution:</strong>
-    <%= sousarticle.caution %>
-  </p>
-
-  <p>
-    <strong>Taille:</strong>
-    <%= sousarticle.taille %>
-  </p>
-
+  <div class="card text-bg-dark mb-3 mx-auto" style="max-width: 36rem;">
+    <div class="card-header border-light"> 
+      <div class="card-title"> <%= sousarticle.id %> </div>
+      <div class="card-title"> <%= sousarticle.article_id %> </div>
+    </div>
+      <div class="card-body">
+        <div class="card-text"> nature: <%= sousarticle.nature %></div>
+      
+      </div>
+      <div data-controller="dropdown", class="mx-3">
+        <div role="button" data-action="click->dropdown#openDropdown" data-dropdown-target="openButton", class="fa-solid fa-eye btn btn-primary btn-sm">
+        </div>
+        <div role="button" data-action="click->dropdown#closeDropdown" data-dropdown-target="closeButton", class="fa-solid fa-eye-slash btn btn-primary btn-sm">
+        </div>
+        <div data-dropdown-target="dropdownContent">
+          <p class="card-text"> commentaires: <%= sousarticle.description %></p>
+          <p class="card-text"> commentaires: <%= sousarticle.prix %></p>
+          <p class="card-text"> commentaires: <%= sousarticle.caution %></p>
+          <p class="card-text"> commentaires: <%= sousarticle.taille %></p>
+        </div>
+      </div>
+      <div class="card-footer border-light mt-2">    
+        <table>
+        <tr>
+          <td>   
+            <%= button_to "", edit_sousarticle_path(sousarticle), class:"fa-regular fa-pen-to-square btn btn-sm btn-secondary", method: :post %> 
+          </td>
+          <td>
+            <%= button_to '', sousarticle_path(sousarticle), class:"fa-solid fa-trash-can btn btn-danger btn-sm", method: :delete %> 
+          </td>
+        </tr>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>

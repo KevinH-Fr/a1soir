@@ -35,8 +35,6 @@ class ArticlesController < ApplicationController
       @valTotal = 0  
     end
 
-
-
     categorieVal = params[:categorieVal]
     couleurVal = params[:couleurVal]
 
@@ -56,13 +54,14 @@ class ArticlesController < ApplicationController
       @q = Produit.ransack(params[:q])
       @produits = @q.result(distinct: true)
     end 
-
   
   end
 
   def edit
     @commandeId = params[:commandeId]
     @produitId = params[:produitId]
+
+    @sousarticles = Sousarticle.article_courant(@article)
 
     @quantite = Article.find(@article.id).quantite
     @valPrix = Article.find(@article.id).prix
