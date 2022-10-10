@@ -2,6 +2,8 @@ class Article < ApplicationRecord
   belongs_to :commande
   belongs_to :produit
 
+  has_many :sousarticles
+
  # enum quantite: {1 => 1, 2 => 2, 3 => 3}
 
   scope :commande_courante, ->  (commande_courante) { where("commande_id = ?", commande_courante)}

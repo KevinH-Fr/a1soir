@@ -11,6 +11,7 @@ class CommandesController < ApplicationController
   def show
     @articles = Article.commande_courante(@commande)
     @paiements = Paiement.commande_courante(@commande)
+    @sousarticles = Sousarticle.all
   end
 
   def new

@@ -7,6 +7,7 @@ class ArticlesController < ApplicationController
   end
 
   def show
+    @sousarticles = Sousarticle.article_courant(@article)
   end
 
   def new
