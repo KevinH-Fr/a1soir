@@ -63,8 +63,6 @@ class ArticlesController < ApplicationController
     @commandeId = params[:commandeId]
     @produitId = params[:produitId]
 
-    @testvar = 'var depuis controller edit'
-
     @quantite = Article.find(@article.id).quantite
     @valPrix = Article.find(@article.id).prix
 

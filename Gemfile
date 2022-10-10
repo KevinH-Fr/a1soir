@@ -20,6 +20,9 @@ gem "chunky_png", "~> 1.4"
 gem "ransack", "~> 3.2"
 #gem 'simple_form'
 
+gem "wicked_pdf"
+gem 'wkhtmltopdf-binary'
+
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
 end
