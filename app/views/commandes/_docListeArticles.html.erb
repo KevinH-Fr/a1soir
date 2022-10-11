@@ -1,3 +1,4 @@
+<strong> doc liste articles</strong>
 
 <h5> Articles </h5>
 
@@ -9,12 +10,12 @@
           <th class="text-center">quantité</th>
           <th>prix</th>
           <th>total</th>
-          <th colspan=2> Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <% @articles.each_with_index do | article, i | %>
+          <% @articles.all.each_with_index do |article, i| %>
+          <%# @articles.commande_courante(article.commande_id).each_with_index do | article, i | %>
             <td> <%= i + 1 %> </td>
             <td> 
               <%= image_tag(Produit.find(article.produit_id).default_image, style: "width: 50px; display: block", 
@@ -24,28 +25,18 @@
             <td class="text-center"> <%= article.quantite %> </td>
             <td class="text-end"> <%= article.prix %> </td>
             <td class="text-end"> <%= article.total %> </td>
-            <td style="width:10px"> <%= link_to "", edit_article_path(article, produitId: article.produit_id, commandeId: article.commande_id), class:"fa-regular fa-pen-to-square btn btn-secondary btn-sm" %> </td> 
-            <td style="width:10px"> <%= button_to '', article, class:"fa-solid fa-trash-can btn btn-danger btn-sm", method: :delete, :onclick => "return confirm('Sûr ?')" %>  </td> 
-        </tr> 
+         </tr> 
 
-            <% @sousarticles = Sousarticle.where(article_id: article.id) %>
+         <%# @sousarticlesLies = Sousarticle.find_by(article_id: article.id).select(:nature, :prix) %>
+
             <% @sousarticles.each do |sousarticle| %>
-              <tr>
-                <td></td>
-                <td class="fst-italic"> <%= sousarticle.nature %> </td>
-                <td></td>
-                <td></td>
-                <td class="text-end"> <%= sousarticle.prix %></td>
-                <td class="text-end"> <%= sousarticle.prix %></td>
-                <td style="width:10px"> <%= link_to "", edit_sousarticle_path(), class:"fa-regular fa-pen-to-square btn btn-secondary btn-sm" %> </td> 
-                <td style="width:10px"> <%= button_to '', sousarticle, class:"fa-solid fa-trash-can btn btn-danger btn-sm", method: :delete, :onclick => "return confirm('Sûr ?')" %>  </td> 
-    
-              </tr>
+            <tr>
+              <td> <%= sousarticle.nature %> </td>
+            </tr>
             <% end %>
-               
 
-            
-       
+
+
         <% end %>
       </tbody>
 
@@ -68,8 +59,4 @@
       </tfoot>
     </table>
 
-    <strong>test somme sous articles </strong>
-    chercher les sous articles dans l article lié 
-    a pour commande id la commande courante 
-    faire un joins 
-    
+           
