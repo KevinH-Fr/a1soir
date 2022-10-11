@@ -6,12 +6,28 @@ class CommandesController < ApplicationController
 
     @q = Commande.ransack(params[:q])
     @commandes = @q.result(distinct: true)
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: "commandes: #{@commandes.count}", template: "commandes/index", formats: [:html]
+      end
+    end
+
   end
 
   def show
     @articles = Article.commande_courante(@commande)
     @paiements = Paiement.commande_courante(@commande)
     @sousarticles = Sousarticle.all
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+       render pdf: "Commande_id: #{@commande.id}", template: "commandes/show", formats: [:html]
+      end
+    end
+
   end
 
   def new

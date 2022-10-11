@@ -1,6 +1,6 @@
 <br>
 <%= render @commande %> 
-<hr>
+
 <%= render "listeArticles" %>
 
 <div class="position-relative">
@@ -8,12 +8,7 @@
     <%= link_to "Nouvel article", new_article_path(commandeId: @commande), class:"btn btn-sm btn-primary" %>
   </div> 
 </div>
-
-<br><hr>
-
-
-
-<br><hr> 
+<br>
 
 <%= render "listePaiements" %>
 
@@ -23,8 +18,8 @@
   </div> 
 </div>
 
-<br> <hr>
 
 <%= render "syntheseCommande" %>
 
 
+<%= link_to "PDF", commande_path(@commande, format: :pdf), class:"btn btn-warning" %>

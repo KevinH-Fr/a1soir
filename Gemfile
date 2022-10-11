@@ -20,7 +20,7 @@ gem "chunky_png", "~> 1.4"
 gem "ransack", "~> 3.2"
 #gem 'simple_form'
 
-gem "wicked_pdf"
+gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 
 group :development, :test do
@@ -36,9 +36,4 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
-
-
-
-
-
 

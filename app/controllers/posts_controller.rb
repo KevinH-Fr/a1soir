@@ -6,7 +6,7 @@ class PostsController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-        render pdf: "Posts: #{@posts.count}", template: "posts/index", formats: [:html], layout: "pdf", disposition: :attachment
+        render pdf: "Posts", template: "posts/index", formats: [:html]
       end
     end
   end
@@ -15,7 +15,7 @@ class PostsController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-       render pdf: "Post id: #{@post.id}", template: "posts/doc", formats: [:html], layout: "pdf", disposition: :attachment
+       render pdf: "Post", template: "posts/show", formats: [:html]
       end
     end
   end
