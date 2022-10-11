@@ -24,7 +24,7 @@ class CommandesController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-       render pdf: "Commande_id: #{@commande.id}", template: "commandes/show", formats: [:html]
+       render pdf: "Commande_id: #{@commande.id}", template: "commandes/bonCommande", formats: [:html]
       end
     end
 
