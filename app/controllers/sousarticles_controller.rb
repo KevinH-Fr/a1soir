@@ -11,6 +11,9 @@ class SousarticlesController < ApplicationController
   def new
     @sousarticle = Sousarticle.new
     @articleId = params[:articleId]
+
+
+
   end
 
   def edit
@@ -66,6 +69,27 @@ class SousarticlesController < ApplicationController
     end
   end
 
+
+
+
+  def toggle_sousarticleauto
+
+    @articleId = params[:articleId]
+    @commandeId = params[:commandeId]
+    @produitId = params[:produitId]
+
+      sousarticle = Sousarticle.create(article_id: @articleId, nature: "chemise")
+      sousarticle = Sousarticle.create(article_id: @articleId, nature: "veste")
+      sousarticle = Sousarticle.create(article_id: @articleId, nature: "pantalon")
+
+      redirect_to edit_article_path(@articleId, 
+        produitId: @produitId, 
+        commandeId: @commandeId, 
+        articleId: @articleId),
+        notice: "test sous article auto  #{@articleId}" 
+  end
+
+
   private
 
     def set_sousarticle
@@ -73,6 +97,6 @@ class SousarticlesController < ApplicationController
     end
 
     def sousarticle_params
-      params.require(:sousarticle).permit(:article_id, :nature, :description, :prix_sousarticle, :caution, :taille)
+      params.fetch(:sousarticle, {}).permit(:article_id, :nature, :description, :prix_sousarticle, :caution, :taille)
     end
 end

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :sousarticles
+
   resources :articleoptions
   resources :paiements
   resources :textes
@@ -12,6 +12,13 @@ Rails.application.routes.draw do
       get :toggle_increaseQuantite
     end 
   end
+
+
+  resources :sousarticles do
+    member do
+      get :toggle_sousarticleauto
+    end
+  end 
 
 
   resources :clients do

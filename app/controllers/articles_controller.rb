@@ -19,7 +19,8 @@ class ArticlesController < ApplicationController
     @produitId = params[:produitId]
     session[:produitId] = params[:produitId]
 
-    @testvar = 'var depuis controller new'
+
+    @sousarticles = Sousarticle.article_courant(@article)
 
     @quantite = 1
     
@@ -54,6 +55,10 @@ class ArticlesController < ApplicationController
       @q = Produit.ransack(params[:q])
       @produits = @q.result(distinct: true)
     end 
+
+ 
+
+
   
   end
 
@@ -76,10 +81,17 @@ class ArticlesController < ApplicationController
 
   def create
     @article = Article.new(article_params)
+    @categories = Produit.distinct.pluck(:categorie)
+    @sousarticles = Sousarticle.article_courant(@article)
+
+    @commandeId = session[:commandeId]
+
+  
 
     respond_to do |format|
       if @article.save
-        format.html { redirect_to commande_url(@article.commande_id), notice: "Article was successfully created." }
+        format.html { redirect_to edit_article_path(@article),
+                      notice: "Article was successfully created." }
         format.json { render :show, status: :created, location: @article }
       else
         format.html { render :new, status: :unprocessable_entity }
