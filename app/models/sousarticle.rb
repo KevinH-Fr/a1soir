@@ -4,7 +4,7 @@ class Sousarticle < ApplicationRecord
   enum natures: ["Chemise", "Ceinture", "Pantalon"]
 
   scope :article_courant, ->  (article_courant) { where("article_id = ?", article_courant)}
-  scope :sum_sousarticles, -> {sum('prix')}
+  scope :sum_sousarticles, -> {sum('prix_sousarticle')}
   scope :compte_sousarticles, -> {count('nature')}
 
 end

@@ -15,7 +15,7 @@
     <div>
     <% form.label :article_id, style: "display: block" %>
     <%#= form.select :article_id, Article.all.collect { |a| [ a.id, a.id ] },  include_blank: true %>
-    <%= form.hidden_field(:article_id, value: @articleId) %>
+    <%= form.number_field(:article_id, value: @articleId) %>
   </div>
 
   <div>
@@ -28,8 +28,8 @@
     <%= form.text_field :description %>
   </div>
   <div>
-    <%= form.label :prix, style: "display: block" %>
-    <%= form.number_field :prix %>
+    <%= form.label :prix_sousarticle, style: "display: block" %>
+    <%= form.number_field :prix_sousarticle %>
   </div>
   <div>
     <%= form.label :caution, style: "display: block" %>

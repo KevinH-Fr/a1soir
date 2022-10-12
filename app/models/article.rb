@@ -10,6 +10,8 @@ class Article < ApplicationRecord
   scope :sum_articles, -> {sum('total')}
   scope :compte_articles, -> {sum('quantite')}
 
+  scope :sum_sousarticles, -> {joins(:sousarticles).sum('prix_sousarticle')}
+
   after_initialize :set_defaults
 
   def set_defaults

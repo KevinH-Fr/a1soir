@@ -18,10 +18,12 @@ class SousarticlesController < ApplicationController
   end
 
   def create
+   
+    @sousarticle = Sousarticle.new(sousarticle_params)
+
     @commandeId = Article.find(@sousarticle.article_id).commande_id
     @produitId = Article.find(@sousarticle.article_id).produit_id
 
-    @sousarticle = Sousarticle.new(sousarticle_params)
 
     respond_to do |format|
       if @sousarticle.save

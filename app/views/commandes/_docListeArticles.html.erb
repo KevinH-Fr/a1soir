@@ -1,4 +1,3 @@
-<strong> doc liste articles</strong>
 
 <h5> Articles </h5>
 
@@ -14,8 +13,7 @@
       </thead>
       <tbody>
         <tr>
-          <% @articles.all.each_with_index do |article, i| %>
-          <%# @articles.commande_courante(article.commande_id).each_with_index do | article, i | %>
+          <% @articles.each_with_index do | article, i | %>
             <td> <%= i + 1 %> </td>
             <td> 
               <%= image_tag(Produit.find(article.produit_id).default_image, style: "width: 50px; display: block", 
@@ -25,18 +23,19 @@
             <td class="text-center"> <%= article.quantite %> </td>
             <td class="text-end"> <%= article.prix %> </td>
             <td class="text-end"> <%= article.total %> </td>
-         </tr> 
+          </tr> 
 
-         <%# @sousarticlesLies = Sousarticle.find_by(article_id: article.id).select(:nature, :prix) %>
-
+            <% @sousarticles = Sousarticle.where(article_id: article.id) %>
             <% @sousarticles.each do |sousarticle| %>
-            <tr>
-              <td> <%= sousarticle.nature %> </td>
-            </tr>
-            <% end %>
-
-
-
+              <tr>
+                <td></td>
+                <td class="fst-italic"> <%= sousarticle.nature %> </td>
+                <td></td>
+                <td></td>
+                <td class="text-end"> </td>
+                <td class="text-end"> <%= sousarticle.prix_sousarticle %></td>
+              </tr>
+            <% end %>       
         <% end %>
       </tbody>
 
@@ -50,7 +49,8 @@
           </td>
           <td></td>
           <td class="text-end">
-            <%= Article.commande_courante(@commande).sum_articles %>
+            <%= Article.commande_courante(@commande).sum_articles + 
+                Article.joins(:sousarticles).commande_courante(@commande).sum_sousarticles %>
           </td>
           <td colspan=3>
           </td>
@@ -59,4 +59,3 @@
       </tfoot>
     </table>
 
-           
