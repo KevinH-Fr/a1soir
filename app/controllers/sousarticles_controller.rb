@@ -71,6 +71,6 @@ class SousarticlesController < ApplicationController
     end
 
     def sousarticle_params
-      params.require(:sousarticle).permit(:article_id, :nature, :description, :prix, :caution, :taille)
+      params.require(:sousarticle).permit(:article_id, :nature, :description, :prix_sousarticle, :caution, :taille)
     end
 end

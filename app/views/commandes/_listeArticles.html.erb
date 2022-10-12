@@ -35,8 +35,8 @@
                 <td class="fst-italic"> <%= sousarticle.nature %> </td>
                 <td></td>
                 <td></td>
-                <td class="text-end"> <%= sousarticle.prix %></td>
-                <td class="text-end"> <%= sousarticle.prix %></td>
+                <td class="text-end"> <%= sousarticle.prix_sousarticle %></td>
+                <td class="text-end"> <%= sousarticle.prix_sousarticle %></td>
                 <td style="width:10px"> <%= link_to "", edit_sousarticle_path(), class:"fa-regular fa-pen-to-square btn btn-secondary btn-sm" %> </td> 
                 <td style="width:10px"> <%= button_to '', sousarticle, class:"fa-solid fa-trash-can btn btn-danger btn-sm", method: :delete, :onclick => "return confirm('Sûr ?')" %>  </td> 
     
@@ -69,7 +69,8 @@
     </table>
 
     <strong>test somme sous articles </strong>
-    chercher les sous articles dans l article lié 
-    a pour commande id la commande courante 
-    faire un joins 
+
+    <hr>
+     <%= Article.joins(:sousarticles).where(commande_id: @commande).sum(:prix_sousarticle) %>
     
+    <hr>
