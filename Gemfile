@@ -23,6 +23,8 @@ gem "ransack", "~> 3.2"
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 
+gem 'wkhtmltopdf-binary-edge', '~> 0.12.6.0'
+
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
 end
