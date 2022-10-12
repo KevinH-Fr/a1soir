@@ -52,8 +52,7 @@
             <%= Article.commande_courante(@commande).sum_articles + 
                 Article.joins(:sousarticles).commande_courante(@commande).sum_sousarticles %>
           </td>
-          <td colspan=3>
-          </td>
+         
         </tr>
         
       </tfoot>
