@@ -11,9 +11,6 @@ class SousarticlesController < ApplicationController
   def new
     @sousarticle = Sousarticle.new
     @articleId = params[:articleId]
-
-
-
   end
 
   def edit
@@ -23,10 +20,8 @@ class SousarticlesController < ApplicationController
   def create
    
     @sousarticle = Sousarticle.new(sousarticle_params)
-
     @commandeId = Article.find(@sousarticle.article_id).commande_id
     @produitId = Article.find(@sousarticle.article_id).produit_id
-
 
     respond_to do |format|
       if @sousarticle.save
@@ -64,13 +59,10 @@ class SousarticlesController < ApplicationController
     @sousarticle.destroy
 
     respond_to do |format|
-      format.html { redirect_to edit_article_path(@sousarticle.article_id, commandeId: @commandeId, produitId:  @produitId), notice: "Sousarticle was successfully destroyed." }
+      format.html { redirect_to commande_path(@commandeId), notice: "Sousarticle was successfully destroyed." }
       format.json { head :no_content }
     end
   end
-
-
-
 
   def toggle_sousarticleauto
 
@@ -89,8 +81,7 @@ class SousarticlesController < ApplicationController
     end 
 
       redirect_to edit_article_path(@articleId, 
-        produitId: @produitId, 
-        commandeId: @commandeId, 
+        produitId: @produitId, commandeId: @commandeId, 
         articleId: @articleId),
         notice: "test sous article auto  #{@articleId}" 
   end

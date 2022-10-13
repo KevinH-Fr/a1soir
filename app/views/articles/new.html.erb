@@ -1,15 +1,16 @@
   
-<%= render "infosCommande" %>
-
 <h1>Nouvel article</h1>
 
-<%#= render "form", article: @article %>
+<%= render "infosCommande" %>
+
+
+
   <%# liste des produits pour selection %>
   <% unless @produitId.present? %> 
     <%= render "listeSelection" %>
   <% end %>
 
-    <%= render "form", article: @article %>
+  <%= render "form", article: @article %>
 
 <div>
   <% @commandeId = session[:commandeId] %>
@@ -17,18 +18,12 @@
 
 <div class="m-4"> 
   
-  <%= render "sousarticles/sousarticlesLies" %>
+  <%#= render "sousarticles/sousarticlesLies" %>
 
-  <%= link_to "Nouveau sous article", 
+  <%#= link_to "Nouveau sous article", 
       new_sousarticle_path(articleId: @article), 
       class:"btn btn-sm btn-success" %>
 
-  <%= link_to "Retour", articles_path, 
+  <%#= link_to "Retour", commande_path(@commandeId), 
       class:"btn btn-sm btn-secondary" %>
 </div>
-
-
-test tempo 
-  <%= link_to "créer sous articles liés auto", 
-     toggle_sousarticleauto_sousarticle_path(id: 1), 
-      class:"btn btn-sm btn-warning" %>

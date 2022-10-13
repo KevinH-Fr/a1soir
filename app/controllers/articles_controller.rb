@@ -3,7 +3,6 @@ class ArticlesController < ApplicationController
 
   def index
     @articles = Article.all
-
   end
 
   def show
@@ -18,7 +17,6 @@ class ArticlesController < ApplicationController
 
     @produitId = params[:produitId]
     session[:produitId] = params[:produitId]
-
 
     @sousarticles = Sousarticle.article_courant(@article)
 
@@ -55,9 +53,6 @@ class ArticlesController < ApplicationController
       @q = Produit.ransack(params[:q])
       @produits = @q.result(distinct: true)
     end 
-
- 
-
 
   
   end
