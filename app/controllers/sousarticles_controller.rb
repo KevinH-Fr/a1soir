@@ -78,9 +78,15 @@ class SousarticlesController < ApplicationController
     @commandeId = params[:commandeId]
     @produitId = params[:produitId]
 
+    valCategorie = Produit.find(@produitId).categorie
+
+    if valCategorie == "Costumes hommes"
       sousarticle = Sousarticle.create(article_id: @articleId, nature: "chemise")
       sousarticle = Sousarticle.create(article_id: @articleId, nature: "veste")
       sousarticle = Sousarticle.create(article_id: @articleId, nature: "pantalon")
+    else
+      sousarticle = Sousarticle.create(article_id: @articleId, nature: "retouches")
+    end 
 
       redirect_to edit_article_path(@articleId, 
         produitId: @produitId, 
@@ -88,7 +94,6 @@ class SousarticlesController < ApplicationController
         articleId: @articleId),
         notice: "test sous article auto  #{@articleId}" 
   end
-
 
   private
 
