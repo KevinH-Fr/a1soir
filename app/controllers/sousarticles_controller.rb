@@ -11,6 +11,9 @@ class SousarticlesController < ApplicationController
   def new
     @sousarticle = Sousarticle.new
     @articleId = params[:articleId]
+
+    @natures = Modelsousarticle.distinct.pluck(:nature)
+    
   end
 
   def edit

@@ -1,0 +1,4 @@
+class Modelsousarticle < ApplicationRecord
+
+
+end

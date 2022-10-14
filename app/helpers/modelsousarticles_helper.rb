@@ -1,0 +1,2 @@
+module ModelsousarticlesHelper
+end

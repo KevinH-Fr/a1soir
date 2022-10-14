@@ -20,7 +20,7 @@
 
   <div>
     <%= form.label :nature, style: "display: block" %>
-    <%= form.select(:nature, Sousarticle.natures.keys, {include_blank: true}) %>
+    <%= form.select(:nature, @natures, {include_blank: true}) %>
   </div>
 
   <div>
