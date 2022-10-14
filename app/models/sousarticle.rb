@@ -1,6 +1,8 @@
 class Sousarticle < ApplicationRecord
   belongs_to :article
 
+  validates :nature, presence: true
+
   enum natures: ["retouches", "ceinture", "chaussures", 
                 "nœud papillon", "veste", "pantalon", 
                 "chemise", "pochette", "boutons de manchette",

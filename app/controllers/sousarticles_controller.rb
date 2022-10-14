@@ -9,15 +9,18 @@ class SousarticlesController < ApplicationController
   end
 
   def new
-    @sousarticle = Sousarticle.new
+    @sousarticle = Sousarticle.new sousarticle_params
+
     @articleId = params[:articleId]
+    session[:articleId] = params[:articleId]
 
     @natures = Modelsousarticle.distinct.pluck(:nature)
-    
+
   end
 
   def edit
     @articleId = params[:articleId]
+    @natures = Modelsousarticle.distinct.pluck(:nature)
   end
 
   def create
@@ -28,7 +31,7 @@ class SousarticlesController < ApplicationController
 
     respond_to do |format|
       if @sousarticle.save
-        format.html { redirect_to edit_article_path(@sousarticle.article_id, commandeId: @commandeId, produitId:  @produitId), 
+        format.html { redirect_to sousarticle_path(@sousarticle), 
              notice: "Sousarticle was successfully created." }
         format.json { render :show, status: :created, location: @sousarticle }
       else
