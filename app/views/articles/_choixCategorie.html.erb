@@ -4,9 +4,9 @@
     <%= link_to "#{categorie}", url_for(commandeId: session[:commandeId], categorieVal: categorie), class:"btn btn-sm btn-secondary", :method => :post %> 
   <% end %>
   <% @categorie = params[:categorieVal]%>
-  <br>  <br>
+  <br> 
 
-  <% if @categorie.present? %>
+  <% if @categorie.present? %>  <br>
     Couleur | 
     <% @couleurs.each do |couleur| %>
       <% if couleur.present? %>
