@@ -1,25 +1,20 @@
 class ModelsousarticlesController < ApplicationController
   before_action :set_modelsousarticle, only: %i[ show edit update destroy ]
 
-  # GET /modelsousarticles or /modelsousarticles.json
   def index
     @modelsousarticles = Modelsousarticle.all
   end
 
-  # GET /modelsousarticles/1 or /modelsousarticles/1.json
   def show
   end
 
-  # GET /modelsousarticles/new
   def new
     @modelsousarticle = Modelsousarticle.new
   end
 
-  # GET /modelsousarticles/1/edit
   def edit
   end
 
-  # POST /modelsousarticles or /modelsousarticles.json
   def create
     @modelsousarticle = Modelsousarticle.new(modelsousarticle_params)
 
@@ -34,7 +29,6 @@ class ModelsousarticlesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /modelsousarticles/1 or /modelsousarticles/1.json
   def update
     respond_to do |format|
       if @modelsousarticle.update(modelsousarticle_params)
@@ -47,7 +41,6 @@ class ModelsousarticlesController < ApplicationController
     end
   end
 
-  # DELETE /modelsousarticles/1 or /modelsousarticles/1.json
   def destroy
     @modelsousarticle.destroy
 
@@ -58,12 +51,10 @@ class ModelsousarticlesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_modelsousarticle
       @modelsousarticle = Modelsousarticle.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def modelsousarticle_params
       params.require(:modelsousarticle).permit(:nature, :description, :prix, :caution)
     end
