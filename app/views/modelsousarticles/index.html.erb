@@ -1,14 +1,7 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Modelsousarticles</h1>
+<h1>Modèles sous-articles</h1>
 
-<div id="modelsousarticles">
-  <% @modelsousarticles.each do |modelsousarticle| %>
-    <%= render modelsousarticle %>
-    <p>
-      <%= link_to "Show this modelsousarticle", modelsousarticle %>
-    </p>
-  <% end %>
-</div>
+<%= render "liste" %>
 
-<%= link_to "New modelsousarticle", new_modelsousarticle_path %>
+<%= link_to "Nouveau", new_modelsousarticle_path, class:"btn btn-success" %>

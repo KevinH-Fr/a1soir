@@ -3,8 +3,9 @@
 <%= render @modelsousarticle %>
 
 <div>
-  <%= link_to "Edit this modelsousarticle", edit_modelsousarticle_path(@modelsousarticle) %> |
-  <%= link_to "Back to modelsousarticles", modelsousarticles_path %>
-
-  <%= button_to "Destroy this modelsousarticle", @modelsousarticle, method: :delete %>
+ <%= link_to "",  edit_modelsousarticle_path(@modelsousarticle), 
+     class:"fa-regular fa-pen-to-square btn btn-secondary btn-sm" %>|
+  <%= link_to "Retour", modelsousarticles_path, class:"btn btn-sm btn-secondary" %>
+  <%= button_to '', @modelsousarticle, class:"fa-solid fa-trash-can btn btn-danger btn-sm", 
+      method: :delete, :onclick => "return confirm('Sûr ?')" %>
 </div>
