@@ -1,25 +1,22 @@
 
-<h1>Editer article</h1>
+<h1 class="my-2">Editer article</h1>
 
 <%= render "infosCommande" %>
 <%= render "form", article: @article %>
 <%= render "sousarticles/sousarticlesLies" %>
 
-<div class="m-4"> 
-  <%= link_to "Nouveau sous article", new_sousarticle_path(articleId: @article), class:"btn btn-sm btn-success" %>
+<% @commandeId = params[:commandeId] %>
+<% @produitId = params[:produitId] %>
+<% @articleId = params[:articleId] %>
+
+ 
+
+<div class="m-3"> 
+ <%= link_to "Sous-articles auto", toggle_sousarticleauto_sousarticle_path(
+      produitId: @produitId, commandeId: @commandeId, articleId: @articleId), 
+      class:"btn btn-sm btn-warning" %>
+  <%= link_to "Nouveau sous article", new_sousarticle_path(articleId: @article), 
+      class:"btn btn-sm btn-success" %>
   <%= link_to "Retour", articles_path, class:"btn btn-sm btn-secondary" %>
 </div>
 
-
-
-
-   <% @commandeId = params[:commandeId] %>
-   <% @produitId = params[:produitId] %>
-   <% @articleId = params[:articleId] %>
-
-  <%= link_to "créer sous articles liés auto", 
-     toggle_sousarticleauto_sousarticle_path(
-      produitId: @produitId, 
-      commandeId: @commandeId, 
-      articleId: @articleId), 
-      class:"btn btn-sm btn-warning mx-2" %>

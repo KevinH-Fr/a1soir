@@ -79,13 +79,14 @@ class ArticlesController < ApplicationController
     @categories = Produit.distinct.pluck(:categorie)
     @sousarticles = Sousarticle.article_courant(@article)
 
-    @commandeId = session[:commandeId]
+    @produitId = @article.produit_id
+    @commandeId = @article.commande_id
 
   
 
     respond_to do |format|
       if @article.save
-        format.html { redirect_to edit_article_path(@article),
+        format.html { redirect_to edit_article_path(@article, commandeId: @commandeId, produitId: @produitId, articleId: @article),
                       notice: "Article was successfully created." }
         format.json { render :show, status: :created, location: @article }
       else
