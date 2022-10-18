@@ -27,7 +27,7 @@ gem "ransack", "~> 3.2"
 
 
 gem 'wicked_pdf'
-gem "wkhtmltopdf-binary", group: :development
+gem "wkhtmltopdf-binary", "~> 0.12.6.5", group: :development
 gem 'wkhtmltopdf-heroku', '2.12.6.0', group: :production
 
 group :development, :test do

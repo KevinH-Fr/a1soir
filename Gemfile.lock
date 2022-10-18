@@ -293,7 +293,7 @@ DEPENDENCIES
   web-console
   webdrivers
   wicked_pdf
-  wkhtmltopdf-binary
+  wkhtmltopdf-binary (~> 0.12.6.5)
   wkhtmltopdf-heroku (= 2.12.6.0)
 
 RUBY VERSION
