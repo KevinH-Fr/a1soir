@@ -34,7 +34,7 @@ WickedPdf.config = {
   # use_xvfb: true,
 }
 
-#WickedPdf.config ||= {}
-#WickedPdf.config.merge!({
-#  layout: "pdf.html.erb",
-#}) 
+WickedPdf.config ||= {}
+WickedPdf.config.merge!({
+  layout: "pdf.html.erb",
+}) 
