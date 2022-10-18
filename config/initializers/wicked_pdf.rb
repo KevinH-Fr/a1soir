@@ -18,7 +18,7 @@ WickedPdf.config = {
   # exe_path: Gem.bin_path('wkhtmltopdf-binary', 'wkhtmltopdf')
 
   # prod : 
-  :exe_path => Rails.root.join('bin', 'wkhtmltopdf-amd64').to_s
+  #:exe_path => Rails.root.join('bin', 'wkhtmltopdf-amd64').to_s
 
   # Needed for wkhtmltopdf 0.12.6+ to use many wicked_pdf asset helpers
   # enable_local_file_access: true,
