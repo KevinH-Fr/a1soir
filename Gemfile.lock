@@ -252,7 +252,6 @@ GEM
     wicked_pdf (2.6.3)
       activesupport
     wkhtmltopdf-binary (0.12.6.5)
-    wkhtmltopdf-binary-edge (0.12.6.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.6.0)
@@ -283,7 +282,6 @@ DEPENDENCIES
   webdrivers
   wicked_pdf
   wkhtmltopdf-binary
-  wkhtmltopdf-binary-edge (~> 0.12.6.0)
 
 RUBY VERSION
    ruby 3.1.2p20
