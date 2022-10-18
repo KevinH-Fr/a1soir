@@ -22,7 +22,7 @@ gem "ransack", "~> 3.2"
 #gem 'simple_form'
 #gem 'wicked_pdf'
 #gem 'wkhtmltopdf-binary'
-#gem 'wkhtmltopdf-binary-edge', '~> 0.12.6.0'
+gem 'wkhtmltopdf-binary-edge', '~> 0.12.6.0'
 
 gem 'wicked_pdf'
 gem "wkhtmltopdf-binary", group: :development
