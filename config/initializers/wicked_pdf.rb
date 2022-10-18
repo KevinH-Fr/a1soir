@@ -37,8 +37,7 @@
 
 WickedPdf.config ||= {}
 WickedPdf.config.merge!({
-  exe_path: '/app/bin/wkhtmltopdf'
-  # /app/bin/wkhtmltopdf
+  exe_path: '/bin/wkhtmltopdf'
 #  layout: "pdf.html.erb",
 
 }) 
