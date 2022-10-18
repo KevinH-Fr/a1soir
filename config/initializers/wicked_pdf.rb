@@ -37,7 +37,7 @@
 
 WickedPdf.config ||= {}
 WickedPdf.config.merge!({
-  exe_path: Gem.bin_path('wkhtmltopdf-binary', 'wkhtmltopdf')
+ # exe_path: Gem.bin_path('wkhtmltopdf-binary', 'wkhtmltopdf')
 #  layout: "pdf.html.erb",
 
 }) 
