@@ -2,6 +2,7 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.1.2"
+gem 'sassc-rails'
 gem "rails", "~> 7.0.4"
 gem "sprockets-rails"
 gem "pg", "~> 1.1"
@@ -19,11 +20,13 @@ gem "rqrcode", "~> 2.1"
 gem "chunky_png", "~> 1.4"
 gem "ransack", "~> 3.2"
 #gem 'simple_form'
+#gem 'wicked_pdf'
+#gem 'wkhtmltopdf-binary'
+#gem 'wkhtmltopdf-binary-edge', '~> 0.12.6.0'
 
 gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary'
-
-#gem 'wkhtmltopdf-binary-edge', '~> 0.12.6.0'
+gem "wkhtmltopdf-binary", group: :development
+gem "wkhtmltopdf-heroku", group: :production
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
