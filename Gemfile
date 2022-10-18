@@ -22,11 +22,11 @@ gem "ransack", "~> 3.2"
 #gem 'simple_form'
 #gem 'wicked_pdf'
 #gem 'wkhtmltopdf-binary'
-gem 'wkhtmltopdf-binary-edge', '~> 0.12.6.0'
+#gem 'wkhtmltopdf-binary-edge', '~> 0.12.6.0'
 
 gem 'wicked_pdf'
 gem "wkhtmltopdf-binary", group: :development
-gem "wkhtmltopdf-heroku", group: :production
+gem 'wkhtmltopdf-heroku', '2.12.6.0', group: :production
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
