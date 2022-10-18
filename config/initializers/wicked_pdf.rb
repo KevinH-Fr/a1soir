@@ -8,7 +8,7 @@
 #
 # https://github.com/mileszs/wicked_pdf/blob/master/README.md
 
-WickedPdf.config = {
+#WickedPdf.config = {
   # Path to the wkhtmltopdf executable: This usually isn't needed if using
   # one of the wkhtmltopdf-binary family of gems.
   
@@ -18,7 +18,7 @@ WickedPdf.config = {
   # exe_path: Gem.bin_path('wkhtmltopdf-binary', 'wkhtmltopdf')
 
   # prod : 
-  :exe_path => Rails.root.join('bin', 'wkhtmltopdf').to_s
+  #:exe_path => Rails.root.join('bin', 'wkhtmltopdf').to_s
   #exe_path: '/app/bin/wkhtmltopdf'
 
   # Needed for wkhtmltopdf 0.12.6+ to use many wicked_pdf asset helpers
@@ -33,9 +33,11 @@ WickedPdf.config = {
   # 'xvfb-run' command, in order to simulate an X server.
   #
   # use_xvfb: true,
-}
+#}
 
-#WickedPdf.config ||= {}
-#WickedPdf.config.merge!({
+WickedPdf.config ||= {}
+WickedPdf.config.merge!({
+  exe_path: Gem.bin_path('wkhtmltopdf-binary', 'wkhtmltopdf')
 #  layout: "pdf.html.erb",
-#}) 
+
+}) 
