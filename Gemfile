@@ -27,8 +27,8 @@ gem "ransack", "~> 3.2"
 
 
 gem 'wicked_pdf'
-gem "wkhtmltopdf-binary", "~> 0.12.6.5", group: :development
-gem 'wkhtmltopdf-heroku', '2.12.6.0', group: :production
+#gem "wkhtmltopdf-binary", "~> 0.12.6.5", group: :development
+#gem 'wkhtmltopdf-heroku', '2.12.6.0', group: :production
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
@@ -36,6 +36,7 @@ end
 
 group :development do
   gem "web-console"
+  gem 'wkhtmltopdf-binary'
 end
 
 group :test do
@@ -44,3 +45,6 @@ group :test do
   gem "webdrivers"
 end
 
+group :production do
+  gem 'wkhtmltopdf-heroku'
+end
