@@ -33,7 +33,7 @@ group :development do
   gem 'wkhtmltopdf-binary', '0.12.4'
 end
 group :production do
-  gem 'wkhtmltopdf-heroku', '2.12.5.0'
+ # gem 'wkhtmltopdf-heroku', '2.12.5.0'
 end
 
 group :development, :test do
@@ -52,7 +52,8 @@ group :test do
 end
 
 group :production do
-#  gem 'wkhtmltopdf-heroku'
+  gem 'wkhtmltopdf-heroku'
 end
 
 
+gem 'grover'

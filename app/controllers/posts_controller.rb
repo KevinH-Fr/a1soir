@@ -15,8 +15,23 @@ class PostsController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-       render pdf: "Post", template: "posts/show", formats: [:html]
+     #  render pdf: "Post", template: "posts/show", formats: [:html]
+     pdf = Grover.new(url_for()).to_pdf
+  
+     customFilename = "Parieurs_"".pdf"
+
+       send_data(pdf, disposition: 'inline', filename: customFilename, 
+                      type: 'application/pdf', format: 'A4')
       end
+      format.png do
+        #  png = Grover.new(url_for(only_path: false)).to_png
+        png = Grover.new(url_for()).to_png
+  
+        customFilename = "Parieurs_"".png"
+  
+          send_data(png, disposition: 'inline', filename: customFilename, 
+                         type: 'application/png', format: 'A4')
+        end 
     end
   end
 

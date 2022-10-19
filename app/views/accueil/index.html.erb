@@ -16,4 +16,5 @@
   <%= render "accueil/slideshow" %>
 </div>
 
-
+<% grover = Grover.new('https://google.com', format: 'A4') %>
+<% pdf = grover.to_pdf %>

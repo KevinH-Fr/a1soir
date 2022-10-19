@@ -88,6 +88,9 @@ GEM
     cloudinary (1.23.0)
       aws_cf_signer
       rest-client (>= 2.0.0)
+    combine_pdf (1.0.22)
+      matrix
+      ruby-rc4 (>= 0.1.5)
     concurrent-ruby (1.1.10)
     crass (1.0.6)
     debug (1.6.2)
@@ -106,6 +109,9 @@ GEM
     ffi (1.15.5)
     globalid (1.0.0)
       activesupport (>= 5.0)
+    grover (1.1.2)
+      combine_pdf (~> 1.0)
+      nokogiri (~> 1.0)
     http-accept (1.7.0)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
@@ -208,6 +214,7 @@ GEM
       chunky_png (~> 1.0)
       rqrcode_core (~> 1.0)
     rqrcode_core (1.2.0)
+    ruby-rc4 (0.1.5)
     rubyzip (2.3.2)
     sassc (2.4.0)
       ffi (~> 1.9)
@@ -277,6 +284,7 @@ DEPENDENCIES
   cloudinary
   debug
   devise (~> 4.8)
+  grover
   importmap-rails
   jbuilder
   pg (~> 1.1)
@@ -294,7 +302,7 @@ DEPENDENCIES
   webdrivers
   wicked_pdf (~> 2.1)
   wkhtmltopdf-binary (= 0.12.4)
-  wkhtmltopdf-heroku (= 2.12.5.0)
+  wkhtmltopdf-heroku
 
 RUBY VERSION
    ruby 3.1.2p20
