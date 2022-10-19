@@ -40,8 +40,6 @@
 #  exe_path: 'app/bin/wkhtmltopdf'
 #  layout: "pdf.html.erb",
 
-
-
 #}) 
 
 WickedPdf.config ||= {}
