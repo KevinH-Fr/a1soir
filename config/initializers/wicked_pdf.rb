@@ -41,6 +41,8 @@
 #  layout: "pdf.html.erb",
 
 
+
+
 #}) 
 
 WickedPdf.config ||= {}
