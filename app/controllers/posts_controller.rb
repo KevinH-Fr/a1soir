@@ -17,7 +17,6 @@ class PostsController < ApplicationController
       format.pdf do
      #  render pdf: "Post", template: "posts/show", formats: [:html]
      pdf = Grover.new(url_for()).to_pdf
-  
      customFilename = "Parieurs_"".pdf"
 
        send_data(pdf, disposition: 'inline', filename: customFilename, 
