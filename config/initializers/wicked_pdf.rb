@@ -42,9 +42,6 @@
 
 
 
-
-
-
 #}) 
 
 WickedPdf.config ||= {}
