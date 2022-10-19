@@ -35,10 +35,15 @@
   # use_xvfb: true,
 #}
 
-WickedPdf.config ||= {}
-WickedPdf.config.merge!({
-  exe_path: 'app/bin/wkhtmltopdf'
+#WickedPdf.config ||= {}
+#WickedPdf.config.merge!({
+#  exe_path: 'app/bin/wkhtmltopdf'
 #  layout: "pdf.html.erb",
 
 
-}) 
+#}) 
+
+WickedPdf.config ||= {}
+WickedPdf.config.merge!({
+  # your extra configurations here
+})

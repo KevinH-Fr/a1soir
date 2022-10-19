@@ -24,9 +24,19 @@ gem "ransack", "~> 3.2"
 #gem 'wkhtmltopdf-binary'
 #gem 'wkhtmltopdf-binary-edge', '~> 0.12.6.0'
 
-gem 'wicked_pdf'
+#gem 'wicked_pdf'
 #gem "wkhtmltopdf-binary", "~> 0.12.6.5", group: :development
 #gem 'wkhtmltopdf-heroku', '2.12.6.0', group: :production
+
+
+gem 'wicked_pdf', '~> 2.1'
+group :development do
+  gem 'wkhtmltopdf-binary', '0.12.4'
+end
+group :production do
+  gem 'wkhtmltopdf-heroku', '2.12.5.0'
+end
+
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
@@ -34,7 +44,7 @@ end
 
 group :development do
   gem "web-console"
-  gem 'wkhtmltopdf-binary'
+ # gem 'wkhtmltopdf-binary'
 end
 
 group :test do
@@ -47,7 +57,7 @@ end
 
 
 group :production do
-  gem 'wkhtmltopdf-heroku'
+#  gem 'wkhtmltopdf-heroku'
 end
 
 
