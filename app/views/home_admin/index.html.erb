@@ -2,17 +2,20 @@
 <div class="container-fluid m-0 p-0">
   <div class="row m-0 p-0">
     <div class="col-6 m-0 p-0">
-        <%= dashboard_card("CLIENTS", clients_path, 
+      <%= dashboard_card("CLIENTS", clients_path, 
             @clients.order(updated_at: :desc).map { |client| { text: client.full_name, path: client_path(client) } }) %>
     </div>
     <div class="col-6 m-0 p-0">
-      <%= render "blocCommandes" %>
+        <%= dashboard_card("COMMANDES", commandes_path, 
+            @commandes.order(updated_at: :desc).map { |commande| { text: commande.full_name, path: commande_path(commande) } }) %>
     </div>
   </div>
 
   <div class="row m-0 p-0">
     <div class="col-6 m-0 p-0">
-      <%= render "blocProduits" %>
+      <%= dashboard_card("PRODUITS", produits_path, 
+            @produits.order(updated_at: :desc).map { |produit| { text: produit.full_name, path: produit_path(produit) } }) %>
+
     </div>
     <div class="col-6 m-0 p-0">
       <%= render "blocCalendrier" %>
