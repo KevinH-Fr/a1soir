@@ -1,1 +1,35 @@
-<h1>Home_admin#index</h1>
+
+<div class="container-fluid m-0 p-0">
+  <div class="row m-0 p-0">
+    <div class="col-6 m-0 p-0">
+        <%= dashboard_card("CLIENTS", clients_path, 
+            @clients.order(updated_at: :desc).map { |client| { text: client.full_name, path: client_path(client) } }) %>
+    </div>
+    <div class="col-6 m-0 p-0">
+      <%= render "blocCommandes" %>
+    </div>
+  </div>
+
+  <div class="row m-0 p-0">
+    <div class="col-6 m-0 p-0">
+      <%= render "blocProduits" %>
+    </div>
+    <div class="col-6 m-0 p-0">
+      <%= render "blocCalendrier" %>
+    </div>
+  </div>
+
+  <div class="row m-0 p-0">
+    <div class="col-12 m-0 p-0">
+      <%= render "blocLarge" %>
+    </div>
+  </div>
+
+</div>
+
+<%= render "footer" %>
+
+
+
+test icon 
+
