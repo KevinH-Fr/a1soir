@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  article: one
+  produit: one
+  nature: MyString
+  description: MyText
+  prix: 9.99
+  caution: 9.99
+  commentaires: MyText
+
+two:
+  article: two
+  produit: two
+  nature: MyString
+  description: MyText
+  prix: 9.99
+  caution: 9.99
+  commentaires: MyText

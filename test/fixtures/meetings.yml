@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nom: MyString
+  datedebut: 2024-02-07
+  datefin: 2024-02-07
+  commande: one
+  client: one
+  lieu: MyString
+
+two:
+  nom: MyString
+  datedebut: 2024-02-07
+  datefin: 2024-02-07
+  commande: two
+  client: two
+  lieu: MyString

@@ -1,0 +1,2 @@
+class Taille < ApplicationRecord
+end

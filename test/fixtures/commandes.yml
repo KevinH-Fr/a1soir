@@ -1,0 +1,33 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nom: MyString
+  montant: 9.99
+  description: MyText
+  client: one
+  debutloc: 2024-02-07
+  finloc: 2024-02-07
+  dateevent: 2024-02-07
+  statutarticles: MyString
+  typeevent: MyString
+  profile: one
+  commentaires: MyText
+  commentaires_doc: MyText
+  location: false
+  devis: false
+
+two:
+  nom: MyString
+  montant: 9.99
+  description: MyText
+  client: two
+  debutloc: 2024-02-07
+  finloc: 2024-02-07
+  dateevent: 2024-02-07
+  statutarticles: MyString
+  typeevent: MyString
+  profile: two
+  commentaires: MyText
+  commentaires_doc: MyText
+  location: false
+  devis: false

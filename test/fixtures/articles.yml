@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  quantite: 1
+  prix: 9.99
+  total: 9.99
+  produit: one
+  commande: one
+  locvente: MyString
+  caution: 9.99
+  totalcaution: 9.99
+  longueduree: false
+  commentaires: MyText
+
+two:
+  quantite: 1
+  prix: 9.99
+  total: 9.99
+  produit: two
+  commande: two
+  locvente: MyString
+  caution: 9.99
+  totalcaution: 9.99
+  longueduree: false
+  commentaires: MyText

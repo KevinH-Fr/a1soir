@@ -1,0 +1,37 @@
+<%= form_with(model: avoir_remb) do |form| %>
+  <% if avoir_remb.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(avoir_remb.errors.count, "error") %> prohibited this avoir_remb from being saved:</h2>
+
+      <ul>
+        <% avoir_remb.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :type_avoir_remb, style: "display: block" %>
+    <%= form.text_field :type_avoir_remb %>
+  </div>
+
+  <div>
+    <%= form.label :montant, style: "display: block" %>
+    <%= form.text_field :montant %>
+  </div>
+
+  <div>
+    <%= form.label :nature, style: "display: block" %>
+    <%= form.text_field :nature %>
+  </div>
+
+  <div>
+    <%= form.label :commande_id, style: "display: block" %>
+    <%= form.text_field :commande_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

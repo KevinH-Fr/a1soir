@@ -1,0 +1,87 @@
+<%= form_with(model: client) do |form| %>
+  <% if client.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(client.errors.count, "error") %> prohibited this client from being saved:</h2>
+
+      <ul>
+        <% client.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :prenom, style: "display: block" %>
+    <%= form.text_field :prenom %>
+  </div>
+
+  <div>
+    <%= form.label :nom, style: "display: block" %>
+    <%= form.text_field :nom %>
+  </div>
+
+  <div>
+    <%= form.label :commentaires, style: "display: block" %>
+    <%= form.text_area :commentaires %>
+  </div>
+
+  <div>
+    <%= form.label :propart, style: "display: block" %>
+    <%= form.text_field :propart %>
+  </div>
+
+  <div>
+    <%= form.label :intitule, style: "display: block" %>
+    <%= form.text_field :intitule %>
+  </div>
+
+  <div>
+    <%= form.label :tel, style: "display: block" %>
+    <%= form.text_field :tel %>
+  </div>
+
+  <div>
+    <%= form.label :tel2, style: "display: block" %>
+    <%= form.text_field :tel2 %>
+  </div>
+
+  <div>
+    <%= form.label :mail, style: "display: block" %>
+    <%= form.text_field :mail %>
+  </div>
+
+  <div>
+    <%= form.label :mail2, style: "display: block" %>
+    <%= form.text_field :mail2 %>
+  </div>
+
+  <div>
+    <%= form.label :adresse, style: "display: block" %>
+    <%= form.text_field :adresse %>
+  </div>
+
+  <div>
+    <%= form.label :cp, style: "display: block" %>
+    <%= form.text_field :cp %>
+  </div>
+
+  <div>
+    <%= form.label :ville, style: "display: block" %>
+    <%= form.text_field :ville %>
+  </div>
+
+  <div>
+    <%= form.label :pays, style: "display: block" %>
+    <%= form.text_field :pays %>
+  </div>
+
+  <div>
+    <%= form.label :contact, style: "display: block" %>
+    <%= form.text_field :contact %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

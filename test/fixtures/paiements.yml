@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  typepaiement: MyString
+  montant: 9.99
+  commande: one
+  moyen: MyString
+  commentaires: MyText
+
+two:
+  typepaiement: MyString
+  montant: 9.99
+  commande: two
+  moyen: MyString
+  commentaires: MyText
