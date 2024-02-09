@@ -16,7 +16,8 @@
 
 
  .no-underline{
-    text-decoration: none;
+   text-decoration: none;
+   color: lightgray;
  }
 
  .brand-colored{

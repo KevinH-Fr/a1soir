@@ -1,24 +1,24 @@
 
 <div class="container-fluid m-0 p-0">
   <div class="row m-0 p-0">
-    <div class="col-6 m-0 p-0">
-      <%= dashboard_card("Clients", clients_path, 
-            @clients.order(updated_at: :desc).map { |client| { text: client.full_name, path: client_path(client), icon: '' } }, 'user' ) %>
+    <div class="col-md-6 m-0 p-0">
+      <%= dashboard_card("Clients", clients_path, new_client_path, 'user',
+            @clients.order(updated_at: :desc).map { |client| { text: client.full_name, path: client_path(client) } } ) %>
     </div>
-    <div class="col-6 m-0 p-0">
-      <%= dashboard_card("Commandes", commandes_path, 
-            @commandes.order(updated_at: :desc).map { |commande| { text: commande.full_name, path: commande_path(commande), icon: '' } }, 'file' ) %>
+    <div class="col-md-6 m-0 p-0">
+      <%= dashboard_card("Commandes", commandes_path, new_commande_path, 'file',
+            @commandes.order(updated_at: :desc).map { |commande| { text: commande.full_name, path: commande_path(commande) } } )  %>
     </div>
   </div>
 
   <div class="row m-0 p-0">
-    <div class="col-6 m-0 p-0">
-      <%= dashboard_card("Produits", produits_path, 
-            @produits.order(updated_at: :desc).map { |produit| { text: produit.full_name, path: produit_path(produit), icon: '' } }, 'shirt' ) %>
+    <div class="col-md-6 m-0 p-0">
+      <%= dashboard_card("Produits", produits_path, new_produit_path, 'shirt',
+            @produits.order(updated_at: :desc).map { |produit| { text: produit.full_name, path: produit_path(produit) } } ) %>
     </div>
-    <div class="col-6 m-0 p-0">
-      <%= dashboard_card("RdV", meetings_path, 
-            @meetings.order(updated_at: :desc).map { |meeting| { text: meeting.nom, path: meeting_path(meeting), icon: '' } }, 'calendar' ) %>
+    <div class="col-md-6 m-0 p-0">
+      <%= dashboard_card("Rendez-vous", meetings_path, new_meeting_path, 'calendar',
+            @meetings.order(updated_at: :desc).map { |meeting| { text: meeting.nom, path: meeting_path(meeting) } } ) %>
     </div>
   </div>
 
