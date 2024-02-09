@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  
   resources :avoir_rembs
   resources :paiement_recus
   resources :paiements

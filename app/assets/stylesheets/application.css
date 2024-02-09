@@ -13,3 +13,17 @@
  *= require_tree .
  *= require_self
  */
+
+
+ .no-underline{
+    text-decoration: none;
+ }
+
+ .brand-colored{
+    color:rgb(208, 77, 123);
+ }
+
+ .page-max-widthed{
+    width: 100%;
+    max-width: 1000px;
+ }

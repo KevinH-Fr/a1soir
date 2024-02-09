@@ -2,23 +2,23 @@
 <div class="container-fluid m-0 p-0">
   <div class="row m-0 p-0">
     <div class="col-6 m-0 p-0">
-      <%= dashboard_card("CLIENTS", clients_path, 
-            @clients.order(updated_at: :desc).map { |client| { text: client.full_name, path: client_path(client) } }) %>
+      <%= dashboard_card("Clients", clients_path, 
+            @clients.order(updated_at: :desc).map { |client| { text: client.full_name, path: client_path(client), icon: '' } }, 'user' ) %>
     </div>
     <div class="col-6 m-0 p-0">
-        <%= dashboard_card("COMMANDES", commandes_path, 
-            @commandes.order(updated_at: :desc).map { |commande| { text: commande.full_name, path: commande_path(commande) } }) %>
+      <%= dashboard_card("Commandes", commandes_path, 
+            @commandes.order(updated_at: :desc).map { |commande| { text: commande.full_name, path: commande_path(commande), icon: '' } }, 'file' ) %>
     </div>
   </div>
 
   <div class="row m-0 p-0">
     <div class="col-6 m-0 p-0">
-      <%= dashboard_card("PRODUITS", produits_path, 
-            @produits.order(updated_at: :desc).map { |produit| { text: produit.full_name, path: produit_path(produit) } }) %>
-
+      <%= dashboard_card("Produits", produits_path, 
+            @produits.order(updated_at: :desc).map { |produit| { text: produit.full_name, path: produit_path(produit), icon: '' } }, 'shirt' ) %>
     </div>
     <div class="col-6 m-0 p-0">
-      <%= render "blocCalendrier" %>
+      <%= dashboard_card("RdV", meetings_path, 
+            @meetings.order(updated_at: :desc).map { |meeting| { text: meeting.nom, path: meeting_path(meeting), icon: '' } }, 'calendar' ) %>
     </div>
   </div>
 
@@ -33,6 +33,5 @@
 <%= render "footer" %>
 
 
-
-test icon 
+<hr>
 
