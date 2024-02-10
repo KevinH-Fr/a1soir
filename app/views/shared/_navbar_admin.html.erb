@@ -1,0 +1,24 @@
+
+<nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <%= link_to image_tag('/images/logo_courant.png', class: 'navbar-brand me-4', width: "200"), root_path %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar">
+      <ul class="navbar-nav me-auto my-2 my-lg-0">
+        <%= nav_link(home_admin_path, "Accueil", "fa-house") %>
+        <%= nav_link(clients_path, "Clients", "fa-user") %>
+        <%= nav_link(produits_path, "Produits", "fa-shirt") %>
+        <%= nav_link(commandes_path, "Commandes", "fa-file-invoice") %>
+        <%= nav_link(meetings_path, "Calendrier", "fa-calendar") %>
+        <%= nav_link(root_path, "Analyses", "fa-chart-line") %>
+        <%= nav_link(root_path, "Marketing", "fa-bullhorn") %>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>

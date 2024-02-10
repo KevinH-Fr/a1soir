@@ -1,1 +1,21 @@
-bloc large
+<div class="card m-2 shadow-sm">
+
+    <div class="card-header bg-dark text-light py-2 fw-bold text-center fs-5">
+        <i class="fa fa-xl brand-colored fa-gear me-2"></i>
+        Fonctions supplémenatires
+    </div>
+
+    <div class= "card-body p-2 light-beige-colored text-center">
+
+        <%= options_supplementaires_link(root_path, "fa-user-circle", "Comptes", "btn-outline-primary") %>
+        <%= options_supplementaires_link(profiles_path, "fa-user-gear", "Profiles", "btn-outline-dark") %>
+        <%= options_supplementaires_link(root_path, "fa-bullhorn", "Marketing", "btn-outline-warning") %>
+        <%= options_supplementaires_link(root_path, "fa-chart-line", "Analyses", "btn-outline-success") %>
+        <%= options_supplementaires_link("etiquettes", "fa-tags", "Etiquettes", "btn-outline-secondary") %>
+        <%= options_supplementaires_link(root_path, "fa-box-open", "Stocks", "btn-outline-danger") %>
+        <%= options_supplementaires_link(fournisseurs_path, "fa-industry", "Fournisseurs", "btn-outline-dark") %>
+        <%= options_supplementaires_link(root_path, "fa-cubes", "Gestion des Ensembles", "btn-outline-primary") %>
+    
+    </div>
+
+</div>

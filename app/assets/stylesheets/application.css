@@ -15,10 +15,6 @@
  */
 
 
- .no-underline{
-   text-decoration: none;
-   color: lightgray;
- }
 
  .brand-colored{
     color:rgb(208, 77, 123);
@@ -27,4 +23,8 @@
  .page-max-widthed{
     width: 100%;
     max-width: 1000px;
+ }
+
+ .light-beige-colored{
+   background-color: rgb(236, 236, 236);
  }
