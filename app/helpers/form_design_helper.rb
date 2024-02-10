@@ -1,6 +1,6 @@
 module FormDesignHelper
     def custom_form_elements(form, *fields)
-        content_tag(:div, class: "p-2") do
+        content_tag(:div, class: "m-1 p-2") do
           fields.each do |field, field_type|
             concat(content_tag(:div, class: "form-group input-group mb-2") do
               concat(content_tag(:div, class: "input-group-text") do

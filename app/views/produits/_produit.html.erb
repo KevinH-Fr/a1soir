@@ -1,62 +1,69 @@
-<div id="<%= dom_id produit %>">
-  <p>
-    <strong>Nom:</strong>
-    <%= produit.nom %>
-  </p>
+<div id="<%= dom_id produit %>" class="my-2">
 
-  <p>
-    <strong>Prixvente:</strong>
-    <%= produit.prixvente %>
-  </p>
+  <div class="card mx-2 my-3 p-3 light-beige-colored shadow-sm">
 
-  <p>
-    <strong>Prixlocation:</strong>
-    <%= produit.prixlocation %>
-  </p>
+    <p>
+      <strong>Nom:</strong>
+      <%= produit.nom %>
+    </p>
 
-  <p>
-    <strong>Description:</strong>
-    <%= produit.description %>
-  </p>
+    <p>
+      <strong>Prixvente:</strong>
+      <%= produit.prixvente %>
+    </p>
 
-  <p>
-    <strong>Categorie produit:</strong>
-    <%= produit.categorie_produit_id %>
-  </p>
+    <p>
+      <strong>Prixlocation:</strong>
+      <%= produit.prixlocation %>
+    </p>
 
-  <p>
-    <strong>Caution:</strong>
-    <%= produit.caution %>
-  </p>
+    <p>
+      <strong>Description:</strong>
+      <%= produit.description %>
+    </p>
 
-  <p>
-    <strong>Handle:</strong>
-    <%= produit.handle %>
-  </p>
+    <p>
+      <strong>Categorie produit:</strong>
+      <%= produit.categorie_produit_id %>
+    </p>
 
-  <p>
-    <strong>Reffrs:</strong>
-    <%= produit.reffrs %>
-  </p>
+    <p>
+      <strong>Caution:</strong>
+      <%= produit.caution %>
+    </p>
 
-  <p>
-    <strong>Quantite:</strong>
-    <%= produit.quantite %>
-  </p>
+    <p>
+      <strong>Handle:</strong>
+      <%= produit.handle %>
+    </p>
 
-  <p>
-    <strong>Fournisseur:</strong>
-    <%= produit.fournisseur_id %>
-  </p>
+    <p>
+      <strong>Reffrs:</strong>
+      <%= produit.reffrs %>
+    </p>
 
-  <p>
-    <strong>Dateachat:</strong>
-    <%= produit.dateachat %>
-  </p>
+    <p>
+      <strong>Quantite:</strong>
+      <%= produit.quantite %>
+    </p>
 
-  <p>
-    <strong>Prixachat:</strong>
-    <%= produit.prixachat %>
-  </p>
+    <p>
+      <strong>Fournisseur:</strong>
+      <%= produit.fournisseur_id %>
+    </p>
+
+    <p>
+      <strong>Dateachat:</strong>
+      <%= produit.dateachat %>
+    </p>
+
+    <p>
+      <strong>Prixachat:</strong>
+      <%= produit.prixachat %>
+    </p>
+  
+    <%= links_record(produit) %>  
+
+  </div>
 
 </div>

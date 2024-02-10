@@ -7,6 +7,18 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :fournisseurs do 
+    member do
+      post :edit
+    end
+  end
+
+  resources :produits do 
+    member do
+      post :edit
+    end
+  end
+
   resources :avoir_rembs
   resources :paiement_recus
   resources :paiements
@@ -15,8 +27,6 @@ Rails.application.routes.draw do
   resources :sousarticles
   resources :articles
   resources :commandes
-  resources :produits
-  resources :fournisseurs
   resources :clients
   resources :profiles
   resources :textes

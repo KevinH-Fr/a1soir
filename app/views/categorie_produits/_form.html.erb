@@ -1,4 +1,4 @@
-<div class="card m-2 p-2 light-beige-colored shadow-sm">
+<div class="card mx-2 my-3 p-2 light-beige-colored shadow-sm">
 
   <%= form_with(model: categorie_produit) do |form| %>
     <% if categorie_produit.errors.any? %>
@@ -13,9 +13,8 @@
       </div>
     <% end %>
 
-
-  <%= custom_form_elements(form, [:nom, :text_field], [:texte_annonce, :text_area], [:label, :text_field]) %>
-
+    <%= custom_form_elements(form, 
+      [:nom, :text_field], [:texte_annonce, :text_area], [:label, :text_field]) %>
 
   <% end %>
 

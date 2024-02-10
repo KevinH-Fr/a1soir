@@ -17,14 +17,41 @@ class ProduitsController < ApplicationController
 
   # GET /produits/1/edit
   def edit
+    respond_to do |format|
+      format.html 
+      format.turbo_stream do  
+        render turbo_stream: turbo_stream.update(@produit, 
+          partial: "produits/form", 
+          locals: {produit: @produit})
+      end
+    end
   end
 
   # POST /produits or /produits.json
   def create
     @produit = Produit.new(produit_params)
 
+    
     respond_to do |format|
       if @produit.save
+
+        flash.now[:success] = "produit was successfully created"
+
+        
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('new',
+                                partial: "produits/form",
+                                locals: { produit: Produit.new }),
+  
+            turbo_stream.prepend('produits',
+                                  partial: "produits/produit",
+                                  locals: { produit: @produit }),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+            
+          ]
+        end
+
         format.html { redirect_to produit_url(@produit), notice: "Produit was successfully created." }
         format.json { render :show, status: :created, location: @produit }
       else
@@ -38,9 +65,33 @@ class ProduitsController < ApplicationController
   def update
     respond_to do |format|
       if @produit.update(produit_params)
+
+        flash.now[:success] = "produit was successfully updated"
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('new',
+                                partial: "produits/form",
+                                locals: { produit: Produit.new }),
+  
+            turbo_stream.prepend('produits',
+                                  partial: "produits/produit",
+                                  locals: { produit: @produit }),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+            
+          ]
+        end
+
         format.html { redirect_to produit_url(@produit), notice: "Produit was successfully updated." }
         format.json { render :show, status: :ok, location: @produit }
       else
+
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(@produit, 
+                    partial: 'produits/form', 
+                    locals: { produit: @produit })
+        end
+
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @produit.errors, status: :unprocessable_entity }
       end

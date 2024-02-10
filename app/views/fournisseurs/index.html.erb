@@ -1,14 +1,9 @@
-<p style="color: green"><%= notice %></p>
+<%= bandeau_entete("Fournisseurs", "layer-group", @fournisseurs.count, "your-search") %>
 
-<h1>Fournisseurs</h1>
+<%= bloc_nouveau(Fournisseur) %>
 
 <div id="fournisseurs">
   <% @fournisseurs.each do |fournisseur| %>
-    <%= render fournisseur %>
-    <p>
-      <%= link_to "Show this fournisseur", fournisseur %>
-    </p>
+        <%= render fournisseur %>
   <% end %>
 </div>
-
-<%= link_to "New fournisseur", new_fournisseur_path %>

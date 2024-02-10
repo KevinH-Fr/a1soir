@@ -16,7 +16,7 @@ module IndexModelHelper
                 concat(content_tag(:button, "Search", class: "btn btn-outline-dark p-1 m-1", type: "button"))
 
                 # New button with collapse attributes
-                concat(content_tag(:button, class: "btn btn-sm btn-warning m-2", type: "button", 
+                concat(content_tag(:button, class: "btn btn-sm btn-warning", type: "button", 
                     data: { bs_toggle: "collapse", bs_target: "#collapseNew", aria_expanded: "false" },
                     aria: { controls: "collapseNew" }) do
                     concat(content_tag(:i, nil, class: "fa-solid fa-square-plus fa-xl"))
@@ -30,17 +30,15 @@ module IndexModelHelper
 
     end
 
-
     def bloc_nouveau(model_class)
 
         content_tag(:div, class: "collapse", id: "collapseNew") do
             concat(content_tag(:div, id: "new") do
-                render partial: "#{model_class.to_s.underscore.pluralize}/form", locals: { model_class.to_s.underscore.to_sym => model_class.new }
+                render partial: "#{model_class.to_s.underscore.pluralize}/form", 
+                locals: { model_class.to_s.underscore.to_sym => model_class.new }
             end)
         end
     end
-
-
 
     def links_record(model)
         content_tag(:div, class: "d-flex justify-content-end") do

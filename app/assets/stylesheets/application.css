@@ -25,6 +25,11 @@
     max-width: 1000px;
  }
 
- .light-beige-colored{
-   background-color: rgb(236, 236, 236);
+ :root {
+   --light-beige-color: rgb(236, 236, 236);
  }
+ 
+ .light-beige-colored {
+   background-color: var(--light-beige-color);
+}
+

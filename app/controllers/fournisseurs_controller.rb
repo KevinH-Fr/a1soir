@@ -17,6 +17,14 @@ class FournisseursController < ApplicationController
 
   # GET /fournisseurs/1/edit
   def edit
+    respond_to do |format|
+      format.html 
+      format.turbo_stream do  
+        render turbo_stream: turbo_stream.update(@fournisseur, 
+          partial: "fournisseurs/form", 
+          locals: {fournisseur: @fournisseur})
+      end
+    end
   end
 
   # POST /fournisseurs or /fournisseurs.json
@@ -25,9 +33,32 @@ class FournisseursController < ApplicationController
 
     respond_to do |format|
       if @fournisseur.save
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('new',
+                                partial: "fournisseurs/form",
+                                locals: { fournisseur: Fournisseur.new }),
+  
+            turbo_stream.prepend('fournisseurs',
+                                  partial: "fournisseurs/fournisseur",
+                                  locals: { fournisseur: @fournisseur }),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+            
+          ]
+        end
+
         format.html { redirect_to fournisseur_url(@fournisseur), notice: "Fournisseur was successfully created." }
         format.json { render :show, status: :created, location: @fournisseur }
       else
+
+
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(
+          'fournisseur_form', 
+          partial: 'fournisseurs/form', 
+          locals: { fournisseur: @fournisseur }
+        ) }
+
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @fournisseur.errors, status: :unprocessable_entity }
       end
@@ -38,9 +69,33 @@ class FournisseursController < ApplicationController
   def update
     respond_to do |format|
       if @fournisseur.update(fournisseur_params)
+
+        flash.now[:success] = "fournisseur was successfully created"
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('new',
+                                partial: "fournisseurs/form",
+                                locals: { fournisseur: Fournisseur.new }),
+  
+            turbo_stream.prepend('fournisseurs',
+                                  partial: "fournisseurs/fournisseur",
+                                  locals: { fournisseur: @fournisseur }),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+            
+          ]
+        end
+
         format.html { redirect_to fournisseur_url(@fournisseur), notice: "Fournisseur was successfully updated." }
         format.json { render :show, status: :ok, location: @fournisseur }
       else
+
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(@fournisseur, 
+                    partial: 'fournisseurs/form', 
+                    locals: { fournisseur: @fournisseur })
+        end
+
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @fournisseur.errors, status: :unprocessable_entity }
       end

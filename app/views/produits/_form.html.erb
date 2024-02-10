@@ -1,77 +1,29 @@
-<%= form_with(model: produit) do |form| %>
-  <% if produit.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(produit.errors.count, "error") %> prohibited this produit from being saved:</h2>
+<%= turbo_frame_tag "produit_form" do %>
 
-      <ul>
-        <% produit.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
 
-  <div>
-    <%= form.label :nom, style: "display: block" %>
-    <%= form.text_field :nom %>
+    <%= form_with(model: produit) do |form| %>
+      <% if produit.errors.any? %>
+        <div style="color: red">
+          <h2><%= pluralize(produit.errors.count, "error") %> prohibited this produit from being saved:</h2>
+
+          <ul>
+            <% produit.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= custom_form_elements(form, 
+        [:nom, :text_field], [:prixvente, :text_field], [:prixlocation, :text_field],
+        [:description, :text_area], [:categorie_produit_id, :text_field], [:caution, :text_field],
+        [:handle, :text_field], [:reffrs, :text_field], [:quantite, :number_field],
+        [:fournisseur_id, :text_field], [:dateachat, :date_field], [:prixachat, :text_field]
+      ) %>
+
+    <% end %>
+  
   </div>
 
-  <div>
-    <%= form.label :prixvente, style: "display: block" %>
-    <%= form.text_field :prixvente %>
-  </div>
-
-  <div>
-    <%= form.label :prixlocation, style: "display: block" %>
-    <%= form.text_field :prixlocation %>
-  </div>
-
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_area :description %>
-  </div>
-
-  <div>
-    <%= form.label :categorie_produit_id, style: "display: block" %>
-    <%= form.text_field :categorie_produit_id %>
-  </div>
-
-  <div>
-    <%= form.label :caution, style: "display: block" %>
-    <%= form.text_field :caution %>
-  </div>
-
-  <div>
-    <%= form.label :handle, style: "display: block" %>
-    <%= form.text_field :handle %>
-  </div>
-
-  <div>
-    <%= form.label :reffrs, style: "display: block" %>
-    <%= form.text_field :reffrs %>
-  </div>
-
-  <div>
-    <%= form.label :quantite, style: "display: block" %>
-    <%= form.number_field :quantite %>
-  </div>
-
-  <div>
-    <%= form.label :fournisseur_id, style: "display: block" %>
-    <%= form.text_field :fournisseur_id %>
-  </div>
-
-  <div>
-    <%= form.label :dateachat, style: "display: block" %>
-    <%= form.date_field :dateachat %>
-  </div>
-
-  <div>
-    <%= form.label :prixachat, style: "display: block" %>
-    <%= form.text_field :prixachat %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
 <% end %>

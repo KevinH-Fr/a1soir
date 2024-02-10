@@ -1,47 +1,27 @@
-<%= form_with(model: fournisseur) do |form| %>
-  <% if fournisseur.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(fournisseur.errors.count, "error") %> prohibited this fournisseur from being saved:</h2>
 
-      <ul>
-        <% fournisseur.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<%= turbo_frame_tag "fournisseur_form" do %>
 
-  <div>
-    <%= form.label :nom, style: "display: block" %>
-    <%= form.text_field :nom %>
+  <div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
+
+    <%= form_with(model: fournisseur) do |form| %>
+      <% if fournisseur.errors.any? %>
+        <div style="color: red">
+          <h2><%= pluralize(fournisseur.errors.count, "error") %> prohibited this fournisseur from being saved:</h2>
+
+          <ul>
+            <% fournisseur.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= custom_form_elements(form, 
+        [:nom, :text_field], [:tel, :text_field], [:mail, :text_field], 
+        [:contact, :text_field], [:site, :text_field], [:notes, :text_area]) %>
+
+    <% end %>
+  
   </div>
 
-  <div>
-    <%= form.label :tel, style: "display: block" %>
-    <%= form.text_field :tel %>
-  </div>
-
-  <div>
-    <%= form.label :mail, style: "display: block" %>
-    <%= form.text_field :mail %>
-  </div>
-
-  <div>
-    <%= form.label :contact, style: "display: block" %>
-    <%= form.text_field :contact %>
-  </div>
-
-  <div>
-    <%= form.label :site, style: "display: block" %>
-    <%= form.text_field :site %>
-  </div>
-
-  <div>
-    <%= form.label :notes, style: "display: block" %>
-    <%= form.text_area :notes %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
 <% end %>
