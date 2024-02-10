@@ -1,5 +1,12 @@
 Rails.application.routes.draw do
   
+
+  resources :categorie_produits do 
+    member do
+      post :edit
+    end
+  end
+
   resources :avoir_rembs
   resources :paiement_recus
   resources :paiements
@@ -10,7 +17,6 @@ Rails.application.routes.draw do
   resources :commandes
   resources :produits
   resources :fournisseurs
-  resources :categorie_produits
   resources :clients
   resources :profiles
   resources :textes

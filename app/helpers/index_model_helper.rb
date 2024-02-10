@@ -12,7 +12,7 @@ module IndexModelHelper
         concat(content_tag(:div, class: "card-body p-0 light-beige-colored") do
             concat(content_tag(:div, class: "d-flex align-items-center") do
 
-                concat(content_tag(:input, nil, class: "form-control", type: "text", placeholder: "Search"))
+                concat(content_tag(:input, nil, class: "form-control mx-1", type: "text", placeholder: "Search"))
                 concat(content_tag(:button, "Search", class: "btn btn-outline-dark p-1 m-1", type: "button"))
 
                 # New button with collapse attributes
@@ -32,36 +32,24 @@ module IndexModelHelper
 
 
     def bloc_nouveau(model_class)
-        content_tag(:div, class: "card m-2 shadow-sm") do
-            concat(content_tag(:div, class: "card-body p-0 light-beige-colored") do
 
-                content_tag(:div, class: "collapse", id: "collapseNew") do
-                    concat(content_tag(:div, id: "new") do
-                        render partial: "#{model_class.to_s.underscore.pluralize}/form", locals: { model_class.to_s.underscore.to_sym => model_class.new }
-                    end)
-                end
+        content_tag(:div, class: "collapse", id: "collapseNew") do
+            concat(content_tag(:div, id: "new") do
+                render partial: "#{model_class.to_s.underscore.pluralize}/form", locals: { model_class.to_s.underscore.to_sym => model_class.new }
             end)
         end
     end
 
 
-    def model_collection(collection, model_name)
-        content_tag(:div, id: "#{model_name.to_s.underscore.pluralize}") do
-            collection.each do |model|
-                concat(content_tag(:div, class: "card m-2 shadow-sm") do
-                    concat(content_tag(:div, class: "card-body p-2 light-beige-colored") do
-                        concat(render(model))
-                        concat(content_tag(:div, class: "d-flex justify-content-end") do
-                            concat(link_to("Show", model, class: "btn btn-primary m-1"))
-                            concat(link_to("Edit", edit_polymorphic_path(model), class: "btn btn-secondary m-1"))
-                            concat(button_to("Destroy", model, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger m-1"))
-                        end)
 
-                    end)
-                end)
-            end
+    def links_record(model)
+        content_tag(:div, class: "d-flex justify-content-end") do
+            concat(link_to("", model, class: "btn btn-primary fa-solid fa-eye m-1"))
+            concat(button_to("", edit_polymorphic_path(model), method: :post, class: "btn btn-secondary fa-solid fa-pen-to-square m-1"))
+            concat(button_to("", model, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger fa-solid fa-trash m-1"))
         end
-    end
+    end 
+
       
 
   end

@@ -15,8 +15,15 @@ class CategorieProduitsController < ApplicationController
     @categorie_produit = CategorieProduit.new
   end
 
-  # GET /categorie_produits/1/edit
   def edit
+    respond_to do |format|
+      format.html 
+      format.turbo_stream do  
+        render turbo_stream: turbo_stream.update(@categorie_produit, 
+          partial: "categorie_produits/form", 
+          locals: {categorie_produit: @categorie_produit})
+      end
+    end
   end
 
   # POST /categorie_produits or /categorie_produits.json
@@ -25,6 +32,24 @@ class CategorieProduitsController < ApplicationController
 
     respond_to do |format|
       if @categorie_produit.save
+
+        flash.now[:success] = "categorie_produit was successfully created"
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('new',
+                                partial: "categorie_produits/form",
+                                locals: { categorie_produit: CategorieProduit.new }),
+  
+            turbo_stream.prepend('categorie_produits',
+                                  partial: "categorie_produits/categorie_produit",
+                                  locals: { categorie_produit: @categorie_produit }),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+            
+          ]
+        end
+          
+
         format.html { redirect_to categorie_produit_url(@categorie_produit), notice: "Categorie produit was successfully created." }
         format.json { render :show, status: :created, location: @categorie_produit }
       else
@@ -32,15 +57,33 @@ class CategorieProduitsController < ApplicationController
         format.json { render json: @categorie_produit.errors, status: :unprocessable_entity }
       end
     end
+
   end
 
-  # PATCH/PUT /categorie_produits/1 or /categorie_produits/1.json
   def update
     respond_to do |format|
       if @categorie_produit.update(categorie_produit_params)
-        format.html { redirect_to categorie_produit_url(@categorie_produit), notice: "Categorie produit was successfully updated." }
+        flash.now[:success] = "categorie_produit was successfully updated"
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update(@categorie_produit, 
+                    partial: 'categorie_produits/categorie_produit', 
+                    locals: { categorie_produit: @categorie_produit }),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+          ]
+        end
+
+        format.html { redirect_to categorie_produit_url(@categorie_produit), notice: "categorie_produit was successfully updated." }
         format.json { render :show, status: :ok, location: @categorie_produit }
       else
+
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(@categorie_produit, 
+                    partial: 'categorie_produits/form', 
+                    locals: { categorie_produit: @categorie_produit })
+        end
+
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @categorie_produit.errors, status: :unprocessable_entity }
       end

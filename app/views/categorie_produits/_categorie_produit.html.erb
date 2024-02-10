@@ -1,4 +1,7 @@
 <div id="<%= dom_id categorie_produit %>">
+
+    <div class="card m-2 p-2 light-beige-colored shadow-sm">
+
   <p>
     <strong>Nom:</strong>
     <%= categorie_produit.nom %>
@@ -13,5 +16,9 @@
     <strong>Label:</strong>
     <%= categorie_produit.label %>
   </p>
+
+  <%= links_record(categorie_produit) %>  
+
+  </div>
 
 </div>

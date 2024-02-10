@@ -1,9 +1,10 @@
-<p style="color: green"><%= notice %></p>
 
 <%= bandeau_entete("Catégories produits", "layer-group", @categorie_produits.count, "your-search") %>
 
 <%= bloc_nouveau(CategorieProduit) %>
 
-<%= model_collection(@categorie_produits, CategorieProduit) %>
-
-
+<div id="categorie_produits">
+  <% @categorie_produits.each do |categorie_produit| %>
+        <%= render categorie_produit %>
+  <% end %>
+</div>
