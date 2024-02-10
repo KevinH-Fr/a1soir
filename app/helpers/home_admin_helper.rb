@@ -36,7 +36,7 @@ module HomeAdminHelper
 
   def options_supplementaires_link(path, icon_class, text, btn_class)
     link_to(path, class: "m-2 btn #{btn_class}") do
-      concat content_tag(:i, "", class: "fa #{icon_class} me-1")
+      concat content_tag(:i, "", class: "fa #{icon_class} me-2")
       concat content_tag(:span, text, class: "fw-bold fs-6")
     end
   end

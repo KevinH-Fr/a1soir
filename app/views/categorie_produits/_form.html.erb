@@ -11,22 +11,9 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :nom, style: "display: block" %>
-    <%= form.text_field :nom %>
-  </div>
 
-  <div>
-    <%= form.label :texte_annonce, style: "display: block" %>
-    <%= form.text_area :texte_annonce %>
-  </div>
+ <%= custom_form_elements(form, [:nom, :text_field], [:texte_annonce, :text_area], [:label, :text_field]) %>
 
-  <div>
-    <%= form.label :label, style: "display: block" %>
-    <%= form.text_area :label %>
-  </div>
 
-  <div>
-    <%= form.submit %>
-  </div>
 <% end %>
+
