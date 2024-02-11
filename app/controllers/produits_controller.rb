@@ -4,6 +4,7 @@ class ProduitsController < ApplicationController
   # GET /produits or /produits.json
   def index
     @produits = Produit.all
+    @categorie_produits = CategorieProduit.all
   end
 
   # GET /produits/1 or /produits/1.json
@@ -13,10 +14,14 @@ class ProduitsController < ApplicationController
   # GET /produits/new
   def new
     @produit = Produit.new
+    @categorie_produits = CategorieProduit.all
+
   end
 
   # GET /produits/1/edit
   def edit
+    @categorie_produits = CategorieProduit.all
+
     respond_to do |format|
       format.html 
       format.turbo_stream do  
@@ -31,13 +36,11 @@ class ProduitsController < ApplicationController
   def create
     @produit = Produit.new(produit_params)
 
-    
     respond_to do |format|
       if @produit.save
 
         flash.now[:success] = "produit was successfully created"
 
-        
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('new',
@@ -63,6 +66,8 @@ class ProduitsController < ApplicationController
 
   # PATCH/PUT /produits/1 or /produits/1.json
   def update
+    @categorie_produits = CategorieProduit.all
+
     respond_to do |format|
       if @produit.update(produit_params)
 
@@ -70,15 +75,8 @@ class ProduitsController < ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update('new',
-                                partial: "produits/form",
-                                locals: { produit: Produit.new }),
-  
-            turbo_stream.prepend('produits',
-                                  partial: "produits/produit",
-                                  locals: { produit: @produit }),
+            turbo_stream.update(@produit, partial: "produits/produit", locals: {produit: @produit}),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
-            
           ]
         end
 

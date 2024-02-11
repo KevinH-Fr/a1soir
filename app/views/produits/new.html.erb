@@ -1,9 +1,7 @@
-<h1>New produit</h1>
+<h1>Nouveau produit</h1>
 
 <%= render "form", produit: @produit %>
 
 <br>
 
-<div>
-  <%= link_to "Back to produits", produits_path %>
-</div>
+<%= return_model_index_button("Retour vers produits", produits_path) %>

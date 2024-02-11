@@ -1,72 +1,79 @@
-<div id="<%= dom_id commande %>">
-  <p>
-    <strong>Nom:</strong>
-    <%= commande.nom %>
-  </p>
+<div id="<%= dom_id commande %>"class="my-2">
 
-  <p>
-    <strong>Montant:</strong>
-    <%= commande.montant %>
-  </p>
+  <div class="card mx-2 my-3 p-3 light-beige-colored shadow-sm">
+    
+    <p>
+      <strong>Nom:</strong>
+      <%= commande.nom %>
+    </p>
 
-  <p>
-    <strong>Description:</strong>
-    <%= commande.description %>
-  </p>
+    <p>
+      <strong>Montant:</strong>
+      <%= commande.montant %>
+    </p>
 
-  <p>
-    <strong>Client:</strong>
-    <%= commande.client_id %>
-  </p>
+    <p>
+      <strong>Description:</strong>
+      <%= commande.description %>
+    </p>
 
-  <p>
-    <strong>Debutloc:</strong>
-    <%= commande.debutloc %>
-  </p>
+    <p>
+      <strong>Client:</strong>
+      <%= commande.client_id %>
+    </p>
 
-  <p>
-    <strong>Finloc:</strong>
-    <%= commande.finloc %>
-  </p>
+    <p>
+      <strong>Debutloc:</strong>
+      <%= commande.debutloc %>
+    </p>
 
-  <p>
-    <strong>Dateevent:</strong>
-    <%= commande.dateevent %>
-  </p>
+    <p>
+      <strong>Finloc:</strong>
+      <%= commande.finloc %>
+    </p>
 
-  <p>
-    <strong>Statutarticles:</strong>
-    <%= commande.statutarticles %>
-  </p>
+    <p>
+      <strong>Dateevent:</strong>
+      <%= commande.dateevent %>
+    </p>
 
-  <p>
-    <strong>Typeevent:</strong>
-    <%= commande.typeevent %>
-  </p>
+    <p>
+      <strong>Statutarticles:</strong>
+      <%= commande.statutarticles %>
+    </p>
 
-  <p>
-    <strong>Profile:</strong>
-    <%= commande.profile_id %>
-  </p>
+    <p>
+      <strong>Typeevent:</strong>
+      <%= commande.typeevent %>
+    </p>
 
-  <p>
-    <strong>Commentaires:</strong>
-    <%= commande.commentaires %>
-  </p>
+    <p>
+      <strong>Profile:</strong>
+      <%= commande.profile_id %>
+    </p>
 
-  <p>
-    <strong>Commentaires doc:</strong>
-    <%= commande.commentaires_doc %>
-  </p>
+    <p>
+      <strong>Commentaires:</strong>
+      <%= commande.commentaires %>
+    </p>
 
-  <p>
-    <strong>Location:</strong>
-    <%= commande.location %>
-  </p>
+    <p>
+      <strong>Commentaires doc:</strong>
+      <%= commande.commentaires_doc %>
+    </p>
 
-  <p>
-    <strong>Devis:</strong>
-    <%= commande.devis %>
-  </p>
+    <p>
+      <strong>Location:</strong>
+      <%= commande.location %>
+    </p>
+
+    <p>
+      <strong>Devis:</strong>
+      <%= commande.devis %>
+    </p>
+  
+    <%= links_record(commande) %>  
+
+  </div>
 
 </div>

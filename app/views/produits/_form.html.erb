@@ -16,13 +16,27 @@
       <% end %>
 
       <%= custom_form_elements(form, 
-        [:nom, :text_field], [:prixvente, :text_field], [:prixlocation, :text_field],
-        [:description, :text_area], [:categorie_produit_id, :text_field], [:caution, :text_field],
+        [:nom, :text_field] ) %>
+
+      <div class="mx-1 px-2">
+        <div class="input-group input-group">
+          <%= form.label :categorie_produit_id, class: "input-group-text" %>
+          <%= form.collection_select :categorie_produit_id, @categorie_produits.all.order(:nom), :id, :nom, 
+          { include_blank: 'Select' }, class: "form-select" %>
+        </div>
+      </div>
+
+      <%= custom_form_elements(form, 
+        [:prixvente, :text_field], [:prixlocation, :text_field],
+        [:description, :text_area], [:caution, :text_field],
         [:handle, :text_field], [:reffrs, :text_field], [:quantite, :number_field],
         [:fournisseur_id, :text_field], [:dateachat, :date_field], [:prixachat, :text_field]
       ) %>
 
+      <%= custom_submit_button(form) %>
+
     <% end %>
+  
   
   </div>
 

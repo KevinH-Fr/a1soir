@@ -1,14 +1,11 @@
-<p style="color: green"><%= notice %></p>
+<%= bandeau_entete("Commandes", "shirt", @commandes.count, "your-search") %>
 
-<h1>Commandes</h1>
+<%= bloc_nouveau(Commande) %>
 
 <div id="commandes">
   <% @commandes.each do |commande| %>
-    <%= render commande %>
-    <p>
-      <%= link_to "Show this commande", commande %>
-    </p>
+        <%= render commande %>
   <% end %>
 </div>
 
-<%= link_to "New commande", new_commande_path %>
+

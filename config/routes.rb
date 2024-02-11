@@ -19,6 +19,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :commandes do 
+    member do
+      post :edit
+    end
+  end
+
   resources :avoir_rembs
   resources :paiement_recus
   resources :paiements
@@ -26,7 +32,6 @@ Rails.application.routes.draw do
   resources :meetings
   resources :sousarticles
   resources :articles
-  resources :commandes
   resources :clients
   resources :profiles
   resources :textes

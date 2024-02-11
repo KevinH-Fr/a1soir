@@ -1,10 +1,6 @@
-<p style="color: green"><%= notice %></p>
+
+<%= card_main_model("Produit", "shirt") %>
 
 <%= render @produit %>
 
-<div>
-  <%= link_to "Edit this produit", edit_produit_path(@produit) %> |
-  <%= link_to "Back to produits", produits_path %>
-
-  <%= button_to "Destroy this produit", @produit, method: :delete %>
-</div>
+<%= return_model_index_button("Retour vers produits", produits_path) %>

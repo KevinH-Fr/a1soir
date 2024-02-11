@@ -1,87 +1,54 @@
-<%= form_with(model: commande) do |form| %>
-  <% if commande.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(commande.errors.count, "error") %> prohibited this commande from being saved:</h2>
+<%= turbo_frame_tag "commande_form" do %>
 
-      <ul>
-        <% commande.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
 
-  <div>
-    <%= form.label :nom, style: "display: block" %>
-    <%= form.text_field :nom %>
+    <%= form_with(model: commande) do |form| %>
+      <% if commande.errors.any? %>
+        <div style="color: red">
+          <h2><%= pluralize(commande.errors.count, "error") %> prohibited this commande from being saved:</h2>
+
+          <ul>
+            <% commande.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= custom_form_elements(form, 
+        [:nom, :text_field] ) %>
+
+      <div class="mx-1 px-2">
+        <div class="input-group input-group">
+          <%= form.label :client_id, class: "input-group-text" %>
+          <%= form.collection_select :client_id, @clients.all.order(:nom), :id, :full_name, 
+          { include_blank: 'Select' }, class: "form-select" %>
+        </div>
+      </div>
+
+      <div class="mx-1 px-2">
+        <div class="input-group input-group">
+          <%= form.label :profile_id, class: "input-group-text" %>
+          <%= form.collection_select :profile_id, @profiles.all.order(:nom), :id, :full_name, 
+          { include_blank: 'Select' }, class: "form-select" %>
+        </div>
+      </div>
+
+      <%= custom_form_elements(form, 
+        [:montant, :text_field], [:description, :text_area], 
+        [:debutloc, :date_field], [:finloc, :date_field], [:dateevent, :date_field],
+        [:statutarticles, :text_field], [:typeevent, :text_field], 
+        [:commentaires, :text_area], [:commentaires_doc, :text_area],
+        [:location, :check_box], [:devis, :check_box]
+      ) %>
+
+      <%= custom_submit_button(form) %>
+
+
+
+
+    <% end %>
+  
   </div>
 
-  <div>
-    <%= form.label :montant, style: "display: block" %>
-    <%= form.text_field :montant %>
-  </div>
-
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_area :description %>
-  </div>
-
-  <div>
-    <%= form.label :client_id, style: "display: block" %>
-    <%= form.text_field :client_id %>
-  </div>
-
-  <div>
-    <%= form.label :debutloc, style: "display: block" %>
-    <%= form.date_field :debutloc %>
-  </div>
-
-  <div>
-    <%= form.label :finloc, style: "display: block" %>
-    <%= form.date_field :finloc %>
-  </div>
-
-  <div>
-    <%= form.label :dateevent, style: "display: block" %>
-    <%= form.date_field :dateevent %>
-  </div>
-
-  <div>
-    <%= form.label :statutarticles, style: "display: block" %>
-    <%= form.text_field :statutarticles %>
-  </div>
-
-  <div>
-    <%= form.label :typeevent, style: "display: block" %>
-    <%= form.text_field :typeevent %>
-  </div>
-
-  <div>
-    <%= form.label :profile_id, style: "display: block" %>
-    <%= form.text_field :profile_id %>
-  </div>
-
-  <div>
-    <%= form.label :commentaires, style: "display: block" %>
-    <%= form.text_area :commentaires %>
-  </div>
-
-  <div>
-    <%= form.label :commentaires_doc, style: "display: block" %>
-    <%= form.text_area :commentaires_doc %>
-  </div>
-
-  <div>
-    <%= form.label :location, style: "display: block" %>
-    <%= form.check_box :location %>
-  </div>
-
-  <div>
-    <%= form.label :devis, style: "display: block" %>
-    <%= form.check_box :devis %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
 <% end %>
