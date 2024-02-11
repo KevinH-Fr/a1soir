@@ -111,9 +111,9 @@ class ArticlesController < ApplicationController
             'partial-articles', partial: 'articles/articles'
            ),
 
-           turbo_stream.remove(
-            'partial-selection'
-           )
+         #  turbo_stream.remove(
+         #   'partial-selection'
+         #  )
           ]
       end
 
