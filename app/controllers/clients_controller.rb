@@ -15,8 +15,17 @@ class ClientsController < ApplicationController
     @client = Client.new
   end
 
-  # GET /clients/1/edit
   def edit
+
+    respond_to do |format|
+      format.html 
+      format.turbo_stream do  
+        render turbo_stream: turbo_stream.update(@client, 
+          partial: "clients/form", 
+          locals: {client: @client})
+      end
+    end
+
   end
 
   # POST /clients or /clients.json
@@ -25,6 +34,23 @@ class ClientsController < ApplicationController
 
     respond_to do |format|
       if @client.save
+
+        flash.now[:success] = "Client was successfully created"
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('new',
+                                partial: "clients/form",
+                                locals: { client: Client.new }),
+  
+            turbo_stream.prepend('clients',
+                                  partial: "clients/client",
+                                  locals: { client: @client }),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+            
+          ]
+        end
+
         format.html { redirect_to client_url(@client), notice: "Client was successfully created." }
         format.json { render :show, status: :created, location: @client }
       else
@@ -38,6 +64,16 @@ class ClientsController < ApplicationController
   def update
     respond_to do |format|
       if @client.update(client_params)
+
+        flash.now[:success] = "Client was successfully updated"
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update(@client, partial: "clients/client", locals: {client: @client}),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+          ]
+        end
+
         format.html { redirect_to client_url(@client), notice: "Client was successfully updated." }
         format.json { render :show, status: :ok, location: @client }
       else

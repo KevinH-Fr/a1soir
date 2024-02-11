@@ -13,18 +13,47 @@ class ArticlesController < ApplicationController
   # GET /articles/new
   def new
     @article = Article.new
+
   end
 
-  # GET /articles/1/edit
   def edit
-  end
 
+    respond_to do |format|
+      format.html 
+      format.turbo_stream do  
+        render turbo_stream: turbo_stream.update(@article, 
+          partial: "articles/form", 
+          locals: { commande_id: @article.commande_id, produit_id: @article.produit_id, article: @article})
+      end
+    end
+
+  end
   # POST /articles or /articles.json
   def create
     @article = Article.new(article_params)
 
     respond_to do |format|
       if @article.save
+        
+        flash.now[:success] = "article was successfully created"
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('new',
+                                partial: "articles/form",
+                                locals: { commande_id: @article.commande.id, produit_id: @article.produit.id, article: Article.new }),
+  
+            turbo_stream.append('articles',
+                                  partial: "articles/article",
+                                  locals: { article: @article }),
+            
+            turbo_stream.update( 'partial-selection' ),
+
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+            
+          ]
+        end
+
         format.html { redirect_to article_url(@article), notice: "Article was successfully created." }
         format.json { render :show, status: :created, location: @article }
       else
@@ -36,8 +65,26 @@ class ArticlesController < ApplicationController
 
   # PATCH/PUT /articles/1 or /articles/1.json
   def update
+
+    @commande = @article.commande 
+
     respond_to do |format|
       if @article.update(article_params)
+
+        flash.now[:success] = "Article was successfully updated"
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update(@article, partial: "articles/article", locals: {article: @article}),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash }),
+      
+            #turbo_stream.update(
+            #  'partial-articles', partial: 'articles/articles'
+            # )
+   
+          ]
+        end
+
         format.html { redirect_to article_url(@article), notice: "Article was successfully updated." }
         format.json { render :show, status: :ok, location: @article }
       else
@@ -49,9 +96,27 @@ class ArticlesController < ApplicationController
 
   # DELETE /articles/1 or /articles/1.json
   def destroy
+
+    @commande = @article.commande
+
     @article.destroy!
 
     respond_to do |format|
+
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.remove(@article),
+          
+          turbo_stream.update(
+            'partial-articles', partial: 'articles/articles'
+           ),
+
+           turbo_stream.remove(
+            'partial-selection'
+           )
+          ]
+      end
+
       format.html { redirect_to articles_url, notice: "Article was successfully destroyed." }
       format.json { head :no_content }
     end

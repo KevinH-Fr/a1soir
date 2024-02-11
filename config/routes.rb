@@ -19,7 +19,23 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :clients do 
+    member do
+      post :edit
+    end
+  end
+
   resources :commandes do 
+    member do
+      post :edit
+    end
+
+    collection do
+      post 'selection_articles'
+    end
+  end
+
+  resources :articles do 
     member do
       post :edit
     end
@@ -31,8 +47,6 @@ Rails.application.routes.draw do
   resources :messagemails
   resources :meetings
   resources :sousarticles
-  resources :articles
-  resources :clients
   resources :profiles
   resources :textes
   resources :messages

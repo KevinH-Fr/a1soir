@@ -1,0 +1,12 @@
+<div  id="partial-articles" class="">
+    <%# recoit le turbo stream avec elements cliqués %>
+
+    <div id="articles">
+
+        <% @commande.articles.each do |article| %>
+            <%= render partial: 'articles/article', locals: { article: article } %>
+        <% end %>
+    
+    </div>
+
+</div>

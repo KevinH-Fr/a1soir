@@ -3,4 +3,18 @@
 
 <%= render @commande %>
 
+<%= render partial: 'clients/client_mini', locals: { client: @commande.client } %>
+
+<%= render 'articles/articles' %>
+
+<div class="">
+    <%= button_to "nouveau", selection_articles_commandes_path, class: "btn btn-success fw-bold" %>
+</div>
+
+<div  id="partial-selection" class="">
+</div>
+
+<hr>
+
 <%= return_model_index_button("Retour vers commandes", commandes_path) %>
+

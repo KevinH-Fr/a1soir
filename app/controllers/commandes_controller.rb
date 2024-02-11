@@ -1,5 +1,5 @@
 class CommandesController < ApplicationController
-  before_action :set_commande, only: %i[ show edit update destroy ]
+  before_action :set_commande, only: [:show, :edit, :update, :destroy]
 
   # GET /commandes or /commandes.json
   def index
@@ -11,6 +11,9 @@ class CommandesController < ApplicationController
 
   # GET /commandes/1 or /commandes/1.json
   def show
+    @commande = Commande.find(params[:event]) if params[:commande]
+    session[:commande] = @commande.id if @commande
+
   end
 
   # GET /commandes/new
@@ -111,6 +114,24 @@ class CommandesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to commandes_url, notice: "Commande was successfully destroyed." }
       format.json { head :no_content }
+    end
+  end
+
+  def selection_articles
+
+    @produits = Produit.all 
+    @commande = Commande.find(session[:commande])
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: 
+          turbo_stream.append(
+            'partial-selection', 
+            partial: 'commandes/selection_articles'
+
+          )
+      end
+      format.html 
     end
   end
 

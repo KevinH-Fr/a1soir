@@ -1,3 +1,5 @@
+<%= turbo_frame_tag "article_form" do %>
+
 <%= form_with(model: article) do |form| %>
   <% if article.errors.any? %>
     <div style="color: red">
@@ -11,57 +13,18 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :quantite, style: "display: block" %>
-    <%= form.number_field :quantite %>
-  </div>
+  <%= custom_form_elements(form, 
+    [:quantite, :number_field], [:prix, :number_field],
+    [:total, :number_field], [:locvente, :check_box],
+    [:caution, :number_field], [:longueduree, :check_box], [:commentaires, :text_area])
+   %>
 
-  <div>
-    <%= form.label :prix, style: "display: block" %>
-    <%= form.text_field :prix %>
-  </div>
+  <%= form.hidden_field :produit_id, value: produit_id  %>
+  <%= form.hidden_field :commande_id, value: commande_id %>
 
-  <div>
-    <%= form.label :total, style: "display: block" %>
-    <%= form.text_field :total %>
-  </div>
+  <%= custom_submit_button(form) %>
 
-  <div>
-    <%= form.label :produit_id, style: "display: block" %>
-    <%= form.text_field :produit_id %>
-  </div>
+<% end %>
 
-  <div>
-    <%= form.label :commande_id, style: "display: block" %>
-    <%= form.text_field :commande_id %>
-  </div>
 
-  <div>
-    <%= form.label :locvente, style: "display: block" %>
-    <%= form.text_field :locvente %>
-  </div>
-
-  <div>
-    <%= form.label :caution, style: "display: block" %>
-    <%= form.text_field :caution %>
-  </div>
-
-  <div>
-    <%= form.label :totalcaution, style: "display: block" %>
-    <%= form.text_field :totalcaution %>
-  </div>
-
-  <div>
-    <%= form.label :longueduree, style: "display: block" %>
-    <%= form.check_box :longueduree %>
-  </div>
-
-  <div>
-    <%= form.label :commentaires, style: "display: block" %>
-    <%= form.text_area :commentaires %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
 <% end %>
