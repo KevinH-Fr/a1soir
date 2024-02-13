@@ -29,6 +29,9 @@ class ArticlesController < ApplicationController
   def create
     @article = Article.new(article_params)
 
+    @produits = Produit.all 
+
+
     respond_to do |format|
       if @article.save
         
@@ -104,9 +107,9 @@ class ArticlesController < ApplicationController
         render turbo_stream: [
           turbo_stream.remove(@article),
           
-          turbo_stream.update(
-            'partial-articles', partial: 'articles/articles'
-           ),
+        #  turbo_stream.update(
+        #    'partial-articles', partial: 'articles/articles'
+        #   ),
 
          #  turbo_stream.remove(
          #   'partial-selection'

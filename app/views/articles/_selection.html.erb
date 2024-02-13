@@ -1,0 +1,20 @@
+
+<div class="card-header fs-4 fw-bold text-center">
+    Sélectionner un article
+</div>
+
+<div class="card-body p-3">
+    <% @produits.each do |produit| %>
+    <div class="container d-flex align-items-center mb-2">
+        <input type="radio" class="form-check-input fs-3 me-2" name="article[produit_id]" id="produit_id_<%= produit.id %>" value="<%= produit.id %>">
+       
+        <label for="produit_id_<%= produit.id %>">    
+            <%= image_tag(produit.image1, width: 100) if produit.image1.present? %>
+            <%= produit.full_name %>
+        </label>
+    </div>
+    <% end %>
+
+</div>
+
+

@@ -16,6 +16,13 @@
       </div>
     <% end %>
 
+
+    <% unless article.persisted? %>
+
+      <%= render 'articles/selection' %>
+
+    <% end %>
+
     <%= custom_form_elements(form, 
       [:quantite, :number_field], [:prix, :number_field],
       [:total, :number_field])
@@ -38,8 +45,11 @@
       [:caution, :number_field], [:longueduree, :check_box], [:commentaires, :text_area])
     %>
 
-    <%= form.hidden_field :produit_id, value: produit_id  %>
-    <%= form.hidden_field :commande_id, value: commande_id %>
+    <%#= form.hidden_field :produit_id, value: produit_id  %>
+
+    <%#= form.text_field :produit_id   %>
+
+    <%= form.hidden_field :commande_id, value: session[:commande] %>
 
     <%= custom_submit_button(form) %>
 

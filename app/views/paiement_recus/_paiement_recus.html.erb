@@ -1,26 +1,20 @@
-<%= card_main_model("Paiements", "money") %>
-
-<div  id="partial-paiements" class="">
-    <%# recoit le turbo stream avec elements cliqués %>
-
-    <div id="paiement_recus">
-
-        <% @commande.paiement_recus.each do |paiement_recu| %>
-                <%= render partial: 'paiement_recus/paiement_recu', locals: { paiement_recu: paiement_recu } %>
-        <% end %>
-    
-    </div>
-
-</div>
-
-<div class="text-end m-2 mb-3">
-  <%= link_to "#collapseNewPaiement", class: "btn btn-warning fw-bold", data: { bs_toggle: "collapse" }, role: "button", aria: { expanded: "false", controls: "collapseNewPaiement" } do %>
-    Nouveau paiement
-  <% end %>
-</div>
+<%= card_main_model(
+  "Paiements", 
+  "money", 
+  link_to("Nouveau paiement", "#collapseNewPaiement", 
+  class: "btn btn-warning fw-bold", 
+  data: { bs_toggle: "collapse" }, 
+  role: "button", aria: { expanded: "false", controls: "collapseNewPaiement" })) %>
 
 <div class="collapse" id="collapseNewPaiement">
-    <div id="new" class="">
+    <div id="new" class="mb-3">
         <%= render partial: 'paiement_recus/form', locals: { commande_id: @commande.id, paiement_recu: PaiementRecu.new } %>
     </div>
 </div>
+
+<div id="paiement_recus">
+  <% @commande.paiement_recus.each do |paiement_recu| %>
+    <%= render partial: 'paiement_recus/paiement_recu', locals: { paiement_recu: paiement_recu } %>
+  <% end %>
+</div>
+

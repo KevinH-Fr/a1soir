@@ -1,14 +1,17 @@
-<%= card_main_model("Articles", "shirt") %>
+<%= card_main_model("Articles", "shirt",
+  link_to("Nouvel article", "#collapseNewArticle", 
+  class: "btn btn-warning fw-bold", 
+  data: { bs_toggle: "collapse" }, 
+  role: "button", aria: { expanded: "false", controls: "collapseNewArticle" })) %>
 
-<div  id="partial-articles" class="">
-    <%# recoit le turbo stream avec elements cliqués %>
-
-    <div id="articles">
-
-        <% @commande.articles.each do |article| %>
-                <%= render partial: 'articles/article', locals: { article: article } %>
-        <% end %>
-    
+<div class="collapse" id="collapseNewArticle">
+    <div id="new" class="mb-3">
+        <%= render partial: 'articles/form', locals: { commande_id: @commande.id, article: Article.new } %>
     </div>
+</div>
 
+<div id="articles">
+  <% @commande.articles.each do |article| %>
+    <%= render partial: 'articles/article', locals: { article: article } %>
+  <% end %>
 </div>

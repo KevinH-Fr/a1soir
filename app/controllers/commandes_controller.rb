@@ -14,6 +14,9 @@ class CommandesController < ApplicationController
     @commande = Commande.find(params[:event]) if params[:commande]
     session[:commande] = @commande.id if @commande
 
+    @produits = Produit.all 
+
+
   end
 
   # GET /commandes/new
@@ -117,23 +120,22 @@ class CommandesController < ApplicationController
     end
   end
 
-  def selection_articles
+ # def selection_articles
 
-    @produits = Produit.all 
-    @commande = Commande.find(session[:commande])
+ #   @produits = Produit.all 
+ #   @commande = Commande.find(session[:commande])
 
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: 
-          turbo_stream.append(
-            'partial-selection', 
-            partial: 'commandes/selection_articles'
-
-          )
-      end
-      format.html 
-    end
-  end
+ #   respond_to do |format|
+ #     format.turbo_stream do
+ #       render turbo_stream: 
+ #         turbo_stream.append(
+ #           'partial-selection', 
+ #           partial: 'commandes/selection_articles'
+ #         )
+ #     end
+ #     format.html 
+ #   end
+ # end
 
   private
     # Use callbacks to share common setup or constraints between actions.
