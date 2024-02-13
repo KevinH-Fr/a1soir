@@ -1,0 +1,17 @@
+<%= card_main_model("Avoir-Remb.", "money-bill-transfer",
+  link_to("", "#collapseNewAAvoirremb", 
+  class: "fa fa-plus btn btn-warning fw-bold", 
+  data: { bs_toggle: "collapse" }, 
+  role: "button", aria: { expanded: "false", controls: "collapseNewAAvoirremb" })) %>
+
+<div class="collapse" id="collapseNewAAvoirremb">
+    <div id="new" class="mb-3">
+        <%= render partial: 'avoir_rembs/form', locals: { commande_id: @commande.id, avoir_remb: AvoirRemb.new } %>
+    </div>
+</div>
+
+<div id="avoir_rembs">
+  <% @commande.avoir_rembs.each do |avoir_remb| %>
+    <%= render partial: 'avoir_rembs/avoir_remb', locals: { avoir_remb: avoir_remb } %>
+  <% end %>
+</div>

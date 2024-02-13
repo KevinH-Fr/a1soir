@@ -17,6 +17,14 @@ class AvoirRembsController < ApplicationController
 
   # GET /avoir_rembs/1/edit
   def edit
+    respond_to do |format|
+      format.html 
+      format.turbo_stream do  
+        render turbo_stream: turbo_stream.update(@avoir_remb, 
+          partial: "avoir_rembs/form", 
+          locals: {commande_id: @avoir_remb.commande_id, avoir_remb: @avoir_remb})
+      end
+    end
   end
 
   # POST /avoir_rembs or /avoir_rembs.json
@@ -25,6 +33,24 @@ class AvoirRembsController < ApplicationController
 
     respond_to do |format|
       if @avoir_remb.save
+
+        flash.now[:success] = "avoir remboursement was successfully created"
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('new',
+                                partial: "avoir_rembs/form",
+                                locals: { commande_id: @avoir_remb.commande.id, avoir_remb: AvoirRemb.new }),
+  
+            turbo_stream.append('avoir_rembs',
+                                  partial: "avoir_rembs/avoir_remb",
+                                  locals: { avoir_remb: @avoir_remb }),
+            
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+            
+          ]
+        end
+
         format.html { redirect_to avoir_remb_url(@avoir_remb), notice: "Avoir remb was successfully created." }
         format.json { render :show, status: :created, location: @avoir_remb }
       else
@@ -38,6 +64,15 @@ class AvoirRembsController < ApplicationController
   def update
     respond_to do |format|
       if @avoir_remb.update(avoir_remb_params)
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update(@avoir_remb, partial: "avoir_rembs/avoir_remb", locals: {avoir_remb: @avoir_remb}),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash }),
+    
+          ]
+        end
+
         format.html { redirect_to avoir_remb_url(@avoir_remb), notice: "Avoir remb was successfully updated." }
         format.json { render :show, status: :ok, location: @avoir_remb }
       else
@@ -52,6 +87,13 @@ class AvoirRembsController < ApplicationController
     @avoir_remb.destroy!
 
     respond_to do |format|
+
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.remove(@avoir_remb)
+        ]
+      end 
+
       format.html { redirect_to avoir_rembs_url, notice: "Avoir remb was successfully destroyed." }
       format.json { head :no_content }
     end

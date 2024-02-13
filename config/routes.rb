@@ -48,7 +48,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :avoir_rembs
+  resources :avoir_rembs do 
+    member do
+      post :edit
+    end
+  end
+
   resources :messagemails
   resources :meetings
   resources :sousarticles
