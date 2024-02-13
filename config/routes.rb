@@ -41,9 +41,14 @@ Rails.application.routes.draw do
     end
   end
 
+  
+  resources :paiement_recus do 
+    member do
+      post :edit
+    end
+  end
+
   resources :avoir_rembs
-  resources :paiement_recus
-  resources :paiements
   resources :messagemails
   resources :meetings
   resources :sousarticles

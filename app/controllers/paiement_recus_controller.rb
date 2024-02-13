@@ -17,6 +17,16 @@ class PaiementRecusController < ApplicationController
 
   # GET /paiement_recus/1/edit
   def edit
+
+    respond_to do |format|
+      format.html 
+      format.turbo_stream do  
+        render turbo_stream: turbo_stream.update(@paiement_recu, 
+          partial: "paiement_recus/form", 
+          locals: {commande_id: @paiement_recu.commande_id, paiement_recu: @paiement_recu})
+      end
+    end
+
   end
 
   # POST /paiement_recus or /paiement_recus.json
@@ -25,6 +35,26 @@ class PaiementRecusController < ApplicationController
 
     respond_to do |format|
       if @paiement_recu.save
+
+        flash.now[:success] = "paiement was successfully created"
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('new',
+                                partial: "paiement_recus/form",
+                                locals: { commande_id: @paiement_recu.commande.id, paiement_recu: PaiementRecu.new }),
+  
+            turbo_stream.append('paiement_recus',
+                                  partial: "paiement_recus/paiement_recu",
+                                  locals: { paiement_recu: @paiement_recu }),
+            
+          #  turbo_stream.update( 'partial-selection' ),
+
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+            
+          ]
+        end
+
         format.html { redirect_to paiement_recu_url(@paiement_recu), notice: "Paiement recu was successfully created." }
         format.json { render :show, status: :created, location: @paiement_recu }
       else
@@ -38,6 +68,15 @@ class PaiementRecusController < ApplicationController
   def update
     respond_to do |format|
       if @paiement_recu.update(paiement_recu_params)
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update(@paiement_recu, partial: "paiement_recus/paiement_recu", locals: {paiement_recu: @paiement_recu}),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash }),
+    
+          ]
+        end
+
         format.html { redirect_to paiement_recu_url(@paiement_recu), notice: "Paiement recu was successfully updated." }
         format.json { render :show, status: :ok, location: @paiement_recu }
       else
@@ -52,6 +91,13 @@ class PaiementRecusController < ApplicationController
     @paiement_recu.destroy!
 
     respond_to do |format|
+
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.remove(@paiement_recu)
+        ]
+      end 
+      
       format.html { redirect_to paiement_recus_url, notice: "Paiement recu was successfully destroyed." }
       format.json { head :no_content }
     end
