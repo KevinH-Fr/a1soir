@@ -34,6 +34,8 @@ class ArticlesController < ApplicationController
 
     respond_to do |format|
       if @article.save
+
+        @commande = @article.commande
         
         flash.now[:success] = "article was successfully created"
 
@@ -47,9 +49,12 @@ class ArticlesController < ApplicationController
                                   partial: "articles/article",
                                   locals: { article: @article }),
             
-            turbo_stream.update( 'partial-selection' ),
+         #   turbo_stream.update( 'partial-selection' ),
 
-            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash }),
+
+            turbo_stream.update('synthese', partial: "articles/synthese", locals: { articles: @commande.articles })
+
             
           ]
         end
@@ -77,11 +82,7 @@ class ArticlesController < ApplicationController
           render turbo_stream: [
             turbo_stream.update(@article, partial: "articles/article", locals: {article: @article}),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash }),
-      
-            #turbo_stream.update(
-            #  'partial-articles', partial: 'articles/articles'
-            # )
-   
+            turbo_stream.update('synthese', partial: "articles/synthese", locals: { articles: @commande.articles })
           ]
         end
 
@@ -107,13 +108,8 @@ class ArticlesController < ApplicationController
         render turbo_stream: [
           turbo_stream.remove(@article),
           
-        #  turbo_stream.update(
-        #    'partial-articles', partial: 'articles/articles'
-        #   ),
+          turbo_stream.update('synthese', partial: "articles/synthese", locals: { articles: @commande.articles })
 
-         #  turbo_stream.remove(
-         #   'partial-selection'
-         #  )
           ]
       end
 

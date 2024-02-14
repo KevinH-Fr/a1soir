@@ -1,5 +1,8 @@
-<%= card_main_model("Articles", "shirt",
-  link_to("", "#collapseNewArticle", 
+<%= card_main_model(
+  "Articles", 
+  "shirt", 
+  link_to("",
+  "#collapseNewArticle", 
   class: "fa fa-plus btn btn-warning fw-bold", 
   data: { bs_toggle: "collapse" }, 
   role: "button", aria: { expanded: "false", controls: "collapseNewArticle" })) %>
@@ -15,3 +18,5 @@
     <%= render partial: 'articles/article', locals: { article: article } %>
   <% end %>
 </div>
+
+<%= render 'articles/synthese' %>
