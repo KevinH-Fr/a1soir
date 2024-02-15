@@ -10,7 +10,6 @@
     
       <div class="col">
 
-
         <h4 class="fw-bold"> <%= article.produit.nom %>  </h4>
 
         <%= article.locvente %>  
@@ -20,11 +19,13 @@
         caution: <%= article.caution %>  
     
       </div>
+
       <div class="col text-end">
         <%= link_to "", "#collapseArticle#{dom_id(article)}", class: "btn btn-sm btn-primary fa fa-eye m-1", "data-bs-toggle": "collapse", role: "button", "aria-expanded": "false", "aria-controls": "collapseArticle#{dom_id(article)}" %>
         <%= button_to "", edit_article_path(article), method: :post, class: "btn btn-sm btn-secondary fa-solid fa-pen-to-square m-1" %>
         <%= button_to "", article, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm m-1 btn-danger fa-solid fa-trash m-1" %>
       </div>
+      
     </div>
     
 

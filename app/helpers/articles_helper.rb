@@ -8,12 +8,12 @@ module ArticlesHelper
   
         concat(content_tag(:span, class: "badge fs-5 bg-secondary mx-1") do
           concat("Prix: ")
-          concat(content_tag(:span, articles.sum(:total), class: ""))
+          concat(content_tag(:span, custom_currency_format(articles.sum(:total)), class: ""))
         end)
 
         concat(content_tag(:span, class: "badge fs-5 bg-secondary mx-1") do
             concat("Caution: ")
-            concat(content_tag(:span, articles.sum(:totalcaution), class: ""))
+            concat(content_tag(:span, custom_currency_format(articles.sum(:totalcaution)), class: ""))
         end)
 
       end

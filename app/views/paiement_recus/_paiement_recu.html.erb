@@ -6,9 +6,9 @@
 
       <div class="col">
 
-        <strong>Type:</strong> <%= paiement_recu.typepaiement %>
-        <strong>Montant:</strong> <%= paiement_recu.montant %>
-        <strong>Moyen:</strong> <%= paiement_recu.moyen %>
+        <%= paiement_recu.typepaiement %>
+        <%= custom_currency_format(paiement_recu.montant) %>
+        <%= "par #{paiement_recu.moyen}" if paiement_recu.moyen.present? %>
 
       </div>
 

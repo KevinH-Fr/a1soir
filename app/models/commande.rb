@@ -10,4 +10,7 @@ class Commande < ApplicationRecord
     "ref#{id}_#{nom}"
   end
 
+  def ref_commande
+    "C#{ 1000 + id }"
+  end
 end

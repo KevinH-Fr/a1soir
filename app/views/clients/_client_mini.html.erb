@@ -6,8 +6,13 @@
 
   <div class="row">
     <div class="col-10">
-        <strong>Client :</strong> <%= client.full_name %>
+        <strong> <%= client.full_name %> </strong> 
+
+        <%= custom_badge("fa-phone", client.tel) %>
+        <%= custom_badge("fa-at", client.mail) %>
+        
     </div>
+    
     <div class="col-2 text-end">
         <%= link_to "Show", "#collapseClient", class: "btn btn-primary", "data-bs-toggle": "collapse", role: "button", "aria-expanded": "false", "aria-controls": "collapseExample" %>
     </div>
@@ -29,15 +34,7 @@
         </p>
 
         <p>
-            <strong>Tel:</strong> <%= client.tel %>
-        </p>
-
-        <p>
             <strong>Tel2:</strong> <%= client.tel2 %>
-        </p>
-
-        <p>
-            <strong>Mail:</strong> <%= client.mail %>
         </p>
 
         <p>
