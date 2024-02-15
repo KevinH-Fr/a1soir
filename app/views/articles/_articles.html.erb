@@ -8,7 +8,7 @@
   role: "button", aria: { expanded: "false", controls: "collapseNewArticle" })) %>
 
 <div class="collapse" id="collapseNewArticle">
-    <div id="new" class="mb-3">
+    <div id="new_article" class="mb-3">
         <%= render partial: 'articles/form', locals: { commande_id: @commande.id, article: Article.new } %>
     </div>
 </div>

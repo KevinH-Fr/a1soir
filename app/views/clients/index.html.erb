@@ -1,15 +1,11 @@
-<p style="color: green"><%= notice %></p>
+<%= bandeau_entete("Clients", "user", @clients.count, "your-search") %>
 
-<h1>Clients</h1>
+<%= bloc_nouveau(Client) %>
 
 <div id="clients">
   <% @clients.each do |client| %>
-    <%= render client %>
-    <p>
-      <%= link_to "Show this client", client %>
-    </p>
+        <%= render client %>
   <% end %>
 </div>
 
-<%= link_to "New client", new_client_path %>
 

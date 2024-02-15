@@ -31,7 +31,6 @@ class ArticlesController < ApplicationController
 
     @produits = Produit.all 
 
-
     respond_to do |format|
       if @article.save
 
@@ -41,7 +40,7 @@ class ArticlesController < ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update('new',
+            turbo_stream.update('new_article',
                                 partial: "articles/form",
                                 locals: { commande_id: @article.commande.id, produit_id: @article.produit.id, article: Article.new }),
   
@@ -52,10 +51,8 @@ class ArticlesController < ApplicationController
          #   turbo_stream.update( 'partial-selection' ),
 
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash }),
+            turbo_stream.update('synthese-articles', partial: "articles/synthese", locals: { articles: @commande.articles })
 
-            turbo_stream.update('synthese', partial: "articles/synthese", locals: { articles: @commande.articles })
-
-            
           ]
         end
 
@@ -82,7 +79,7 @@ class ArticlesController < ApplicationController
           render turbo_stream: [
             turbo_stream.update(@article, partial: "articles/article", locals: {article: @article}),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash }),
-            turbo_stream.update('synthese', partial: "articles/synthese", locals: { articles: @commande.articles })
+            turbo_stream.update('synthese-articles', partial: "articles/synthese", locals: { articles: @commande.articles })
           ]
         end
 
@@ -99,17 +96,14 @@ class ArticlesController < ApplicationController
   def destroy
 
     @commande = @article.commande
-
     @article.destroy!
 
     respond_to do |format|
 
       format.turbo_stream do
         render turbo_stream: [
-          turbo_stream.remove(@article),
-          
-          turbo_stream.update('synthese', partial: "articles/synthese", locals: { articles: @commande.articles })
-
+          turbo_stream.remove(@article),     
+          turbo_stream.update('synthese-articles', partial: "articles/synthese", locals: { articles: @commande.articles })
           ]
       end
 
