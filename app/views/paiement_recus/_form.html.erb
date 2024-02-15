@@ -13,8 +13,16 @@
       </div>
     <% end %>
 
+    <div class="mx-1 px-2">
+      <div class="input-group input-group">
+        <%= form.label :typepaiement, class: "input-group-text" %>
+        <%= form.select :typepaiement, PaiementRecu::TYPE_PAIEMENT,
+        { include_blank: 'Select' }, class: "form-select" %>
+      </div>
+    </div>
+    
     <%= custom_form_elements(form, 
-      [:typepaiement, :number_field], [:montant, :number_field],
+      [:montant, :number_field],
       [:moyen, :number_field], [:commentaires, :text_area] )
     %>
 
