@@ -1,7 +1,6 @@
 class CommandesController < ApplicationController
   before_action :set_commande, only: [:show, :edit, :update, :destroy]
 
-  # GET /commandes or /commandes.json
   def index
     @commandes = Commande.all
     @clients = Client.all
@@ -9,7 +8,6 @@ class CommandesController < ApplicationController
 
   end
 
-  # GET /commandes/1 or /commandes/1.json
   def show
     @commande = Commande.find(params[:event]) if params[:commande]
     session[:commande] = @commande.id if @commande
@@ -19,7 +17,6 @@ class CommandesController < ApplicationController
 
   end
 
-  # GET /commandes/new
   def new
     @commande = Commande.new
     @clients = Client.all
@@ -27,7 +24,6 @@ class CommandesController < ApplicationController
 
   end
 
-  # GET /commandes/1/edit
   def edit
     @clients = Client.all
     @profiles = Profile.all 
@@ -43,7 +39,6 @@ class CommandesController < ApplicationController
 
   end
 
-  # POST /commandes or /commandes.json
   def create
     @commande = Commande.new(commande_params)
     @clients = Client.all
@@ -77,7 +72,6 @@ class CommandesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /commandes/1 or /commandes/1.json
   def update
     @clients = Client.all
 
@@ -110,7 +104,6 @@ class CommandesController < ApplicationController
     end
   end
 
-  # DELETE /commandes/1 or /commandes/1.json
   def destroy
     @commande.destroy!
 
@@ -119,23 +112,6 @@ class CommandesController < ApplicationController
       format.json { head :no_content }
     end
   end
-
- # def selection_articles
-
- #   @produits = Produit.all 
- #   @commande = Commande.find(session[:commande])
-
- #   respond_to do |format|
- #     format.turbo_stream do
- #       render turbo_stream: 
- #         turbo_stream.append(
- #           'partial-selection', 
- #           partial: 'commandes/selection_articles'
- #         )
- #     end
- #     format.html 
- #   end
- # end
 
   private
     # Use callbacks to share common setup or constraints between actions.

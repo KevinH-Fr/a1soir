@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   
-
   resources :categorie_produits do 
     member do
       post :edit
@@ -63,6 +62,9 @@ Rails.application.routes.draw do
   
   devise_for :users
   
+  #pdf generation 
+  get '/generate_commande_pdf', to: 'pdf#generate_commande'
+
   
   get "home_admin", to: "home_admin#index"
 

@@ -70,3 +70,8 @@ end
 
 gem "devise", "~> 4.9"
 
+
+gem 'wicked_pdf'
+
+gem "wkhtmltopdf-binary", group: :development
+gem "wkhtmltopdf-heroku", group: :production

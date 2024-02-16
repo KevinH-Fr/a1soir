@@ -17,3 +17,5 @@
 
 <%= return_model_index_button("Retour vers commandes", commandes_path) %>
 
+<%= link_to "Editer PDF", generate_commande_pdf_path, title: "Editer PDF",
+              class: "btn btn-lg btn-danger fa-solid fa-file-pdf fa-bounce fw-bold", target: "_blank" %>
