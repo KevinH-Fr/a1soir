@@ -8,4 +8,13 @@ class Produit < ApplicationRecord
   def full_name
     nom
   end
+
+  def default_image
+    if image1.attached?
+      image1
+    else
+      '/images/no_photo.png'
+    end
+  end
+
 end

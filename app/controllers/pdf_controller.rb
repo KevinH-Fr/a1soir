@@ -9,11 +9,18 @@ class PdfController < ApplicationController
               formats: [:html],
               disposition: :inline,              
               layout: 'pdf'
-            )
+            ),
+
+            #footer: {
+            #    content: render_to_string(
+            #      'shared/doc_footer',
+            #      layout: 'pdf'
+            #    )
+            #}
         )
         
         send_data pdf,
-        filename: "doc.pdf",
+        filename: "#{@typedoc}_" "#{@commande.ref_commande}.pdf",
         type: 'application/pdf',
         disposition: 'inline'
 

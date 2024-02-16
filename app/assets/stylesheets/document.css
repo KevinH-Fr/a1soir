@@ -1,4 +1,273 @@
 
-.header-doc{
-  font-size: xx-large;
+.a1soir-colored {
+  color: rgb(143, 31, 70);
+}
+
+.cadre {
+  padding: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(249, 237, 237);
+  color: rgb(0, 0, 0);
+}
+
+.bloc-adresse {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: large;
+  background-color: rgb(249, 237, 237);
+  color: rgb(0, 0, 0);
+  position: absolute; 
+  top: 120px;
+  left: 650px;
+}
+
+.bloc-mention{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: small;
+  background-color: rgb(249, 237, 237);
+  color: rgb(0, 0, 0);
+  text-align: center;
+  font-style: italic;
+}
+
+.doc-important{
+  color: rgb(37, 37, 37);
+  font-size: large;
+  font-weight: bold;
+}
+
+.h4-doc{
+  color: rgb(37, 37, 37);
+  text-align: left;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.h5-doc{
+  background-color: rgb(183, 183, 183);
+  color: white;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: large;
+  font-weight: bold;
+  line-height: 30px;
+  margin-bottom: 0px;
+}
+
+
+.h6-doc{
+  color: rgb(143, 31, 70);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: large;
+  font-weight: bold;
+}
+
+.table-doc{
+  width: 100%;
+  background-color: rgb(249, 237, 237);
+  border-color: white;
+}
+
+.table-invisible{
+  background-color: rgb(249, 237, 237);
+  border-color:  rgb(249, 237, 237);
+
+}
+
+.th-doc, .tfoot-doc{
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(142, 141, 141);
+  color: white;
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
+ /* padding: 5px 10px 5px 10px;*/
+ 
+}
+
+.td-doc{
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(0, 0, 0);
+  font-size: medium;
+  vertical-align: middle;
+}
+
+.td-doc-valeurs{
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(0, 0, 0);
+  font-size: medium;
+  vertical-align: middle;
+  width: 100px;
+}
+
+.centered{
+  text-align: center;
+}
+
+.started{
+  text-align: left;
+}
+
+.ended{
+  text-align: right;
+}
+
+.td-doc-main{
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(0, 0, 0);
+  font-size: medium;
+  vertical-align: middle;
+  padding: 20px;
+  font-weight: bold;
+}
+
+.td-doc-normal{
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(0, 0, 0);
+  font-size: medium;
+  vertical-align: middle;
+  padding: 20px;
+}
+
+.td-doc-italic{
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(0, 0, 0);
+  font-size: medium;
+  vertical-align: middle;
+  padding-left: 40px;
+  font-style: italic;
+
+}
+
+.td-doc-img-sousarticle{
+  width: 50px;
+  height: 50px;
+  vertical-align: middle;
+  padding-left: 40px;
+
+}
+
+.bolded{
+  font-weight: bold;
+}
+
+.section-solidaire{
+  page-break-inside: avoid;
+}
+
+.top-bottom-bordered{
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-color: white;
+
+}
+
+.green-colored{
+  color: green;
+}
+
+.red-colored{
+  color: red;
+}
+
+.table-etiquette{
+  width: 400px;
+  height: 600px;
+  margin: 5px;
+ /* background-color: rgb(232, 226, 226);*/
+  border-color: white;
+}
+
+.table-etiquette-verso{
+  width: 400px;
+  height: 640px;
+  margin: 5px;
+  background-color: rgb(255, 255, 255);
+  border-style: solid;
+  border-color: rgb(182, 181, 181);
+}
+
+.th-titre-etiquette{
+  padding-top: 5px;
+  vertical-align: middle;
+  color:black
+}
+
+.th-etiquette{
+  padding: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 400px;
+  height: 380px;
+}
+
+.td-etiquette{
+  font-size: large;
+  padding: 5px;
+  margin: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.td-etiquette-description{
+  font-size: large;
+  padding: 20px;
+  margin: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+.img-etiquette{
+  /*width: 250px;*/
+  max-height: 90%;
+  max-width: 90%;
+  vertical-align: middle;
+  padding: 5px;
+}
+
+.img-qr-etiquette{
+  width: 150px;
+  padding: 5px;
+  vertical-align: middle;
+}
+
+.taille-active{
+  background-color: rgb(40, 170, 72);
+  color: white;
+  font-weight: bold;
+  padding: 4px;
+  margin: 5px;
+  border-radius: 10px;
+}
+
+.taille-alternative{
+  background-color: rgb(99, 99, 100);
+  color: white;
+  padding: 4px;
+  margin: 5px;
+  border-radius: 10px;
+  height: 200px;
+}
+
+.middled{
+  vertical-align: middle;
+}
+
+.shadowed{
+  border-radius: .2em;
+  box-shadow: 2px 3px 4px rgba(165, 163, 163, 0.8);
+}
+
+.page-break {
+  display: block;
+  clear: both;
+  page-break-after: always;
+}
+
+.hr-doted {
+  border: none;
+  border-top: 2px dotted rgb(137, 135, 135);
+  color: #fff;
+  background-color: #fff;
+  height: 5px;
+  margin: 10px;
+  margin-top: 70px;
+  width: 90%;
 }
