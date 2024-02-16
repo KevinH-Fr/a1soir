@@ -1,16 +1,21 @@
 class PdfController < ApplicationController
     def generate_commande
+        @commande = Commande.find(params[:commande])
+        @type_doc = params[:type_doc]
+
         pdf = WickedPdf.new.pdf_from_string(
             render_to_string(
-              template: "commandes/document", 
+              template: "pdf_commande/document", 
               formats: [:html],
               disposition: :inline,              
               layout: 'pdf'
             )
-          )
-            send_data pdf,
-            filename: "doc.pdf",
-            type: 'application/pdf',
-            disposition: 'inline'
-          end
+        )
+        
+        send_data pdf,
+        filename: "doc.pdf",
+        type: 'application/pdf',
+        disposition: 'inline'
+
+    end
 end
