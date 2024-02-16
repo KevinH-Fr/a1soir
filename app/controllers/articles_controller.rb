@@ -41,17 +41,21 @@ class ArticlesController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('new_article',
-                                partial: "articles/form",
-                                locals: { commande_id: @article.commande.id, produit_id: @article.produit.id, article: Article.new }),
+              partial: "articles/form",
+              locals: { commande_id: @article.commande.id, produit_id: @article.produit.id, article: Article.new }),
   
             turbo_stream.append('articles',
-                                  partial: "articles/article",
-                                  locals: { article: @article }),
+              partial: "articles/article",
+              locals: { article: @article }),
             
-         #   turbo_stream.update( 'partial-selection' ),
+            turbo_stream.update('synthese-commande', 
+              partial: "commandes/synthese"),
+                        
+            turbo_stream.update('synthese-articles', 
+              partial: "articles/synthese", 
+              locals: { articles: @commande.articles }),
 
-            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash }),
-            turbo_stream.update('synthese-articles', partial: "articles/synthese", locals: { articles: @commande.articles })
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
 
           ]
         end
@@ -77,9 +81,19 @@ class ArticlesController < ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update(@article, partial: "articles/article", locals: {article: @article}),
-            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash }),
-            turbo_stream.update('synthese-articles', partial: "articles/synthese", locals: { articles: @commande.articles })
+            turbo_stream.update(@article, 
+              partial: "articles/article", 
+              locals: {article: @article}),
+
+            turbo_stream.update('synthese-commande', 
+              partial: "commandes/synthese") ,
+  
+              turbo_stream.update('synthese-articles', 
+                partial: "articles/synthese", 
+                locals: { articles: @commande.articles }),
+              turbo_stream.prepend('flash', 
+                partial: 'layouts/flash', 
+                locals: { flash: flash })
           ]
         end
 
@@ -103,7 +117,13 @@ class ArticlesController < ApplicationController
       format.turbo_stream do
         render turbo_stream: [
           turbo_stream.remove(@article),     
-          turbo_stream.update('synthese-articles', partial: "articles/synthese", locals: { articles: @commande.articles })
+          turbo_stream.update('synthese-articles', 
+            partial: "articles/synthese", 
+            locals: { articles: @commande.articles }),
+
+          turbo_stream.update('synthese-commande', 
+            partial: "commandes/synthese") 
+  
           ]
       end
 

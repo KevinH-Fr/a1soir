@@ -36,15 +36,17 @@ class PaiementRecusController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('new_paiement',
-                                partial: "paiement_recus/form",
-                                locals: { commande_id: @paiement_recu.commande.id, paiement_recu: PaiementRecu.new }),
+              partial: "paiement_recus/form",
+              locals: { commande_id: @paiement_recu.commande.id, paiement_recu: PaiementRecu.new }),
   
             turbo_stream.append('paiement_recus',
-                                  partial: "paiement_recus/paiement_recu",
-                                  locals: { paiement_recu: @paiement_recu }),
+              partial: "paiement_recus/paiement_recu",
+              locals: { paiement_recu: @paiement_recu }),
             
-            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash }),
-            turbo_stream.update('synthese-paiements', partial: "paiement_recus/synthese", locals: { articles: @commande.paiement_recus })            
+            turbo_stream.update('synthese-commande', 
+              partial: "commandes/synthese"),    
+
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
           ]
         end
 
@@ -55,8 +57,8 @@ class PaiementRecusController < ApplicationController
         format.turbo_stream do
           render turbo_stream: 
             turbo_stream.update('new_paiement',
-                                partial: "paiement_recus/form",
-                                locals: {commande_id: @paiement_recu.commande.id, paiement_recu: @paiement_recu })
+              partial: "paiement_recus/form",
+              locals: {commande_id: @paiement_recu.commande.id, paiement_recu: @paiement_recu })
         end
         
         format.html { render :new, status: :unprocessable_entity }
@@ -75,9 +77,18 @@ class PaiementRecusController < ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update(@paiement_recu, partial: "paiement_recus/paiement_recu", locals: {paiement_recu: @paiement_recu}),
-            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash }),
-            turbo_stream.update('synthese-paiements', partial: "paiement_recus/synthese", locals: { paiement_recus: @commande.paiement_recus })
+            turbo_stream.update(@paiement_recu, 
+              partial: "paiement_recus/paiement_recu", 
+              locals: {paiement_recu: @paiement_recu}),
+
+            turbo_stream.update('synthese-paiements', 
+              partial: "paiement_recus/synthese", 
+              locals: { paiement_recus: @commande.paiement_recus }),
+
+            turbo_stream.update('synthese-commande', 
+              partial: "commandes/synthese"),    
+
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
 
           ]
         end
@@ -109,7 +120,12 @@ class PaiementRecusController < ApplicationController
       format.turbo_stream do
         render turbo_stream: [
           turbo_stream.remove(@paiement_recu),
-          turbo_stream.update('synthese-paiements', partial: "paiement_recus/synthese", locals: { paiement_recus: @commande.paiement_recus })
+          turbo_stream.update('synthese-paiements', 
+            partial: "paiement_recus/synthese", 
+            locals: { paiement_recus: @commande.paiement_recus }),
+
+          turbo_stream.update('synthese-commande', 
+            partial: "commandes/synthese") 
 
         ]
       end 

@@ -34,18 +34,23 @@ class AvoirRembsController < ApplicationController
     respond_to do |format|
       if @avoir_remb.save
 
+        @commande = @avoir_remb.commande
+
         flash.now[:success] = "avoir remboursement was successfully created"
 
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('new',
-                                partial: "avoir_rembs/form",
-                                locals: { commande_id: @avoir_remb.commande.id, avoir_remb: AvoirRemb.new }),
+              partial: "avoir_rembs/form",
+              locals: { commande_id: @avoir_remb.commande.id, avoir_remb: AvoirRemb.new }),
   
             turbo_stream.append('avoir_rembs',
-                                  partial: "avoir_rembs/avoir_remb",
-                                  locals: { avoir_remb: @avoir_remb }),
-            
+              partial: "avoir_rembs/avoir_remb",
+              locals: { avoir_remb: @avoir_remb }),
+
+            turbo_stream.update('synthese-commande', 
+              partial: "commandes/synthese"),
+                        
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
             
           ]
@@ -62,13 +67,24 @@ class AvoirRembsController < ApplicationController
 
   # PATCH/PUT /avoir_rembs/1 or /avoir_rembs/1.json
   def update
+
+    @commande = @avoir_remb.commande
+
     respond_to do |format|
       if @avoir_remb.update(avoir_remb_params)
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update(@avoir_remb, partial: "avoir_rembs/avoir_remb", locals: {avoir_remb: @avoir_remb}),
-            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash }),
+            turbo_stream.update(@avoir_remb, 
+              partial: "avoir_rembs/avoir_remb", 
+              locals: {avoir_remb: @avoir_remb}),
+
+            turbo_stream.update('synthese-commande', 
+              partial: "commandes/synthese"),
+  
+            turbo_stream.prepend('flash', 
+              partial: 'layouts/flash', 
+              locals: { flash: flash })
     
           ]
         end
@@ -84,13 +100,18 @@ class AvoirRembsController < ApplicationController
 
   # DELETE /avoir_rembs/1 or /avoir_rembs/1.json
   def destroy
+    @commande = @avoir_remb.commande
     @avoir_remb.destroy!
 
     respond_to do |format|
 
       format.turbo_stream do
         render turbo_stream: [
-          turbo_stream.remove(@avoir_remb)
+          turbo_stream.remove(@avoir_remb),
+
+          turbo_stream.update('synthese-commande', 
+            partial: "commandes/synthese") 
+
         ]
       end 
 
