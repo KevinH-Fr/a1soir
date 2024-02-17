@@ -11,28 +11,13 @@
 
 <%= render 'avoir_rembs/avoir_rembs' %>
 
-<div class="d-flex rounded bg-secondary mt-3 m-2 p-2">
-
-    <div class="dropdown">
-        <a class="btn btn-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Editer PDF
-        </a>
-
-        <ul class="dropdown-menu">
-            <li> 
-                <%= link_to "Commande", generate_commande_pdf_path(commande: @commande, type_doc: 'commande'), 
-                    class: "dropdown-item", target: "_blank" %> 
-            </li>
-            <li> 
-                <%= link_to "Facture", generate_commande_pdf_path(commande: @commande, type_doc: 'facture'), 
-                    class: "dropdown-item", target: "_blank" %> 
-            </li>
-        </ul>
-    </div>
-
-    <%= render 'synthese' %>
-</div>
 
 <hr>
 
 <%= return_model_index_button("Retour vers commandes", commandes_path) %>
+
+
+
+<footer class="fixed-bottom footer-index bg-dark">
+    <%= render 'commandes/footer' %>
+</footer>

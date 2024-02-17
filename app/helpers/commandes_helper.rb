@@ -23,7 +23,7 @@ module CommandesHelper
     end 
 
     def remb_deduit(commande)
-        commande.avoir_rembs.sum(:montant)
+        commande.avoir_rembs.remb_only.sum(:montant)
     end 
 
 

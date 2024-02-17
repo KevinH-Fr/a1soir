@@ -10,13 +10,16 @@ class PdfController < ApplicationController
               disposition: :inline,              
               layout: 'pdf'
             ),
+    
+            header: {
+                content: render_to_string(
+                    'shared/doc_entete'                )
+            },
 
-            #footer: {
-            #    content: render_to_string(
-            #      'shared/doc_footer',
-            #      layout: 'pdf'
-            #    )
-            #}
+            footer: {
+                content: render_to_string(
+                  'shared/doc_footer'                )
+            }
         )
         
         send_data pdf,

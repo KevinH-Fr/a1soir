@@ -36,9 +36,9 @@
             </td>
 
             <td class="td-doc-valeurs centered"> <%= article.quantite %> </td>
-            <td class="td-doc-valeurs ended"> <%= number_to_currency(article.prix, locale: :fr) %> </td>
-            <td class="td-doc-valeurs ended"> <%= number_to_currency(article.total, locale: :fr) %> </td>
-            <td class="td-doc-valeurs ended"> <%= number_to_currency(article.totalcaution, locale: :fr) %> </td>
+            <td class="td-doc-valeurs ended"> <%= custom_currency_format(article.prix) %> </td>
+            <td class="td-doc-valeurs ended"> <%= custom_currency_format(article.total) %> </td>
+            <td class="td-doc-valeurs ended"> <%= custom_currency_format(article.totalcaution) %> </td>
 
           </tr> 
         <% end %>

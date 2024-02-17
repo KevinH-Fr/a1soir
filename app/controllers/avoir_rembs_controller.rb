@@ -48,6 +48,10 @@ class AvoirRembsController < ApplicationController
               partial: "avoir_rembs/avoir_remb",
               locals: { avoir_remb: @avoir_remb }),
 
+            turbo_stream.update('synthese-avoirrembs', 
+                partial: "avoir_rembs/synthese", 
+                locals: { avoir_rembs: @commande.avoir_rembs }),
+
             turbo_stream.update('synthese-commande', 
               partial: "commandes/synthese"),
                         
@@ -81,6 +85,10 @@ class AvoirRembsController < ApplicationController
 
             turbo_stream.update('synthese-commande', 
               partial: "commandes/synthese"),
+
+            turbo_stream.update('synthese-avoirrembs', 
+              partial: "avoir_rembs/synthese", 
+              locals: { avoir_rembs: @commande.avoir_rembs }),
   
             turbo_stream.prepend('flash', 
               partial: 'layouts/flash', 
@@ -108,6 +116,10 @@ class AvoirRembsController < ApplicationController
       format.turbo_stream do
         render turbo_stream: [
           turbo_stream.remove(@avoir_remb),
+
+          turbo_stream.update('synthese-avoirrembs', 
+            partial: "avoir_rembs/synthese", 
+            locals: { avoir_rembs: @commande.avoir_rembs }),
 
           turbo_stream.update('synthese-commande', 
             partial: "commandes/synthese") 
