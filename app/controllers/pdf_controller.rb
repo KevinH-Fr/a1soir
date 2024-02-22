@@ -28,4 +28,14 @@ class PdfController < ApplicationController
         disposition: 'inline'
 
     end
+
+    def send_email
+        to_email = 'recipient@example.com' # Replace with the recipient's email
+        subject = 'Your Email Subject'
+        message = 'Your email message'
+    
+        CommandeMailer.send_email(to_email, subject, message).deliver_now
+        redirect_to root_path, notice: 'Email sent successfully!'
+      end
+
 end

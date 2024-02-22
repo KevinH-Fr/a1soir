@@ -4,25 +4,25 @@
     <%= custom_badge("", @commande.client.full_name, "secondary", "") %>
 
     <%= render 'synthese' %>
-    
-    <div class="dropdown">
-        <a class="btn btn-sm btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
-            <i class="fa fa-file me-1"></i>
+
+
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+           <i class="fa fa-file me-1"></i>
             <span class="fw-bold"> Editer </span> 
-        </a>
+    </button>
 
-        <ul class="dropdown-menu">
-            <li> 
-                <%= link_to "Commande", generate_commande_pdf_path(commande: @commande, type_doc: 'commande'), 
-                    class: "dropdown-item", target: "_blank" %> 
-            </li>
-            <li> 
-                <%= link_to "Facture", generate_commande_pdf_path(commande: @commande, type_doc: 'facture'), 
-                    class: "dropdown-item", target: "_blank" %> 
-            </li>
-        </ul>
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Type d'édition</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
+    <div class="offcanvas-body">
+        <%= render 'choix_edition' %>
+    </div>
+    </div>
+
+
 
 </div>
 

@@ -79,7 +79,8 @@ Rails.application.routes.draw do
   #pdf generation 
   get '/generate_commande_pdf', to: 'pdf#generate_commande'
 
-  
+  post '/send_email', to: 'pdf#send_email'
+
   get "home_admin", to: "home_admin#index"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

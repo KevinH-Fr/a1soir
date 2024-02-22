@@ -6,6 +6,8 @@ class Commande < ApplicationRecord
   has_many :paiement_recus
   has_many :avoir_rembs
   
+  DOCUMENT_TYPES = ['commande', 'facture', 'facture simple']
+
   def full_name
     "ref#{id}_#{nom}"
   end

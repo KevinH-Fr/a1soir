@@ -1,0 +1,41 @@
+<div class="card mx-2 my-3 p-3 shadow-sm">
+    <div class="container text-center fs-5">
+        <i class="fa-regular fa-file text-danger me-1"></i>
+        <span>Editer PDF</span>
+    </div>
+
+    <hr>
+    
+<% Commande::DOCUMENT_TYPES.each do |doc_type| %>
+  <%= link_to generate_commande_pdf_path(commande: @commande, type_doc: doc_type), 
+              class: "btn btn-secondary m-1", target: "_blank" do %>
+    <span class="fw-bold"> <%= doc_type.capitalize %> </span>
+  <% end %>
+<% end %>
+
+</div>
+
+
+<div class="card mx-2 my-3 p-3 shadow-sm">
+    <div class="container text-center fs-5">
+        <i class="fa fa-regular fa-envelope text-primary me-1"></i>
+        <span>Envoyer mail</span>
+    </div>
+
+    <hr>
+        
+        <%# creer un controller pour envoi mail ? 
+
+        %>
+
+<%= button_to 'Send Email', send_email_path, method: :post, class: 'btn btn-primary' %>
+
+
+    <% Commande::DOCUMENT_TYPES.each do |doc_type| %>
+        <%= link_to generate_commande_pdf_path(commande: @commande, type_doc: doc_type), 
+                    class: "btn btn-secondary m-1", target: "_blank" do %>
+            <span class="fw-bold"> <%= doc_type.capitalize %> </span>
+        <% end %>
+    <% end %>             
+
+</div>
