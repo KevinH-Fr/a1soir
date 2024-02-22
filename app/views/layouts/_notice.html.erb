@@ -1,0 +1,13 @@
+<div class="container text-center" style="position: fixed; z-index: 5;">
+  <% flash.each do |key, value| %>
+    <% if key == "error" %>
+      <div class="alert alert-danger mx-4">
+        <%= value %>
+      </div>
+    <% else %>
+      <div class="alert alert-success mx-4">
+        <%= value %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

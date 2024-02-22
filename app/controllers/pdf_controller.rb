@@ -30,12 +30,35 @@ class PdfController < ApplicationController
     end
 
     def send_email
-        to_email = 'recipient@example.com' # Replace with the recipient's email
-        subject = 'Your Email Subject'
-        message = 'Your email message'
-    
-        CommandeMailer.send_email(to_email, subject, message).deliver_now
-        redirect_to root_path, notice: 'Email sent successfully!'
-      end
+        @commande = Commande.find(params[:commande])
+
+        @type_doc = params[:type_doc]
+        CommandeMailer.email_commande(@type_doc, @commande).deliver_now
+        
+       # redirect_to commande_path(@commande), notice: 'Email sent successfully!'
+
+        puts " ______________send email done_______________________"
+
+
+        respond_to do |format|
+      
+              
+              flash.now[:success] = "email was successfully created"
+             # flash[:notice] = 'Email sent successfully!'
+
+              format.turbo_stream do
+                render turbo_stream: [
+
+
+                  turbo_stream.prepend('flash', partial: 'layouts/notice', locals: { flash: flash })
+      
+                ]
+              end
+        end
+
+            
+
+
+    end
 
 end

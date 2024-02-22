@@ -5,13 +5,14 @@
     </div>
 
     <hr>
-    
-<% Commande::DOCUMENT_TYPES.each do |doc_type| %>
-  <%= link_to generate_commande_pdf_path(commande: @commande, type_doc: doc_type), 
-              class: "btn btn-secondary m-1", target: "_blank" do %>
-    <span class="fw-bold"> <%= doc_type.capitalize %> </span>
-  <% end %>
-<% end %>
+
+        
+    <% Commande::DOCUMENT_TYPES.each do |doc_type| %>
+    <%= link_to generate_commande_pdf_path(commande: @commande, type_doc: doc_type), 
+                class: "btn btn-outline-danger m-1 w-100", target: "_blank" do %>
+        <span class="fw-bold"> <%= doc_type.capitalize %> </span>
+    <% end %>
+    <% end %>
 
 </div>
 
@@ -23,19 +24,18 @@
     </div>
 
     <hr>
-        
-        <%# creer un controller pour envoi mail ? 
-
-        %>
-
-<%= button_to 'Send Email', send_email_path, method: :post, class: 'btn btn-primary' %>
 
 
     <% Commande::DOCUMENT_TYPES.each do |doc_type| %>
-        <%= link_to generate_commande_pdf_path(commande: @commande, type_doc: doc_type), 
-                    class: "btn btn-secondary m-1", target: "_blank" do %>
+        <%= button_to send_email_path(commande: @commande, type_doc: doc_type), method: :post, class: 'btn btn-outline-primary m-1 w-100' do %>
             <span class="fw-bold"> <%= doc_type.capitalize %> </span>
         <% end %>
-    <% end %>             
+    <% end %>
+
+
+
+    <p style="color: green"><%#= flash[:notice] %></p>
+
+            
 
 </div>
