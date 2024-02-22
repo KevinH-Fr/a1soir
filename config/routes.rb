@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'stock/index'
   
   resources :categorie_produits do 
     member do

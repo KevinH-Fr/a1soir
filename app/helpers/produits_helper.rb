@@ -11,3 +11,4 @@ module ProduitsHelper
         Produit.where(reffrs: produit.reffrs, taille_id: produit.taille_id).where.not(id: produit.id)
     end
 end
+ 

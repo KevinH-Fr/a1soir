@@ -1,9 +1,11 @@
 module CommandesHelper
 
     def compte_articles(commande)
-        commande.articles.sum(:quantite)
+        if commande 
+            commande.articles.sum(:quantite)
+    
+        end
     end
-
 
     def du_prix(commande)
         commande.articles.sum(:total)

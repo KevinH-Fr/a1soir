@@ -30,6 +30,7 @@ module IndexModelHelper
 
     end
 
+
     def bloc_nouveau(model_class)
 
         content_tag(:div, class: "collapse", id: "collapseNew") do
@@ -39,6 +40,7 @@ module IndexModelHelper
             end)
         end
     end
+
 
     def links_record(model)
         content_tag(:div, class: "d-flex justify-content-end") do
