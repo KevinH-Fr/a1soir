@@ -3,6 +3,11 @@
 
     <span>Client </span> 
     <span class="doc-important"> <%= @commande.client.full_name %> </span> <br><br>
+
+    <span>Evénement</span>
+    <span class="doc-important"> <%#= @commande.info_evenement %> </span> <br>
+    <br>
+
     courriel: <span class="doc-important"> <%= @commande.client.mail %> </span> <br>
     téléphone: <span class="doc-important"> <%= @commande.client.tel %> </span> 
 
@@ -10,10 +15,7 @@
     <%= @commande.client.cp %> 
     <%= @commande.client.ville %>  
 
-    <span>Evénement</span> 
-    <span class="doc-important"> <%#= @commande.info_evenement %> </span> <br>
     <br>
-
     <span>Servi par </span> 
     <span class="doc-important"> <%#= Profile.find(profileId).full_name %> </span> <br>
     <br>

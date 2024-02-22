@@ -74,16 +74,15 @@
             TOTAUX
           </td>
           <td class="centered tfoot-doc">
-            <%#= Article.commande_courante(@commande).compte_articles %>
+            <%= compte_articles(@commande) %>
           </td>
           <td class="tfoot-doc"></td>
           <td class="ended tfoot-doc">
-            <%#= number_to_currency(Article.commande_courante(@commande).sum_articles + 
-                Article.joins(:sousarticles).commande_courante(@commande).sum_sousarticles, locale: :fr) %>
+            <%= du_prix(@commande) %>
           </td>
 
           <td class="ended tfoot-doc">
-            <%#= number_to_currency(Article.commande_courante(@commande).sum_caution_articles, locale: :fr) %>
+            <%= du_caution(@commande) %>
           </td>
 
         </tr>

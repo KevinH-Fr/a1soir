@@ -13,12 +13,12 @@ class PdfController < ApplicationController
     
             header: {
                 content: render_to_string(
-                    'shared/doc_entete'                )
+                    'shared/doc_entete')
             },
 
             footer: {
                 content: render_to_string(
-                  'shared/doc_footer'                )
+                  'shared/doc_footer' )
             }
         )
         

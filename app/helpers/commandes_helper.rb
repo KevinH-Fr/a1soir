@@ -1,5 +1,10 @@
 module CommandesHelper
 
+    def compte_articles(commande)
+        commande.articles.sum(:quantite)
+    end
+
+
     def du_prix(commande)
         commande.articles.sum(:total)
         # + Article.joins(:sousarticles).commande_courante(@commande).sum_sousarticles
@@ -25,7 +30,6 @@ module CommandesHelper
     def remb_deduit(commande)
         commande.avoir_rembs.remb_only.sum(:montant)
     end 
-
 
     def solde_prix_avant_avoirremb(commande)
         du_prix(commande) - recu_prix(commande) 

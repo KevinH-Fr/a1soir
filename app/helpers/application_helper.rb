@@ -14,7 +14,7 @@ module ApplicationHelper
 
     def custom_badge_boolean(text, value)
         color = (value != 0) ? "danger" : "success"
-        content_tag(:div, class: "badge bg-#{color} mx-2 fs-5") do
+        content_tag(:div, class: "badge bg-#{color} mx-2 fs-6") do
           concat " #{text}"
           concat " #{custom_currency_format(value)}"
         end
