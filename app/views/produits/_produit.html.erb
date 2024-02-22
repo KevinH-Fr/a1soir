@@ -25,6 +25,38 @@
     </p>
 
     <p>
+      <strong>Couleur:</strong>
+      <%= produit.couleur.nom if produit.couleur %>
+
+      <p>
+        Autres couleur(s) : 
+
+        <% same_reffrs_same_taille_others_couleurs(produit).each do |produit| %>
+          <%= produit.couleur.nom if produit.couleur %>
+
+        <% end %>
+      </p>
+
+    </p>
+
+
+    <p>
+      <strong>Taille:</strong>
+      <%= produit.taille.nom if produit.taille %>
+        
+      <p>
+        Autres taille(s) : 
+
+        <% same_reffrs_same_couleur_others_tailles(produit).each do |produit| %>
+          <%= produit.taille.nom if produit.taille %>
+
+        <% end %>
+      </p>
+  
+    </p>
+ 
+
+    <p>
       <strong>Categorie produit:</strong>
       <%= produit.categorie_produit.nom if produit.categorie_produit %>
     </p>

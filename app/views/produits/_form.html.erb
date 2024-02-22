@@ -43,6 +43,25 @@
         <%= form.file_field :images, multiple: true, class:"form-control m-1 p-1" %>
       </div>
 
+
+      <div class="mx-1 px-2">
+        <div class="input-group input-group">
+          <%= form.label :couleur_id, class: "input-group-text" %>
+          <%= form.collection_select :couleur_id, @couleurs.all.order(:nom), :id, :nom, 
+          { include_blank: 'Select' }, class: "form-select" %>
+        </div>
+      </div>
+
+      <div class="mx-1 px-2">
+        <div class="input-group input-group">
+          <%= form.label :taille_id, class: "input-group-text" %>
+          <%= form.collection_select :taille_id, @tailles.all.order(:nom), :id, :nom, 
+          { include_blank: 'Select' }, class: "form-select" %>
+        </div>
+      </div>
+
+
+
       <%= custom_submit_button(form) %>
 
     <% end %>

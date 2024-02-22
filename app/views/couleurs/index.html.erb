@@ -1,0 +1,11 @@
+<%= bandeau_entete("Couleurs", "paint", @couleurs.count, "your-search") %>
+
+<%= bloc_nouveau(Couleur) %>
+
+<div id="couleurs">
+  <% @couleurs.each do |couleur| %>
+        <%= render couleur %>
+  <% end %>
+</div>
+
+

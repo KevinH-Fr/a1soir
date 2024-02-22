@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_10_161343) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_22_152310) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -131,13 +131,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_10_161343) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "couleurs_produits", id: false, force: :cascade do |t|
-    t.integer "produit_id", null: false
-    t.integer "couleur_id", null: false
-    t.index ["couleur_id", "produit_id"], name: "index_couleurs_produits_on_couleur_id_and_produit_id"
-    t.index ["produit_id", "couleur_id"], name: "index_couleurs_produits_on_produit_id_and_couleur_id"
-  end
-
   create_table "fournisseurs", force: :cascade do |t|
     t.string "nom"
     t.string "tel"
@@ -217,15 +210,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_10_161343) do
     t.decimal "prixachat"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "couleur_id"
+    t.integer "taille_id"
     t.index ["categorie_produit_id"], name: "index_produits_on_categorie_produit_id"
+    t.index ["couleur_id"], name: "index_produits_on_couleur_id"
     t.index ["fournisseur_id"], name: "index_produits_on_fournisseur_id"
-  end
-
-  create_table "produits_tailles", id: false, force: :cascade do |t|
-    t.integer "produit_id", null: false
-    t.integer "taille_id", null: false
-    t.index ["produit_id", "taille_id"], name: "index_produits_tailles_on_produit_id_and_taille_id"
-    t.index ["taille_id", "produit_id"], name: "index_produits_tailles_on_taille_id_and_produit_id"
+    t.index ["taille_id"], name: "index_produits_on_taille_id"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -287,7 +277,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_10_161343) do
   add_foreign_key "paiement_recus", "commandes"
   add_foreign_key "paiements", "commandes"
   add_foreign_key "produits", "categorie_produits"
+  add_foreign_key "produits", "couleurs"
   add_foreign_key "produits", "fournisseurs"
+  add_foreign_key "produits", "tailles"
   add_foreign_key "sousarticles", "articles"
   add_foreign_key "sousarticles", "produits"
 end

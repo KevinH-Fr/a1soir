@@ -5,6 +5,9 @@ class ProduitsController < ApplicationController
   def index
     @produits = Produit.all
     @categorie_produits = CategorieProduit.all
+    @couleurs = Couleur.all 
+    @tailles = Taille.all 
+
   end
 
   # GET /produits/1 or /produits/1.json
@@ -21,6 +24,8 @@ class ProduitsController < ApplicationController
   # GET /produits/1/edit
   def edit
     @categorie_produits = CategorieProduit.all
+    @couleurs = Couleur.all 
+    @tailles = Taille.all 
 
     respond_to do |format|
       format.html 
@@ -67,6 +72,8 @@ class ProduitsController < ApplicationController
   # PATCH/PUT /produits/1 or /produits/1.json
   def update
     @categorie_produits = CategorieProduit.all
+    @couleurs = Couleur.all 
+    @tailles = Taille.all 
 
     respond_to do |format|
       if @produit.update(produit_params)
@@ -114,7 +121,8 @@ class ProduitsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def produit_params
-      params.require(:produit).permit(:nom, :prixvente, :prixlocation, :description, :categorie_produit_id, :caution, :handle, :reffrs, :quantite, :fournisseur_id, :dateachat, :prixachat, 
-        :image1, :images)
+      params.require(:produit).permit(:nom, :prixvente, :prixlocation, :description, :categorie_produit_id, 
+        :caution, :handle, :reffrs, :quantite, :fournisseur_id, :dateachat, :prixachat, 
+        :image1, :couleur_id, :taille_id, images: [] )
     end
 end

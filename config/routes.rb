@@ -18,6 +18,19 @@ Rails.application.routes.draw do
     end
   end
 
+
+  resources :couleurs do 
+    member do
+      post :edit
+    end
+  end
+
+  resources :tailles do 
+    member do
+      post :edit
+    end
+  end
+
   resources :clients do 
     member do
       post :edit

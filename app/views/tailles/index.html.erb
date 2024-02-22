@@ -1,0 +1,11 @@
+<%= bandeau_entete("tailles", "paint", @tailles.count, "your-search") %>
+
+<%= bloc_nouveau(Taille) %>
+
+<div id="tailles">
+  <% @tailles.each do |taille| %>
+        <%= render taille %>
+  <% end %>
+</div>
+
+
