@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
+  resources :doc_editions
   get 'stock/index'
   
+
   resources :categorie_produits do 
     member do
       post :edit
@@ -77,7 +79,11 @@ Rails.application.routes.draw do
   devise_for :users
   
   #pdf generation 
+
+
   get '/generate_commande_pdf', to: 'pdf#generate_commande'
+
+  get '/choix_edition', to: 'commandes#choix_edition_bis'
 
   post '/send_email', to: 'pdf#send_email'
 

@@ -1,20 +1,37 @@
+<!-- Editer PDF -->
 <div class="card mx-2 my-3 p-3 shadow-sm">
-    <div class="container text-center fs-5">
-        <i class="fa-regular fa-file text-danger me-1"></i>
-        <span>Editer PDF</span>
-    </div>
+  <div class="container text-center fs-5">
+    <i class="fa-regular fa-file text-danger me-1"></i>
+    <span>Editer PDF</span>
+  </div>
+
+  <div class="container">
+    <%= form_with(model: @commande, url: commande_path(@commande), method: :patch, local: true) do |form| %>
+      <div class="mb-3">
+        <%= form.label :commentaires_doc, class: "form-label" %>
+        <%= form.text_area :commentaires_doc, class: "form-control", rows: 3 %>
+      </div>
+
+      <%= form.submit 'Ajouter Commentaire', class: "btn btn-primary" %>
+    <% end %>
+  </div>
 
     <hr>
 
-        
-    <% Commande::DOCUMENT_TYPES.each do |doc_type| %>
-    <%= link_to generate_commande_pdf_path(commande: @commande, type_doc: doc_type), 
-                class: "btn btn-outline-danger m-1 w-100", target: "_blank" do %>
-        <span class="fw-bold"> <%= doc_type.capitalize %> </span>
-    <% end %>
-    <% end %>
-
+    <div class="container">
+      <p>Sélectionner le type de document:</p>
+      <% Commande::DOCUMENT_TYPES.each do |doc_type| %>
+        <%= link_to generate_commande_pdf_path(commande: @commande, type_doc: doc_type), 
+                    class: "btn btn-outline-danger m-1 w-100", target: "_blank" do %>
+          <span class="fw-bold"> <%= doc_type.capitalize %> </span>
+        <% end %>
+      <% end %>
+    </div>
 </div>
+
+
+
+
 
 
 <div class="card mx-2 my-3 p-3 shadow-sm">

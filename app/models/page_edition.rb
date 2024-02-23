@@ -1,0 +1,2 @@
+class PageEdition < ApplicationRecord
+end

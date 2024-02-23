@@ -1,0 +1,48 @@
+<%= form_with(model: doc_edition) do |form| %>
+  <% if doc_edition.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(doc_edition.errors.count, "error") %> prohibited this doc_edition from being saved:</h2>
+
+      <ul>
+        <% doc_edition.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :commande_id, style: "display: block" %>
+    <%= form.text_field :commande_id, value: session[:commande] %>
+  </div>
+
+  <div data-controller="form-element">
+    <%= form.button "Validate", formaction: new_doc_edition_path, formmethod: :get, data: { turbo_frame: :passcode_field, form_element_target: "submitbtn" } %>
+
+    <div>
+      <%= form.label :doc_type, style: "display: block" %>
+      <%= form.select :doc_type, Commande::DOCUMENT_TYPES, {include_blank: true}, { data: { action: "change->form-element#remotesubmit"}} %>
+    </div>
+  </div>
+
+
+  <%= turbo_frame_tag :passcode_field do %>
+    <% if doc_edition.doc_type? %>
+      <%= turbo_stream.update "passcode-time", html: Time.zone.now %>
+    <div>
+      <%= form.label :edition_type, style: "display: block" %>
+      <%= form.text_field :edition_type %>
+    </div>
+    <% end %>
+  <% end %>
+
+
+  <div>
+    <%= form.label :commentaires, style: "display: block" %>
+    <%= form.text_area :commentaires %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

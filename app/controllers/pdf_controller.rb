@@ -3,6 +3,8 @@ class PdfController < ApplicationController
     @commande = Commande.find(params[:commande])
     @type_doc = params[:type_doc]
 
+    @commentaire_doc = @commande.commentaires_doc
+
     pdf_data = generate_pdf_data
 
     send_pdf_data(pdf_data, "#{@type_doc}_#{@commande.ref_commande}.pdf")
@@ -12,8 +14,10 @@ class PdfController < ApplicationController
     @commande = Commande.find(params[:commande])
     @type_doc = params[:type_doc]
 
+    @commentaire_doc = @commande.commentaires_doc
+
     pdf_data = generate_pdf_data
-    CommandeMailer.email_commande(@type_doc, @commande, pdf_data).deliver_now
+    CommandeMailer.email_commande(@type_doc, @commande, pdf_data, @commentaire_doc).deliver_now
 
     respond_to do |format|
       flash.now[:success] = "Email was successfully created"
@@ -35,7 +39,7 @@ class PdfController < ApplicationController
         formats: [:html],
         disposition: :inline,
         layout: 'pdf',
-        assigns: { commande: @commande, type_doc: @type_doc }
+        assigns: { commande: @commande, type_doc: @type_doc, commentaire_doc: @commentaire_doc }
       ),
       header: {
         content: render_to_string('shared/doc_entete')

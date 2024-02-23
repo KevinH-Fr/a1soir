@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Doc editions</h1>
+
+<div id="doc_editions">
+  <% @doc_editions.each do |doc_edition| %>
+    <%= render doc_edition %>
+    <p>
+      <%= link_to "Show this doc edition", doc_edition %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New doc edition", new_doc_edition_path %>
