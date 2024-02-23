@@ -5,7 +5,7 @@
 
     <%= render 'synthese' %>
 
-    <%= link_to  "edition bis", new_doc_edition_path %>
+    <%#= link_to  "edition bis", new_doc_edition_path %>
 
     <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
            <i class="fa fa-file me-1"></i>
@@ -13,13 +13,13 @@
     </button>
 
     <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Type d'édition</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <%= render 'choix_edition' %>
-    </div>
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Type d'édition</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <%= render "doc_editions/form", doc_edition: @doc_edition %>
+        </div>
     </div>
 
 

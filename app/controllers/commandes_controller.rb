@@ -14,6 +14,8 @@ class CommandesController < ApplicationController
 
     @produits = Produit.all 
 
+    @doc_edition = DocEdition.new
+
 
   end
 

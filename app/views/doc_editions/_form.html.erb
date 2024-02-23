@@ -1,3 +1,7 @@
+
+<div class="card mx-2 my-3 p-3 shadow-sm">
+
+
 <%= form_with(model: doc_edition) do |form| %>
   <% if doc_edition.errors.any? %>
     <div style="color: red">
@@ -12,37 +16,78 @@
   <% end %>
 
   <div>
-    <%= form.label :commande_id, style: "display: block" %>
-    <%= form.text_field :commande_id, value: session[:commande] %>
+    <%= form.hidden_field :commande_id, value: session[:commande] %>
   </div>
 
+  
   <div data-controller="form-element">
-    <%= form.button "Validate", formaction: new_doc_edition_path, formmethod: :get, data: { turbo_frame: :passcode_field, form_element_target: "submitbtn" } %>
-
-    <div>
-      <%= form.label :doc_type, style: "display: block" %>
-      <%= form.select :doc_type, Commande::DOCUMENT_TYPES, {include_blank: true}, { data: { action: "change->form-element#remotesubmit"}} %>
-    </div>
-  </div>
+    <%= form.button "Validate", formaction: new_doc_edition_path, formmethod: :get, 
+          data: { turbo_frame: :content_field, form_element_target: "submitbtn" } %>
 
 
-  <%= turbo_frame_tag :passcode_field do %>
-    <% if doc_edition.doc_type? %>
-      <%= turbo_stream.update "passcode-time", html: Time.zone.now %>
-    <div>
-      <%= form.label :edition_type, style: "display: block" %>
-      <%= form.text_field :edition_type %>
-    </div>
+  <div class="container text-center fs-5">
+    <i class="fa-regular fa-file me-1"></i>
+    <span>Type document</span>
+  </div> 
+
+  <hr>
+
+  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+    <% Commande::DOCUMENT_TYPES.each do |doc_type| %>
+      <%= form.radio_button :doc_type, doc_type, id: "btnradio-#{doc_type}", class: "btn-check", data: { action: "change->form-element#remotesubmit" } %>
+      <label class="btn btn-outline-primary" for="btnradio-<%= doc_type %>"><%= doc_type %></label>
     <% end %>
+  </div>
+
+
+  <%= turbo_frame_tag :content_field do %>
+    <% if doc_edition.doc_type? %>
+
+      <div class="container text-center">
+
+        <div class="container text-center fs-5 mt-4">
+          <i class="fa-regular fa-envelope me-1"></i>
+          <span>Type édition</span>
+        </div> 
+      </div>
+      
+      <hr>
+    
+      <div class="container text-center">
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+          <% Commande::EDITION_TYPES.each do |edition_type| %>
+            <%= form.radio_button :edition_type, edition_type, id: "btnradio-#{edition_type}", class: "btn-check", data: { action: "change->form-element#remotesubmit" } %>
+            <label class="btn btn-outline-primary px-4" for="btnradio-<%= edition_type %>"><%= edition_type %></label>
+          <% end %>
+        </div>
+      </div>
+
+    <% end %>
+
+    <% if doc_edition.edition_type? %>
+
+      <div class="container text-center fs-5 mt-4">
+        <i class="fa-regular fa-message me-1"></i>
+        <span>Commentaires</span>
+      </div> 
+
+      <hr>
+      
+      <div class="input-group mt-4">
+        <%#= form.label :commentaires, class: "input-group-text" %>
+        <%= form.text_area :commentaires, class: "form-control" %>
+      </div>
+    <% end %>
+
   <% end %>
-
-
-  <div>
-    <%= form.label :commentaires, style: "display: block" %>
-    <%= form.text_area :commentaires %>
   </div>
 
-  <div>
-    <%= form.submit %>
-  </div>
+
+  <br><br>
+
+  <%= custom_submit_button(form) %>
+
 <% end %>
+
+
+</div>

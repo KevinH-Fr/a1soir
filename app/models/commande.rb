@@ -7,6 +7,7 @@ class Commande < ApplicationRecord
   has_many :avoir_rembs
   
   DOCUMENT_TYPES = ['commande', 'facture', 'facture simple']
+  EDITION_TYPES = ['pdf', 'mail']
 
   def full_name
     "ref#{id}_#{nom}"

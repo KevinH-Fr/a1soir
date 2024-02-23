@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  
   resources :doc_editions
   get 'stock/index'
   
