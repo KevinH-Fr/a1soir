@@ -5,9 +5,8 @@
 
     <%= render 'synthese' %>
 
-    <%#= link_to  "edition bis", new_doc_edition_path %>
-
-    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+    <%= link_to  "document", new_doc_edition_path %>
+    <!--button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
            <i class="fa fa-file me-1"></i>
             <span class="fw-bold"> Editer </span> 
     </button>
@@ -18,9 +17,16 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <%= render "doc_editions/form", doc_edition: @doc_edition %>
+            <%#= render "doc_editions/form", doc_edition: @doc_edition %>
+
+
+
+            <div id="doc_edition">
+                <%#= render @doc_edition %>
+            </div>
+
         </div>
-    </div>
+    </div-->
 
 
 </div>

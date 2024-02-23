@@ -33,7 +33,7 @@
   <hr>
 
   <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-    <% Commande::DOCUMENT_TYPES.each do |doc_type| %>
+    <% DocEdition::DOCUMENT_TYPES.each do |doc_type| %>
       <%= form.radio_button :doc_type, doc_type, id: "btnradio-#{doc_type}", class: "btn-check", data: { action: "change->form-element#remotesubmit" } %>
       <label class="btn btn-outline-primary" for="btnradio-<%= doc_type %>"><%= doc_type %></label>
     <% end %>
@@ -42,29 +42,6 @@
 
   <%= turbo_frame_tag :content_field do %>
     <% if doc_edition.doc_type? %>
-
-      <div class="container text-center">
-
-        <div class="container text-center fs-5 mt-4">
-          <i class="fa-regular fa-envelope me-1"></i>
-          <span>Type édition</span>
-        </div> 
-      </div>
-      
-      <hr>
-    
-      <div class="container text-center">
-        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-          <% Commande::EDITION_TYPES.each do |edition_type| %>
-            <%= form.radio_button :edition_type, edition_type, id: "btnradio-#{edition_type}", class: "btn-check", data: { action: "change->form-element#remotesubmit" } %>
-            <label class="btn btn-outline-primary px-4" for="btnradio-<%= edition_type %>"><%= edition_type %></label>
-          <% end %>
-        </div>
-      </div>
-
-    <% end %>
-
-    <% if doc_edition.edition_type? %>
 
       <div class="container text-center fs-5 mt-4">
         <i class="fa-regular fa-message me-1"></i>
@@ -77,15 +54,16 @@
         <%#= form.label :commentaires, class: "input-group-text" %>
         <%= form.text_area :commentaires, class: "form-control" %>
       </div>
+
+      <%= custom_submit_button(form) %>
+
     <% end %>
+
+
 
   <% end %>
   </div>
 
-
-  <br><br>
-
-  <%= custom_submit_button(form) %>
 
 <% end %>
 

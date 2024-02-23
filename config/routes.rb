@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
-  
-  resources :doc_editions
+
   get 'stock/index'
   
+  resources :doc_editions do 
+    member do
+      post :edit
+    end
+  end
 
   resources :categorie_produits do 
     member do
@@ -82,11 +86,14 @@ Rails.application.routes.draw do
   #pdf generation 
 
 
-  get '/generate_commande_pdf', to: 'pdf#generate_commande'
+  get '/generate_commande_doc_editions', to: 'doc_editions#generate_commande'
 
-  get '/choix_edition', to: 'commandes#choix_edition_bis'
 
-  post '/send_email', to: 'pdf#send_email'
+  post '/send_email', to: 'doc_editions#send_email'
+
+  #get 'doc_editions/send_email'
+
+ # post '/send_email', to: 'doc_editions#send_email'
 
   get "home_admin", to: "home_admin#index"
 
