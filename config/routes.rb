@@ -74,10 +74,15 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :profiles do 
+    member do
+      post :edit
+    end
+  end
+
   resources :messagemails
   resources :meetings
   resources :sousarticles
-  resources :profiles
   resources :textes
   resources :messages
   

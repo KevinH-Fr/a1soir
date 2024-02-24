@@ -1,30 +1,51 @@
 class ProfilesController < ApplicationController
   before_action :set_profile, only: %i[ show edit update destroy ]
 
-  # GET /profiles or /profiles.json
   def index
     @profiles = Profile.all
   end
 
-  # GET /profiles/1 or /profiles/1.json
   def show
   end
 
-  # GET /profiles/new
   def new
     @profile = Profile.new
   end
 
-  # GET /profiles/1/edit
   def edit
+
+    respond_to do |format|
+      format.html 
+      format.turbo_stream do  
+        render turbo_stream: turbo_stream.update(@profile, 
+          partial: "profiles/form", 
+          locals: {profile: @profile})
+      end
+    end
   end
 
-  # POST /profiles or /profiles.json
   def create
     @profile = Profile.new(profile_params)
 
     respond_to do |format|
       if @profile.save
+
+        flash.now[:success] = "profile was successfully created"
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('new',
+                                partial: "profiles/form",
+                                locals: { profile: Profile.new }),
+  
+            turbo_stream.prepend('profiles',
+                                  partial: "profiles/profile",
+                                  locals: { profile: @profile }),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+            
+          ]
+        end
+
         format.html { redirect_to profile_url(@profile), notice: "Profile was successfully created." }
         format.json { render :show, status: :created, location: @profile }
       else
@@ -38,16 +59,32 @@ class ProfilesController < ApplicationController
   def update
     respond_to do |format|
       if @profile.update(profile_params)
+
+        flash.now[:success] = "profile was successfully updated"
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update(@profile, partial: "profiles/profile", locals: {profile: @profile}),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+          ]
+        end
+
         format.html { redirect_to profile_url(@profile), notice: "Profile was successfully updated." }
         format.json { render :show, status: :ok, location: @profile }
       else
+
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(@profile, 
+                    partial: 'profiles/form', 
+                    locals: { profile: @profile })
+        end
+
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @profile.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /profiles/1 or /profiles/1.json
   def destroy
     @profile.destroy!
 
@@ -58,13 +95,11 @@ class ProfilesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_profile
       @profile = Profile.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def profile_params
-      params.require(:profile).permit(:prenom, :nom)
+      params.require(:profile).permit(:prenom, :nom, :profile_pic)
     end
 end

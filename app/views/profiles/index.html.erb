@@ -1,14 +1,11 @@
-<p style="color: green"><%= notice %></p>
+<%= bandeau_entete("Profiles", "user-circle", @profiles.count, "your-search") %>
 
-<h1>Profiles</h1>
+<%= bloc_nouveau(Profile) %>
 
 <div id="profiles">
   <% @profiles.each do |profile| %>
-    <%= render profile %>
-    <p>
-      <%= link_to "Show this profile", profile %>
-    </p>
+        <%= render profile %>
   <% end %>
 </div>
 
-<%= link_to "New profile", new_profile_path %>
+
