@@ -29,13 +29,10 @@
     <%= doc_edition.message %>
   </p>
 
-  <%= link_to generate_commande_doc_editions_path(doc_edition: doc_edition), 
-        class: "btn btn-outline-danger m-1 w-100", target: "_blank" do %>
-        <span class="fw-bold"> Editer pdf </span>
-  <% end %>
 
-  <%= button_to 'Envoyer mail', send_email_path(doc_edition: doc_edition), 
-        method: :post, class: 'btn w-100 btn-outline-primary' %>
-
+  <%= button_to "", edit_doc_edition_path(doc_edition), method: :post, 
+        class: "btn btn-sm btn-secondary fa-solid fa-pen-to-square me-1" %>
 
 </div>
+
+

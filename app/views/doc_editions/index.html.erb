@@ -1,0 +1,11 @@
+<%= bandeau_entete("Doc édition", "file", "", "your-search") %>
+
+<%= bloc_nouveau(DocEdition) %>
+
+<div id="doc_editions">
+  <% @doc_editions.each do |doc_edition| %>
+        <%= render doc_edition %>
+  <% end %>
+</div>
+
+

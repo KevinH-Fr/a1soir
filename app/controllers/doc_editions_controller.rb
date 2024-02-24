@@ -1,5 +1,5 @@
 class DocEditionsController < ApplicationController
-  before_action :set_doc_edition, only: %i[ show edit ]
+  before_action :set_doc_edition, only: %i[ show edit update ]
 
   def new
     @doc_edition = DocEdition.new doc_edition_params
@@ -30,6 +30,36 @@ class DocEditionsController < ApplicationController
     end
   end
 
+  def update
+
+    respond_to do |format|
+      if @doc_edition.update(doc_edition_params)
+
+        flash.now[:success] = "doc_edition was successfully updated"
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update(@doc_edition, partial: "doc_editions/doc_edition", locals: {doc_edition: @doc_edition}),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+          ]
+        end
+
+        format.html { redirect_to doc_edition_url(@doc_edition), notice: "doc_edition was successfully updated." }
+        format.json { render :show, status: :ok, location: @doc_edition }
+      else
+
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(@doc_edition, 
+                    partial: 'doc_editions/form', 
+                    locals: { doc_edition: @doc_edition })
+        end
+
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @doc_edition.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def create
     @doc_edition = DocEdition.new(doc_edition_params)
 
@@ -37,6 +67,25 @@ class DocEditionsController < ApplicationController
       if @doc_edition.save
 
         @commande = @doc_edition.commande
+        
+        flash.now[:success] = "doc_edition was successfully created"
+
+        format.turbo_stream do
+          render turbo_stream: [
+          #  turbo_stream.update('new_doc_edition',
+          #    partial: "doc_editions/form"),
+  
+     #       turbo_stream.update('doc_editions',
+     #         partial: "doc_editions/doc_edition",
+     #         locals: { doc_edition: @doc_edition }),
+
+              turbo_stream.update('synthese-doc-editions', 
+                partial: "doc_editions/synthese"),
+ 
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+
+          ]
+        end
 
         format.html { redirect_to doc_edition_url(@doc_edition), notice: "doc_edition was successfully created." }
         format.json { render :show, status: :created, location: @doc_edition }
@@ -46,6 +95,10 @@ class DocEditionsController < ApplicationController
     end
   end
 
+
+  def index
+    @doc_editions = DocEdition.all
+  end
 
   def generate_commande
     @doc_edition = DocEdition.find(params[:doc_edition])
@@ -83,8 +136,6 @@ class DocEditionsController < ApplicationController
         formats: [:html],
         disposition: :inline,
         layout: 'pdf'
-        #,
-        #assigns: { commande: @commande, type_doc: @type_doc, commentaire_doc: @commentaire_doc }
       ),
       header: {
         content: render_to_string('shared/doc_entete')
