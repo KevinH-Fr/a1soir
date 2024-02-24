@@ -6,11 +6,11 @@
 
 <br> 
 <h4 class="h4-doc"> 
-  <%= "Devis" if @commande.devis? %>
+  <%= "Devis" if @doc_edition.commande.devis? %>
   
   <strong> 
-    <%= @commande.ref_commande %> 
-    <%= @type_doc %> 
+    <%= @doc_edition.commande.ref_commande %> 
+    <%= @doc_edition.doc_type %> 
   </strong> 
 
 </h4>

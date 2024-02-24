@@ -2,18 +2,18 @@
 <div class="cadre">
 
     <span>Client </span> 
-    <span class="doc-important"> <%= @commande.client.full_name %> </span> <br><br>
+    <span class="doc-important"> <%= @doc_edition.commande.client.full_name %> </span> <br><br>
 
     <span>Evénement</span>
     <span class="doc-important"> <%#= @commande.info_evenement %> </span> <br>
     <br>
 
-    courriel: <span class="doc-important"> <%= @commande.client.mail %> </span> <br>
-    téléphone: <span class="doc-important"> <%= @commande.client.tel %> </span> 
+    courriel: <span class="doc-important"> <%= @doc_edition.commande.client.mail %> </span> <br>
+    téléphone: <span class="doc-important"> <%= @doc_edition.commande.client.tel %> </span> 
 
-    <%= @commande.client.adresse %> <br>
-    <%= @commande.client.cp %> 
-    <%= @commande.client.ville %>  
+    <%= @doc_edition.commande.client.adresse %> <br>
+    <%= @doc_edition.commande.client.cp %> 
+    <%= @doc_edition.commande.client.ville %>  
 
     <br>
     <span>Servi par </span> 

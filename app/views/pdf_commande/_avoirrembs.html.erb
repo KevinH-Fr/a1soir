@@ -1,6 +1,6 @@
 
 <div class="section-solidaire"> 
-  <% if @commande.avoir_rembs.present? %>
+  <% if @doc_edition.commande.avoir_rembs.present? %>
     <h5 class="h5-doc"> AVOIRS REMBOURSEMENTS </h5>
 
     <table class="table table-doc table-bordered">
@@ -28,7 +28,7 @@
             <tr>
               <td colspan=3 class="tfoot-doc">  TOTAUX  </td>
               <td class="tfoot-doc centered"> 
-                <%= custom_currency_format(recu_caution(@commande)) %> 
+                <%= custom_currency_format(recu_caution(@doc_edition.commande)) %> 
               </td>
             </tr>
           </tfoot>

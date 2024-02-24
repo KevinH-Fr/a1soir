@@ -15,7 +15,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @commande.articles.each_with_index do | article, i | %>
+        <% @doc_edition.commande.articles.each_with_index do | article, i | %>
           <tr>
             <td class="td-doc centered" style="width: 40px;"> <%= i + 1 %> </td>
             <td class="td-doc centered" style="width: 70px;"> 
@@ -74,15 +74,15 @@
             TOTAUX
           </td>
           <td class="centered tfoot-doc">
-            <%= compte_articles(@commande) %>
+            <%= compte_articles(@doc_edition.commande) %>
           </td>
           <td class="tfoot-doc"></td>
           <td class="ended tfoot-doc">
-            <%= du_prix(@commande) %>
+            <%= du_prix(@doc_edition.commande) %>
           </td>
 
           <td class="ended tfoot-doc">
-            <%= du_caution(@commande) %>
+            <%= du_caution(@doc_edition.commande) %>
           </td>
 
         </tr>

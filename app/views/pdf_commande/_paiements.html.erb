@@ -1,6 +1,6 @@
 <%# reparametrer les articles avec le param local commande passé depuis commande mailer %>
 
-<% if @commande.paiement_recus.present? %>
+<% if @doc_edition.commande.paiement_recus.present? %>
 
   <div class="section-solidaire">
 
@@ -17,7 +17,7 @@
       </thead>
 
       <tbody>
-        <% @commande.paiement_recus.each_with_index do | paiement, i | %>
+        <% @doc_edition.commande.paiement_recus.each_with_index do | paiement, i | %>
           <tr>
             <td class="td-doc centered"> <%= i + 1 %> </td>
             <td class="td-doc centered"> <%= paiement.typepaiement %> </td>
@@ -31,7 +31,7 @@
         <tr>
           <td colspan=3 class="tfoot-doc centered">  TOTAUX  </td>
           <td class="tfoot-doc centered"> 
-            <%= custom_currency_format(recu_prix(@commande)) %> 
+            <%= custom_currency_format(recu_prix(@doc_edition.commande)) %> 
           </td>
         </tr>
       </tfoot>

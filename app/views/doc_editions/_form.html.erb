@@ -55,13 +55,47 @@
         <%= form.text_area :commentaires, class: "form-control" %>
       </div>
 
+
+
+      <%# email data %>
+
+      <p>
+        <a class="btn btn-primary my-2" data-bs-toggle="collapse" href="#emailCollapse" role="button" aria-expanded="false" aria-controls="emailCollapse">
+          Preparer email
+        </a>
+
+      </p>
+
+      <div class="collapse" id="emailCollapse">
+        <div class="card card-body">
+          <!-- Your email-related elements go here -->
+          <div>
+            <%= form.label :sujet, class: "form-label" %>
+            <%= form.text_field :sujet, value: @sujet, class: "form-control" %>
+          </div>
+
+          <div>
+            <%= form.label :destinataire, class: "form-label" %>
+            <%= form.text_field :destinataire, value: @destinataire, class: "form-control" %>
+          </div>
+
+          <div>
+            <%= form.label :message, class: "form-label" %>
+            <%= form.text_area :message, value: @message, class: "form-control" %>
+          </div>
+
+          <!-- Add any other email-related fields as needed -->
+        </div>
+      </div>
+
       <%= custom_submit_button(form) %>
 
     <% end %>
 
 
-
   <% end %>
+
+
   </div>
 
 

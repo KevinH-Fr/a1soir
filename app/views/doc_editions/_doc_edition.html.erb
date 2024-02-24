@@ -13,14 +13,29 @@
     <strong>Commentaires:</strong>
     <%= doc_edition.commentaires %>
   </p>
+  
+  <p>
+    <strong>sujet:</strong>
+    <%= doc_edition.sujet %>
+  </p>
 
-  <%= link_to generate_commande_doc_editions_path(commande: doc_edition.commande, type_doc: doc_edition.doc_type), 
-         class: "btn btn-outline-danger m-1 w-100", target: "_blank" do %>
-         <span class="fw-bold"> Editer pdf </span>
-   <% end %>
+  <p>
+    <strong>destinaire:</strong>
+    <%= doc_edition.destinataire %>
+  </p>
 
+  <p>
+    <strong>message:</strong>
+    <%= doc_edition.message %>
+  </p>
 
-  <%= button_to 'Send Email', send_email_path(commande: doc_edition.commande, type_doc: doc_edition.doc_type), method: :post, class: 'btn w-100 btn-outline-primary' %>
+  <%= link_to generate_commande_doc_editions_path(doc_edition: doc_edition), 
+        class: "btn btn-outline-danger m-1 w-100", target: "_blank" do %>
+        <span class="fw-bold"> Editer pdf </span>
+  <% end %>
+
+  <%= button_to 'Envoyer mail', send_email_path(doc_edition: doc_edition), 
+        method: :post, class: 'btn w-100 btn-outline-primary' %>
 
 
 </div>
