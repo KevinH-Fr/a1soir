@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'users/index'
 
   get 'stock/index'
   
@@ -88,8 +89,17 @@ Rails.application.routes.draw do
   
   devise_for :users
   
-  #pdf generation 
+  resources :users do
+    member do
+      #get :toggle_status
+      get :toggle_status_user
+      get :toggle_status_vendeur
+      get :toggle_status_admin
+      get :editer_mail
+    end
+  end
 
+  #pdf generation 
 
   get '/generate_commande_doc_editions', to: 'doc_editions#generate_commande'
   post '/send_email', to: 'doc_editions#send_email'

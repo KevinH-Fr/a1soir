@@ -1,0 +1,114 @@
+
+<% if user_signed_in? %>
+    <% if current_user.admin? %>
+
+        <div class="bloc-entete-model card card-header entete-index">
+        <strong>COMPTES</strong> 
+        </div> 
+
+        <div class="bloc-record">
+            <h5> Liste des utilisateurs | nb: <%= @users.count %></h5>
+
+            <div class="table-responsive">
+            <table  class="table table-striped table-bordered table-hover">  
+                <thead class="table-dark text-center">
+                <tr>
+                    <th> # </th>
+                    <th> email </th>
+                    <th> changer role </th>
+                </tr>
+                </thead>
+                <tbody>
+                <% @users.each do |user| %>
+                    <tr>
+                    <td> <%= user.id %>    </td>
+                    <td> <%= user.email %> </td>   
+                    <td> 
+                        <%= link_to "Vendeur", toggle_status_vendeur_user_path(user), class:"btn btn-sm btn-primary", 
+                            :onclick => "return confirm('Etes-vous certain de vouloir passer cet utilisateur en Vendeur ?')" %> 
+                        <%= link_to "Admin", toggle_status_admin_user_path(user), class:"btn btn-sm btn-dark", 
+                            :onclick => "return confirm('Etes-vous certain de vouloir passer cet utilisateur en Admin ?')" %> 
+                    </td>
+
+                    </tr>
+                <% end %>
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="bloc-record">
+            <h5> Liste des vendeurs | nb: <%= @vendeurs.count %> </h5>
+
+            <div class="table-responsive">
+            <table  class="table table-striped table-bordered table-hover">  
+                <thead class="table-dark text-center">
+                <tr>
+                    <th> # </th>
+                    <th> email </th>
+                    <th> changer role </th>
+                </tr>
+                </thead>
+                <tbody>
+                <% @vendeurs.each do |user| %>
+                    <tr>
+                    <td> <%= user.id %>    </td>
+                    <td> <%= user.email %> </td> 
+                    <td> 
+                        <%= link_to "User", toggle_status_user_user_path(user), class:"btn btn-sm btn-secondary", 
+                            :onclick => "return confirm('Etes-vous certain de vouloir passer cet utilisateur en User ?')" %> 
+                        <%= link_to "Admin", toggle_status_admin_user_path(user), class:"btn btn-sm btn-dark", 
+                            :onclick => "return confirm('Etes-vous certain de vouloir passer cet utilisateur en Admin ?')" %> 
+                    </td>
+
+                    </tr>
+                <% end %>
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="bloc-record">
+            <h5> Liste des admins | nb: <%= @admins.count %></h5>
+
+            <div class="table-responsive">
+            <table  class="table table-striped table-bordered table-hover">  
+                <thead class="table-dark text-center">
+                <tr>
+                    <th> # </th>
+                    <th>email </th>
+                    <th>changer rôle</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <% @admins.each do |user| %>
+                    <tr>
+                    <td> <%= user.id %>  </td>
+                    <td> <%= user.email %> </td>
+                        <td> 
+                        <%= link_to "User", toggle_status_user_user_path(user), class:"btn btn-sm btn-secondary", 
+                            :onclick => "return confirm('Etes-vous certain de vouloir passer cet Admin en User ?')" %> 
+
+                        <%= link_to "Vendeur", toggle_status_vendeur_user_path(user), class:"btn btn-sm btn-primary", 
+                            :onclick => "return confirm('Etes-vous certain de vouloir passer cet Admin en Vendeur ?')" %> 
+                        </td>
+                        
+                    </tr>
+                <% end %>
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+    <% end %>
+
+<% else %>
+    Vous devez être connecté(e) à un compte Admin
+    <%= render "home_admin/demande_connexion" %>
+<% end %>
+

@@ -91,10 +91,13 @@
       <%= produit.dateachat %>
     </p>
 
-    <p>
-      <strong>Prixachat:</strong>
-      <%= produit.prixachat %>
-    </p>
+    <% if current_user.admin? %>
+        <p>
+          <strong>Prixachat:</strong>
+          <%= produit.prixachat %>
+        </p>
+      
+    <% end %>
   
     <%= links_record(produit) %>  
 

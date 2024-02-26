@@ -7,7 +7,7 @@
 
     <div class= "card-body p-2 light-beige-colored text-center">
 
-        <%= options_supplementaires_link(root_path, "fa-user-circle", "Comptes", "btn-outline-primary") %>
+        <%= options_supplementaires_link(users_path, "fa-user-circle", "Comptes", "btn-outline-primary") %>
         <%= options_supplementaires_link(profiles_path, "fa-user-gear", "Profiles", "btn-outline-dark") %>
         <%= options_supplementaires_link(root_path, "fa-bullhorn", "Marketing", "btn-outline-warning") %>
         <%= options_supplementaires_link(root_path, "fa-chart-line", "Analyses", "btn-outline-success") %>
@@ -22,6 +22,16 @@
 
         <%# faire des regrouepents avc des menus deroulants par cat : ex parametre %>
 
+
     </div>
 
 </div>
+
+<% if user_signed_in? %>
+    <div class="container-fluid mt-4 d-flex justify-content-end">
+        <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-sm btn-danger d-flex align-items-center" do %>
+            <i class="fa-solid fa-right-from-bracket me-1"></i>
+            <span class="fw-bold"><%= current_user.role %> </span>
+        <% end %>
+    </div>
+<% end %>
