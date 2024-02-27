@@ -1,0 +1,16 @@
+<!-- _calendar_event.html.erb -->
+<div class="day">
+  <%= date.day %>
+</div>
+
+<% meetings.each do |meeting| %>
+  <div class="card-title">
+    <%= link_to meeting.full_name, meeting, class: "text-primary" %>
+  </div>
+  <div class="card-body">
+    <p class="card-text">
+        <%= meeting.datedebut.strftime("%H:%M") if meeting.datedebut.present? %>
+        <%= meeting.datefin.strftime('%H:%M') if meeting.datefin.present? %>
+    </p>
+  </div>
+<% end %>

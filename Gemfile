@@ -77,3 +77,5 @@ gem "wkhtmltopdf-binary", group: :development
 gem "wkhtmltopdf-heroku", group: :production
 
 gem "letter_opener", group: :development
+
+gem "simple_calendar"

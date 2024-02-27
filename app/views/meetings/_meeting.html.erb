@@ -1,32 +1,40 @@
-<div id="<%= dom_id meeting %>">
-  <p>
-    <strong>Nom:</strong>
-    <%= meeting.nom %>
-  </p>
 
-  <p>
-    <strong>Datedebut:</strong>
-    <%= meeting.datedebut %>
-  </p>
+<div id="<%= dom_id meeting %>" class="my-2">
 
-  <p>
-    <strong>Datefin:</strong>
-    <%= meeting.datefin %>
-  </p>
+  <div class="card mx-2 my-3 p-3 light-beige-colored shadow-sm">
 
-  <p>
-    <strong>Commande:</strong>
-    <%= meeting.commande_id %>
-  </p>
+    <p>
+      <strong>Nom:</strong>
+      <%= meeting.nom %>
+    </p>
 
-  <p>
-    <strong>Client:</strong>
-    <%= meeting.client_id %>
-  </p>
+    <p>
+      <strong>Datedebut:</strong>
+      <%= meeting.datedebut %>
+    </p>
 
-  <p>
-    <strong>Lieu:</strong>
-    <%= meeting.lieu %>
-  </p>
+    <p>
+      <strong>Datefin:</strong>
+      <%= meeting.datefin %>
+    </p>
+
+    <p>
+      <strong>Commande:</strong>
+      <%= meeting.commande_id %>
+    </p>
+
+    <p>
+      <strong>Client:</strong>
+      <%= meeting.client_id %>
+    </p>
+
+    <p>
+      <strong>Lieu:</strong>
+      <%= meeting.lieu %>
+    </p>
+
+    <%= links_record(meeting) %>  
+
+  </div>
 
 </div>

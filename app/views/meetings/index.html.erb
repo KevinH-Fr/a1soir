@@ -1,14 +1,37 @@
-<p style="color: green"><%= notice %></p>
+<%= bandeau_entete("Rendez-vous", "date", @meetings.count, "your-search") %>
 
-<h1>Meetings</h1>
+<%= bloc_nouveau(Meeting) %>
 
-<div id="meetings">
-  <% @meetings.each do |meeting| %>
-    <%= render meeting %>
-    <p>
-      <%= link_to "Show this meeting", meeting %>
-    </p>
-  <% end %>
+
+<div class="container m-3 text-center">
+  <%= link_to 'Jour', { type: 'day', date: @date }, class: 'btn btn-outline-primary' %>
+  <%= link_to 'Semaine', { type: 'week', date: @date }, class: 'btn btn-outline-primary' %>
+  <%= link_to 'Mois', { type: 'month', date: @date }, class: 'btn btn-outline-primary' %>
 </div>
 
-<%= link_to "New meeting", new_meeting_path %>
+<div class="text-center my-4 m-2"> 
+
+  <% if @calendar_type == "day" %>
+    <%= calendar(number_of_days: 1, events: @meetings_periode) do |date, meetings| %>
+      <%= render partial: 'calendar', locals: { date: date, meetings: meetings } %>
+    <% end %>
+  <% elsif @calendar_type == "week" %>
+    <%= week_calendar(events: @meetings_periode) do |date, meetings| %>
+      <%= render partial: 'calendar', locals: { date: date, meetings: meetings } %>
+    <% end %>
+  <% elsif @calendar_type == "month" %>
+    <%= month_calendar(events: @meetings_periode) do |date, meetings| %>
+      <%= render partial: 'calendar', locals: { date: date, meetings: meetings } %>
+    <% end %>
+  <% end %>
+
+
+  <hr>
+
+  <div class="container text-end">
+    <%= link_to "S'abonner au calendrier", meetings_url(protocol: :webcal, format: :ics), 
+          class:"btn btn-sm btn-primary fw-bold" %>  
+  </div>
+
+
+</div>

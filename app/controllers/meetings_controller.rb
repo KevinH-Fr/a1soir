@@ -1,9 +1,14 @@
 class MeetingsController < ApplicationController
   before_action :set_meeting, only: %i[ show edit update destroy ]
 
-  # GET /meetings or /meetings.json
   def index
     @meetings = Meeting.all
+
+    @meetings_periode = Meeting.where(
+      datedebut: Time.now.beginning_of_month.beginning_of_week..
+      Time.now.end_of_month.end_of_week)
+
+    @calendar_type = params[:type] || 'month'
   end
 
   # GET /meetings/1 or /meetings/1.json
