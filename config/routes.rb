@@ -81,8 +81,14 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :meetings do 
+    member do
+      post :edit
+    end
+  end
+
+
   resources :messagemails
-  resources :meetings
   resources :sousarticles
   resources :textes
   resources :messages

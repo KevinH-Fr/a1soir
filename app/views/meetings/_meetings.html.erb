@@ -1,0 +1,36 @@
+<%= card_main_model(
+  "Meetings", 
+  "calendar", 
+  link_to("", "#collapseNewMeeting", 
+  class: "fa fa-plus btn btn-warning fw-bold", 
+  data: { bs_toggle: "collapse" }, 
+  role: "button", aria: { expanded: "false", controls: "collapseNewMeeting" })) %>
+
+
+<% if @commande %>
+    <div class="collapse" id="collapseNewMeeting">
+        <div id="new_meeting" class="mb-3">
+            <%= render partial: 'meetings/form', locals: { commande_id: @commande.id, meeting: Meeting.new } %>
+        </div>
+    </div>
+
+    <div id="meetings">
+        <% @commande.meetings.each do |meeting| %>
+            <%= render partial: 'meetings/meeting', locals: { meeting: meeting } %>
+        <% end %>
+    </div>
+
+<% elsif @client %>
+    <div class="collapse" id="collapseNewMeeting">
+        <div id="new_meeting" class="mb-3">
+            <%= render partial: 'meetings/form', locals: { client_id: @client.id, meeting: Meeting.new } %>
+        </div>
+    </div>
+
+    <div id="meetings">
+        <% @client.meetings.each do |meeting| %>
+            <%= render partial: 'meetings/meeting', locals: { meeting: meeting } %>
+        <% end %>
+    </div>
+<% end %>
+

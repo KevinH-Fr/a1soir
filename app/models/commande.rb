@@ -5,6 +5,7 @@ class Commande < ApplicationRecord
   has_many :articles
   has_many :paiement_recus
   has_many :avoir_rembs
+  has_many :meetings 
   
   def full_name
     "ref#{id}_#{nom}"

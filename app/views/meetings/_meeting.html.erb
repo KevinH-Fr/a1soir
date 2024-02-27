@@ -9,30 +9,32 @@
     </p>
 
     <p>
-      <strong>Datedebut:</strong>
-      <%= meeting.datedebut %>
+      <strong>Date:</strong>
+      <%= l(meeting.datedebut , format: :short) %> -
+      <%= l(meeting.datefin , format: :short) %>
     </p>
 
-    <p>
-      <strong>Datefin:</strong>
-      <%= meeting.datefin %>
-    </p>
-
-    <p>
-      <strong>Commande:</strong>
-      <%= meeting.commande_id %>
-    </p>
-
-    <p>
-      <strong>Client:</strong>
-      <%= meeting.client_id %>
-    </p>
-
-    <p>
-      <strong>Lieu:</strong>
-      <%= meeting.lieu %>
-    </p>
-
+    <% if meeting.commande %>
+      <p>
+        <strong>Commande:</strong>
+        <%= meeting.commande.full_name %>
+      </p>
+    <% end %>
+    
+    <% if meeting.client %>
+      <p>
+        <strong>Client:</strong>
+        <%= meeting.client.full_name %>
+      </p>
+    <% end %>
+    
+    <% if meeting.lieu.present? %>
+      <p>
+        <strong>Lieu:</strong>
+        <%= meeting.lieu %>
+      </p>    
+    <% end %>
+    
     <%= links_record(meeting) %>  
 
   </div>

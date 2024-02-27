@@ -3,6 +3,8 @@ class MeetingsController < ApplicationController
 
   def index
     @meetings = Meeting.all
+    @commandes = Commande.all
+    @clients = Client.all
 
     @meetings_periode = Meeting.where(
       datedebut: Time.now.beginning_of_month.beginning_of_week..
@@ -20,8 +22,15 @@ class MeetingsController < ApplicationController
     @meeting = Meeting.new
   end
 
-  # GET /meetings/1/edit
   def edit
+    respond_to do |format|
+      format.html 
+      format.turbo_stream do  
+        render turbo_stream: turbo_stream.update(@meeting, 
+          partial: "meetings/form", 
+          locals: {meeting: @meeting})
+      end
+    end
   end
 
   # POST /meetings or /meetings.json

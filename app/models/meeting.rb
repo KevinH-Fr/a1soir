@@ -1,16 +1,18 @@
 class Meeting < ApplicationRecord
-  belongs_to :commande
-  belongs_to :client
+  belongs_to :commande, optional: true
+  belongs_to :client, optional: true
 
   validates :datedebut, uniqueness: true
+
+  LIEU_OPTIONS = ['boutique', 'exterieur']
 
   def full_name
     if client.present?
       "#{nom} - #{client.full_name}"
     elsif commande.present?
-       #{commande.client.full_name}" 
+      "#{commande.client.full_name}" 
     else
-      name 
+      nom 
     end 
   end
   
@@ -20,7 +22,7 @@ class Meeting < ApplicationRecord
     elsif commande_id.present?
        "#{commande.client.full_name} - #{commande.client.tel}"     
     else
-              
+      nom     
     end 
   end
 

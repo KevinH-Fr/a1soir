@@ -1,12 +1,12 @@
-<%= bandeau_entete("Rendez-vous", "date", @meetings.count, "your-search") %>
+<%= bandeau_entete("Rendez-vous", "calendar", @meetings.count, "your-search") %>
 
 <%= bloc_nouveau(Meeting) %>
 
 
 <div class="container m-3 text-center">
-  <%= link_to 'Jour', { type: 'day', date: @date }, class: 'btn btn-outline-primary' %>
-  <%= link_to 'Semaine', { type: 'week', date: @date }, class: 'btn btn-outline-primary' %>
-  <%= link_to 'Mois', { type: 'month', date: @date }, class: 'btn btn-outline-primary' %>
+  <%= link_to 'Jour', { type: 'day'}, class: 'btn btn-outline-primary' %>
+  <%= link_to 'Semaine', { type: 'week'}, class: 'btn btn-outline-primary' %>
+  <%= link_to 'Mois', { type: 'month' }, class: 'btn btn-outline-primary' %>
 </div>
 
 <div class="text-center my-4 m-2"> 
