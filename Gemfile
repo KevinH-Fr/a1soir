@@ -79,3 +79,5 @@ gem "wkhtmltopdf-heroku", group: :production
 gem "letter_opener", group: :development
 
 gem "simple_calendar"
+
+gem "rqrcode", "~> 2.0"
