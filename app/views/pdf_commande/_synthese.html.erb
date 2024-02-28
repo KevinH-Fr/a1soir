@@ -81,25 +81,23 @@
         </table>
     </div>
 
-    <%# if @messagemail.commentairedoc? %>
+    <% if @doc_edition.commentaires %>
         <div class="cadre my-2">
         <span class="bolded">Commentaires </span> 
         <span class=""> <%= @doc_edition.commentaires %> </span> <br>
         <br>
         </div>
-    <%# end %>
+    <% end %>
 
-    <%# @meeting = Meeting.where(commande_id: @commande.id).last %>
-    <%# if @meeting.present? && @meeting.start_time > DateTime.now %>
+    <% if @doc_edition.commande.meetings.where('datedebut > ?', DateTime.now).exists? %>
     <br>
         <div class="cadre my-2">
             <span class="bolded">Prochain rendez-vous: </span> <br>
             <span class=""> 
-                <%#= @meeting.name %> | 
-                <%#= @meeting.start_time.strftime("%d/%m/%y" " à %H:%M") %> 
+                <%= @doc_edition.commande.meetings.first.start_time.strftime("%d/%m/%y" " à %H:%M") %> 
             </span> <br>
         </div>
-    <%# end %>
+    <% end %>
 
     <br>
     <div class="cadre my-2 bloc-mention mt-2">

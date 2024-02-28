@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_27_155634) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_27_173719) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -168,18 +168,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_27_155634) do
     t.index ["commande_id"], name: "index_meetings_on_commande_id"
   end
 
-  create_table "messagemails", force: :cascade do |t|
-    t.string "titre"
-    t.text "body"
-    t.text "commentaires"
-    t.integer "commande_id"
-    t.integer "client_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["client_id"], name: "index_messagemails_on_client_id"
-    t.index ["commande_id"], name: "index_messagemails_on_commande_id"
-  end
-
   create_table "messages", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -287,8 +275,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_27_155634) do
   add_foreign_key "doc_editions", "commandes"
   add_foreign_key "meetings", "clients"
   add_foreign_key "meetings", "commandes"
-  add_foreign_key "messagemails", "clients"
-  add_foreign_key "messagemails", "commandes"
   add_foreign_key "paiement_recus", "commandes"
   add_foreign_key "paiements", "commandes"
   add_foreign_key "produits", "categorie_produits"
