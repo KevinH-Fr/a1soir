@@ -20,15 +20,6 @@
  <br> <br>
 
 
-
-<% if @commande.meetings.where('datedebut > ?', DateTime.now).exists? %>
-    <%= @commande.meetings.ids %>
-<% end %>
-
-
-
-
-
 <footer class="fixed-bottom footer-index bg-dark">
     <%= render 'commandes/footer' %>
 </footer>

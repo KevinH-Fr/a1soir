@@ -15,10 +15,12 @@
     </p>
 
     <% if meeting.commande %>
-      <p>
-        <strong>Commande:</strong>
-        <%= meeting.commande.full_name %>
-      </p>
+      <% unless controller_name == 'commandes' && action_name == 'show' %>
+        <p>
+          <strong>Commande:</strong>
+          <%= meeting.commande.full_name %>
+        </p>
+      <% end %>
     <% end %>
     
     <% if meeting.client %>

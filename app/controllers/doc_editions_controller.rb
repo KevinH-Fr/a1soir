@@ -130,20 +130,20 @@ class DocEditionsController < ApplicationController
   private
 
   def generate_pdf_data
-    WickedPdf.new.pdf_from_string(
-      render_to_string(
-        template: "pdf_commande/document",
-        formats: [:html],
-        disposition: :inline,
-        layout: 'pdf'
-      ),
+    pdf_html = render_to_string(template: 'pdf_commande/document', layout: 'pdf')
+    pdf_options = {
       header: {
-        content: render_to_string('shared/doc_entete')
+        content: render_to_string('shared/doc_entete', layout: 'pdf'),
+        spacing: 10
       },
       footer: {
-        content: render_to_string('shared/doc_footer')
+        content: render_to_string('shared/doc_footer', layout: 'pdf'),
+        spacing: 10
       }
-    )
+    }
+    
+    pdf = WickedPdf.new.pdf_from_string(pdf_html, pdf_options)
+
   end
 
   def send_pdf_data(pdf_data, filename)

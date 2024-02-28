@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'pdf_generator/generate_pdf'
   get 'users/index'
 
   get 'stock/index'
