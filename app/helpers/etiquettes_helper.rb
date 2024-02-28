@@ -1,0 +1,2 @@
+module EtiquettesHelper
+end

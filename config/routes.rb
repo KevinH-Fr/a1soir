@@ -111,6 +111,11 @@ Rails.application.routes.draw do
   get '/generate_commande_doc_editions', to: 'doc_editions#generate_commande'
   post '/send_email', to: 'doc_editions#send_email'
 
+   # etiquettes
+
+   get 'etiquettes/index'
+   get "/etiquettes/edition", to: "etiquettes#edition", as: :edition_etiquettes
+ 
 
   get "home_admin", to: "home_admin#index"
 

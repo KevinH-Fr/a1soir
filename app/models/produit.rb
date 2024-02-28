@@ -24,6 +24,9 @@ class Produit < ApplicationRecord
     end
   end
 
+  def nom_ref_couleur_taille 
+    "#{nom} | #{reffrs} | #{couleur&.nom} | #{taille&.nom}"
+  end 
 
   def generate_qr
       GenerateQr.call(self)

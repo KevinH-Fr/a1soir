@@ -16,7 +16,7 @@ class MeetingsController < ApplicationController
       format.html
       format.ics do
         cal = Icalendar::Calendar.new
-        cal.x_wr_calname = 'A1soir_new_app1'
+        cal.x_wr_calname = 'A1soir_new_app2'
 
         @meetings.each do | meeting |
 
