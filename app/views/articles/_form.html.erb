@@ -17,7 +17,7 @@
     <% end %>
 
 
-    <% unless article.persisted? %>
+    <% unless article.persisted? || @produit_scan.present? %>
 
       <%= render 'articles/selection' %>
 
@@ -47,8 +47,7 @@
 
     <%#= form.hidden_field :produit_id, value: produit_id  %>
 
-    <%#= form.text_field :produit_id   %>
-
+    <%= form.hidden_field :produit_id, value: @produit_scan.id  if @produit_scan %>
     <%= form.hidden_field :commande_id, value: session[:commande] %>
 
     <%= custom_submit_button(form) %>

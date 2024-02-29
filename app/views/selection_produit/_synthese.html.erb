@@ -1,0 +1,13 @@
+<div id="synthese-selection">
+    <div class="card m-3 p-3">  
+        <%= Time.now %> <br>
+
+        <% @produits_scan.each do |produit| %>  
+            <% if produit %>
+                <%= Produit.find(produit).id %>
+                <%= Produit.find(produit).nom %>
+            <% end %>            
+        <% end %>
+    </div>
+</div>
+

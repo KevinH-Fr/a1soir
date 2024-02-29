@@ -23,12 +23,16 @@
 
   <form data-action="submit@submit->rails#create">
     <input type="hidden" id="scan" name="scan">
-    <button type="submit" id="submitButton" class= "btn btn-success my-3" style="display: none;">Valider</button>
   </form>
 
   </div>
 </div>
 
-<% if @produits_scan.present? %>  
-  <%= Produit.find(@produits_scan.to_i).nom %>
+<% if @produit_scan.present? %>
+
+  <%= render @produit_scan %>
+
+  <%= render partial: 'articles/form', locals: { commande_id: @commande.id, produit_id: @produit_scan.id, article: Article.new } %>
+
 <% end %>
+

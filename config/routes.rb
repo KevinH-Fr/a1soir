@@ -120,7 +120,6 @@ Rails.application.routes.draw do
   get 'selection_produit', to: 'selection_produit#index'
   get 'scanqr', to: 'selection_produit#scanqr'
 
-  
   get "home_admin", to: "home_admin#index"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

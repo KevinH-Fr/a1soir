@@ -11,6 +11,7 @@ export default class extends Controller {
     this.sourceSelect = this.element.querySelector("#sourceSelect");
 
     this.populateSources();
+
   }
 
   populateSources() {
@@ -60,6 +61,8 @@ export default class extends Controller {
         this.handleResult(result);
       }
     });
+
+
   }
 
   stopScan() {
@@ -76,9 +79,6 @@ export default class extends Controller {
 
   handleResult(result) {
 
-    const btnSubmit = this.element.querySelector("#submitButton");
-    btnSubmit.style.display = "inline";
-
     // Display product information on the page
     // transforme value
     var  resultTransforme = result.toString().split('produits/')[1];
@@ -88,13 +88,37 @@ export default class extends Controller {
     resultElement.textContent = `Product ID: ${resultTransforme2}`;
     this.resultsDiv.appendChild(resultElement);
 
-     console.log(resultTransforme2);
+    console.log(resultTransforme2);
 
     this.element.querySelector("#scan").value = resultTransforme2
 
     this.codeReader.stopStreams();
     const btnReset = this.element.querySelector("#resetButton");
     btnReset.style.display = "none";
+
+  this.refreshWithParam(resultTransforme2);
+
   }
+
+
+  async refreshWithParam(resultTransforme2) {
+    const currentUrl = window.location.href;
+  
+    // Create a URL object
+    const updatedUrl = new URL(currentUrl);
+  
+    // Add the new parameter
+    updatedUrl.searchParams.set('scan', resultTransforme2);
+  
+    // Preserve existing parameters
+    const existingParams = new URLSearchParams(updatedUrl.search);
+    existingParams.forEach((value, key) => {
+      updatedUrl.searchParams.set(key, value);
+    });
+  
+    // Redirect to the updated URL
+    window.location.href = updatedUrl.toString();
+  }
+  
 
 }

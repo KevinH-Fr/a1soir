@@ -1,27 +1,18 @@
 class SelectionProduitController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:process_qr] # Skip CSRF token check for the process_qr action
 
   before_action :authenticate_user!
   before_action :authenticate_vendeur_or_admin!
   
     def index
     end
-  
-
-
-    def process_qr
-      #  render json: { success: true }
-    end
     
     def scanqr
-      @commande = params[:commande]
+      @commande = Commande.find(session[:commande])
       @article = params[:article] 
       
-      @produits_scan = params[:scan]  
-      puts "_________________value passed to rails: #{@produits_scan}_______________________________"
-
-
-    #  redirect_to root_path
+      if params[:scan]
+        @produit_scan = Produit.find(params[:scan]) 
+      end
 
     end 
 
