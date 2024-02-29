@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  get 'pdf_generator/generate_pdf'
-  get 'users/index'
-
-  get 'stock/index'
   
   resources :doc_editions do 
     member do
@@ -106,6 +102,12 @@ Rails.application.routes.draw do
     end
   end
 
+
+  get 'pdf_generator/generate_pdf'
+  get 'users/index'
+
+  get 'stock/index'
+
   #pdf generation 
 
   get '/generate_commande_doc_editions', to: 'doc_editions#generate_commande'
@@ -118,7 +120,7 @@ Rails.application.routes.draw do
  
 
   get 'selection_produit', to: 'selection_produit#index'
-  get 'scanqr', to: 'selection_produit#scanqr'
+  #get 'selection', to: 'selection_produit#index'
 
   get "home_admin", to: "home_admin#index"
 

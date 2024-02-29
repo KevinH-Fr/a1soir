@@ -1,34 +1,45 @@
 
-<div class="bloc-entete-model">
-  <div class="card card-header entete-index m-0 p-1">
-    Séléctionner le produit 
+<h2 class="text-center mb-2">Sélection produit</h2>
+
+<% unless @produit.present? %>
+
+  <div class="container d-flex justify-content-center">
+
+    <%= link_to "#collapseSelectionQr", 
+        class: "btn w-50 btn-primary m-1", "data-bs-toggle": "collapse", 
+        role: "button", "aria-expanded": "false", "aria-controls": "collapseSelectionQr" do %>
+      <i class="fa fa-qrcode m-1"></i>
+      <span class="">QR code</span>
+    <% end %>
+
+    <%= link_to "#selectionManuelle", 
+        class: "btn w-50 btn-primary m-1", "data-bs-toggle": "collapse", 
+        role: "button", "aria-expanded": "false", "aria-controls": "selectionManuelle" do %>
+      <i class="fa fa-hand m-1"></i>
+      <span class="">Sélection manuelle</span>
+    <% end %>
+
   </div>
+
+<% end %>
+
+
+<div class="collapse" id="collapseSelectionQr">
+  <%= render "selection_qr" %>
 </div>
 
-<div class="card"> <%= render "selection_produit/search" %> </div>
-<div class="card my-1"> <%= render "selection_produit/choixCategorie" %> </div>
-
-<hr>
-
-<div class="bloc-record">
-    <%= render "selection_produit/listeSelection" %>
+<div class="collapse" id="selectionManuelle">
+  <%= render"selection_manuelle" %>
 </div>
 
-<hr><br><br>
 
-<div class="fixed-bottom footer-index text-center bg-dark">
-    <div class="row justify-content-evenly">
-        <div class="col text-start">
-            <%= link_to "", commande_path(@commandeId), class:"fa-solid fa-rotate-left btn btn-sm btn-secondary" %> 
-        </div>
-        <div class="col text-center">
-            <div class="badge bg-dark">
-              <%== pagy_nav(@pagy) %>
-            </div>
-        </div>
-        <div class="col text-end">
-          <span class="badge text-bg-secondary"> <%= Commande.find(@commandeId).texte_record if @commandeId.present? %> </span> 
-          <span class="badge text-bg-secondary"> <%= Client.find(@clientId).full_name if @clientId.present? %> </span> 
-        </div>
-    </div>
+<% if @produit.present? %>
+  <%= render @produit %>
+  <%= render partial: 'articles/form', locals: { commande_id: @commande.id, produit_id: @produit.id, article: Article.new } %>
+<% end %>
+
+
+
+<div class="fixed-bottom bg-light p-3">
+  <%= return_model_index_button("Retour vers commande", commande_path(@commande)) %>
 </div>

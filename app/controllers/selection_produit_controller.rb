@@ -4,17 +4,19 @@ class SelectionProduitController < ApplicationController
   before_action :authenticate_vendeur_or_admin!
   
     def index
-    end
-    
-    def scanqr
+      @produits = Produit.all 
+      
       @commande = Commande.find(session[:commande])
       @article = params[:article] 
       
-      if params[:scan]
-        @produit_scan = Produit.find(params[:scan]) 
+      if params[:produit]
+        @produit = Produit.find(params[:produit]) 
+        puts "_________________produit slected: #{@produit.id}__________________________"
       end
 
-    end 
+
+    end
+    
 
     private
 

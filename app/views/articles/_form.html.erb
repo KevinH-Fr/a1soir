@@ -1,7 +1,6 @@
-<%= turbo_frame_tag "article_form" do %>
+<%#= turbo_frame_tag "article_form" do %>
 
   <div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
-
 
   <%= form_with(model: article) do |form| %>
     <% if article.errors.any? %>
@@ -17,11 +16,11 @@
     <% end %>
 
 
-    <% unless article.persisted? || @produit_scan.present? %>
+    <%# unless article.persisted? || @produit.present? %>
 
-      <%= render 'articles/selection' %>
+      <%#= render 'articles/selection' %>
 
-    <% end %>
+    <%# end %>
 
     <%= custom_form_elements(form, 
       [:quantite, :number_field], [:prix, :number_field],
@@ -47,7 +46,7 @@
 
     <%#= form.hidden_field :produit_id, value: produit_id  %>
 
-    <%= form.hidden_field :produit_id, value: @produit_scan.id  if @produit_scan %>
+    <%= form.hidden_field :produit_id, value: @produit.id  if @produit %>
     <%= form.hidden_field :commande_id, value: session[:commande] %>
 
     <%= custom_submit_button(form) %>
@@ -56,4 +55,4 @@
 
   </div>
 
-<% end %>
+<%# end %>

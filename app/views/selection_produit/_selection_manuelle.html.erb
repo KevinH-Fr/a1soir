@@ -1,0 +1,12 @@
+
+<% @produits.each do |produit| %>
+
+
+    <%= link_to url_for(produit: produit) do %>
+        <div class="card d-flex align-items-center mb-2">
+                <%= image_tag(produit.image1, width: 100) if produit.image1.present? %>
+                <%= produit.full_name %>
+        </div>
+        <% end %>
+    <% end %>
+    

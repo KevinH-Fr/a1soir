@@ -90,7 +90,7 @@ export default class extends Controller {
 
     console.log(resultTransforme2);
 
-    this.element.querySelector("#scan").value = resultTransforme2
+    this.element.querySelector("#produit").value = resultTransforme2
 
     this.codeReader.stopStreams();
     const btnReset = this.element.querySelector("#resetButton");
@@ -108,7 +108,7 @@ export default class extends Controller {
     const updatedUrl = new URL(currentUrl);
   
     // Add the new parameter
-    updatedUrl.searchParams.set('scan', resultTransforme2);
+    updatedUrl.searchParams.set('produit', resultTransforme2);
   
     // Preserve existing parameters
     const existingParams = new URLSearchParams(updatedUrl.search);

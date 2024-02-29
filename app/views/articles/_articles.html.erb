@@ -1,19 +1,14 @@
 <%= card_main_model(
   "Articles", 
   "shirt", 
-  link_to("",
-  "#collapseNewArticle", 
-  class: "fa fa-plus btn btn-warning fw-bold", 
-  data: { bs_toggle: "collapse" }, 
-  role: "button", aria: { expanded: "false", controls: "collapseNewArticle" })) %>
-
-<%= link_to "", scanqr_path(commande: @commande), 
-      class:"fa-solid fa-qrcode btn btn-sm btn-primary m-1 p-2", data: { turbo: false }  %> 
+  link_to("", selection_produit_path(commande: @commande), 
+  class:"fa-solid fa-plus btn btn-sm btn-warning m-1 p-2"
+)) %>
 
 <div class="collapse" id="collapseNewArticle">
-    <div id="new_article" class="mb-3">
-        <%= render partial: 'articles/form', locals: { commande_id: @commande.id, article: Article.new } %>
-    </div>
+  <div id="new_article" class="mb-3">
+    <%= render partial: 'articles/form', locals: { commande_id: @commande.id, article: Article.new } %>
+  </div>
 </div>
 
 <div id="articles">
