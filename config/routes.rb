@@ -111,12 +111,16 @@ Rails.application.routes.draw do
   get '/generate_commande_doc_editions', to: 'doc_editions#generate_commande'
   post '/send_email', to: 'doc_editions#send_email'
 
-   # etiquettes
+  # etiquettes
 
-   get 'etiquettes/index'
-   get "/etiquettes/edition", to: "etiquettes#edition", as: :edition_etiquettes
+  get 'etiquettes/index'
+  get "/etiquettes/edition", to: "etiquettes#edition", as: :edition_etiquettes
  
 
+  get 'selection_produit', to: 'selection_produit#index'
+  get 'scanqr', to: 'selection_produit#scanqr'
+
+  
   get "home_admin", to: "home_admin#index"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

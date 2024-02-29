@@ -18,6 +18,8 @@ class ProduitsController < ApplicationController
   def new
     @produit = Produit.new
     @categorie_produits = CategorieProduit.all
+    @couleurs = Couleur.all 
+    @tailles = Taille.all 
 
   end
 
@@ -41,6 +43,8 @@ class ProduitsController < ApplicationController
   def create
     @produit = Produit.new(produit_params)
     @categorie_produits = CategorieProduit.all
+    @couleurs = Couleur.all 
+    @tailles = Taille.all 
 
     respond_to do |format|
       if @produit.save
