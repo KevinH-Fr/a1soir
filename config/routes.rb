@@ -126,6 +126,7 @@ Rails.application.routes.draw do
     collection do
       post 'display_qr'
       post 'display_manuelle'
+      post 'display_categorie_selected'
     end
   end
 

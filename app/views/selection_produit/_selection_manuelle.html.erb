@@ -1,24 +1,19 @@
 
 <%# ajouter logique pour filtres et recherche %>
 
-
-
-<% @produits.each do |produit| %>
-  <%= link_to selection_produit_path(produit: produit), remote: true do %>
-
-    <div class="card mb-3">
-        <div class="row g-0">
-            <div class="col-md-4">
-                <%= image_tag(produit.default_image, width: 100) %>
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title"> <%= produit.full_name %> </h5>
-                    <p class="card-text"> <%= produit.description %></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
+<div class="d-flex flex-wrap justify-content-center align-items-center py-4">
+  <% @categorie_produits.each do |categorie_produit| %>
+    <%= button_to display_categorie_selected_selection_produit_index_path(categorie_produit: categorie_produit), class: "btn btn-primary m-2 btn-topic mx-3 px-4",
+      data: { controller: "button-color", action: "click->button-color#handleClick" },
+      "data-original-color": "text-primary" do %>
+      <i class="fa fa-solid fa-xl text-primary <%= categorie_produit.nom.downcase.parameterize %>"></i>
+      <span class="ms-1 fw-bold text-light"><%= categorie_produit.nom %></span>
+    <% end %>
   <% end %>
-<% end %>
+</div>
+
+
+<div id="partial-categorie-selected" class="">
+  <%# recoit le turbo stream avec elements cliqués %>
+</div>
+
