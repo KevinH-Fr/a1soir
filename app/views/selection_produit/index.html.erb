@@ -1,45 +1,35 @@
-
 <h2 class="text-center mb-2">Sélection produit</h2>
 
 <% unless @produit.present? %>
+  <% button_configs = [
+    { path: display_qr_selection_produit_index_path, icon: "fa-qrcode", text: "QR code", color: "text-primary" },
+    { path: display_manuelle_selection_produit_index_path, icon: "fa-hand", text: "Manuelle", color: "text-secondary" }
+  ] %>
 
-  <div class="container d-flex justify-content-center">
-
-    <%= link_to "#collapseSelectionQr", 
-        class: "btn w-50 btn-primary m-1", "data-bs-toggle": "collapse", 
-        role: "button", "aria-expanded": "false", "aria-controls": "collapseSelectionQr" do %>
-      <i class="fa fa-qrcode m-1"></i>
-      <span class="">QR code</span>
+<div class="d-flex flex-wrap justify-content-center align-items-center py-4">
+  <% button_configs.each do |config| %>
+    <%= button_to config[:path], class: "btn m-2 btn-topic mx-3 px-4",
+      data: { controller: "button-color", action: "click->button-color#handleClick" },
+      "data-original-color": config[:color] do %>
+      <i class="fa fa-solid fa-xl <%= config[:icon] %> <%= config[:color] %> <%= config[:text].downcase.parameterize %> <%= config[:color] %>" data-target="button-color.icon"></i>
+      <span class="ms-1 fw-bold text-dark"><%= config[:text] %></span>
     <% end %>
-
-    <%= link_to "#selectionManuelle", 
-        class: "btn w-50 btn-primary m-1", "data-bs-toggle": "collapse", 
-        role: "button", "aria-expanded": "false", "aria-controls": "selectionManuelle" do %>
-      <i class="fa fa-hand m-1"></i>
-      <span class="">Sélection manuelle</span>
-    <% end %>
-
-  </div>
+  <% end %>
+</div>
 
 <% end %>
 
-
-<div class="collapse" id="collapseSelectionQr">
-  <%= render "selection_qr" %>
+<div id="partial-container" class="partial-topic">
+  <%# recoit le turbo stream avec elements cliqués %>
+  <% if @produit.present? %>
+    <%= render @produit %>
+    <%= render partial: 'articles/form', locals: { commande_id: @commande.id, produit_id: @produit.id, article: Article.new } %>
+  <% end %>
 </div>
 
-<div class="collapse" id="selectionManuelle">
-  <%= render"selection_manuelle" %>
-</div>
+<br> <br>
 
-
-<% if @produit.present? %>
-  <%= render @produit %>
-  <%= render partial: 'articles/form', locals: { commande_id: @commande.id, produit_id: @produit.id, article: Article.new } %>
-<% end %>
-
-
-
-<div class="fixed-bottom bg-light p-3">
+<div class="fixed-bottom bg-light">
   <%= return_model_index_button("Retour vers commande", commande_path(@commande)) %>
 </div>
+

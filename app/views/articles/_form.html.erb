@@ -17,9 +17,7 @@
 
 
     <%# unless article.persisted? || @produit.present? %>
-
       <%#= render 'articles/selection' %>
-
     <%# end %>
 
     <%= custom_form_elements(form, 
@@ -44,9 +42,7 @@
       [:caution, :number_field], [:longueduree, :check_box], [:commentaires, :text_area])
     %>
 
-    <%#= form.hidden_field :produit_id, value: produit_id  %>
-
-    <%= form.hidden_field :produit_id, value: @produit.id  if @produit %>
+    <%= form.hidden_field :produit_id, value: @produit.id if @produit %>
     <%= form.hidden_field :commande_id, value: session[:commande] %>
 
     <%= custom_submit_button(form) %>

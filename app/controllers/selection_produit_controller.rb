@@ -2,9 +2,8 @@ class SelectionProduitController < ApplicationController
 
   before_action :authenticate_user!
   before_action :authenticate_vendeur_or_admin!
-  
+      
     def index
-      @produits = Produit.all 
       
       @commande = Commande.find(session[:commande])
       @article = params[:article] 
@@ -14,6 +13,28 @@ class SelectionProduitController < ApplicationController
         puts "_________________produit slected: #{@produit.id}__________________________"
       end
 
+    end
+
+    def display_qr
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(
+            'partial-container', partial: 'selection_produit/selection_qr'
+          )
+        end
+      end
+    end
+
+    def display_manuelle
+      @produits = Produit.all 
+
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(
+            'partial-container', partial: 'selection_produit/selection_manuelle'
+          )
+        end
+      end
 
     end
     
