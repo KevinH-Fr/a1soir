@@ -6,33 +6,22 @@ export default class extends Controller {
   }
 
   handleClick(event) {
-    const buttons = document.getElementsByClassName("btn-topic");
     const clickedButton = event.currentTarget;
-
-    for (const button of buttons) {
-      if (button === clickedButton) {
-        button.classList.add("active");
-        this.changeIconColor(button, true);
-      } else {
-        button.classList.remove("active");
-        this.changeIconColor(button, false);
+    const container = clickedButton.closest(".d-flex"); // limiter a div 
+  
+    if (container) {
+      const buttons = container.getElementsByClassName("btn-topic");
+  
+      for (const button of buttons) {
+        if (button === clickedButton) {
+          button.classList.add("active");
+        } else {
+          button.classList.remove("active");
+        }
       }
     }
-
-    
   }
-
-  changeIconColor(button, isActive) {
-    const icon = button.querySelector(".fa");
-    const originalColor = button.dataset.originalColor || "text-dark";
-    const iconColor = button.dataset.iconColor || originalColor;
-
-    if (isActive) {
-      icon.style.color = "white";
-    } else {
-      icon.style.color = iconColor;
-    }
-  }
-
+  
+ 
   
 }

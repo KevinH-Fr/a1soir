@@ -32,4 +32,8 @@ class Produit < ApplicationRecord
       GenerateQr.call(self)
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["categorie_produit_id", "caution", "couleur_id", "created_at", "dateachat", "description", "fournisseur_id", "handle", "id", "id_value", "nom", "prixachat", "prixlocation", "prixvente", "quantite", "reffrs", "taille_id", "updated_at"]
+  end
+
 end

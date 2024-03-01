@@ -127,6 +127,8 @@ Rails.application.routes.draw do
       post 'display_qr'
       post 'display_manuelle'
       post 'display_categorie_selected'
+      post 'display_taille_selected'
+      post 'display_couleur_selected'
     end
   end
 

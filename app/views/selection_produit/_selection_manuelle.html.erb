@@ -1,17 +1,14 @@
 
-<%# ajouter logique pour filtres et recherche %>
-
-<div class="d-flex flex-wrap justify-content-center align-items-center py-4">
+<div class="d-flex flex-wrap justify-content-center align-items-center">
   <% @categorie_produits.each do |categorie_produit| %>
-    <%= button_to display_categorie_selected_selection_produit_index_path(categorie_produit: categorie_produit), class: "btn btn-primary m-2 btn-topic mx-3 px-4",
-      data: { controller: "button-color", action: "click->button-color#handleClick" },
-      "data-original-color": "text-primary" do %>
-      <i class="fa fa-solid fa-xl text-primary <%= categorie_produit.nom.downcase.parameterize %>"></i>
-      <span class="ms-1 fw-bold text-light"><%= categorie_produit.nom %></span>
+    <%= button_to display_categorie_selected_selection_produit_index_path(
+        categorie_produit: categorie_produit), class: "btn btn-outline-primary m-2 btn-topic px-4",
+        data: { controller: "button-color", action: "click->button-color#handleClick" },
+        "data-original-color": "text-primary" do %>
+      <span class="ms-1 fw-bold"><%= categorie_produit.nom %></span>
     <% end %>
   <% end %>
 </div>
-
 
 <div id="partial-categorie-selected" class="">
   <%# recoit le turbo stream avec elements cliqués %>

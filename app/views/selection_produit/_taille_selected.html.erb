@@ -1,17 +1,16 @@
 <div class="d-flex flex-wrap justify-content-center align-items-center">
-  <% @tailles.each do |taille| %>
-    <%= button_to display_taille_selected_selection_produit_index_path(categorie_produit: @categorie_produit, taille: taille), 
+  <% @couleurs.each do |couleur| %>
+    <%= button_to display_couleur_selected_selection_produit_index_path(
+        categorie_produit: @categorie_produit, taille: @taille, couleur: couleur), 
         class: "btn btn-outline-primary m-2 btn-topic px-4",
         data: { controller: "button-color", action: "click->button-color#handleClick" },
         "data-original-color": "text-primary" do %>
-        <span class="ms-1 fw-bold"><%= taille.nom %></span>
+        <span class="ms-1 fw-bold"><%= couleur.nom %></span>
     <% end %>
   <% end %>
 </div>
 
 
-<div id="partial-taille-selected" class="">
+<div id="partial-couleur-selected" class="">
   <%# recoit le turbo stream avec elements cliqués %>
 </div>
-
-
