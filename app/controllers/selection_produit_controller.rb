@@ -9,6 +9,8 @@ class SelectionProduitController < ApplicationController
     if params[:article]
       @article = Article.find(params[:article])
       session[:article] = params[:article]
+    else 
+      session[:article] = nil
     end 
     
     if params[:produit]

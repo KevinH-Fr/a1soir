@@ -2,19 +2,20 @@ module CommandesHelper
 
     def compte_articles(commande)
         if commande 
-            commande.articles.sum(:quantite)
-    
+            commande.articles.sum(:quantite) 
         end
     end
 
     def du_prix(commande)
-        commande.articles.sum(:total)
-        # + Article.joins(:sousarticles).commande_courante(@commande).sum_sousarticles
+        prix_articles = commande.articles.sum(:total)
+        prix_sous_articles = commande.articles.joins(:sousarticles).sum('sousarticles.prix')
+        prix_articles + prix_sous_articles
     end
    
     def du_caution(commande)
-        commande.articles.sum(:totalcaution)
-        # ajouter sum caution sous articles?
+        caution_articles = commande.articles.sum(:totalcaution)
+        caution_sous_articles = commande.articles.joins(:sousarticles).sum('sousarticles.caution')
+        caution_articles + caution_sous_articles
     end 
 
     def recu_prix(commande)

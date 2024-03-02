@@ -1,16 +1,13 @@
 class SousarticlesController < ApplicationController
   before_action :set_sousarticle, only: %i[ show edit update destroy ]
 
-  # GET /sousarticles or /sousarticles.json
   def index
     @sousarticles = Sousarticle.all
   end
 
-  # GET /sousarticles/1 or /sousarticles/1.json
   def show
   end
 
-  # GET /sousarticles/new
   def new
     @sousarticle = Sousarticle.new
   end
@@ -29,13 +26,15 @@ class SousarticlesController < ApplicationController
     end
   end
 
-  # POST /sousarticles or /sousarticles.json
   def create
     @sousarticle = Sousarticle.new(sousarticle_params)
 
     respond_to do |format|
       if @sousarticle.save
-        format.html { redirect_to sousarticle_url(@sousarticle), notice: "Sousarticle was successfully created." }
+
+        @commande = @sousarticle.article.commande
+
+        format.html { redirect_to commande_url(@commande), notice: "Sousarticle was successfully created." }
         format.json { render :show, status: :created, location: @sousarticle }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -48,6 +47,29 @@ class SousarticlesController < ApplicationController
   def update
     respond_to do |format|
       if @sousarticle.update(sousarticle_params)
+
+        @commande = @sousarticle.article.commande
+
+        flash.now[:success] = "sousarticle was successfully updated"
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update(@sousarticle, 
+              partial: "sousarticles/sousarticle", 
+              locals: {sousarticle: @sousarticle}),
+
+            turbo_stream.update('synthese-commande', 
+              partial: "commandes/synthese") ,
+  
+              turbo_stream.update('synthese-articles', 
+                partial: "articles/synthese", 
+                locals: { articles: @commande.articles }),
+              turbo_stream.prepend('flash', 
+                partial: 'layouts/flash', 
+                locals: { flash: flash })
+          ]
+        end
+
         format.html { redirect_to sousarticle_url(@sousarticle), notice: "Sousarticle was successfully updated." }
         format.json { render :show, status: :ok, location: @sousarticle }
       else
@@ -59,9 +81,24 @@ class SousarticlesController < ApplicationController
 
   # DELETE /sousarticles/1 or /sousarticles/1.json
   def destroy
+    @commande = @sousarticle.article.commande
     @sousarticle.destroy!
 
     respond_to do |format|
+
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.remove(@sousarticle),     
+          turbo_stream.update('synthese-articles', 
+            partial: "articles/synthese", 
+            locals: { articles: @commande.articles }),
+
+          turbo_stream.update('synthese-commande', 
+            partial: "commandes/synthese") 
+  
+          ]
+      end
+
       format.html { redirect_to sousarticles_url, notice: "Sousarticle was successfully destroyed." }
       format.json { head :no_content }
     end
