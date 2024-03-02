@@ -59,7 +59,12 @@ Rails.application.routes.draw do
     end
   end
 
-  
+  resources :sousarticles do 
+    member do
+      post :edit
+    end
+  end
+
   resources :paiement_recus do 
     member do
       post :edit
@@ -84,9 +89,6 @@ Rails.application.routes.draw do
     end
   end
 
-
-  resources :messagemails
-  resources :sousarticles
   resources :textes
   resources :messages
   

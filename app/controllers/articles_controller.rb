@@ -14,7 +14,6 @@ class ArticlesController < ApplicationController
   end
 
   def edit
-
     respond_to do |format|
       format.html 
       format.turbo_stream do  
@@ -23,9 +22,8 @@ class ArticlesController < ApplicationController
           locals: { commande_id: @article.commande_id, produit_id: @article.produit_id, article: @article})
       end
     end
-
   end
-  # POST /articles or /articles.json
+
   def create
     @article = Article.new(article_params)
 

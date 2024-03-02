@@ -15,8 +15,18 @@ class SousarticlesController < ApplicationController
     @sousarticle = Sousarticle.new
   end
 
-  # GET /sousarticles/1/edit
   def edit
+    respond_to do |format|
+      format.html 
+      format.turbo_stream do  
+        render turbo_stream: turbo_stream.update(@sousarticle, 
+          partial: "sousarticles/form", 
+          locals: { commande_id: @sousarticle.article.commande_id, 
+                    produit_id: @sousarticle.produit_id, 
+                    article: @sousarticle.article,
+                    sousarticle: @sousarticle})
+      end
+    end
   end
 
   # POST /sousarticles or /sousarticles.json
