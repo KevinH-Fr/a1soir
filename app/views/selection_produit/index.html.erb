@@ -1,4 +1,14 @@
-<h2 class="text-center mb-4">Sélection produit</h2>
+<h2 class="text-center mb-4">
+
+  <% if @article %>
+    Sélection sous-article de <%= @article.nom_complet %>    
+  <% else %>
+    Sélection article
+  <% end %>
+  pour commande <%= @commande.ref_commande %>
+
+  
+</h2>
 
 
 <div class="container-fluid d-flex justify-content-center align-items-center">
@@ -27,14 +37,10 @@
 <% end %>
 
 
-
-
-
-
 <% unless @produit.present? || params[:q] %>
   <% button_configs = [
     { path: display_qr_selection_produit_index_path, icon: "fa-qrcode", text: "QR code", color: "text-secondary" },
-    { path: display_manuelle_selection_produit_index_path, icon: "fa-hand", text: "Manuelle", color: "text-secondary" }
+    { path: display_manuelle_selection_produit_index_path(article: @article), icon: "fa-hand", text: "Manuelle", color: "text-secondary" }
   ] %>
 
   <div class="d-flex flex-wrap justify-content-center align-items-center">
@@ -54,7 +60,15 @@
   <%# recoit le turbo stream avec elements cliqués %>
   <% if @produit.present? %>
     <%= render @produit %>
-    <%= render partial: 'articles/form', locals: { commande_id: @commande.id, produit_id: @produit.id, article: Article.new } %>
+
+    <% if @article %>
+      <%= render partial: 'sousarticles/form', 
+          locals: { commande_id: @commande.id, produit_id: @produit.id, article: @article.id, sousarticle: Sousarticle.new } %>    
+    <% else %>
+      <%= render partial: 'articles/form', 
+          locals: { commande_id: @commande.id, produit_id: @produit.id, article: Article.new } %>
+    <% end %>
+    
   <% end %>
 </div>
 

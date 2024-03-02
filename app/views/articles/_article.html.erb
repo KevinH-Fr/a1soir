@@ -18,6 +18,11 @@
         total: <%= article.total %>  
         caution: <%= article.caution %>  
     
+
+        <%= link_to  "Add Sous article", selection_produit_path(
+            commande: @commande, article: article), 
+            class: "fa fa-plus btn btn-warning fw-bold" %>
+
       </div>
 
       <div class="col text-end">

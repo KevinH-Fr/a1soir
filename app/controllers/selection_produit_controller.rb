@@ -5,7 +5,11 @@ class SelectionProduitController < ApplicationController
       
   def index
     @commande = Commande.find(session[:commande])
-    @article = params[:article] 
+
+    if params[:article]
+      @article = Article.find(params[:article])
+      session[:article] = params[:article]
+    end 
     
     if params[:produit]
       @produit = Produit.find(params[:produit]) 
@@ -66,7 +70,7 @@ class SelectionProduitController < ApplicationController
     @categorie_produit = CategorieProduit.find(params[:categorie_produit])
     @taille = Taille.find(params[:taille])
 
-    @produits = Produit.where(categorie_produit: @categorie_produit, couleur: @couleur)
+  #  @produits = Produit.where(categorie_produit: @categorie_produit, couleur: @couleur)
 
     respond_to do |format|
       format.turbo_stream do
@@ -79,6 +83,8 @@ class SelectionProduitController < ApplicationController
   end 
 
   def display_couleur_selected
+
+    @article = session[:article] 
 
     @categorie_produit = CategorieProduit.find(params[:categorie_produit])
     @couleur = Couleur.find(params[:couleur])

@@ -1,52 +1,36 @@
-<%= form_with(model: sousarticle) do |form| %>
-  <% if sousarticle.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(sousarticle.errors.count, "error") %> prohibited this sousarticle from being saved:</h2>
+<div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
 
-      <ul>
-        <% sousarticle.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+  <%= form_with(model: sousarticle) do |form| %>
+    <% if sousarticle.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(sousarticle.errors.count, "error") %> prohibited this sousarticle from being saved:</h2>
+
+        <ul>
+          <% sousarticle.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div>
+      <%= form.label :article_id, style: "display: block" %>
+      <%= form.text_field :article_id, value: @article.id if @article %>
     </div>
+
+    <div>
+      <%= form.label :produit_id, style: "display: block" %>
+      <%= form.text_field :produit_id, value: @produit.id if @produit %>
+    </div>
+
+    <%= custom_form_elements(form, 
+      [:nature, :text_field], [:description, :text_area],
+      [:prix, :number_field], [:caution, :number_field], [:commentaires, :text_area])
+    %>
+
+
+    <%= custom_submit_button(form) %>
+
   <% end %>
 
-  <div>
-    <%= form.label :article_id, style: "display: block" %>
-    <%= form.text_field :article_id %>
-  </div>
-
-  <div>
-    <%= form.label :produit_id, style: "display: block" %>
-    <%= form.text_field :produit_id %>
-  </div>
-
-  <div>
-    <%= form.label :nature, style: "display: block" %>
-    <%= form.text_field :nature %>
-  </div>
-
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_area :description %>
-  </div>
-
-  <div>
-    <%= form.label :prix, style: "display: block" %>
-    <%= form.text_field :prix %>
-  </div>
-
-  <div>
-    <%= form.label :caution, style: "display: block" %>
-    <%= form.text_field :caution %>
-  </div>
-
-  <div>
-    <%= form.label :commentaires, style: "display: block" %>
-    <%= form.text_area :commentaires %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
+</div>
