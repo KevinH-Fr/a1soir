@@ -4,6 +4,7 @@ class SelectionProduitController < ApplicationController
   before_action :authenticate_vendeur_or_admin!
       
   def index
+
     @commande = Commande.find(session[:commande])
 
     if params[:article]

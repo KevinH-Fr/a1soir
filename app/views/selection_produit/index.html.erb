@@ -18,7 +18,9 @@
       <div class="input-group w-100">
         <%= f.search_field :nom_cont, class: "form-control", placeholder: 'Chercher...' %>
 
-        <%= link_to selection_produit_path, class: 'btn btn-outline-danger rounded' do %>
+        <%= hidden_field_tag 'article', params[:article] if params[:article] %>
+
+        <%= link_to selection_produit_path(article: params[:article]), class: 'btn btn-outline-danger rounded' do %>
           <i class="fa fa-xl fa-circle-xmark"></i>
         <% end %>
         
