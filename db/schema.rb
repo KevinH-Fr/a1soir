@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_27_173719) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_05_144403) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -144,6 +144,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_27_173719) do
     t.index ["commande_id"], name: "index_doc_editions_on_commande_id"
   end
 
+  create_table "ensembles", force: :cascade do |t|
+    t.integer "produit_id", null: false
+    t.integer "type_produit1_id", null: false
+    t.integer "type_produit2_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["produit_id"], name: "index_ensembles_on_produit_id"
+    t.index ["type_produit1_id"], name: "index_ensembles_on_type_produit1_id"
+    t.index ["type_produit2_id"], name: "index_ensembles_on_type_produit2_id"
+  end
+
   create_table "fournisseurs", force: :cascade do |t|
     t.string "nom"
     t.string "tel"
@@ -213,10 +224,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_27_173719) do
     t.datetime "updated_at", null: false
     t.integer "couleur_id"
     t.integer "taille_id"
+    t.integer "type_produit_id"
     t.index ["categorie_produit_id"], name: "index_produits_on_categorie_produit_id"
     t.index ["couleur_id"], name: "index_produits_on_couleur_id"
     t.index ["fournisseur_id"], name: "index_produits_on_fournisseur_id"
     t.index ["taille_id"], name: "index_produits_on_taille_id"
+    t.index ["type_produit_id"], name: "index_produits_on_type_produit_id"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -252,6 +265,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_27_173719) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "type_produits", force: :cascade do |t|
+    t.string "nom"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -273,6 +292,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_27_173719) do
   add_foreign_key "commandes", "clients"
   add_foreign_key "commandes", "profiles"
   add_foreign_key "doc_editions", "commandes"
+  add_foreign_key "ensembles", "produits"
+  add_foreign_key "ensembles", "type_produits", column: "type_produit1_id"
+  add_foreign_key "ensembles", "type_produits", column: "type_produit2_id"
   add_foreign_key "meetings", "clients"
   add_foreign_key "meetings", "commandes"
   add_foreign_key "paiement_recus", "commandes"
@@ -281,6 +303,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_27_173719) do
   add_foreign_key "produits", "couleurs"
   add_foreign_key "produits", "fournisseurs"
   add_foreign_key "produits", "tailles"
+  add_foreign_key "produits", "type_produits"
   add_foreign_key "sousarticles", "articles"
   add_foreign_key "sousarticles", "produits"
 end

@@ -33,7 +33,6 @@
 
   </div>
 
-
   <% if params[:q] %>
     <%= render "selection_produit/produits_filtres" %>
   <% end %>
@@ -58,23 +57,37 @@
 
   <% end %>
 
-<div id="partial-container" class="partial-topic">
-  <%# recoit le turbo stream avec elements cliqués %>
-  <% if @produit.present? %>
-    <%= render @produit %>
+  <div id="partial-container" class="partial-topic">
+    <%# recoit le turbo stream avec elements cliqués %>
+    <% if @produit.present? %>
+      <%= render @produit %>
 
-    <% if @article %>
-      <%= render partial: 'sousarticles/form', 
-          locals: { commande_id: @commande.id, produit_id: @produit.id, article: @article.id, sousarticle: Sousarticle.new } %>    
-    <% else %>
-      <%= render partial: 'articles/form', 
-          locals: { commande_id: @commande.id, produit_id: @produit.id, article: Article.new } %>
+      <% if @article %>
+        <%= render partial: 'sousarticles/form', 
+            locals: { commande_id: @commande.id, produit_id: @produit.id, article: @article.id, sousarticle: Sousarticle.new } %>    
+      <% else %>
+        <%= render partial: 'articles/form', 
+            locals: { commande_id: @commande.id, produit_id: @produit.id, article: Article.new } %>
+      <% end %>
+      
     <% end %>
-    
-  <% end %>
-</div>
+  </div>
 
 </div>
+
+
+  <div class="container bg-warning">
+    test ensembles <br>
+
+    types produit de la commande : 
+    <%= type_produits_in_commande(@commande) %> <br>
+
+    match: <%= find_ensemble_matching_type_produits(@commande)&.produit&.nom %>
+    
+
+  </div>
+
+
 
 <br> <br>
 

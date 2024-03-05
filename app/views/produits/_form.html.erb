@@ -26,6 +26,14 @@
         </div>
       </div>
 
+      <div class="mx-1 px-2">
+        <div class="input-group input-group">
+          <%= form.label :type_produit_id, class: "input-group-text" %>
+          <%= form.collection_select :type_produit_id, @type_produits.all.order(:nom), :id, :nom, 
+          { include_blank: 'Select' }, class: "form-select" %>
+        </div>
+      </div>
+
       <%= custom_form_elements(form, 
         [:prixvente, :text_field], [:prixlocation, :text_field],
         [:description, :text_area], [:caution, :text_field],

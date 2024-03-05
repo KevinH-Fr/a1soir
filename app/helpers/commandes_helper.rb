@@ -7,16 +7,20 @@ module CommandesHelper
     end
 
     def du_prix(commande)
-        prix_articles = commande.articles.sum(:total)
-        prix_sous_articles = commande.articles.joins(:sousarticles).sum('sousarticles.prix')
-        prix_articles + prix_sous_articles
+        if commande 
+            prix_articles = commande.articles.sum(:total)
+            prix_sous_articles = commande.articles.joins(:sousarticles).sum('sousarticles.prix')
+            prix_articles + prix_sous_articles
+        end
     end
    
     def du_caution(commande)
-        caution_articles = commande.articles.sum(:totalcaution)
-        caution_sous_articles = commande.articles.joins(:sousarticles).sum('sousarticles.caution')
-        caution_articles + caution_sous_articles
-    end 
+        if commande 
+            caution_articles = commande.articles.sum(:totalcaution)
+            caution_sous_articles = commande.articles.joins(:sousarticles).sum('sousarticles.caution')
+            caution_articles + caution_sous_articles
+        end 
+    end
 
     def recu_prix(commande)
         commande.paiement_recus.only_prix.sum(:montant)

@@ -1,0 +1,34 @@
+<%= form_with(model: ensemble) do |form| %>
+  <% if ensemble.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(ensemble.errors.count, "error") %> prohibited this ensemble from being saved:</h2>
+
+      <ul>
+        <% ensemble.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <div class="field">
+    <%= form.label :produit_id, 'Produit' %>
+    <%= form.collection_select :produit_id, Produit.all, :id, :nom %>
+  </div>
+
+  <div class="field">
+    <%= form.label :type_produit1_id, 'Type Produit 1' %>
+    <%= form.collection_select :type_produit1_id, TypeProduit.all, :id, :nom %>
+  </div>
+
+  <div class="field">
+    <%= form.label :type_produit2_id, 'Type Produit 2' %>
+    <%= form.collection_select :type_produit2_id, TypeProduit.all, :id, :nom %>
+  </div>
+
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

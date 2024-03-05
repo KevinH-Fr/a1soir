@@ -12,6 +12,18 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :type_produits do 
+    member do
+      post :edit
+    end
+  end
+
+  resources :ensembles do 
+    member do
+      post :edit
+    end
+  end
+
   resources :fournisseurs do 
     member do
       post :edit

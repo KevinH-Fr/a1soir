@@ -1,0 +1,27 @@
+
+
+<div id="<%= dom_id ensemble %>" class="my-2">
+
+  <div class="card mx-2 my-3 p-3 light-beige-colored shadow-sm">
+
+    <p>
+      <strong>Parent:</strong>
+      <%= ensemble.produit.nom %>
+    </p>
+
+
+    <p>
+      <strong>Enfant1:</strong>
+      <%= ensemble.type_produit1.nom %>
+    </p>
+
+    
+    <p>
+      <strong>Enfant2:</strong>
+      <%= ensemble.type_produit2.nom %>
+    </p>
+
+    <%= links_record(ensemble) %>  
+
+  </div>
+</div>

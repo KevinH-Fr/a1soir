@@ -1,0 +1,10 @@
+
+<%= bandeau_entete("Types produits", "layer-group", @type_produits.count, "your-search") %>
+
+<%= bloc_nouveau(TypeProduit) %>
+
+<div id="type_produits">
+  <% @type_produits.each do |type_produit| %>
+        <%= render type_produit %>
+  <% end %>
+</div>

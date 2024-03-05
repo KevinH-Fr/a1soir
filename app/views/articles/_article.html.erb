@@ -4,11 +4,11 @@
   <div class="card mx-2 mb-3 p-2 light-beige-colored shadow-sm">
     <div class="row d-flex align-items-center">
 
-      <div class="col">
-        <%= image_tag(article.produit.default_image, width: 50) %>  
+      <div class="col-2 text-center">
+        <%= image_tag(article.produit.default_image, width: 100, class: "rounded") %>  
       </div>
     
-      <div class="col">
+      <div class="col ps-4">
 
         <h4 class="fw-bold"> <%= article.produit.nom %>  </h4>
 
@@ -18,7 +18,7 @@
         total: <%= article.total %>  
         caution: <%= article.caution %>  
     
-        <div class="my-1">
+        <div class="mt-3">
           <%= link_to selection_produit_path(
             commande: @commande, article: article), 
             class: "btn btn-sm btn-warning fw-bold" do %>
@@ -40,7 +40,7 @@
     <div class="container-fluid">
       <% if article.sousarticles.present? %>
         <hr>
-        <h5>Sous-articles:</h5>
+        <h5 class="fw-bold">Sous-articles:</h5>
         <% article.sousarticles.each do |sousarticle| %>
           <%= render partial: 'sousarticles/sousarticle', locals: { sousarticle: sousarticle } %>
         <% end %>    
