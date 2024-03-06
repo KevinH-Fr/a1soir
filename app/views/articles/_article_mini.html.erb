@@ -1,0 +1,15 @@
+<div class="card mx-2 mb-3 p-2 light-beige-colored shadow-sm">
+    <div class="row d-flex align-items-center">
+        <div class="col-2 text-center">
+          <%= image_tag(article.produit.default_image, width: 50, class: "rounded") %>  
+        </div>
+        <div class="col ps-4">
+            <h4 class="fw-bold"> <%= article.produit.nom %>  </h4>
+            <%= article.locvente %>  
+            qté.: <%= article.quantite %>  
+            prix: <%= article.prix %>  
+            total: <%= article.total %>  
+            caution: <%= article.caution %>           
+       </div>
+    </div>
+</div>

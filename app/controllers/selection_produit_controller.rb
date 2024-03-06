@@ -1,5 +1,7 @@
 class SelectionProduitController < ApplicationController
 
+  include EnsemblesHelper 
+  
   before_action :authenticate_user!
   before_action :authenticate_vendeur_or_admin!
       
@@ -103,6 +105,27 @@ class SelectionProduitController < ApplicationController
 
   end 
   
+
+  def toggle_transformer_ensemble
+
+    @commande = Commande.find(session[:commande])
+    result = find_ensemble_matching_type_produits(@commande)
+
+    # Create an article in the commande corresponding to the ensemble
+    new_article = Article.create(produit_id: result[:ensemble].produit.id, commande_id: @commande.id, quantite: 1 )
+
+    # Create sous-articles corresponding to the matching articles
+    result[:matching_articles].each do |matching_article|
+      Sousarticle.create(article_id: new_article.id, produit_id: matching_article.produit.id)
+    end
+
+    # Delete the initial articles transformed into the ensemble
+    result[:matching_articles].destroy_all
+    
+
+    redirect_to commande_path(@commande),
+      notice: "Transformation en ensemble effectuée"
+  end
 
 
 

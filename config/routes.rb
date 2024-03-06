@@ -143,7 +143,8 @@ Rails.application.routes.draw do
       post 'display_categorie_selected'
       post 'display_taille_selected'
       post 'display_couleur_selected'
-    end
+      post 'toggle_transformer_ensemble'
+    end 
   end
 
 
