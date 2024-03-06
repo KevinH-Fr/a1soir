@@ -15,27 +15,33 @@
       </div>
     <% end %>
 
-
-    <%# unless article.persisted? || @produit.present? %>
-      <%#= render 'articles/selection' %>
-    <%# end %>
-
     <%= custom_form_elements(form, 
-      [:quantite, :number_field], [:prix, :number_field],
+      [:quantite, :number_field],
       [:total, :number_field])
     %>
 
-    <div class="container-fluid d-flex">
-      <div class="form-check mx-2">
-        <%= form.radio_button :locvente, "location", class: "form-check-input", id: "flexRadioDefault1", autocomplete: "off" %>
-        <%= form.label :locvente_location, "Location", class: "form-check-label", for: "flexRadioDefault1" %>
-      </div>
+  <div class="form-group input-group mb-1 p-2">
+    <div class="input-group-text">Prix</div>
+    <%= form.number_field :prix,
+                          value: (@commande.is_location ? @produit.prixlocation : @produit.prixvente),
+                          class: "form-control",
+                          placeholder: "",
+                          step: "0.01" %>
+  </div>
 
-      <div class="form-check mx-2">
-        <%= form.radio_button :locvente, "vente", class: "form-check-input", id: "flexRadioDefault2", autocomplete: "off" %>
-        <%= form.label :locvente_vente, "Vente", class: "form-check-label", for: "flexRadioDefault2" %>
-      </div>
+
+
+  <div class="container-fluid d-flex">
+    <div class="form-check mx-2">
+      <%= form.radio_button :locvente, "location", checked: (@commande.is_location), class: "form-check-input", id: "flexRadioDefault1", autocomplete: "off" %>
+      <%= form.label :locvente_location, "Location", class: "form-check-label", for: "flexRadioDefault1" %>
     </div>
+
+    <div class="form-check mx-2">
+      <%= form.radio_button :locvente, "vente", checked: (@commande.is_vente), class: "form-check-input", id: "flexRadioDefault2", autocomplete: "off" %>
+      <%= form.label :locvente_vente, "Vente", class: "form-check-label", for: "flexRadioDefault2" %>
+    </div>
+  </div>
 
 
     <%= custom_form_elements(form, 

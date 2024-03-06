@@ -8,6 +8,7 @@
         <%= link_to commande_path(commande), class: "text-decoration-none text-dark" do %>
           <strong><%= commande.ref_commande %> </strong>
           <%= commande.full_name %>
+          <%= commande.location ? "location" : "vente" %>
         <% end %>
       </div>
       <div class="col-2 text-end">
