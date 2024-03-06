@@ -112,11 +112,19 @@ class SelectionProduitController < ApplicationController
     result = find_ensemble_matching_type_produits(@commande)
 
     # Create an article in the commande corresponding to the ensemble
-    new_article = Article.create(produit_id: result[:ensemble].produit.id, commande_id: @commande.id, quantite: 1 )
+    new_article = Article.create(
+      produit_id: result[:ensemble].produit.id, 
+      commande_id: @commande.id, 
+      #ajouter prix
+      #ajouter type locvente
+      quantite: 1 )
 
     # Create sous-articles corresponding to the matching articles
     result[:matching_articles].each do |matching_article|
-      Sousarticle.create(article_id: new_article.id, produit_id: matching_article.produit.id)
+      Sousarticle.create(
+        article_id: new_article.id, 
+        produit_id: matching_article.produit.id)
+        #passer les prix a zero
     end
 
     # Delete the initial articles transformed into the ensemble

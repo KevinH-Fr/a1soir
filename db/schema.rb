@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_05_144403) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_06_162059) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -145,14 +145,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_05_144403) do
   end
 
   create_table "ensembles", force: :cascade do |t|
-    t.integer "produit_id", null: false
-    t.integer "type_produit1_id", null: false
-    t.integer "type_produit2_id", null: false
+    t.integer "produit_id"
+    t.integer "type_produit1_id"
+    t.integer "type_produit2_id"
+    t.integer "type_produit3_id"
+    t.integer "type_produit4_id"
+    t.integer "type_produit5_id"
+    t.integer "type_produit6_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["produit_id"], name: "index_ensembles_on_produit_id"
     t.index ["type_produit1_id"], name: "index_ensembles_on_type_produit1_id"
     t.index ["type_produit2_id"], name: "index_ensembles_on_type_produit2_id"
+    t.index ["type_produit3_id"], name: "index_ensembles_on_type_produit3_id"
+    t.index ["type_produit4_id"], name: "index_ensembles_on_type_produit4_id"
+    t.index ["type_produit5_id"], name: "index_ensembles_on_type_produit5_id"
+    t.index ["type_produit6_id"], name: "index_ensembles_on_type_produit6_id"
   end
 
   create_table "fournisseurs", force: :cascade do |t|
@@ -295,6 +303,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_05_144403) do
   add_foreign_key "ensembles", "produits"
   add_foreign_key "ensembles", "type_produits", column: "type_produit1_id"
   add_foreign_key "ensembles", "type_produits", column: "type_produit2_id"
+  add_foreign_key "ensembles", "type_produits", column: "type_produit3_id"
+  add_foreign_key "ensembles", "type_produits", column: "type_produit4_id"
+  add_foreign_key "ensembles", "type_produits", column: "type_produit5_id"
+  add_foreign_key "ensembles", "type_produits", column: "type_produit6_id"
   add_foreign_key "meetings", "clients"
   add_foreign_key "meetings", "commandes"
   add_foreign_key "paiement_recus", "commandes"

@@ -1,14 +1,14 @@
-<p style="color: green"><%= notice %></p>
 
-<h1>Ensembles</h1>
+<%= bandeau_entete("Ensembles", "group", @ensembles.count, "your-search") %>
+
+<%= bloc_nouveau(Ensemble) %>
 
 <div id="ensembles">
   <% @ensembles.each do |ensemble| %>
-    <%= render ensemble %>
-    <p>
-      <%= link_to "Show this ensemble", ensemble %>
-    </p>
+        <%= render ensemble %>
   <% end %>
 </div>
 
-<%= link_to "New ensemble", new_ensemble_path %>
+
+
+

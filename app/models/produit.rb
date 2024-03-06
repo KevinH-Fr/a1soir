@@ -15,6 +15,10 @@ class Produit < ApplicationRecord
 
   after_create :generate_qr
 
+
+  scope :is_ensemble, -> { joins(:type_produit).where(type_produits: { nom: 'ensemble' }) }
+
+
   def full_name
     nom
   end

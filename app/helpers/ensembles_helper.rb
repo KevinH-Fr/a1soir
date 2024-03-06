@@ -13,8 +13,8 @@ module EnsemblesHelper
       )
   
         if ensemble
-        matching_articles = find_matching_articles(commande, ensemble)
-        { ensemble: ensemble, matching_articles: matching_articles }
+          matching_articles = find_matching_articles(commande, ensemble)
+          { ensemble: ensemble, matching_articles: matching_articles }
         end 
     end
   
@@ -22,7 +22,10 @@ module EnsemblesHelper
   
     def find_matching_articles(commande, ensemble)
       commande.articles.joins(:produit => :type_produit)
-                      .where('type_produits.nom IN (?)', [ensemble.type_produit1.nom, ensemble.type_produit2.nom])
+                      .where('type_produits.nom IN (?)', 
+                      [ensemble.type_produit1.nom, ensemble.type_produit2&.nom, 
+                       ensemble.type_produit3&.nom, ensemble.type_produit4&.nom, 
+                       ensemble.type_produit5&.nom, ensemble.type_produit6&.nom ])
     end
   
   end
