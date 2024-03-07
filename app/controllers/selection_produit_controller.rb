@@ -1,5 +1,5 @@
 class SelectionProduitController < ApplicationController
-
+  include CommonPrixProduit
   include EnsemblesHelper 
   
   before_action :authenticate_user!
@@ -16,9 +16,7 @@ class SelectionProduitController < ApplicationController
       session[:article] = nil
     end 
     
-    if params[:produit]
-      @produit = Produit.find(params[:produit]) 
-    end
+    @produit = Produit.find(params[:produit]) if params[:produit]
 
     # search
     @q = Produit.ransack(params[:q])

@@ -16,10 +16,13 @@ class Commande < ApplicationRecord
   end
 
   def is_location
-    location
+    type_locvente == "location" ? true : false 
   end
 
   def is_vente
-    location ? false : true 
+    type_locvente == "vente" ? true : false 
   end
+  
+  # ajouter is mixte ?
+
 end

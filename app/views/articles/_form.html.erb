@@ -1,6 +1,6 @@
 <%#= turbo_frame_tag "article_form" do %>
 
-  <div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
+<div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
 
   <%= form_with(model: article) do |form| %>
     <% if article.errors.any? %>
@@ -19,42 +19,96 @@
       [:quantite, :number_field],
       [:total, :number_field])
     %>
+    
+    <%# test dynamic form %>
 
-  <div class="form-group input-group mb-1 p-2">
-    <div class="input-group-text">Prix</div>
-    <%= form.number_field :prix,
-                          value: (@commande.is_location ? @produit.prixlocation : @produit.prixvente),
-                          class: "form-control",
-                          placeholder: "",
-                          step: "0.01" %>
-  </div>
+    <%= form.hidden_field :produit_id, value: @produit.id if @produit %>
+    <%= form.hidden_field :commande_id, value: session[:commande] %>
 
 
+    <div data-controller="form-element">
+      <%= form.button "Validate", formaction: new_article_path, formmethod: :get, 
+          data: { turbo_frame: :content_field, form_element_target: "submitbtn" } %>
 
-  <div class="container-fluid d-flex">
-    <div class="form-check mx-2">
-      <%= form.radio_button :locvente, "location", checked: (@commande.is_location), class: "form-check-input", id: "flexRadioDefault1", autocomplete: "off" %>
-      <%= form.label :locvente_location, "Location", class: "form-check-label", for: "flexRadioDefault1" %>
+
+      <div class="container-fluid d-flex">
+        <div class="form-check mx-2">
+          <%= form.radio_button :locvente, "location", checked: (@commande.is_location), class: "form-check-input", 
+              id: "flexRadioDefault1", autocomplete: "off", 
+              data: { action: "change->form-element#remotesubmit" } %>
+          <%= form.label :locvente_location, "Location", class: "form-check-label", for: "flexRadioDefault1" %>
+        </div>
+
+        <div class="form-check mx-2">
+          <%= form.radio_button :locvente, "vente", checked: (@commande.is_vente), class: "form-check-input", 
+              id: "flexRadioDefault2", autocomplete: "off", 
+              data: { action: "change->form-element#remotesubmit" } %>
+          <%= form.label :locvente_vente, "Vente", class: "form-check-label", for: "flexRadioDefault2" %>
+        </div>
+      </div>
+
+      <%= turbo_frame_tag :content_field do %>
+        val locvente article : <%= article.locvente %> <br>
+        val produit : <%= article.produit_id %>
+
+        <div class="form-group input-group mb-1 p-2">
+          <div class="input-group-text">Prix</div>
+            <%# if @produit %>
+              <%= form.number_field :prix,
+                  value: article.locvente == "location" ? @prix_location : @prix_vente ,
+                  class: "form-control", placeholder: "", step: "0.01" %>
+          <%# end %>
+        </div> 
+      
+
+      <% end %>
+      
     </div>
 
-    <div class="form-check mx-2">
-      <%= form.radio_button :locvente, "vente", checked: (@commande.is_vente), class: "form-check-input", id: "flexRadioDefault2", autocomplete: "off" %>
-      <%= form.label :locvente_vente, "Vente", class: "form-check-label", for: "flexRadioDefault2" %>
-    </div>
-  </div>
+    <%# fin test dynamic form %>
 
 
+
+
+      <div class="container-fluid d-flex">
+        <div class="form-check mx-2">
+          <%#= form.radio_button :locvente, "location", checked: (@commande.is_location), class: "form-check-input", 
+              id: "flexRadioDefault1", autocomplete: "off", 
+              data: { action: "change->form-element#remotesubmit" } %>
+          <%#= form.label :locvente_location, "Location", class: "form-check-label", for: "flexRadioDefault1" %>
+        </div>
+
+        <div class="form-check mx-2">
+          <%#= form.radio_button :locvente, "vente", checked: (@commande.is_vente), class: "form-check-input", id: "flexRadioDefault2", autocomplete: "off" %>
+          <%#= form.label :locvente_vente, "Vente", class: "form-check-label", for: "flexRadioDefault2" %>
+        </div>
+      </div>
+
+      <%# en fonction de la bascule loc ou vente, changer dynamiquement le prix ou le loyer %>
+
+
+        <%# if @produit %>
+          <div class="form-group input-group mb-1 p-2">
+            <div class="input-group-text">Prix</div>
+            <%#= form.number_field :prix,
+                                  value: (@commande.is_location ? @produit.prixlocation : @produit.prixvente),
+                                  class: "form-control",
+                                  placeholder: "",
+                                  step: "0.01" %>
+          </div>  
+        <%# end %>
+      
+    
+    
     <%= custom_form_elements(form, 
       [:caution, :number_field], [:longueduree, :check_box], [:commentaires, :text_area])
     %>
 
-    <%= form.hidden_field :produit_id, value: @produit.id if @produit %>
-    <%= form.hidden_field :commande_id, value: session[:commande] %>
 
     <%= custom_submit_button(form) %>
 
   <% end %>
 
-  </div>
+</div>
 
 <%# end %>

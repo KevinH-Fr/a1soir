@@ -38,9 +38,27 @@
         [:montant, :text_field], [:description, :text_area], 
         [:debutloc, :date_field], [:finloc, :date_field], [:dateevent, :date_field],
         [:statutarticles, :text_field], [:typeevent, :text_field], 
-        [:commentaires, :text_area], [:commentaires_doc, :text_area],
-        [:location, :check_box], [:devis, :check_box]
+        [:commentaires, :text_area], [:commentaires_doc, :text_area], [:devis, :check_box]
       ) %>
+
+
+      <div class="container-fluid d-flex">
+        <div class="form-check mx-2">
+          <%= form.radio_button :type_locvente, "location", class: "form-check-input", id: "flexRadioDefault1", autocomplete: "off" %>
+          <%= form.label :type_locvente_location, "Location", class: "form-check-label", for: "flexRadioDefault1" %>
+        </div>
+
+        <div class="form-check mx-2">
+          <%= form.radio_button :type_locvente, "vente", class: "form-check-input", id: "flexRadioDefault2", autocomplete: "off" %>
+          <%= form.label :type_locvente_vente, "Vente", class: "form-check-label", for: "flexRadioDefault2" %>
+        </div>
+
+        <div class="form-check mx-2">
+          <%= form.radio_button :type_locvente, "mixte", class: "form-check-input", id: "flexRadioDefault3", autocomplete: "off" %>
+          <%= form.label :type_locvente_mixte, "Mixte", class: "form-check-label", for: "flexRadioDefault3" %>
+        </div>
+
+      </div>
 
       <%= custom_submit_button(form) %>
 

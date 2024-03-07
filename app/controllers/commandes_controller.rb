@@ -124,6 +124,7 @@ class CommandesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def commande_params
-      params.require(:commande).permit(:nom, :montant, :description, :client_id, :debutloc, :finloc, :dateevent, :statutarticles, :typeevent, :profile_id, :commentaires, :commentaires_doc, :location, :devis)
+      params.require(:commande).permit(:nom, :montant, :description, :client_id, :debutloc, :finloc, :dateevent, 
+        :statutarticles, :typeevent, :profile_id, :commentaires, :commentaires_doc, :type_locvente, :devis)
     end
 end

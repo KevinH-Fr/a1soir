@@ -1,4 +1,6 @@
 class ArticlesController < ApplicationController
+  include CommonPrixProduit
+  
   before_action :set_article, only: %i[ show edit update destroy ]
 
   # GET /articles or /articles.json
@@ -10,10 +12,25 @@ class ArticlesController < ApplicationController
   end
 
   def new
-    @article = Article.new
+    @commande = Commande.find(session[:commande])
+
+   # if params[:produit]
+    #  @produit = Produit.find(params[:produit]) 
+    #  session[:produit] = @produit
+    #end
+
+
+    
+    @article = Article.new article_params
+    
+
+    
+   # @prix = @article.locvente == "location" ? 20 : 200
   end
 
   def edit
+    @commande = @article.commande
+
     respond_to do |format|
       format.html 
       format.turbo_stream do  
@@ -33,6 +50,12 @@ class ArticlesController < ApplicationController
       if @article.save
 
         @commande = @article.commande
+
+
+        # faire un code qui vient update le type de commande location vente ou mixte en fonction du type d'article
+        # idem sur update 
+
+        
         
     #    flash.now[:success] = "article was successfully created"
 
@@ -138,6 +161,6 @@ class ArticlesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def article_params
-      params.require(:article).permit(:quantite, :prix, :total, :produit_id, :commande_id, :locvente, :caution, :totalcaution, :longueduree, :commentaires)
+      params.fetch(:article, {}).permit(:quantite, :prix, :total, :produit_id, :commande_id, :locvente, :caution, :totalcaution, :longueduree, :commentaires)
     end
 end
