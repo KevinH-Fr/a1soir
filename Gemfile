@@ -83,3 +83,5 @@ gem "simple_calendar"
 gem "rqrcode", "~> 2.0"
 
 gem 'ransack'
+
+gem 'jquery-rails'

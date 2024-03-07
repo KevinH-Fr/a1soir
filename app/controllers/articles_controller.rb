@@ -1,5 +1,4 @@
 class ArticlesController < ApplicationController
-  include CommonPrixProduit
   
   before_action :set_article, only: %i[ show edit update destroy ]
 
@@ -13,23 +12,16 @@ class ArticlesController < ApplicationController
 
   def new
     @commande = Commande.find(session[:commande])
-
-   # if params[:produit]
-    #  @produit = Produit.find(params[:produit]) 
-    #  session[:produit] = @produit
-    #end
-
-
     
     @article = Article.new article_params
-    
-
-    
-   # @prix = @article.locvente == "location" ? 20 : 200
   end
 
   def edit
     @commande = @article.commande
+
+    @produit = @article.produit
+
+    puts "_______________ val produit depuis articles edit: #{@produit.id}__________________________"
 
     respond_to do |format|
       format.html 

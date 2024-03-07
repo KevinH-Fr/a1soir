@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :friends
   
   resources :doc_editions do 
     member do

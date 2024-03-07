@@ -1,5 +1,4 @@
 class SelectionProduitController < ApplicationController
-  include CommonPrixProduit
   include EnsemblesHelper 
   
   before_action :authenticate_user!
@@ -8,6 +7,7 @@ class SelectionProduitController < ApplicationController
   def index
 
     @commande = Commande.find(session[:commande])
+    @type_locvente = @commande.type_locvente
 
     if params[:article]
       @article = Article.find(params[:article])
@@ -17,7 +17,6 @@ class SelectionProduitController < ApplicationController
     end 
     
     @produit = Produit.find(params[:produit]) if params[:produit]
-
     # search
     @q = Produit.ransack(params[:q])
     @produits = @q.result

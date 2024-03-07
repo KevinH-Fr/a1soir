@@ -7,6 +7,7 @@ class Produit < ApplicationRecord
   belongs_to :couleur, optional: true
   belongs_to :taille, optional: true
 
+  has_many :articles
   has_many :ensembles
 
   has_one_attached :image1

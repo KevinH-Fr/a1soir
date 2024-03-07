@@ -2,7 +2,7 @@
 <div class="container-fluid m-2 p-2">
 
     <% @produits.each do |produit| %>
-        <%= link_to selection_produit_path(produit: produit, article: @article), remote: true do %>
+        <%= link_to selection_produit_path(produit: produit, article: @article) do %>
 
             <div class="card mb-3">
                 <div class="row g-0">
