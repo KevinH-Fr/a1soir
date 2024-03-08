@@ -20,7 +20,7 @@ export default class extends Controller {
     if (location) {
       this.prixTarget.value = prixlocationInitialValue; 
       this.cautionTarget.value = cautionInitialValue; 
-    } else {
+    } else if (vente) {
       this.prixTarget.value =  prixventeInitialValue;
       this.cautionTarget.value = 0;
     }
@@ -47,12 +47,13 @@ export default class extends Controller {
     const prixValue = this.prixTarget.value;
     const cautionInitialValue = prixventeInitialValue;
     const location = this.locationTarget.checked;
+    const vente = this.venteTarget.checked;
 
     this.totalTarget.value = quantiteValue * prixValue;
 
     if (location) {
       this.cautionTarget.value = quantiteValue * cautionInitialValue; 
-    } else {
+    } else if (vente) {
       this.cautionTarget.value = 0;
     }
 
