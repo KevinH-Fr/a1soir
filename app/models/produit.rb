@@ -8,6 +8,8 @@ class Produit < ApplicationRecord
   belongs_to :taille, optional: true
 
   has_many :articles
+  has_many :sousarticles
+
   has_many :ensembles
 
   has_one_attached :image1

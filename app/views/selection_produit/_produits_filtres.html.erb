@@ -13,6 +13,8 @@
                         <div class="card-body">
                             <h5 class="card-title"> <%= produit.full_name %> </h5>
                             <p class="card-text"> <%= produit.description %></p>
+
+                            <%= est_disponible(produit) %>
                         </div>
                     </div>
                 </div>
