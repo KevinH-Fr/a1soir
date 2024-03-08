@@ -7,8 +7,13 @@
       <div class="col-10">
         <%= link_to commande_path(commande), class: "text-decoration-none text-dark" do %>
           <strong><%= commande.ref_commande %> </strong>
-          <%= commande.full_name %>
-          <%= commande.type_locvente %>
+
+          <span class="m-1"> <%= commande.full_name %> </span>
+          <span class="m-1"> <%= commande.type_locvente %> </span>
+
+          <%= render partial: 'commandes/toggles_statut', locals: { commande: commande } %>
+
+
         <% end %>
       </div>
       <div class="col-2 text-end">
@@ -53,11 +58,6 @@
       <p>
         <strong>Dateevent:</strong>
         <%= commande.dateevent %>
-      </p>
-
-      <p>
-        <strong>Statutarticles:</strong>
-        <%= commande.statutarticles %>
       </p>
 
       <p>

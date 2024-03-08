@@ -64,6 +64,9 @@ Rails.application.routes.draw do
   resources :commandes do 
     member do
       post :edit
+      get :toggle_statut_retire
+      get :toggle_statut_non_retire
+      get :toggle_statut_rendu
     end
 
     collection do

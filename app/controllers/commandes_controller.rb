@@ -1,5 +1,6 @@
 class CommandesController < ApplicationController
-  before_action :set_commande, only: [:show, :edit, :update, :destroy]
+  before_action :set_commande, only: [:show, :edit, :update, :destroy, 
+    :toggle_statut_non_retire, :toggle_statut_retire, :toggle_statut_rendu]
 
   def index
     @commandes = Commande.all
@@ -13,9 +14,7 @@ class CommandesController < ApplicationController
     session[:commande] = @commande.id if @commande
 
     @produits = Produit.all 
-
     @doc_edition = DocEdition.new
-
 
   end
 
@@ -115,6 +114,24 @@ class CommandesController < ApplicationController
     end
   end
 
+
+  def toggle_statut_retire
+    @commande.update(statutarticles: "retiré" )
+    redirect_to commande_path(@commande),
+      notice: "commande retirée par client" 
+  end
+
+  def toggle_statut_non_retire
+    @commande.update(statutarticles: "non-retiré" )
+    redirect_to commande_path(@commande),
+      notice: "commande non-retirée par client" 
+  end
+
+  def toggle_statut_rendu
+    @commande.update(statutarticles: "rendu" )
+    redirect_to commande_path(@commande),
+      notice: "commande rendue par client" 
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

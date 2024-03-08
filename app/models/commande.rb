@@ -7,6 +7,8 @@ class Commande < ApplicationRecord
   has_many :avoir_rembs
   has_many :meetings 
   
+  after_create :after_commande_create
+
   def full_name
     "ref#{id}_#{nom}"
   end
@@ -24,5 +26,12 @@ class Commande < ApplicationRecord
   end
   
   # ajouter is mixte ?
+
+
+  private
+
+  def after_commande_create
+    self.update(statutarticles: "non-retiré")
+  end
 
 end
