@@ -2,32 +2,28 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["prixvente_initial", "prixlocation_initial", 
-    "type", "location", "vente", "prix", "quantite", "total", "is_new_article"]
+    "type", "location", "vente", "prix", "quantite", "total", "caution", "is_new_article"]
   
   connect() {
-    console.log("Form article connected");
     this.checkIfNew();
   }
 
   setInitialPrice() {
-    console.log("Call set initial price");
 
     const prixventeInitialValue = this.prixvente_initialTarget.value;
     const prixlocationInitialValue = this.prixlocation_initialTarget.value;
- //   const type = this.typeTarget.value;
+    const cautionInitialValue = prixventeInitialValue;
+
     const location = this.locationTarget.checked;
     const vente = this.venteTarget.checked;
 
-    console.log("location is:" + location);
-
     if (location) {
-      this.prixTarget.value = prixlocationInitialValue 
-      console.log(prixlocationInitialValue);
+      this.prixTarget.value = prixlocationInitialValue; 
+      this.cautionTarget.value = cautionInitialValue; 
     } else {
       this.prixTarget.value =  prixventeInitialValue;
-      console.log(prixventeInitialValue);
+      this.cautionTarget.value = 0;
     }
-
 
     const quantiteValue = this.quantiteTarget.value;
     if (quantiteValue == 0) {
@@ -38,8 +34,6 @@ export default class extends Controller {
   }
 
   checkIfNew() {
-    console.log("Call check if new");
-
     const isNewArticle = this.is_new_articleTarget.value === "true";
 
     if (isNewArticle) {
@@ -48,11 +42,19 @@ export default class extends Controller {
   }
 
   calculTotal() {
-    console.log("Call calcul total");
-
+    const prixventeInitialValue = this.prixvente_initialTarget.value;
     const quantiteValue = this.quantiteTarget.value;
     const prixValue = this.prixTarget.value;
+    const cautionInitialValue = prixventeInitialValue;
+    const location = this.locationTarget.checked;
 
     this.totalTarget.value = quantiteValue * prixValue;
+
+    if (location) {
+      this.cautionTarget.value = quantiteValue * cautionInitialValue; 
+    } else {
+      this.cautionTarget.value = 0;
+    }
+
   }
 }

@@ -68,10 +68,16 @@
                               class: "form-control label-colored" %>
       </div>
       
+      <div class="input-group input-group-sm my-1">
+        <%= form.label :caution, class: "input-group-text fs-6 input-colored" %>
+        <%= form.number_field :caution, 
+                              data: { form_article_target: "caution" }, 
+                              class: "form-control label-colored" %>
+      </div>
     </div>
      
     <%= custom_form_elements(form, 
-      [:caution, :number_field], [:longueduree, :check_box], [:commentaires, :text_area])
+      [:longueduree, :check_box], [:commentaires, :text_area])
     %>
 
 
