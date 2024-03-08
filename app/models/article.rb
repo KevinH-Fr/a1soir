@@ -7,9 +7,16 @@ class Article < ApplicationRecord
   scope :location_only, -> { where(locvente: 'location') }
   scope :vente_only, -> { where(locvente: 'vente') }
 
-  
   def nom_complet
     "#{produit.nom}"
   end 
+
+  def is_location
+    locvente == "location" ? true : false 
+  end
+
+  def is_vente
+    locvente == "vente" ? true : false 
+  end
 
 end

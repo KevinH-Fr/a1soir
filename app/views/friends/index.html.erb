@@ -1,14 +1,13 @@
-<p style="color: green"><%= notice %></p>
+<%= bandeau_entete("Friends", "user", @friends.count, "your-search") %>
 
-<h1>Friends</h1>
+<%= bloc_nouveau(Friend) %>
 
 <div id="friends">
   <% @friends.each do |friend| %>
-    <%= render friend %>
-    <p>
-      <%= link_to "Show this friend", friend %>
-    </p>
+        <%= render friend %>
   <% end %>
 </div>
 
-<%= link_to "New friend", new_friend_path %>
+
+
+

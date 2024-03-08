@@ -1,5 +1,3 @@
-<%#= turbo_frame_tag "article_form" do %>
-
 <div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
 
   <%= form_with(model: article) do |form| %>
@@ -15,89 +13,63 @@
       </div>
     <% end %>
 
-    <%= custom_form_elements(form, 
-      [:quantite, :number_field],
-      [:total, :number_field])
-    %>
-    
-    <%# test dynamic form %>
-
     <%= form.hidden_field :commande_id, value: session[:commande] %>
+    <%= form.hidden_field :produit_id, value: @produit.id if @produit %>
 
     <div data-controller="form-article">
-
-
-    <%# reprendre et faire fonctionenr sur edition : 
-      faire if persisted et recuperer si persisted la valeur du produit
-      si ok, essayer plutot de passer par un controller plus propre pour affecter le @produit
-      essayer de passer une valeur @produit depuis controller artcile edit
-
-    %>
     
-    <% if article.persisted? %>
-        <%= form.hidden_field :prixlocation_initial, value: @produit&.prixlocation,  
-              data: { action: "change->form-article#update_price", form_article_target: "prixlocation_initial" } %>
-        <%= form.hidden_field :prixvente_initial, value: @produit&.prixvente,  
-              data: { action: "change->form-article#update_price", form_article_target: "prixvente_initial" } %>
+      <%= form.hidden_field :is_new_article, value: (article.persisted? ? "false" : "true"),  
+            data: { action: "change->form-article#checkIfNew", form_article_target: "is_new_article" } %>
 
-        <div class="container-fluid d-flex">
-          <div class="input-group input-group-sm my-1">
-            <%= form.label :locvente, "locvente", class: "input-group-text label-colored" %>
-            <%= form.select :locvente, options_for_select(["", "location", "vente"], 
-                  selected: article.locvente), {}, 
-                  data: { action: "change->form-article#change_type_locvente", form_article_target: "type" }, 
-                  class: "form-select input-colored" %>
+      <%= form.hidden_field :prixlocation_initial, value: @produit&.prixlocation,  
+            data: { form_article_target: "prixlocation_initial" } %>
+      <%= form.hidden_field :prixvente_initial, value: @produit&.prixvente,  
+            data: { form_article_target: "prixvente_initial" } %>
+
+      <div class="container-fluid d-flex">
+        <div class="input-group input-group-sm my-1">
+
+          <div class="form-check mx-2">
+            <%= form.radio_button :locvente, "location", checked: (article.persisted? ? article.is_location : @commande.is_location), 
+                class: "form-check-input", id: "flexRadioDefault1", autocomplete: "off", 
+                data: { action: "change->form-article#setInitialPrice", form_article_target: "location" } %>
+            <%= form.label :locvente_location, "Location", class: "form-check-label", for: "flexRadioDefault1" %>
           </div>
-      </div>
 
-    <% else %>
-
-        <%= form.hidden_field :prixlocation_initial, value: @produit&.prixlocation,  
-              data: { action: "change->form-article#set_initial_price", form_article_target: "prixlocation_initial" } %>
-        <%= form.hidden_field :prixvente_initial, value: @produit&.prixvente,  
-              data: { action: "change->form-article#set_initial_price", form_article_target: "prixvente_initial" } %>
-
-        <div class="container-fluid d-flex">
-          <div class="input-group input-group-sm my-1">
-            <%= form.label :locvente, "locvente", class: "input-group-text label-colored" %>
-            <%= form.select :locvente, options_for_select(["location", "vente"], 
-                  selected: @type_locvente), {}, 
-                  data: { action: "change->form-article#set_initial_price", form_article_target: "type" }, 
-                  class: "form-select input-colored" %>
+          <div class="form-check mx-2">
+            <%= form.radio_button :locvente, "vente", checked: (article.persisted? ? article.is_vente : @commande.is_vente), class: "form-check-input", 
+                id: "flexRadioDefault2", autocomplete: "off", 
+                data: { action: "change->form-article#setInitialPrice", form_article_target: "vente" } %>
+            <%= form.label :locvente_vente, "Vente", class: "form-check-label", for: "flexRadioDefault2" %>
           </div>
+          
+        </div>
+
       </div>
-
-    <% end %>
-
 
 
       <div class="input-group input-group-sm my-1">
         <%= form.label :prix, class: "input-group-text fs-6 input-colored" %>
-        <%= form.number_field :prix, data: { form_article_target: "prix" }, class: "form-control label-colored" %>
+        <%= form.number_field :prix, data: { action: "change->form-article#calculTotal", form_article_target: "prix" }, 
+              class: "form-control label-colored" %>
+      </div>
+
+      <div class="input-group input-group-sm my-1">
+        <%= form.label :quantite, class: "input-group-text fs-6 input-colored" %>
+        <%= form.number_field :quantite, 
+                              data: { action: "change->form-article#calculTotal", form_article_target: "quantite" }, 
+                              class: "form-control label-colored" %>
+      </div>
+
+      <div class="input-group input-group-sm my-1">
+        <%= form.label :total, class: "input-group-text fs-6 input-colored" %>
+        <%= form.number_field :total, 
+                              data: { action: "change->form-article#calculTotal", form_article_target: "total" }, 
+                              class: "form-control label-colored" %>
       </div>
       
     </div>
-
-    <%# fin test dynamic form %>
-
-
-
-
-      <div class="container-fluid d-flex">
-        <div class="form-check mx-2">
-          <%#= form.radio_button :locvente, "location", checked: (@commande.is_location), class: "form-check-input", 
-              id: "flexRadioDefault1", autocomplete: "off", 
-              data: { action: "change->form-element#remotesubmit" } %>
-          <%#= form.label :locvente_location, "Location", class: "form-check-label", for: "flexRadioDefault1" %>
-        </div>
-
-        <div class="form-check mx-2">
-          <%#= form.radio_button :locvente, "vente", checked: (@commande.is_vente), class: "form-check-input", id: "flexRadioDefault2", autocomplete: "off" %>
-          <%#= form.label :locvente_vente, "Vente", class: "form-check-label", for: "flexRadioDefault2" %>
-        </div>
-      </div>
-
-          
+     
     <%= custom_form_elements(form, 
       [:caution, :number_field], [:longueduree, :check_box], [:commentaires, :text_area])
     %>

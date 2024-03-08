@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
-  resources :friends
   
+  resources :friends do 
+    member do
+      post :edit
+    end
+  end
+
   resources :doc_editions do 
     member do
       post :edit

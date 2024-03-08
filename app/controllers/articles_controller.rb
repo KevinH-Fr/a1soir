@@ -43,36 +43,6 @@ class ArticlesController < ApplicationController
 
         @commande = @article.commande
 
-
-        # faire un code qui vient update le type de commande location vente ou mixte en fonction du type d'article
-        # idem sur update 
-
-        
-        
-    #    flash.now[:success] = "article was successfully created"
-
-     #   format.turbo_stream do
-     #     render turbo_stream: [
-     #       turbo_stream.update('new_article',
-     #         partial: "articles/form",
-     #         locals: { commande_id: @article.commande.id, produit_id: @article.produit.id, article: Article.new }),
-  
-     #       turbo_stream.append('articles',
-     #         partial: "articles/article",
-     #         locals: { article: @article }),
-            
-     #       turbo_stream.update('synthese-commande', 
-     #         partial: "commandes/synthese"),
-                        
-     #       turbo_stream.update('synthese-articles', 
-     #         partial: "articles/synthese", 
-     #         locals: { articles: @commande.articles }),
-
-     #       turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
-
-     #     ]
-     #   end
-
         format.html { redirect_to selection_produit_path(commande: @commande.id), notice: "Article was successfully created." }
         format.json { render :show, status: :created, location: @article }
       else

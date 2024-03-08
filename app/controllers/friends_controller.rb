@@ -12,11 +12,27 @@ class FriendsController < ApplicationController
 
   # GET /friends/new
   def new
-    @friend = Friend.new
+    @friend = Friend.new friend_params
   end
 
   # GET /friends/1/edit
   def edit
+
+    respond_to do |format|
+      format.html 
+      format.turbo_stream do  
+        render turbo_stream: [
+          turbo_stream.update(@friend, 
+          partial: "friends/form", 
+          locals: { friend: @friend}),
+
+          turbo_stream.replace(
+            "content_field", 
+            partial: "friends/form",
+            locals: { friend: @friend }
+          )]
+      end
+    end
   end
 
   # POST /friends or /friends.json
