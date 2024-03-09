@@ -1,7 +1,9 @@
 module EnsemblesHelper
 
     def type_produits_in_commande(commande)
-      commande.articles.joins(produit: :type_produit).distinct.pluck('type_produits.nom')
+      # trouver les type produits de la commande avec même locvente value
+      locvente_values = commande.articles.pluck(:locvente).uniq
+      locvente_values.one? ? commande.articles.joins(produit: :type_produit).distinct.pluck('type_produits.nom') : []
     end
   
     def find_ensemble_matching_type_produits(commande)

@@ -138,15 +138,27 @@ class SelectionProduitController < ApplicationController
 
   def toggle_transformer_ensemble
 
+    
     @commande = Commande.find(session[:commande])
     result = find_ensemble_matching_type_produits(@commande)
+    
+    type_locvente = result[:matching_articles].first&.locvente
+    if type_locvente == "location"
+      prix =  result[:ensemble].produit.prixlocation
+    elsif type_locvente == "vente"
+      prix = result[:ensemble].produit.prixvente
+    end
+
+    puts "___________________test vals depuis transfo ensemble - type_locvente: #{type_locvente} - prix: #{prix}___________________________"
 
     # Create an article in the commande corresponding to the ensemble
     new_article = Article.create(
       produit_id: result[:ensemble].produit.id, 
       commande_id: @commande.id, 
-      #ajouter prix
-      #ajouter type locvente
+      locvente: type_locvente,
+      prix: prix,
+      caution: type_locvente == "location" ? result[:ensemble].produit.prixvente : 0,
+      total: prix,
       quantite: 1 )
 
     # Create sous-articles corresponding to the matching articles
