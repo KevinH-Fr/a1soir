@@ -46,4 +46,8 @@ class Produit < ApplicationRecord
     ["categorie_produit_id", "caution", "couleur_id", "created_at", "dateachat", "description", "fournisseur_id", "handle", "id", "id_value", "nom", "prixachat", "prixlocation", "prixvente", "quantite", "reffrs", "taille_id", "updated_at"]
   end
 
+  def self.ransackable_associations(auth_object = nil)
+    ["articles", "categorie_produit", "couleur", "ensembles", "fournisseur", "image1_attachment", "image1_blob", "images_attachments", "images_blobs", "qr_code_attachment", "qr_code_blob", "sousarticles", "taille", "type_produit"]
+  end
+
 end

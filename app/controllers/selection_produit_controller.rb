@@ -19,7 +19,7 @@ class SelectionProduitController < ApplicationController
     @produit = Produit.find(params[:produit]) if params[:produit]
     # search
     @q = Produit.ransack(params[:q])
-    @produits = @q.result
+    @produits = @q.result.includes(:couleur, :taille)
 
   end
 

@@ -16,7 +16,7 @@
     <%= search_form_for @q, url: selection_produit_path, method: :get do |f| %>
 
       <div class="input-group w-100">
-        <%= f.search_field :nom_cont, class: "form-control", placeholder: 'Chercher...' %>
+        <%= f.search_field :nom_or_reffrs_or_couleur_nom_or_taille_nom_cont, class: "form-control", placeholder: 'Chercher...' %>
 
         <%= hidden_field_tag 'article', params[:article] if params[:article] %>
 
