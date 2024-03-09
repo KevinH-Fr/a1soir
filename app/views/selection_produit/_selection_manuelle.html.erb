@@ -1,8 +1,16 @@
-
 <div class="d-flex flex-wrap justify-content-center align-items-center">
+
+  <%= button_to display_categorie_selected_selection_produit_index_path(
+      categorie_produit: "all"), 
+      class: "btn btn-outline-primary m-2 btn-topic px-2",
+      data: { controller: "button-color", action: "click->button-color#handleClick" },
+      "data-original-color": "text-primary" do %>
+      <span class="ms-1 fw-bold">Tout</span>
+  <% end %>
+
   <% @categorie_produits.each do |categorie_produit| %>
     <%= button_to display_categorie_selected_selection_produit_index_path(
-        categorie_produit: categorie_produit), class: "btn btn-outline-primary m-2 btn-topic px-4",
+        categorie_produit: categorie_produit), class: "btn btn-outline-primary m-2 btn-topic px-2",
         data: { controller: "button-color", action: "click->button-color#handleClick" },
         "data-original-color": "text-primary" do %>
       <span class="ms-1 fw-bold"><%= categorie_produit.nom %></span>

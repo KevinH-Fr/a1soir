@@ -21,7 +21,6 @@ class SelectionProduitController < ApplicationController
     @q = Produit.ransack(params[:q])
     @produits = @q.result
 
-
   end
 
   def display_qr
@@ -34,7 +33,6 @@ class SelectionProduitController < ApplicationController
       end
     end
   end
-
 
   def display_manuelle
 
@@ -51,28 +49,46 @@ class SelectionProduitController < ApplicationController
   end
 
   def display_categorie_selected
-    @categorie_produit = CategorieProduit.find(params[:categorie_produit])
 
-    @tailles = Taille.all 
-
-
+    if params[:categorie_produit] == "all"
+      type_mono_multi = "multi"
+      @categorie_produits = CategorieProduit.pluck(:id)
+      @tailles = Taille.all
+    else
+      type_mono_multi = "mono"
+      selected_categorie_produit_id = CategorieProduit.find(params[:categorie_produit]).id
+      @categorie_produits = [selected_categorie_produit_id]
+      @tailles = Taille.joins(:produits).where(produits: { categorie_produit: selected_categorie_produit_id }).distinct
+    end
+    
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.update(
-          'partial-categorie-selected', partial: 'selection_produit/categorie_selected'
+        render turbo_stream: [
+          turbo_stream.update(
+           'partial-categorie-selected', partial: 'selection_produit/categorie_selected'
         )
+      ]
       end
     end    
 
   end 
 
-  def display_taille_selected
-
-    @couleurs = Couleur.all 
-    @categorie_produit = CategorieProduit.find(params[:categorie_produit])
-    @taille = Taille.find(params[:taille])
-
-  #  @produits = Produit.where(categorie_produit: @categorie_produit, couleur: @couleur)
+  def display_taille_selected    
+    
+    if params[:categorie_produit] == "all"
+      @categorie_produits = CategorieProduit.pluck(:id)
+    elsif params[:categorie_produit].present?
+      selected_categorie_produits_ids = CategorieProduit.where(id: params[:categorie_produit]).pluck(:id)
+      @categorie_produits = selected_categorie_produits_ids
+    end
+    
+    if params[:taille] == "all"
+      @tailles = Taille.all.pluck(:id)
+    else
+      selected_taille_id = Taille.find(params[:taille]).id
+      @tailles = [selected_taille_id]
+    end
+    @couleurs = Couleur.joins(:produits).where(produits: { categorie_produit: @categorie_produits, taille: @tailles }).distinct
 
     respond_to do |format|
       format.turbo_stream do
@@ -86,12 +102,29 @@ class SelectionProduitController < ApplicationController
 
   def display_couleur_selected
 
-    @article = session[:article] 
+    if params[:categorie_produit] == "all"
+      @categorie_produits = CategorieProduit.pluck(:id)
+    elsif params[:categorie_produit].present?  
+      selected_categorie_produits_ids = CategorieProduit.where(id: params[:categorie_produit]).pluck(:id)
+      @categorie_produits = selected_categorie_produits_ids
+    end
 
-    @categorie_produit = CategorieProduit.find(params[:categorie_produit])
-    @couleur = Couleur.find(params[:couleur])
-    @produits = Produit.where(categorie_produit: @categorie_produit, couleur: @couleur)
-
+    if params[:taille] == "all" 
+      @tailles = Taille.pluck(:id)
+    elsif params[:taille].present?   
+      selected_taille_ids = Taille.where(id: params[:taille]).pluck(:id)
+      @tailles = selected_taille_ids
+    end
+        
+    if params[:couleur] == "all"
+      @couleurs = Couleur.pluck(:id)
+    elsif params[:couleur].present?
+      selected_couleur_ids = Couleur.where(id: params[:couleur]).pluck(:id)
+      @couleurs = selected_couleur_ids
+    end
+        
+    @produits = Produit.where(couleur: @couleurs, taille: @tailles, categorie_produit: @categorie_produits)
+    
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.update(
