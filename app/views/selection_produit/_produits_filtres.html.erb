@@ -2,10 +2,10 @@
     <% if @produits.any? %>
         <% @produits.each do |produit| %>
             <%= link_to selection_produit_path(produit: produit, article: @article), class: "text-decoration-none" do %>
-                <div class="card shadow-sm mb-3 p-2">
+                <div class="card shadow-sm mb-3">
                     <div class="row g-0">
                         <div class="col-4">
-                              <%= image_tag(produit.default_image, class: "img-fluid h-100") %>
+                              <%= image_tag(produit.default_image, class: "img-produit") %>
                         </div>
                         <div class="col-8 d-flex align-items-center">
                             <div class="card-body">
