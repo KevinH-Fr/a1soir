@@ -57,9 +57,9 @@ module StockHelper
         restants = produits_restants(produits)
 
         if est_disponible(produits)
-          content_tag(:span, "Produit disponible - #{restants} restants", class: "badge w-100 fs-4 border border-success text-success")
+          content_tag(:span, "Produit disponible - #{restants}", class: "badge fs-6 border border-success text-success")
         else
-          content_tag(:span, "Produit indisponible", class: "badge w-100 fs-4 border-danger text-danger")
+          content_tag(:span, "Produit indisponible", class: "badge fs-6 border border-danger text-danger")
         end
     end
       

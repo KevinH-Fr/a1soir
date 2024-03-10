@@ -15,6 +15,9 @@ class SelectionProduitController < ApplicationController
     else 
       session[:article] = nil
     end 
+
+    @titre = @article ? "Sélection sous-article de #{@article.nom_complet}" : "Sélection article" 
+    @titre_complet = "#{@titre}" " pour commande #{ @commande.ref_commande }"
     
     @produit = Produit.find(params[:produit]) if params[:produit]
     # search
@@ -148,8 +151,6 @@ class SelectionProduitController < ApplicationController
     elsif type_locvente == "vente"
       prix = result[:ensemble].produit.prixvente
     end
-
-    puts "___________________test vals depuis transfo ensemble - type_locvente: #{type_locvente} - prix: #{prix}___________________________"
 
     # Create an article in the commande corresponding to the ensemble
     new_article = Article.create(

@@ -6,9 +6,9 @@
     <h2 class="my-4 fs-1">Connexion</h2>
 
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "email ...",
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "email...",
               class:"form-control my-2" %>
-        <%= f.password_field :password, autocomplete: "current-password", placeholder: "mot de passe ...",
+        <%= f.password_field :password, autocomplete: "current-password", placeholder: "mot de passe...",
               class:"form-control my-2" %>
 
       <div class="d-flex justify-content-center align-items-center my-2">

@@ -1,8 +1,8 @@
-<div class="d-flex flex-wrap justify-content-center align-items-center">
+<div class="d-flex flex-wrap justify-content-center align-items-center mb-3">
 
   <%= button_to display_categorie_selected_selection_produit_index_path(
       categorie_produit: "all"), 
-      class: "btn btn-outline-primary m-2 btn-topic px-2",
+      class: "btn btn-outline-primary m-1 btn-topic",
       data: { controller: "button-color", action: "click->button-color#handleClick" },
       "data-original-color": "text-primary" do %>
       <span class="ms-1 fw-bold">Tout</span>
@@ -10,10 +10,10 @@
 
   <% @categorie_produits.each do |categorie_produit| %>
     <%= button_to display_categorie_selected_selection_produit_index_path(
-        categorie_produit: categorie_produit), class: "btn btn-outline-primary m-2 btn-topic px-2",
+        categorie_produit: categorie_produit), class: "btn btn-outline-primary m-1 btn-topic",
         data: { controller: "button-color", action: "click->button-color#handleClick" },
         "data-original-color": "text-primary" do %>
-      <span class="ms-1 fw-bold"><%= categorie_produit.nom %></span>
+      <span class="fw-bold"><%= categorie_produit.nom %></span>
     <% end %>
   <% end %>
 </div>

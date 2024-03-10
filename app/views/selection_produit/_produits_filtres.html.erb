@@ -1,19 +1,25 @@
-<div class="container-fluid m-2 p-2">
+<div class="container-fluid p-2">
     <% if @produits.any? %>
         <% @produits.each do |produit| %>
-            <%= link_to selection_produit_path(produit: produit, article: @article) do %>
-
-                <div class="card mb-3">
+            <%= link_to selection_produit_path(produit: produit, article: @article), class: "text-decoration-none" do %>
+                <div class="card shadow-sm mb-3 p-2">
                     <div class="row g-0">
-                        <div class="col-md-4">
-                            <%= image_tag(produit.default_image, width: 100) %>
+                        <div class="col-4">
+                              <%= image_tag(produit.default_image, class: "img-fluid h-100") %>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-8 d-flex align-items-center">
                             <div class="card-body">
-                                <h5 class="card-title"> <%= produit.full_name %> </h5>
-                                <p class="card-text"> <%= produit.description %></p>
+                                <h4 class="card-title"> <%= produit.full_name %> </h4>
+                                <p> <%= produit.description %></p>
 
-                                <%= est_disponible(produit) %>
+                                <%= badge_taille_produit(produit) %> 
+                                <%= badge_couleur_produit(produit) %> 
+
+                                <%= badge_prixlocation_produit(produit) %>
+                                <%= badge_prixvente_produit(produit) %>
+
+                                <p class="m-1 mt-3"><%= badge_disponibilite(produit) %> </p>
+
                             </div>
                         </div>
                     </div>
