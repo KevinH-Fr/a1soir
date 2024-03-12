@@ -1,0 +1,14 @@
+
+<%= bandeau_entete("Paramètres admin", "shirt","", "your-search") %>
+
+<%= bloc_nouveau(AdminParameter) %>
+
+<div id="admin_parameters">
+  <% @admin_parameters.each do |admin_parameter| %>
+        <%= render admin_parameter %>
+  <% end %>
+</div>
+
+
+
+

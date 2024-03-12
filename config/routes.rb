@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
-  
+
+  resources :admin_parameters do 
+    member do
+      post :edit
+    end
+  end
+
   resources :friends do 
     member do
       post :edit
