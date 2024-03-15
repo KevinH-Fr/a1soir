@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'analyses/index'
 
   resources :admin_parameters do 
     member do

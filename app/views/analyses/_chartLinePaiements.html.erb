@@ -1,0 +1,64 @@
+
+  <div class="chartBox mx-auto">
+    <canvas id="myChartLinePaiements"></canvas>
+  </div>
+
+  <%# @data = Article.group('DATE(created_at)').sum('total') %>
+
+<script>
+
+  var couleur1 = 'rgb(213, 155, 19)';
+  var couleur2 = 'rgb(240, 214, 83)';
+
+// CHART BAR
+    var dataLinePaiements = {
+      datasets: [{
+        data: <%= @groupedByDatePaiements.to_json.html_safe %>,
+        fill: true,
+        backgroundColor: [couleur1, couleur2 ],
+        borderWidth: 1
+      }]
+    };
+
+    var delayedLinePaiements;
+
+    var configLinePaiements = {
+      type: 'line',
+      data: dataLinePaiements,
+      options: {
+
+        plugins: {
+            legend: {
+                display: false
+            },
+        },
+        aspectRatio: 1,
+
+         animation: {
+                onComplete: () => {
+                    delayed = true;
+                },
+                delay: (context) => {
+                    let delay = 0;
+                    if (context.type === 'data' && context.mode === 'default' && !delayedLineCa) {
+                    delay = context.dataIndex * 2000  + context.datasetIndex * 10;
+                    }
+                    return delay;
+                },
+            },
+
+            borderColor:'rgb(0, 0, 0)',
+            pointBorderWidth: 1,
+            pointHoverBorderWidth: 20,
+            lineTension: 0.4,
+
+          }
+      };
+
+        // render init block
+    var myChartLinePaiements = new Chart(
+      document.getElementById('myChartLinePaiements'),
+      configLinePaiements
+    );
+  
+</script>

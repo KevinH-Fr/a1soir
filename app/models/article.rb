@@ -9,6 +9,10 @@ class Article < ApplicationRecord
 
   after_commit :after_article_save, on: [:create, :update, :destroy]
 
+  # filtres analyses
+  scope :filtredatedebut, -> (debut) { where("articles.created_at >= ?", debut) }
+  scope :filtredatefin, -> (fin) { where("articles.created_at <= ?", fin) }
+  
 
   def nom_complet
     "#{produit.nom}"

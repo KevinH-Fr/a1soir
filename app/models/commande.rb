@@ -9,6 +9,18 @@ class Commande < ApplicationRecord
   
   after_create :after_commande_create
 
+  scope :hors_devis, ->  { where("devis = ?", false)}
+  scope :non_retire, -> { where("statutarticles = ?", "non-retiré")}
+  scope :retire, -> { where("statutarticles = ?", "retiré")}
+  scope :rendu, -> { where("statutarticles = ?", "rendu")}
+
+
+  # filtres analyses
+  scope :filtredatedebut, -> (debut) { where("created_at >= ?", debut) }
+  scope :filtredatefin, -> (fin) { where("created_at <= ?", fin) }
+  
+
+  
   def full_name
     "ref#{id}_#{nom}"
   end

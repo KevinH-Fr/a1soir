@@ -8,4 +8,8 @@ class PaiementRecu < ApplicationRecord
   scope :only_prix, -> { where(typepaiement: 'prix') }
   scope :only_caution, -> { where(typepaiement: 'caution') }
 
+  # filtres analyses
+  scope :filtredatedebut, -> (debut) { where("created_at >= ?", debut) }
+  scope :filtredatefin, -> (fin) { where("created_at <= ?", fin) }
+  
 end
