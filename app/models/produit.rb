@@ -17,6 +17,7 @@ class Produit < ApplicationRecord
   has_one_attached :qr_code
 
   after_create :generate_qr
+  after_create :set_initial_location_price
 
 
   scope :is_ensemble, -> { joins(:type_produit).where(type_produits: { nom: 'ensemble' }) }
@@ -48,6 +49,15 @@ class Produit < ApplicationRecord
 
   def self.ransackable_associations(auth_object = nil)
     ["articles", "categorie_produit", "couleur", "ensembles", "fournisseur", "image1_attachment", "image1_blob", "images_attachments", "images_blobs", "qr_code_attachment", "qr_code_blob", "sousarticles", "taille", "type_produit"]
+  end
+
+  private
+
+  def set_initial_location_price
+    if prixachat && AdminParameter.first
+      montant_location = prixachat * (1 + AdminParameter.first.tx_tva.to_f / 100) * AdminParameter.first.coef_prix_achat_location 
+      self.update(prixlocation: montant_location )
+    end
   end
 
 end

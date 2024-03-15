@@ -15,6 +15,13 @@
     [:tx_tva, :number_field]
   ) %>
 
+  <div class="input-group input-group mx-1 px-2">
+    <%= form.label :coef_prix_achat_location, "prix vente TTC", class: "input-group-text" %>
+    <%= form.number_field :coef_prix_achat_location, class: "form-control" %>
+  </div>
+  
+
+
   <div>
     <%= form.submit %>
   </div>
