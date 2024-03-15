@@ -48,21 +48,21 @@ class CommandesController < ApplicationController
     respond_to do |format|
       if @commande.save
 
-        flash.now[:success] = "commande was successfully created"
+        #flash.now[:success] = "commande was successfully created"
 
-        format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.update('new',
-                                partial: "commandes/form",
-                                locals: { commande: Commande.new }),
+        #format.turbo_stream do
+        #  render turbo_stream: [
+        #    turbo_stream.update('new',
+        #                        partial: "commandes/form",
+        #                        locals: { commande: Commande.new }),
   
-            turbo_stream.prepend('commandes',
-                                  partial: "commandes/commande",
-                                  locals: { commande: @commande }),
-            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
-            
-          ]
-        end
+        #    turbo_stream.prepend('commandes',
+        #                          partial: "commandes/commande",
+        #                          locals: { commande: @commande }),
+        #    turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+        #    
+        #  ]
+        #end
 
         format.html { redirect_to commande_url(@commande), notice: "Commande was successfully created." }
         format.json { render :show, status: :created, location: @commande }

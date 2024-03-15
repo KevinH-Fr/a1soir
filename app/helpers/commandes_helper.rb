@@ -13,6 +13,14 @@ module CommandesHelper
             prix_articles + prix_sous_articles
         end
     end
+
+    def tva_sur_prix(commande)
+        du_prix(commande) * (AdminParameter.first.tx_tva.to_f / 100)
+    end
+
+    def du_prix_ht(commande)
+        du_prix(commande) - tva_sur_prix(commande)
+    end
    
     def du_caution(commande)
         if commande 

@@ -40,31 +40,38 @@
             <td class="td-doc-valeurs ended"> <%= custom_currency_format(article.total) %> </td>
             <td class="td-doc-valeurs ended"> <%= custom_currency_format(article.totalcaution) %> </td>
 
+
+
+            <% if article.sousarticles.present? %>
+
+              <tr>
+                <td colspan=2></td>
+                <td colspan=5 class="">  
+
+                  <% article.sousarticles.each do |sousarticle| %>
+  
+                    <%= image_tag(sousarticle.produit.default_image, style: "width: 40px; display: block", 
+                       class: "img-fluid rounded") %> 
+    
+                    <h6 class="fw-bold"> <%= sousarticle.produit.nom %>  </h6>
+                      Nature:  <%= sousarticle.nature %>
+                      Description: <%= sousarticle.description %>
+                      Prix: <%= sousarticle.prix %>
+                      Caution: <%= sousarticle.caution %>
+                      Commentaires:   <%= sousarticle.commentaires %>
+
+                    
+                  <% end %>    
+                </td>                
+              </tr>
+      
+            <% end %>
+            
           </tr> 
+
         <% end %>
 
-            <%# @sousarticles = Sousarticle.where(article_id: article.id) %>
-            <%# @sousarticles.each do |sousarticle| %>
-            <%# @produit = Produit.find(sousarticle.produit_id) if Produit.find(sousarticle.produit_id).present?  %>
-              <!--tr>
-                <td></td>
-                <td class="td-doc-img-sousarticle"> 
-                  <%#= image_tag(@produit.default_image, style: "width: 40px; display: block", 
-                    class:"") %>
-                </td>
-                <td class="td-doc-italic fst-italic"> 
-                  <%#= @produit.nom %> 
-                  taille: <%#= @produit.taille %>  
-                  <%#= @produit.description %> 
-                  <%#= sousarticle.commentaire %> 
-                </td>
-                <td></td>
-                <td> </td>
-                <td class="td-doc ended">  
-                  <%#= number_to_currency(sousarticle.prix_sousarticle, locale: :fr) if sousarticle.prix_sousarticle > 0 %> 
-                </td>
-              </tr-->
-            <%# end %>       
+      
       
       </tbody>
 
@@ -86,6 +93,18 @@
           </td>
 
         </tr>
+
+        <% if @doc_edition.doc_type == "facture" %>
+          
+          <tr>
+            <td colspan=7 class="centered tfoot-doc">  
+              total ht: <%= du_prix_ht(@doc_edition.commande) %> 
+              tva: <%= tva_sur_prix(@doc_edition.commande) %> 
+              total ttc:   <%= du_prix(@doc_edition.commande) %>
+            </td>
+          </tr>
+        <% end %>
+
       </tfoot>
     </table>
 
