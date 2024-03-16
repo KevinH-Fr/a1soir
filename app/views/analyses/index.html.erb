@@ -18,9 +18,9 @@
             <%= label_tag :fin, "fin", class:"input-group-text label-with-format centered" %>
             <%= date_field_tag :fin, params[:fin], class:"form-control field-with-format" %>
 
-            <%= link_to "Effacer", url_for(), class:"btn btn-sm btn-outline-danger rounded mx-1" %> 
+            <%= link_to "Effacer", url_for(), class:"btn btn-outline-danger rounded mx-1" %> 
 
-            <%= submit_tag "Go", class:"btn btn-success fw-bold" %>
+            <%= submit_tag "Go", class:"btn btn-success fw-bold rounded" %>
 
           </div>
 
@@ -34,95 +34,11 @@
       </div>
     </div>
         
-    <div class="bloc-record p-0">
-      <div class="card card-header text-center text-light fw-bold bg-secondary m-0 p-1">
-        <h5 class="m-0 p-0">Commandes</h5> 
-      </div> 
-      <div class="card-body text-dark">
-      
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-4 m-0 p-1">
-                <%= render "chartPieCommandes" %>
-            </div>
-            <div class="col-md-4 m-0 p-1">
-                <%= render "chartBarCommandes" %>
-            </div>
-            <div class="col-md-4 m-0 p-1">
-                <%= render "chartLineCommandes" %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-        <div class="bloc-record p-0">
-      <div class="card card-header text-center text-light fw-bold bg-secondary m-0 p-1">
-        <h5 class="m-0 p-0">Articles</h5> 
-      </div> 
-      <div class="card-body text-dark">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-4 m-0 p-1">
-              <%= render "chartPieArticles" %>
-            </div>
-            <div class="col-md-4 m-0 p-1">
-                <%= render "chartBarArticles" %>
-            </div>
-            <div class="col-md-4 m-0 p-1">
-                <%= render "chartLineArticles" %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="bloc-record p-0">
-      <div class="card card-header text-center text-light fw-bold bg-secondary m-0 p-1">
-        <h5 class="m-0 p-0">Chiffre d'affaires</h5> 
-      </div>
-      <div class="card-body text-dark">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-4 p-1 m-0">
-                <%= render "chartPieCa" %>
-            </div>
-            <div class="col-md-4 p-1 m-0">
-                <%= render "chartBarCa" %>
-            </div>
-            <div class="col-md-4 p-1 m-0">
-                <%= render "chartLineCa" %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="bloc-record p-0">
-      <div class="card card-header text-center text-light fw-bold bg-secondary m-0 p-1">
-        <h5 class="m-0 p-0">Paiements</h5> 
-      </div>
-      <div class="card-body text-dark">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-4 p-1 m-0">
-                <%= render "chartPiePaiements" %>
-            </div>
-            <div class="col-md-4 p-1 m-0">
-              <%= render "chartBarPaiements" %>
-            </div>
-            <div class="col-md-4 p-1 m-0">
-              <%= render "chartLinePaiements" %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <%= render_dashboard_section("Commandes", ["chartPieCommandes", "chartBarCommandes", "chartLineCommandes"]) %>
+    <%= render_dashboard_section("Articles", ["chartPieArticles", "chartBarArticles", "chartLineArticles"]) %>
+    <%= render_dashboard_section("Chiffre d'affaires", ["chartPieCa", "chartBarCa", "chartLineCa"]) %>
+    <%= render_dashboard_section("Paiements", ["chartPiePaiements", "chartBarPaiements", "chartLinePaiements"]) %>
 
   </div>
-
-
 
 </div>

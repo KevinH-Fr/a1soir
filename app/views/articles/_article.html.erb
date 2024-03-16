@@ -17,6 +17,8 @@
         prix: <%= article.prix %>  
         total: <%= article.total %>  
         caution: <%= article.caution %>  
+
+        <%= article.longueduree ? "longue durée" : "" %>
     
         <div class="mt-3">
           <%= link_to selection_produit_path(
@@ -55,11 +57,6 @@
     <%#= article.totalcaution %>    
     
     <div class="collapse" id="collapseArticle<%= dom_id(article) %>">
-      <p>
-        <strong>Longueduree:</strong>
-        <%= article.longueduree %>
-      </p>
-
       <p>
         <strong>Commentaires:</strong>
         <%= article.commentaires %>
