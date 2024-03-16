@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["prixvente_initial", "prixlocation_initial", 
-    "type", "location", "vente", "prix", "quantite", "total", "caution", "is_new_article"]
+    "type", "location", "vente", "prix", "quantite", "total", "caution", "is_new_article", "coef_longue_duree", "longueduree"]
   
   connect() {
     this.checkIfNew();
@@ -18,8 +18,9 @@ export default class extends Controller {
     const vente = this.venteTarget.checked;
 
     if (location) {
-      this.prixTarget.value = prixlocationInitialValue; 
+      
       this.cautionTarget.value = cautionInitialValue; 
+
     } else if (vente) {
       this.prixTarget.value =  prixventeInitialValue;
       this.cautionTarget.value = 0;
@@ -53,9 +54,28 @@ export default class extends Controller {
 
     if (location) {
       this.cautionTarget.value = quantiteValue * cautionInitialValue; 
+
     } else if (vente) {
       this.cautionTarget.value = 0;
     }
 
   }
+
+  changePrixLongueDuree() {
+
+    const coefLongueDuree = this.coef_longue_dureeTarget.value;
+    const longueduree = this.longuedureeTarget.checked;
+
+    console.log("change longue duree");
+
+    if (longueduree) {
+      this.prixTarget.value = parseFloat(this.prixTarget.value) * ( 1 + (parseFloat(coefLongueDuree) / 100) ) ; 
+    }  else {
+      this.prixTarget.value =  parseFloat(this.prixTarget.value) / ( 1 + (parseFloat(coefLongueDuree) / 100) ) ; 
+    }
+
+    this.calculTotal();
+
+  }
+
 }

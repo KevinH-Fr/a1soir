@@ -26,6 +26,10 @@
       <%= form.hidden_field :prixvente_initial, value: @produit&.prixvente,  
             data: { form_article_target: "prixvente_initial" } %>
 
+      <%# prevoir cas ou absence de admin param fisrt %>
+      <%= form.hidden_field :coef_longue_duree, value: AdminParameter&.first&.coef_longue_duree,  
+            data: { form_article_target: "coef_longue_duree" } %>
+
       <div class="container-fluid d-flex">
         <div class="input-group input-group-sm my-1">
 
@@ -64,8 +68,8 @@
       <div class="input-group input-group-sm my-1">
         <%= form.label :total, class: "input-group-text fs-6 input-colored" %>
         <%= form.number_field :total, 
-                              data: { action: "change->form-article#calculTotal", form_article_target: "total" }, 
-                              class: "form-control label-colored" %>
+              data: { action: "change->form-article#calculTotal", form_article_target: "total" }, 
+              class: "form-control label-colored", readonly: true %>
       </div>
       
       <div class="input-group input-group-sm my-1">
@@ -74,10 +78,17 @@
                               data: { form_article_target: "caution" }, 
                               class: "form-control label-colored" %>
       </div>
-    </div>
+
+      <div class="form-check form-switch h6 text-start my-2">
+        <%= form.label :longueduree, "Longue durée", class: "form-check-label" %>
+        <%= form.check_box :longueduree, data: { action: "change->form-article#changePrixLongueDuree", form_article_target: "longueduree" }, 
+              class: "form-check-input" %>
+      </div>
      
+    </div>
+
     <%= custom_form_elements(form, 
-      [:longueduree, :check_box], [:commentaires, :text_area])
+     [:commentaires, :text_area])
     %>
 
 
