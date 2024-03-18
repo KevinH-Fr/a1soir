@@ -21,7 +21,7 @@ module ArticlesHelper
     end
   end
 
-  def produit_selection(produit)
+  def produit_selection(produit, commande)
     content_tag(:div, class: "card shadow-sm mb-3") do
       content_tag(:div, class: "row g-0") do
         content_tag(:div, class: "col-4") do
@@ -38,7 +38,9 @@ module ArticlesHelper
             badge_prixlocation_produit(produit) +
             badge_prixvente_produit(produit) +
 
-            content_tag(:p, badge_disponibilite(produit), class: "m-1 mt-3")
+
+
+            content_tag(:p, badge_disponibilite(produit, commande.debutloc.to_date), class: "m-1 mt-3") 
           end
         end
       end

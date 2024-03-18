@@ -11,7 +11,8 @@
         <p> Total vendus : <span class="fw-bold"> <%= total_vendus(@produit) %> </span> </p> 
         <p> Restant : <span class="fw-bold"> <%= produits_restants(@produit) %> </span> </p> 
 
-        <%= badge_disponibilite(@produit) %>
+
+        <%= badge_disponibilite(@produit, Time.now.to_date) %>
 
     </div>
 </div>

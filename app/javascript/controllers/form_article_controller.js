@@ -18,7 +18,7 @@ export default class extends Controller {
     const vente = this.venteTarget.checked;
 
     if (location) {
-      
+      this.prixTarget.value =  prixlocationInitialValue;
       this.cautionTarget.value = cautionInitialValue; 
 
     } else if (vente) {

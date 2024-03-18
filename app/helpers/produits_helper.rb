@@ -1,8 +1,5 @@
 module ProduitsHelper
 
-    #faire helper pour trouver les produits similaire avec autre couleur ou autre taille
-    # voir comment était fait avant : sur reffrs 
-
     def same_reffrs_same_couleur_others_tailles(produit)
         Produit.where(reffrs: produit.reffrs, couleur_id: produit.couleur_id).where.not(id: produit.id)
     end
