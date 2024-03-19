@@ -1,4 +1,6 @@
 class ProduitsController < ApplicationController
+  before_action :authenticate_vendeur_or_admin!
+
   before_action :set_produit, only: %i[ show edit update destroy ]
 
   def index
@@ -130,5 +132,11 @@ class ProduitsController < ApplicationController
       params.require(:produit).permit(:nom, :prixvente, :prixlocation, :description, :categorie_produit_id, :type_produit_id,
         :caution, :handle, :reffrs, :quantite, :fournisseur_id, :dateachat, :prixachat, 
         :image1, :couleur_id, :taille_id, images: [] )
+    end
+
+    def authenticate_vendeur_or_admin!
+      unless current_user && (current_user.vendeur? || current_user.admin?)
+        render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
+      end
     end
 end

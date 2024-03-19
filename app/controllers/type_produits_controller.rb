@@ -1,4 +1,6 @@
 class TypeProduitsController < ApplicationController
+  before_action :authenticate_vendeur_or_admin!
+
   before_action :set_type_produit, only: %i[ show edit update destroy ]
 
   # GET /type_produits or /type_produits.json
@@ -73,5 +75,11 @@ class TypeProduitsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def type_produit_params
       params.require(:type_produit).permit(:nom)
+    end
+
+    def authenticate_vendeur_or_admin!
+      unless current_user && (current_user.vendeur? || current_user.admin?)
+        render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
+      end
     end
 end

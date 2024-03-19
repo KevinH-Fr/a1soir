@@ -1,4 +1,6 @@
 class AnalysesController < ApplicationController
+  before_action :authenticate_vendeur_or_admin!
+
   def index
     datedebut = DateTime.parse(params[:debut]) if params[:debut].present?
     datefin = DateTime.parse(params[:fin]) if params[:fin].present?
@@ -45,5 +47,11 @@ class AnalysesController < ApplicationController
     @totalCaution =  @paiementsFiltres.only_caution.sum(:montant)
     @groupedByDatePaiements =  @paiementsFiltres.group('DATE(created_at)').only_prix.sum(:montant)
 
+  end
+
+  def authenticate_vendeur_or_admin!
+    unless current_user && (current_user.vendeur? || current_user.admin?)
+      render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
+    end
   end
 end

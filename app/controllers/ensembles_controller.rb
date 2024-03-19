@@ -1,4 +1,6 @@
 class EnsemblesController < ApplicationController
+  before_action :authenticate_vendeur_or_admin!
+
   before_action :set_ensemble, only: %i[ show edit update destroy ]
 
   def index
@@ -93,6 +95,12 @@ class EnsemblesController < ApplicationController
     def ensemble_params
       params.require(:ensemble).permit(:produit_id, :type_produit1_id, :type_produit2_id, :type_produit3_id,
         :type_produit4_id, :type_produit5_id, :type_produit6_id)
+    end
+
+    def authenticate_vendeur_or_admin!
+      unless current_user && (current_user.vendeur? || current_user.admin?)
+        render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
+      end
     end
     
 end

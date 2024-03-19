@@ -1,4 +1,6 @@
 class TaillesController < ApplicationController
+  before_action :authenticate_vendeur_or_admin!
+
   before_action :set_taille, only: %i[ show edit update destroy ]
 
   def index
@@ -104,5 +106,11 @@ class TaillesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def taille_params
       params.require(:taille).permit(:nom)
+    end
+
+    def authenticate_vendeur_or_admin!
+      unless current_user && (current_user.vendeur? || current_user.admin?)
+        render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
+      end
     end
 end

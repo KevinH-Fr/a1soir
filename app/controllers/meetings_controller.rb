@@ -1,4 +1,6 @@
 class MeetingsController < ApplicationController
+  before_action :authenticate_vendeur_or_admin!
+
   before_action :set_meeting, only: %i[ show edit update destroy ]
 
   def index
@@ -115,5 +117,11 @@ class MeetingsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def meeting_params
       params.require(:meeting).permit(:nom, :datedebut, :datefin, :commande_id, :client_id, :lieu)
+    end
+
+    def authenticate_vendeur_or_admin!
+      unless current_user && (current_user.vendeur? || current_user.admin?)
+        render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
+      end
     end
 end

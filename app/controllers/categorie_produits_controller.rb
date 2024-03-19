@@ -1,4 +1,6 @@
 class CategorieProduitsController < ApplicationController
+  before_action :authenticate_vendeur_or_admin!
+
   before_action :set_categorie_produit, only: %i[ show edit update destroy ]
 
   # GET /categorie_produits or /categorie_produits.json
@@ -109,5 +111,11 @@ class CategorieProduitsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def categorie_produit_params
       params.require(:categorie_produit).permit(:nom, :texte_annonce, :label)
+    end
+
+    def authenticate_vendeur_or_admin!
+      unless current_user && (current_user.vendeur? || current_user.admin?)
+        render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
+      end
     end
 end

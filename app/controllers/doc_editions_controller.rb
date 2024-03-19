@@ -1,4 +1,6 @@
 class DocEditionsController < ApplicationController
+  before_action :authenticate_vendeur_or_admin!
+
   before_action :set_doc_edition, only: %i[ show edit update ]
 
   def new
@@ -158,5 +160,17 @@ class DocEditionsController < ApplicationController
   
   def doc_edition_params
     params.fetch(:doc_edition, {}).permit(:commande_id, :doc_type, :edition_type, :commentaires, :sujet, :destinataire, :message)
+  end
+
+  def authenticate_vendeur_or_admin!
+    unless current_user && (current_user.vendeur? || current_user.admin?)
+      render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
+    end
+  end
+
+  def authenticate_vendeur_or_admin!
+    unless current_user && (current_user.vendeur? || current_user.admin?)
+      render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
+    end
   end
 end

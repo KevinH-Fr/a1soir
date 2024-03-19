@@ -1,4 +1,7 @@
 class ClientsController < ApplicationController
+
+  before_action :authenticate_vendeur_or_admin!
+
   before_action :set_client, only: %i[ show edit update destroy ]
 
   # GET /clients or /clients.json
@@ -103,4 +106,13 @@ class ClientsController < ApplicationController
     def client_params
       params.require(:client).permit(:prenom, :nom, :commentaires, :propart, :intitule, :tel, :tel2, :mail, :mail2, :adresse, :cp, :ville, :pays, :contact)
     end
+
+    private
+
+    def authenticate_vendeur_or_admin!
+      unless current_user && (current_user.vendeur? || current_user.admin?)
+        render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
+      end
+    end
+
 end

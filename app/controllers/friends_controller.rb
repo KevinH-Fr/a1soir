@@ -1,4 +1,6 @@
 class FriendsController < ApplicationController
+  before_action :authenticate_vendeur_or_admin!
+
   before_action :set_friend, only: %i[ show edit update destroy ]
 
   # GET /friends or /friends.json
@@ -82,5 +84,11 @@ class FriendsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def friend_params
       params.fetch(:friend, {}).permit(:nom, :age)
+    end
+
+    def authenticate_vendeur_or_admin!
+      unless current_user && (current_user.vendeur? || current_user.admin?)
+        render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
+      end
     end
 end

@@ -1,7 +1,7 @@
 class AdminParametersController < ApplicationController
+  before_action :authenticate_admin!
   before_action :set_admin_parameter, only: %i[ show edit update destroy ]
 
-  before_action :authenticate_admin!
 
   # GET /admin_parameters or /admin_parameters.json
   def index

@@ -1,4 +1,6 @@
 class CommandesController < ApplicationController
+  before_action :authenticate_vendeur_or_admin!
+
   before_action :set_commande, only: [:show, :edit, :update, :destroy, 
     :toggle_statut_non_retire, :toggle_statut_retire, :toggle_statut_rendu]
 
@@ -143,5 +145,11 @@ class CommandesController < ApplicationController
     def commande_params
       params.require(:commande).permit(:nom, :montant, :description, :client_id, :debutloc, :finloc, :dateevent, 
         :statutarticles, :typeevent, :profile_id, :commentaires, :commentaires_doc, :type_locvente, :devis)
+    end
+
+    def authenticate_vendeur_or_admin!
+      unless current_user && (current_user.vendeur? || current_user.admin?)
+        render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
+      end
     end
 end

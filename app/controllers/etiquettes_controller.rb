@@ -1,4 +1,6 @@
 class EtiquettesController < ApplicationController
+    before_action :authenticate_vendeur_or_admin!
+
     def index
         @produits = Produit.all 
     end
@@ -25,6 +27,12 @@ class EtiquettesController < ApplicationController
       end
 
     end 
+
+    def authenticate_vendeur_or_admin!
+        unless current_user && (current_user.vendeur? || current_user.admin?)
+          render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
+        end
+    end
 
 
 end

@@ -1,4 +1,6 @@
 class PaiementsController < ApplicationController
+  before_action :authenticate_vendeur_or_admin!
+
   before_action :set_paiement, only: %i[ show edit update destroy ]
 
   # GET /paiements or /paiements.json
@@ -66,5 +68,11 @@ class PaiementsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def paiement_params
       params.require(:paiement).permit(:typepaiement, :montant, :commande_id, :moyen, :commentaires)
+    end
+
+    def authenticate_vendeur_or_admin!
+      unless current_user && (current_user.vendeur? || current_user.admin?)
+        render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
+      end
     end
 end
