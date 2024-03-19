@@ -107,12 +107,5 @@ class ClientsController < ApplicationController
       params.require(:client).permit(:prenom, :nom, :commentaires, :propart, :intitule, :tel, :tel2, :mail, :mail2, :adresse, :cp, :ville, :pays, :contact)
     end
 
-    private
-
-    def authenticate_vendeur_or_admin!
-      unless current_user && (current_user.vendeur? || current_user.admin?)
-        render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
-      end
-    end
 
 end

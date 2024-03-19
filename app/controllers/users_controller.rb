@@ -29,12 +29,6 @@ class UsersController < ApplicationController
 
   private
 
-  def authenticate_vendeur_or_admin!
-    unless current_user && (current_user.vendeur? || current_user.admin?)
-      render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
-    end
-  end
-
   # Use callbacks to share common setup or constraints between actions.
   def set_user
     @user = User.find(params[:id])

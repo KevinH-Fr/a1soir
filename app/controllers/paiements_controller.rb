@@ -1,4 +1,5 @@
 class PaiementsController < ApplicationController
+
   before_action :authenticate_vendeur_or_admin!
 
   before_action :set_paiement, only: %i[ show edit update destroy ]
@@ -70,9 +71,4 @@ class PaiementsController < ApplicationController
       params.require(:paiement).permit(:typepaiement, :montant, :commande_id, :moyen, :commentaires)
     end
 
-    def authenticate_vendeur_or_admin!
-      unless current_user && (current_user.vendeur? || current_user.admin?)
-        render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
-      end
-    end
 end

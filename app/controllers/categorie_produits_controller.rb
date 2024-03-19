@@ -1,4 +1,5 @@
 class CategorieProduitsController < ApplicationController
+
   before_action :authenticate_vendeur_or_admin!
 
   before_action :set_categorie_produit, only: %i[ show edit update destroy ]
@@ -113,9 +114,5 @@ class CategorieProduitsController < ApplicationController
       params.require(:categorie_produit).permit(:nom, :texte_annonce, :label)
     end
 
-    def authenticate_vendeur_or_admin!
-      unless current_user && (current_user.vendeur? || current_user.admin?)
-        render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
-      end
-    end
+
 end

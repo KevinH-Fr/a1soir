@@ -146,9 +146,4 @@ class AvoirRembsController < ApplicationController
       params.require(:avoir_remb).permit(:type_avoir_remb, :montant, :nature, :commande_id)
     end
 
-    def authenticate_vendeur_or_admin!
-      unless current_user && (current_user.vendeur? || current_user.admin?)
-        render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
-      end
-    end
 end

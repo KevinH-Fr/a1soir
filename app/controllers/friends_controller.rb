@@ -1,4 +1,5 @@
 class FriendsController < ApplicationController
+
   before_action :authenticate_vendeur_or_admin!
 
   before_action :set_friend, only: %i[ show edit update destroy ]
@@ -86,9 +87,4 @@ class FriendsController < ApplicationController
       params.fetch(:friend, {}).permit(:nom, :age)
     end
 
-    def authenticate_vendeur_or_admin!
-      unless current_user && (current_user.vendeur? || current_user.admin?)
-        render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
-      end
-    end
 end

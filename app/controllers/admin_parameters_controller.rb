@@ -1,7 +1,7 @@
 class AdminParametersController < ApplicationController
+
   before_action :authenticate_admin!
   before_action :set_admin_parameter, only: %i[ show edit update destroy ]
-
 
   # GET /admin_parameters or /admin_parameters.json
   def index
@@ -68,12 +68,6 @@ class AdminParametersController < ApplicationController
   end
 
   private
-
-    def authenticate_admin!
-      unless current_user && current_user.admin?
-        render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
-      end
-    end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_admin_parameter

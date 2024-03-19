@@ -118,9 +118,4 @@ class SousarticlesController < ApplicationController
       params.require(:sousarticle).permit(:article_id, :produit_id, :nature, :description, :prix, :caution, :commentaires)
     end
 
-    def authenticate_vendeur_or_admin!
-      unless current_user && (current_user.vendeur? || current_user.admin?)
-        render "home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
-      end
-    end
 end
