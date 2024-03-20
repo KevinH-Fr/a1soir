@@ -46,23 +46,23 @@ module StockHelper
     end
 
     def locations_terminees_a_date(produits, date)
-      # Count the products with location finished before the given date
-
+      # Count the products with locations finished before the given date and the status of the command is "rendu"
+    
       if produits.is_a?(Produit)
-        total_quantite = produits.articles.joins(:commande).where("commandes.finloc < ?", date).location_only.sum(:quantite).to_i
-        total_quantite += produits.sousarticles.joins(:article => :commande).where("commandes.finloc < ?", date).location_only.count.to_i
+        total_quantite = produits.articles.joins(:commande).where("commandes.finloc < ? AND commandes.statutarticles = ?", date, "rendu").location_only.sum(:quantite).to_i
+        total_quantite += produits.sousarticles.joins(:article => :commande).where("commandes.finloc < ? AND commandes.statutarticles = ?", date, "rendu").location_only.count.to_i
         total_quantite
       elsif produits.is_a?(Enumerable)
         produits.map do |produit|
-          total_quantite = produit.articles.joins(:commande).where("commandes.finloc < ?", date).location_only.sum(:quantite).to_i
-          total_quantite += produit.sousarticles.joins(:article => :commande).where("commandes.finloc < ?", date).location_only.count.to_i
+          total_quantite = produit.articles.joins(:commande).where("commandes.finloc < ? AND commandes.statutarticles = ?", date, "rendu").location_only.sum(:quantite).to_i
+          total_quantite += produit.sousarticles.joins(:article => :commande).where("commandes.finloc < ? AND commandes.statutarticles = ?", date, "rendu").location_only.count.to_i
           total_quantite  
         end.sum
       else
         0
       end
-
     end
+    
     
 
     # statut des articles

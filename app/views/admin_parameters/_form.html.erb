@@ -1,28 +1,29 @@
-<%= form_with(model: admin_parameter) do |form| %>
-  <% if admin_parameter.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(admin_parameter.errors.count, "error") %> prohibited this admin_parameter from being saved:</h2>
+<div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
 
-      <ul>
-        <% admin_parameter.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+  <%= form_with(model: admin_parameter) do |form| %>
+    <% if admin_parameter.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(admin_parameter.errors.count, "error") %> prohibited this admin_parameter from being saved:</h2>
+
+        <ul>
+          <% admin_parameter.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= custom_form_elements(form, 
+      [:tx_tva, :number_field], [:coef_longue_duree, :number_field]
+    ) %>
+
+    <div class="input-group input-group mx-1 px-2">
+      <%= form.label :coef_prix_achat_location, "prix vente TTC", class: "input-group-text" %>
+      <%= form.number_field :coef_prix_achat_location, class: "form-control" %>
     </div>
+    
+    <%= custom_submit_button(form) %>
+
   <% end %>
 
-  <%= custom_form_elements(form, 
-    [:tx_tva, :number_field], [:coef_longue_duree, :number_field]
-  ) %>
-
-  <div class="input-group input-group mx-1 px-2">
-    <%= form.label :coef_prix_achat_location, "prix vente TTC", class: "input-group-text" %>
-    <%= form.number_field :coef_prix_achat_location, class: "form-control" %>
-  </div>
-  
-
-
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
+</div>

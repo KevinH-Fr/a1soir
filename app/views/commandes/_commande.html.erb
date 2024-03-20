@@ -10,6 +10,8 @@
 
           <span class="m-1"> <%= commande.full_name %> </span>
           <span class="m-1"> <%= commande.type_locvente %> </span>
+          <span class="m-1"> <%= commande.typeevent %> </span>
+
 
           <%= render partial: 'commandes/toggles_statut', locals: { commande: commande } %>
 
@@ -25,70 +27,14 @@
 
     <div class="collapse" id="collapseCommande<%= dom_id(commande) %>">
 
-      <p>
-        <strong>Nom:</strong>
-        <%= commande.nom %>
-      </p>
-
-      <p>
-        <strong>Montant:</strong>
-        <%= commande.montant %>
-      </p>
-
-      <p>
-        <strong>Description:</strong>
-        <%= commande.description %>
-      </p>
-
-      <p>
-        <strong>Client:</strong>
-        <%= commande.client_id %>
-      </p>
-
-      <p>
-        <strong>Debutloc:</strong>
-        <%= commande.debutloc %>
-      </p>
-
-      <p>
-        <strong>Finloc:</strong>
-        <%= commande.finloc %>
-      </p>
-
-      <p>
-        <strong>Dateevent:</strong>
-        <%= commande.dateevent %>
-      </p>
-
-      <p>
-        <strong>Typeevent:</strong>
-        <%= commande.typeevent %>
-      </p>
-
-      <p>
-        <strong>Profile:</strong>
-        <%= commande.profile_id %>
-      </p>
-
-      <p>
-        <strong>Commentaires:</strong>
-        <%= commande.commentaires %>
-      </p>
-
-      <p>
-        <strong>Commentaires doc:</strong>
-        <%= commande.commentaires_doc %>
-      </p>
-
-      <p>
-        <strong>Type:</strong>
-        <%= commande.type_locvente %>
-      </p>
-
-      <p>
-        <strong>Devis:</strong>
-        <%= commande.devis %>
-      </p>
+      <%= field_with_label("nom: ", commande.nom)  %>
+      <%= field_with_label("description: ", commande.description)  %>
+      <%= field_with_label("debutloc: ", commande.debutloc)  %>
+      <%= field_with_label("finloc: ", commande.finloc)  %>
+      <%= field_with_label("dateevent: ", commande.dateevent)  %>
+      <%= field_with_label("profile_id: ", commande.profile_id)  %>
+      <%= field_with_label("commentaires: ", commande.commentaires)  %>
+      <%= field_with_label("devis: ", commande.devis)  %>
     
       <%= links_record(commande) %>  
 

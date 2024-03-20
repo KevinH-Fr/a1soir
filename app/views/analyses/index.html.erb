@@ -1,44 +1,39 @@
-<div class="cadre-index-large mx-auto">
+<div class="card m-2 shadow-sm">
 
-    <div class="bloc-entete-model">
-      <div class="card card-header entete-index text-center">
-        <strong>Analyses</strong> 
-      </div> 
-    </div>
+  <div class="card-header bg-dark text-light text-center">
+    <i class="fa fa-xl brand-colored fa fa-chart-line ms-1 me-3"></i>
+    <strong>Analyses</strong> 
+  </div> 
 
-    <div class="bloc-record p-2">
-      <div class="card-body text-dark ">
+  <div class="card-body text-dark ">
 
-        <%= form_tag url_for, method: :get do %>
+    <%= form_tag url_for, method: :get do %>
 
-          <div class="input-group mb-1">
-            <%= label_tag :début, "début", class:"input-group-text label-with-format centered" %>
-            <%= date_field_tag :debut, params[:debut], class:"form-control field-with-format" %>
+      <div class="input-group mb-1">
+        <%= label_tag :début, "début", class:"input-group-text label-with-format centered" %>
+        <%= date_field_tag :debut, params[:debut], class:"form-control field-with-format" %>
 
-            <%= label_tag :fin, "fin", class:"input-group-text label-with-format centered" %>
-            <%= date_field_tag :fin, params[:fin], class:"form-control field-with-format" %>
+        <%= label_tag :fin, "fin", class:"input-group-text label-with-format centered" %>
+        <%= date_field_tag :fin, params[:fin], class:"form-control field-with-format" %>
 
-            <%= link_to "Effacer", url_for(), class:"btn btn-outline-danger rounded mx-1" %> 
+        <%= link_to "Effacer", url_for(), class:"btn btn-outline-danger rounded mx-1" %> 
 
-            <%= submit_tag "Go", class:"btn btn-success fw-bold rounded" %>
+        <%= submit_tag "Go", class:"btn btn-success fw-bold rounded" %>
 
-          </div>
-
-        <% end %>
-
-        <% if @datedebut.present? && @datefin.present? %>
-          <div class="fw-bold">
-            filtre actif: <%= @datedebut.strftime("%d/%m/%y")  %> - <%= @datefin.strftime("%d/%m/%y") %>
-          </div>
-        <% end %>
       </div>
-    </div>
-        
-    <%= render_dashboard_section("Commandes", ["chartPieCommandes", "chartBarCommandes", "chartLineCommandes"]) %>
-    <%= render_dashboard_section("Articles", ["chartPieArticles", "chartBarArticles", "chartLineArticles"]) %>
-    <%= render_dashboard_section("Chiffre d'affaires", ["chartPieCa", "chartBarCa", "chartLineCa"]) %>
-    <%= render_dashboard_section("Paiements", ["chartPiePaiements", "chartBarPaiements", "chartLinePaiements"]) %>
 
+    <% end %>
+
+    <% if @datedebut.present? && @datefin.present? %>
+      <div class="fw-bold">
+        filtre actif: <%= @datedebut.strftime("%d/%m/%y")  %> - <%= @datefin.strftime("%d/%m/%y") %>
+      </div>
+    <% end %>
   </div>
-
 </div>
+    
+<%= render_dashboard_section("Commandes", ["chartPieCommandes", "chartBarCommandes", "chartLineCommandes"]) %>
+<%= render_dashboard_section("Articles", ["chartPieArticles", "chartBarArticles", "chartLineArticles"]) %>
+<%= render_dashboard_section("Chiffre d'affaires", ["chartPieCa", "chartBarCa", "chartLineCa"]) %>
+<%= render_dashboard_section("Paiements", ["chartPiePaiements", "chartBarPaiements", "chartLinePaiements"]) %>
+

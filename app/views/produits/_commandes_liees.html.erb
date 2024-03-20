@@ -7,14 +7,19 @@
 
     <div class="card-body">  
         <% @commandes_liees.each do |commande|  %>
-            <div class="card d-flex flex-row mx-2 mb-3 p-2 bg-light shadow-sm">
-                <span class="fw-bold mx-2"> <%= commande.client.full_name %> </span>
-                <span class="mx-2"> <%= commande.full_name %> </span> 
-                <span class="mx-2"> <%= commande.type_locvente %> </span> 
-                <span class="mx-2"> <%= commande.debutloc %> </span> 
-                <span class="mx-2">  <%= commande.finloc %> </span> 
 
-            </div>
+            <%= link_to commande_path(commande), class: "text-decoration-none" do %>
+                <div class="card d-flex flex-row mx-2 mb-3 p-2 bg-light shadow-sm">
+                    <span class="fw-bold mx-2"> <%= commande.client.full_name %> </span>
+                    <span class="mx-2"> <%= commande.full_name %> </span> 
+                    <span class="mx-2"> <%= commande.type_locvente %> </span> 
+                    <span class="mx-2"> <%= commande.debutloc %> </span> 
+                    <span class="mx-2">  <%= commande.finloc %> </span> 
+
+                </div>
+            <% end %>
+            
         <% end %>
+        
     </div>
 </div>

@@ -1,9 +1,9 @@
 
-<div class="card m-2 p-4">
-  <div class="card card-header entete-index text-center">
+<div class="card">
+  <div class="card-header entete-index text-center">
     <strong>Demande de connexion</strong> 
   </div>
-  <div class="bloc-record text-center">
+  <div class="card-body text-center">
     <% unless current_user.present? %>
       <%= link_to "Se connecter", new_user_session_path, class:"btn btn-success p-2 m-2 fw-bold" %> 
       <%= link_to "Créer un compte", new_user_registration_path, class:"btn btn-primary p-2 m-2 fw-bold" %>
