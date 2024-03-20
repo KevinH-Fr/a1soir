@@ -1,7 +1,6 @@
-<%= bandeau_entete("Rendez-vous", "calendar", @meetings.count, "your-search") %>
+<%= bandeau_entete("Rendez-vous", "calendar", @meetings.count, :nom_or_datedebut_or_datefin_or_lieu_cont) %>
 
 <%= bloc_nouveau(Meeting) %>
-
 
 <div class="container m-3 text-center">
   <%= link_to 'Jour', { type: 'day'}, class: 'btn btn-outline-primary' %>
@@ -27,6 +26,14 @@
 
 
   <hr>
+
+  <% if params[:q].present? %>
+    <div id="meetings">
+      <% @meetings.each do |meeting| %>
+        <%= render meeting %>
+      <% end %>
+    </div>
+  <% end %>
 
   <div class="container text-end">
     <%= link_to "S'abonner au calendrier", meetings_url(protocol: :webcal, format: :ics), 

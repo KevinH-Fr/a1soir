@@ -1,19 +1,16 @@
 class CategorieProduitsController < ApplicationController
 
   before_action :authenticate_vendeur_or_admin!
-
   before_action :set_categorie_produit, only: %i[ show edit update destroy ]
 
-  # GET /categorie_produits or /categorie_produits.json
   def index
-    @categorie_produits = CategorieProduit.all
+    @q = CategorieProduit.ransack(params[:q])
+    @categorie_produits = @q.result(distinct: true)
   end
 
-  # GET /categorie_produits/1 or /categorie_produits/1.json
   def show
   end
 
-  # GET /categorie_produits/new
   def new
     @categorie_produit = CategorieProduit.new
   end
@@ -29,7 +26,6 @@ class CategorieProduitsController < ApplicationController
     end
   end
 
-  # POST /categorie_produits or /categorie_produits.json
   def create
     @categorie_produit = CategorieProduit.new(categorie_produit_params)
 
@@ -93,7 +89,6 @@ class CategorieProduitsController < ApplicationController
     end
   end
 
-  # DELETE /categorie_produits/1 or /categorie_produits/1.json
   def destroy
     @categorie_produit.destroy!
 
@@ -104,12 +99,10 @@ class CategorieProduitsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_categorie_produit
       @categorie_produit = CategorieProduit.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def categorie_produit_params
       params.require(:categorie_produit).permit(:nom, :texte_annonce, :label)
     end

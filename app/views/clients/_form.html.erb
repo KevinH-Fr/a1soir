@@ -22,7 +22,7 @@
 
       <div class="input-group px-2 mb-1">
         <%= form.label :propart, class: "input-group-text" %>
-        <%= form.select :propart, Client::PROPPART_OPTIONS, { include_blank: 'Sélectionner' }, class: "form-select" %>
+        <%= form.select :propart, Client::PROPART_OPTIONS, { include_blank: 'Sélectionner' }, class: "form-select" %>
       </div>
 
       <%= custom_form_elements(form, 

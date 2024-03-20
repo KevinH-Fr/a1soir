@@ -48,7 +48,7 @@ class Produit < ApplicationRecord
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["articles", "categorie_produit", "couleur", "ensembles", "fournisseur", "image1_attachment", "image1_blob", "images_attachments", "images_blobs", "qr_code_attachment", "qr_code_blob", "sousarticles", "taille", "type_produit"]
+    ["articles", "categorie_produit", "couleur", "ensembles", "fournisseur", "taille", "type_produit"]
   end
 
   private

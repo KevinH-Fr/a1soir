@@ -5,7 +5,10 @@ class MeetingsController < ApplicationController
   before_action :set_meeting, only: %i[ show edit update destroy ]
 
   def index
-    @meetings = Meeting.all
+
+    @q = Meeting.ransack(params[:q])
+    @meetings = @q.result(distinct: true)
+    
     @commandes = Commande.all
     @clients = Client.all
 

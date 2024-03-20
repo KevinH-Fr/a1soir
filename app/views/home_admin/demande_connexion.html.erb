@@ -5,8 +5,18 @@
   </div>
   <div class="card-body text-center">
     <% unless current_user.present? %>
-      <%= link_to "Se connecter", new_user_session_path, class:"btn btn-success p-2 m-2 fw-bold" %> 
-      <%= link_to "Créer un compte", new_user_registration_path, class:"btn btn-primary p-2 m-2 fw-bold" %>
+
+      <%= link_to new_user_session_path, class: "btn btn-sm btn-warning m-1" do %>
+          <i class="fa fa-solid fa-xl fa-user-lock"></i>
+          <span class="ms-1 fw-bold">Connexion</span>
+      <% end %>
+
+
+      <%= link_to new_user_registration_path, class: "btn btn-sm btn-primary m-1" do %>
+        <i class="fa fa-solid fa-xl fa-user-plus"></i>
+        <span class="ms-1 fw-bold">Nouveau</span>
+      <% end %>
+
     <% end %>
 
     <% if user_signed_in? %>

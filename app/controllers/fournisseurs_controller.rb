@@ -1,24 +1,20 @@
 class FournisseursController < ApplicationController
 
   before_action :authenticate_vendeur_or_admin!
-
   before_action :set_fournisseur, only: %i[ show edit update destroy ]
 
-  # GET /fournisseurs or /fournisseurs.json
   def index
-    @fournisseurs = Fournisseur.all
+    @q = Fournisseur.ransack(params[:q])
+    @fournisseurs = @q.result(distinct: true)
   end
 
-  # GET /fournisseurs/1 or /fournisseurs/1.json
   def show
   end
 
-  # GET /fournisseurs/new
   def new
     @fournisseur = Fournisseur.new
   end
 
-  # GET /fournisseurs/1/edit
   def edit
     respond_to do |format|
       format.html 
@@ -30,7 +26,6 @@ class FournisseursController < ApplicationController
     end
   end
 
-  # POST /fournisseurs or /fournisseurs.json
   def create
     @fournisseur = Fournisseur.new(fournisseur_params)
 
@@ -68,7 +63,6 @@ class FournisseursController < ApplicationController
     end
   end
 
-  # PATCH/PUT /fournisseurs/1 or /fournisseurs/1.json
   def update
     respond_to do |format|
       if @fournisseur.update(fournisseur_params)
@@ -105,7 +99,6 @@ class FournisseursController < ApplicationController
     end
   end
 
-  # DELETE /fournisseurs/1 or /fournisseurs/1.json
   def destroy
     @fournisseur.destroy!
 
@@ -116,12 +109,10 @@ class FournisseursController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_fournisseur
       @fournisseur = Fournisseur.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def fournisseur_params
       params.require(:fournisseur).permit(:nom, :tel, :mail, :contact, :site, :notes)
     end

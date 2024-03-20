@@ -1,4 +1,4 @@
-<%= bandeau_entete("Clients", "user", @clients.count, "your-search") %>
+<%= bandeau_entete("Clients", "user", @clients.count, :nom_or_prenom_cont) %>
 
 <%= bloc_nouveau(Client) %>
 
@@ -7,5 +7,6 @@
         <%= render client %>
   <% end %>
 </div>
+
 
 

@@ -14,4 +14,12 @@ class Profile < ApplicationRecord
         end
     end
 
+    def self.ransackable_attributes(auth_object = nil)
+        ["created_at", "id", "id_value", "nom", "prenom", "updated_at"]
+    end
+
+    def self.ransackable_associations(auth_object = nil)
+        ["profile_pic_attachment", "profile_pic_blob"]
+    end
+
 end

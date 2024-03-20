@@ -1,7 +1,7 @@
 module HomeAdminHelper
   def dashboard_card(title, path, new_path, icon, items)
     content_tag(:div, class: "card m-2 shadow-sm") do
-      concat(content_tag(:div, class: "card-header bg-dark text-light py-2") do
+      concat(content_tag(:div, class: "card-header bg-dark text-light py-1") do
         concat(content_tag(:div, class: "row align-items-center m-0 p-1") do
           concat(content_tag(:div, class: "col text-start m-0 p-0") do
             concat(content_tag(:i, nil, class: "fa fa-xl brand-colored fa-#{icon}"))
@@ -35,7 +35,7 @@ module HomeAdminHelper
   end
 
   def options_supplementaires_link(path, icon_class, text, btn_class)
-    link_to(path, class: "m-2 btn #{btn_class}") do
+    link_to(path, class: "m-1 btn btn-sm #{btn_class}") do
       concat content_tag(:i, "", class: "fa #{icon_class} me-2")
       concat content_tag(:span, text, class: "fw-bold fs-6")
     end

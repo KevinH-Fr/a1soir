@@ -35,4 +35,12 @@ class Meeting < ApplicationRecord
     datefin
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["client_id", "commande_id", "created_at", "datedebut", "datefin", "id", "id_value", "lieu", "nom", "updated_at"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["client", "commande"]
+  end
+
 end

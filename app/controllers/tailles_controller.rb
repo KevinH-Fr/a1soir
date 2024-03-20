@@ -4,7 +4,8 @@ class TaillesController < ApplicationController
   before_action :set_taille, only: %i[ show edit update destroy ]
 
   def index
-    @tailles = Taille.all
+    @q = Taille.ransack(params[:q])
+    @tailles = @q.result(distinct: true)
   end
 
   def show

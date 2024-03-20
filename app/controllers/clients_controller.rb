@@ -1,11 +1,11 @@
 class ClientsController < ApplicationController
 
   before_action :authenticate_vendeur_or_admin!
-
   before_action :set_client, only: %i[ show edit update destroy ]
 
   def index
-    @clients = Client.all
+    @q = Client.ransack(params[:q])
+    @clients = @q.result(distinct: true)
   end
 
   def show

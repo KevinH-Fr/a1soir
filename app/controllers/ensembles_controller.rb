@@ -4,7 +4,8 @@ class EnsemblesController < ApplicationController
   before_action :set_ensemble, only: %i[ show edit update destroy ]
 
   def index
-    @ensembles = Ensemble.all
+    @q = Ensemble.ransack(params[:q])
+    @ensembles = @q.result(distinct: true)
   end
 
   def show

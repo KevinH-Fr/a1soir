@@ -40,7 +40,14 @@ class Commande < ApplicationRecord
   
   # ajouter is mixte ?
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["id", "nom", "montant", "description", "client_id", "debutloc", "finloc", "dateevent", "statutarticles", "typeevent", "profile_id", "commentaires", "commentaires_doc", "type_locvente", "devis"]
+  end
 
+  def self.ransackable_associations(auth_object = nil)
+    ["articles", "avoir_rembs", "client", "meetings", "paiement_recus", "profile"]
+  end
+  
   private
 
   def after_commande_create

@@ -5,7 +5,10 @@ class CommandesController < ApplicationController
     :toggle_statut_non_retire, :toggle_statut_retire, :toggle_statut_rendu]
 
   def index
-    @commandes = Commande.all
+
+    @q = Commande.ransack(params[:q])
+    @commandes = @q.result(distinct: true)
+    
     @clients = Client.all
     @profiles = Profile.all 
 

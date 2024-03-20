@@ -1,19 +1,16 @@
 class TypeProduitsController < ApplicationController
 
   before_action :authenticate_vendeur_or_admin!
-
   before_action :set_type_produit, only: %i[ show edit update destroy ]
 
-  # GET /type_produits or /type_produits.json
   def index
-    @type_produits = TypeProduit.all
+    @q = TypeProduit.ransack(params[:q])
+    @type_produits = @q.result(distinct: true)
   end
 
-  # GET /type_produits/1 or /type_produits/1.json
   def show
   end
 
-  # GET /type_produits/new
   def new
     @type_produit = TypeProduit.new
   end
@@ -29,7 +26,6 @@ class TypeProduitsController < ApplicationController
     end
   end
 
-  # POST /type_produits or /type_produits.json
   def create
     @type_produit = TypeProduit.new(type_produit_params)
 
@@ -44,7 +40,6 @@ class TypeProduitsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /type_produits/1 or /type_produits/1.json
   def update
     respond_to do |format|
       if @type_produit.update(type_produit_params)
@@ -57,7 +52,6 @@ class TypeProduitsController < ApplicationController
     end
   end
 
-  # DELETE /type_produits/1 or /type_produits/1.json
   def destroy
     @type_produit.destroy!
 
@@ -68,12 +62,10 @@ class TypeProduitsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_type_produit
       @type_produit = TypeProduit.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def type_produit_params
       params.require(:type_produit).permit(:nom)
     end

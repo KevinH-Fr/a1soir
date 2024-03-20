@@ -1,11 +1,13 @@
 class ProduitsController < ApplicationController
 
   before_action :authenticate_vendeur_or_admin!
-
   before_action :set_produit, only: %i[ show edit update destroy ]
 
   def index
-    @produits = Produit.all
+
+    @q = Produit.ransack(params[:q])
+    @produits = @q.result(distinct: true)
+    
     @categorie_produits = CategorieProduit.all
     @type_produits = TypeProduit.all
 
