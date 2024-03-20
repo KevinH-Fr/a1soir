@@ -32,7 +32,7 @@ class CategorieProduitsController < ApplicationController
     respond_to do |format|
       if @categorie_produit.save
 
-        flash.now[:success] = "categorie_produit was successfully created"
+        flash.now[:success] =  I18n.t('notices.successfully_created')
 
         format.turbo_stream do
           render turbo_stream: [
@@ -62,7 +62,7 @@ class CategorieProduitsController < ApplicationController
   def update
     respond_to do |format|
       if @categorie_produit.update(categorie_produit_params)
-        flash.now[:success] = "categorie_produit was successfully updated"
+        flash.now[:success] =  I18n.t('notices.successfully_updated')
 
         format.turbo_stream do
           render turbo_stream: [
@@ -93,7 +93,7 @@ class CategorieProduitsController < ApplicationController
     @categorie_produit.destroy!
 
     respond_to do |format|
-      format.html { redirect_to categorie_produits_url, notice: "Categorie produit was successfully destroyed." }
+      format.html { redirect_to categorie_produits_url, notice: I18n.t('notices.successfully_destroyed')  }
       format.json { head :no_content }
     end
   end

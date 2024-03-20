@@ -33,7 +33,7 @@ class TaillesController < ApplicationController
     respond_to do |format|
       if @taille.save
 
-        flash.now[:success] = "taille was successfully created"
+        flash.now[:success] =  I18n.t('notices.successfully_created')
 
         format.turbo_stream do
           render turbo_stream: [
@@ -63,7 +63,7 @@ class TaillesController < ApplicationController
     respond_to do |format|
       if @taille.update(taille_params)
 
-        flash.now[:success] = "taille was successfully updated"
+        flash.now[:success] = I18n.t('notices.successfully_updated')
 
         format.turbo_stream do
           render turbo_stream: [
@@ -93,7 +93,7 @@ class TaillesController < ApplicationController
     @taille.destroy!
 
     respond_to do |format|
-      format.html { redirect_to tailles_url, notice: "taille was successfully destroyed." }
+      format.html { redirect_to tailles_url, notice: I18n.t('notices.successfully_destroyed')  }
       format.json { head :no_content }
     end
   end

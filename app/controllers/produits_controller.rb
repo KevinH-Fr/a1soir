@@ -74,7 +74,7 @@ class ProduitsController < ApplicationController
         #  ]
         #end
 
-        format.html { redirect_to produit_url(@produit), notice: "Produit was successfully created." }
+        format.html { redirect_to produit_url(@produit), notice: I18n.t('notices.successfully_created') }
         format.json { render :show, status: :created, location: @produit }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -93,7 +93,7 @@ class ProduitsController < ApplicationController
     respond_to do |format|
       if @produit.update(produit_params)
 
-        flash.now[:success] = "produit was successfully updated"
+        flash.now[:success] =  I18n.t('notices.successfully_updated')
 
         format.turbo_stream do
           render turbo_stream: [
@@ -122,7 +122,7 @@ class ProduitsController < ApplicationController
     @produit.destroy!
 
     respond_to do |format|
-      format.html { redirect_to produits_url, notice: "Produit was successfully destroyed." }
+      format.html { redirect_to produits_url, notice:  I18n.t('notices.successfully_destroyed')}
       format.json { head :no_content }
     end
   end

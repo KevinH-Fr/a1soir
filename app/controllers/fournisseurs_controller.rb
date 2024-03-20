@@ -32,6 +32,8 @@ class FournisseursController < ApplicationController
     respond_to do |format|
       if @fournisseur.save
 
+        flash.now[:success] =  I18n.t('notices.successfully_created')
+
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('new',
@@ -67,7 +69,7 @@ class FournisseursController < ApplicationController
     respond_to do |format|
       if @fournisseur.update(fournisseur_params)
 
-        flash.now[:success] = "fournisseur was successfully created"
+        flash.now[:success] = I18n.t('notices.successfully_updated')
 
         format.turbo_stream do
           render turbo_stream: [
@@ -103,7 +105,7 @@ class FournisseursController < ApplicationController
     @fournisseur.destroy!
 
     respond_to do |format|
-      format.html { redirect_to fournisseurs_url, notice: "Fournisseur was successfully destroyed." }
+      format.html { redirect_to fournisseurs_url, notice: I18n.t('notices.successfully_destroyed')  }
       format.json { head :no_content }
     end
   end

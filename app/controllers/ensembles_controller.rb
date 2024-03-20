@@ -32,7 +32,7 @@ class EnsemblesController < ApplicationController
     respond_to do |format|
       if @ensemble.save
 
-        flash.now[:success] = "ensemble was successfully created"
+        flash.now[:success] =  I18n.t('notices.successfully_created')
 
         format.turbo_stream do
           render turbo_stream: [
@@ -61,7 +61,7 @@ class EnsemblesController < ApplicationController
     respond_to do |format|
       if @ensemble.update(ensemble_params)
 
-        flash.now[:success] = "ensemble was successfully updated"
+        flash.now[:success] = I18n.t('notices.successfully_updated')
 
         format.turbo_stream do
           render turbo_stream: [
@@ -83,7 +83,7 @@ class EnsemblesController < ApplicationController
     @ensemble.destroy!
 
     respond_to do |format|
-      format.html { redirect_to ensembles_url, notice: "Ensemble was successfully destroyed." }
+      format.html { redirect_to ensembles_url, notice: I18n.t('notices.successfully_destroyed')  }
       format.json { head :no_content }
     end
   end

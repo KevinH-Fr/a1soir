@@ -4,31 +4,26 @@ class MessagesController < ApplicationController
 
   before_action :set_message, only: %i[ show edit update destroy ]
 
-  # GET /messages or /messages.json
   def index
     @messages = Message.all
   end
 
-  # GET /messages/1 or /messages/1.json
   def show
   end
 
-  # GET /messages/new
   def new
     @message = Message.new
   end
 
-  # GET /messages/1/edit
   def edit
   end
 
-  # POST /messages or /messages.json
   def create
     @message = Message.new(message_params)
 
     respond_to do |format|
       if @message.save
-        format.html { redirect_to message_url(@message), notice: "Message was successfully created." }
+        format.html { redirect_to message_url(@message), notice: I18n.t('notices.successfully_created') }
         format.json { render :show, status: :created, location: @message }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -41,7 +36,7 @@ class MessagesController < ApplicationController
   def update
     respond_to do |format|
       if @message.update(message_params)
-        format.html { redirect_to message_url(@message), notice: "Message was successfully updated." }
+        format.html { redirect_to message_url(@message), notice: I18n.t('notices.successfully_updated') }
         format.json { render :show, status: :ok, location: @message }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -55,7 +50,7 @@ class MessagesController < ApplicationController
     @message.destroy!
 
     respond_to do |format|
-      format.html { redirect_to messages_url, notice: "Message was successfully destroyed." }
+      format.html { redirect_to messages_url, notice: I18n.t('notices.successfully_destroyed')  }
       format.json { head :no_content }
     end
   end

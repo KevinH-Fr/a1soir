@@ -23,8 +23,6 @@ class ArticlesController < ApplicationController
 
     @produit = @article.produit
 
-    puts "_______________ val produit depuis articles edit: #{@produit.id}__________________________"
-
     respond_to do |format|
       format.html 
       format.turbo_stream do  
@@ -45,7 +43,7 @@ class ArticlesController < ApplicationController
 
         @commande = @article.commande
 
-        format.html { redirect_to selection_produit_path(commande: @commande.id), notice: "Article was successfully created." }
+        format.html { redirect_to selection_produit_path(commande: @commande.id), notice:  I18n.t('notices.successfully_created') }
         format.json { render :show, status: :created, location: @article }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -62,7 +60,7 @@ class ArticlesController < ApplicationController
     respond_to do |format|
       if @article.update(article_params)
 
-        flash.now[:success] = "Article was successfully updated"
+        flash.now[:success] =  I18n.t('notices.successfully_updated')
 
         format.turbo_stream do
           render turbo_stream: [
@@ -112,7 +110,7 @@ class ArticlesController < ApplicationController
           ]
       end
 
-      format.html { redirect_to articles_url, notice: "Article was successfully destroyed." }
+      format.html { redirect_to articles_url, notice:  I18n.t('notices.successfully_destroyed') }
       format.json { head :no_content }
     end
   end

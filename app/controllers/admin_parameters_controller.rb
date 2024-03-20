@@ -35,7 +35,7 @@ class AdminParametersController < ApplicationController
 
     respond_to do |format|
       if @admin_parameter.save
-        format.html { redirect_to admin_parameter_url(@admin_parameter), notice: "Admin parameter was successfully created." }
+        format.html { redirect_to admin_parameter_url(@admin_parameter), notice:  I18n.t('notices.successfully_created') }
         format.json { render :show, status: :created, location: @admin_parameter }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -48,7 +48,7 @@ class AdminParametersController < ApplicationController
   def update
     respond_to do |format|
       if @admin_parameter.update(admin_parameter_params)
-        format.html { redirect_to admin_parameter_url(@admin_parameter), notice: "Admin parameter was successfully updated." }
+        format.html { redirect_to admin_parameter_url(@admin_parameter), notice: I18n.t('notices.successfully_updated') }
         format.json { render :show, status: :ok, location: @admin_parameter }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -62,7 +62,7 @@ class AdminParametersController < ApplicationController
     @admin_parameter.destroy!
 
     respond_to do |format|
-      format.html { redirect_to admin_parameters_url, notice: "Admin parameter was successfully destroyed." }
+      format.html { redirect_to admin_parameters_url, notice: I18n.t('notices.successfully_destroyed')  }
       format.json { head :no_content }
     end
   end

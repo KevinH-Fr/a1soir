@@ -69,7 +69,7 @@ class CommandesController < ApplicationController
         #  ]
         #end
 
-        format.html { redirect_to commande_url(@commande), notice: "Commande was successfully created." }
+        format.html { redirect_to commande_url(@commande), notice:  I18n.t('notices.successfully_created') }
         format.json { render :show, status: :created, location: @commande }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -84,7 +84,7 @@ class CommandesController < ApplicationController
     respond_to do |format|
       if @commande.update(commande_params)
 
-        flash.now[:success] = "commande was successfully updated"
+        flash.now[:success] =  I18n.t('notices.successfully_updated')
 
         format.turbo_stream do
           render turbo_stream: [
@@ -114,7 +114,7 @@ class CommandesController < ApplicationController
     @commande.destroy!
 
     respond_to do |format|
-      format.html { redirect_to commandes_url, notice: "Commande was successfully destroyed." }
+      format.html { redirect_to commandes_url, notice:  I18n.t('notices.successfully_destroyed') }
       format.json { head :no_content }
     end
   end

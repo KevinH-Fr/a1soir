@@ -31,7 +31,7 @@ class TypeProduitsController < ApplicationController
 
     respond_to do |format|
       if @type_produit.save
-        format.html { redirect_to type_produit_url(@type_produit), notice: "Type produit was successfully created." }
+        format.html { redirect_to type_produit_url(@type_produit), notice:  I18n.t('notices.successfully_created')}
         format.json { render :show, status: :created, location: @type_produit }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -43,7 +43,7 @@ class TypeProduitsController < ApplicationController
   def update
     respond_to do |format|
       if @type_produit.update(type_produit_params)
-        format.html { redirect_to type_produit_url(@type_produit), notice: "Type produit was successfully updated." }
+        format.html { redirect_to type_produit_url(@type_produit), notice: I18n.t('notices.successfully_updated') }
         format.json { render :show, status: :ok, location: @type_produit }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -56,7 +56,7 @@ class TypeProduitsController < ApplicationController
     @type_produit.destroy!
 
     respond_to do |format|
-      format.html { redirect_to type_produits_url, notice: "Type produit was successfully destroyed." }
+      format.html { redirect_to type_produits_url, notice: I18n.t('notices.successfully_destroyed')  }
       format.json { head :no_content }
     end
   end

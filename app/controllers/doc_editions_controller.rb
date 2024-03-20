@@ -71,7 +71,7 @@ class DocEditionsController < ApplicationController
 
         @commande = @doc_edition.commande
         
-        flash.now[:success] = "doc_edition was successfully created"
+        flash.now[:success] =  I18n.t('notices.successfully_created')
 
         format.turbo_stream do
           render turbo_stream: [

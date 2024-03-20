@@ -1,34 +1,28 @@
 class TextesController < ApplicationController
 
   before_action :authenticate_vendeur_or_admin!
-
   before_action :set_texte, only: %i[ show edit update destroy ]
 
-  # GET /textes or /textes.json
   def index
     @textes = Texte.all
   end
 
-  # GET /textes/1 or /textes/1.json
   def show
   end
 
-  # GET /textes/new
   def new
     @texte = Texte.new
   end
 
-  # GET /textes/1/edit
   def edit
   end
 
-  # POST /textes or /textes.json
   def create
     @texte = Texte.new(texte_params)
 
     respond_to do |format|
       if @texte.save
-        format.html { redirect_to texte_url(@texte), notice: "Texte was successfully created." }
+        format.html { redirect_to texte_url(@texte), notice:  I18n.t('notices.successfully_created') }
         format.json { render :show, status: :created, location: @texte }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -37,11 +31,10 @@ class TextesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /textes/1 or /textes/1.json
   def update
     respond_to do |format|
       if @texte.update(texte_params)
-        format.html { redirect_to texte_url(@texte), notice: "Texte was successfully updated." }
+        format.html { redirect_to texte_url(@texte), notice: I18n.t('notices.successfully_updated') }
         format.json { render :show, status: :ok, location: @texte }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -50,12 +43,11 @@ class TextesController < ApplicationController
     end
   end
 
-  # DELETE /textes/1 or /textes/1.json
   def destroy
     @texte.destroy!
 
     respond_to do |format|
-      format.html { redirect_to textes_url, notice: "Texte was successfully destroyed." }
+      format.html { redirect_to textes_url, notice: I18n.t('notices.successfully_destroyed')  }
       format.json { head :no_content }
     end
   end
