@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "client_form" do %>
+<%#= turbo_frame_tag "client_form" do %>
 
   <div class="card mx-2 mb-3 p-2 light-beige-colored shadow-sm">
 
@@ -17,12 +17,22 @@
 
 
       <%= custom_form_elements(form, 
-        [:prenom, :text_field], [:nom, :text_field],
-        [:commentaires, :text_area], [:propart, :text_field],
+        [:prenom, :text_field], [:nom, :text_field]
+      ) %>
+
+      <div class="input-group px-2 mb-1">
+        <%= form.label :propart, class: "input-group-text" %>
+        <%= form.select :propart, Client::PROPPART_OPTIONS, { include_blank: 'Sélectionner' }, class: "form-select" %>
+      </div>
+
+      <%= custom_form_elements(form, 
+        [:commentaires, :text_area],
         [:intitule, :text_field], [:tel, :text_field], [:tel2, :number_field],
-        [:mail, :text_field], [:mail2, :date_field], [:adresse, :text_field],
+        [:mail, :text_field], [:mail2, :text_field], [:adresse, :text_field],
         [:cp, :text_field], [:ville, :text_field], [:pays, :text_field], [:contact, :text_field]
       ) %>
+
+
 
       <%= custom_submit_button(form) %>
 
@@ -30,4 +40,4 @@
 
   </div>
 
-<% end %>
+<%# end %>

@@ -19,6 +19,15 @@ module ApplicationHelper
           concat " #{custom_currency_format(value)}"
         end
     end
+
+    def field_with_label(text, value)
+      if value.present?
+        content_tag(:div, class: "mx-2 fs-6") do
+          concat " #{text}"
+          concat " #{value}"
+        end
+      end
+    end
       
 
 end
