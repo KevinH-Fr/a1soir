@@ -58,21 +58,21 @@ class ProduitsController < ApplicationController
     respond_to do |format|
       if @produit.save
 
-        flash.now[:success] = "produit was successfully created"
+        #flash.now[:success] = "produit was successfully created"
 
-        format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.update('new',
-                                partial: "produits/form",
-                                locals: { produit: Produit.new }),
+        #format.turbo_stream do
+        #  render turbo_stream: [
+        #    turbo_stream.update('new',
+        #                        partial: "produits/form",
+        #                        locals: { produit: Produit.new }),
   
-            turbo_stream.prepend('produits',
-                                  partial: "produits/produit",
-                                  locals: { produit: @produit }),
-            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+        #    turbo_stream.prepend('produits',
+        #                          partial: "produits/produit",
+        #                          locals: { produit: @produit }),
+        #    turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
             
-          ]
-        end
+        #  ]
+        #end
 
         format.html { redirect_to produit_url(@produit), notice: "Produit was successfully created." }
         format.json { render :show, status: :created, location: @produit }
