@@ -15,6 +15,7 @@ class ProduitsController < ApplicationController
   end
 
   def show
+    @commandes_liees = Commande.joins(articles: :produit).where(articles: { produit_id: @produit }).distinct
   end
 
   def new

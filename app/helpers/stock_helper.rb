@@ -64,10 +64,6 @@ module StockHelper
 
     end
     
-    #def produits_restants_date(produits, date)
-      # compter les produits dispo à la date de debut de la commande courante
-    #  produits_restants(produits) + locations_terminees_a_date(produits, date)
-    #end
 
     # statut des articles
     def articles_loues_in_commandes_non_retires

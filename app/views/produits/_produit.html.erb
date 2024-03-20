@@ -3,9 +3,9 @@
     <div class="card-body p-0">
       <div class="row g-0">
         <div class="col-4">
-          <%= image_tag(produit.default_image, class: "img-produit")  %>
+          <%= link_to image_tag(produit.default_image, class: "img-produit"), produit_path(produit)  %>
         </div>
-        <div class="col-8 d-flex flex-column p-2">
+        <div class="col-8 d-flex flex-column p-4">
           <h5 class="card-title">
             <%= produit.nom %>
             <%= link_to "", "#collapseProduit#{dom_id(produit)}", 
@@ -20,7 +20,7 @@
 
             <%= produit.description %>
 
-        <div class="container">
+        <div class="container-fluid p-0">
             <%= badge_prixlocation_produit(produit) %>
             <%= badge_prixvente_produit(produit) %>
             <%= badge_couleur_produit(produit) %> 
@@ -33,7 +33,8 @@
         </div>
       </div>
 
-      <div class="p-2 collapse" id="collapseProduit<%= dom_id(produit) %>">
+      <div class="collapse px-2" id="collapseProduit<%= dom_id(produit) %>">
+          <hr>
 
             <%= image_tag(produit.qr_code, class:"rounded-start") if produit.qr_code.attached? %>
 
