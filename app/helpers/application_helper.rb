@@ -9,8 +9,10 @@ module ApplicationHelper
   end
 
     def custom_badge(icon_class, text, color, value)
-        content_tag(:div, class: "badge bg-#{color} mx-2 fs-6") do
-          concat content_tag(:i, '', class: "fa #{icon_class} me-1")
+        content_tag(:div, class: "badge bg-#{color} mx-1 fs-6") do
+          if icon_class.present?
+            concat content_tag(:i, '', class: "fa #{icon_class} me-1")
+          end
           concat " #{text}"
           concat " #{value}"
         end
@@ -20,7 +22,7 @@ module ApplicationHelper
         color = (value != 0) ? "danger" : "success"
         content_tag(:div, class: "badge bg-#{color} mx-2 fs-6") do
           concat " #{text}"
-          concat " #{custom_currency_format(value)}"
+          concat " #{custom_currency_no_decimals_format(value)}"
         end
     end
 

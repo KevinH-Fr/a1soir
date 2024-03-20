@@ -8,14 +8,18 @@
 
         <div class="col">
         
-          <strong>Type avoir remb:</strong>
+          <strong>Type:</strong>
           <%= avoir_remb.type_avoir_remb %>
 
           <strong>Montant:</strong>
-          <%= avoir_remb.montant %>
+          <%= custom_currency_no_decimals_format(avoir_remb.montant) %>
 
-          <strong>Nature:</strong>
-          <%= avoir_remb.nature %>
+          <% if avoir_remb.nature.present? %>
+            <strong>Nature:</strong>
+            <%= avoir_remb.nature %>            
+          <% end %>
+
+          <%= link_to "", "#collapseAvoir_remb#{dom_id(avoir_remb)}", class: "btn btn-sm btn-primary fa fa-eye m-1", "data-bs-toggle": "collapse", role: "button", "aria-expanded": "false", "aria-controls": "collapseAvoir_remb#{dom_id(avoir_remb)}" %>
 
         </div>
 
@@ -23,10 +27,8 @@
     
     </div>
 
-    <div class="col text-end">
-      <%= link_to "", "#collapseAvoir_remb#{dom_id(avoir_remb)}", class: "btn btn-sm btn-primary fa fa-eye m-1", "data-bs-toggle": "collapse", role: "button", "aria-expanded": "false", "aria-controls": "collapseAvoir_remb#{dom_id(avoir_remb)}" %>
-      <%= button_to "", edit_avoir_remb_path(avoir_remb), method: :post, class: "btn btn-sm btn-secondary fa-solid fa-pen-to-square m-1" %>
-      <%= button_to "", avoir_remb, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm m-1 btn-danger fa-solid fa-trash m-1" %>
+    <div class="text-end">
+      <%= links_record(avoir_remb) %>  
     </div>
 
     <div class="collapse" id="collapseAvoir_remb<%= dom_id(avoir_remb) %>">

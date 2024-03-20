@@ -8,12 +8,15 @@
         <%= link_to commande_path(commande), class: "text-decoration-none text-dark" do %>
           <strong><%= commande.ref_commande %> </strong>
 
-          <span class="m-1"> <%= commande.full_name %> </span>
-          <span class="m-1"> <%= commande.type_locvente %> </span>
-          <span class="m-1"> <%= commande.typeevent %> </span>
+          <%= custom_badge("", "", "secondary", commande.full_name) %>
+          <%= custom_badge("", "", "secondary", commande.type_locvente) %>
+          <%= custom_badge("fa-calendar", "", "secondary", commande.full_event) %>
 
+          <%= custom_badge("", "", "secondary", commande.profile&.nom) %>
 
-          <%= render partial: 'commandes/toggles_statut', locals: { commande: commande } %>
+          <span class="mx-1">
+            <%= render partial: 'commandes/toggles_statut', locals: { commande: commande } %>
+          </span>
 
 
         <% end %>
@@ -32,7 +35,6 @@
       <%= field_with_label("debutloc: ", commande.debutloc)  %>
       <%= field_with_label("finloc: ", commande.finloc)  %>
       <%= field_with_label("dateevent: ", commande.dateevent)  %>
-      <%= field_with_label("profile_id: ", commande.profile_id)  %>
       <%= field_with_label("commentaires: ", commande.commentaires)  %>
       <%= field_with_label("devis: ", commande.devis)  %>
     

@@ -44,7 +44,11 @@ class PaiementRecusController < ApplicationController
             turbo_stream.append('paiement_recus',
               partial: "paiement_recus/paiement_recu",
               locals: { paiement_recu: @paiement_recu }),
-            
+
+            turbo_stream.update('synthese-paiements', 
+                partial: "paiement_recus/synthese", 
+                locals: { paiement_recus: @commande.paiement_recus }),
+
             turbo_stream.update('synthese-commande', 
               partial: "commandes/synthese"),    
 

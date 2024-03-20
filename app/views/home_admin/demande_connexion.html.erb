@@ -1,9 +1,9 @@
 
 <div class="card">
-  <div class="card-header entete-index text-center">
+  <div class="card-header bg-dark text-light p-1 text-center">
     <strong>Demande de connexion</strong> 
   </div>
-  <div class="card-body text-center">
+  <div class="card-body light-beige-colored text-center">
     <% unless current_user.present? %>
 
       <%= link_to new_user_session_path, class: "btn btn-sm btn-warning m-1" do %>

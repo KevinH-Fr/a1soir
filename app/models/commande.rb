@@ -37,6 +37,10 @@ class Commande < ApplicationRecord
   def is_vente
     type_locvente == "vente" ? true : false 
   end
+
+  def full_event
+    "#{typeevent}" " #{dateevent}"
+  end
   
   # ajouter is mixte ?
 
