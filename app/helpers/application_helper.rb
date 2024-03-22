@@ -9,7 +9,7 @@ module ApplicationHelper
   end
 
     def custom_badge(icon_class, text, color, value)
-        content_tag(:div, class: "badge bg-#{color} mx-1 fs-6") do
+        content_tag(:div, class: "badge bg-#{color} m-1 fs-6") do
           if icon_class.present?
             concat content_tag(:i, '', class: "fa #{icon_class} me-1")
           end

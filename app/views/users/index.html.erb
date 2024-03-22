@@ -2,11 +2,9 @@
 <% if user_signed_in? %>
     <% if current_user.admin? %>
 
-        <div class="bloc-entete-model card card-header entete-index">
-        <strong>COMPTES</strong> 
-        </div> 
+        <%= bandeau_entete("Comptes", "users", "", "") %>
 
-        <div class="bloc-record">
+        <div class="mx-2">
             <h5> Liste des utilisateurs | nb: <%= @users.count %></h5>
 
             <div class="table-responsive">
@@ -39,7 +37,7 @@
 
         <hr/>
 
-        <div class="bloc-record">
+        <div class="mx-2">
             <h5> Liste des vendeurs | nb: <%= @vendeurs.count %> </h5>
 
             <div class="table-responsive">
