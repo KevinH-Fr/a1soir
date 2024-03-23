@@ -78,6 +78,8 @@ class MeetingsController < ApplicationController
   def create
     @meeting = Meeting.new(meeting_params)
 
+    @client = params[:client_id] 
+    
     respond_to do |format|
       if @meeting.save
         format.html { redirect_to meeting_url(@meeting), notice: I18n.t('notices.successfully_created') }

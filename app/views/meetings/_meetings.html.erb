@@ -28,7 +28,7 @@
     </div>
 
     <div id="meetings">
-        <% @client.meetings.each do |meeting| %>
+        <%  (@client.meetings + @client.commandes.map(&:meetings).flatten).uniq.each do |meeting| %>
             <%= render partial: 'meetings/meeting', locals: { meeting: meeting } %>
         <% end %>
     </div>

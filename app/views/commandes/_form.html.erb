@@ -18,15 +18,23 @@
       <%= custom_form_elements(form, 
         [:nom, :text_field] ) %>
 
-      <div class="mx-1 px-2">
+      <div class="m-1">
         <div class="input-group input-group">
-          <%= form.label :client_id, class: "input-group-text" %>
-          <%= form.collection_select :client_id, @clients.all.order(:nom), :id, :full_name, 
-          { include_blank: 'Select' }, class: "form-select" %>
+        
+          <% if @client %>
+            <%= form.hidden_field :client_id, value: @client.id %>
+          <% else %>
+            <%= form.label :client_id, class: "input-group-text" %>
+            <%= form.select :client_id, 
+              options_for_select(Client.all.order(:nom).pluck(:nom, :id)),
+              { include_blank: 'Select' },
+              { class: "form-select" } %>
+          <% end %>
+
         </div>
       </div>
 
-      <div class="mx-1 px-2">
+      <div class="m-1">
         <div class="input-group input-group">
           <%= form.label :profile_id, class: "input-group-text" %>
           <%= form.collection_select :profile_id, @profiles.all.order(:nom), :id, :full_name, 

@@ -8,6 +8,8 @@
         <%= link_to commande_path(commande), class: "text-decoration-none text-dark" do %>
           <strong><%= commande.ref_commande %> </strong>
 
+
+          <%= custom_badge("", "", "secondary", commande.client.full_name) %>
           <%= custom_badge("", "", "secondary", commande.full_name) %>
           <%= custom_badge("", "", "secondary", commande.type_locvente) %>
           <%= custom_badge("fa-calendar", "", "secondary", commande.full_event) %>

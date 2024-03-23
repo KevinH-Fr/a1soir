@@ -76,6 +76,6 @@ class AdminParametersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def admin_parameter_params
-      params.require(:admin_parameter).permit(:tx_tva, :coef_prix_achat_location, :coef_longue_duree)
+      params.require(:admin_parameter).permit(:tx_tva, :coef_prix_achat_location, :coef_longue_duree, :duree_rdv)
     end
 end

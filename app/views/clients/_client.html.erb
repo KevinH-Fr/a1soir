@@ -4,15 +4,19 @@
     <div class="card-body p-0">
       <div class="row g-0">
         <div class="col-2 p-2 d-flex align-items-center justify-content-center">
-          <i class="fa fa-user text-secondary fa-4x"></i>
+          <%= link_to  client_path(client) do %>
+            <i class="fa fa-user text-secondary fa-4x"></i>
+          <% end %>
         </div>
         <div class="col-10 d-flex flex-column p-2">
           <h5 class="card-title">
 
-            <%= field_with_label("type: ", client.propart)  %>
-            <%= client.prenom %>
-            <%= client.nom %>
-
+            <%= link_to  client_path(client), class: "text-decoration-none text-dark" do %>
+              <%= client.prenom %>
+              <%= client.nom %>
+            <% end %>
+          
+            <%= client.propart %>
 
             <%= link_to "", "#collapseClient#{dom_id(client)}", 
                   class: "btn btn-sm btn-outline-primary fa-solid fa-eye m-1", "data-bs-toggle": "collapse", 

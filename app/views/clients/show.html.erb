@@ -1,5 +1,31 @@
+<%= card_main_model("Client", "user") %>
 
 <%= render @client %>
+
+
+<%= card_main_model(
+  "Commandes", 
+  "file-invoice", 
+  link_to("", "#collapseNewCommande", 
+  class: "fa fa-plus btn btn-warning fw-bold", 
+  data: { bs_toggle: "collapse" }, 
+  role: "button", aria: { expanded: "false", controls: "collapseNewCommande" })) %>
+
+
+<div class="collapse" id="collapseNewCommande">
+    <div id="new_commande" class="mb-3">
+        <%= render partial: 'commandes/form', locals: { client_id: @client.id, commande: Commande.new } %>
+    </div>
+</div>
+
+<div id="commandes">
+    <% @client.commandes.each do |commande| %>
+        <%= render commande %>
+    <% end %>
+</div>
+
+
+
 
 <%= render 'meetings/meetings' %>
 
