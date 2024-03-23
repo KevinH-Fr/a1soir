@@ -1,13 +1,12 @@
 <div id="<%= dom_id type_produit %>" class="my-2">
 
-  <div class="card mx-2 my-3 p-3 light-beige-colored shadow-sm">
+  <div class="card d-flex flex-row mx-2 my-3 p-3 light-beige-colored shadow-sm">
 
-    <p>
-      <strong>Nom:</strong>
-      <%= type_produit.nom %>
-    </p>
+    <%= type_produit.nom %>
 
-    <%= links_record(type_produit) %>  
+    <div class="container text-end">
+      <%= links_record(type_produit) %>  
+    </div>
 
   </div>
 </div>
