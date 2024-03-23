@@ -51,4 +51,3 @@ gem 'jquery-rails'
 
 gem 'cloudinary'
 gem 'dotenv', groups: [:development, :test]
-gem "ferrum", "~> 0.15"
