@@ -23,5 +23,4 @@ class HomeAdminController < ApplicationController
 
   end
 
-
 end
