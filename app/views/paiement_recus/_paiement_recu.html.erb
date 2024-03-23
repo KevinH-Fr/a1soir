@@ -5,15 +5,14 @@
     <div class="row d-flex align-items-center">
 
       <div class="col">
-
-        <%= paiement_recu.typepaiement %>
-        <%= custom_currency_format(paiement_recu.montant) %>
+        <strong> <%= paiement_recu.typepaiement %> </strong>
+        <%= custom_currency_no_decimals_format(paiement_recu.montant) %>
         <%= "par #{paiement_recu.moyen}" if paiement_recu.moyen.present? %>
 
-        <%= link_to "", "#collapsePaiementRecu#{dom_id(paiement_recu)}", class: "btn btn-sm btn-primary fa fa-eye m-1", "data-bs-toggle": "collapse", role: "button", "aria-expanded": "false", "aria-controls": "collapsePaiementRecu#{dom_id(paiement_recu)}" %>
-
+        <%= link_to "", "#collapsePaiementRecu#{dom_id(paiement_recu)}", 
+              class: "btn btn-sm btn-primary fa fa-eye m-1", "data-bs-toggle": "collapse", 
+              role: "button", "aria-expanded": "false", "aria-controls": "collapsePaiementRecu#{dom_id(paiement_recu)}" %>
       </div>
-
 
       <div class="text-end">
         <%= links_record(paiement_recu) %>  

@@ -31,6 +31,23 @@ class TypeProduitsController < ApplicationController
 
     respond_to do |format|
       if @type_produit.save
+
+        flash.now[:success] = "type_produit was successfully created"
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('new',
+                               partial: "type_produits/form",
+                                locals: { type_produit: TypeProduit.new }),
+  
+            turbo_stream.prepend('type_produits',
+                                  partial: "type_produits/type_produit",
+                                  locals: { type_produit: @type_produit }),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+            
+        ]
+      end
+
         format.html { redirect_to type_produit_url(@type_produit), notice:  I18n.t('notices.successfully_created')}
         format.json { render :show, status: :created, location: @type_produit }
       else
