@@ -38,7 +38,6 @@ gem 'wicked_pdf'
 gem "wkhtmltopdf-binary", group: :development
 gem "wkhtmltopdf-heroku", group: :production
 
-gem 'wkhtmltoimage-binary'
 
 gem "letter_opener", group: :development
 

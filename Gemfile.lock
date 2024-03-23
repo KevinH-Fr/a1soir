@@ -294,7 +294,6 @@ GEM
     websocket-extensions (0.1.5)
     wicked_pdf (2.7.0)
       activesupport
-    wkhtmltoimage-binary (0.12.5)
     wkhtmltopdf-binary (0.12.6.6)
     wkhtmltopdf-heroku (2.12.6.0)
     xpath (3.2.0)
@@ -332,7 +331,6 @@ DEPENDENCIES
   tzinfo-data
   web-console
   wicked_pdf
-  wkhtmltoimage-binary
   wkhtmltopdf-binary
   wkhtmltopdf-heroku
 
