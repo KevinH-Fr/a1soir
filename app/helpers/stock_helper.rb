@@ -41,11 +41,11 @@ module StockHelper
       end
     end
   
-    def produits_restants(produits, date)
-      total_produits(produits) - total_loues(produits) - total_vendus(produits)  + locations_terminees_a_date(produits, date)
+    def produits_restants(produits, date = Date.today)
+      total_produits(produits) - total_loues(produits) - total_vendus(produits)  + locations_terminees_a_date(produits,  date = Date.today)
     end
 
-    def locations_terminees_a_date(produits, date)
+    def locations_terminees_a_date(produits,  date = Date.today)
       # Count the products with locations finished before the given date and the status of the command is "rendu"
     
       if produits.is_a?(Produit)
@@ -79,18 +79,19 @@ module StockHelper
     end
 
 
-    def est_disponible(produits, date)
-        if produits_restants(produits, date) > 0
+    def est_disponible(produits, date = Date.today)
+
+        if produits_restants(produits,  date = Date.today) > 0
             true 
         else
             false
         end
     end
 
-    def badge_disponibilite(produits, date)
-        restants = produits_restants(produits, date)
+    def badge_disponibilite(produits, date = Date.today)
+        restants = produits_restants(produits,  date = Date.today)
 
-        if est_disponible(produits, date)
+        if est_disponible(produits,  date = Date.today)
           content_tag(:span, "Produit disponible - #{restants}", class: "badge fs-6 border border-success text-success")
         else
           content_tag(:span, "Produit indisponible", class: "badge fs-6 border border-danger text-danger")

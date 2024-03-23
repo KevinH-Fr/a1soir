@@ -40,7 +40,7 @@ module ArticlesHelper
 
 
 
-            content_tag(:p, badge_disponibilite(produit, commande.debutloc.to_date), class: "m-1 mt-3") 
+            content_tag(:p, badge_disponibilite(produit, commande.debutloc&.to_date), class: "m-1 mt-3") 
           end
         end
       end
