@@ -128,7 +128,6 @@ class DocEditionsController < ApplicationController
     end
   end
 
-
   private
 
   def generate_pdf_data
