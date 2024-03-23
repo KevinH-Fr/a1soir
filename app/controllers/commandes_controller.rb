@@ -34,6 +34,7 @@ class CommandesController < ApplicationController
     @clients = Client.all
     @profiles = Profile.all 
 
+    @client = @commande.client
     respond_to do |format|
       format.html 
       format.turbo_stream do  
@@ -80,6 +81,7 @@ class CommandesController < ApplicationController
 
   def update
     @clients = Client.all
+    @profiles = Profile.all 
 
     respond_to do |format|
       if @commande.update(commande_params)

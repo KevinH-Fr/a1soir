@@ -2,16 +2,14 @@
 
   <div class="card mx-2 mb-3 p-3 light-beige-colored shadow-sm">
     
-
     <div class="row">
       <div class="col-10">
         <%= link_to commande_path(commande), class: "text-decoration-none text-dark" do %>
-          <strong><%= commande.ref_commande %> </strong>
 
-
+          <%= custom_badge("", "", "primary", commande.ref_commande) %>
           <%= custom_badge("", "", "secondary", commande.client.full_name) %>
           <%= custom_badge("", "", "secondary", commande.full_name) %>
-          <%= custom_badge("", "", "secondary", commande.type_locvente) %>
+          <%= custom_badge("", "", "secondary", commande.type_locvente) if commande.type_locvente %>
           <%= custom_badge("fa-calendar", "", "secondary", commande.full_event) %>
 
           <%= custom_badge("", "", "secondary", commande.profile&.nom) %>
@@ -20,30 +18,34 @@
             <%= render partial: 'commandes/toggles_statut', locals: { commande: commande } %>
           </span>
 
-
         <% end %>
-      </div>
-      <div class="col-2 text-end">
+
         <%= link_to "", "#collapseCommande#{dom_id(commande)}", 
           class: "btn btn-sm btn-primary fa fa-eye m-1", "data-bs-toggle": "collapse", 
           role: "button", "aria-expanded": "false", "aria-controls": "collapseCommande#{dom_id(commande)}" %>
+  
+      </div>
+      <div class="col-2 text-end">
+        <%= links_record(commande) %>  
+      </div>
+
+      <div class="collapse" id="collapseCommande<%= dom_id(commande) %>">
+
+        <%= field_with_label("nom: ", commande.nom)  %>
+        <%= field_with_label("description: ", commande.description)  %>
+        <%= field_with_label("debutloc: ", commande.debutloc)  %>
+        <%= field_with_label("finloc: ", commande.finloc)  %>
+        <%= field_with_label("dateevent: ", commande.dateevent)  %>
+        <%= field_with_label("commentaires: ", commande.commentaires)  %>
+        <%= field_with_label("devis: ", commande.devis)  %>
+      
+
       </div>
     </div>
 
-    <div class="collapse" id="collapseCommande<%= dom_id(commande) %>">
-
-      <%= field_with_label("nom: ", commande.nom)  %>
-      <%= field_with_label("description: ", commande.description)  %>
-      <%= field_with_label("debutloc: ", commande.debutloc)  %>
-      <%= field_with_label("finloc: ", commande.finloc)  %>
-      <%= field_with_label("dateevent: ", commande.dateevent)  %>
-      <%= field_with_label("commentaires: ", commande.commentaires)  %>
-      <%= field_with_label("devis: ", commande.devis)  %>
-    
-      <%= links_record(commande) %>  
-
-    </div>
   
   </div>
+
+
 
 </div>

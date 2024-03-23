@@ -11,56 +11,28 @@
         <%= custom_badge("fa-phone", "", "secondary", client.tel) %>
         <%= custom_badge("fa-at", "", "secondary", client.mail) %>
         
+        <%= link_to "", "#collapseClient", class: "btn btn-sm btn-primary fa fa-eye", "data-bs-toggle": "collapse", role: "button", "aria-expanded": "false", "aria-controls": "collapseExample" %>
     </div>
     
     <div class="col-2 text-end">
-        <%= link_to "", "#collapseClient", class: "btn btn-sm btn-primary fa fa-eye", "data-bs-toggle": "collapse", role: "button", "aria-expanded": "false", "aria-controls": "collapseExample" %>
+        <%= links_record(client) %>  
+
     </div>
   </div>
   
 
     <div class="collapse" id="collapseClient">
 
-        <p>
-            <strong>Commentaires:</strong> <%= client.commentaires %>
-        </p>
-
-        <p>
-            <strong>Propart:</strong> <%= client.propart %>
-        </p>
-
-        <p>
-            <strong>Intitule:</strong> <%= client.intitule %>
-        </p>
-
-        <p>
-            <strong>Tel2:</strong> <%= client.tel2 %>
-        </p>
-
-        <p>
-           <strong>Mail2:</strong>  <%= client.mail2 %>
-        </p>
-
-        <p>
-            <strong>Adresse:</strong> <%= client.adresse %>
-        </p>
-
-        <p>
-            <strong>Cp:</strong> <%= client.cp %>
-        </p>
-
-        <p>
-            <strong>Ville:</strong> <%= client.ville %>
-        </p>
-
-        <p>
-            <strong>Pays:</strong>   <%= client.pays %> </p>
-
-        <p>
-            <strong>Contact:</strong>  <%= client.contact %>
-        </p>
-
-        <%= links_record(client) %>  
+        <%= field_with_label("Commentaires: ", client.commentaires)  %>
+        <%= field_with_label("", client.propart)  %>
+        <%= field_with_label("intitule", client.intitule)  %>
+        <%= field_with_label("tel2", client.tel2)  %>
+        <%= field_with_label("mail2", client.mail2)  %>
+        <%= field_with_label("adresse", client.adresse)  %>
+        <%= field_with_label("cp", client.cp)  %>
+        <%= field_with_label("ville", client.ville)  %>
+        <%= field_with_label("pays", client.pays)  %>
+        <%= field_with_label("contact", client.contact)  %>
 
     </div>
 
