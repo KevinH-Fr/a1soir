@@ -11,16 +11,14 @@ module ProduitsHelper
     def badge_prixvente_produit(produit)
         if produit.prixvente
             content_tag(:span, class: "badge fs-6 border border-secondary text-secondary m-1") do
-                concat content_tag(:i, "", class: "fa fa-euro me-2")
                 concat content_tag(:span, "vente: #{custom_currency_no_decimals_format(produit.prixvente)}")
             end
         end
     end
 
     def badge_prixlocation_produit(produit)
-        if produit.prixlocation
+        if produit.prixlocation 
             content_tag(:span, class: "badge fs-6 border border-secondary text-secondary m-1") do
-                concat content_tag(:i, "", class: "fa fa-euro me-2")
                 concat content_tag(:span, "location: #{custom_currency_no_decimals_format(produit.prixlocation)}")
             end
         end

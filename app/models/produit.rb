@@ -17,7 +17,7 @@ class Produit < ApplicationRecord
   has_one_attached :qr_code
 
   after_create :generate_qr
-  after_create :set_initial_location_price
+  after_create :set_initial_vente_price
 
 
   scope :is_ensemble, -> { joins(:type_produit).where(type_produits: { nom: 'ensemble' }) }
@@ -53,10 +53,10 @@ class Produit < ApplicationRecord
 
   private
 
-  def set_initial_location_price
+  def set_initial_vente_price
     if prixachat && AdminParameter.first
-      montant_location = prixachat * (1 + AdminParameter.first.tx_tva.to_f / 100) * AdminParameter.first.coef_prix_achat_location 
-      self.update(prixlocation: montant_location )
+      montant_vente = prixachat * (1 + AdminParameter.first.tx_tva.to_f / 100) * AdminParameter.first.coef_prix_achat_vente
+      self.update(prixvente: montant_vente )
     end
   end
 
