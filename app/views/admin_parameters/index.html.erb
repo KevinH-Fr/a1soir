@@ -1,6 +1,20 @@
 
 <%= bandeau_entete("Paramètres admin", "screwdriver-wrench","", "") %>
 
+<div class="container-fluid text-end">
+  
+  <% unless @admin_parameters.first %>
+    <%= link_to "#collapseNew", 
+          class: "btn btn-warning", "data-bs-toggle": "collapse", 
+          role: "button", "aria-expanded": "false", "aria-controls": "collapseNew" do %>
+
+        <i class="fa-solid fa-square-plus fa-xl me-1"></i>
+        <span class="fw-bold"> Créer </span>
+
+    <% end %>
+  <% end %>
+</div>
+
 <%= bloc_nouveau(AdminParameter) %>
 
 <div id="admin_parameters">
@@ -8,7 +22,4 @@
         <%= render admin_parameter %>
   <% end %>
 </div>
-
-
-
 
