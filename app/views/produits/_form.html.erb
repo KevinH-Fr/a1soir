@@ -15,6 +15,10 @@
         </div>
       <% end %>
 
+      <div class="container text-center p-2">
+        <%= image_tag(produit.default_image, class: "img-fluid rounded") %>
+      </div>
+
       <%= custom_form_elements(form, 
         [:nom, :text_field] ) %>
 

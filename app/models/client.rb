@@ -1,9 +1,14 @@
 class Client < ApplicationRecord
+    
+    before_validation :capitalize_names
 
     has_many :commandes
     has_many :meetings
-
-    PROPART_OPTIONS = ["particuluer", "professionnel"]
+    
+    validates :nom, presence: true
+    validate :tel_or_mail_present
+  
+    PROPART_OPTIONS = ["particulier", "professionnel"]
     
     def full_name
         prenom + " " + nom
@@ -15,6 +20,19 @@ class Client < ApplicationRecord
 
     def self.ransackable_associations(auth_object = nil)
         ["commandes", "meetings"]
+    end
+
+    private
+  
+    def capitalize_names
+      self.prenom = prenom.titleize if prenom.present?
+      self.nom = nom.titleize if nom.present?
+    end
+
+    def tel_or_mail_present
+        unless tel.present? || mail.present?
+          errors.add(:base, "Remplir le téléphone ou le mail")
+        end
     end
 
 end
