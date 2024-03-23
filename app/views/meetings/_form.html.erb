@@ -39,31 +39,31 @@
       </div>
 
 
-    <% unless @client %>
 
-      <div class="input-group mb-1">
+    <%# meeting depuis client %>
+
+    <% if @client %>
+      <%= form.text_field :client_id, value: @client&.id %>
+
+    <%# meeting depuis commande %>
+    <% elsif @commande %>
+      <%= form.text_field :commande_id, value: @commande&.id %>
+
+    <% else %>
+    <%# meeting depuis meeting %>
+        <div class="input-group mb-1">
+
         <%= form.label :commande_id, class: "input-group-text" %>
         <%= form.select :commande_id, 
-          options_for_select(Commande.all.order(:nom).pluck(:nom, :id), selected: @commande&.id),
-          { include_blank: 'Select' },
-          { class: "form-select", disabled: @commande.present? } %>
+          options_for_select(Commande.all.order(:nom).pluck(:nom, :id)),
+          { include_blank: 'Select' },  { class: "form-select" } %>
+
+        <%= form.label :commande_id, class: "input-group-text" %>
+        <%= form.select :commande_id, 
+          options_for_select(Commande.all.order(:nom).pluck(:nom, :id)),
+          { include_blank: 'Select' },  { class: "form-select" } %>
+
       </div>
-        
-    <% end %>
-      
-    <% unless @commande %>
-
-      <div class="input-group mb-1">
-
-      <%= form.hidden_field :client_id, value: @client&.id %>
-
-        <%#= form.label :client_id, class: "input-group-text" %>
-        <%#= form.select :client_id, 
-          options_for_select(Client.all.order(:nom).pluck(:nom, :id), selected: @client&.id),
-          { include_blank: 'Select' },
-          { class: "form-select", disabled: @client.present? } %>
-      </div>  
-        
     <% end %>
 
     <div class="input-group mb-1">
