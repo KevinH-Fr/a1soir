@@ -7,6 +7,8 @@ class SelectionProduitController < ApplicationController
   def index
 
     @commande = Commande.find(session[:commande])
+
+    puts "___________________commande : #{@commande.id}"
     @type_locvente = @commande.type_locvente
 
     if params[:article]
@@ -104,6 +106,9 @@ class SelectionProduitController < ApplicationController
   end 
 
   def display_couleur_selected
+
+    @commande = Commande.find(session[:commande])
+    puts "___________________commande : #{@commande.id}"
 
     if params[:categorie_produit] == "all"
       @categorie_produits = CategorieProduit.pluck(:id)

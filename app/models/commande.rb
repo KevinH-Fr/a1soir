@@ -42,6 +42,9 @@ class Commande < ApplicationRecord
     "#{typeevent}" " #{dateevent}"
   end
   
+  def date_retenue
+    debutloc.present? ? debutloc : Date.today
+  end
   # ajouter is mixte ?
 
   def self.ransackable_attributes(auth_object = nil)

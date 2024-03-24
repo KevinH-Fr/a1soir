@@ -1,7 +1,7 @@
 <div class="container-fluid p-2">
     <% if @produits.any? %>
         <% @produits.each do |produit| %>
-            <% if est_disponible(produit, @commande.debutloc&.to_date ) %>
+            <% if est_disponible(produit, @commande&.date_retenue.to_date ) %>
                 <%= link_to selection_produit_path(produit: produit, article: @article), class: "text-decoration-none" do %>
                     <%= produit_selection(produit, @commande) %>
                 <% end %>
