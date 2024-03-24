@@ -1,22 +1,20 @@
-<div class="container-fluid">
-    <div class="row mx-2 p-2">
-        <div class="col-2 text-start">
+<div class="container-fluid m-0 p-0">
+    <div class="row mx-1 py-2 align-items-center">
+        <div class="col text-start">
             <%= custom_badge("", @commande.ref_commande, "secondary", "") %>        
+            <%#= custom_badge("", @commande.client.full_name, "secondary", "") %>
         </div>
-        <div class="col-8">
-            <div class="d-flex align-items-center justify-content-center">
-                <%= custom_badge("", @commande.client.full_name, "secondary", "") %>
-                <%= render 'synthese' %>
-            </div>
+        <div class="col-6 text-center">
+            <%= render 'synthese' %>
         </div>
-        <div class="col-2 text-end">
+        <div class="col text-end">
             <button class="btn btn-primary fa fa-bounce" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
                 <i class="fa fa-file me-1"></i>
+                <span class="d-none d-md-inline">editer</span>
             </button>
         </div>
     </div>
 </div>
-
 
 <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
     <div class="offcanvas-header">

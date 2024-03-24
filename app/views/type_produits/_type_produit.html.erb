@@ -2,7 +2,7 @@
 
   <div class="card d-flex flex-row mx-2 my-3 p-3 light-beige-colored shadow-sm">
 
-    <%= type_produit.nom %>
+    <%= link_to type_produit.nom, type_produit_path(type_produit), class: "text-dark text-decoration-none" %>
 
     <div class="container-fluid p-0 text-end">
       <%= links_record(type_produit) %>  

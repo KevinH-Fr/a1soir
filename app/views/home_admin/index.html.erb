@@ -18,7 +18,7 @@
     </div>
     <div class="col-md-6 m-0 p-0">
       <%= dashboard_card("Rendez-vous", meetings_path, new_meeting_path, 'calendar',
-            @meetings.order(updated_at: :desc).map { |meeting| { text: meeting.nom, path: meeting_path(meeting) } } ) %>
+            @meetings.order(updated_at: :desc).map { |meeting| { text:  meeting.meeting_info, path: meeting_path(meeting) } } ) %>
     </div>
   </div>
 

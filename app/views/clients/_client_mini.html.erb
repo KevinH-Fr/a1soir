@@ -6,8 +6,8 @@
 
   <div class="row">
     <div class="col-10">
-        <strong> <%= client.full_name %> </strong> 
 
+        <%= custom_badge("", "", "primary", client.full_name) %>
         <%= custom_badge("fa-phone", "", "secondary", client.tel) %>
         <%= custom_badge("fa-at", "", "secondary", client.mail) %>
         
