@@ -2,79 +2,18 @@
 
     <div class="section-solidaire">
 
-        <h5 class="h5-doc"> SYNTHESE </h5>
-
         <table class="table table-doc">
-            <thead>
-                <tr>
-                    <th class="th-doc">Nature</th>
-                    <th class="th-doc">Débit</th>
-                    <th class="th-doc">Crédit</th>
-                    <th class="th-doc">Solde</th>
-                </tr>
-            </thead>
         
             <tbody>
                 <tr class="centered">
-                    <td class="td-doc started">Prix</td>
-                    <td class="td-doc"> <%= custom_currency_format(du_prix(@doc_edition.commande)) %></td>
-                    <td class="td-doc"> <%= custom_currency_format(recu_prix(@doc_edition.commande)) %></td>
-                    <td class="td-doc"> <%= custom_currency_format(solde_prix_avant_avoirremb(@doc_edition.commande)) %></td>
+                    <td colspan="5" class="td-doc started">Soldes</td>
+                    <td class="td-doc-valeurs ended">
+                         <%= colored_value_format(solde_prix(@doc_edition.commande)) %>
+                     </td>
+                    <td class="td-doc-valeurs ended">
+                        <%= colored_value_format(solde_caution(@doc_edition.commande)) %>
+                    </td>
                 </tr>
-
-                <% if avoir_deduit(@doc_edition.commande)  != 0  %>
-                    <tr class="centered">
-                        <td class="td-doc started">Avoir</td>
-                        <td class="td-doc"> <%= custom_currency_format(0) %></td>
-                        <td class="td-doc"> <%= custom_currency_format(avoir_deduit(@doc_edition.commande)) %></td>
-                        <td class="td-doc"> <%= custom_currency_format(-avoir_deduit(@doc_edition.commande)) %></td>
-                    </tr>
-                <% end %>
-
-                <% if remb_deduit(@doc_edition.commande) != 0 %>
-                    <tr class="centered">
-                        <td class="td-doc started">Remboursement</td>
-                        <td class="td-doc"> <%= custom_currency_format(remb_deduit(@doc_edition.commande)) %> </td>
-                        <td class="td-doc">  <%= custom_currency_format(0) %></td>
-                        <td class="td-doc"> <%= custom_currency_format(remb_deduit(@doc_edition.commande)) %></td>
-                    </tr>
-                <% end %>
-
-                <tr class="bolded centered">
-                    <td class="td-doc top-bottom-bordered started">Totaux</td>
-                    <td class="td-doc top-bottom-bordered"> <%= custom_currency_format(du_prix(@doc_edition.commande) + 0 + remb_deduit(@doc_edition.commande)) %> </td>
-                    <td class="td-doc top-bottom-bordered">  <%= custom_currency_format(recu_prix(@doc_edition.commande) + 0 + avoir_deduit(@doc_edition.commande)) %></td>
-                
-                    <% if solde_prix_avant_avoirremb(@doc_edition.commande) + -avoir_deduit(@doc_edition.commande) + remb_deduit(@doc_edition.commande) == 0 %>
-                        <td class="td-doc top-bottom-bordered green-colored"> 
-                            <%= custom_currency_format(solde_prix_avant_avoirremb(@doc_edition.commande) + 
-                            -avoir_deduit(@doc_edition.commande) + remb_deduit(@doc_edition.commande)) %>
-                        </td>
-                    <% else %>
-                        <td class="td-doc top-bottom-bordered red-colored"> 
-                            <%= custom_currency_format(solde_prix_avant_avoirremb(@doc_edition.commande) + 
-                            -avoir_deduit(@doc_edition.commande) + remb_deduit(@doc_edition.commande)) %>
-                        </td>
-                    <% end %>
-                </tr>
-
-                <% if du_caution(@doc_edition.commande) || recu_caution(@doc_edition.commande) != 0 %>
-                    <tr class="bolded centered">
-                        <td class="td-doc started">Caution</td>
-                        <td class="td-doc"> <%= custom_currency_format(du_caution(@doc_edition.commande)) %></td>
-                        <td class="td-doc"> <%= custom_currency_format(recu_caution(@doc_edition.commande)) %></td>
-                    
-                            <% if solde_caution(@doc_edition.commande) == 0 %>
-                                <td class="td-doc green-colored"> 
-                                    <%= custom_currency_format(solde_caution(@doc_edition.commande)) %>
-                                </td>
-                            <% else %>
-                                <td class="td-doc red-colored"> 
-                                    <%= custom_currency_format(solde_caution(@doc_edition.commande)) %>
-                                </td>
-                            <% end %>
-                    </tr>
-                <% end %>
 
             </tbody>
             

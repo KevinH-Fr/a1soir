@@ -10,28 +10,36 @@
       <thead class="">
         <tr>
           <th class="th-doc">#</th>
-          <th class="th-doc">Type</th>
-          <th class="th-doc">Date</th>
-          <th class="th-doc">Montant</th>
+          <th class="th-doc">type</th>
+          <th class="th-doc">date</th>
+          <th class="th-doc"></th>
+          <th class="th-doc">prix</th>  
+          <th class="th-doc">caution</th>
+
         </tr>
       </thead>
 
       <tbody>
         <% @doc_edition.commande.paiement_recus.each_with_index do | paiement, i | %>
           <tr>
-            <td class="td-doc centered"> <%= i + 1 %> </td>
-            <td class="td-doc centered"> <%= paiement.typepaiement %> </td>
+            <td class="td-doc-valeurs centered"> <%= i + 1 %> </td>
+            <td class="td-doc centered"> <%= paiement.moyen %> </td>
             <td class="td-doc centered"> <%= paiement.created_at.strftime("%d/%m/%y") %> </td>
-            <td class="td-doc centered">  <%= custom_currency_format(paiement.montant) %> </td>
+            <td></td>
+            <td class="td-doc-valeurs ended">  <%= custom_currency_format(paiement.montant) if paiement.typepaiement == "prix" %> </td>
+            <td class="td-doc-valeurs ended">  <%= custom_currency_format(paiement.montant)  if paiement.typepaiement == "caution" %> </td>
           </tr> 
         <% end %>  
       </tbody>
       
       <tfoot>
         <tr>
-          <td colspan=3 class="tfoot-doc centered">  TOTAUX  </td>
-          <td class="tfoot-doc centered"> 
+          <td colspan=4 class="tfoot-doc centered">  TOTAUX  </td>
+          <td class="tfoot-doc ended"> 
             <%= custom_currency_format(recu_prix(@doc_edition.commande)) %> 
+          </td>
+          <td class="tfoot-doc ended"> 
+            <%= custom_currency_format(recu_caution(@doc_edition.commande)) %> 
           </td>
         </tr>
       </tfoot>
