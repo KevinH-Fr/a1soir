@@ -7,6 +7,8 @@ class Produit < ApplicationRecord
   belongs_to :couleur, optional: true
   belongs_to :taille, optional: true
 
+  validates :nom, presence: true
+
   has_many :articles
   has_many :sousarticles
 

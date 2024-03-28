@@ -38,12 +38,12 @@
             <%= image_tag(produit.qr_code, class:"rounded-start") if produit.qr_code.attached? %>
 
             Autres couleur(s) : 
-            <% same_reffrs_same_taille_others_couleurs(produit).each do |produit| %>
+            <% same_produit_same_taille_others_couleurs(produit).each do |produit| %>
               <%= produit.couleur.nom if produit.couleur %>
             <% end %>
 
             Autres taille(s) : 
-            <% same_reffrs_same_couleur_others_tailles(produit).each do |produit| %>
+            <% same_produit_same_couleur_others_tailles(produit).each do |produit| %>
               <%= produit.taille.nom if produit.taille %>
             <% end %>
   
