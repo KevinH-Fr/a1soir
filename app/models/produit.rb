@@ -18,6 +18,8 @@ class Produit < ApplicationRecord
   has_many_attached :images
   has_one_attached :qr_code
 
+  before_validation :generate_handle
+
   after_create :generate_qr
   after_create :set_initial_vente_price
 
@@ -60,6 +62,14 @@ class Produit < ApplicationRecord
       montant_vente = prixachat * (1 + AdminParameter.first.tx_tva.to_f / 100) * AdminParameter.first.coef_prix_achat_vente
       self.update(prixvente: montant_vente )
     end
+  end
+
+  def generate_handle
+    # Ensure nom is not nil before processing
+    return unless nom
+
+    # Use ActiveSupport's parameterize method to generate the handle
+    self.handle = nom.parameterize
   end
 
 end

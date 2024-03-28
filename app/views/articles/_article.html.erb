@@ -10,9 +10,12 @@
     
       <div class="col ps-4">
 
-        <h5 class="fw-bold"> <%= article.produit.nom %>  </h5>
+        <h5 class="fw-bold"> <%= article.produit.nom %>  </h5>  
 
        <span class="fw-bold"> <%= article.locvente %> </span>
+
+        taille: <%= article.produit.taille.nom %>  
+
         qté.: <%= article.quantite %>  
         prix: <%= custom_currency_no_decimals_format(article.prix) %>  
         total: <%= custom_currency_no_decimals_format(article.total) %>  

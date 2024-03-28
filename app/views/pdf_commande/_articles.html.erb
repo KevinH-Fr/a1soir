@@ -53,7 +53,7 @@
                     <%= image_tag(sousarticle.produit.default_image, style: "width: 40px;", 
                        class: "img-fluid rounded") %> 
                     <%= sousarticle.produit.nom %> 
-                    <%= sousarticle.produit&.taille.nom %> 
+                    <%= sousarticle.produit&.taille&.nom %> 
                     <%= sousarticle.nature %>
                     <%= sousarticle.commentaires  %>
                   </td>

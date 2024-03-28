@@ -1,11 +1,11 @@
 module ProduitsHelper
 
     def same_produit_same_couleur_others_tailles(produit)
-        Produit.where(nom: produit.nom, couleur_id: produit.couleur_id).where.not(id: produit.id)
+        Produit.where(handle: produit.handle, couleur_id: produit.couleur_id).where.not(id: produit.id)
     end
 
     def same_produit_same_taille_others_couleurs(produit)
-        Produit.where(nom: produit.nom, taille_id: produit.taille_id).where.not(id: produit.id)
+        Produit.where(handle: produit.handle, taille_id: produit.taille_id).where.not(id: produit.id)
     end
 
     def badge_prixvente_produit(produit)
