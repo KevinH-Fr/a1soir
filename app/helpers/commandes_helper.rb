@@ -24,7 +24,7 @@ module CommandesHelper
    
     def du_caution(commande)
         if commande 
-            caution_articles = commande.articles.sum(:totalcaution)
+            caution_articles = commande.articles.sum(:caution)
             caution_sous_articles = commande.articles.joins(:sousarticles).sum('sousarticles.caution')
             caution_articles + caution_sous_articles
         end 

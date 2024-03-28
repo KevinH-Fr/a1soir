@@ -43,11 +43,11 @@
     <%# meeting depuis client %>
 
     <% if @client %>
-      <%= form.text_field :client_id, value: @client&.id %>
+      <%= form.hidden_field :client_id, value: @client&.id %>
 
     <%# meeting depuis commande %>
     <% elsif @commande %>
-      <%= form.text_field :commande_id, value: @commande&.id %>
+      <%= form.hidden_field :commande_id, value: @commande&.id %>
 
     <% else %>
     <%# meeting depuis meeting %>

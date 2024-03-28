@@ -14,7 +14,7 @@ class DocEditionsController < ApplicationController
 
     part_1 = "Merci de trouver ci-attaché votre #{@doc_edition.doc_type}"
     part_2 = @commande.typeevent? ? " pour votre #{@commande.typeevent}" : ""
-    part_3 = @commande.dateevent? ? " prévu(e) le #{@commande.dateevenement}" : ""
+    part_3 = @commande.dateevent? ? " prévu(e) le #{@commande.dateevent}" : ""
 
     @message ="#{part_1}#{part_2}#{part_3}"
     

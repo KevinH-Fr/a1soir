@@ -13,15 +13,8 @@
       </div>
     <% end %>
 
-    <div>
-      <%= form.label :article_id, style: "display: block" %>
-      <%= form.text_field :article_id, value: @article.id if @article %>
-    </div>
-
-    <div>
-      <%= form.label :produit_id, style: "display: block" %>
-      <%= form.text_field :produit_id, value: @produit.id if @produit %>
-    </div>
+    <%= form.hidden_field :article_id, value: @article.id if @article %>
+    <%= form.hidden_field :produit_id, value: @produit.id if @produit %>
 
     <%= custom_form_elements(form, 
       [:nature, :text_field], [:description, :text_area],

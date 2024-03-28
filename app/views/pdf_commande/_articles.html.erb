@@ -28,8 +28,7 @@
                 <%= article.produit.nom %> 
               </div>
               <span class="td-doc-normal"> 
-                <%= article.produit.description %> 
-                taille: <%#= article.produit.taille %>  
+                <%= "taille: #{ article.produit.taille.nom }" if article.produit.taille.present?  %>
                 <%= article.commentaires %>
                 <%= "location longue durée" if article.longueduree == true %>  
               </span>
@@ -38,31 +37,39 @@
             <td class="td-doc-valeurs centered"> <%= article.quantite %> </td>
             <td class="td-doc-valeurs ended"> <%= custom_currency_format(article.prix) %> </td>
             <td class="td-doc-valeurs ended"> <%= custom_currency_format(article.total) %> </td>
-            <td class="td-doc-valeurs ended"> <%= custom_currency_format(article.totalcaution) %> </td>
+            <td class="td-doc-valeurs ended"> <%= custom_currency_format(article.caution) %> </td>
 
 
 
             <% if article.sousarticles.present? %>
 
               <tr>
-                <td colspan=2></td>
-                <td colspan=5 class="">  
 
                   <% article.sousarticles.each do |sousarticle| %>
   
-                    <%= image_tag(sousarticle.produit.default_image, style: "width: 40px; display: block", 
-                       class: "img-fluid rounded") %> 
-    
-                    <h6 class="fw-bold"> <%= sousarticle.produit.nom %>  </h6>
-                      Nature:  <%= sousarticle.nature %>
-                      Description: <%= sousarticle.description %>
-                      Prix: <%= sousarticle.prix %>
-                      Caution: <%= sousarticle.caution %>
-                      Commentaires:   <%= sousarticle.commentaires %>
+                  <td colspan=2> </td>
 
-                    
+                  <td class="">
+                    <%= image_tag(sousarticle.produit.default_image, style: "width: 40px;", 
+                       class: "img-fluid rounded") %> 
+                    <%= sousarticle.produit.nom %> 
+                    <%= sousarticle.produit&.taille.nom %> 
+                    <%= sousarticle.nature %>
+                    <%= sousarticle.commentaires  %>
+                  </td>
+              
+                  <td></td>
+                  <td>
+                    <%= custom_currency_format(sousarticle.prix) %>    
+                  </td>
+                  <td> 
+                    <%= custom_currency_format(sousarticle.prix) %>    
+                  </td>
+                  <td>         
+                    <%= custom_currency_format(sousarticle.caution) %>    
+                  </td>
                   <% end %>    
-                </td>                
+
               </tr>
       
             <% end %>
@@ -85,11 +92,11 @@
           </td>
           <td class="tfoot-doc"></td>
           <td class="ended tfoot-doc">
-            <%= du_prix(@doc_edition.commande) %>
+            <%= custom_currency_format(du_prix(@doc_edition.commande)) %>
           </td>
 
           <td class="ended tfoot-doc">
-            <%= du_caution(@doc_edition.commande) %>
+            <%= custom_currency_format(du_caution(@doc_edition.commande)) %>
           </td>
 
         </tr>

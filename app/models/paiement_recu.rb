@@ -5,6 +5,8 @@ class PaiementRecu < ApplicationRecord
   
   TYPE_PAIEMENT = ["prix", "caution"]
 
+  MOYEN_PAIEMENT = ["carte bleue", "espèces", "chèque", "virement"]
+
   scope :only_prix, -> { where(typepaiement: 'prix') }
   scope :only_caution, -> { where(typepaiement: 'caution') }
 
