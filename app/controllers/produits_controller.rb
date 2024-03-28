@@ -13,6 +13,7 @@ class ProduitsController < ApplicationController
 
     @couleurs = Couleur.all 
     @tailles = Taille.all 
+    @fournisseurs = Fournisseur.all 
 
   end
 
@@ -27,6 +28,7 @@ class ProduitsController < ApplicationController
 
     @couleurs = Couleur.all 
     @tailles = Taille.all 
+    @fournisseurs = Fournisseur.all 
 
   end
 
@@ -36,6 +38,7 @@ class ProduitsController < ApplicationController
 
     @couleurs = Couleur.all 
     @tailles = Taille.all 
+    @fournisseurs = Fournisseur.all 
 
     respond_to do |format|
       format.html 
@@ -89,6 +92,7 @@ class ProduitsController < ApplicationController
 
     @couleurs = Couleur.all 
     @tailles = Taille.all 
+    @fournisseurs = Fournisseur.all 
 
     respond_to do |format|
       if @produit.update(produit_params)

@@ -57,7 +57,7 @@
             <%= produit.reffrs %>
   
             <strong>Fournisseur:</strong>
-            <%= produit.fournisseur_id %>
+            <%= produit.fournisseur&.nom %>
   
               <strong>Quantite:</strong>
               <%= produit.quantite %>
