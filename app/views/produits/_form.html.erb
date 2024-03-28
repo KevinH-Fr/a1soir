@@ -37,12 +37,12 @@
 
         <div class="input-group input-group mb-1">
           <%= form.label :prixvente, "prix vente TTC", class: "input-group-text" %>
-          <%= form.number_field :prixvente, class: "form-control" %>
+          <%= form.number_field :prixvente, step: "any", class: "form-control" %>
         </div>
 
         <div class="input-group input-group mb-1">
           <%= form.label :prixlocation, "prix location TTC", class: "input-group-text" %>
-          <%= form.number_field :prixlocation, class: "form-control" %>
+          <%= form.number_field :prixlocation, step: "any", class: "form-control" %>
         </div>
 
         <%= custom_form_elements(form, 

@@ -25,9 +25,14 @@
         <%= form.select :propart, Client::PROPART_OPTIONS, { include_blank: 'Sélectionner' }, class: "form-select" %>
       </div>
 
+      <div class="input-group px-2 mb-1">
+        <%= form.label :intitule, class: "input-group-text" %>
+        <%= form.select :intitule, Client::INTITULE_OPTIONS, { include_blank: 'Sélectionner' }, class: "form-select" %>
+      </div>
+
       <%= custom_form_elements(form, 
         [:commentaires, :text_area],
-        [:intitule, :text_field], [:tel, :text_field], [:tel2, :number_field],
+        [:tel, :text_field], [:tel2, :number_field],
         [:mail, :text_field], [:mail2, :text_field], [:adresse, :text_field],
         [:cp, :text_field], [:ville, :text_field], [:pays, :text_field], [:contact, :text_field]
       ) %>

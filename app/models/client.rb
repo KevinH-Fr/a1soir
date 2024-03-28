@@ -9,6 +9,7 @@ class Client < ApplicationRecord
     validate :tel_or_mail_present
   
     PROPART_OPTIONS = ["particulier", "professionnel"]
+    INTITULE_OPTIONS = ["Madame", "Monsieur", "Madame et Monsieur"]
     
     def full_name
         prenom + " " + nom
