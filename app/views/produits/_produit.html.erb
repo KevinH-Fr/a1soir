@@ -28,8 +28,11 @@
         </div>
           <div class="mt-auto">
 
-           <%= link_to "", dupliquer_produit_path(produitbase: produit), 
-              class: "fa-solid fa-copy btn btn-sm btn-dark" %>
+
+          <% if controller_name = "produits"  && action_name == "show" %>            
+            <%= link_to "", dupliquer_produit_path(produitbase: produit.id), 
+                class: "fa-solid fa-copy btn btn-sm btn-dark" %>
+          <% end %>
 
             <%= links_record(produit) %>  
           </div>
