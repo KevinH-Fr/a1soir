@@ -46,6 +46,7 @@ Rails.application.routes.draw do
   resources :produits do 
     member do
       post :edit
+      get :dupliquer
     end
   end
 
