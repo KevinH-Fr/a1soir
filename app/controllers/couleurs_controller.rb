@@ -88,7 +88,6 @@ class CouleursController < ApplicationController
     end
   end
 
-  # DELETE /couleurs/1 or /couleurs/1.json
   def destroy
     @couleur.destroy!
 
@@ -99,14 +98,12 @@ class CouleursController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_couleur
       @couleur = Couleur.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def couleur_params
-      params.require(:couleur).permit(:nom)
+      params.require(:couleur).permit(:nom, :couleur_code)
     end
 
 end

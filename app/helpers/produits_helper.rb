@@ -36,7 +36,7 @@ module ProduitsHelper
     def badge_couleur_produit(produit)
         if produit.couleur
             content_tag(:span, class: "badge fs-6 border border-secondary text-secondary m-1") do
-                concat content_tag(:i, "", class: "fa fa-palette me-2")
+                concat color_icon(produit.couleur) if produit.couleur.couleur_code
                 concat content_tag(:span, produit.couleur.nom, class: "")
             end
         end

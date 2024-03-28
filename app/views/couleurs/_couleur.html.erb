@@ -3,8 +3,10 @@
   <div class="card mx-2 my-3 p-3 light-beige-colored shadow-sm">
 
     <p>
-      <strong>Nom:</strong>
-      <%= couleur.nom %>
+      <strong> <%= couleur.nom %> </strong>
+
+      <%= color_icon(couleur) if couleur.couleur_code %>
+    
     </p>
 
     <%= links_record(couleur) %>  

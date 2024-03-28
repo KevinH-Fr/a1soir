@@ -32,15 +32,35 @@
                   <div class="td-etiquette middled centered">  
                     Taille(s) : 
                     <% if produit.taille.present? %>
-                      <span class="taille-active"> <%= produit.taille&.nom %></span>
-                      <br>
+                      <span class="badge border border-3 border-dark text-dark"> <%= produit.taille&.nom %></span>
+
                       <% same_produit_same_couleur_others_tailles(produit).each do |produit| %>
-                        Autres taille(s) : 
-                        <%= produit.taille.nom if produit.taille&.nom %>
+                        <span class="badge border border-secondary text-secondary"> 
+                          <%= produit.taille.nom if produit.taille&.nom %>
+                        </span>
                       <% end %>
                       
                     <% end %>
                   </div>
+
+                  <div class="td-etiquette middled centered">  
+                  Couleur(s) : 
+                  <% if produit.couleur.present? %>
+                    <span class="badge border border-3 border-dark text-dark"> 
+                      <%= produit.couleur&.nom %>
+                      <%= color_icon(produit.couleur) if produit.couleur %>
+                    </span>
+
+                    <% same_produit_same_taille_others_couleurs(produit).each do |produit| %>
+                      <span class="badge border border-secondary text-secondary"> 
+                        <%= produit.couleur&.nom %>
+                        <%= color_icon(produit.couleur) if produit.couleur %>
+                      </span>
+                    <% end %>
+                    
+                  <% end %>
+                </div>
+                
                 </td>
                 <td class="td-etiquette middled centered shadowed">
                   <%= image_tag(produit.qr_code, class:"img-qr-etiquette") if produit.qr_code.present? %>

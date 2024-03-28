@@ -39,6 +39,9 @@ module ApplicationHelper
       css_style = amount.to_i > 0 ? 'color: red;' : 'color: green;'
       content_tag(:span, number_to_currency(amount), style: css_style)
     end
-      
+
+    def color_icon(couleur)
+      content_tag(:i, '', class: "fa fa-circle mx-1", style: "color: #{couleur.couleur_code}")
+    end
 
 end
