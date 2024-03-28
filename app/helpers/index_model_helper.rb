@@ -73,6 +73,7 @@ module IndexModelHelper
       end
   end 
 
+
   def return_model_index_button(text, path)
     content_tag(:div, class: "m-1 d-flex align-items-center") do
       link_to path, class: "btn bg-dark text-light fw-bold d-flex align-items-center" do

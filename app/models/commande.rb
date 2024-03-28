@@ -23,7 +23,7 @@ class Commande < ApplicationRecord
 
   
   def full_name
-    "ref#{id}_#{nom}"
+    "#{ref_commande} #{created_at.strftime("%d/%m/%Y")}"
   end
 
   def ref_commande
