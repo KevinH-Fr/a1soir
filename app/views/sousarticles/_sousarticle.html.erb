@@ -11,11 +11,15 @@
       <div class="col">
 
         <h6 class="fw-bold"> <%= sousarticle.produit.nom %>  </h6>
-        Nature:  <%= sousarticle.nature %>
-        Description: <%= sousarticle.description %>
-        Prix: <%= sousarticle.prix %>
-        Caution: <%= sousarticle.caution %>
-        Commentaires:   <%= sousarticle.commentaires %>
+
+        <%= sousarticle.produit&.couleur&.nom %> 
+        <%= "taille:  #{sousarticle.produit&.taille&.nom}" if sousarticle.produit.taille.present?  %> 
+
+        <%= "nature:  #{sousarticle.nature}" if sousarticle.nature.present? %> 
+        <%= "description:  #{sousarticle.description}" if sousarticle.description.present? %> 
+        <%= "prix:  #{sousarticle.prix}" if sousarticle.prix.present? %> 
+        <%= "caution:  #{sousarticle.caution}" if sousarticle.caution.present? %> 
+        <%= "commentaires:  #{sousarticle.commentaires}" if sousarticle.commentaires.present? %> 
 
       </div>
 

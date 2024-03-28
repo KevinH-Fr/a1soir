@@ -5,7 +5,7 @@
     <span class="doc-important"> <%= @doc_edition.commande.client.full_name %> </span> <br><br>
 
     <span>Evénement</span>
-    <span class="doc-important"> <%#= @commande.info_evenement %> </span> <br>
+    <span class="doc-important"> <%= @doc_edition.commande.full_event %> </span> <br>
     <br>
 
     courriel: <span class="doc-important"> <%= @doc_edition.commande.client.mail %> </span> <br>
@@ -21,7 +21,7 @@
     <br>
 
     <span>Statut commande </span> 
-    <span class="doc-important"> <%#= @commande.statutarticles %> </span> <br>
+    <span class="doc-important"> <%= @doc_edition.commande.statutarticles %> </span> <br>
     <br>
 
 

@@ -28,6 +28,7 @@
                 <%= article.produit.nom %> 
               </div>
               <span class="td-doc-normal"> 
+                <%= "couleur: #{ article.produit.couleur.nom }" if article.produit.couleur.present?  %>
                 <%= "taille: #{ article.produit.taille.nom }" if article.produit.taille.present?  %>
                 <%= article.commentaires %>
                 <%= "location longue durée" if article.longueduree == true %>  
@@ -53,6 +54,7 @@
                     <%= image_tag(sousarticle.produit.default_image, style: "width: 40px;", 
                        class: "img-fluid rounded") %> 
                     <%= sousarticle.produit.nom %> 
+                    <%= sousarticle.produit&.couleur&.nom %> 
                     <%= sousarticle.produit&.taille&.nom %> 
                     <%= sousarticle.nature %>
                     <%= sousarticle.commentaires  %>

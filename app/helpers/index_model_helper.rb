@@ -69,7 +69,9 @@ module IndexModelHelper
       content_tag(:div, class: "d-flex justify-content-end") do
           concat(link_to("", model, class: "btn btn-sm btn-primary fa-solid fa-square-up-right m-1 p-2"))
           concat(button_to("", edit_polymorphic_path(model), method: :post, class: "btn btn-sm btn-secondary fa-solid fa-pen-to-square m-1 p-2"))
-          concat(button_to("", model, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger fa-solid fa-trash m-1 p-2"))
+          concat(button_to("", model, method: :delete, 
+            :onclick => "return confirm('Etes-vous certain de vouloir supprimer cet élément ?')",
+            class: "btn btn-sm btn-danger fa-solid fa-trash m-1 p-2"))
       end
   end 
 

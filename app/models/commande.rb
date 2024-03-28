@@ -39,7 +39,7 @@ class Commande < ApplicationRecord
   end
 
   def full_event
-    "#{typeevent}" " #{dateevent}"
+    "#{typeevent}" " #{dateevent.strftime("%d/%m/%Y") if dateevent} "
   end
   
   def date_retenue
