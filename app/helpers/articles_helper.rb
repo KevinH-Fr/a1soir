@@ -38,8 +38,6 @@ module ArticlesHelper
             badge_prixlocation_produit(produit) +
             badge_prixvente_produit(produit) +
 
-
-
             content_tag(:p, badge_disponibilite(produit, commande.debutloc&.to_date), class: "m-1 mt-3") 
           end
         end

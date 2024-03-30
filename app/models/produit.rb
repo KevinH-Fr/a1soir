@@ -24,14 +24,9 @@ class Produit < ApplicationRecord
   after_create :generate_qr
   after_create :set_initial_vente_price
 
-
-  scope :is_service, -> { joins(:categorie_produit).where(categorie_produits: { service: true }) }
   scope :is_ensemble, -> { joins(:type_produit).where(type_produits: { nom: 'ensemble' }) }
-
-
-  def is_service?
-    categorie_produit&.service
-  end
+  scope :is_service, -> { joins(:categorie_produit).where(categorie_produits: { service: true }) }
+  scope :not_service, -> { joins(:categorie_produit).where(categorie_produits: { service: [false, nil] }) }
 
   def full_name
     nom

@@ -53,4 +53,8 @@ module ApplicationHelper
       end
     end
 
+    def extract_ids(objects)
+      Array.wrap(objects).pluck(:id)
+    end
+    
 end

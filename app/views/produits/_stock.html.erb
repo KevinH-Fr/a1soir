@@ -6,10 +6,10 @@
     </div>
 
     <div class="card-body">         
-        <p> Total produits : <span class="fw-bold"> <%= total_produits(@produit) %> </span> </p> 
-        <p> Total loués : <span class="fw-bold"> <%= total_loues(@produit) %> </span> </p> 
-        <p> Total vendus : <span class="fw-bold"> <%= total_vendus(@produit) %> </span> </p> 
-        <p> Restant : <span class="fw-bold"> <%= produits_restants(@produit, Time.now.to_date) %> </span> </p> 
+        <p> Total produits : <span class="fw-bold"> <%= total_produits(extract_ids(@produit)) %> </span> </p> 
+        <p> Total loués : <span class="fw-bold"> <%= total_loues(extract_ids(@produit)) %> </span> </p> 
+        <p> Total vendus : <span class="fw-bold"> <%= total_vendus(extract_ids(@produit)) %> </span> </p> 
+        <p> Restant : <span class="fw-bold"> <%= produits_restants(extract_ids(@produit), Time.now.to_date) %> </span> </p> 
 
         <%= badge_disponibilite(@produit, Time.now.to_date) %>
 

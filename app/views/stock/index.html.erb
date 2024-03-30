@@ -7,13 +7,15 @@
   </div>
   <div class="card-body"> 
     <p> Total produits : <span class="fw-bold"> <%= total_produits(@produits) %> </span> </p> 
-    <p> Total services : <span class="fw-bold"> <%= total_services(@produits) %> </span> </p> 
-
-    <p> Total services vendus : <span class="fw-bold"> <%= articles_services_in_commandes %> </span> </p> 
-
     <p> Total loués : <span class="fw-bold"> <%= total_loues(@produits) %> </span> </p> 
     <p> Total vendus : <span class="fw-bold"> <%= total_vendus(@produits) %> </span> </p> 
     <p> Restant : <span class="fw-bold"> <%= produits_restants(@produits, Time.now.to_date) %> </span> </p> 
+  
+    <hr>
+
+    <p> Total services : <span class="fw-bold"> <%= total_services(@produits) %> </span> </p> 
+    <p> Total services vendus : <span class="fw-bold"> <%= articles_services_in_commandes %> </span> </p> 
+
   </div>
 </div>
 

@@ -1,134 +1,80 @@
 module StockHelper
-    def total_produits(produits)
-      if produits.is_a?(Produit)
-        produits.quantite.to_i
-      elsif produits.is_a?(Enumerable)
-        produits.sum(:quantite)
-      else
-        0
-      end
-    end
-  
-    def total_services(produits)
-      if produits.is_a?(Produit)
-        produits.is_service.count
-      elsif produits.is_a?(Enumerable)
-        produits.count { |produit| produit.is_service? }
-      else
-        0
-      end
-    end
-    
-    
 
-    def total_loues(produits)
-      if produits.is_a?(Produit)
-        total_quantite = produits.articles.location_only.sum(:quantite)
-        total_quantite += produits.sousarticles.location_only.count
-        total_quantite      
-      elsif produits.is_a?(Enumerable)
-        produits.map do |produit|
-            total_quantite = produit.articles.location_only.sum(:quantite)
-            total_quantite += produit.sousarticles.location_only.count
-            total_quantite
-          end.sum
-        else
-        0
-      end
-    end
-  
-    def total_vendus(produits)
-      if produits.is_a?(Produit)
-        total_quantite = produits.articles.vente_only.sum(:quantite)
-        total_quantite += produits.sousarticles.vente_only.count
-        total_quantite
-      elsif produits.is_a?(Enumerable)
-        produits.map do |produit|
-          total_quantite = produit.articles.vente_only.sum(:quantite)
-          total_quantite += produit.sousarticles.vente_only.count
-          total_quantite
-        end.sum
-      else
-        0
-      end
-    end
-
-
-  
-    def produits_restants(produits, date = Date.today)
-      if produits.is_a?(Produit)
-        return produits.is_service? ? 1 : (total_produits(produits) - total_loues(produits) - total_vendus(produits) + locations_terminees_a_date(produits, date))
-      elsif produits.is_a?(Enumerable)
-        return produits.any?(&:is_service?) ? 1 : (total_produits(produits) - total_loues(produits) - total_vendus(produits) + locations_terminees_a_date(produits, date))
-      else
-        return 0
-      end
-    end
-    
-
-    def locations_terminees_a_date(produits,  date = Date.today)
-      # Count the products with locations finished before the given date and the status of the command is "rendu"
-    
-      if produits.is_a?(Produit)
-        total_quantite = produits.articles.joins(:commande).where("commandes.finloc < ? AND commandes.statutarticles = ?", date, "rendu").location_only.sum(:quantite).to_i
-        total_quantite += produits.sousarticles.joins(:article => :commande).where("commandes.finloc < ? AND commandes.statutarticles = ?", date, "rendu").location_only.count.to_i
-        total_quantite
-      elsif produits.is_a?(Enumerable)
-        produits.map do |produit|
-          total_quantite = produit.articles.joins(:commande).where("commandes.finloc < ? AND commandes.statutarticles = ?", date, "rendu").location_only.sum(:quantite).to_i
-          total_quantite += produit.sousarticles.joins(:article => :commande).where("commandes.finloc < ? AND commandes.statutarticles = ?", date, "rendu").location_only.count.to_i
-          total_quantite  
-        end.sum
-      else
-        0
-      end
-    end
-    
-    
-
-    # statut des articles
-    def articles_loues_in_commandes_non_retires
-      Commande.non_retire.sum { |commande| commande.articles.location_only.count }
-    end
-
-    def articles_loues_in_commandes_retires
-      Commande.retire.sum { |commande| commande.articles.location_only.count }
-    end
-  
-    def articles_loues_in_commandes_rendus
-      Commande.rendu.sum { |commande| commande.articles.location_only.count }
-    end
-
-    def articles_services_in_commandes
-      total_count = 0
-      Commande.all.each do |commande|
-        articles_count = commande.articles.service_only.count
-        sousarticles_count = commande.articles.map { |article| article.sousarticles.service_only.count }.sum
-        total_count += articles_count + sousarticles_count
-      end
-      total_count
-    end
-    
-
-
-    def est_disponible(produits, date = Date.today)
-
-        if produits_restants(produits,  date = Date.today) > 0
-            true 
-        else
-            false
-        end
-    end
-
-    def badge_disponibilite(produits, date = Date.today)
-        restants = produits_restants(produits,  date = Date.today)
-
-        if est_disponible(produits,  date = Date.today)
-          content_tag(:span, "Produit disponible - #{restants}", class: "badge fs-6 border border-success text-success")
-        else
-          content_tag(:span, "Produit indisponible", class: "badge fs-6 border border-danger text-danger")
-        end
-    end
-      
+  def total_produits(produits)
+    Produit.where(id: produits).not_service.sum(:quantite)    
   end
+  
+  def total_services(produits)
+    Produit.where(id: produits).is_service.sum(:quantite)    
+  end
+    
+  def total_loues(produits)
+    total_quantite = Article.joins(:produit).where(produits: { id: produits }).location_only.sum(:quantite)
+    total_quantite += Sousarticle.joins(:produit).where(produits: { id: produits }).location_only.count
+    total_quantite
+  end
+  
+  def total_vendus(produits)
+    total_quantite = Article.joins(:produit).where(produits: { id: produits }).merge(Produit.not_service).vente_only.sum(:quantite)
+    total_quantite += Sousarticle.joins(:produit).where(produits: { id: produits }).merge(Produit.not_service).vente_only.count
+    total_quantite
+  end
+  
+  
+
+  def produits_restants(produits, date = Date.today)
+    total_produits(produits) - total_loues(produits) - total_vendus(produits) + locations_terminees_a_date(produits, date)
+  end
+    
+  def locations_terminees_a_date(produits,  date = Date.today)
+    # Count the products with locations finished before the given date and the status of the command is "rendu" 
+    total_quantite = Article.joins(:commande).where("commandes.finloc < ? AND commandes.statutarticles = ?", date, "rendu").location_only.sum(:quantite).to_i
+    total_quantite += Sousarticle.joins(:article => :commande).where("commandes.finloc < ? AND commandes.statutarticles = ?", date, "rendu").location_only.count.to_i
+    total_quantite
+  end
+    
+  # statut des articles
+  def articles_loues_in_commandes_non_retires
+    Commande.non_retire.sum { |commande| commande.articles.location_only.sum(:quantite) }
+  end
+
+  def articles_loues_in_commandes_retires
+    Commande.retire.sum { |commande| commande.articles.location_only.sum(:quantite) }
+  end
+
+  def articles_loues_in_commandes_rendus
+    Commande.rendu.sum { |commande| commande.articles.location_only.sum(:quantite) }
+  end
+
+  def articles_services_in_commandes
+    total_count = 0
+    Commande.all.each do |commande|
+      articles_count = commande.articles.service_only.count
+      sousarticles_count = commande.articles.map { |article| article.sousarticles.service_only.count }.sum
+      total_count += articles_count + sousarticles_count
+    end
+    total_count
+  end
+  
+
+  def est_disponible(produits, date = Date.today)
+    produits_restants(produits, date) > 0 || Produit.where(id: produits).is_service.exists?
+  end
+  
+
+  def badge_disponibilite(produits, date = Date.today)
+    if Produit.where(id: produits).is_service.exists?
+      restants = 1
+    else 
+      restants = produits_restants(produits,  date = Date.today)
+    end
+
+    if est_disponible(produits,  date = Date.today)
+      content_tag(:span, "Produit disponible - #{restants}", class: "badge fs-6 border border-success text-success")
+    else
+      content_tag(:span, "Produit indisponible", class: "badge fs-6 border border-danger text-danger")
+    end
+  end
+      
+end
   
