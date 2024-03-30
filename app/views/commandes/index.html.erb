@@ -1,11 +1,12 @@
-p<%= bandeau_entete("Commandes", "file-invoice", @commandes.count, :nom_or_type_locvente_or_typeevent_cont) %>
+<%= bandeau_entete("Commandes", "file-invoice", @commandes.count, 
+  :nom_or_type_locvente_or_typeevent_cont, commandes_path) %>
 
 <%= bloc_nouveau(Commande) %>
 
-<div id="commandes">
-  <% @commandes.each do |commande| %>
-        <%= render commande %>
-  <% end %>
-</div>
+<%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+  <div id="commandes"> </div> 
 
-
+  <%= turbo_frame_tag :pagination, loading: :lazy, 
+                        src: commandes_path(format: :turbo_stream,
+                        q: params[:q]&.to_unsafe_h) %>
+<% end %>

@@ -6,8 +6,12 @@ class CommandesController < ApplicationController
 
   def index
 
-    @q = Commande.ransack(params[:q])
-    @commandes = @q.result(distinct: true)
+    search_params = params.permit(:format, :page, 
+      q:[:nom_or_type_locvente_or_typeevent_cont])
+   @q = Commande.ransack(search_params[:q])
+   commandes = @q.result(distinct: true).order(created_at: :desc)
+   @pagy, @commandes = pagy_countless(commandes, items: 2)
+
     
     @clients = Client.all
     @profiles = Profile.all 

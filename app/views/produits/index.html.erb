@@ -1,5 +1,6 @@
 <%= bandeau_entete("Produits", "shirt", @produits.count, 
-      search_form_new_test(@q, :nom_or_prixvente_or_prixlocation_or_reffrs_or_handle_or_categorie_produit_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont)) %>
+      :nom_or_prixvente_or_prixlocation_or_reffrs_or_handle_or_categorie_produit_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont,
+      produits_path) %>
 
 <%= bloc_nouveau(Produit) %>
 
