@@ -11,11 +11,14 @@ class GenerateQr < ApplicationService
     require "rqrcode"
     
     def call
-        qr_url = url_for(controller: model.class.name.underscore.pluralize,
+
+      host = Rails.env.production? ? 'a1soir-2-2a03802389d6.herokuapp.com' : 'localhost:3000'
+
+      qr_url = url_for(controller: model.class.name.underscore.pluralize,
             action: "show",
             id: model.id,
             only_path: false,
-            host: ['localhost:3000', 'a1soir-2-2a03802389d6.herokuapp.com'], #'a1soir.herokuapp.com',
+            host: host, #'a1soir.herokuapp.com',
             source: 'from_qr')
 
     qrcode = RQRCode::QRCode.new(qr_url)
