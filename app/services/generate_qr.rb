@@ -12,7 +12,7 @@ class GenerateQr < ApplicationService
     
     def call
 
-      host = Rails.env.production? ? 'a1soir-2-2a03802389d6.herokuapp.com' : 'localhost:3000'
+      host = Rails.env.production? ? 'admin.a1soir.com' : 'localhost:3000'
 
       qr_url = url_for(controller: model.class.name.underscore.pluralize,
             action: "show",
