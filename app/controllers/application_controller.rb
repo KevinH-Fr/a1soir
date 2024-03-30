@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
+  
+  include Pagy::Backend
 
-    protected
+  protected
 
     def authenticate_vendeur_or_admin!
       unless current_user && (current_user.vendeur? || current_user.admin?)

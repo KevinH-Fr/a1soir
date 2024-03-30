@@ -5,15 +5,34 @@ class ProduitsController < ApplicationController
 
   def index
 
-    @q = Produit.ransack(params[:q])
-    @produits = @q.result(distinct: true)
+  #  @q = Produit.ransack(params[:q])
+  #  @produits = @q.result(distinct: true)
+          
+  #  page = (params[:page].to_i > 0) ? params[:page].to_i : 1
+  #  items = 5
+  #  start = (page - 1) * items
     
+  #  @pagy = Pagy.new(count: @produits.size, page: page, items: items)
+  #  @produits = @produits.slice(start, items)
+
+    search_params = params.permit(:format, :page, 
+       q:[:nom_cont])
+    @q = Produit.ransack(search_params[:q])
+    produits = @q.result(distinct: true).order(created_at: :desc)
+    @pagy, @produits = pagy_countless(produits, items: 2)
+
+
     @categorie_produits = CategorieProduit.all
     @type_produits = TypeProduit.all
 
     @couleurs = Couleur.all 
     @tailles = Taille.all 
     @fournisseurs = Fournisseur.all 
+
+  #  respond_to do |format|
+  #    format.html
+  #    format.turbo_stream
+  #  end
 
   end
 

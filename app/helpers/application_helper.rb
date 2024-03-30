@@ -1,5 +1,7 @@
 module ApplicationHelper
 
+  include Pagy::Frontend
+  
     def custom_currency_format(amount)
         number_to_currency(amount, precision: 2, unit: "€", format: "%n %u", delimiter: " ")
     end

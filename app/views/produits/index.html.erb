@@ -1,11 +1,12 @@
 <%= bandeau_entete("Produits", "shirt", @produits.count, 
-  :nom_or_prixvente_or_prixlocation_or_reffrs_or_handle_or_categorie_produit_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont) %>
+      search_form_new_test(@q, :nom_or_prixvente_or_prixlocation_or_reffrs_or_handle_or_categorie_produit_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont)) %>
 
 <%= bloc_nouveau(Produit) %>
 
-<div id="produits">
-  <% @produits.each do |produit| %>
-      <%= render produit %>
-  <% end %>
-</div>
+<%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+<div id="produits"> </div> 
 
+<%= turbo_frame_tag :pagination, loading: :lazy, 
+                      src: produits_path(format: :turbo_stream,
+                     q: params[:q]&.to_unsafe_h) %>
+<% end %>

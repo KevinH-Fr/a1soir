@@ -26,8 +26,10 @@ module IndexModelHelper
         concat(content_tag(:div, class: "card-body p-1 light-beige-colored") do
           concat(content_tag(:div, class: "d-flex align-items-center") do
 
-            concat(index_search_form(@q, champs_recherche )) # Call the client_search_form helper method
+          #  concat(index_search_form(@q, champs_recherche )) # Call the client_search_form helper method
         
+           concat(search_form_new_test(@q, champs_recherche)) # Call the client_search_form helper method
+
             # New button with collapse attributes
             concat(content_tag(:button, class: "btn btn-sm btn-warning", type: "button", 
                 data: { bs_toggle: "collapse", bs_target: "#collapseNew", aria_expanded: "false" },
@@ -45,14 +47,18 @@ module IndexModelHelper
   end
 
   def index_search_form(q, champs_recherche)
-    search_form_for q, html: { class: "d-flex align-items-center w-100" } do |f|
-      concat(f.search_field champs_recherche, class: "form-control flex-grow-1 mx-1", type: "text", placeholder: "Chercher...")
-      concat(button_tag(type: "submit", class: "btn btn-sm btn-success fw-bold me-1") do
-        concat(content_tag(:i, "", class: "fa-solid fa-xl fa-magnifying-glass"))
-      end)
+    search_form_for q, html: { class: "d-flex align-items-center w-100" }, data: { turbo_frame: :results } do |f|
+     # concat(f.label champs_recherche)
+      concat(f.search_field champs_recherche, class: "form-control flex-grow-1 mx-1", placeholder: "Chercher...", autofocus: true, autocomplete: 'off', oninput: 'this.form.requestSubmit()')
+     # concat(button_tag(type: "submit", class: "btn btn-sm btn-success fw-bold me-1") do
+     #   concat(content_tag(:i, "", class: "fa-solid fa-xl fa-magnifying-glass"))
+     # end)
     end
   end
-
+  
+  def search_form_new_test(q, champs_recherche)
+    render partial: 'shared/search_form', locals: { }
+  end
 
   def bloc_nouveau(model_class)
 

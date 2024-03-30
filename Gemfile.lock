@@ -179,6 +179,7 @@ GEM
     nokogiri (1.16.2-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
+    pagy (7.0.11)
     pg (1.5.6)
     psych (5.1.2)
       stringio
@@ -316,6 +317,7 @@ DEPENDENCIES
   jbuilder
   jquery-rails
   letter_opener
+  pagy
   pg (~> 1.4, >= 1.4.1)
   puma (>= 5.0)
   rails (~> 7.1.3)
