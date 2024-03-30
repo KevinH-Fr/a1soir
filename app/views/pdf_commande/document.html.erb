@@ -7,10 +7,24 @@
 <h4 class="h4-doc"> 
   <%= "Devis" if @doc_edition.commande.devis? %>
   
-  <strong> 
-    <%= @doc_edition.commande.ref_commande %> 
-    <%= @doc_edition.doc_type %> 
-  </strong> 
+
+  <table>
+    <tr>
+      <td class="">
+        <%= image_tag(@doc_edition.commande.qr_code, class:"img-qr-etiquette") if @doc_edition.commande.qr_code.present? %>
+      </td>
+      <td class="">
+        <strong> 
+          <%= @doc_edition.commande.ref_commande %> 
+          <%= @doc_edition.doc_type %> 
+        </strong> 
+      </td>
+    </tr>
+  </table>
+
+<div class="row"> 
+
+</div>
 
 </h4>
 

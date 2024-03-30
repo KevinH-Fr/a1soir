@@ -58,12 +58,11 @@ export default class extends Controller {
       if (result) {
         console.log('Found QR code!', result);
         // Assuming the QR code content is a URL
-        window.open(result.text, '_blank'); // Opens the URL in a new tab
+        window.location.href = result.text; // Open the URL in the current window
         this.stopScan();
 
       }
     });
-    
 
 
   }
