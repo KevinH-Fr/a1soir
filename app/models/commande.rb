@@ -7,7 +7,10 @@ class Commande < ApplicationRecord
   has_many :avoir_rembs
   has_many :meetings 
   
+  has_one_attached :qr_code
+
   after_create :after_commande_create
+  after_create :generate_qr
 
   scope :hors_devis, ->  { where("devis = ?", false)}
   scope :non_retire, -> { where("statutarticles = ?", "non-retiré")}
@@ -19,6 +22,7 @@ class Commande < ApplicationRecord
   scope :filtredatedebut, -> (debut) { where("created_at >= ?", debut) }
   scope :filtredatefin, -> (fin) { where("created_at <= ?", fin) }
   
+
   EVENEMENTS_OPTIONS = ['mariage', 'soirée', 'divers']
 
   
@@ -46,6 +50,10 @@ class Commande < ApplicationRecord
     debutloc.present? ? debutloc : Date.today
   end
   # ajouter is mixte ?
+
+  def generate_qr
+    GenerateQr.call(self)
+  end
 
   def self.ransackable_attributes(auth_object = nil)
     ["id", "nom", "montant", "description", "client_id", "debutloc", "finloc", "dateevent", "statutarticles", "typeevent", "profile_id", "commentaires", "commentaires_doc", "type_locvente", "devis"]

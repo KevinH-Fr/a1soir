@@ -33,6 +33,8 @@
 
       <div class="collapse" id="collapseCommande<%= dom_id(commande) %>">
 
+        <%= image_tag(commande.qr_code, class:"rounded-start") if commande.qr_code.attached? %>
+
         <%= field_with_label("nom: ", commande.nom)  %>
         <%= field_with_label("description: ", commande.description)  %>
         <%= field_with_label("debutloc: ", commande.debutloc)  %>
