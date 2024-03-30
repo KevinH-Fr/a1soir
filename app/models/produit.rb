@@ -19,13 +19,19 @@ class Produit < ApplicationRecord
   has_one_attached :qr_code
 
   before_validation :generate_handle
+  before_validation :fix_quantity_for_service
 
   after_create :generate_qr
   after_create :set_initial_vente_price
 
 
+  scope :is_service, -> { joins(:categorie_produit).where(categorie_produits: { service: true }) }
   scope :is_ensemble, -> { joins(:type_produit).where(type_produits: { nom: 'ensemble' }) }
 
+
+  def is_service?
+    categorie_produit&.service
+  end
 
   def full_name
     nom
@@ -70,6 +76,13 @@ class Produit < ApplicationRecord
 
     # Use ActiveSupport's parameterize method to generate the handle
     self.handle = nom.parameterize
+  end
+
+  def fix_quantity_for_service 
+    #if produit is a service empty the quantity
+    if categorie_produit&.service 
+      self.quantite = 1
+    end
   end
 
 end

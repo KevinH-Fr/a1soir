@@ -9,6 +9,18 @@ module StockHelper
       end
     end
   
+    def total_services(produits)
+      if produits.is_a?(Produit)
+        produits.is_service.count
+      elsif produits.is_a?(Enumerable)
+        produits.count { |produit| produit.is_service? }
+      else
+        0
+      end
+    end
+    
+    
+
     def total_loues(produits)
       if produits.is_a?(Produit)
         total_quantite = produits.articles.location_only.sum(:quantite)
@@ -40,10 +52,19 @@ module StockHelper
         0
       end
     end
+
+
   
     def produits_restants(produits, date = Date.today)
-      total_produits(produits) - total_loues(produits) - total_vendus(produits)  + locations_terminees_a_date(produits,  date = Date.today)
+      if produits.is_a?(Produit)
+        return produits.is_service? ? 1 : (total_produits(produits) - total_loues(produits) - total_vendus(produits) + locations_terminees_a_date(produits, date))
+      elsif produits.is_a?(Enumerable)
+        return produits.any?(&:is_service?) ? 1 : (total_produits(produits) - total_loues(produits) - total_vendus(produits) + locations_terminees_a_date(produits, date))
+      else
+        return 0
+      end
     end
+    
 
     def locations_terminees_a_date(produits,  date = Date.today)
       # Count the products with locations finished before the given date and the status of the command is "rendu"
@@ -77,6 +98,17 @@ module StockHelper
     def articles_loues_in_commandes_rendus
       Commande.rendu.sum { |commande| commande.articles.location_only.count }
     end
+
+    def articles_services_in_commandes
+      total_count = 0
+      Commande.all.each do |commande|
+        articles_count = commande.articles.service_only.count
+        sousarticles_count = commande.articles.map { |article| article.sousarticles.service_only.count }.sum
+        total_count += articles_count + sousarticles_count
+      end
+      total_count
+    end
+    
 
 
     def est_disponible(produits, date = Date.today)

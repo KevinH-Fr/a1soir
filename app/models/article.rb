@@ -3,7 +3,9 @@ class Article < ApplicationRecord
   belongs_to :commande
 
   has_many :sousarticles, dependent: :destroy
-  
+
+  scope :service_only, -> { joins(:produit).where(produits: { categorie_produit_id: CategorieProduit.where(service: true) }) }
+
   scope :location_only, -> { where(locvente: 'location') }
   scope :vente_only, -> { where(locvente: 'vente') }
 

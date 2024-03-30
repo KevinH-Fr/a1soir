@@ -104,7 +104,7 @@ class CategorieProduitsController < ApplicationController
     end
 
     def categorie_produit_params
-      params.require(:categorie_produit).permit(:nom, :texte_annonce, :label)
+      params.require(:categorie_produit).permit(:nom, :service, :texte_annonce, :label)
     end
 
 

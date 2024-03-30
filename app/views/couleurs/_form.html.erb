@@ -16,10 +16,11 @@
 
       <%= custom_form_elements(form, [:nom, :text_field]) %>
 
-      <div class="input-group px-2 mb-1">
-        <%= form.label :couleur_code, class: "input-group-text" %>
-        <%= form.color_field :couleur_code, class: "form-control" %>
+      <div class="input-group input-group-sm my-1 px-1">
+        <%= form.label :couleur_code, class: "input-group-text input-colored" %>
+        <%= form.color_field :couleur_code, class: "form-control py-1 label-colored" %>
       </div>
+
 
       <%= custom_submit_button(form) %>
 

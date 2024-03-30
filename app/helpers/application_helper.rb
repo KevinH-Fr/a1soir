@@ -44,4 +44,13 @@ module ApplicationHelper
       content_tag(:i, '', class: "fa fa-circle mx-1", style: "color: #{couleur.couleur_code}")
     end
 
+    def icon_true_field_with_label(text, value)
+      if value
+        content_tag(:p, class: "text-start badge text-dark mx-0 p-0 fs-6") do
+          concat " #{text}"
+          concat content_tag(:i, "", class: "fas text-success fa-check-circle ms-1")
+        end
+      end
+    end
+
 end
