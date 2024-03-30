@@ -3,19 +3,20 @@
   <div class="card mx-2 mb-3 light-beige-colored shadow-sm">
     <div class="card-body p-0">
       <div class="row g-0">
-        <div class="col-2 p-2 d-flex align-items-center justify-content-center">
-          <%= link_to  client_path(client) do %>
+        <div data-turbo="false" class="col-2 p-2 d-flex align-items-center justify-content-center">
+          <%= link_to client_path(client) do %>
             <i class="fa fa-user text-secondary fa-4x"></i>
           <% end %>
         </div>
         <div class="col-10 d-flex flex-column p-2">
           <h5 class="card-title">
-
-            <%= link_to  client_path(client), class: "text-decoration-none text-dark" do %>
+          <div data-turbo="false">
+            <%= link_to client_path(client), class: "text-decoration-none text-dark" do %>
               <%= client.prenom %>
               <%= client.nom %>
             <% end %>
-          
+          </div>
+        
             <%= client.propart %>
 
             <%= link_to "", "#collapseClient#{dom_id(client)}", 
@@ -33,7 +34,7 @@
   
       <div class="collapse px-2" id="collapseClient<%= dom_id(client) %>">
 
-       <hr>
+        <hr>
 
         <%= field_with_label("type: ", client.propart)  %>
         <%= field_with_label("commentaires: ", client.commentaires)  %>

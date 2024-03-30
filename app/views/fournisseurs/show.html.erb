@@ -1,10 +1,7 @@
-<p style="color: green"><%= notice %></p>
+<%= card_main_model("Fournisseur", "industry") %>
 
 <%= render @fournisseur %>
 
-<div>
-  <%= link_to "Edit this fournisseur", edit_fournisseur_path(@fournisseur) %> |
-  <%= link_to "Back to fournisseurs", fournisseurs_path %>
+<hr>
 
-  <%= button_to "Destroy this fournisseur", @fournisseur, method: :delete %>
-</div>
+<%= return_model_index_button("Retour vers fournisseurs", fournisseurs_path) %>

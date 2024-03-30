@@ -65,6 +65,16 @@ class TypeProduitsController < ApplicationController
   def update
     respond_to do |format|
       if @type_produit.update(type_produit_params)
+
+        flash.now[:success] =  I18n.t('notices.successfully_updated')
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update(@type_produit, partial: "type_produits/type_produit", locals: {type_produit: @type_produit}),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+          ]
+        end
+
         format.html { redirect_to type_produit_url(@type_produit), notice: I18n.t('notices.successfully_updated') }
         format.json { render :show, status: :ok, location: @type_produit }
       else

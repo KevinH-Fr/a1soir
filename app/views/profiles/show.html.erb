@@ -1,10 +1,7 @@
-<p style="color: green"><%= notice %></p>
+<%= card_main_model("Profile", "user-gear") %>
 
 <%= render @profile %>
 
-<div>
-  <%= link_to "Edit this profile", edit_profile_path(@profile) %> |
-  <%= link_to "Back to profiles", profiles_path %>
+<hr>
 
-  <%= button_to "Destroy this profile", @profile, method: :delete %>
-</div>
+<%= return_model_index_button("Retour vers profiles", profiles_path) %>

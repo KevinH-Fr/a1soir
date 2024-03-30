@@ -79,15 +79,8 @@ class FournisseursController < ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update('new',
-                                partial: "fournisseurs/form",
-                                locals: { fournisseur: Fournisseur.new }),
-  
-            turbo_stream.prepend('fournisseurs',
-                                  partial: "fournisseurs/fournisseur",
-                                  locals: { fournisseur: @fournisseur }),
+            turbo_stream.update(@fournisseur, partial: "fournisseurs/fournisseur", locals: {fournisseur: @fournisseur}),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
-            
           ]
         end
 

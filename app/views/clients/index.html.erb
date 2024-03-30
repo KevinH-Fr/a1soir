@@ -4,7 +4,8 @@
 <%= bloc_nouveau(Client) %>
 
 <%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
-    <div id="clients"> </div> 
+
+<div id="clients"> </div> 
 
 <%= turbo_frame_tag :pagination, loading: :lazy, 
                         src: clients_path(format: :turbo_stream,
