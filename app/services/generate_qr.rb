@@ -1,8 +1,9 @@
 class GenerateQr < ApplicationService
-    attr_reader :produit
+    attr_reader :model
 
-    def initialize(produit)
-        @produit = produit
+    def initialize(model)
+        @model = model
+        puts "_________________model from generate qr : #{model}"
     end
 
     include Rails.application.routes.url_helpers
@@ -10,9 +11,9 @@ class GenerateQr < ApplicationService
     require "rqrcode"
     
     def call
-        qr_url = url_for(controller:'produits',
+        qr_url = url_for(controller: model.class.name.underscore.pluralize,
             action: "show",
-            id: produit.id,
+            id: model.id,
             only_path: false,
             host: 'localhost:3000', #'a1soir.herokuapp.com',
             source: 'from_qr')
@@ -41,7 +42,7 @@ class GenerateQr < ApplicationService
         content_type: "png"
       )
 
-      produit.qr_code.attach(blob)
+      model.qr_code.attach(blob)
     end
 
 end

@@ -54,16 +54,13 @@ export default class extends Controller {
       console.error("No video input devices available");
       return;
     }
+
     this.codeReader.decodeFromInputVideoDevice(this.selectedDeviceId, 'video').then((result) => {
       if (result) {
         console.log('Found QR code!', result);
-        // Assuming the QR code content is a URL
-        window.open(result.text, '_blank'); // Opens the URL in a new tab
-        this.stopScan();
-
+        this.handleResult(result);
       }
     });
-    
 
 
   }
@@ -78,6 +75,49 @@ export default class extends Controller {
 
     const btnReset = this.element.querySelector("#resetButton");
     btnReset.style.display = "none";
+  }
+
+  handleResult(result) {
+
+    // Display product information on the page
+    // transforme value
+    var  resultTransforme = result.toString().split('produits/')[1];
+    var  resultTransforme2 = resultTransforme.split('?')[0];
+    
+    const resultElement = document.createElement('p');
+    resultElement.textContent = `Product ID: ${resultTransforme2}`;
+    this.resultsDiv.appendChild(resultElement);
+
+    console.log(resultTransforme2);
+
+    this.element.querySelector("#produit").value = resultTransforme2
+
+    this.codeReader.stopStreams();
+    const btnReset = this.element.querySelector("#resetButton");
+    btnReset.style.display = "none";
+
+  this.refreshWithParam(resultTransforme2);
+
+  }
+
+
+  async refreshWithParam(resultTransforme2) {
+    const currentUrl = window.location.href;
+  
+    // Create a URL object
+    const updatedUrl = new URL(currentUrl);
+  
+    // Add the new parameter
+    updatedUrl.searchParams.set('produit', resultTransforme2);
+  
+    // Preserve existing parameters
+    const existingParams = new URLSearchParams(updatedUrl.search);
+    existingParams.forEach((value, key) => {
+      updatedUrl.searchParams.set(key, value);
+    });
+  
+    // Redirect to the updated URL
+    window.location.href = updatedUrl.toString();
   }
   
 

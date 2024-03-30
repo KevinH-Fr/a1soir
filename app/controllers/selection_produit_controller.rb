@@ -7,8 +7,6 @@ class SelectionProduitController < ApplicationController
   def index
 
     @commande = Commande.find(session[:commande])
-
-    puts "___________________commande : #{@commande.id}"
     @type_locvente = @commande.type_locvente
 
     if params[:article]

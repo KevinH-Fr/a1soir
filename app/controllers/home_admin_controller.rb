@@ -8,7 +8,8 @@ class HomeAdminController < ApplicationController
     @produits = Produit.limit(6)
     @meetings = Meeting.limit(6)
 
-
   end
+
+
 
 end

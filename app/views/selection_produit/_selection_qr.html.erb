@@ -1,13 +1,13 @@
 
-<div data-controller="qr-code">
+<div data-controller="qr-code-ajout-article">
   <div class="container-fluid p-2"> 
 
     <div class="container d-flex justify-content-center align-items-center">
       <div class="m-2" id="sourceSelectPanel">
         <select id="sourceSelect" class="form-select m-2" style="max-width:400px;"> </select>
       </div>
-      <a class="button btn btn-primary m-2" id="startButton" data-action="click->qr-code#startScan">Démarrer</a>
-      <a class="button btn btn-danger m-2" id="resetButton"  data-action="click->qr-code#stopScan" style="display: none;">Arrêter</a>
+      <a class="button btn btn-primary m-2" id="startButton" data-action="click->qr-code-ajout-article#startScan">Démarrer</a>
+      <a class="button btn btn-danger m-2" id="resetButton"  data-action="click->qr-code-ajout-article#stopScan" style="display: none;">Arrêter</a>
     </div>
 
     <div class="text-center mt-2">
