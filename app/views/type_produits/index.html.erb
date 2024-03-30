@@ -1,10 +1,13 @@
 
-<%= bandeau_entete("Types produits", "list-ul", @type_produits.count, :nom_cont) %>
+<%= bandeau_entete("Types produits", "list-ul", @type_produits.count, 
+:nom_cont, type_produits_path) %>
 
 <%= bloc_nouveau(TypeProduit) %>
 
-<div id="type_produits">
-  <% @type_produits.each do |type_produit| %>
-        <%= render type_produit %>
-  <% end %>
-</div>
+<%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+    <div id="type_produits"> </div> 
+
+    <%= turbo_frame_tag :pagination, loading: :lazy, 
+                        src: type_produits_path(format: :turbo_stream,
+                        q: params[:q]&.to_unsafe_h) %>
+<% end %>

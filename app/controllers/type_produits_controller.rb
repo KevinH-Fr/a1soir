@@ -4,8 +4,13 @@ class TypeProduitsController < ApplicationController
   before_action :set_type_produit, only: %i[ show edit update destroy ]
 
   def index
-    @q = TypeProduit.ransack(params[:q])
-    @type_produits = @q.result(distinct: true)
+
+    search_params = params.permit(:format, :page, 
+      q:[:nom_cont])
+    @q = TypeProduit.ransack(search_params[:q])
+    type_produits = @q.result(distinct: true).order(created_at: :desc)
+    @pagy, @type_produits = pagy_countless(type_produits, items: 2)
+
   end
 
   def show

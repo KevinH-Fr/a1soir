@@ -6,8 +6,12 @@ class MeetingsController < ApplicationController
 
   def index
 
-    @q = Meeting.ransack(params[:q])
-    @meetings = @q.result(distinct: true)
+    search_params = params.permit(:format, :page, 
+      q:[:nom_or_datedebut_or_datefin_or_lieu_cont])
+    @q = Meeting.ransack(search_params[:q])
+    meetings = @q.result(distinct: true).order(created_at: :desc)
+    @pagy, @meetings = pagy_countless(meetings, items: 2)
+
     
     @commandes = Commande.all
     @clients = Client.all
@@ -20,6 +24,7 @@ class MeetingsController < ApplicationController
 
     respond_to do |format|
       format.html
+      format.turbo_stream
       format.ics do
         cal = Icalendar::Calendar.new
         cal.x_wr_calname = 'A1soir_new_app2'

@@ -4,8 +4,13 @@ class CouleursController < ApplicationController
   before_action :set_couleur, only: %i[ show edit update destroy ]
 
   def index
-    @q = Couleur.ransack(params[:q])
-    @couleurs = @q.result(distinct: true)
+
+    search_params = params.permit(:format, :page, 
+      q:[:nom_cont])
+    @q = Couleur.ransack(search_params[:q])
+    couleurs = @q.result(distinct: true).order(created_at: :desc)
+    @pagy, @couleurs = pagy_countless(couleurs, items: 2)
+
   end
 
   def show

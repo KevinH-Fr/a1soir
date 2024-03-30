@@ -4,8 +4,13 @@ class EnsemblesController < ApplicationController
   before_action :set_ensemble, only: %i[ show edit update destroy ]
 
   def index
-    @q = Ensemble.ransack(params[:q])
-    @ensembles = @q.result(distinct: true)
+
+    search_params = params.permit(:format, :page, 
+      q:[:produit_nom_cont])
+    @q = Ensemble.ransack(search_params[:q])
+    ensembles = @q.result(distinct: true).order(created_at: :desc)
+    @pagy, @ensembles = pagy_countless(ensembles, items: 2)
+
   end
 
   def show

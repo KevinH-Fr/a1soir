@@ -1,11 +1,11 @@
-<%= bandeau_entete("Couleurs", "paint", @couleurs.count, :nom_cont) %>
+<%= bandeau_entete("Couleurs", "paint", @couleurs.count, :nom_cont, couleurs_path) %>
 
 <%= bloc_nouveau(Couleur) %>
 
-<div id="couleurs">
-  <% @couleurs.each do |couleur| %>
-        <%= render couleur %>
-  <% end %>
-</div>
+<%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+    <div id="couleurs"> </div> 
 
-
+    <%= turbo_frame_tag :pagination, loading: :lazy, 
+                        src: couleurs_path(format: :turbo_stream,
+                        q: params[:q]&.to_unsafe_h) %>
+<% end %>

@@ -1,0 +1,14 @@
+<%# meetings infinite scroll pagination %>
+
+<%= turbo_stream.append :meetings do %>
+    <%= render @meetings %>
+<% end %>
+
+<% if @pagy.next.present? %>
+    <%= turbo_stream.replace :pagination do %>
+        <%= turbo_frame_tag :pagination, loading: :lazy,
+                            src: meetings_path(format: :turbo_stream,
+                            page: @pagy.next, q: params[:q]&.to_unsafe_h ) %>
+    <% end %>
+
+<% end %>

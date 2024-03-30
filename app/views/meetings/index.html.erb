@@ -1,4 +1,5 @@
-<%= bandeau_entete("Rendez-vous", "calendar", @meetings.count, :nom_or_datedebut_or_datefin_or_lieu_cont) %>
+<%= bandeau_entete("Rendez-vous", "calendar", @meetings.count, 
+:nom_or_datedebut_or_datefin_or_lieu_cont, meetings_path) %>
 
 <%= bloc_nouveau(Meeting) %>
 
@@ -28,11 +29,14 @@
   <hr>
 
   <% if params[:q].present? %>
-    <div id="meetings">
-      <% @meetings.each do |meeting| %>
-        <%= render meeting %>
-      <% end %>
-    </div>
+    <%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+        <div id="meetings"> </div> 
+
+        <%= turbo_frame_tag :pagination, loading: :lazy, 
+                            src: meetings_path(format: :turbo_stream,
+                            q: params[:q]&.to_unsafe_h) %>
+    <% end %>
+
   <% end %>
 
   <div class="container text-end">

@@ -1,11 +1,12 @@
-<%= bandeau_entete("tailles", "paint", @tailles.count, :nom_cont) %>
+<%= bandeau_entete("tailles", "paint", @tailles.count, :nom_cont, tailles_path) %>
 
 <%= bloc_nouveau(Taille) %>
 
-<div id="tailles">
-  <% @tailles.each do |taille| %>
-        <%= render taille %>
-  <% end %>
-</div>
 
+<%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+    <div id="tailles"> </div> 
 
+    <%= turbo_frame_tag :pagination, loading: :lazy, 
+                        src: tailles_path(format: :turbo_stream,
+                        q: params[:q]&.to_unsafe_h) %>
+<% end %>

@@ -9,16 +9,8 @@
 
     <%= icon_true_field_with_label("service", categorie_produit.service)  %>
 
-    <p>
-      <strong>Texte annonce:</strong>
-      <%= categorie_produit.texte_annonce %>
-    </p>
-
-    <p>
-      <strong>Label:</strong>
-      <%= categorie_produit.label %>
-    </p>
-
+    <%= field_with_label("Texte", categorie_produit.texte_annonce) %>
+    <%= field_with_label("Label", categorie_produit.label) %>
 
 
     <%= links_record(categorie_produit) %>  

@@ -1,9 +1,12 @@
-<%= bandeau_entete("Catégories produits", "layer-group", @categorie_produits.count, :nom_cont) %>
+<%= bandeau_entete("Catégories produits", "layer-group", @categorie_produits.count, 
+:nom_cont, categorie_produits_path) %>
 
 <%= bloc_nouveau(CategorieProduit) %>
 
-<div id="categorie_produits">
-  <% @categorie_produits.each do |categorie_produit| %>
-        <%= render categorie_produit %>
-  <% end %>
-</div>
+<%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+    <div id="categorie_produits"> </div> 
+
+    <%= turbo_frame_tag :pagination, loading: :lazy, 
+                        src: categorie_produits_path(format: :turbo_stream,
+                        q: params[:q]&.to_unsafe_h) %>
+<% end %>

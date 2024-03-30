@@ -1,14 +1,14 @@
 
-<%= bandeau_entete("Ensembles", "group", @ensembles.count, :produit_nom_cont) %>
+<%= bandeau_entete("Ensembles", "group", @ensembles.count, 
+    :produit_nom_cont, ensembles_path) %>
 
 <%= bloc_nouveau(Ensemble) %>
 
-<div id="ensembles">
-  <% @ensembles.each do |ensemble| %>
-        <%= render ensemble %>
-  <% end %>
-</div>
+<%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+    <div id="ensembles"> </div> 
 
-
-
+    <%= turbo_frame_tag :pagination, loading: :lazy, 
+                        src: ensembles_path(format: :turbo_stream,
+                        q: params[:q]&.to_unsafe_h) %>
+<% end %>
 

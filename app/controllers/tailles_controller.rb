@@ -4,8 +4,14 @@ class TaillesController < ApplicationController
   before_action :set_taille, only: %i[ show edit update destroy ]
 
   def index
-    @q = Taille.ransack(params[:q])
-    @tailles = @q.result(distinct: true)
+    
+    search_params = params.permit(:format, :page, 
+      q:[:nom_cont])
+    @q = Taille.ransack(search_params[:q])
+    tailles = @q.result(distinct: true).order(created_at: :desc)
+    @pagy, @tailles = pagy_countless(tailles, items: 2)
+
+
   end
 
   def show
