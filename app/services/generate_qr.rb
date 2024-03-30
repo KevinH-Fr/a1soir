@@ -15,7 +15,7 @@ class GenerateQr < ApplicationService
             action: "show",
             id: model.id,
             only_path: false,
-            host: 'localhost:3000', #'a1soir.herokuapp.com',
+            host: ['localhost:3000', 'a1soir-2-2a03802389d6.herokuapp.com'], #'a1soir.herokuapp.com',
             source: 'from_qr')
 
     qrcode = RQRCode::QRCode.new(qr_url)
