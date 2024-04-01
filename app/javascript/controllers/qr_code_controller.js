@@ -15,35 +15,30 @@ export default class extends Controller {
   }
 
   populateSources() {
-    navigator.mediaDevices.enumerateDevices()
-      .then(devices => {
-        const videoInputDevices = devices.filter(device => device.kind === 'videoinput');
+    this.codeReader.getVideoInputDevices()
+      .then((videoInputDevices) => {
         if (videoInputDevices.length >= 1) {
           this.selectedDeviceId = videoInputDevices[0].deviceId;
-  
+
           videoInputDevices.forEach((element) => {
             const sourceOption = document.createElement('option');
-            sourceOption.text = element.label || `Camera ${element.deviceId}`;
+            sourceOption.text = element.label;
             sourceOption.value = element.deviceId;
             this.sourceSelect.appendChild(sourceOption);
           });
-  
+
           this.sourceSelect.onchange = () => {
             this.selectedDeviceId = this.sourceSelect.value;
           };
-  
+
           const sourceSelectPanel = this.element.querySelector('#sourceSelectPanel');
           sourceSelectPanel.style.display = 'inline';
-        } else {
-          console.error('No video input devices found.');
         }
       })
       .catch((err) => {
-        console.error('Error enumerating devices:', err);
-      }
-    );
+        console.error(err);
+      });
   }
-
 
   startScan() {
 
