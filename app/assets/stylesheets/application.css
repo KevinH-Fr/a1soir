@@ -47,6 +47,9 @@
    background-color: var(--light-beige-color);
 }
 
+.lighter-beige-colored {
+  background-color: #f4f4f4; 
+}
 
 .card-connexion{
    width: 90%;

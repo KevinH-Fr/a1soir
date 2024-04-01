@@ -6,20 +6,20 @@
       <div data-turbo="false" class="col-10">
         <%= link_to commande_path(commande), class: "text-decoration-none text-dark" do %>
 
-          <%= custom_badge("", "", "primary", commande.ref_commande) %>
-          <%= custom_badge("", "", "secondary", commande.client.full_name) %>
-          <%= custom_badge("", "", "secondary", commande.full_name) %>
-          <%= custom_badge("", "", "secondary", commande.type_locvente) if commande.type_locvente %>
-          <%= custom_badge("fa-calendar", "", "secondary", commande.full_event) %>
+          <%#= custom_badge("", "", "", commande.ref_commande) %>
+          <%= custom_badge("", "", "", "fw-bold", commande.full_name) %>
+          <%= custom_badge("", "", "", "", commande.client.full_name) %>
+          <%= custom_badge("", "", "", "", commande.type_locvente) if commande.type_locvente %>
+          <%= custom_badge("fa-calendar", "", "", "", commande.full_event) %>
 
-          <%= custom_badge("", "", "secondary", commande.profile&.nom) %>
+          <%= custom_badge("", "", "", "", commande.profile&.nom) %>
 
         <%= link_to "", "#collapseCommande#{dom_id(commande)}", 
-          class: "btn btn-sm btn-primary fa fa-eye m-1", "data-bs-toggle": "collapse", 
+          class: "btn btn-sm btn-outline-primary fa fa-eye m-1", "data-bs-toggle": "collapse", 
           role: "button", "aria-expanded": "false", "aria-controls": "collapseCommande#{dom_id(commande)}" %>
   
 
-          <div class="m-1">
+          <div class="my-2">
             <%= render partial: 'commandes/toggles_statut', locals: { commande: commande } %>
           </div>
 

@@ -2,7 +2,7 @@
 
     <div class="card-header bg-dark text-light py-2 fw-bold text-center fs-5">
         <i class="fa fa-xl brand-colored fa-gear me-2"></i>
-        Fonctions supplémenatires
+        Fonctions supplémentaires
     </div>
 
     <div class= "card-body p-2 light-beige-colored text-center">
@@ -17,7 +17,6 @@
         <%= options_supplementaires_link(ensembles_path, "fa-cubes", "Gestion des Ensembles", "btn-outline-primary") %>
         <%= options_supplementaires_link(categorie_produits_path, "fa-layer-group", "Cat. produits", "btn-outline-dark") %>
         <%= options_supplementaires_link(type_produits_path, "fa-list-ul", "Type. produits", "btn-outline-primary") %>
-
         <%= options_supplementaires_link(couleurs_path, "fa-palette", "Couleurs", "btn-outline-dark") %>
         <%= options_supplementaires_link(tailles_path, "fa-ruler", "Tailles", "btn-outline-secondary") %>
         <%= options_supplementaires_link(admin_parameters_path, "fa-screwdriver-wrench", "Parametres", "btn-outline-warning") %>
@@ -43,11 +42,3 @@
 
 </div>
 
-<% if user_signed_in? %>
-    <div class="container-fluid mt-4 d-flex justify-content-end">
-        <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-sm btn-danger d-flex align-items-center" do %>
-            <i class="fa-solid fa-right-from-bracket me-1"></i>
-            <span class="fw-bold"><%= current_user.role %> </span>
-        <% end %>
-    </div>
-<% end %>

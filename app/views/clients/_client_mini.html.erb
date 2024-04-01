@@ -7,11 +7,11 @@
   <div class="row">
     <div class="col-10">
 
-        <%= custom_badge("", "", "primary", client.full_name) %>
-        <%= custom_badge("fa-phone", "", "secondary", client.tel) %>
-        <%= custom_badge("fa-at", "", "secondary", client.mail) %>
+        <%= custom_badge("", "", "", "fw-bold",  client.full_name) %>
+        <%= custom_badge("fa-phone", "", "", "", client.tel) %>
+        <%= custom_badge("fa-at", "", "", "", client.mail) %>
         
-        <%= link_to "", "#collapseClient", class: "btn btn-sm btn-primary fa fa-eye", "data-bs-toggle": "collapse", role: "button", "aria-expanded": "false", "aria-controls": "collapseExample" %>
+        <%= link_to "", "#collapseClient", class: "btn btn-sm btn-outline-primary fa fa-eye", "data-bs-toggle": "collapse", role: "button", "aria-expanded": "false", "aria-controls": "collapseExample" %>
     </div>
     
     <div class="col-2 text-end">

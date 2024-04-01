@@ -10,8 +10,8 @@ module ApplicationHelper
       number_to_currency(amount, precision: 0, unit: "€", format: "%n %u", delimiter: " ")
   end
 
-    def custom_badge(icon_class, text, color, value)
-        content_tag(:div, class: "badge bg-#{color} m-1 fs-6") do
+    def custom_badge(icon_class, text, color, bold, value)
+        content_tag(:div, class: "badge lighter-beige-colored fw-normal #{bold} bg-#{color} m-1 fs-6 shadow-sm text-dark") do
           if icon_class.present?
             concat content_tag(:i, '', class: "fa #{icon_class} me-1")
           end

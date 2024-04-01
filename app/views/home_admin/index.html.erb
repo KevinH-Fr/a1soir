@@ -28,5 +28,15 @@
     </div>
   </div>
 
+
+  <% if user_signed_in? %>
+      <div class="container-fluid mt-4 d-flex justify-content-end">
+          <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-sm btn-danger d-flex align-items-center" do %>
+              <i class="fa-solid fa-right-from-bracket me-1"></i>
+              <span class="fw-bold"><%= current_user.role %> </span>
+          <% end %>
+      </div>
+  <% end %>
+
 </div>
 
