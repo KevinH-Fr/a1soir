@@ -15,30 +15,39 @@ export default class extends Controller {
   }
 
   populateSources() {
-    this.codeReader.getVideoInputDevices()
-      .then((videoInputDevices) => {
-        if (videoInputDevices.length >= 1) {
-          this.selectedDeviceId = videoInputDevices[0].deviceId;
+    // Check if the browser supports mediaDevices API
+    if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+        navigator.mediaDevices.enumerateDevices()
+            .then((devices) => {
+                const videoInputDevices = devices.filter(device => device.kind === 'videoinput');
 
-          videoInputDevices.forEach((element) => {
-            const sourceOption = document.createElement('option');
-            sourceOption.text = element.label;
-            sourceOption.value = element.deviceId;
-            this.sourceSelect.appendChild(sourceOption);
-          });
+                if (videoInputDevices.length >= 1) {
+                    this.selectedDeviceId = videoInputDevices[0].deviceId;
 
-          this.sourceSelect.onchange = () => {
-            this.selectedDeviceId = this.sourceSelect.value;
-          };
+                    videoInputDevices.forEach((element) => {
+                        const sourceOption = document.createElement('option');
+                        sourceOption.text = element.label || `Camera ${this.sourceSelect.length + 1}`;
+                        sourceOption.value = element.deviceId;
+                        this.sourceSelect.appendChild(sourceOption);
+                    });
 
-          const sourceSelectPanel = this.element.querySelector('#sourceSelectPanel');
-          sourceSelectPanel.style.display = 'inline';
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+                    this.sourceSelect.onchange = () => {
+                        this.selectedDeviceId = this.sourceSelect.value;
+                    };
+
+                    const sourceSelectPanel = this.element.querySelector('#sourceSelectPanel');
+                    sourceSelectPanel.style.display = 'inline';
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    } else {
+        console.error('enumerateDevices() not supported on this browser.');
+    }
   }
+
+
 
   startScan() {
 
