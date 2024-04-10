@@ -46,9 +46,12 @@
                   <div class="td-etiquette middled centered">  
                   Couleur(s) : 
                   <% if produit.couleur.present? %>
-                    <span class="badge border border-3 border-dark text-dark"> 
+                    <span class="badge text-dark px-2" style="border: 2px solid black; border-radius: 10px; display: flex; "> 
                       <%= produit.couleur&.nom %>
-                      <%= color_icon(produit.couleur) if produit.couleur %>
+
+                      <div style="width: 20px; height: 20px; border-radius: 50%; background-color: 
+                        <%= produit.couleur.couleur_code %>"> </div>
+
                     </span>
 
                     <% same_produit_same_taille_others_couleurs(produit).each do |produit| %>
