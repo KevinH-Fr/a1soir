@@ -32,10 +32,14 @@
                   <div class="td-etiquette middled centered">  
                     Taille(s) : 
                     <% if produit.taille.present? %>
-                      <span class="badge border border-3 border-dark text-dark"> <%= produit.taille&.nom %></span>
+                      <span class="text-dark p-1" style="border: 2px solid black; border-radius: 10px;"> 
+                        <%= produit.taille&.nom %>
+                      </span>
+
+                    <br>
 
                       <% same_produit_same_couleur_others_tailles(produit).each do |produit| %>
-                        <span class="badge border border-secondary text-secondary"> 
+                        <span class="my-2"> 
                           <%= produit.taille.nom if produit.taille&.nom %>
                         </span>
                       <% end %>
@@ -43,21 +47,24 @@
                     <% end %>
                   </div>
 
-                  <div class="td-etiquette middled centered">  
+
+                  <div class="td-etiquette middled centered text-center">  
                   Couleur(s) : 
                   <% if produit.couleur.present? %>
-                    <span class="badge text-dark px-2" style="border: 2px solid black; border-radius: 10px; display: flex; "> 
-                      <%= produit.couleur&.nom %>
 
-                      <div style="width: 20px; height: 20px; border-radius: 50%; background-color: 
-                        <%= produit.couleur.couleur_code %>"> </div>
-
+                    <span class="text-dark p-1" style="border: 2px solid black; border-radius: 10px;"> 
+                      <span> <%= produit.couleur&.nom %> </span> 
+                      <div class="" style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: <%= produit.couleur.couleur_code %>"></div>
                     </span>
 
+                    <br>
+
+
                     <% same_produit_same_taille_others_couleurs(produit).each do |produit| %>
-                      <span class="badge border border-secondary text-secondary"> 
-                        <%= produit.couleur&.nom %>
-                        <%= color_icon(produit.couleur) if produit.couleur %>
+                      
+                      <span class="text-dark p-1" style=""> 
+                        <span> <%= produit.couleur&.nom %> </span> 
+                        <div class="" style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: <%= produit.couleur.couleur_code %>"></div>
                       </span>
                     <% end %>
                     
