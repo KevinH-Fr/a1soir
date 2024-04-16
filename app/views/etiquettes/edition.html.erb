@@ -54,14 +54,14 @@
 
                     <span class="text-dark p-1" style="border: 2px solid black; border-radius: 10px;"> 
                       <span> <%= produit.couleur&.nom %> </span> 
-                      <div class="" style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: <%= produit.couleur.couleur_code %>"></div>
+                      <div class="" style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; margin-right: 10px; background-color: <%= produit.couleur.couleur_code %>"></div>
                     </span>
 
                     <hr>
 
                     <% same_produit_same_taille_others_couleurs(produit).each do |produit| %>
                       
-                      <span class="text-secondary p-1" style="color: grey; border: 2px solid grey; border-radius: 10px;"> 
+                      <span class="text-secondary p-1 m-1" style="color: grey; border: 2px solid grey; border-radius: 10px;"> 
                         <span> <%= produit.couleur&.nom %> </span> 
                         <div class="" style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: <%= produit.couleur.couleur_code %>"></div>
                       </span>
