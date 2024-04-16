@@ -78,53 +78,59 @@
       })
     }
 
-    window.addEventListener('load', function () {
-      let selectedDeviceId;
-      const codeReader = new ZXing.BrowserQRCodeReader()
-      console.log('ZXing code reader initialized')
+  window.addEventListener('load', function () {
+    let selectedDeviceId;
+    const codeReader = new ZXing.BrowserQRCodeReader();
+    console.log('ZXing code reader initialized');
 
-      codeReader.getVideoInputDevices()
-        .then((videoInputDevices) => {
-          const sourceSelect = document.getElementById('sourceSelect')
-          selectedDeviceId = videoInputDevices[0].deviceId
-          if (videoInputDevices.length >= 1) {
-            videoInputDevices.forEach((element) => {
-              const sourceOption = document.createElement('option')
-              sourceOption.text = element.label
-              sourceOption.value = element.deviceId
-              sourceSelect.appendChild(sourceOption)
-            })
+    const startButton = document.getElementById('startButton');
 
-            sourceSelect.onchange = () => {
-              selectedDeviceId = sourceSelect.value;
-            };
+    // Request permission to access the camera when the start button is clicked
+    startButton.addEventListener('click', async () => {
+      try {
+        // Request permission to use video input (camera)
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const videoInputDevices = await codeReader.getVideoInputDevices();
 
-            const sourceSelectPanel = document.getElementById('sourceSelectPanel')
-            sourceSelectPanel.style.display = 'block'
-          }
+        const sourceSelect = document.getElementById('sourceSelect');
+        sourceSelect.innerHTML = ''; // Clear previous options
 
-          document.getElementById('startButton').addEventListener('click', () => {
+        videoInputDevices.forEach((device) => {
+          const sourceOption = document.createElement('option');
+          sourceOption.text = device.label;
+          sourceOption.value = device.deviceId;
+          sourceSelect.appendChild(sourceOption);
+        });
 
-            const decodingStyle = document.getElementById('decoding-style').value;
+        sourceSelect.onchange = () => {
+          selectedDeviceId = sourceSelect.value;
+        };
 
-            if (decodingStyle == "once") {
-              decodeOnce(codeReader, selectedDeviceId);
-            } else {
-              decodeContinuously(codeReader, selectedDeviceId);
-            }
+        const sourceSelectPanel = document.getElementById('sourceSelectPanel');
+        sourceSelectPanel.style.display = 'block';
 
-            console.log(`Started decode from camera with id ${selectedDeviceId}`)
-          })
+        selectedDeviceId = videoInputDevices[0].deviceId; // Default to the first device
 
-          document.getElementById('resetButton').addEventListener('click', () => {
-            codeReader.reset()
-            document.getElementById('result').textContent = '';
-            console.log('Reset.')
-          })
+        const decodingStyle = document.getElementById('decoding-style').value;
 
-        })
-        .catch((err) => {
-          console.error(err)
-        })
-    })
-  </script>
+        if (decodingStyle == "once") {
+          decodeOnce(codeReader, selectedDeviceId);
+        } else {
+          decodeContinuously(codeReader, selectedDeviceId);
+        }
+
+        console.log(`Started decode from camera with id ${selectedDeviceId}`);
+      } catch (error) {
+        console.error('Error accessing camera:', error);
+        // Handle error (e.g., show error message to user)
+      }
+    });
+
+    document.getElementById('resetButton').addEventListener('click', () => {
+      codeReader.reset();
+      document.getElementById('result').textContent = '';
+      console.log('Reset.');
+    });
+  });
+
+</script>
