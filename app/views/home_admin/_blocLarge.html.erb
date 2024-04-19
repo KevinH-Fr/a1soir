@@ -23,7 +23,7 @@
 
         <%# faire des regrouepents avc des menus deroulants par cat : ex parametre %>
 
-        <button class="btn btn-primary fa fa-bounce" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+        <!--button class="btn btn-primary fa fa-bounce" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
             <i class="fa fa-qrcode me-1"></i>
             <span class="d-none d-md-inline">scan</span>
         </button>
@@ -34,10 +34,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-                <%= render 'home_admin/selection_qr' %>
+                <%#= render 'home_admin/selection_qr' %>
                 <%#= render 'home_admin/selection_qr_test' %>
             </div>
-        </div>
+        </div-->
+
+        <%= link_to home_admin_scan_qr_path, class: "btn btn-primary fa fa-bounce" do %>
+            <i class="fa fa-qrcode me-1"></i>
+            <span class="d-none d-md-inline">scan</span>
+        <% end %>
+        
 
     </div>
 

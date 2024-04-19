@@ -10,6 +10,9 @@ class HomeAdminController < ApplicationController
 
   end
 
+  def selection_qr
+  end
+
 
 
 end

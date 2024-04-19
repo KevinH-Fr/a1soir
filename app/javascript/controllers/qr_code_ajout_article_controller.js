@@ -13,32 +13,47 @@ export default class extends Controller {
     this.populateSources();
 
   }
-
+  
   populateSources() {
-    this.codeReader.getVideoInputDevices()
-      .then((videoInputDevices) => {
-        if (videoInputDevices.length >= 1) {
-          this.selectedDeviceId = videoInputDevices[0].deviceId;
+    // Check if the browser supports mediaDevices API and getUserMedia
+    if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices && navigator.mediaDevices.getUserMedia) {
+        // Request permission to use video inputs (camera)
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(() => {
+                // If permission is granted, enumerate video input devices
+                navigator.mediaDevices.enumerateDevices()
+                    .then((devices) => {
+                        const videoInputDevices = devices.filter(device => device.kind === 'videoinput');
 
-          videoInputDevices.forEach((element) => {
-            const sourceOption = document.createElement('option');
-            sourceOption.text = element.label;
-            sourceOption.value = element.deviceId;
-            this.sourceSelect.appendChild(sourceOption);
-          });
+                        if (videoInputDevices.length >= 1) {
+                            this.selectedDeviceId = videoInputDevices[0].deviceId;
 
-          this.sourceSelect.onchange = () => {
-            this.selectedDeviceId = this.sourceSelect.value;
-          };
+                            videoInputDevices.forEach((element) => {
+                                const sourceOption = document.createElement('option');
+                                sourceOption.text = element.label || `Camera ${this.sourceSelect.length + 1}`;
+                                sourceOption.value = element.deviceId;
+                                this.sourceSelect.appendChild(sourceOption);
+                            });
 
-          const sourceSelectPanel = this.element.querySelector('#sourceSelectPanel');
-          sourceSelectPanel.style.display = 'inline';
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
+                            this.sourceSelect.onchange = () => {
+                                this.selectedDeviceId = this.sourceSelect.value;
+                            };
+
+                            const sourceSelectPanel = this.element.querySelector('#sourceSelectPanel');
+                            sourceSelectPanel.style.display = 'inline';
+                        }
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+            })
+            .catch((err) => {
+                console.error('Permission to access camera denied:', err);
+            });
+    } else {
+        console.error('getUserMedia or enumerateDevices() not supported on this browser.');
+    }
+}
 
   startScan() {
 

@@ -166,6 +166,7 @@ Rails.application.routes.draw do
 
 
   get "home_admin", to: "home_admin#index"
+  get "home_admin_scan_qr", to: "home_admin#selection_qr"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
