@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_30_121234) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_22_140859) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -251,6 +251,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_30_121234) do
     t.integer "couleur_id"
     t.integer "taille_id"
     t.integer "type_produit_id"
+    t.boolean "actif", default: true
     t.index ["categorie_produit_id"], name: "index_produits_on_categorie_produit_id"
     t.index ["couleur_id"], name: "index_produits_on_couleur_id"
     t.index ["fournisseur_id"], name: "index_produits_on_fournisseur_id"

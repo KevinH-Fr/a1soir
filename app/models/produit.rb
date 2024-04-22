@@ -9,8 +9,8 @@ class Produit < ApplicationRecord
 
   validates :nom, presence: true
 
-  has_many :articles
-  has_many :sousarticles
+  has_many :articles, dependent: :destroy
+  has_many :sousarticles, dependent: :destroy
 
   has_many :ensembles
 
@@ -27,6 +27,7 @@ class Produit < ApplicationRecord
   scope :is_ensemble, -> { joins(:type_produit).where(type_produits: { nom: 'ensemble' }) }
   scope :is_service, -> { joins(:categorie_produit).where(categorie_produits: { service: true }) }
   scope :not_service, -> { joins(:categorie_produit).where(categorie_produits: { service: [false, nil] }) }
+  scope :actif, -> { where(actif: true) } 
 
   def full_name
     nom
@@ -55,6 +56,8 @@ class Produit < ApplicationRecord
   def self.ransackable_associations(auth_object = nil)
     ["articles", "categorie_produit", "couleur", "ensembles", "fournisseur", "taille", "type_produit"]
   end
+
+
 
   private
 

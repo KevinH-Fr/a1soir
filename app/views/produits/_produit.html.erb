@@ -27,6 +27,8 @@
             <%= badge_couleur_produit(produit) %> 
             <%= badge_taille_produit(produit) %> 
             <p class="m-1 mt-3"><%= badge_disponibilite(produit, Time.now.to_date) %> </p> 
+            <%= is_archived(produit) %> 
+
         </div>
           <div class="mt-auto">
 

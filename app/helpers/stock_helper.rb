@@ -58,7 +58,9 @@ module StockHelper
   
 
   def est_disponible(produits, date = Date.today)
-    produits_restants(produits, date) > 0 || Produit.where(id: produits).is_service.exists?
+    unless is_archived(produits)
+      produits_restants(produits, date) > 0 || Produit.where(id: produits).is_service.exists?
+    end
   end
   
 

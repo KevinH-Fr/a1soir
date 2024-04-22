@@ -132,14 +132,28 @@ class ProduitsController < ApplicationController
   end
 
   def destroy
-    @produit.destroy!
+    @produit.destroy
 
-    respond_to do |format|
-      format.html { redirect_to produits_url, notice:  I18n.t('notices.successfully_destroyed')}
-      format.json { head :no_content }
+    if @produit.destroy
+      respond_to do |format|
+
+        
+        flash.now[:success] =  I18n.t('notices.successfully_destroyed')
+
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.remove(@produit),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+          ]
+        end
+
+        format.html { redirect_to produits_path, notice: I18n.t('notices.successfully_destroyed') }
+      end
     end
-  end
 
+  end
+  
   def dupliquer
     @produit = Produit.find(params[:id])
   
@@ -186,7 +200,7 @@ class ProduitsController < ApplicationController
 
     def produit_params
       params.require(:produit).permit(:nom, :prixvente, :prixlocation, :description, :categorie_produit_id, :type_produit_id,
-        :caution, :handle, :reffrs, :quantite, :fournisseur_id, :dateachat, :prixachat, 
+        :caution, :handle, :reffrs, :quantite, :fournisseur_id, :dateachat, :prixachat, :actif,
         :image1, :couleur_id, :taille_id, images: [] )
     end
 

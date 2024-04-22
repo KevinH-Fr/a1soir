@@ -42,5 +42,15 @@ module ProduitsHelper
         end
     end
 
+    def is_archived(produit)
+        unless produit.actif 
+            content_tag(:span, class: "badge fs-6 border border-secondary text-secondary m-1") do
+                concat content_tag(:i, nil, class: "fas fa-box-archive me-1")
+                concat content_tag(:span, "archivé", class: "ms-1" )
+            end
+        end
+    end
+    
+
 end
  
