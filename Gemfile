@@ -15,6 +15,7 @@ gem "image_processing", "~> 1.2"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mswin mswin64 mingw x64_mingw ]
+  gem 'rspec-rails', '~> 6.1.0'
 end
 
 group :development do
@@ -26,6 +27,7 @@ end
 group :test do
   gem "capybara"
   gem "selenium-webdriver"
+  
 end
 
 group :production do
