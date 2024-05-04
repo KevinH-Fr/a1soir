@@ -8,7 +8,10 @@ RSpec.describe 'User' do
             user = User.create role: nil
             expect(user.role).to eq "user"
         end
+    
+    end
 
+    describe '#change_default_role' do
 
         it "keeps admin if admin is setted" do
             user = User.create role: 'admin'
