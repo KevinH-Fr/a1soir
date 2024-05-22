@@ -21,11 +21,10 @@ class Commande < ApplicationRecord
   # filtres analyses
   scope :filtredatedebut, -> (debut) { where("created_at >= ?", debut) }
   scope :filtredatefin, -> (fin) { where("created_at <= ?", fin) }
-  
+
 
   EVENEMENTS_OPTIONS = ['mariage', 'soirée', 'divers']
 
-  
   def full_name
     "#{ref_commande} #{created_at.strftime("%d/%m/%Y")}"
   end
