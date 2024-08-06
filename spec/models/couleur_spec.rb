@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Couleur' do           
 
     describe 'callbacks' do
-        it 'downcases nom before validation' do
+        it 'downcases nom beafore validation' do
             couleur = Couleur.new(nom: 'TestName')
             couleur.valid? # Triggers validation callbacks
             expect(couleur.nom).to eq('testname')
