@@ -50,12 +50,13 @@
       <%= custom_form_elements(form, 
         [:description, :text_area], 
         [:debutloc, :date_field], [:finloc, :date_field], [:dateevent, :date_field],
-        [:statutarticles, :text_field], 
         [:commentaires, :text_area], [:devis, :check_box]
       ) %>
 
 
-
+          <div class="my-2">
+            <%= render partial: 'commandes/toggles_statut', locals: { commande: commande } %>
+          </div>
 
       <div class="container-fluid d-flex">
         <div class="form-check mx-2">

@@ -46,12 +46,14 @@ class SelectionProduitController < ApplicationController
       format.turbo_stream do
         render turbo_stream: turbo_stream.update(
           'partial-container', partial: 'selection_produit/selection_manuelle'
+
         )
       end
     end
   end
 
   def display_categorie_selected
+
 
     if params[:categorie_produit] == "all"
       type_mono_multi = "multi"
@@ -106,7 +108,6 @@ class SelectionProduitController < ApplicationController
   def display_couleur_selected
 
     @commande = Commande.find(session[:commande])
-    puts "___________________commande : #{@commande.id}"
 
     if params[:categorie_produit] == "all"
       @categorie_produits = CategorieProduit.pluck(:id)
@@ -128,8 +129,11 @@ class SelectionProduitController < ApplicationController
       selected_couleur_ids = Couleur.where(id: params[:couleur]).pluck(:id)
       @couleurs = selected_couleur_ids
     end
-        
-    @produits = Produit.where(couleur: @couleurs, taille: @tailles, categorie_produit: @categorie_produits)
+      
+    @produits = Produit.where(categorie_produit: [@categorie_produits, nil])
+                       .where(taille: [@tailles, nil])
+                       .where(couleur: [@couleurs, nil])
+
     
     respond_to do |format|
       format.turbo_stream do

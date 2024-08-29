@@ -1,4 +1,5 @@
 <div class="container-fluid p-2">
+
     <% if @produits.any? %>
         <% @produits.each do |produit| %>
             <% if est_disponible(produit, @commande&.date_retenue.to_date ) %>
