@@ -14,7 +14,7 @@
           </thead>
           <tbody>
 
-            <%  @commande.avoir_rembs.each_with_index do | avoirremb, i | %>
+            <% @doc_edition.commande.avoir_rembs.each_with_index do | avoirremb, i | %>
               <tr>
                 <td class="td-doc centered"> <%= i + 1 %> </td>
                 <td class="td-doc centered"> <%= avoirremb.type_avoir_remb %> </td>
