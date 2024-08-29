@@ -53,11 +53,6 @@
         [:commentaires, :text_area], [:devis, :check_box]
       ) %>
 
-
-          <div class="my-2">
-            <%= render partial: 'commandes/toggles_statut', locals: { commande: commande } %>
-          </div>
-
       <div class="container-fluid d-flex">
         <div class="form-check mx-2">
           <%= form.radio_button :type_locvente, "location", class: "form-check-input", id: "flexRadioDefault1", autocomplete: "off" %>

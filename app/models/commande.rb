@@ -19,9 +19,9 @@ class Commande < ApplicationRecord
 
 
   # filtres analyses
-  scope :filtredatedebut, -> (debut) { where("created_at >= ?", debut) }
-  scope :filtredatefin, -> (fin) { where("created_at <= ?", fin) }
-
+  scope :filtredatedebut, -> (debut) { where("created_at >= ?", debut.beginning_of_day) }
+  scope :filtredatefin, -> (fin) { where("created_at <= ?", fin.end_of_day) }
+  
 
   EVENEMENTS_OPTIONS = ['mariage', 'soirée', 'divers']
 
