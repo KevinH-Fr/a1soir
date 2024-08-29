@@ -6,7 +6,10 @@ class ProduitsController < ApplicationController
   def index
 
     search_params = params.permit(:format, :page, 
-       q:[:nom_or_prixvente_or_prixlocation_or_reffrs_or_handle_or_categorie_produit_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont])
+       q:[:nom_or_reffrs_or_handle_or_categorie_produit_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont])
+       # without integer to prevent error on pg search, if needed add custom function to be able to search also on price
+       # or_prixvente_or_prixlocation 
+       
     @q = Produit.ransack(search_params[:q])
     produits = @q.result(distinct: true).order(created_at: :desc)
     @pagy, @produits = pagy_countless(produits, items: 2)
