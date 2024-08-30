@@ -15,6 +15,7 @@ class FournisseursController < ApplicationController
   end
 
   def show
+    @produits = @fournisseur.produits
   end
 
   def new

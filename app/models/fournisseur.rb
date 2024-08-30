@@ -1,6 +1,8 @@
 class Fournisseur < ApplicationRecord
     validates :nom, presence: true
 
+    has_many :produits
+    
     def self.ransackable_attributes(auth_object = nil)
         ["contact", "created_at", "id", "id_value", "mail", "nom", "notes", "site", "tel", "updated_at"]
     end
