@@ -16,6 +16,8 @@ class DocEditionsController < ApplicationController
     part_2 = @commande.typeevent? ? " pour votre #{@commande.typeevent}" : ""
     part_3 = @commande.dateevent? ? " prévu(e) le #{@commande.dateevent}" : ""
 
+
+
     @message ="#{part_1}#{part_2}#{part_3}"
     
   end

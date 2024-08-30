@@ -87,6 +87,22 @@ class MeetingsController < ApplicationController
     
     respond_to do |format|
       if @meeting.save
+
+          flash.now[:success] =  I18n.t('notices.successfully_created')
+          
+          format.turbo_stream do
+            render turbo_stream: [
+              turbo_stream.update('new',
+                partial: "meetings/form",
+                                locals: { meeting: Meeting.new }),
+                                
+                                turbo_stream.prepend('meetings',
+                                  partial: "meetings/meeting",
+                                  locals: { meeting: @meeting }),
+                                  turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+                                ]
+          end
+        
         format.html { redirect_to meeting_url(@meeting), notice: I18n.t('notices.successfully_created') }
         format.json { render :show, status: :created, location: @meeting }
       else
@@ -100,6 +116,16 @@ class MeetingsController < ApplicationController
   def update
     respond_to do |format|
       if @meeting.update(meeting_params)
+
+        flash.now[:success] =  I18n.t('notices.successfully_updated')
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update(@meeting, partial: "meetings/meeting", locals: {meeting: @meeting}),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+          ]
+        end
+
         format.html { redirect_to meeting_url(@meeting), notice: I18n.t('notices.successfully_updated') }
         format.json { render :show, status: :ok, location: @meeting }
       else
