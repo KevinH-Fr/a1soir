@@ -58,9 +58,9 @@
           options_for_select(Commande.all.order(:nom).pluck(:nom, :id)),
           { include_blank: 'Select' },  { class: "form-select" } %>
 
-        <%= form.label :commande_id, class: "input-group-text" %>
-        <%= form.select :commande_id, 
-          options_for_select(Commande.all.order(:nom).pluck(:nom, :id)),
+        <%= form.label :client_id, class: "input-group-text" %>
+        <%= form.select :client_id, 
+          options_for_select(Client.all.order(:nom).pluck(:nom, :id)),
           { include_blank: 'Select' },  { class: "form-select" } %>
 
       </div>

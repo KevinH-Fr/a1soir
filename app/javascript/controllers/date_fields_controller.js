@@ -11,14 +11,26 @@ export default class extends Controller {
   updateDateFin() {
     const datedebutValue = new Date(this.datedebutTarget.value);
     const dureeRdvValue = parseInt(this.dureerdvTarget.value); // Convert value to integer
-
+  
+    console.log(datedebutValue);
+    console.log(dureeRdvValue);
+  
     if (!isNaN(datedebutValue.getTime()) && !isNaN(dureeRdvValue)) {
       // Add duration in minutes to the datedebut
-      const datefinValue = new Date(datedebutValue.getTime() + ( dureeRdvValue * 120000 )); // Add minutes in milliseconds
-      // Format datefin as "YYYY-MM-DDTHH:MM"
-      const datefinFormatted = datefinValue.toISOString().slice(0, 16);
+      const datefinValue = new Date(datedebutValue.getTime() + (dureeRdvValue * 60000)); // Add minutes in milliseconds
+  
+      // Manually format datefin as "YYYY-MM-DDTHH:MM" in the local time zone
+      const year = datefinValue.getFullYear();
+      const month = String(datefinValue.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+      const day = String(datefinValue.getDate()).padStart(2, '0');
+      const hours = String(datefinValue.getHours()).padStart(2, '0');
+      const minutes = String(datefinValue.getMinutes()).padStart(2, '0');
+  
+      const datefinFormatted = `${year}-${month}-${day}T${hours}:${minutes}`;
+      
       // Set the value of datefin field
       this.datefinTarget.value = datefinFormatted;
     }
   }
+    
 }

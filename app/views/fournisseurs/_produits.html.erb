@@ -6,8 +6,16 @@
     </div>
 
     <div class="card-body">
-        nb produits: <%= @produits.count %> <br>
+        nb ref produits: <%= @produits.count %> <br>
         total achat HT: <%= @produits.sum(:prixachat) %> <br>
+
+        <hr>
+
+        Total produits : <span class="fw-bold"> <%= total_produits(@produits) %> </span> <br>
+        Total loués : <span class="fw-bold"> <%= total_loues(@produits) %> </span> <br>
+        Total vendus : <span class="fw-bold"> <%= total_vendus(@produits) %> </span> <br>
+        Restant : <span class="fw-bold"> <%= produits_restants(@produits, Time.now.to_date) %> </span> <br>
+    
     </div>
 </div>
 

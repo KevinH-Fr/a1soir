@@ -33,7 +33,7 @@
           <div class="mt-auto">
 
 
-          <% if controller_name = "produits"  && action_name == "show" %>            
+          <% if controller_name == "produits"  && action_name == "show" %>            
             <%= link_to "", dupliquer_produit_path(produitbase: produit.id),
                   class: "fa-solid fa-copy btn btn-sm btn-dark",
                   :onclick => "return confirm('Etes-vous certain de vouloir dupliquer ce produit ?')",
