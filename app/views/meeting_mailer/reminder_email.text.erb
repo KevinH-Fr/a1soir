@@ -1,3 +1,15 @@
-Meeting#reminder_email
+  <body>
+    <h1>Rappel de RDV</h1>
+    <p> <%= @recipient.intitule %> <%= @recipient.full_name %>,</p>
+    <p>Ce message est un rappel de votre RDV prévu le <%= @meeting.datedebut.strftime('%d/%m/%Y à %H:%M') %>.</p>
 
-<%= @greeting %>, find me in app/views/meeting_mailer/reminder_email.text.erb
+    <% if @meeting.lieu %>
+      lieu du RDV: <%= @meeting.lieu %>
+    <% end %>
+
+    <p>Nous restons à votre écoute</p>
+    adresse 
+    site web 
+    tel 
+
+  </body>

@@ -55,3 +55,6 @@ gem 'cloudinary'
 gem 'dotenv', groups: [:development, :test]
 
 gem 'pagy'
+
+
+gem 'whenever', require: false

@@ -1,13 +1,20 @@
 class MeetingMailer < ApplicationMailer
 
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
-  #
-  #   en.meeting_mailer.reminder_email.subject
-  #
-  def reminder_email
-    @greeting = "Hi"
+  def reminder_email(meeting)
+    @meeting = meeting
 
-    mail to: "to@example.org"
+
+      # Determine the recipient based on association
+      @recipient = if meeting.commande.present?
+      meeting.commande.client
+    else
+      meeting.client 
+    end
+
+    puts "__________recipient email: #{@recipient.mail}___________________"
+
+    # You can customize the subject and email body as needed
+    mail(to: @recipient.mail, subject: "Rappel RDV à venir#{meeting.datedebut.strftime('%H:%M')}")
   end
+
 end

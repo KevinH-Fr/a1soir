@@ -122,11 +122,14 @@ class DocEditionsController < ApplicationController
     respond_to do |format|
       flash.now[:success] = "Email was successfully created"
 
-      format.turbo_stream do
-        render turbo_stream: [
-          turbo_stream.prepend('flash', partial: 'layouts/notice', locals: { flash: flash })
-        ]
-      end
+      # format.turbo_stream do
+      #   render turbo_stream: [
+      #     turbo_stream.prepend('flash', partial: 'layouts/notice', locals: { flash: flash })
+      #   ]
+      # end
+
+      format.html { redirect_to commande_path(@doc_edition.commande), notice: "email was successfully sended." }
+
     end
   end
 

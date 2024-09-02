@@ -5,7 +5,7 @@ class CommandeMailer < ApplicationMailer
   
       next_meeting =
         if doc_edition.commande.meetings.where('datedebut > ?', DateTime.now).exists?
-          "\nProchain RDV:\n#{doc_edition.commande.meetings.first.start_time.strftime('%d/%m/%y à %H:%M')}"
+          "\nProchain RDV: #{doc_edition.commande.meetings.first.start_time.strftime('%d/%m/%y à %H:%M')}"
         else
           ""
         end
@@ -14,7 +14,7 @@ class CommandeMailer < ApplicationMailer
       footer = <<~FOOTER
         Autour d'un soir - Cannes
         04 93 00 00 00
-        https://example.com
+        https://a1soir.com
       FOOTER
   
       @message_full += next_meeting
