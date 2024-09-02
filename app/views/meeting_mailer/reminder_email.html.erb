@@ -1,4 +1,3 @@
-<!-- app/views/commande_mailer/reminder_email.html.erb -->
 <!DOCTYPE html>
 <html>
   <body>
@@ -10,10 +9,7 @@
       lieu du RDV: <%= @meeting.lieu %>
     <% end %>
 
-    <p>Nous restons à votre écoute</p>
-    adresse 
-    site web 
-    tel 
+   <%= render 'layouts/mailer/footer' %>
 
   </body>
 </html>

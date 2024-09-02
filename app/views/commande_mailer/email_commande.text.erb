@@ -1,0 +1,13 @@
+  <body>
+    <h1>Commande email</h1>
+
+    <p> <%= @doc_edition.message %>,</p>
+
+
+        <% if @doc_edition.commande.meetings.where('datedebut > ?', DateTime.now).exists? %>
+            <p>  Prochain RDV: <%= @doc_edition.commande.meetings.first.start_time.strftime('%d/%m/%y à %H:%M') %> </p>
+        <% end %>
+        
+   <%= render 'layouts/mailer/footer' %>
+
+  </body>
