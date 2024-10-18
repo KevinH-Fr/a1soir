@@ -1,122 +1,117 @@
-<div class="container-edition">
 
-  <% @produits = [@produit1, @produit2, @produit3, @produit4] %>
+<div class="container-edition mx-auto">
 
-  <% @produits.each do |produit| %>
-    <div style="display: inline-block;">
+  <table>
 
-      <% if produit.present? %>
-        <table class="table-etiquette">
-          <thead> 
-            <tr>
-              <th class="th-etiquette shadowed text-center" colspan="2">
-                <%= image_tag(produit.default_image, class:"img-etiquette") if produit.present? %> 
-              </th>
-            </tr>
-            <tr>
-              <th class="th-titre-etiquette middled shadowed" colspan="2">
-                <h3 class="bolded text-dark"> <%= produit.nom if produit.present? %> </h3> 
-              </th>
-            </tr>
-          </thead> 
-            
-          <tbody> 
-            <tr>
-                
-              <td class="td-etiquette middled shadowed" colspan="1">
-                
-                <span>Location : <%= number_to_currency(produit.prixlocation, locale: :fr, precision: 0) if produit.present? %></span> 
-                <br>
-                <span>Vente : <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) if produit.present? %></span>
-              
-                <div class="td-etiquette middled centered">  
-                  Taille(s) : 
-                  <% if produit.taille.present? %>
-                    <span class="text-dark p-1" style="border: 2px solid black; border-radius: 10px;"> 
-                      <%= produit.taille&.nom %>
-                    </span>
+    <% @produits.each_slice(2).with_index do |produits_pair, index| %> 
+      <tr>
+        <% produits_pair.each do |produit| %>
+          <% if produit.present? %>
+            <td style="border: 1px solid #ccc; padding: 10px;">
+              <!-- Container for each product -->
+              <div style="width: 450px; margin: 20px;">
 
-                  <hr>
-
-                    <% same_produit_same_couleur_others_tailles(produit).each do |produit| %>
-                      <span class="p-1" style="color: grey; border: 2px solid grey; border-radius: 10px;"> 
-                        <%= produit.taille.nom if produit.taille&.nom %>
-                      </span>
-                    <% end %>
-                    
-                  <% end %>
+                <!-- Header Section (Image) -->
+                <div style="height: 410px; padding: 10px; box-sizing: border-box; overflow: hidden;">
+                  <%= image_tag(produit.default_image, class: "img-fluid text-center") %>
                 </div>
 
-                <div class="td-etiquette middled centered text-center">  
-                  Couleur(s) : 
-                  <% if produit.couleur.present? %>
+                <!-- Body Section (Product Name) -->
+                <div style="height: 50px; padding: 10px; box-sizing: border-box; overflow: hidden;">
+                  <h3 class="bolded text-dark text-center"> <%= produit.nom %> </h3> 
+                </div>
 
-                    <span class="text-dark p-1" style="border: 2px solid black; border-radius: 10px;"> 
-                      <span> <%= produit.couleur&.nom %> </span> 
-                      <div class="" style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; margin-right: 10px; background-color: <%= produit.couleur.couleur_code %>"></div>
-                    </span>
+                <!-- Pricing Section -->
+                <div class="text-center" style="height: 50px; padding: 10px; box-sizing: border-box; overflow: hidden;">
+                  <span>Location: <%= number_to_currency(produit.prixlocation, locale: :fr, precision: 0) %></span> - 
+                  <span>Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>
+                </div>
 
-                    <hr>
-
-                    <% same_produit_same_taille_others_couleurs(produit).each do |produit| %>
+                <!-- Footer Section ( tailles and colors) -->
+                <div style="height: 160px; margin-top: 15px; padding: 10px; 
+                            box-sizing: border-box; overflow: hidden; vertical-align: middle;">
+                 
+                  <table>
+                    <tr>
+                      <td>
+                        <%= image_tag(produit.qr_code, class:"img-fluid") if produit.qr_code.present? %>              
+                      </td>
                       
-                      <span class="text-secondary p-1 m-1" style="color: grey; border: 2px solid grey; border-radius: 10px;"> 
-                        <span> <%= produit.couleur&.nom %> </span> 
-                        <div class="" style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: <%= produit.couleur.couleur_code %>"></div>
-                      </span>
-                    <% end %>
+                      <td class="p-2">
                     
-                  <% end %>
+                        <div>
+                          Taille(s) : 
+                          <% if produit.taille.present? %>
+                            <span class="text-dark p-1" style="border: 2px solid black; border-radius: 10px;"> 
+                              <%= produit.taille&.nom %>
+                            </span>
+                      
+                            <hr>
+
+                            <% same_produit_same_couleur_others_tailles(produit).each do |produit| %>
+                              <span class="p-1" style="color: grey; border: 2px solid grey; border-radius: 10px;"> 
+                                <%= produit.taille.nom if produit.taille&.nom %>
+                              </span>
+                            <% end %>
+                              
+                          <% end %>
+                        </div>
+
+                        <hr>
+
+                        <div class="">  
+                          Couleur(s) : 
+                          <% if produit.couleur.present? %>
+                            <span class="text-dark p-1" style="border: 2px solid black; border-radius: 10px;"> 
+                              <span> <%= produit.couleur&.nom %> </span> 
+                              <div class="" style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; margin-right: 10px; background-color: <%= produit.couleur.couleur_code %>"></div>
+                            </span>
+
+                            <hr>
+
+                            <% same_produit_same_taille_others_couleurs(produit).each do |produit| %>
+                              
+                              <span class="text-secondary p-1 m-1" style="color: grey; border: 2px solid grey; border-radius: 10px;"> 
+                                <span> <%= produit.couleur&.nom %> </span> 
+                                <div class="" style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: <%= produit.couleur.couleur_code %>"></div>
+                              </span>
+                            <% end %>
+                          <% end %>
+                          
+                        </div>
+                      </td>
+
+                    </tr>
+                  </table>
+
                 </div>
-                  
-              </td>
-              <td class="td-etiquette middled centered shadowed">
-                <%= image_tag(produit.qr_code, class:"img-qr-etiquette") if produit.qr_code.present? %>
-              </td>
-            </tr>
-          </tbody> 
-        </table>
-      <% end %>
 
-    </div>
-
-  <% end %>
-
-  <% unless request.format.html? %> <%# masquer sur html %>
-  
-    <div class="page-break"></div>  <%# changement de page vers verso %>
-
-    <% @produits.each do |produit| %>
-      <div style="display: inline-block;">
-        <% if produit.present? %>
-          <div class="table-etiquette-verso"> 
-            <% 8.times do %>  
-              <hr class="hr-doted">
-            <% end %>
-          </div>
+              </div>
+            </td>
+          <% end %>
         <% end %>
-      </div>
+
+        <!-- Add an empty <td> if there's only one product in the row -->
+        <% if produits_pair.size == 1 %>
+          <td></td>
+        <% end %>
+      </tr>
     <% end %>
+  </table>
 
-  <% end %>
+</div>
 
 
-  <% if request.format.html? %> <%# que sur html %>
+<div class="page-break"></div>  <%# changement de page vers verso %>
 
-    <hr>
+<div class="container-edition mx-auto p-4">
 
-    <div class="container-fluid d-flex justify-content-between">
-
-      <%= return_model_index_button("Retour vers etiquettes", etiquettes_index_path) %>
-      <%= link_to url_for(prod1: @produit1, prod2: @produit2, prod3: @produit3, prod4: @produit4, format: :pdf), 
-            class:"btn m-1 btn-danger",
-            title: "Editer étiquette", target: "_blank" do %> 
-        <i class="fa-solid fa-xl fa-file-pdf fa-bounce "></i>
-        <span class="fw-bold">Editer</span>
-      <% end %>
-        
-    </div>
-
+  <% 21.times do %>  
+    <hr class="hr-doted">
   <% end %>
 
 </div>
+
+
+
+

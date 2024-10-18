@@ -145,13 +145,16 @@ Rails.application.routes.draw do
   post '/send_email', to: 'doc_editions#send_email'
 
   # etiquettes
-
   get 'etiquettes/index'
-  get "/etiquettes/edition", to: "etiquettes#edition", as: :edition_etiquettes
- 
 
+  resources :etiquettes do
+    collection do
+      post :edition           # For the form submission
+      get :generate_pdf, defaults: { format: :pdf }  # Force the format to PDF
+    end
+  end
+  
   get 'selection_produit', to: 'selection_produit#index'
-  #get 'selection', to: 'selection_produit#index'
 
   resources :selection_produit do
     collection do
