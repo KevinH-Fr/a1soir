@@ -6,13 +6,13 @@
   <div class="card-body light-beige-colored text-center">
     <% unless current_user.present? %>
 
-      <%= link_to new_user_session_path, class: "btn btn-warning m-1 p-3 rounded-pill" do %>
+      <%= link_to new_user_session_path, class: "btn btn-warning m-1 p-2 rounded-pill" do %>
           <i class="fa fa-solid fa-xl fa-user-lock"></i>
           <span class="ms-1 fw-bold">Connexion</span>
       <% end %>
 
 
-      <%= link_to new_user_registration_path, class: "btn btn-primary m-1 p-3 rounded-pill" do %>
+      <%= link_to new_user_registration_path, class: "btn btn-primary m-1 p-2 rounded-pill" do %>
         <i class="fa fa-solid fa-xl fa-user-plus"></i>
         <span class="ms-1 fw-bold">Nouveau</span>
       <% end %>

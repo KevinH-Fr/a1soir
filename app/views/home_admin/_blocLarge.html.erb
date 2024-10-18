@@ -1,8 +1,19 @@
 <div class="card m-2 shadow-sm">
 
     <div class="card-header bg-dark text-light py-2 fw-bold text-center fs-5">
-        <i class="fa fa-xl brand-colored fa-gear me-2"></i>
-        Fonctions supplémentaires
+
+        <div class="row align-items-center m-0 p-1">
+            <div class="col text-start m-0 p-0 ">
+                <i class="fa fa-xl brand-colored fa-compass me-2"></i>
+            </div>
+            <div class="col text-center fw-bold text-nowrap">
+                Accès
+            </div>
+            <div class="col text-end m-0 p-0">
+            
+            </div>
+        </div>
+
     </div>
 
     <div class= "card-body p-2 light-beige-colored text-center">
@@ -14,9 +25,9 @@
         <%= options_supplementaires_link(etiquettes_index_path, "fa-tags", "Etiquettes", "btn-outline-secondary") %>
         <%= options_supplementaires_link(stock_index_path, "fa-box-open", "Stocks", "btn-outline-danger") %>
         <%= options_supplementaires_link(fournisseurs_path, "fa-industry", "Fournisseurs", "btn-outline-dark") %>
-        <%= options_supplementaires_link(ensembles_path, "fa-cubes", "Gestion des Ensembles", "btn-outline-primary") %>
+        <%= options_supplementaires_link(ensembles_path, "fa-cubes", "Ensembles", "btn-outline-primary") %>
         <%= options_supplementaires_link(categorie_produits_path, "fa-layer-group", "Cat. produits", "btn-outline-dark") %>
-        <%= options_supplementaires_link(type_produits_path, "fa-list-ul", "Type. produits", "btn-outline-primary") %>
+        <%= options_supplementaires_link(type_produits_path, "fa-list-ul", "Types produits", "btn-outline-primary") %>
         <%= options_supplementaires_link(couleurs_path, "fa-palette", "Couleurs", "btn-outline-dark") %>
         <%= options_supplementaires_link(tailles_path, "fa-ruler", "Tailles", "btn-outline-secondary") %>
         <%= options_supplementaires_link(admin_parameters_path, "fa-screwdriver-wrench", "Parametres", "btn-outline-warning") %>

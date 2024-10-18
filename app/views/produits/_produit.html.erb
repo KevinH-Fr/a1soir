@@ -1,11 +1,16 @@
 <div id="<%= dom_id produit %>" class="my-2">
+
   <div class="card mx-2 mb-3 light-beige-colored shadow-sm">
-    <div class="card-body p-0">
-      <div class="row g-0">
-        <div data-turbo="false" class="col-4">
-          <%= link_to image_tag(produit.default_image, class: "img-produit"), produit_path(produit)  %>
+    <div class="row g-0">
+      <!-- Image Column -->
+      <div class="col-sm-4 p-1 text-center">
+        <div data-turbo="false">
+          <%= link_to image_tag(produit.default_image, class: "img-fluid"), produit_path(produit)  %>
         </div>
-        <div class="col-8 d-flex flex-column p-4">
+      </div>
+      <!-- Text Column -->
+      <div class="col-sm-8">
+        <div class="card-body p-1">
           <h5 class="card-title">
             <%= produit.nom %>
             <div data-turbo="false">
@@ -14,77 +19,82 @@
                     role: "button", "aria-expanded": "false", "aria-controls": "collapseProduit#{dom_id(produit)}" %>
             </div>
           </h5>
-
+          
+          <p class="card-text">
             <p>
               <%= produit.categorie_produit.nom if produit.categorie_produit %>
             </p>
 
             <%= produit.description %>
 
-        <div class="container-fluid p-0">
-            <%= badge_prixlocation_produit(produit) %>
-            <%= badge_prixvente_produit(produit) %>
-            <%= badge_couleur_produit(produit) %> 
-            <%= badge_taille_produit(produit) %> 
-            <p class="m-1 mt-3"><%= badge_disponibilite(produit, Time.now.to_date) %> </p> 
-            <%= is_archived(produit) %> 
+            <div class="container-fluid p-0">
+                <%= badge_prixlocation_produit(produit) %>
+                <%= badge_prixvente_produit(produit) %>
+                <%= badge_couleur_produit(produit) %> 
+                <%= badge_taille_produit(produit) %> 
+                <p class="m-1"><%= badge_disponibilite(produit, Time.now.to_date) %> </p> 
+                <%= is_archived(produit) %> 
+            </div>
 
+            <div class="mt-auto m-1">
+              <% if controller_name == "produits"  && action_name == "show" %>            
+                <%= link_to dupliquer_produit_path(produitbase: produit.id),
+                      class: "btn btn-sm btn-dark",
+                      :onclick => "return confirm('Etes-vous certain de vouloir dupliquer ce produit ?')",
+                      title: 'Dupliquer' do %>
+                  <i class="fa-solid fa-copy me-1"></i>
+                  <span class="fw-bold">Dupliquer</span>
+                
+                <% end %>
+                
+              <% end %>
+              <%= links_record(produit) %>  
+            </div>
+          </p>
         </div>
-          <div class="mt-auto">
 
+      </div>
+    </div>
 
-          <% if controller_name == "produits"  && action_name == "show" %>            
-            <%= link_to "", dupliquer_produit_path(produitbase: produit.id),
-                  class: "fa-solid fa-copy btn btn-sm btn-dark",
-                  :onclick => "return confirm('Etes-vous certain de vouloir dupliquer ce produit ?')",
-                  title: 'Dupliquer' %>
-          <% end %>
+    <div class="collapse px-2" id="collapseProduit<%= dom_id(produit) %>">
+      <hr>
 
-            <%= links_record(produit) %>  
+      <div class="row g-0">
+      <!-- Image Column -->
+        <div class="col-sm-4 p-1 text-center">
+          <div data-turbo="false">
+            <%= image_tag(produit.qr_code, class:"img-fluid") if produit.qr_code.attached? %>
           </div>
         </div>
+        <!-- Text Column -->
+        <div class="col-sm-8">
+          Autres couleur(s) : 
+          <% same_produit_same_taille_others_couleurs(produit).each do |produit| %>
+            <%= produit.couleur.nom if produit.couleur %>
+          <% end %>
+
+          Autres taille(s) : 
+          <% same_produit_same_couleur_others_tailles(produit).each do |produit| %>
+            <%= produit.taille.nom if produit.taille %>
+          <% end %>
+
+          <br>
+
+          <%= custom_badge("", "caution", "", "", produit.caution ) if produit.caution %>
+
+          <%= custom_badge("", "handle:", "", "", produit.handle ) if produit.handle %>
+          <%= custom_badge("", "ref. fournisseur:", "", "", produit.reffrs ) if produit.reffrs %>
+          <%= custom_badge("", "fournisseur:", "", "", produit.fournisseur&.nom ) if produit.fournisseur&.nom %>
+          <%= custom_badge("", "quantité:", "", "", produit.quantite ) if produit.quantite %>
+          <%= custom_badge("", "date achat:", "", "", produit.dateachat ) if produit.dateachat %>
+
+          <% if current_user.admin? %>
+            <%= custom_badge("", "prixachat", "", "", produit.prixachat ) if produit.prixachat %>
+          <% end %>
+          
+        </div>
       </div>
 
-      <div class="collapse px-2" id="collapseProduit<%= dom_id(produit) %>">
-          <hr>
-
-            <%= image_tag(produit.qr_code, class:"rounded-start") if produit.qr_code.attached? %>
-
-            Autres couleur(s) : 
-            <% same_produit_same_taille_others_couleurs(produit).each do |produit| %>
-              <%= produit.couleur.nom if produit.couleur %>
-            <% end %>
-
-            Autres taille(s) : 
-            <% same_produit_same_couleur_others_tailles(produit).each do |produit| %>
-              <%= produit.taille.nom if produit.taille %>
-            <% end %>
-  
-            <strong>Caution:</strong>
-            <%= produit.caution %>
-  
-            <strong>Handle:</strong>
-            <%= produit.handle %>
-  
-            <strong>Reffrs:</strong>
-            <%= produit.reffrs %>
-  
-            <strong>Fournisseur:</strong>
-            <%= produit.fournisseur&.nom %>
-  
-              <strong>Quantite:</strong>
-              <%= produit.quantite %>
-
-              <strong>Dateachat:</strong>
-              <%= produit.dateachat %>
-            </p>
-
-            <% if current_user.admin? %>
-                <strong>Prixachat:</strong>
-                <%= produit.prixachat %>
-            <% end %>
-
-      </div>
 
     </div>
   </div>
