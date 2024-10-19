@@ -29,6 +29,11 @@ class Produit < ApplicationRecord
   scope :not_service, -> { joins(:categorie_produit).where(categorie_produits: { service: [false, nil] }) }
   scope :actif, -> { where(actif: true) } 
 
+  # filtres analyses
+  scope :filtredatedebut, -> (debut) { where("created_at >= ?", debut.beginning_of_day) }
+  scope :filtredatefin, -> (fin) { where("created_at <= ?", fin.end_of_day) }
+
+  
   def full_name
     nom
   end

@@ -1,0 +1,62 @@
+
+<div class="card mx-2 mb-3 light-beige-colored shadow-sm p-2">
+
+    <div class="card-header fw-bold">
+        analyse
+    </div>
+
+    <div class="card-body">
+
+        <%= form_tag url_for, method: :get do %>
+
+            <div class="input-group mb-1">
+                <%= label_tag :début, "début", class:"input-group-text label-with-format centered" %>
+                <%= date_field_tag :debut, params[:debut], class:"form-control field-with-format" %>
+
+                <%= label_tag :fin, "fin", class:"input-group-text label-with-format centered" %>
+                <%= date_field_tag :fin, params[:fin], class:"form-control field-with-format" %>
+
+                <%= link_to "Effacer", url_for(), class:"btn btn-outline-danger rounded mx-1" %> 
+
+                <%= submit_tag "Go", class:"btn btn-success fw-bold rounded" %>
+
+            </div>
+
+        <% end %>
+
+        <div class="my-2">
+            <% if @datedebut.present? && @datefin.present? %>
+                <div class="fw-bold">
+                    filtre de dates sur produits: <%= @datedebut.strftime("%d/%m/%y")  %> - <%= @datefin.strftime("%d/%m/%y") %>
+                </div>
+
+                <div class="d-flex flex-wrap justify-content-evenly">
+                    <div class="card flex-fill p-2 m-1">
+                        <span class="fw-bold">  achats </span>  <br>
+                        nb:  <%= @produitsFiltres.count %> 
+                        quantité: <%= @produitsFiltres.sum(:quantite) %> 
+                        total prix:  <%= @total_prixachat_sum %>
+                    </div>
+                    
+                    <div class="card flex-fill p-2 m-1">
+                        <span class="fw-bold"> ventes </span>  <br>
+                        nb:  <%= @vente_produits.count %> 
+                        total prix:  <%= @vente_produits.sum(:prix) %>
+                    </div>
+                    
+                    <div class="card flex-fill p-2 m-1">
+                        <span class="fw-bold"> locations </span>  <br>
+                        nb:  <%= @location_produits.count %> 
+                        total prix:  <%= @location_produits.sum(:prix) %>
+                    </div>
+                </div>
+
+            <% end %>    
+        </div>
+        
+
+
+    
+    </div>
+
+</div>

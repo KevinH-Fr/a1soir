@@ -16,6 +16,35 @@ class FournisseursController < ApplicationController
 
   def show
     @produits = @fournisseur.produits
+
+    datedebut = DateTime.parse(params[:debut]) if params[:debut].present?
+    datefin = DateTime.parse(params[:fin]) if params[:fin].present?
+    @datedebut = DateTime.parse(params[:debut]) if params[:debut].present?
+    @datefin = DateTime.parse(params[:fin]) if params[:fin].present?
+
+
+    if datedebut.present? && datefin.present? 
+      @produitsFiltres = @produits.filtredatedebut(datedebut).filtredatefin(datefin)
+    else
+      @produitsFiltres = @produits
+    end
+
+    # Calculate the total sum of (quantite * prixachat) using Ruby iteration
+    @total_prixachat_sum = @produitsFiltres.inject(0) do |sum, produit|
+      sum + (produit.quantite * produit.prixachat.to_i)
+    end
+
+    @vente_produits = Article.where(produit_id: @produits.ids)
+    .vente_only
+    .filtredatedebut(datedebut)
+    .filtredatefin(datefin)
+
+    @location_produits = Article.where(produit_id: @produits.ids)
+    .location_only
+    .filtredatedebut(datedebut)
+    .filtredatefin(datefin)
+
+
   end
 
   def new
