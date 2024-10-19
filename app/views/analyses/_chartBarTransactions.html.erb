@@ -1,18 +1,18 @@
 
   <div class="chartBox mx-auto">
-    <canvas id="myChartBarPaiements"></canvas>
+    <canvas id="myChartBarCa"></canvas>
   </div>
 
-  <% @data = [@totalPrix, @totalCaution] %>
+  <% @data = [@totalTransactionsLoc, @totalTransactionsVente] %>
  
 <script>
    
-  var couleur1 = 'rgb(213, 155, 19)';
-  var couleur2 = 'rgb(240, 214, 83)';
+  var couleur1 = 'rgb(116, 159, 130)';
+  var couleur2 = 'rgb(66, 95, 87)';
 
 // CHART BAR
-    var dataBarPaiements = {
-      labels: ['Prix', 'Caution'],
+    var dataBarCa = {
+      labels: ['location', 'vente'],
       datasets: [{
       
         data: <%= @data.to_json.html_safe %>,
@@ -22,11 +22,11 @@
       }]
     };
 
-    var delayedBarPaiements;
+    var delayedBarCa;
 
-    var configBarPaiements = {
+    var configBarCa = {
       type: 'bar',
-      data: dataBarPaiements,
+      data: dataBarCa,
       options: {
 
         plugins: {
@@ -58,9 +58,9 @@
       };
 
         // render init block
-    var myChartBarPaiements = new Chart(
-      document.getElementById('myChartBarPaiements'),
-      configBarPaiements
+    var myChartBarCa = new Chart(
+      document.getElementById('myChartBarCa'),
+      configBarCa
     );
 
 

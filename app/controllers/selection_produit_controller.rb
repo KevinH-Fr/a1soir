@@ -40,7 +40,7 @@ class SelectionProduitController < ApplicationController
   def display_manuelle
 
     @categorie_produits = CategorieProduit.all
-  
+
     respond_to do |format|
       format.html
       format.turbo_stream do
@@ -53,7 +53,6 @@ class SelectionProduitController < ApplicationController
   end
 
   def display_categorie_selected
-
 
     if params[:categorie_produit] == "all"
       type_mono_multi = "multi"
@@ -109,6 +108,10 @@ class SelectionProduitController < ApplicationController
 
     @commande = Commande.find(session[:commande])
 
+    if session[:article]
+      @article = Article.find(session[:article])
+    end 
+
     if params[:categorie_produit] == "all"
       @categorie_produits = CategorieProduit.pluck(:id)
     elsif params[:categorie_produit].present?  
@@ -134,7 +137,6 @@ class SelectionProduitController < ApplicationController
                        .where(taille: [@tailles, nil])
                        .where(couleur: [@couleurs, nil])
 
-    
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.update(

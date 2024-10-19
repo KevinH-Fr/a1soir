@@ -33,19 +33,19 @@ class AnalysesController < ApplicationController
     @nbVente =  @articlesFiltres.vente_only.count 
     @groupedByDateArticles =  @articlesFiltres.group('DATE(articles.created_at)').sum('quantite')
 
-    #  ca : 
-    @totalCa = @articlesFiltres.sum(:prix) + @sousArticlesFiltres.sum(:prix)
-    @totalLoc =  @articlesFiltres.location_only.sum(:prix) + @sousArticlesFiltres.location_only.sum(:prix)
+    #  transactions : 
+    @totalTransactions = @articlesFiltres.sum(:prix) + @sousArticlesFiltres.sum(:prix)
+
+    @totalTransactionsVente = @articlesFiltres.vente_only.sum(:prix) + @sousArticlesFiltres.vente_only.sum(:prix)
+    @totalTransactionsLoc =  @articlesFiltres.location_only.sum(:prix) + @sousArticlesFiltres.location_only.sum(:prix)
     
-    # en l'etat les sous articles passent que à la vente dans le calcul?
-    @totalVente =  @articlesFiltres.vente_only.sum(:prix) + @sousArticlesFiltres.vente_only.sum(:prix)
-    @groupedByDateCa =  @articlesFiltres.group('DATE(articles.created_at)').sum('total')
+    @groupedByDateTransactions =  @articlesFiltres.group('DATE(articles.created_at)').sum('total')
     
-    # paiements 
-    @totalPaiements =  @paiementsFiltres.sum(:montant)
-    @totalPrix =  @paiementsFiltres.only_prix.sum(:montant)
-    @totalCaution =  @paiementsFiltres.only_caution.sum(:montant)
-    @groupedByDatePaiements =  @paiementsFiltres.group('DATE(created_at)').only_prix.sum(:montant)
+    # CA 
+    @totalCa =  @paiementsFiltres.sum(:montant)
+    @totalPrixCa =  @paiementsFiltres.only_prix.sum(:montant)
+    @totalCautionCa =  @paiementsFiltres.only_caution.sum(:montant)
+    @groupedByDateCa =  @paiementsFiltres.group('DATE(created_at)').sum(:montant)
 
   end
 

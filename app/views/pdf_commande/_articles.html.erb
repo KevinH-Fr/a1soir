@@ -53,18 +53,21 @@
                   <td class="">
                     <%= image_tag(sousarticle.produit.default_image, style: "width: 40px;", 
                        class: "img-fluid rounded") %> 
-                    <%= sousarticle.produit.nom %> 
+                    <%= sousarticle.produit.nom %>
                     <%= sousarticle.produit&.couleur&.nom %> 
                     <%= sousarticle.produit&.taille&.nom %> 
-                    <%= sousarticle.nature %>
-                    <%= sousarticle.commentaires  %>
+                    <%= sousarticle.nature %> <br>
+                    <small>
+                      <%= sousarticle.description %>
+                      <%= sousarticle.commentaires  %>
+                    </small>
                   </td>
               
                   <td></td>
-                  <td>
+                  <td class="td-doc-valeurs ended"> 
                     <%= custom_currency_format(sousarticle.prix) %>    
                   </td>
-                  <td> 
+                  <td class="td-doc-valeurs ended"> 
                     <%= custom_currency_format(sousarticle.prix) %>    
                   </td>
                   <td>         
