@@ -167,8 +167,8 @@
 .container-edition {
   display: flex;
   flex-wrap: wrap; /* Allows items to wrap onto multiple lines */
-  justify-content: center; /* Horizontally centers items in the container */
-  margin: 40px; 
+  /*justify-content: center; /* Horizontally centers items in the container */
+ /* margin: 40px; 
 }
 
 
@@ -269,8 +269,8 @@
   border-top: 2px dotted rgb(137, 135, 135);
   color: #fff;
   background-color: #fff;
-  height: 5px;
-  margin-top: 60px;
+  height: 4px;
+  margin-top: 52px;
   width: 100%;
 }
 

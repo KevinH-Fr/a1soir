@@ -24,6 +24,9 @@ class EtiquettesController < ApplicationController
       @prod4 = Produit.find(session.delete(:prod4)) if session[:prod4].present?
   
       @produits = [@prod1, @prod2, @prod3, @prod4]
+
+      @produits_count = @produits.count { |prod| prod.present? } 
+
       respond_to do |format|
         format.pdf do
             render pdf: "etiquette_#{Time.now.strftime('%Y%m%d_%H%M%S')}", # File name for the PDF

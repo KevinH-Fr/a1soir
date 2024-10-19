@@ -1,5 +1,5 @@
 
-<div class="container-edition mx-auto">
+<div class="container-edition">
 
   <table>
 
@@ -12,8 +12,16 @@
               <div style="width: 450px; margin: 20px;">
 
                 <!-- Header Section (Image) -->
-                <div style="height: 410px; padding: 10px; box-sizing: border-box; overflow: hidden;">
+                <div class="text-center" style="height: 410px; padding: 10px; box-sizing: border-box; overflow: hidden;">
                   <%= image_tag(produit.default_image, class: "img-fluid text-center") %>
+
+                  <% if produit.image1.present? %>
+                    <%= image_tag(produit.image1, class: "img-fluid") %>                    
+                  <% else %>
+                    <%= image_tag wicked_pdf_asset_path('/images/no_photo.png'), class: "img-fluid" %>
+                  <% end %>
+
+
                 </div>
 
                 <!-- Body Section (Product Name) -->
@@ -91,10 +99,7 @@
           <% end %>
         <% end %>
 
-        <!-- Add an empty <td> if there's only one product in the row -->
-        <% if produits_pair.size == 1 %>
-          <td></td>
-        <% end %>
+
       </tr>
     <% end %>
   </table>
@@ -104,14 +109,37 @@
 
 <div class="page-break"></div>  <%# changement de page vers verso %>
 
-<div class="container-edition mx-auto p-4">
+<div class="container-edition">
 
-  <% 21.times do %>  
-    <hr class="hr-doted">
-  <% end %>
+  <table>
 
-</div>
+    <% @produits.each_slice(2).with_index do |produits_pair, index| %> 
+      <tr>
+        <% produits_pair.each do |produit| %>
+          <% if produit.present? %>
+            <td style="border: 1px solid #ccc; padding: 10px;">
+              <!-- Container for each product -->
+              <div style="width: 450px; margin: 20px;">
 
+                <!-- Header Section (Image) -->
+                <div style="height: 685px; padding: 10px; box-sizing: border-box; overflow: hidden;">
 
+                  <% 12.times do %>  
+                    <hr class="hr-doted">
+                  <% end %>
 
+                  
+                </div>  
+              </div>
+            </td>
+          <% end %>
+        <% end %>
+      
+      </tr>
+    
+    <% end %>
+  
+  </table>    
+
+</div>     
 
