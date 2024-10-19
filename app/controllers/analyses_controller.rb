@@ -43,8 +43,14 @@ class AnalysesController < ApplicationController
     
     # CA 
     @totalCa =  @paiementsFiltres.sum(:montant)
+    
     @totalPrixCa =  @paiementsFiltres.only_prix.sum(:montant)
-    @totalCautionCa =  @paiementsFiltres.only_caution.sum(:montant)
+    @totalPrixCaCb =  @paiementsFiltres.only_prix.only_cb.sum(:montant)
+    @totalPrixCaEspeces =  @paiementsFiltres.only_prix.only_espece.sum(:montant)
+    @totalPrixCaCheque =  @paiementsFiltres.only_prix.only_cheque.sum(:montant)
+    @totalPrixCaVirement =  @paiementsFiltres.only_prix.only_virement.sum(:montant)
+
+    #@totalCautionCa =  @paiementsFiltres.only_caution.sum(:montant)
     @groupedByDateCa =  @paiementsFiltres.group('DATE(created_at)').sum(:montant)
 
   end

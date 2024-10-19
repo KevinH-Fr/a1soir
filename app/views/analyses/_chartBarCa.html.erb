@@ -3,21 +3,23 @@
     <canvas id="myChartBarPaiements"></canvas>
   </div>
 
-  <% @data = [@totalPrixCa, @totalCautionCa] %>
+  <% @data = [@totalPrixCaCb, @totalPrixCaEspeces, @totalPrixCaCheque, @totalPrixCaVirement] %>
  
 <script>
    
-  var couleur1 = 'rgb(213, 155, 19)';
-  var couleur2 = 'rgb(240, 214, 83)';
+  var couleur1 = 'rgb(20, 63, 169)';
+  var couleur2 = 'rgb(20, 169, 74)';
+  var couleur3 = 'rgb(160, 155, 155)';
+  var couleur4 = 'rgb(251, 247, 39)';
 
 // CHART BAR
     var dataBarPaiements = {
-      labels: ['Prix', 'Caution'],
+      labels: ['CB', 'Espèces', 'Chèque', 'Virement'],
       datasets: [{
       
         data: <%= @data.to_json.html_safe %>,
         fill: true,
-        backgroundColor: [ couleur1, couleur2 ],
+        backgroundColor: [ couleur1, couleur2, couleur3, couleur4 ],
         borderWidth: 1
       }]
     };
