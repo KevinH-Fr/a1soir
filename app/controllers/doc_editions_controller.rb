@@ -8,6 +8,14 @@ class DocEditionsController < ApplicationController
     @doc_edition = DocEdition.new doc_edition_params
     @commande = Commande.find(session[:commande])
 
+    @next_meeting = @commande.next_upcoming_meeting&.start_time
+
+    # Fetch the next upcoming meeting for both Commande and Client (if a client is associated)
+    next_commande_meeting = @commande.next_upcoming_meeting
+    next_client_meeting = @commande.client&.next_upcoming_meeting
+    
+    # Determine the closest meeting
+    @next_meeting = [next_commande_meeting, next_client_meeting].compact.min_by(&:datedebut)
 
     @sujet = "votre #{@doc_edition.doc_type}"
     @destinataire = @commande.client.mail
@@ -15,10 +23,9 @@ class DocEditionsController < ApplicationController
     part_1 = "Merci de trouver ci-attaché votre #{@doc_edition.doc_type}"
     part_2 = @commande.typeevent? ? " pour votre #{@commande.typeevent}" : ""
     part_3 = @commande.dateevent? ? " prévu(e) le #{@commande.dateevent}" : ""
+    part_4 = @next_meeting.present? ? "\nRDV à venir: #{@next_meeting.meeting_details}" : ""
 
-
-
-    @message ="#{part_1}#{part_2}#{part_3}"
+    @message ="#{part_1}#{part_2}#{part_3}#{part_4}"
     
   end
 

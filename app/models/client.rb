@@ -15,6 +15,10 @@ class Client < ApplicationRecord
         prenom + " " + nom
     end
 
+    def next_upcoming_meeting
+        meetings.where('datedebut > ?', Time.now).order(datedebut: :asc).first
+      end
+      
     def self.ransackable_attributes(auth_object = nil)
         ["adresse", "commentaires", "contact", "cp", "created_at", "id", "id_value", "intitule", "mail", "mail2", "nom", "pays", "prenom", "propart", "tel", "tel2", "updated_at", "ville"]
     end

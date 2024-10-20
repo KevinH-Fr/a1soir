@@ -38,6 +38,10 @@ class Meeting < ApplicationRecord
   def meeting_info
     "#{datedebut.strftime('%d-%m %H:%M')} - #{full_name}"
   end
+
+  def meeting_details
+    "#{nom} - #{datedebut.strftime('%d-%m %H:%M')} - #{full_name}"
+  end
   
 
   def self.ransackable_attributes(auth_object = nil)

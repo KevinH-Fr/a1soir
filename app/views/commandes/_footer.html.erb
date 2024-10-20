@@ -1,7 +1,12 @@
 <div class="container-fluid m-0 p-0">
     <div class="row mx-1 py-2 align-items-center">
         <div class="col text-start">
-            <%= custom_badge("", @commande.ref_commande, "secondary", "", "") %>        
+
+            <span class="badge bg-secondary fw-bold m-1 fs-6 shadow-sm text-light">
+                <%= @commande.ref_commande %>        
+            </span>
+
+
             <%#= custom_badge("", @commande.client.full_name, "secondary", "") %>
         </div>
         <div class="col-6 text-center">

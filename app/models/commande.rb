@@ -54,6 +54,10 @@ class Commande < ApplicationRecord
     GenerateQr.call(self)
   end
 
+  def next_upcoming_meeting
+    meetings.where('datedebut > ?', Time.now).order(datedebut: :asc).first
+  end
+  
   def self.ransackable_attributes(auth_object = nil)
     ["id", "nom", "montant", "description", "client_id", "debutloc", "finloc", "dateevent", "statutarticles", "typeevent", "profile_id", "commentaires", "commentaires_doc", "type_locvente", "devis"]
   end
