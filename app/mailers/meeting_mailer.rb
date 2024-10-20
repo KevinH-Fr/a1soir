@@ -10,7 +10,7 @@ class MeetingMailer < ApplicationMailer
       meeting.client 
     end
 
-    puts "______________test recipient from meeting mailer: #{@recipient.mail}"
+    puts "______________test recipient from meeting mailer: #{@recipient.mail}_____________"
 
     if @recipient.mail
       # You can customize the subject and email body as needed
