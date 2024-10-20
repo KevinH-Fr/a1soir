@@ -9,7 +9,7 @@ class MeetingMailer < ApplicationMailer
     else
       meeting.client 
     end
-
+    
     puts "______________test recipient from meeting mailer: #{@recipient.mail}_____________"
 
     if @recipient.mail
