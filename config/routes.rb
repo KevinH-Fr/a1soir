@@ -144,6 +144,9 @@ Rails.application.routes.draw do
   get '/generate_commande_doc_editions', to: 'doc_editions#generate_commande'
   post '/send_email', to: 'doc_editions#send_email'
 
+  post '/send_reminder', to: 'meetings#send_reminder'
+  post '/send_reminder_job', to: 'meetings#send_reminder_job'
+
   # etiquettes
   get 'etiquettes/index'
 

@@ -1,6 +1,6 @@
 class MeetingsController < ApplicationController
 
-  before_action :authenticate_vendeur_or_admin!
+  #before_action :authenticate_vendeur_or_admin!
 
   before_action :set_meeting, only: %i[ show edit update destroy ]
 
@@ -145,6 +145,32 @@ class MeetingsController < ApplicationController
     end
   end
 
+
+  def send_reminder
+    @meeting = Meeting.find(params[:meeting])
+
+    MeetingMailer.reminder_email(@meeting).deliver_now
+
+    respond_to do |format|
+      flash.now[:success] = "Email was successfully created"
+
+      format.html { redirect_to meeting_path(@meeting), notice: "email was successfully sended." }
+
+    end
+  end
+
+  def send_reminder_job
+    @meeting = Meeting.find(params[:meeting])
+    
+    # Trigger the job asynchronously
+    MeetingReminderJob.perform_later
+
+    # Redirect with a notice
+    redirect_to @meeting, notice: 'Reminder job has been enqueued.'
+  end
+
+
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_meeting
