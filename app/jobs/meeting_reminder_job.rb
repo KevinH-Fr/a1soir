@@ -11,7 +11,7 @@ class MeetingReminderJob < ApplicationJob
 
     # Send reminder emails for each meeting
     meetings.each do |meeting|
-      MeetingMailer.reminder_email(meeting).deliver_later
+      MeetingMailer.reminder_email(meeting).deliver_now
     end
   end
 end
