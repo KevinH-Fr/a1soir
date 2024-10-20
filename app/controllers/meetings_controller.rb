@@ -163,7 +163,7 @@ class MeetingsController < ApplicationController
     @meeting = Meeting.find(params[:meeting])
     
     # Trigger the job asynchronously
-    MeetingReminderJob.perform_later
+    MeetingReminderJob.perform_now
 
     # Redirect with a notice
     redirect_to @meeting, notice: 'Reminder job has been enqueued.'
