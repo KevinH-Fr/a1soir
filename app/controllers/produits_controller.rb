@@ -156,44 +156,46 @@ class ProduitsController < ApplicationController
     end
 
   end
-  
+
+
+
   def dupliquer
     @produit = Produit.find(params[:id])
   
     if params[:produitbase].present?
-      @produitBase = Produit.find(params[:produitbase]) 
+      @produitBase = Produit.find(params[:produitbase])
   
-      # Préparer un nouveau produit qui contient les mêmes données que le courant
-      original = @produitBase
-      copy = original.dup
-      copy.nom = "#{original.nom}_new" # append "new" to the original name
+      Produit.transaction do
+        original = @produitBase
+        copy = original.dup
+        copy.nom = "#{original.nom}_new"
   
-      if original.image1.attached?
-        copy.image1.attach \
-          io: StringIO.new(original.image1.download),
-          filename: original.image1.filename,
-          content_type: original.image1.content_type
-      end
-  
-      original.images.each do |image|
-        if image.attached?
-          copy.images.attach \
-            io: StringIO.new(image.download),
-            filename: image.filename,
-            content_type: image.content_type
+        if original.image1.attached?
+          copy.image1.attach \
+            io: StringIO.new(original.image1.download),
+            filename: original.image1.filename,
+            content_type: original.image1.content_type
         end
+  
+        original.images.each do |image|
+          if image.attached?
+            copy.images.attach \
+              io: StringIO.new(image.download),
+              filename: image.filename,
+              content_type: image.content_type
+          end
+        end
+  
+        copy.save!
+   
+        redirect_to produit_path(copy), notice: "Duplication du produit effectuée !"
       end
   
-      copy.save!
-  
-      # Redirect to the newly created product
-      redirect_to produit_path(copy),
-                  notice: "Duplication du produit effectuée !"
     else
-      redirect_to produit_path(@produit),
-                  notice: "Aucun produit de base spécifié."
+      redirect_to produit_path(@produit), notice: "Aucun produit de base spécifié."
     end
   end
+  
   
 
   private
