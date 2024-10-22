@@ -1,8 +1,7 @@
 
 <%= render @meeting %>
 
-<div class="card bg-success">   
-
+<div class="text-end">   
 
   <%= button_to 'Envoyer mail', send_reminder_path(meeting: @meeting), 
         method: :post, class: 'btn m-1 btn-primary fw-bold' %>

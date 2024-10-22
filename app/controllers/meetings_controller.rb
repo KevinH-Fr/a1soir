@@ -69,6 +69,8 @@ class MeetingsController < ApplicationController
 
   def edit
     @commande = @meeting.commande
+    @client = @meeting.client
+    
     respond_to do |format|
       format.html 
       format.turbo_stream do  
