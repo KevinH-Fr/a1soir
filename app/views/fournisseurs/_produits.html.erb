@@ -1,24 +1,4 @@
 
-<div class="card mx-2 mb-3 light-beige-colored shadow-sm p-2">
-
-    <div class="card-header fw-bold">
-        synthèse générale
-    </div>
-
-    <div class="card-body">
-        nb ref produits: <%= @produits.count %> <br>
-        total achat HT: <%= @total_prixachat_sum %> <br>
-
-        <hr>
-
-        Total produits : <span class="fw-bold"> <%= total_produits(@produits) %> </span> <br>
-        Total loués : <span class="fw-bold"> <%= total_loues(@produits) %> </span> <br>
-        Total vendus : <span class="fw-bold"> <%= total_vendus(@produits) %> </span> <br>
-        Restant : <span class="fw-bold"> <%= produits_restants(@produits, Time.now.to_date) %> </span> <br>
-    
-    </div>
-</div>
-
-<% @produits.each do |produit| %>
+<% @produitsFiltres.each do |produit| %>
     <%= render produit %>
 <% end %>

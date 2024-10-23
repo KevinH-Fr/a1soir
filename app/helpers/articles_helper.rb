@@ -24,8 +24,8 @@ module ArticlesHelper
   def produit_selection(produit, commande)
     content_tag(:div, class: "card shadow-sm mb-3") do
       content_tag(:div, class: "row g-0") do
-        content_tag(:div, class: "col-4") do
-          image_tag(produit.default_image, class: "img-produit")
+        content_tag(:div, class: "col-4 d-flex align-items-center") do
+          image_tag(produit.default_image, class: "img-fluid")
         end +
         content_tag(:div, class: "col-8 d-flex align-items-center") do
           content_tag(:div, class: "card-body") do

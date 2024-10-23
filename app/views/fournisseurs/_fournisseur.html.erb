@@ -1,37 +1,44 @@
-<div id="<%= dom_id fournisseur %>" class="my-2">
+ <div id="<%= dom_id fournisseur %>" class="my-2">
 
   <div class="card mx-2 my-3 p-3 light-beige-colored shadow-sm">
 
-    <p>
-      <strong>Nom:</strong>
-      <%= fournisseur.nom %>
-    </p>
+    <div data-turbo="false">
 
-    <p>
-      <strong>Tel:</strong>
-      <%= fournisseur.tel %>
-    </p>
+      <%= link_to fournisseur, class: "text-decoration-none text-dark" do %>
+        <p>
+          <strong>Nom:</strong>
+          <%= fournisseur.nom %>
+        </p>
 
-    <p>
-      <strong>Mail:</strong>
-      <%= fournisseur.mail %>
-    </p>
+        <p>
+          <strong>Tel:</strong>
+          <%= fournisseur.tel %>
+        </p>
 
-    <p>
-      <strong>Contact:</strong>
-      <%= fournisseur.contact %>
-    </p>
+        <p>
+          <strong>Mail:</strong>
+          <%= fournisseur.mail %>
+        </p>
 
-    <p>
-      <strong>Site:</strong>
-      <%= fournisseur.site %>
-    </p>
+        <p>
+          <strong>Contact:</strong>
+          <%= fournisseur.contact %>
+        </p>
 
-    <p>
-      <strong>Notes:</strong>
-      <%= fournisseur.notes %>
-    </p>
-  
+        <p>
+          <strong>Site:</strong>
+          <%= fournisseur.site %>
+        </p>
+
+        <p>
+          <strong>Notes:</strong>
+          <%= fournisseur.notes %>
+        </p>
+      
+      <% end %>
+    
+    </div>
+    
     <%= links_record(fournisseur) %>  
 
   </div>

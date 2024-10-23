@@ -29,6 +29,10 @@ class Commande < ApplicationRecord
     "#{ref_commande} #{created_at.strftime("%d/%m/%Y")}"
   end
 
+  def full_name_with_client
+    "#{ref_commande} #{client.full_name} #{created_at.strftime("%d/%m/%Y")}"
+  end
+
   def ref_commande
     "C#{ 1000 + id }"
   end
