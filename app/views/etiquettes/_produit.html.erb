@@ -3,7 +3,7 @@
     <%#= image_tag(produit.default_image, class: "img-fluid text-center") %>
 
     <% if produit.image1.present? %>
-        <%= image_tag(produit.image1, class: "img-fluid") %>
+        <%= image_tag(produit.image1, style: "height: 100%") %>
     <% else %>
         <%= image_tag wicked_pdf_asset_path('/images/no_photo.png'), class: "img-fluid" %>
     <% end %>
