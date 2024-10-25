@@ -1,22 +1,19 @@
-
 <div class="container-edition">
+  <table style="width: 100%; border-collapse: collapse;">
+    <% @produits.each_with_index do |produit, index| %>
+      <% if index % 2 == 0 %><tr><% end %> <!-- Open a new row for every two produits -->
 
-  <table>
+      <% if produit.present? %>
+        <td style="width: 50%; height: 600px; border: 1px solid #ccc; padding: 10px; box-sizing: border-box;">
+          <div style="margin: 10px;">
 
-    <% @produits.each_slice(2).with_index do |produits_pair, index| %> 
-      <tr>
-        <% produits_pair.each do |produit| %>
-          <% if produit.present? %>
-            <td style="border: 1px solid #ccc; padding: 10px;">
-              <!-- Container for each product -->
-              <div style="width: 450px; margin: 20px;">
 
                 <!-- Header Section (Image) -->
                 <div class="text-center" style="height: 410px; padding: 10px; box-sizing: border-box; overflow: hidden;">
                   <%#= image_tag(produit.default_image, class: "img-fluid text-center") %>
 
                   <% if produit.image1.present? %>
-                    <%= image_tag(produit.image1, class: "img-fluid") %>                    
+                    <%= image_tag(produit.image1, class: "img-fluid text-center") %>                    
                   <% else %>
                     <%= image_tag wicked_pdf_asset_path('/images/no_photo.png'), class: "img-fluid" %>
                   <% end %>
@@ -24,122 +21,92 @@
 
                 </div>
 
-                <!-- Body Section (Product Name) -->
-                <div style="height: 50px; padding: 10px; box-sizing: border-box; overflow: hidden;">
-                  <h3 class="bolded text-dark text-center"> <%= produit.nom %> </h3> 
-                </div>
 
-                <!-- Pricing Section -->
-                <div class="text-center" style="height: 50px; padding: 10px; box-sizing: border-box; overflow: hidden;">
-                  <span>Location: <%= number_to_currency(produit.prixlocation, locale: :fr, precision: 0) %></span> - 
-                  <span>Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>
-                </div>
+            <!-- Body Section (Product Name) -->
+            <div style="height: 60px; padding: 10px; overflow: hidden;">
+              <h3 class="bolded text-dark text-center"><%= produit.nom %></h3> 
+            </div>
 
-                <!-- Footer Section ( tailles and colors) -->
-                <div style="height: 160px; margin-top: 15px; padding: 10px; 
-                            box-sizing: border-box; overflow: hidden; vertical-align: middle;">
-                 
-                  <table>
-                    <tr>
-                      <td>
-                        <%= image_tag(produit.qr_code, class:"img-fluid") if produit.qr_code.present? %>              
-                      </td>
-                      
-                      <td class="p-2">
-                    
-                        <div>
-                          Taille(s) : 
-                          <% if produit.taille.present? %>
-                            <span class="text-dark p-1" style="border: 2px solid black; border-radius: 10px;"> 
-                              <%= produit.taille&.nom %>
-                            </span>
-                      
-                            <hr>
+            <!-- Pricing Section -->
+            <div class="text-center" style="height: 30px; padding: 5px; overflow: hidden;">
+              <span>Location: <%= number_to_currency(produit.prixlocation, locale: :fr, precision: 0) %></span> - 
+              <span>Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>
+            </div>
 
-                            <% same_produit_same_couleur_others_tailles(produit).each do |produit| %>
-                              <span class="p-1" style="color: grey; border: 2px solid grey; border-radius: 10px;"> 
-                                <%= produit.taille.nom if produit.taille&.nom %>
-                              </span>
-                            <% end %>
-                              
-                          <% end %>
-                        </div>
+            <!-- Footer Section (Sizes and Colors) -->
+            <div style="height: 120px; padding: 5px; overflow: hidden;">
+              <table style="width: 100%;">
+                <tr>
+                  <td style="width: 120px;">
+                    <%= image_tag(produit.qr_code, class:"img-fluid") if produit.qr_code.present? %>              
+                  </td>
+                  <td>
+                    <div>Taille(s): 
+                      <% if produit.taille.present? %>
+                        <span style="border: 2px solid black; border-radius: 5px;"> 
+                          <%= produit.taille&.nom %>
+                        </span>
+                        <% same_produit_same_couleur_others_tailles(produit).each do |prod| %>
+                          <span style="border: 2px solid grey; border-radius: 5px; color: grey;">
+                            <%= prod.taille&.nom %>
+                          </span>
+                        <% end %>
+                      <% end %>
+                    </div>
+                    <div>Couleur(s): 
+                      <% if produit.couleur.present? %>
+                        <span style="border: 2px solid black; border-radius: 5px;">
+                          <%= produit.couleur&.nom %>
+                          <div style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: <%= produit.couleur.couleur_code %>"></div>
+                        </span>
+                        <% same_produit_same_taille_others_couleurs(produit).each do |prod| %>
+                          <span style="border: 2px solid grey; border-radius: 5px; color: grey;">
+                            <%= prod.couleur&.nom %>
+                            <div style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: <%= prod.couleur.couleur_code %>"></div>
+                          </span>
+                        <% end %>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </td>
+      <% end %>
 
-                        <hr>
-
-                        <div class="">  
-                          Couleur(s) : 
-                          <% if produit.couleur.present? %>
-                            <span class="text-dark p-1" style="border: 2px solid black; border-radius: 10px;"> 
-                              <span> <%= produit.couleur&.nom %> </span> 
-                              <div class="" style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; margin-right: 10px; background-color: <%= produit.couleur.couleur_code %>"></div>
-                            </span>
-
-                            <hr>
-
-                            <% same_produit_same_taille_others_couleurs(produit).each do |produit| %>
-                              
-                              <span class="text-secondary p-1 m-1" style="color: grey; border: 2px solid grey; border-radius: 10px;"> 
-                                <span> <%= produit.couleur&.nom %> </span> 
-                                <div class="" style="display: inline-block; width: 15px; height: 15px; border-radius: 50%; background-color: <%= produit.couleur.couleur_code %>"></div>
-                              </span>
-                            <% end %>
-                          <% end %>
-                          
-                        </div>
-                      </td>
-
-                    </tr>
-                  </table>
-
-                </div>
-
-              </div>
-            </td>
-          <% end %>
-        <% end %>
-
-
-      </tr>
+      <% if index % 2 == 1 %></tr><% end %> <!-- Close row after every two produits -->
     <% end %>
   </table>
-
 </div>
 
+<div class="page-break"></div>
 
-<div class="page-break"></div>  <%# changement de page vers verso %>
-
+<!-- Back Side Section -->
 <div class="container-edition">
+  <table style="width: 100%; border-collapse: collapse;">
+    <% @produits.each_with_index do |produit, index| %>
+      <% if index % 2 == 0 %><tr><% end %> <!-- Open a new row for every two produits -->
 
-  <table>
+      <% if produit.present? %>
+        <td style="border: 1px solid #ccc; padding: 10px;">
+          <!-- Container for each product -->
+          <div style="width: 450px; margin: 20px;">
 
-    <% @produits.each_slice(2).with_index do |produits_pair, index| %> 
-      <tr>
-        <% produits_pair.each do |produit| %>
-          <% if produit.present? %>
-            <td style="border: 1px solid #ccc; padding: 10px;">
-              <!-- Container for each product -->
-              <div style="width: 450px; margin: 20px;">
+            <!-- Header Section (Image) -->
+            <div style="height: 685px; padding: 10px; box-sizing: border-box; overflow: hidden;">
 
-                <!-- Header Section (Image) -->
-                <div style="height: 685px; padding: 10px; box-sizing: border-box; overflow: hidden;">
+              <% 12.times do %>  
+                <hr class="hr-doted">
+              <% end %>
 
-                  <% 12.times do %>  
-                    <hr class="hr-doted">
-                  <% end %>
+            </div>  
+          </div>
+        </td>
 
-                  
-                </div>  
-              </div>
-            </td>
-          <% end %>
-        <% end %>
-      
-      </tr>
-    
+      <% end %>
+
+      <% if index % 2 == 1 %></tr><% end %> <!-- Close row after every two produits -->
     <% end %>
-  
-  </table>    
-
-</div>     
-
+  </table>
+</div>
