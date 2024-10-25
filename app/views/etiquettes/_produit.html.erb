@@ -1,0 +1,63 @@
+<!-- Section Image -->
+<div class="text-center" style="height: 410px; padding: 10px; box-sizing: border-box;">
+    <%#= image_tag(produit.default_image, class: "img-fluid text-center") %>
+
+    <% if produit.image1.present? %>
+        <%= image_tag(produit.image1, style: "max-width: 100%; height: auto; display: block; margin: 0 auto;") %>
+    <% else %>
+        <%= image_tag wicked_pdf_asset_path('/images/no_photo.png'), class: "img-fluid" %>
+    <% end %>
+
+</div>
+
+<!-- Footer Section (Sizes and Colors) -->
+<div style="height: 120px; padding: 5px;">
+    <table style="width: 100%;">
+        <tr>
+            <td style="width: 160px;">
+                <%= image_tag(produit.qr_code, class:"img-fluid") if produit.qr_code.present? %>              
+            </td>
+
+            <td style="width: 300px; padding: 5px;">
+                <h3 class="bolded text-dark"><%= produit.nom %></h3> 
+
+                <!-- Pricing Section -->
+                <div>
+                    <span>Location: <%= number_to_currency(produit.prixlocation, locale: :fr, precision: 0) %></span> - 
+                    <span>Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>
+                </div>
+
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div style="height: 80px; padding: 5px; margin-top: 20px">
+
+    <div>Taille(s): 
+        <% if produit.taille.present? %>
+            <span style="border: 2px solid black; border-radius: 5px; margin-right: 2px;">
+                <%= produit.taille&.nom %>
+            </span>
+            <% same_produit_same_couleur_others_tailles(produit).each do |prod| %>
+                <span style="border: 2px solid grey; border-radius: 5px; color: grey; margin-right: 2px;">
+                    <%= prod.taille&.nom %>
+                </span>
+            <% end %>
+        <% end %>
+    </div>
+    <div>Couleur(s): 
+        <% if produit.couleur.present? %>
+            <span style="border: 2px solid black; border-radius: 5px; margin-right: 2px;">
+                <%= produit.couleur&.nom %>
+                <div style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: <%= produit.couleur.couleur_code %>"></div>
+            </span>
+            <% same_produit_same_taille_others_couleurs(produit).each do |prod| %>
+                <span style="border: 2px solid grey; border-radius: 5px; color: grey; margin-right: 2px;">
+                    <%= prod.couleur&.nom %>
+                    <div style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: <%= prod.couleur.couleur_code %>"></div>
+                </span>
+            <% end %>
+        <% end %>
+    </div>
+</div>

@@ -164,22 +164,6 @@
 }
 
 
-.container-edition {
-  display: flex;
-  flex-wrap: wrap; /* Allows items to wrap onto multiple lines */
-  /*justify-content: center; /* Horizontally centers items in the container */
- /* margin: 40px; 
-}
-
-
-.table-etiquette{
-  width: 400px;
-  height: 600px;
-  margin: 5px;
- /* background-color: rgb(232, 226, 226);*/
-  border-color: white;
-}
-
 .table-etiquette-verso{
   width: 400px;
   height: 640px;
@@ -266,14 +250,15 @@
 
 .hr-doted {
   border: none;
-  border-top: 2px dotted rgb(137, 135, 135);
+  border-top: 1px dotted rgb(62, 62, 62);
   color: #fff;
   background-color: #fff;
   height: 4px;
-  margin-top: 48px;
+  margin-top: 46px;
   width: 100%;
 }
 
 .test-color{
   color:#8f1f46
 }
+
