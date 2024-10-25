@@ -3,7 +3,7 @@
     <%#= image_tag(produit.default_image, class: "img-fluid text-center") %>
 
     <% if produit.image1.present? %>
-        <%= image_tag(produit.image1, style: "max-width: 100%; height: auto; display: block; margin: 0 auto;") %>
+        <%= image_tag(produit.image1, class: "img-fluid") %>
     <% else %>
         <%= image_tag wicked_pdf_asset_path('/images/no_photo.png'), class: "img-fluid" %>
     <% end %>
@@ -36,11 +36,11 @@
 
     <div>Taille(s): 
         <% if produit.taille.present? %>
-            <span style="border: 2px solid black; border-radius: 5px; margin-right: 2px;">
+            <span style="border: 2px solid black; border-radius: 5px; margin-right: 2px; padding: 1px;">
                 <%= produit.taille&.nom %>
             </span>
             <% same_produit_same_couleur_others_tailles(produit).each do |prod| %>
-                <span style="border: 2px solid grey; border-radius: 5px; color: grey; margin-right: 2px;">
+                <span style="border: 2px solid grey; border-radius: 5px; color: grey; margin-right: 2px; padding: 1px;">
                     <%= prod.taille&.nom %>
                 </span>
             <% end %>
@@ -48,12 +48,12 @@
     </div>
     <div>Couleur(s): 
         <% if produit.couleur.present? %>
-            <span style="border: 2px solid black; border-radius: 5px; margin-right: 2px;">
+            <span style="border: 2px solid black; border-radius: 5px; margin-right: 2px; padding: 1px;">
                 <%= produit.couleur&.nom %>
                 <div style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: <%= produit.couleur.couleur_code %>"></div>
             </span>
             <% same_produit_same_taille_others_couleurs(produit).each do |prod| %>
-                <span style="border: 2px solid grey; border-radius: 5px; color: grey; margin-right: 2px;">
+                <span style="border: 2px solid grey; border-radius: 5px; color: grey; margin-right: 2px; padding: 1px;">
                     <%= prod.couleur&.nom %>
                     <div style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: <%= prod.couleur.couleur_code %>"></div>
                 </span>
