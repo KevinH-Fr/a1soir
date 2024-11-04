@@ -40,14 +40,11 @@
             <td class="td-doc-valeurs ended"> <%= custom_currency_format(article.total) %> </td>
             <td class="td-doc-valeurs ended"> <%= custom_currency_format(article.caution) %> </td>
 
-
-
             <% if article.sousarticles.present? %>
 
-              <tr>
-
-                <% article.sousarticles.each do |sousarticle| %>
+              <% article.sousarticles.each do |sousarticle| %>
   
+                <tr>
                   <td colspan=2> </td>
 
                   <td class="">
@@ -73,17 +70,15 @@
                   <td>         
                     <%= custom_currency_format(sousarticle.caution) %>    
                   </td>
-                <% end %>    
-
-              </tr>
+                </tr>        
+              
+              <% end %>    
       
             <% end %>
             
           </tr> 
 
         <% end %>
-
-      
       
       </tbody>
 

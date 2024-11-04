@@ -10,7 +10,7 @@
 <% if @commande %>
     <div class="collapse" id="collapseNewMeeting">
         <div id="new_meeting" class="mb-3">
-            <%= render partial: 'meetings/form', locals: { commande_id: @commande.id, meeting: Meeting.new } %>
+            <%= render partial: 'meetings/form', locals: { commande_id: @commande.id, client_id: nil, meeting: Meeting.new } %>
         </div>
     </div>
 
@@ -23,7 +23,7 @@
 <% elsif @client %>
     <div class="collapse" id="collapseNewMeeting">
         <div id="new_meeting" class="mb-3">
-            <%= render partial: 'meetings/form', locals: { client_id: @client.id, meeting: Meeting.new } %>
+            <%= render partial: 'meetings/form', locals: { client_id: @client.id, commande_id: nil, meeting: Meeting.new } %>
         </div>
     </div>
 

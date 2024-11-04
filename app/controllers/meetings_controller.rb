@@ -65,12 +65,17 @@ class MeetingsController < ApplicationController
   # GET /meetings/new
   def new
     @meeting = Meeting.new
+
+    @client = params[:client_id] 
+    @commande = params[:commande_id] 
+
   end
 
   def edit
     @commande = @meeting.commande
     @client = @meeting.client
     
+
     respond_to do |format|
       format.html 
       format.turbo_stream do  
@@ -86,7 +91,8 @@ class MeetingsController < ApplicationController
     @meeting = Meeting.new(meeting_params)
 
     @client = params[:client_id] 
-    
+    @commande = params[:commande_id] 
+
     respond_to do |format|
       if @meeting.save
 
@@ -94,20 +100,29 @@ class MeetingsController < ApplicationController
           
           format.turbo_stream do
             render turbo_stream: [
-              turbo_stream.update('new',
+              turbo_stream.update('new_meeting',
                 partial: "meetings/form",
-                                locals: { meeting: Meeting.new }),
-                                
-                                turbo_stream.prepend('meetings',
-                                  partial: "meetings/meeting",
-                                  locals: { meeting: @meeting }),
-                                  turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
-                                ]
+                  locals: { meeting: Meeting.new, commande_id: @meeting.commande_id, client_id: @meeting.client_id}),
+                  
+              turbo_stream.prepend('meetings',
+                partial: "meetings/meeting",
+                locals: { meeting: @meeting }),
+                turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+              ]
           end
         
         format.html { redirect_to meeting_url(@meeting), notice: I18n.t('notices.successfully_created') }
         format.json { render :show, status: :created, location: @meeting }
       else
+
+        format.turbo_stream do
+          render turbo_stream: 
+            turbo_stream.update(@meeting,
+              partial: "meetings/form", 
+              locals: {meeting: @meeting, commande_id: @meeting.commande_id, client_id: @meeting.client_id}
+            )
+        end
+
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @meeting.errors, status: :unprocessable_entity }
       end
