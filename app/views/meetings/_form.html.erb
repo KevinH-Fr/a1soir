@@ -24,13 +24,13 @@
 
 
         <div class="input-group mb-1">
-          <%= form.label :datedebut, class: "input-group-text label-with-format" %>
+          <%= form.label :datedebut, "date début", class: "input-group-text label-with-format" %>
           <%= form.datetime_field :datedebut, class: "form-control m-1 p-1",
                 data: { action: "change->date-fields#updateDateFin", date_fields_target: "datedebut" } %>
         </div>
 
         <div class="input-group mb-1">
-          <%= form.label :datefin, class: "input-group-text label-with-format" %>
+          <%= form.label :datefin, "date fin", class: "input-group-text label-with-format" %>
           <%= form.datetime_field :datefin, class: "form-control m-1 p-1",
             data: {  date_fields_target: "datefin" } %>
         </div>

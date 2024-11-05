@@ -5,12 +5,10 @@
         <div class="card-title d-flex">
           <div data-turbo="false">
             <%= link_to client_path(client), class: "text-decoration-none text-dark" do %>
-              <%= client.prenom %>
-              <%= client.nom %>
+              <%= custom_badge("", "", "", "fw-bold", client.full_name) %>
             <% end %>
           </div>
-        
-          <%= client.propart %>
+          <%= custom_badge("", "", "", "", client.propart) %>
 
           <%= link_to "", "#collapseClient#{dom_id(client)}", 
                 class: "btn btn-sm btn-outline-primary fa fa-eye m-1", "data-bs-toggle": "collapse", 
