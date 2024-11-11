@@ -1,46 +1,34 @@
 
 <div id="<%= dom_id meeting %>" class="my-2">
 
-  <div class="card mx-2 mb-3 p-3 light-beige-colored shadow-sm">
+  <div class="card mx-2 mb-3 p-2 light-beige-colored shadow-sm">
 
-    <div class="d-flex flex-col">
-      <%= meeting.nom %>
+    <div class="row">
+      <div class="col-10">
+        <%= custom_badge("", "", "", "",  meeting.nom) %>
+        <%= custom_badge("fa-calendar", "", "", "",  meeting.full_date) %>
 
-      <div class="badge text-dark mx-1">
-        <i class="fa fa-calendar"></i>
-        <%= l(meeting.datedebut , format: :short) %> -
-        <%= l(meeting.datefin , format: :short) %>      
+        <% if meeting.lieu.present? %>
+          <%= custom_badge("fa-map", "", "", "",  meeting.lieu) %>
+        <% end %>
+
+        <% if meeting.commande %>
+          <% unless controller_name == 'commandes' && action_name == 'show' %>
+            <%= custom_badge("", "", "", "", meeting.commande.full_name ) %>
+          <% end %>
+        <% end %>
+        
+        <% if meeting.client %>
+          <% unless controller_name == 'clients' && action_name == 'show' %>
+            <%= custom_badge("", "", "", "", meeting.client.full_name ) %>
+          <% end %>
+        <% end %>
+
       </div>
-
-      <% if meeting.lieu.present? %>
-
-        <div class="badge text-dark">
-          <i class="fa fa-map"></i>
-          <%= meeting.lieu %>     
-        </div>
-
-      <% end %>
-
+      <div class="col-2">
+        <%= links_record(meeting) %>  
+      </div>
     </div>
-
-    <% if meeting.commande %>
-      <% unless controller_name == 'commandes' && action_name == 'show' %>
-        <p>
-          <strong>Commande:</strong>
-          <%= meeting.commande.full_name %>
-        </p>
-      <% end %>
-    <% end %>
-    
-    <% if meeting.client %>
-      <p>
-        <strong>Client:</strong>
-        <%= meeting.client.full_name %>
-      </p>
-    <% end %>
-
-    <%= links_record(meeting) %>  
-
   </div>
 
 </div>

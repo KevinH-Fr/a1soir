@@ -35,6 +35,10 @@ class Meeting < ApplicationRecord
     datefin
   end
 
+  def full_date
+    "#{datedebut.strftime('%d-%m %H:%M')} - #{datefin.strftime('%H:%M')}"
+  end
+
   def meeting_info
     "#{datedebut.strftime('%d-%m %H:%M')} - #{full_name}"
   end
