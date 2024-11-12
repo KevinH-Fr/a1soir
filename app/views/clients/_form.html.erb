@@ -21,13 +21,13 @@
       ) %>
 
       <div class="input-group px-2 mb-1">
-        <%= form.label :propart, class: "input-group-text" %>
-        <%= form.select :propart, Client::PROPART_OPTIONS, { include_blank: 'Sélectionner' }, class: "form-select" %>
+        <%= form.label :propart, "Pro / Particulier", class: "input-group-text" %>
+        <%= form.select :propart, Client::PROPART_OPTIONS, { include_blank: '' }, class: "form-select" %>
       </div>
 
       <div class="input-group px-2 mb-1">
         <%= form.label :intitule, class: "input-group-text" %>
-        <%= form.select :intitule, Client::INTITULE_OPTIONS, { include_blank: 'Sélectionner' }, class: "form-select" %>
+        <%= form.select :intitule, Client::INTITULE_OPTIONS, { include_blank: '' }, class: "form-select" %>
       </div>
 
       <%= custom_form_elements(form, 
