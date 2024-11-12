@@ -1,5 +1,5 @@
 class Produit < ApplicationRecord
-  belongs_to :categorie_produit, optional: true
+  belongs_to :categorie_produit
   belongs_to :type_produit, optional: true
 
   belongs_to :fournisseur, optional: true
