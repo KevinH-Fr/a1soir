@@ -51,7 +51,7 @@
     <div class="container-fluid">
       <% if article.sousarticles.present? %>
         <hr>
-        <h5 class="fw-bold">Sous-articles:</h5>
+        <h6 class="fw-bold">Sous-articles:</h6>
         <% article.sousarticles.each do |sousarticle| %>
           <%= render partial: 'sousarticles/sousarticle', locals: { sousarticle: sousarticle } %>
         <% end %>    

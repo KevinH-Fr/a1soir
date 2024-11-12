@@ -60,16 +60,16 @@ module IndexModelHelper
       end
   end
 
-
-  def links_record(model)
+  def links_record(model, turbo_delete: false)
     content_tag(:div, class: "d-flex justify-content-end") do
       concat(link_to("", model, class: "btn btn-sm btn-primary fa-solid fa-square-up-right me-1 p-2", data: { turbo: false }))
       concat(button_to("", edit_polymorphic_path(model), method: :post, class: "btn btn-sm btn-secondary fa-solid fa-pen-to-square me-1 p-2"))
-      concat(button_to("", model, method: :delete, 
-        :onclick => "return confirm('Etes-vous certain de vouloir supprimer cet élément ?')",
+      concat(button_to("", model, method: :delete, data: { turbo: turbo_delete }, 
+        onclick: "return confirm('Etes-vous certain de vouloir supprimer cet élément et tous les éléments liés ?')",
         class: "btn btn-sm btn-danger fa-solid fa-trash me-1 p-2"))
     end
   end
+  
   
 
 

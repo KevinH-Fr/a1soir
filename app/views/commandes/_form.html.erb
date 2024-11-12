@@ -19,7 +19,7 @@
         [:nom, :text_field] ) %>
 
       <div class="m-1">
-        <div class="input-group input-group">
+        <div class="input-group">
         
           <% if @client %>
             <%= form.hidden_field :client_id, value: @client.id %>
@@ -27,7 +27,7 @@
             <%= form.label :client_id, class: "input-group-text" %>
             <%= form.select :client_id, 
               options_for_select(Client.all.order(:nom).pluck(:nom, :id)),
-              { include_blank: 'Select' },
+              { include_blank: '' },
               { class: "form-select" } %>
           <% end %>
 
@@ -35,21 +35,23 @@
       </div>
 
       <div class="m-1">
-        <div class="input-group input-group">
+        <div class="input-group mb-1">
           <%= form.label :profile_id, class: "input-group-text" %>
           <%= form.collection_select :profile_id, @profiles.all.order(:nom), :id, :full_name, 
           { include_blank: 'Select' }, class: "form-select" %>
         </div>
-      </div>
 
-      <div class="input-group mb-1">
-        <%= form.label :typeevent, class: "input-group-text" %>
-        <%= form.select :typeevent, Commande::EVENEMENTS_OPTIONS, { include_blank: 'Select' }, class: "form-select" %>
+        <div class="input-group">
+          <%= form.label :typeevent, "Evénement", class: "input-group-text" %>
+          <%= form.select :typeevent, Commande::EVENEMENTS_OPTIONS, { include_blank: '' }, class: "form-select" %>
+        </div>
+        
       </div>
-      
+    
       <%= custom_form_elements(form, 
         [:description, :text_area], 
-        [:debutloc, :date_field], [:finloc, :date_field], [:dateevent, :date_field],
+        [:debutloc, :date_field, "Début location"], [:finloc, :date_field, "Fin location"], 
+        [:dateevent, :date_field, "Date événement"],
         [:commentaires, :text_area], [:devis, :check_box]
       ) %>
 

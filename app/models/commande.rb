@@ -2,12 +2,12 @@ class Commande < ApplicationRecord
   belongs_to :client
   belongs_to :profile
 
-  has_many :articles
-  has_many :paiement_recus
-  has_many :avoir_rembs
-  has_many :meetings 
-  
-  has_one_attached :qr_code
+  has_many :articles, dependent: :destroy
+  has_many :paiement_recus, dependent: :destroy
+  has_many :avoir_rembs, dependent: :destroy
+  has_many :meetings, dependent: :destroy
+
+  has_one_attached :qr_code, dependent: :destroy
 
   after_create :after_commande_create
   after_create :generate_qr
@@ -21,7 +21,7 @@ class Commande < ApplicationRecord
   # filtres analyses
   scope :filtredatedebut, -> (debut) { where("created_at >= ?", debut.beginning_of_day) }
   scope :filtredatefin, -> (fin) { where("created_at <= ?", fin.end_of_day) }
-  
+
 
   EVENEMENTS_OPTIONS = ['mariage', 'soirée', 'divers']
 
@@ -38,17 +38,17 @@ class Commande < ApplicationRecord
   end
 
   def is_location
-    type_locvente == "location" ? true : false 
+    type_locvente == "location" ? true : false
   end
 
   def is_vente
-    type_locvente == "vente" ? true : false 
+    type_locvente == "vente" ? true : false
   end
 
   def full_event
     "#{typeevent}" " #{dateevent.strftime("%d/%m/%Y") if dateevent} "
   end
-  
+
   def date_retenue
     debutloc.present? ? debutloc : Date.today
   end
@@ -61,7 +61,7 @@ class Commande < ApplicationRecord
   def next_upcoming_meeting
     meetings.where('datedebut > ?', Time.now).order(datedebut: :asc).first
   end
-  
+
   def self.ransackable_attributes(auth_object = nil)
     ["id", "nom", "montant", "description", "client_id", "debutloc", "finloc", "dateevent", "statutarticles", "typeevent", "profile_id", "commentaires", "commentaires_doc", "type_locvente", "devis"]
   end
@@ -69,7 +69,7 @@ class Commande < ApplicationRecord
   def self.ransackable_associations(auth_object = nil)
     ["articles", "avoir_rembs", "client", "meetings", "paiement_recus", "profile"]
   end
-  
+
   private
 
   def after_commande_create
