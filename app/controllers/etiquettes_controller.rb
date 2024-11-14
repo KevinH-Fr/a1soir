@@ -39,5 +39,7 @@ class EtiquettesController < ApplicationController
         end
       end
     end 
+
+    
   end
   

@@ -9,8 +9,7 @@
         <p> Stock initial : <span class="fw-bold"> <%= total_produits(extract_ids(@produit)) %> </span> </p> 
         <p> Total loués : <span class="fw-bold"> <%= total_loues(extract_ids(@produit)) %> </span> </p> 
         <p> Total vendus : <span class="fw-bold"> <%= total_vendus(extract_ids(@produit)) %> </span> </p> 
-        <p> Loc terminées : <span class="fw-bold"> <%= total_vendus(extract_ids(@produit)) %> </span> </p> 
-        <p> Restant : <span class="fw-bold"> <%= locations_terminees_a_date(extract_ids(@produit), Time.now.to_date) %> </span> </p> 
+        <p> Loc terminées : <span class="fw-bold"> <%= locations_terminees_a_date(extract_ids(@produit)) %> </span> </p> 
 
         <%= badge_disponibilite(@produit, Time.now.to_date) %>
 

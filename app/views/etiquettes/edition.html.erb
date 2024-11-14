@@ -1,37 +1,38 @@
-<table>
-  <% @produits.each_slice(2).with_index do |produits_pair| %>
-    <tr>
-      <% produits_pair.each do |produit| %>
-        <% if produit.present? %>
+ 
+  <table>
+    <% @produits.each_slice(2).with_index do |produits_pair| %>
+      <tr>
+        <% produits_pair.each do |produit| %>
+          <% if produit.present? %>
 
-          <td style="width: 450px; height: 632px; border: 1px solid #ccc; padding: 10px; box-sizing: border-box;">
-            <%= render 'etiquettes/produit', produit: produit %>
-          </td>
-        
+            <td style="width: 450px; height: 632px; border: 1px solid #ccc; padding: 10px; box-sizing: border-box;">
+              <%= render 'etiquettes/produit', produit: produit %>
+            </td>
+          
+          <% end %>
+          
         <% end %>
         
-      <% end %>
-      
 
-    </tr>
-  <% end %>
-</table>
+      </tr>
+    <% end %>
+  </table>
 
 
-<div class="page-break"></div>
+  <div class="page-break"></div>
 
 
-<!-- Back Side Section -->
-<table>
-  <% 2.times do %>
-    <tr>
-      <% 2.times do %>
-        <td style="width: 450px; height: 632px; border: 1px solid #ccc; padding: 10px; box-sizing: border-box;">
-          <% 12.times do %>
-            <hr class="hr-doted">
-          <% end %>
-        </td>
-      <% end %>
-    </tr>
-  <% end %>
-</table>
+  <!-- Back Side Section -->
+  <table>
+    <% 2.times do %>
+      <tr>
+        <% 2.times do %>
+          <td style="width: 450px; height: 632px; border: 1px solid #ccc; padding: 10px; box-sizing: border-box;">
+            <% 12.times do %>
+              <hr class="hr-doted">
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
