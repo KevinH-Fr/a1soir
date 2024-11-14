@@ -1,4 +1,4 @@
-<%= bandeau_entete("Commandes", "file-invoice", @commandes.count, 
+<%= bandeau_entete("Commandes", "file-invoice", Commande.count, 
   :nom_or_type_locvente_or_typeevent_cont, commandes_path) %>
 
 <%= bloc_nouveau(Commande) %>

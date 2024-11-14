@@ -8,6 +8,7 @@ class Commande < ApplicationRecord
   has_many :meetings, dependent: :destroy
 
   has_one_attached :qr_code, dependent: :destroy
+  has_many :doc_editions, dependent: :destroy
 
   after_create :after_commande_create
   after_create :generate_qr

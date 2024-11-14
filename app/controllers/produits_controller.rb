@@ -178,12 +178,12 @@ class ProduitsController < ApplicationController
         end
   
         original.images.each do |image|
-          if image.attached?
+          #if image.attached?
             copy.images.attach \
               io: StringIO.new(image.download),
               filename: image.filename,
               content_type: image.content_type
-          end
+          #end
         end
   
         copy.save!
