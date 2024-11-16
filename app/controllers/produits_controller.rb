@@ -11,7 +11,7 @@ class ProduitsController < ApplicationController
        # or_prixvente_or_prixlocation 
        
     @q = Produit.ransack(search_params[:q])
-    produits = @q.result(distinct: true).order(created_at: :desc)
+    produits = @q.result(distinct: true).order(nom: :asc)
     @pagy, @produits = pagy_countless(produits, items: 2)
 
 
