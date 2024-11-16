@@ -23,8 +23,12 @@
 
                 <!-- Pricing Section -->
                 <div>
-                    <span>Location: <%= number_to_currency(produit.prixlocation, locale: :fr, precision: 0) %></span> - 
-                    <span>Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>
+                    <% if produit.prixvente %>
+                        <span>Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>                      
+                    <% end %>
+                    <% if produit.prixlocation %>
+                        <span>Location: <%= number_to_currency(produit.prixlocation, locale: :fr, precision: 0) %></span> 
+                    <% end %>
                 </div>
 
             </td>

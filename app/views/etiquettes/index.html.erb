@@ -1,38 +1,45 @@
 <%= bandeau_entete("Etiquettes", "tags", "", "", "") %>
 
-<div class="mx-2">
-  <!-- Form to submit the select_tag values to the 'edition' action -->
-  <%= form_tag edition_etiquettes_path, method: :post, format: :pdf, data: { turbo: false } do %>
-     <div class="input-group mb-1">
-      <%= label_tag :prod1, " Produit n°1", class: "input-group-text label-with-format centered" %>
-      <%= select_tag :prod1, options_for_select(@produits.map { |p| [p.nom_ref_couleur_taille, p.id] }), 
-          prompt: "Selectionner un produit", class: "form-select field-with-format" %>
+<div class="p-2">
+  <%= index_search_form(@q, etiquettes_path, :nom_or_reffrs_or_handle_or_categorie_produit_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont ) %>
+
+  <% if session[:selection_etiquettes].present? %>
+    <div class="d-flex align-items-center m-2">
+      <strong> Sélection active :   </strong>
+
+      <% session[:selection_etiquettes].each do |produit| %>
+
+        <%= custom_badge("", "", "", "", Produit.find(produit).full_name ) %>
+
+      <% end %>
+
+      <%= form_with url: reset_selection_etiquettes_path, method: :post, data: { turbo: false } do |form| %>
+        <button type="submit" class="btn text-danger">
+          <i class="fa-regular fa-xl fa-circle-xmark"></i> 
+        </button>
+      <% end %>
+      
     </div>
 
-    <div class="input-group mb-1">
-      <%= label_tag :prod2, " Produit n°2", class: "input-group-text label-with-format centered" %>
-      <%= select_tag :prod2, options_for_select(@produits.map { |p| [p.nom_ref_couleur_taille, p.id] }), 
-          prompt: "Selectionner un produit", class: "form-select field-with-format" %>
+    <div class="text-end">
+      <%= link_to generate_pdf_etiquettes_path, class: "btn btn-danger" do %>
+        <span class="fw-bold ms-2"> Edition étiquette</span>
+        <i class="fa-regular fa-file"></i> 
+      <% end %>
     </div>
 
-    <div class="input-group mb-1">
-      <%= label_tag :prod3, " Produit n°3", class: "input-group-text label-with-format centered" %>
-      <%= select_tag :prod3, options_for_select(@produits.map { |p| [p.nom_ref_couleur_taille, p.id] }), 
-          prompt: "Selectionner un produit", class: "form-select field-with-format" %>
-    </div>
-
-    <div class="input-group mb-1">
-      <%= label_tag :prod4, " Produit n°4", class: "input-group-text label-with-format centered" %>
-      <%= select_tag :prod4, options_for_select(@produits.map { |p| [p.nom_ref_couleur_taille, p.id] }), 
-          prompt: "Selectionner un produit", class: "form-select field-with-format" %>
-    </div>
-
-    <div class="text-end mt-2">
-      <!-- Submit button to submit the form and call the 'edition' action in the controller -->
-      <%= submit_tag 'Editer', class: 'btn m-1 btn-danger' %>
-    </div>
   <% end %>
+
 </div>
 
+
+<%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+
+<div id="etiquettes"> </div> 
+
+<%= turbo_frame_tag :pagination, loading: :lazy, 
+                        src: etiquettes_path(format: :turbo_stream,
+                        q: params[:q]&.to_unsafe_h) %>
+<% end %>
 
 <%#= link_to 'print', 'your_link_here', :onclick => 'window.print();return false;'%>

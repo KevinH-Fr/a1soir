@@ -1,0 +1,14 @@
+<%# produits infinite scroll pagination %>
+
+<%= turbo_stream.append :etiquettes do %>
+    <%= render @produits %>
+<% end %>
+
+<% if @pagy.next.present? %>
+    <%= turbo_stream.replace :pagination do %>
+        <%= turbo_frame_tag :pagination, loading: :lazy,
+                            src: etiquettes_path(format: :turbo_stream,
+                            page: @pagy.next, q: params[:q]&.to_unsafe_h ) %>
+    <% end %>
+
+<% end %>

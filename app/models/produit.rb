@@ -74,7 +74,8 @@ class Produit < ApplicationRecord
   end
 
   def generate_handle
-    # Ensure nom is not nil before processing
+    # handle used to regroup products for colors and tailles
+    # quid utiliser nom ou reffrs
     return unless nom
 
     # Use ActiveSupport's parameterize method to generate the handle

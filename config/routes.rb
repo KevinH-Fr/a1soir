@@ -152,7 +152,8 @@ Rails.application.routes.draw do
 
   resources :etiquettes do
     collection do
-      post :edition           # For the form submission
+      post :reset_selection
+      post :update_selection
       get :generate_pdf, defaults: { format: :pdf }  # Force the format to PDF
     end
   end

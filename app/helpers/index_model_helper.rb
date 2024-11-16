@@ -69,9 +69,6 @@ module IndexModelHelper
         class: "btn btn-sm btn-danger fa-solid fa-trash me-1 p-2"))
     end
   end
-  
-  
-
 
   def return_model_index_button(text, path)
     content_tag(:div, class: "m-1 d-flex align-items-center") do
