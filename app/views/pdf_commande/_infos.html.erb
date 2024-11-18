@@ -2,10 +2,19 @@
 <div class="cadre">
 
     <span>Client </span> 
-    <span class="doc-important"> <%= @doc_edition.commande.client.full_name %> </span> <br><br>
+    <span class="doc-important"> <%= @doc_edition.commande.client.full_name %> </span> <br>
 
-    <span>Evénement</span>
-    <span class="doc-important"> <%= @doc_edition.commande.full_event %> </span> <br>
+    <% if @doc_edition.commande.typeevent.present? %>
+        <br>
+        <span>Evénement</span>
+        <span class="doc-important"> <%= @doc_edition.commande.full_event %> </span> <br>
+    <% end %>
+    
+
+    <% if @doc_edition.commande.debutloc %>
+        <span> <%= @doc_edition.commande.label_dates_location %> </span> <br>
+    <% end %>
+
     <br>
 
     courriel: <span class="doc-important"> <%= @doc_edition.commande.client.mail %> </span> <br>

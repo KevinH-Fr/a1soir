@@ -52,7 +52,7 @@
               <% if controller_name == "etiquettes"  && action_name == "index" %> 
                 <div class="container text-end">
 
-                  <% if session[:selection_etiquettes]&.count < 4 %>
+                  <% if session[:selection_etiquettes].count < 4 %>
                     
                     <%= form_with url: update_selection_etiquettes_path, method: :post, local: true, data: { turbo: false } do |form| %>
                       <%= form.hidden_field :new_product, value: produit.id %>

@@ -55,6 +55,12 @@ class Commande < ApplicationRecord
   end
   # ajouter is mixte ?
 
+  def label_dates_location 
+    if debutloc && finloc
+      "Location du #{debutloc.strftime("%d/%m/%Y")} au #{finloc.strftime("%d/%m/%Y")}"
+    end
+  end
+
   def generate_qr
     GenerateQr.call(self)
   end
