@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_22_140859) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_18_134046) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -83,6 +83,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_22_140859) do
     t.integer "commande_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "custom_date"
     t.index ["commande_id"], name: "index_avoir_rembs_on_commande_id"
   end
 
@@ -219,6 +220,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_22_140859) do
     t.text "commentaires"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "custom_date"
     t.index ["commande_id"], name: "index_paiement_recus_on_commande_id"
   end
 

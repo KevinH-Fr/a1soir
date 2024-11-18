@@ -13,7 +13,7 @@
       </div>
     <% end %>
 
-    <div class="mx-1 px-2">
+    <div class="m-1">
       <div class="input-group input-group">
         <%= form.label :type_avoir_remb, class: "input-group-text" %>
         <%= form.select :type_avoir_remb, AvoirRemb::TYPE_AVOIRREMB,
@@ -25,6 +25,13 @@
       [:montant, :number_field],
       [:nature, :text_field] )
     %>
+
+    <div class="m-1">
+      <div class="input-group">
+        <%= form.label :custom_date, "Date", class: "input-group-text" %>
+        <%= form.date_field :custom_date, value: avoir_remb.custom_date || Date.current, class: "form-control" %>
+      </div>
+    </div>
 
     <%= form.hidden_field :commande_id, value: commande_id %>
 

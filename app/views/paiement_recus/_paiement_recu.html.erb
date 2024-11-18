@@ -8,6 +8,8 @@
         <strong> <%= paiement_recu.typepaiement %> </strong>
         <%= custom_currency_no_decimals_format(paiement_recu.montant) %>
         <%= "par #{paiement_recu.moyen}" if paiement_recu.moyen.present? %>
+        <%= "le #{paiement_recu.custom_date.strftime("%d/%m/%Y")}" if paiement_recu.custom_date.present? %>
+
 
         <%= link_to "", "#collapsePaiementRecu#{dom_id(paiement_recu)}", 
               class: "btn btn-sm btn-outline-primary fa fa-eye m-1", "data-bs-toggle": "collapse", 

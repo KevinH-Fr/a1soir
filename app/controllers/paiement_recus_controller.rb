@@ -151,7 +151,7 @@ class PaiementRecusController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def paiement_recu_params
-      params.require(:paiement_recu).permit(:typepaiement, :montant, :commande_id, :moyen, :commentaires)
+      params.require(:paiement_recu).permit(:typepaiement, :montant, :commande_id, :moyen, :commentaires, :custom_date)
     end
 
 end

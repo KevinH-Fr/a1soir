@@ -16,6 +16,7 @@ class PaiementRecu < ApplicationRecord
   scope :only_virement, -> { where(moyen: 'virement') }
 
   # filtres analyses
+  # check if on created_at or custom_date
   scope :filtredatedebut, -> (debut) { where("created_at >= ?", debut.beginning_of_day) }
   scope :filtredatefin, -> (fin) { where("created_at <= ?", fin.end_of_day) }
   
