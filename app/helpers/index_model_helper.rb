@@ -60,7 +60,7 @@ module IndexModelHelper
       end
   end
 
-  def links_record(model, turbo_delete: false)
+  def links_record(model, turbo_delete: true)
     content_tag(:div, class: "d-flex justify-content-end") do
       concat(link_to("", model, class: "btn btn-sm btn-primary fa-solid fa-square-up-right me-1 p-2", data: { turbo: false }))
       concat(button_to("", edit_polymorphic_path(model), method: :post, class: "btn btn-sm btn-secondary fa-solid fa-pen-to-square me-1 p-2"))
