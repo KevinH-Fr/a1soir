@@ -31,7 +31,7 @@
           <%= link_to selection_produit_path(
             commande: @commande, article: article), 
             class: "btn btn-sm btn-warning fw-bold" do %>
-            <i class="fa fa-plus"></i>
+            <i class="bi bi-plus-lg"></i>
             <span>Sous-article </span>          
           <% end %>
         </div>    
@@ -39,11 +39,11 @@
       </div>
 
       <div class="col-2 text-end">
-        <%= link_to "", "#collapseArticle#{dom_id(article)}", class: "btn btn-sm btn-primary fa fa-eye m-1", "data-bs-toggle": "collapse", role: "button", "aria-expanded": "false", "aria-controls": "collapseArticle#{dom_id(article)}" %>
+        <%= link_to "", "#collapseArticle#{dom_id(article)}", class: "btn btn-sm btn-primary bi bi-eye m-1", "data-bs-toggle": "collapse", role: "button", "aria-expanded": "false", "aria-controls": "collapseArticle#{dom_id(article)}" %>
         <%= button_to "", edit_article_path(article), method: :post, class: "btn btn-sm btn-secondary fa-solid fa-pen-to-square m-1" %>
         <%= button_to "", article, method: :delete,  
               onclick: "return confirm('Confirmer suppression ?');", 
-              class: "btn btn-sm m-1 btn-danger fa-solid fa-trash m-1" %>
+              class: "btn btn-sm m-1 btn-danger bi bi-trash m-1" %>
       </div>
       
     </div>

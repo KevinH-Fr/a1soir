@@ -25,10 +25,10 @@
 
       <div class="col text-end">
         <%= link_to "", "#collapseSousarticle#{dom_id(sousarticle)}", 
-              class: "btn btn-sm btn-primary fa fa-eye m-1", "data-bs-toggle": "collapse", 
+              class: "btn btn-sm btn-primary bi bi-eye m-1", "data-bs-toggle": "collapse", 
               role: "button", "aria-expanded": "false", "aria-controls": "collapseSousarticle#{dom_id(sousarticle)}" %>
         <%= button_to "", edit_sousarticle_path(sousarticle), method: :post, class: "btn btn-sm btn-secondary fa-solid fa-pen-to-square m-1" %>
-        <%= button_to "", sousarticle, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm m-1 btn-danger fa-solid fa-trash m-1" %>
+        <%= button_to "", sousarticle, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm m-1 btn-danger bi bi-trash m-1" %>
       </div>
 
     </div>

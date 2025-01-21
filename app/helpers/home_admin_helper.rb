@@ -4,7 +4,7 @@ module HomeAdminHelper
       concat(content_tag(:div, class: "card-header bg-dark text-light py-1") do
         concat(content_tag(:div, class: "row align-items-center m-0 p-1") do
           concat(content_tag(:div, class: "col text-start m-0 p-0") do
-            concat(content_tag(:i, nil, class: "fa fa-xl brand-colored fa-#{icon}"))
+            concat(content_tag(:i, nil, class: "bi bi-xl brand-colored bi-#{icon}"))
           end)
 
           concat(content_tag(:div, class: "col text-center fw-bold text-nowrap") do
@@ -12,7 +12,7 @@ module HomeAdminHelper
           end)
 
           concat(content_tag(:div, class: "col text-end m-0 p-0") do
-            concat(link_to("", new_path, class: "fa fa-add btn btn-warning btn-sm"))
+            concat(link_to("", new_path, class: "bi bi-plus-lg btn btn-warning btn-sm"))
           end)
         end)
       end)
@@ -23,7 +23,7 @@ module HomeAdminHelper
             items.each do |item|
               concat(content_tag(:tr) do
                 concat(content_tag(:td) do
-                  concat(content_tag(:i, nil, class: "fa fa-#{item[:icon]} me-1")) # Include icon for each item
+                  concat(content_tag(:i, nil, class: "bi bi-#{item[:icon]} me-1")) # Include icon for each item
                   concat(link_to item[:text], item[:path], class: "text-dark crop text-decoration-none")
                 end)
               end)
@@ -36,7 +36,7 @@ module HomeAdminHelper
 
   def options_supplementaires_link(path, icon_class, text, btn_class)
     link_to(path, class: "me-1 mb-1 btn btn-sm #{btn_class}") do
-      concat content_tag(:i, "", class: "fa #{icon_class} me-1")
+      concat content_tag(:i, "", class: "bi #{icon_class} me-1")
       concat content_tag(:span, text, class: "fw-bold")
     end
   end

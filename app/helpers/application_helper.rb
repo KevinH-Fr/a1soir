@@ -43,7 +43,7 @@ module ApplicationHelper
     end
 
     def color_icon(couleur)
-      content_tag(:i, '', class: "fa fa-circle mx-1", style: "color: #{couleur.couleur_code}")
+      content_tag(:i, '', class: "bi bi-circle-fill mx-1", style: "color: #{couleur.couleur_code}")
     end
 
     def icon_true_field_with_label(text, value)

@@ -1,6 +1,6 @@
 
 <%= search_form_for @q, url: chemin_recherche, html: { class: "d-flex align-items-center w-100 position-relative" }, data: { turbo_frame: :results } do |f| %>
   <%= f.search_field champs_recherche, class: "form-control w-100 me-1 ps-5", autofocus: true, autocomplete: 'off', placeholder: "Rechercher", oninput: 'this.form.requestSubmit()' %>
-  <i class="fa fa-magnifying-glass position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%);"></i>
+  <i class="bi bi-search position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%);"></i>
 <% end %>
 

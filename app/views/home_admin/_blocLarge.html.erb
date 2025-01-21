@@ -4,7 +4,7 @@
 
         <div class="row align-items-center m-0 p-1">
             <div class="col text-start m-0 p-0 ">
-                <i class="fa fa-xl brand-colored fa-compass me-2"></i>
+                <i class="bi bi-xl brand-colored bi-compass me-2"></i>
             </div>
             <div class="col text-center fw-bold text-nowrap">
                 Accès
@@ -18,19 +18,19 @@
 
     <div class= "card-body p-2 light-beige-colored text-center">
 
-        <%= options_supplementaires_link(users_path, "fa-user-circle", "Comptes", "btn-outline-primary") %>
-        <%= options_supplementaires_link(profiles_path, "fa-user-gear", "Profiles", "btn-outline-dark") %>
-        <%= options_supplementaires_link(root_path, "fa-bullhorn", "Marketing", "btn-outline-warning") %>
-        <%= options_supplementaires_link(analyses_index_path, "fa-chart-line", "Analyses", "btn-outline-success") %>
-        <%= options_supplementaires_link(etiquettes_index_path, "fa-tags", "Etiquettes", "btn-outline-secondary") %>
-        <%= options_supplementaires_link(stock_index_path, "fa-box-open", "Stocks", "btn-outline-danger") %>
-        <%= options_supplementaires_link(fournisseurs_path, "fa-industry", "Fournisseurs", "btn-outline-dark") %>
-        <%= options_supplementaires_link(ensembles_path, "fa-cubes", "Ensembles", "btn-outline-primary") %>
-        <%= options_supplementaires_link(categorie_produits_path, "fa-layer-group", "Cat. produits", "btn-outline-dark") %>
-        <%= options_supplementaires_link(type_produits_path, "fa-list-ul", "Types produits", "btn-outline-primary") %>
-        <%= options_supplementaires_link(couleurs_path, "fa-palette", "Couleurs", "btn-outline-dark") %>
-        <%= options_supplementaires_link(tailles_path, "fa-ruler", "Tailles", "btn-outline-secondary") %>
-        <%= options_supplementaires_link(admin_parameters_path, "fa-screwdriver-wrench", "Parametres", "btn-outline-warning") %>
+        <%= options_supplementaires_link(users_path, "bi-person-circle", "Comptes", "btn-outline-primary") %>
+        <%= options_supplementaires_link(profiles_path, "bi-person-check", "Profiles", "btn-outline-dark") %>
+        <%= options_supplementaires_link(root_path, "bi-flag", "Marketing", "btn-outline-warning") %>
+        <%= options_supplementaires_link(analyses_index_path, "bi-graph-up-arrow", "Analyses", "btn-outline-success") %>
+        <%= options_supplementaires_link(etiquettes_index_path, "bi-tags", "Etiquettes", "btn-outline-secondary") %>
+        <%= options_supplementaires_link(stock_index_path, "bi-boxes", "Stocks", "btn-outline-danger") %>
+        <%= options_supplementaires_link(fournisseurs_path, "bi-buildings", "Fournisseurs", "btn-outline-dark") %>
+        <%= options_supplementaires_link(ensembles_path, "bi-collection", "Ensembles", "btn-outline-primary") %>
+        <%= options_supplementaires_link(categorie_produits_path, "bi-layers", "Cat. produits", "btn-outline-dark") %>
+        <%= options_supplementaires_link(type_produits_path, "bi-list-ul", "Types produits", "btn-outline-primary") %>
+        <%= options_supplementaires_link(couleurs_path, "bi-palette", "Couleurs", "btn-outline-dark") %>
+        <%= options_supplementaires_link(tailles_path, "bi-rulers", "Tailles", "btn-outline-secondary") %>
+        <%= options_supplementaires_link(admin_parameters_path, "bi-gear", "Parametres", "btn-outline-warning") %>
 
         <%# faire des regrouepents avc des menus deroulants par cat : ex parametre %>
 
@@ -50,9 +50,9 @@
             </div>
         </div-->
 
-        <%= link_to home_admin_scan_qr_path, class: "btn btn-primary fa fa-bounce" do %>
-            <i class="fa fa-qrcode me-1"></i>
-            <span class="d-none d-md-inline">scan</span>
+        <%= link_to home_admin_scan_qr_path, class: "btn btn-sm btn-primary fa fa-bounce" do %>
+            <i class="bi bi-qr-code-scan"></i>
+            <span class="d-none d-md-inline">Scan</span>
         <% end %>
         
 
