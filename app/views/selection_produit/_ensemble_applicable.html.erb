@@ -1,25 +1,23 @@
-
-<% if (result = find_ensemble_matching_type_produits(@commande)) %>
+<% if (results = find_ensemble_matching_type_produits(@commande)).present? %>
+  <% results.each do |result| %>
     <div class="card p-2 my-2">
-
-        <% if result[:matching_articles].any? %>
-            <h4>Articles correspondant à un ensemble:</h4>
-            <% result[:matching_articles].each do |article| %>
-                <%= render partial: 'articles/article_mini', locals: { article: article } %>
-            <% end %>
-
-            <h4> Vers l'ensemble:  </h4>
-            <%= render partial: 'produits/produit_mini', locals: { produit: result[:ensemble].produit } %>
-
-        <% else %>
-            <p>No matching articles found in the commande.</p>
+      <% if result[:matching_articles].any? %>
+        <h5>Articles correspondant à un ensemble:</h5>
+        <% result[:matching_articles].each do |article| %>
+          <%= render partial: 'articles/article_mini', locals: { article: article } %>
         <% end %>
+        <h5>Vers l'ensemble: </h5>
+        <%= render partial: 'produits/produit_mini', locals: { produit: result[:ensemble].produit } %>
 
-        <%= button_to "Transformer en ensemble", 
-            toggle_transformer_ensemble_selection_produit_index_path,
-            class: "btn btn-primary my-2 w-100 fw-bold",
-            method: :post,
-            onclick: "return confirm('Certain(e) de transformer les articles en ensemble ?');" %>
-            
+      <% else %>
+        <p>No matching articles found for this ensemble.</p>
+      <% end %>
+
+      <%= button_to "Transformer en ensemble", 
+          toggle_transformer_ensemble_selection_produit_index_path,
+          class: "btn btn-primary my-2 w-100 fw-bold",
+          method: :post,
+          onclick: "return confirm('Certain(e) de transformer les articles en ensemble ?');" %>
     </div>
+  <% end %>
 <% end %>

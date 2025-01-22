@@ -149,42 +149,68 @@ class SelectionProduitController < ApplicationController
   
 
   def toggle_transformer_ensemble
-    
     @commande = Commande.find(session[:commande])
-    result = find_ensemble_matching_type_produits(@commande)
-    
-    type_locvente = result[:matching_articles].first&.locvente
-    if type_locvente == "location"
-      prix =  result[:ensemble].produit.prixlocation
-    elsif type_locvente == "vente"
-      prix = result[:ensemble].produit.prixvente
+  
+    # Fetch the results (array of hashes)
+    results = find_ensemble_matching_type_produits(@commande)
+  
+    # Ensure results are present
+    if results.blank?
+      return redirect_to commande_path(@commande), alert: "Aucun ensemble correspondant trouvé."
     end
-
-    # Create an article in the commande corresponding to the ensemble
-    new_article = Article.create(
-      produit_id: result[:ensemble].produit.id, 
-      commande_id: @commande.id, 
+  
+    # Select the first result (you can adapt this to allow user choice if needed)
+    selected_result = results.first
+  
+    # Extract ensemble and matching articles
+    ensemble = selected_result[:ensemble]
+    matching_articles = selected_result[:matching_articles]
+  
+    # Ensure matching articles exist
+    if matching_articles.blank?
+      return redirect_to commande_path(@commande), alert: "Aucun article correspondant trouvé pour l'ensemble."
+    end
+  
+    # Determine the locvente type and corresponding pricing
+    type_locvente = matching_articles.first.locvente
+    if type_locvente == "location"
+      prix = ensemble.produit.prixlocation
+      caution = ensemble.produit.prixvente
+    elsif type_locvente == "vente"
+      prix = ensemble.produit.prixvente
+      caution = 0
+    else
+      return redirect_to commande_path(@commande), alert: "Type locvente non défini pour la transformation."
+    end
+  
+    # Create a new article for the ensemble
+    new_article = Article.create!(
+      produit_id: ensemble.produit.id,
+      commande_id: @commande.id,
       locvente: type_locvente,
       prix: prix,
-      caution: type_locvente == "location" ? result[:ensemble].produit.prixvente : 0,
+      caution: caution,
       total: prix,
-      quantite: 1 )
-
-    # Create sous-articles corresponding to the matching articles
-    result[:matching_articles].each do |matching_article|
-      Sousarticle.create(
-        article_id: new_article.id, 
-        produit_id: matching_article.produit.id)
-        #passer les prix a zero
+      quantite: 1
+    )
+  
+    # Create sous-articles for the matching articles
+    matching_articles.each do |matching_article|
+      Sousarticle.create!(
+        article_id: new_article.id,
+        produit_id: matching_article.produit.id
+      )
+      # Optionally reset the price of matching articles (e.g., matching_article.update(prix: 0))
     end
-
-    # Delete the initial articles transformed into the ensemble
-    result[:matching_articles].destroy_all
-    
-
+  
+    # Delete the original articles after transformation
+    matching_articles.each(&:destroy)
+  
+    # Redirect with a success notice
     redirect_to commande_path(@commande),
-      notice: "Transformation en ensemble effectuée"
+                notice: "Transformation en ensemble effectuée avec succès."
   end
+  
 
 
 end
