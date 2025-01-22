@@ -149,7 +149,6 @@ class SelectionProduitController < ApplicationController
   
 
   def toggle_transformer_ensemble
-
     
     @commande = Commande.find(session[:commande])
     result = find_ensemble_matching_type_produits(@commande)
