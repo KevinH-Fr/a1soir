@@ -34,7 +34,7 @@ module IndexModelHelper
             concat(content_tag(:button, class: "btn btn-sm btn-warning", type: "button", 
                 data: { bs_toggle: "collapse", bs_target: "#collapseNew", aria_expanded: "false" },
                 aria: { controls: "collapseNew" }) do
-                concat(content_tag(:i, nil, class: "fa-solid fa-square-plus fa-xl"))
+                concat(content_tag(:i, nil, class: "bi bi-plus-lg fa-xl"))
             end)
 
           end)
@@ -62,8 +62,8 @@ module IndexModelHelper
 
   def links_record(model, turbo_delete: true)
     content_tag(:div, class: "d-flex justify-content-end") do
-      concat(link_to("", model, class: "btn btn-sm btn-primary fa-solid fa-square-up-right me-1 p-2", data: { turbo: false }))
-      concat(button_to("", edit_polymorphic_path(model), method: :post, class: "btn btn-sm btn-secondary fa-solid fa-pen-to-square me-1 p-2"))
+      concat(link_to("", model, class: "btn btn-sm btn-primary bi bi-arrow-up-right-square me-1 p-2", data: { turbo: false }))
+      concat(button_to("", edit_polymorphic_path(model), method: :post, class: "btn btn-sm btn-secondary bi bi-pencil-square me-1 p-2"))
       concat(button_to("", model, method: :delete, data: { turbo: turbo_delete }, 
         onclick: "return confirm('Etes-vous certain de vouloir supprimer cet élément et tous les éléments liés ?')",
         class: "btn btn-sm btn-danger bi bi-trash me-1 p-2"))
@@ -73,7 +73,7 @@ module IndexModelHelper
   def return_model_index_button(text, path)
     content_tag(:div, class: "m-1 d-flex align-items-center") do
       link_to path, class: "btn bg-dark text-light fw-bold d-flex align-items-center" do
-          content_tag(:i, "", class: "fa-solid fa-xl fa-arrow-left") +
+          content_tag(:i, "", class: "bi bi-arrow-return-left") +
           content_tag(:span, text, class: "ms-2")
       end
     end

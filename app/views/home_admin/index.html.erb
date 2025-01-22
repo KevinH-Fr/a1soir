@@ -6,7 +6,7 @@
             @clients.order(updated_at: :desc).map { |client| { text: client.full_name, path: client_path(client) } } ) %>
     </div>
     <div class="col-md-6 m-0 p-0">
-      <%= dashboard_card("Commandes", commandes_path, new_commande_path, 'file-earmark-post',
+      <%= dashboard_card("Commandes", commandes_path, new_commande_path, 'file-earmark-fill',
             @commandes.order(updated_at: :desc).map { |commande| { text: commande.full_name_with_client, path: commande_path(commande) } } )  %>
     </div>
   </div>

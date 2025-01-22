@@ -40,7 +40,7 @@
 
       <div class="col-2 text-end">
         <%= link_to "", "#collapseArticle#{dom_id(article)}", class: "btn btn-sm btn-primary bi bi-eye m-1", "data-bs-toggle": "collapse", role: "button", "aria-expanded": "false", "aria-controls": "collapseArticle#{dom_id(article)}" %>
-        <%= button_to "", edit_article_path(article), method: :post, class: "btn btn-sm btn-secondary fa-solid fa-pen-to-square m-1" %>
+        <%= button_to "", edit_article_path(article), method: :post, class: "btn btn-sm btn-secondary bi bi-pencil-square m-1" %>
         <%= button_to "", article, method: :delete,  
               onclick: "return confirm('Confirmer suppression ?');", 
               class: "btn btn-sm m-1 btn-danger bi bi-trash m-1" %>

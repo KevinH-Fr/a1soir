@@ -50,7 +50,7 @@ module ApplicationHelper
       if value
         content_tag(:p, class: "text-start badge text-dark mx-0 p-0 fs-6") do
           concat " #{text}"
-          concat content_tag(:i, "", class: "fas text-success fa-check-circle ms-1")
+          concat content_tag(:i, "", class: "fas text-success bi-check-circle ms-1")
         end
       end
     end

@@ -1,6 +1,7 @@
 class Ensemble < ApplicationRecord
     belongs_to :produit
 
+    # un produit parent et jusqua 6 enfants
     belongs_to :type_produit1, class_name: 'TypeProduit', foreign_key: 'type_produit1_id', optional: true
     belongs_to :type_produit2, class_name: 'TypeProduit', foreign_key: 'type_produit2_id', optional: true
     belongs_to :type_produit3, class_name: 'TypeProduit', foreign_key: 'type_produit3_id', optional: true

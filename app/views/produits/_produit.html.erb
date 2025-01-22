@@ -42,7 +42,7 @@
                       class: "btn btn-sm btn-dark",
                       :onclick => "return confirm('Etes-vous certain de vouloir dupliquer ce produit ?')",
                       title: 'Dupliquer' do %>
-                  <i class="fa-solid fa-copy me-1"></i>
+                  <i class="bi-copy me-1"></i>
                   <span class="fw-bold">Dupliquer</span>
                 
                 <% end %>
@@ -58,7 +58,7 @@
                       <%= form.hidden_field :new_product, value: produit.id %>
                         <button type="submit" class="btn btn-warning my-4">
                           <span class="fw-bold ms-2"> Sélection étiquette</span>
-                          <i class="fa-solid fa-xl fa-tags"></i> 
+                          <i class="bi-tags"></i> 
                         </button>
                     <% end %>
                   
@@ -66,7 +66,7 @@
 
                     <%= link_to etiquettes_path, class: "btn btn-secondary my-4" do %>
                       <span class="fw-bold ms-2"> Limite atteinte</span>
-                      <i class="fa-solid fa-xl fa-tags"></i> 
+                      <i class="bi fa-tags"></i> 
                     <% end %>
                     
                   

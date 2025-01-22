@@ -14,7 +14,7 @@
         <%= hidden_field_tag 'article', params[:article] if params[:article] %>
 
         <%= link_to selection_produit_path(article: params[:article]), class: 'btn btn-outline-danger rounded mx-1' do %>
-          <i class="bi bi-xl bi-check2-circle"></i>
+          <i class="bi bi-xl bi-x-circle"></i>
         <% end %>
         
         <%= f.button class: 'btn btn-outline-success rounded mx-1' do %>
