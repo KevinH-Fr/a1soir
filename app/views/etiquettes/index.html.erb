@@ -5,7 +5,7 @@
 
   <% if session[:selection_etiquettes].present? %>
     <div class="d-flex align-items-center m-2">
-      <strong> Sélection active :   </strong>
+      <strong> Sélection active :  </strong>
 
       <% session[:selection_etiquettes].each do |produit| %>
 
@@ -15,16 +15,16 @@
 
       <%= form_with url: reset_selection_etiquettes_path, method: :post, data: { turbo: false } do |form| %>
         <button type="submit" class="btn text-danger">
-          <i class="fa-regular fa-xl fa-circle-xmark"></i> 
+          <i class="bi bi-x-circle"></i> 
         </button>
       <% end %>
       
     </div>
 
     <div class="text-end">
-      <%= link_to generate_pdf_etiquettes_path, class: "btn btn-danger" do %>
+      <%= link_to generate_pdf_etiquettes_path, target: '_blank', class: "btn btn-danger" do %>
         <span class="fw-bold ms-2"> Edition étiquette</span>
-        <i class="fa-regular fa-file"></i> 
+        <i class="bi bi-file-earmark-pdf-fill"></i> 
       <% end %>
     </div>
 
