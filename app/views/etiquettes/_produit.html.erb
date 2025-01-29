@@ -1,11 +1,10 @@
 <!-- Section Image -->
-<div class="text-center" style="height: 410px; padding: 10px; box-sizing: border-box;">
-    <%#= image_tag(produit.default_image, class: "img-fluid text-center") %>
+<div class="text-center" style="height: 410px; padding: 10px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa;">
 
     <% if produit.image1.present? %>
-        <%= image_tag(produit.image1, style: "height: 100%") %>
+        <%= image_tag produit.image1, class: "img-thumbnail rounded", style: "max-height: 100%; max-width: 100%; object-fit: contain;" %>
     <% else %>
-        <%= image_tag wicked_pdf_asset_path('/images/no_photo.png'), class: "img-fluid" %>
+        <%= image_tag wicked_pdf_asset_path('/images/no_photo.png'), class: "img-fluid", style: "max-height: 100%; max-width: 100%; object-fit: contain;" %>
     <% end %>
 
 </div>
