@@ -27,13 +27,15 @@ module StockHelper
   end
     
   def locations_terminees_a_date(produits,  date = Date.today)
-    # Count the products with locations finished before the given date and the status of the command is "rendu" 
-    # total_quantite = Article.joins(:commande).where("commandes.finloc < ? AND commandes.statutarticles = ?", date, "rendu").location_only.sum(:quantite).to_i
-    # total_quantite += Sousarticle.joins(:article => :commande).where("commandes.finloc < ? AND commandes.statutarticles = ?", date, "rendu").location_only.count.to_i
 
     #only check status rendu, not end date of location
-    total_quantite = Article.joins(:commande).where("commandes.statutarticles = ?", "rendu").location_only.sum(:quantite).to_i
-    total_quantite += Sousarticle.joins(:article => :commande).where("commandes.statutarticles = ?", "rendu").location_only.count.to_i
+    total_quantite = Article.joins(:commande)
+      .where(commande: { statutarticles: "rendu" }, produit_id: produits)
+      .location_only.sum(:quantite).to_i
+
+    total_quantite += Sousarticle.joins(article: :commande)
+      .where(commandes: { statutarticles: "rendu" })
+      .where(produit_id: produits).location_only.sum(:quantite).to_i
 
     total_quantite
   end

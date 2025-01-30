@@ -12,48 +12,70 @@ export default class extends Controller {
 
     this.populateSources();
 
+    // Restart scan if previously active
+    if (sessionStorage.getItem("scanning") === "true") {
+      this.startScan();
+    }
   }
   
   populateSources() {
-    // Check if the browser supports mediaDevices API and getUserMedia
     if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices && navigator.mediaDevices.getUserMedia) {
-        // Request permission to use video inputs (camera)
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(() => {
-                // If permission is granted, enumerate video input devices
                 navigator.mediaDevices.enumerateDevices()
                     .then((devices) => {
                         const videoInputDevices = devices.filter(device => device.kind === 'videoinput');
 
                         if (videoInputDevices.length >= 1) {
-                            this.selectedDeviceId = videoInputDevices[0].deviceId;
+                            // Retrieve the previously used device from sessionStorage
+                            const storedDeviceId = sessionStorage.getItem("selectedCamera");
 
+                            // Default to the first camera if no previous selection exists
+                            this.selectedDeviceId = storedDeviceId || videoInputDevices[0].deviceId;
+
+                            // Populate the dropdown with camera options
+                            this.sourceSelect.innerHTML = ""; // Clear previous options
                             videoInputDevices.forEach((element) => {
                                 const sourceOption = document.createElement('option');
                                 sourceOption.text = element.label || `Camera ${this.sourceSelect.length + 1}`;
                                 sourceOption.value = element.deviceId;
                                 this.sourceSelect.appendChild(sourceOption);
+
+                                // Preselect the previously used camera
+                                if (element.deviceId === this.selectedDeviceId) {
+                                    sourceOption.selected = true;
+                                }
                             });
 
                             this.sourceSelect.onchange = () => {
                                 this.selectedDeviceId = this.sourceSelect.value;
+                                sessionStorage.setItem("selectedCamera", this.selectedDeviceId); // Save selection
                             };
 
+                            // Show camera selection dropdown
                             const sourceSelectPanel = this.element.querySelector('#sourceSelectPanel');
                             sourceSelectPanel.style.display = 'inline';
+
+                            // Automatically start scanning if it was active before
+                            if (sessionStorage.getItem("scanning") === "true") {
+                                this.startScan();
+                            }
+                        } else {
+                            console.error("No video input devices detected.");
                         }
                     })
                     .catch((err) => {
-                        console.error(err);
+                        console.error("Error enumerating devices:", err);
                     });
             })
             .catch((err) => {
-                console.error('Permission to access camera denied:', err);
+                console.error('Camera access denied:', err);
             });
     } else {
         console.error('getUserMedia or enumerateDevices() not supported on this browser.');
     }
-}
+  }
+
 
   startScan() {
 
@@ -77,20 +99,23 @@ export default class extends Controller {
       }
     });
 
-
   }
 
   stopScan() {
     this.codeReader.reset();
     this.resultsDiv.textContent = "";
     console.log('Scan stopped.');
-    
+
     const btnStart = this.element.querySelector("#startButton");
     btnStart.style.display = "inline";
 
     const btnReset = this.element.querySelector("#resetButton");
     btnReset.style.display = "none";
+
+    // Remove scanning state (only when manually stopped)
+    sessionStorage.removeItem("scanning");
   }
+
 
   handleResult(result) {
 
@@ -111,7 +136,10 @@ export default class extends Controller {
     const btnReset = this.element.querySelector("#resetButton");
     btnReset.style.display = "none";
 
-  this.refreshWithParam(resultTransforme2);
+    // Ensure scanning continues
+    this.startScan();
+
+    this.refreshWithParam(resultTransforme2);
 
   }
 
@@ -131,6 +159,9 @@ export default class extends Controller {
       updatedUrl.searchParams.set(key, value);
     });
   
+    // Save scanning state
+    sessionStorage.setItem("scanning", "true");
+
     // Redirect to the updated URL
     window.location.href = updatedUrl.toString();
   }
