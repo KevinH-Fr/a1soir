@@ -30,7 +30,7 @@ class ProduitsController < ApplicationController
   end
 
   def show
-    @commandes_liees = Commande.joins(articles: :produit).where(articles: { produit_id: @produit }).distinct
+    @commandes_liees = Commande.joins(articles: :produit).where(articles: { produit_id: @produit }).order(created_at: :desc).distinct
   end
 
   def new

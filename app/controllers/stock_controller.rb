@@ -3,7 +3,7 @@ class StockController < ApplicationController
 
   def index
     @produits = Produit.all
-    @commandes = Commande.all
+    @commandes = Commande.all.includes([:articles])
   end
 
 end

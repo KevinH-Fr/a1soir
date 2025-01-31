@@ -58,3 +58,5 @@ gem 'pagy'
 
 
 gem 'whenever', require: false
+
+gem 'bullet', group: 'development'
