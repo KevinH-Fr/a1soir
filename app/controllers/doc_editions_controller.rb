@@ -21,13 +21,16 @@ class DocEditionsController < ApplicationController
 
     I18n.locale = @commande.client.language || :fr 
 
-    @sujet = I18n.t('commande_email.subject', doc_type: I18n.t("document_types.#{@doc_edition.doc_type}"), ref_commande: @commande.ref_commande)
+    doc_type_label =  I18n.t("document_types.#{@doc_edition.doc_type}")
+    event_type_label =  I18n.t("events.#{@commande.typeevent}")
+
+    @sujet = I18n.t('commande_email.subject', doc_type: doc_type_label, ref_commande: @commande.ref_commande)
     @destinataire = @commande.client.mail
 
     # reprendre
     part_0 = I18n.t('commande_email.body.greeting', client: @commande.client.full_intitule)
-    part_1 = I18n.t('commande_email.body.document_info', doc_type: @doc_edition.doc_type)
-    part_2 = @commande.typeevent? ? I18n.t('commande_email.body.event_info', event_type: @commande.typeevent) : ""
+    part_1 = I18n.t('commande_email.body.document_info', doc_type: doc_type_label)
+    part_2 = @commande.typeevent? ? I18n.t('commande_email.body.event_info', event_type: event_type_label) : ""
     part_3 = @commande.dateevent? ? I18n.t('commande_email.body.date_info', event_date: format_date_in_french(@commande.dateevent)) : ""
     #part_4 = @next_meeting.present? ? I18n.t('commande_email.body.next_meeting', meeting_details: @next_meeting.meeting_details) : ""
 

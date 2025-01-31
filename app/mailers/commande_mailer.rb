@@ -6,6 +6,8 @@ class CommandeMailer < ApplicationMailer
     @message_full = doc_edition.message
     @doc_edition = doc_edition
   
+    I18n.locale = @doc_edition.commande.client.language || :fr 
+
     attachments["#{doc_edition.doc_type}_#{doc_edition.commande.ref_commande}.pdf"] = pdf_data
 
     attachments.inline['logo_a1soir_2025.png'] = File.read(Rails.root.join('app/assets/images/logo_a1soir_2025.png'))

@@ -8,7 +8,7 @@
     <%= yield %> <!-- This will insert the email content (body) -->
 
     <footer style="">
-      <%= render 'shared/mailer_footer' %>
+      <%= render 'shared/mailer_footer', locale: I18n.locale %> 
     </footer>
   </body>
 </html>

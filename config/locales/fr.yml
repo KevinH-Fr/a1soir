@@ -265,3 +265,9 @@ fr:
     find_us: "Retrouvez-nous sur notre"
     website: "site internet"
     online_store: "boutique en ligne"
+
+
+  events:
+    mariage: "Mariage"
+    soiree: "Soirée"
+    divers: "Divers"

@@ -43,3 +43,8 @@ en:
     find_us: "Find us on our"
     website: "website"
     online_store: "online store"
+
+  events:
+    mariage: "Wedding"
+    soiree: "Evening Party"
+    divers: "Miscellaneous"
