@@ -1,8 +1,29 @@
-    <div style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px; font-size: 12px; color: #888;">
+<div style="margin-top: 20px;">
+  
+  <p> <%= I18n.t('email_footer.thank_you') %> </p>
+  <p> <%= I18n.t('email_footer.availability') %> </p>
 
-    <p>Autour d'un soir - Cannes</p>
+  <p>
+    <%= I18n.t('email_footer.review_invite') %>
+    <a href="https://g.page/r/CUEPEuSQB0y8EAI/review"><%= I18n.t('email_footer.review_link_text') %></a>
+  </p>
 
-    <p>04 93 00 00 00</p>
-    <p><a href="https://example.com">https://example.com</a></p>
-    </div>
+  <p> <%= I18n.t('email_footer.closing') %> </p>
 
+  <p> <%= I18n.t('email_footer.team') %> </p>
+
+  <p>
+    <%= image_tag attachments['logo_a1soir_2025.png'].url, alt: "A1soir Logo", width: "150" %>
+  </p>
+
+  <p> <%= I18n.t('email_footer.phone') %> </p>
+
+    <p>
+        <%= I18n.t('email_footer.find_us') %>
+        <a href="https://a1soir.com/"><%= I18n.t('email_footer.website') %></a>,
+        <a href="https://shop-a1soir.webflow.io/"><%= I18n.t('email_footer.online_store') %></a>,
+        <a href="https://www.instagram.com/autourdunsoir/">Instagram</a>,
+        <a href="https://www.facebook.com/AutourDunSoir/">Facebook</a>
+    </p>
+
+</div>

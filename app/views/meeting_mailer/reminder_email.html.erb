@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <h1>Rappel de RDV</h1>
-    <p> <%= @recipient.intitule %> <%= @recipient.full_name %>,</p>
-    <p>Ce message est un rappel de votre RDV prévu le <%= @meeting.datedebut.strftime('%d/%m/%Y à %H:%M') %>.</p>
 
-    <% if @meeting.lieu %>
-      lieu du RDV: <%= @meeting.lieu %>
-    <% end %>
+    <p>
+      <%= I18n.t('reminders.body.greeting') %> 
+      <%= I18n.t('reminders.body.appointment_details', date: @meeting.datedebut.strftime('%d/%m/%Y à %H:%M'), name: @meeting.nom) %>
+    </p>
+
+    <p>
+      <%= I18n.t('reminders.body.location_label') %>
+      <%= @meeting.lieu == "boutique" || "" ? I18n.t('reminders.body.location_boutique') : @meeting.lieu %>
+    </p>
+
+    <p>
+      <%= I18n.t('reminders.body.alternative_location') %>
+    </p>
 
   </body>
-
-  <footer>
-    <%= render 'shared/mailer_footer' %>
-  </footer>
-
 </html>

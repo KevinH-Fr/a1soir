@@ -2,6 +2,8 @@ class DocEditionsController < ApplicationController
 
  # before_action :authenticate_vendeur_or_admin!
 
+  include ApplicationHelper
+
   before_action :set_doc_edition, only: %i[ show edit update ]
 
   def new
@@ -17,16 +19,20 @@ class DocEditionsController < ApplicationController
     # Determine the closest meeting
     @next_meeting = [next_commande_meeting, next_client_meeting].compact.min_by(&:datedebut)
 
-    @sujet = "votre #{@doc_edition.doc_type}"
+    I18n.locale = @commande.client.language || :fr 
+
+    @sujet = I18n.t('commande_email.subject', doc_type: I18n.t("document_types.#{@doc_edition.doc_type}"), ref_commande: @commande.ref_commande)
     @destinataire = @commande.client.mail
 
-    part_1 = "Merci de trouver ci-attaché votre #{@doc_edition.doc_type}"
-    part_2 = @commande.typeevent? ? " pour votre #{@commande.typeevent}" : ""
-    part_3 = @commande.dateevent? ? " prévu(e) le #{@commande.dateevent}" : ""
-    part_4 = @next_meeting.present? ? "\nRDV à venir: #{@next_meeting.meeting_details}" : ""
+    # reprendre
+    part_0 = I18n.t('commande_email.body.greeting', client: @commande.client.full_intitule)
+    part_1 = I18n.t('commande_email.body.document_info', doc_type: @doc_edition.doc_type)
+    part_2 = @commande.typeevent? ? I18n.t('commande_email.body.event_info', event_type: @commande.typeevent) : ""
+    part_3 = @commande.dateevent? ? I18n.t('commande_email.body.date_info', event_date: format_date_in_french(@commande.dateevent)) : ""
+    #part_4 = @next_meeting.present? ? I18n.t('commande_email.body.next_meeting', meeting_details: @next_meeting.meeting_details) : ""
 
-    @message ="#{part_1}#{part_2}#{part_3}#{part_4}"
-    
+    @message = "#{part_0}\n\n#{part_1}#{part_2}#{part_3}." ##{part_4}
+
   end
 
 

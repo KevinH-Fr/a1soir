@@ -1,22 +1,23 @@
 class MeetingMailer < ApplicationMailer
 
+  layout "mailer"  
+  
   def reminder_email(meeting)
     @meeting = meeting
+    @recipient = meeting.commande&.client || meeting.client
+      
+    return unless @recipient&.mail
+  
+    I18n.locale = @recipient.language || :fr 
+    @subject = I18n.t('reminders.subject')
 
-      # Determine the recipient based on association
-      @recipient = if meeting.commande.present?
-      meeting.commande.client
-    else
-      meeting.client 
-    end
-    
-    puts "______________test recipient from meeting mailer: #{@recipient.mail}_____________"
-
-    if @recipient.mail
-      # You can customize the subject and email body as needed
-      mail(to: @recipient.mail, subject: "Rappel RDV à venir#{meeting.datedebut.strftime('%H:%M')}")
-    end
-    
+    attachments.inline['logo_a1soir_2025.png'] = File.read(Rails.root.join('app/assets/images/logo_a1soir_2025.png'))
+  
+    mail(
+      to: @recipient.mail,
+      subject: @subject
+    )
   end
+  
 
 end

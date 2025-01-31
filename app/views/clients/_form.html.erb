@@ -37,7 +37,10 @@
         [:cp, :text_field], [:ville, :text_field], [:pays, :text_field], [:contact, :text_field]
       ) %>
 
-
+      <div class="input-group px-2 mb-1">
+        <%= form.label :language, "Language", class: "input-group-text" %>
+        <%= form.select :language, [['Français', 'fr'], ['Anglais', 'en']], { include_blank: '', selected: 'fr' }, class: "form-select" %>
+      </div>
 
       <%= custom_submit_button(form) %>
 

@@ -79,9 +79,9 @@ module StockHelper
     end
 
     if est_disponible(produits,  date = Date.today)
-      content_tag(:span, "Produit disponible - #{restants}", class: "badge fs-6 border border-success text-success")
+      content_tag(:span, "Disponibles : #{restants}", class: "badge fs-6 border border-success text-success")
     else
-      content_tag(:span, "Produit indisponible", class: "badge fs-6 border border-danger text-danger")
+      content_tag(:span, "Indisponible", class: "badge fs-6 border border-danger text-danger")
     end
   end
       

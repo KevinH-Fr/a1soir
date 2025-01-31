@@ -1,12 +1,12 @@
-<%= card_main_model("Client", "user") %>
+<%= card_main_model("Client", "person") %>
 
 <%= render @client %>
 
 <%= card_main_model(
   "Commandes", 
-  "file-invoice", 
+  "file-earmark-fill", 
   link_to("", "#collapseNewCommande", 
-  class: "bi bi-plus-lg btn btn-warning fw-bold", 
+  class: "bi bi-plus-lg btn btn-sm btn-warning fw-bold", 
   data: { bs_toggle: "collapse" }, 
   role: "button", aria: { expanded: "false", controls: "collapseNewCommande" })) %>
 
@@ -22,7 +22,6 @@
         <%= render commande %>
     <% end %>
 </div>
-
 
 <%= render 'meetings/meetings' %>
 

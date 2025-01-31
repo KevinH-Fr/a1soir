@@ -7,7 +7,7 @@ class MeetingReminderJob < ApplicationJob
    tomorrow = Date.tomorrow.beginning_of_day..Date.tomorrow.end_of_day
    meetings = Meeting.where(datedebut: tomorrow)
 
-   puts "_____call meeting reminder job on #{meetings.count} meetings_____________"
+   #puts "_____call meeting reminder job on #{meetings.count} meetings_____________"
 
     # Send reminder emails for each meeting
     meetings.each do |meeting|

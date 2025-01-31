@@ -59,4 +59,8 @@ module ApplicationHelper
       Array.wrap(objects).pluck(:id)
     end
     
+    def format_date_in_french(date)
+      I18n.l(date, locale: :fr)  # Format the date in French using I18n
+    end
+
 end

@@ -1,39 +1,45 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
   hello: "Hello world"
 
   date:
     formats:
-      default: "%d/%m-%Y"
+      default: "%d/%m/%Y"
 
   datetime:
     formats:
-      default: ! '%d/%m/%Y %H:%M'
+      default: "%d/%m/%Y %H:%M"
+
+  reminders:
+    subject: "Reminder for upcoming appointment with Autour d'un Soir"
+    body:
+      greeting: "Don't forget your upcoming appointment at Autour d'un Soir"
+      appointment_details: "on %{date} for %{name}."
+      location_label: "Meeting Location:"
+      location_boutique: "Autour D'un Soir Boutique, 27-29 Boulevard Carnot 06400 Cannes."
+      alternative_location: "If you can't make it, please contact us by replying to this email or by phone at 04.93.45.17.17."
+
+  commande_email:
+    subject: "Your %{doc_type} %{ref_commande} at Autour d'un Soir"
+    body:
+      greeting: "Hello %{client},"
+      document_info: "Please find attached your %{doc_type}"
+      event_info: " for your %{event_type}"
+      date_info: " on %{event_date}"
+      next_meeting: "\nUpcoming appointment: %{meeting_details}"
+
+  document_types:
+    commande: "Order"
+    facture: "Invoice"
+    facture simple: "Simple Invoice"
+
+  email_footer:
+    thank_you: "The entire Autour d'un Soir team thanks you for your trust."
+    availability: "We remain at your disposal for more information."
+    review_invite: "Feel free to share your feedback on our service by clicking the link here:"
+    review_link_text: "Link"
+    closing: "Best regards,"
+    team: "The entire boutique team"
+    phone: "Phone: 04 93 45 17 17"
+    find_us: "Find us on our"
+    website: "website"
+    online_store: "online store"

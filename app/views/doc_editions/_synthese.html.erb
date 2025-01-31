@@ -3,11 +3,15 @@
       
     <%= link_to generate_commande_doc_editions_path(doc_edition: @doc_edition), 
         class: "btn btn-outline-danger m-1 w-100", target: "_blank" do %>
+        <i class="bi bi-filetype-pdf"></i>
         <span class="fw-bold"> Editer pdf </span>
-  <% end %>
+    <% end %>
 
-  <%= button_to 'Envoyer mail', send_email_path(doc_edition: @doc_edition), 
-        method: :post, class: 'btn w-100 m-1 btn-outline-primary fw-bold' %>
+    <%= button_to send_email_path(doc_edition: @doc_edition), 
+          method: :post, class: 'btn w-100 m-1 btn-outline-primary fw-bold' do %>
+        <i class="bi bi-envelope-at"></i>
+        <span class="fw-bold"> Envoyer mail </span>
+    <% end %>
 
   <% end %>
 

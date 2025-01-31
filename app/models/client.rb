@@ -12,7 +12,15 @@ class Client < ApplicationRecord
     INTITULE_OPTIONS = ["Madame", "Monsieur", "Madame et Monsieur"]
     
     def full_name
-        prenom + " " + nom
+      prenom + " " + nom
+    end
+
+    def full_intitule
+      if propart == "professionnel"
+        nom
+      else
+        "#{intitule} #{nom}"
+      end 
     end
 
     def next_upcoming_meeting

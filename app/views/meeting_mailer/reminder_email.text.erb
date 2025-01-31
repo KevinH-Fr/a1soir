@@ -1,12 +1,8 @@
-  <body>
-    <h1>Rappel de RDV</h1>
-    <p> <%= @recipient.intitule %> <%= @recipient.full_name %>,</p>
-    <p>Ce message est un rappel de votre RDV prévu le <%= @meeting.datedebut.strftime('%d/%m/%Y à %H:%M') %>.</p>
+N'oubliez pas votre rendez vous prochain chez Autour d'un Soir le  <%= @meeting.datedebut.strftime('%d/%m/%Y à %H:%M') %> 
+pour <%= @meeting.nom %>.
 
-    <% if @meeting.lieu %>
-      lieu du RDV: <%= @meeting.lieu %>
-    <% end %>
+Lieu du Rdv : 
+<%= @meeting.lieu == "boutique" ? "#{@meeting.lieu} - Boutique Autour D'un Soir, 27-29 Boulevard Carnot 06400 Cannes." : @meeting.lieu %>
 
-  </body>
+Si vous avez un empêchement contactez-nous en répondant à ce mail ou par téléphone au 04.93.45.17.17.
 
-  <%= render 'shared/mailer_footer' %>
