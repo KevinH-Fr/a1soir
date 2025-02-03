@@ -180,6 +180,7 @@ class MeetingsController < ApplicationController
   end
 
   def send_reminder_job
+    puts " ___________ call send reminder job _______________"
     @meeting = Meeting.find(params[:meeting])
     
     # Trigger the job asynchronously

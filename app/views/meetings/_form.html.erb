@@ -48,13 +48,16 @@
         <div class="input-group mb-1">
           <%= form.label :commande_id, class: "input-group-text" %>
           <%= form.select :commande_id, 
-            options_for_select(Commande.all.order(:nom).pluck(:nom, :id)),
-            { include_blank: 'Select' },  { class: "form-select" } %>
+                options_for_select(Commande.select(:id).order(:id).map { |c| [c.ref_commande, c.id] }, @meeting.commande_id),
+                { include_blank: 'Select' },  
+                { class: "form-select" } %>
 
           <%= form.label :client_id, class: "input-group-text" %>
           <%= form.select :client_id, 
-            options_for_select(Client.all.order(:nom).pluck(:nom, :id)),
-            { include_blank: 'Select' },  { class: "form-select" } %>
+                options_for_select(Client.all.order(:nom).pluck(:nom, :id), meeting.client_id),
+                { include_blank: 'Select' },  
+                { class: "form-select" } %>
+
       </div>
     <% end %>
 
