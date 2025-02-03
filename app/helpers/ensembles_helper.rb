@@ -38,6 +38,7 @@ module EnsemblesHelper
   
     # Step 3: Build the ensemble query dynamically based on available type_produits
     ensembles = Ensemble.all
+      .includes([:type_produit1], [:type_produit2], [:type_produit3], [:type_produit4], [:type_produit5], [:type_produit6])
   
     # Dynamically filter ensembles based on available type_produits
     ensembles = ensembles.select do |ensemble|

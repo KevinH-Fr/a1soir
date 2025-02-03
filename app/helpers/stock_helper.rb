@@ -23,7 +23,11 @@ module StockHelper
   
 
   def produits_restants(produits, date = Date.today)
-    total_produits(produits) - total_loues(produits) - total_vendus(produits) + locations_terminees_a_date(produits, date)
+    if Produit.is_ensemble.exists?(id: produits) 
+      1 # defaut stock for ensemble
+    else
+      total_produits(produits) - total_loues(produits) - total_vendus(produits) + locations_terminees_a_date(produits, date)
+    end
   end
     
   def locations_terminees_a_date(produits,  date = Date.today)

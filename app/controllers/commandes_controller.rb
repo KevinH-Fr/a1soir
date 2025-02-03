@@ -19,7 +19,7 @@ class CommandesController < ApplicationController
   end
 
   def show
-    @commande = Commande.find(params[:event]) if params[:commande]
+    @commande = Commande.find(params[:commande]) if params[:commande]
     session[:commande] = @commande.id if @commande
 
     @produits = Produit.all 

@@ -19,7 +19,9 @@ class Produit < ApplicationRecord
   has_one_attached :qr_code
 
   before_validation :generate_handle
+
   before_validation :fix_quantity_for_service
+  before_validation :fix_quantity_for_ensemble
 
   after_create :generate_qr
   after_create :set_initial_vente_price
@@ -85,6 +87,13 @@ class Produit < ApplicationRecord
   def fix_quantity_for_service 
     #if produit is a service empty the quantity
     if categorie_produit&.service 
+      self.quantite = 1
+    end
+  end
+
+  def fix_quantity_for_ensemble
+    #if produit is an ebsemble empty the quantity
+    if type_produit.nom == "ensemble" 
       self.quantite = 1
     end
   end
