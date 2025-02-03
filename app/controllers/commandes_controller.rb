@@ -19,7 +19,7 @@ class CommandesController < ApplicationController
   end
 
   def show
-    @commande = Commande.find(params[:commande]) if params[:commande]
+    @commande = Commande.includes(articles: [:produit, :sousarticles]).find(params[:commande]) if params[:commande]
     session[:commande] = @commande.id if @commande
 
     @produits = Produit.all 
@@ -57,24 +57,7 @@ class CommandesController < ApplicationController
 
     respond_to do |format|
       if @commande.save
-
-        #flash.now[:success] = "commande was successfully created"
-
-        #format.turbo_stream do
-        #  render turbo_stream: [
-        #    turbo_stream.update('new',
-        #                        partial: "commandes/form",
-        #                        locals: { commande: Commande.new }),
-  
-        #    turbo_stream.prepend('commandes',
-        #                          partial: "commandes/commande",
-        #                          locals: { commande: @commande }),
-        #    turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
-        #    
-        #  ]
-        #end
-
-        format.html { redirect_to commande_url(@commande), notice:  I18n.t('notices.successfully_created') }
+        format.html { redirect_to commande_url(@commande), notice:  "Création à jour réussie" }
         format.json { render :show, status: :created, location: @commande }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -90,7 +73,7 @@ class CommandesController < ApplicationController
     respond_to do |format|
       if @commande.update(commande_params)
 
-        flash.now[:success] =  I18n.t('notices.successfully_updated')
+        flash.now[:success] =  "Mise à jour réussie"
 
         format.turbo_stream do
           render turbo_stream: [
@@ -127,7 +110,7 @@ class CommandesController < ApplicationController
       #   render turbo_stream: turbo_stream.remove(@commande)
       # end
 
-      format.html { redirect_to root_path, notice:  I18n.t('notices.successfully_destroyed') }
+      format.html { redirect_to root_path, notice:  "Suppression réussie" }
       format.json { head :no_content }
     end
   end

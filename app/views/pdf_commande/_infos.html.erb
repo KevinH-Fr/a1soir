@@ -1,38 +1,44 @@
+<table width="100%" style="border-style: hidden;">
+  <tr>
+    <!-- Left Side: Existing Content -->
+    <td style="vertical-align: top; width: 80%; border-style: hidden;">
+      <span>Client </span> 
+      <span class="doc-important"> <%= @doc_edition.commande.client.full_name %> </span> <br>
 
-<div class="cadre">
+      <% if @doc_edition.commande.typeevent.present? %>
+          <br>
+          <span>Evénement</span>
+          <span class="doc-important"> <%= @doc_edition.commande.full_event %> </span> <br>
+      <% end %>
 
-    <span>Client </span> 
-    <span class="doc-important"> <%= @doc_edition.commande.client.full_name %> </span> <br>
+      <% if @doc_edition.commande.debutloc %>
+          <span> <%= @doc_edition.commande.label_dates_location %> </span> <br>
+      <% end %>
 
-    <% if @doc_edition.commande.typeevent.present? %>
-        <br>
-        <span>Evénement</span>
-        <span class="doc-important"> <%= @doc_edition.commande.full_event %> </span> <br>
-    <% end %>
-    
+      <br>
+      courriel: <span class="doc-important"> <%= @doc_edition.commande.client.mail %> </span> <br>
+      téléphone: <span class="doc-important"> <%= @doc_edition.commande.client.tel %> </span> <br>
 
-    <% if @doc_edition.commande.debutloc %>
-        <span> <%= @doc_edition.commande.label_dates_location %> </span> <br>
-    <% end %>
+      <%= @doc_edition.commande.client.adresse %> <br>
+      <%= @doc_edition.commande.client.cp %> 
+      <%= @doc_edition.commande.client.ville %>  
 
-    <br>
+      <br>
+      <span>Servi par </span> 
+      <span class="doc-important"> <%= @doc_edition.commande.profile.full_name %> </span> <br>
+      <br>
 
-    courriel: <span class="doc-important"> <%= @doc_edition.commande.client.mail %> </span> <br>
-    téléphone: <span class="doc-important"> <%= @doc_edition.commande.client.tel %> </span> 
+      <span>Statut commande </span> 
+      <span class="doc-important"> <%= @doc_edition.commande.statutarticles %> </span> <br>
+      <br>
 
-    <%= @doc_edition.commande.client.adresse %> <br>
-    <%= @doc_edition.commande.client.cp %> 
-    <%= @doc_edition.commande.client.ville %>  
+    </td>
 
-    <br>
-    <span>Servi par </span> 
-    <span class="doc-important"> <%= @doc_edition.commande.profile.full_name %> </span> <br>
-    <br>
-
-    <span>Statut commande </span> 
-    <span class="doc-important"> <%= @doc_edition.commande.statutarticles %> </span> <br>
-    <br>
-
-
-
-</div>   
+    <!-- Right Side: Doc Type & Ref Commande -->
+    <td style="vertical-align: top; text-align: right; width: 20%; border-style: hidden;">
+      <span class="doc-important"> <%= @doc_edition.doc_type %> </span>
+      <span class="doc-important"> <%= @doc_edition.commande.ref_commande %> </span> 
+      <%= image_tag(@doc_edition.commande.qr_code, class:"img-qr-etiquette") if @doc_edition.commande.qr_code.present? %>
+    </td>
+  </tr>
+</table>

@@ -53,7 +53,7 @@ class TypeProduitsController < ApplicationController
         ]
       end
 
-        format.html { redirect_to type_produit_url(@type_produit), notice:  I18n.t('notices.successfully_created')}
+        format.html { redirect_to type_produit_url(@type_produit), notice:  "Création à jour réussie"}
         format.json { render :show, status: :created, location: @type_produit }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -66,7 +66,7 @@ class TypeProduitsController < ApplicationController
     respond_to do |format|
       if @type_produit.update(type_produit_params)
 
-        flash.now[:success] =  I18n.t('notices.successfully_updated')
+        flash.now[:success] =  "Mise à jour réussie"
 
         format.turbo_stream do
           render turbo_stream: [
@@ -75,7 +75,7 @@ class TypeProduitsController < ApplicationController
           ]
         end
 
-        format.html { redirect_to type_produit_url(@type_produit), notice: I18n.t('notices.successfully_updated') }
+        format.html { redirect_to type_produit_url(@type_produit), notice:  "Mise à jour réussie" }
         format.json { render :show, status: :ok, location: @type_produit }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -88,7 +88,7 @@ class TypeProduitsController < ApplicationController
     @type_produit.destroy!
 
     respond_to do |format|
-      format.html { redirect_to type_produits_url, notice: I18n.t('notices.successfully_destroyed')  }
+      format.html { redirect_to type_produits_url, notice:  "Suppression réussie"  }
       format.json { head :no_content }
     end
   end

@@ -22,7 +22,7 @@ class TextesController < ApplicationController
 
     respond_to do |format|
       if @texte.save
-        format.html { redirect_to texte_url(@texte), notice:  I18n.t('notices.successfully_created') }
+        format.html { redirect_to texte_url(@texte), notice:  "Création à jour réussie" }
         format.json { render :show, status: :created, location: @texte }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -34,7 +34,7 @@ class TextesController < ApplicationController
   def update
     respond_to do |format|
       if @texte.update(texte_params)
-        format.html { redirect_to texte_url(@texte), notice: I18n.t('notices.successfully_updated') }
+        format.html { redirect_to texte_url(@texte), notice:  "Mise à jour réussie" }
         format.json { render :show, status: :ok, location: @texte }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -47,7 +47,7 @@ class TextesController < ApplicationController
     @texte.destroy!
 
     respond_to do |format|
-      format.html { redirect_to textes_url, notice: I18n.t('notices.successfully_destroyed')  }
+      format.html { redirect_to textes_url, notice:  "Suppression réussie"  }
       format.json { head :no_content }
     end
   end

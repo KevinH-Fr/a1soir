@@ -54,7 +54,7 @@ class ProfilesController < ApplicationController
           ]
         end
 
-        format.html { redirect_to profile_url(@profile), notice:  I18n.t('notices.successfully_created') }
+        format.html { redirect_to profile_url(@profile), notice:  "Création à jour réussie" }
         format.json { render :show, status: :created, location: @profile }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -77,7 +77,7 @@ class ProfilesController < ApplicationController
           ]
         end
 
-        format.html { redirect_to profile_url(@profile), notice:  I18n.t('notices.successfully_updated') }
+        format.html { redirect_to profile_url(@profile), notice: "Mise à jour réussie" }
         format.json { render :show, status: :ok, location: @profile }
       else
 
@@ -97,7 +97,7 @@ class ProfilesController < ApplicationController
     @profile.destroy!
 
     respond_to do |format|
-      format.html { redirect_to profiles_url, notice:  I18n.t('notices.successfully_destroyed') }
+      format.html { redirect_to profiles_url, notice:  "Suppression réussie" }
       format.json { head :no_content }
     end
   end

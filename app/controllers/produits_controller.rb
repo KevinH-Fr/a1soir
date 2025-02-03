@@ -22,15 +22,17 @@ class ProduitsController < ApplicationController
     @tailles = Taille.all 
     @fournisseurs = Fournisseur.all 
 
-  #  respond_to do |format|
-  #    format.html
-  #    format.turbo_stream
-  #  end
-
   end
 
   def show
-    @commandes_liees = Commande.joins(articles: :produit).where(articles: { produit_id: @produit }).order(created_at: :desc).distinct
+    @commandes_liees = Commande
+    .includes([:client])
+    .joins(:articles)
+    .left_joins(articles: :sousarticles)
+    .where(articles: { produit_id: @produit.id })
+    .or(Commande.where(sousarticles: { produit_id: @produit.id }))
+    .order(created_at: :desc)
+    .distinct
   end
 
   def new
@@ -72,24 +74,7 @@ class ProduitsController < ApplicationController
 
     respond_to do |format|
       if @produit.save
-
-        #flash.now[:success] = "produit was successfully created"
-
-        #format.turbo_stream do
-        #  render turbo_stream: [
-        #    turbo_stream.update('new',
-        #                        partial: "produits/form",
-        #                        locals: { produit: Produit.new }),
-  
-        #    turbo_stream.prepend('produits',
-        #                          partial: "produits/produit",
-        #                          locals: { produit: @produit }),
-        #    turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
-            
-        #  ]
-        #end
-
-        format.html { redirect_to produit_url(@produit), notice: I18n.t('notices.successfully_created') }
+        format.html { redirect_to produit_url(@produit), notice: "Création réussie" }
         format.json { render :show, status: :created, location: @produit }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -109,7 +94,7 @@ class ProduitsController < ApplicationController
     respond_to do |format|
       if @produit.update(produit_params)
 
-        flash.now[:success] =  I18n.t('notices.successfully_updated')
+        flash.now[:success] =  "Mise à jour réussie"
 
         format.turbo_stream do
           render turbo_stream: [
@@ -141,7 +126,7 @@ class ProduitsController < ApplicationController
       respond_to do |format|
 
         
-        flash.now[:success] =  I18n.t('notices.successfully_destroyed')
+        flash.now[:success] = "Destruction réussie"
 
 
         format.turbo_stream do
@@ -151,7 +136,7 @@ class ProduitsController < ApplicationController
           ]
         end
 
-        format.html { redirect_to produits_path, notice: I18n.t('notices.successfully_destroyed') }
+        format.html { redirect_to produits_path, notice:  "Suppression réussie" }
       end
     end
 

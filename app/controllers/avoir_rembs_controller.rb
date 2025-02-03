@@ -39,7 +39,7 @@ class AvoirRembsController < ApplicationController
 
         @commande = @avoir_remb.commande
 
-        flash.now[:success] =  I18n.t('notices.successfully_created')
+        flash.now[:success] =  "Création réussie"
 
         format.turbo_stream do
           render turbo_stream: [
@@ -80,7 +80,7 @@ class AvoirRembsController < ApplicationController
     respond_to do |format|
       if @avoir_remb.update(avoir_remb_params)
 
-        flash.now[:success] =  I18n.t('notices.successfully_updated')
+        flash.now[:success] =  "Mise à jour réussie"
 
         format.turbo_stream do
           render turbo_stream: [
@@ -132,7 +132,7 @@ class AvoirRembsController < ApplicationController
         ]
       end 
 
-      format.html { redirect_to avoir_rembs_url, notice: I18n.t('notices.successfully_destroyed')  }
+      format.html { redirect_to avoir_rembs_url, notice:  "Suppression réussie"  }
       format.json { head :no_content }
     end
   end

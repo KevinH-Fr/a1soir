@@ -9,34 +9,30 @@ class DocEditionsController < ApplicationController
   def new
     @doc_edition = DocEdition.new doc_edition_params
     @commande = Commande.find(session[:commande])
-
+  
     @next_meeting = @commande.next_upcoming_meeting&.start_time
-
-    # Fetch the next upcoming meeting for both Commande and Client (if a client is associated)
+  
     next_commande_meeting = @commande.next_upcoming_meeting
     next_client_meeting = @commande.client&.next_upcoming_meeting
-    
-    # Determine the closest meeting
     @next_meeting = [next_commande_meeting, next_client_meeting].compact.min_by(&:datedebut)
-
-    I18n.locale = @commande.client.language || :fr 
-
-    doc_type_label =  I18n.t("document_types.#{@doc_edition.doc_type}")
-    event_type_label =  I18n.t("events.#{@commande.typeevent}")
-
-    @sujet = I18n.t('commande_email.subject', doc_type: doc_type_label, ref_commande: @commande.ref_commande)
-    @destinataire = @commande.client.mail
-
-    # reprendre
-    part_0 = I18n.t('commande_email.body.greeting', client: @commande.client.full_intitule)
-    part_1 = I18n.t('commande_email.body.document_info', doc_type: doc_type_label)
-    part_2 = @commande.typeevent? ? I18n.t('commande_email.body.event_info', event_type: event_type_label) : ""
-    part_3 = @commande.dateevent? ? I18n.t('commande_email.body.date_info', event_date: format_date_in_french(@commande.dateevent)) : ""
-    #part_4 = @next_meeting.present? ? I18n.t('commande_email.body.next_meeting', meeting_details: @next_meeting.meeting_details) : ""
-
-    @message = "#{part_0}\n\n#{part_1}#{part_2}#{part_3}." ##{part_4}
-
-  end
+  
+    client_locale = @commande.client.language || :fr 
+  
+    I18n.with_locale(client_locale) do
+      doc_type_label = I18n.t("document_types.#{@doc_edition.doc_type}")
+      event_type_label = I18n.t("events.#{@commande.typeevent}")
+  
+      @sujet = I18n.t('commande_email.subject', doc_type: doc_type_label, ref_commande: @commande.ref_commande)
+      @destinataire = @commande.client.mail
+  
+      part_0 = I18n.t('commande_email.body.greeting', client: @commande.client.full_intitule)
+      part_1 = I18n.t('commande_email.body.document_info', doc_type: doc_type_label)
+      part_2 = @commande.typeevent? ? I18n.t('commande_email.body.event_info', event_type: event_type_label) : ""
+      part_3 = @commande.dateevent? ? I18n.t('commande_email.body.date_info', event_date: format_date_in_french(@commande.dateevent)) : ""
+  
+      @message = "#{part_0}\n\n#{part_1}#{part_2}#{part_3}."
+    end
+  end  
 
 
   def edit
@@ -89,7 +85,7 @@ class DocEditionsController < ApplicationController
 
         @commande = @doc_edition.commande
         
-        flash.now[:success] =  I18n.t('notices.successfully_created')
+        flash.now[:success] =  "Création réussie"
 
         format.turbo_stream do
           render turbo_stream: [

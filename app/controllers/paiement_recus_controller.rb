@@ -33,7 +33,7 @@ class PaiementRecusController < ApplicationController
         
         @commande = @paiement_recu.commande
 
-        flash.now[:success] = I18n.t('notices.successfully_created')
+        flash.now[:success] = "Création réussie"
 
         format.turbo_stream do
           render turbo_stream: [
@@ -81,7 +81,7 @@ class PaiementRecusController < ApplicationController
     respond_to do |format|
       if @paiement_recu.update(paiement_recu_params)
 
-        flash.now[:success] = I18n.t('notices.successfully_updated')
+        flash.now[:success] = "Mise à jour réussie"
 
         format.turbo_stream do
           render turbo_stream: [
@@ -138,7 +138,7 @@ class PaiementRecusController < ApplicationController
         ]
       end 
       
-      format.html { redirect_to paiement_recus_url, notice: I18n.t('notices.successfully_destroyed')  }
+      format.html { redirect_to paiement_recus_url, notice:  "Suppression réussie"  }
       format.json { head :no_content }
     end
   end

@@ -57,7 +57,7 @@ class ClientsController < ApplicationController
        #  ]
        # end
 
-        format.html { redirect_to client_url(@client), notice:  I18n.t('notices.successfully_created')}
+        format.html { redirect_to client_url(@client), notice:  "Création à jour réussie"}
         format.json { render :show, status: :created, location: @client }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -71,7 +71,7 @@ class ClientsController < ApplicationController
     respond_to do |format|
       if @client.update(client_params)
 
-        flash.now[:success] =  I18n.t('notices.successfully_updated')
+        flash.now[:success] =  "Mise à jour réussie"
 
         format.turbo_stream do
           render turbo_stream: [
@@ -94,7 +94,7 @@ class ClientsController < ApplicationController
     @client.destroy!
 
     respond_to do |format|
-      format.html { redirect_to clients_url, notice:  I18n.t('notices.successfully_destroyed') }
+      format.html { redirect_to clients_url, notice:  "Suppression réussie" }
       format.json { head :no_content }
     end
   end

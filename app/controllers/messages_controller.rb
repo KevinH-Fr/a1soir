@@ -23,7 +23,7 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       if @message.save
-        format.html { redirect_to message_url(@message), notice: I18n.t('notices.successfully_created') }
+        format.html { redirect_to message_url(@message), notice: "Création réussie" }
         format.json { render :show, status: :created, location: @message }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -36,7 +36,7 @@ class MessagesController < ApplicationController
   def update
     respond_to do |format|
       if @message.update(message_params)
-        format.html { redirect_to message_url(@message), notice: I18n.t('notices.successfully_updated') }
+        format.html { redirect_to message_url(@message), notice:  "Mise à jour réussie" }
         format.json { render :show, status: :ok, location: @message }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -50,7 +50,7 @@ class MessagesController < ApplicationController
     @message.destroy!
 
     respond_to do |format|
-      format.html { redirect_to messages_url, notice: I18n.t('notices.successfully_destroyed')  }
+      format.html { redirect_to messages_url, notice:  "Suppression réussie"  }
       format.json { head :no_content }
     end
   end

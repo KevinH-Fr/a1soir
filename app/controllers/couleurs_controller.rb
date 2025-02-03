@@ -38,7 +38,7 @@ class CouleursController < ApplicationController
     respond_to do |format|
       if @couleur.save
 
-        flash.now[:success] =  I18n.t('notices.successfully_created')
+        flash.now[:success] =  "Création réussie"
 
         format.turbo_stream do
           render turbo_stream: [
@@ -68,7 +68,7 @@ class CouleursController < ApplicationController
     respond_to do |format|
       if @couleur.update(couleur_params)
 
-        flash.now[:success] = I18n.t('notices.successfully_updated')
+        flash.now[:success] = "Mise à jour réussie"
 
         format.turbo_stream do
           render turbo_stream: [
@@ -97,7 +97,7 @@ class CouleursController < ApplicationController
     @couleur.destroy!
 
     respond_to do |format|
-      format.html { redirect_to couleurs_url, notice: I18n.t('notices.successfully_destroyed')  }
+      format.html { redirect_to couleurs_url, notice:  "Suppression réussie"  }
       format.json { head :no_content }
     end
   end

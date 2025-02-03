@@ -37,7 +37,7 @@ class SousarticlesController < ApplicationController
 
         @commande = @sousarticle.article.commande
 
-        format.html { redirect_to commande_url(@commande), notice:  I18n.t('notices.successfully_created')}
+        format.html { redirect_to commande_url(@commande), notice:  'sous article successfully_created'}
         format.json { render :show, status: :created, location: @sousarticle }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -53,7 +53,7 @@ class SousarticlesController < ApplicationController
 
         @commande = @sousarticle.article.commande
 
-        flash.now[:success] = I18n.t('notices.successfully_updated')
+        flash.now[:success] = "Sousarticle was successfully updated."
 
         format.turbo_stream do
           render turbo_stream: [
@@ -102,7 +102,7 @@ class SousarticlesController < ApplicationController
           ]
       end
 
-      format.html { redirect_to sousarticles_url, notice: I18n.t('notices.successfully_destroyed')  }
+      format.html { redirect_to sousarticles_url, notice: "sous article supprimé"  }
       format.json { head :no_content }
     end
   end
