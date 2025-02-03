@@ -99,7 +99,7 @@ class MeetingsController < ApplicationController
         # Send reminder email after the meeting is successfully created
         MeetingMailer.reminder_email(@meeting).deliver_now
 
-          flash.now[:success] =  I18n.t('notices.successfully_created')
+          flash.now[:success] =  "Meeting was created"
           
           format.turbo_stream do
             render turbo_stream: [
@@ -114,7 +114,7 @@ class MeetingsController < ApplicationController
               ]
           end
         
-        format.html { redirect_to meeting_url(@meeting), notice: I18n.t('notices.successfully_created') }
+        format.html { redirect_to meeting_url(@meeting), notice: "Meeting was created" }
         format.json { render :show, status: :created, location: @meeting }
       else
 
@@ -137,7 +137,7 @@ class MeetingsController < ApplicationController
     respond_to do |format|
       if @meeting.update(meeting_params)
 
-        flash.now[:success] =  I18n.t('notices.successfully_updated')
+        flash.now[:success] = "Meeting was updated"
 
         format.turbo_stream do
           render turbo_stream: [
@@ -146,7 +146,7 @@ class MeetingsController < ApplicationController
           ]
         end
 
-        format.html { redirect_to meeting_url(@meeting), notice: I18n.t('notices.successfully_updated') }
+        format.html { redirect_to meeting_url(@meeting), notice: "Meeting was updated" }
         format.json { render :show, status: :ok, location: @meeting }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -160,7 +160,7 @@ class MeetingsController < ApplicationController
     @meeting.destroy!
 
     respond_to do |format|
-      format.html { redirect_to meetings_url, notice: I18n.t('notices.successfully_destroyed')  }
+      format.html { redirect_to meetings_url, notice: "Meeting was destroyed" }
       format.json { head :no_content }
     end
   end

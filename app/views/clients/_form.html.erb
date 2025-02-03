@@ -39,7 +39,10 @@
 
       <div class="input-group px-2 mb-1">
         <%= form.label :language, "Language", class: "input-group-text" %>
-        <%= form.select :language, [['Français', 'fr'], ['Anglais', 'en']], { include_blank: '', selected: 'fr' }, class: "form-select" %>
+        <%= form.select :language, 
+          [['Français', 'fr'], ['Anglais', 'en']], 
+          { include_blank: '', selected: form.object.language || 'fr' }, 
+          class: "form-select" %>
       </div>
 
       <%= custom_submit_button(form) %>
