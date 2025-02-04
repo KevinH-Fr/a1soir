@@ -4,13 +4,13 @@
 </div>
 
 <% meetings.each do |meeting| %>
-  <div class="card-title">
-    <%= link_to meeting.full_name, meeting, class: "text-primary" %>
-  </div>
-  <div class="card-body">
-    <p class="card-text">
-        <%= meeting.datedebut.strftime("%H:%M") if meeting.datedebut.present? %>
-        <%= meeting.datefin.strftime('%H:%M') if meeting.datefin.present? %>
-    </p>
+  <div class="d-flex text-wrap badge text-decoration-none bg-primary mb-1 small p-1" style="max-width: 100%; font-size: 10px;">
+    <div class="flex-grow-1">
+      <%= link_to meeting.full_name, meeting, class: "text-decoration-none text-light" %>
+        <div class="fw-normal mt-1">
+          <%= meeting.datedebut.strftime("%H:%M") if meeting.datedebut.present? %>
+          <%= meeting.datefin.strftime('%H:%M') if meeting.datefin.present? %>
+        </div>
+    </div>
   </div>
 <% end %>

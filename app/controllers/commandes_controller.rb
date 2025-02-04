@@ -22,6 +22,8 @@ class CommandesController < ApplicationController
     @commande = Commande.includes(articles: [:produit, :sousarticles]).find(params[:commande]) if params[:commande]
     session[:commande] = @commande.id if @commande
 
+    @articles = @commande.articles.includes(produit: [:image1_attachment, :couleur, :taille])
+
     @produits = Produit.all 
     @doc_edition = DocEdition.new
 

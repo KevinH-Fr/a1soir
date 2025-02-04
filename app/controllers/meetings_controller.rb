@@ -18,7 +18,7 @@ class MeetingsController < ApplicationController
 
     @meetings_periode = Meeting.where(
       datedebut: Time.now.beginning_of_month.beginning_of_week..
-      Time.now.end_of_month.end_of_week)
+      Time.now.end_of_month.end_of_week).includes(commande: :client)
 
     @calendar_type = params[:type] || 'month'
 

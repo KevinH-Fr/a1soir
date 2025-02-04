@@ -12,10 +12,11 @@
 </div>
 
 <div id="articles">
-  <% @commande.articles.each do |article| %>
+  <% @articles.includes(:sousarticles).each do |article| %>
     <%= render partial: 'articles/article', locals: { article: article } %>
   <% end %>
 </div>
+
 
 <div class="card mx-2 rounded bg-secondary mb-3">
   <%= render 'articles/synthese' %>
