@@ -113,6 +113,9 @@ Rails.application.routes.draw do
   end
 
   resources :meetings do 
+    collection do
+      get :download_ics # Define the download_ics route
+    end
     member do
       post :edit
     end

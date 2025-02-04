@@ -26,36 +26,25 @@ class MeetingsController < ApplicationController
       format.html
       format.turbo_stream
       format.ics do
-        cal = Icalendar::Calendar.new
-        cal.x_wr_calname = 'A1soir_new_app2'
 
-        @meetings.each do | meeting |
+        puts " _____________ call ics cal __________"
+        ics_file = MeetingIcsService.new(@meetings).generate
+        puts " _____________ data: #{ics_file} __________"
 
-          cal.event do |e|
-
-
-           e.last_modified = Time.now.utc
-
-           e.dtstart     = meeting.start_time 
-           e.dtend       = meeting.end_time 
-
-          # e.dtstart     = Icalendar::Values::DateTime.new(meeting.start_time, tzid: "Europe/Paris")
-          # e.dtend       = Icalendar::Values::DateTime.new(meeting.end_time, tzid: "Europe/Paris")
-         
-           e.summary     = meeting.full_name 
-            e.description = meeting.full_details
-            e.location    = meeting.lieu
-            e.uid         = "UNIQUEv2#{meeting.id.to_s}"
-            e.sequence    = Time.now.to_i
-          end
-        end
-        
-        cal.publish
         response.headers['Content-Type'] = 'text/calendar; charset=UTF-8'
-        render plain: cal.to_ical
-        
+        render plain: ics_file
       end 
     end
+  end
+
+  def download_ics
+    @meetings = Meeting.all.includes(commande: :client)
+
+    # Generate ICS content
+    ics_file = MeetingIcsService.new(@meetings).generate
+
+    # Set the response headers and render the ICS file
+    send_data ics_file, filename: "meetings.ics", type: "text/calendar", disposition: "attachment"
   end
 
   # GET /meetings/1 or /meetings/1.json
