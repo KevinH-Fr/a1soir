@@ -34,7 +34,7 @@ class EtiquettesController < ApplicationController
     
     def generate_pdf
   
-      @produits = Produit.where(id: session[:selection_etiquettes])
+      @produits = Produit.where(id: session[:selection_etiquettes]).includes([:taille], [:couleur], [:image1_attachment], [:qr_code_attachment])
       @produits_count = @produits.count { |prod| prod.present? } 
 
       respond_to do |format|

@@ -1,5 +1,6 @@
 <%= bandeau_entete("Etiquettes", "tags", "", "", "") %>
 
+
 <div class="p-2">
   <%= index_search_form(@q, etiquettes_path, :nom_or_reffrs_or_handle_or_categorie_produit_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont ) %>
 
@@ -8,7 +9,6 @@
       <strong> Sélection active :  </strong>
 
       <% session[:selection_etiquettes].each do |produit| %>
-
         <%= custom_badge("", "", "", "", Produit.find(produit).full_name ) %>
 
       <% end %>

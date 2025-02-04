@@ -93,7 +93,7 @@ class Produit < ApplicationRecord
 
   def fix_quantity_for_ensemble
     #if produit is an ebsemble empty the quantity
-    if type_produit.nom == "ensemble" 
+    if type_produit&.nom == "ensemble" 
       self.quantite = 1
     end
   end

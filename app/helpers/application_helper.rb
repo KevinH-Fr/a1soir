@@ -63,4 +63,8 @@ module ApplicationHelper
       I18n.l(date, locale: :fr)  # Format the date in French using I18n
     end
 
+    def no_photo_url
+      'https://res.cloudinary.com/dukne3lhz/image/upload/v1738665309/no_photo_black_p8wyfh.png'
+    end
+
 end
