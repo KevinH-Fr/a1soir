@@ -9,7 +9,7 @@ class MeetingReminderJob < ApplicationJob
     # Convert datedebut to UTC before comparing
     meetings = Meeting.where("DATE(datedebut) = ?", tomorrow_date)
   
-   # puts "_____call meeting reminder job on #{meetings.count} meetings_____________"
+    puts "_____call meeting reminder job on #{meetings.count} meetings_____________"
   
     # Send reminder emails for each meeting
     meetings.each do |meeting|
