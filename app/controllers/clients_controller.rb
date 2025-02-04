@@ -13,6 +13,7 @@ class ClientsController < ApplicationController
   end
 
   def show
+    
     @clients = Client.all
     @profiles = Profile.all 
 
