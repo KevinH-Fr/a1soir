@@ -20,7 +20,7 @@
         </table>
     </div>
 
-    <% if @doc_edition.commentaires %>
+    <% if @doc_edition.commentaires.present? %>
         <div class="cadre my-2">
         <span class="bolded">Commentaires </span> 
         <span class=""> <%= @doc_edition.commentaires %> </span> <br>

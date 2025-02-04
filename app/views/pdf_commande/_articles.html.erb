@@ -23,7 +23,7 @@
                class: "img-fluid rounded") %> 
             </td>
 
-            <td> 
+            <td style="vertical-align: middle;"> 
               <div class="td-doc-main"> 
                 <%= article.produit.nom %> 
               </div>
@@ -48,17 +48,30 @@
                   <td colspan=2> </td>
 
                   <td class="">
-                    <%= image_tag(sousarticle.produit.default_image, style: "width: 40px;", 
-                       class: "img-fluid rounded") %> 
-                    <%= sousarticle.produit.nom %>
-                    <%= sousarticle.produit&.couleur&.nom %> 
-                    <%= sousarticle.produit&.taille&.nom %> 
-                    <%= sousarticle.nature %> <br>
-                    <small>
-                      <%= sousarticle.description %>
-                      <%= sousarticle.commentaires  %>
-                    </small>
+                    <div style="display: inline-block; vertical-align: middle;">
+                      <!-- Image on the left -->
+                      <%= image_tag(sousarticle.produit.default_image, style: "width: 40px; height: auto;", class: "img-fluid rounded") %> 
+                    </div>
+                    
+                    <div style="display: inline-block; margin-left: 10px; vertical-align: middle;">
+                      <!-- Text on the right -->
+                      <div>
+                        <strong><%= sousarticle.produit.nom %></strong>
+                      </div>
+                      <div>
+                        <%= sousarticle.produit&.couleur&.nom %> 
+                        <%= sousarticle.produit&.taille&.nom %>
+                      </div>
+                      <div>
+                        <%= sousarticle.nature %> 
+                        <small>
+                          <%= sousarticle.description %>
+                          <%= sousarticle.commentaires %>
+                        </small>
+                      </div>
+                    </div>
                   </td>
+
               
                   <td></td>
                   <td class="td-doc-valeurs ended"> 
