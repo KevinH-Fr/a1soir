@@ -62,3 +62,4 @@ gem 'whenever', require: false
 gem 'bullet', group: 'development'
 
 gem 'icalendar'
+

@@ -93,4 +93,5 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
 
+  #config.hosts << "4d69-176-137-196-163.ngrok-free.app"
 end
