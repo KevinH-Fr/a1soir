@@ -5,6 +5,8 @@ class CategorieProduitsController < ApplicationController
 
   def index
 
+    @count_categorie_produits = CategorieProduit.count
+
     search_params = params.permit(:format, :page, 
       q:[:nom_cont])
     @q = CategorieProduit.ransack(search_params[:q])

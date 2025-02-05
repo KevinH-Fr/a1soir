@@ -24,7 +24,7 @@
                         <tr>
                             <td class="col-1 text-center"> <%= user.id %> </td>
                             <td class="col-7"> <%= user.email %> </td>   
-                            <td class="col-5 text-center"> 
+                            <td class="col-5 d-flex gap-1 text-center"> 
                                 <%= link_to "Vendeur", toggle_status_vendeur_user_path(user), class:"btn btn-sm btn-primary", 
                                 :onclick => "return confirm('Etes-vous certain de vouloir passer cet utilisateur en Vendeur ?')" %> 
                                 <%= link_to "Admin", toggle_status_admin_user_path(user), class:"btn btn-sm btn-dark", 
@@ -60,7 +60,7 @@
                         <tr>
                             <td class="col-1 text-center"> <%= user.id %> </td>
                             <td class="col-7 "> <%= user.email %> </td>   
-                            <td class="col-5 text-center"> 
+                            <td class="col-5 d-flex gap-1 text-center"> 
                                 <%= link_to "User", toggle_status_user_user_path(user), class:"btn btn-sm btn-secondary", 
                                     :onclick => "return confirm('Etes-vous certain de vouloir passer cet utilisateur en User ?')" %> 
                                 <%= link_to "Admin", toggle_status_admin_user_path(user), class:"btn btn-sm btn-dark", 
@@ -97,7 +97,7 @@
                         <tr>
                             <td class="col-1 text-center"> <%= user.id %> </td>
                             <td class="col-7"> <%= user.email %> </td>   
-                            <td class="col-5 text-center"> 
+                            <td class="col-5 d-flex gap-1 text-center"> 
                                 <%= link_to "User", toggle_status_user_user_path(user), class:"btn btn-sm btn-secondary", 
                                     :onclick => "return confirm('Etes-vous certain de vouloir passer cet Admin en User ?')" %> 
 

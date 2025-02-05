@@ -1,14 +1,14 @@
 module HomeAdminHelper
   def dashboard_card(title, path, new_path, icon, items)
     content_tag(:div, class: "card m-2 shadow-sm") do
-      concat(content_tag(:div, class: "card-header bg-dark text-light py-1") do
-        concat(content_tag(:div, class: "row align-items-center m-0 p-1") do
+      concat(content_tag(:div, class: "card-header bg-dark text-light p-1 px-2") do
+        concat(content_tag(:div, class: "row align-items-center m-0 p-0") do
           concat(content_tag(:div, class: "col text-start m-0 p-0") do
-            concat(content_tag(:i, nil, class: "bi bi-xl brand-colored bi-#{icon}"))
+            concat(content_tag(:i, nil, class: "bi brand-colored bi-#{icon} fs-3"))
           end)
 
           concat(content_tag(:div, class: "col text-center fw-bold text-nowrap") do
-            concat(link_to title, path, class: "text-center text-decoration-none text-light fs-5")
+            concat(link_to title, path, class: "text-center text-decoration-none text-light fs-6")
           end)
 
           concat(content_tag(:div, class: "col text-end m-0 p-0") do

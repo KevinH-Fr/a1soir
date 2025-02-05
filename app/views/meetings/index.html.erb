@@ -1,15 +1,15 @@
-<%= bandeau_entete("Rendez-vous", "calendar", @meetings.count, 
+<%= bandeau_entete("Rendez-vous", "calendar", @count_meetings, 
 :nom_or_datedebut_or_datefin_or_lieu_cont, meetings_path) %>
 
 <%= bloc_nouveau(Meeting) %>
 
 <div class="container my-3 text-center">
-  <%= link_to 'Jour', { type: 'day'}, class: 'btn btn-outline-primary' %>
-  <%= link_to 'Semaine', { type: 'week'}, class: 'btn btn-outline-primary' %>
-  <%= link_to 'Mois', { type: 'month' }, class: 'btn btn-outline-primary' %>
+  <%= link_to 'Jour', { type: 'day' }, class: active_date_range_class('day') %>
+  <%= link_to 'Semaine', { type: 'week' }, class: active_date_range_class('week') %>
+  <%= link_to 'Mois', { type: 'month' }, class: active_date_range_class('month') %>
 </div>
 
-<div class="d-flex text-center my-4 m-2 overflow-auto" style="max-width: 100%; white-space: nowrap;">
+<div class="d-flex justify-content-center text-center my-4 m-2 overflow-auto" style="max-width: 100%; white-space: nowrap;">
 
   <% if @calendar_type == "day" %>
     <%= calendar(number_of_days: 1, events: @meetings_periode.includes(:commande, :client)) do |date, meetings| %>
@@ -42,7 +42,7 @@
   <% end %>
 
 
-  <div class="container text-end">
+  <div class="container-fluid text-end">
     <%#= link_to "S'abonner au calendrier", meetings_url(protocol: :webcal, format: :ics), 
           class:"btn btn-sm btn-dark fw-bold" %>  
     <%= render 'copy_url_button' %>

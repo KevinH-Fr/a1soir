@@ -1,12 +1,12 @@
 <div class="card m-2 shadow-sm">
 
-    <div class="card-header bg-dark text-light py-2 fw-bold text-center fs-5">
+    <div class="card-header bg-dark text-light p-1 px-2 fw-bold text-center fs-5">
 
-        <div class="row align-items-center m-0 p-1">
+        <div class="row align-items-center m-0 p-0">
             <div class="col text-start m-0 p-0 ">
-                <i class="bi bi-xl brand-colored bi-compass me-2"></i>
+                <i class="bi bi-xl fs-3 brand-colored bi-compass me-2"></i>
             </div>
-            <div class="col text-center fw-bold text-nowrap">
+            <div class="col text-center fw-bold text-nowrap fs-6">
                 Accès
             </div>
             <div class="col text-end m-0 p-0">
@@ -30,24 +30,6 @@
         <%= options_supplementaires_link(couleurs_path, "bi-palette", "Couleurs", "btn-outline-dark") %>
         <%= options_supplementaires_link(tailles_path, "bi-rulers", "Tailles", "btn-outline-secondary") %>
         <%= options_supplementaires_link(admin_parameters_path, "bi-gear", "Parametres", "btn-outline-warning") %>
-
-        <%# faire des regrouepents avc des menus deroulants par cat : ex parametre %>
-
-        <!--button class="btn btn-primary fa fa-bounce" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
-            <i class="fa fa-qrcode me-1"></i>
-            <span class="d-none d-md-inline">scan</span>
-        </button>
-        
-        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Scan QR code</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <%#= render 'home_admin/selection_qr' %>
-                <%#= render 'home_admin/selection_qr_test' %>
-            </div>
-        </div-->
 
         <%= link_to home_admin_scan_qr_path, class: "btn btn-sm btn-primary fa fa-bounce" do %>
             <i class="bi bi-qr-code-scan"></i>

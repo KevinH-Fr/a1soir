@@ -4,6 +4,7 @@ class CouleursController < ApplicationController
   before_action :set_couleur, only: %i[ show edit update destroy ]
 
   def index
+    @count_couleurs = Couleur.count
 
     search_params = params.permit(:format, :page, 
       q:[:nom_cont])

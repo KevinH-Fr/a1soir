@@ -4,11 +4,13 @@ class ClientsController < ApplicationController
   before_action :set_client, only: %i[ show edit update destroy ]
 
   def index
+    @count_clients = Client.count
+
     search_params = params.permit(:format, :page, 
       q:[:nom_or_prenom_cont])
-   @q = Client.ransack(search_params[:q])
-   clients = @q.result(distinct: true).order(created_at: :desc)
-   @pagy, @clients = pagy_countless(clients, items: 2)
+    @q = Client.ransack(search_params[:q])
+    clients = @q.result(distinct: true).order(created_at: :desc)
+    @pagy, @clients = pagy_countless(clients, items: 2)
 
   end
 

@@ -4,6 +4,7 @@ class EnsemblesController < ApplicationController
   before_action :set_ensemble, only: %i[ show edit update destroy ]
 
   def index
+    @count_ensembles = Ensemble.count
 
     search_params = params.permit(:format, :page, 
       q:[:produit_nom_cont])

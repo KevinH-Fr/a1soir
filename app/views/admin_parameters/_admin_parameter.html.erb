@@ -1,25 +1,14 @@
 <div id="<%= dom_id admin_parameter %>" class="my-2">
   <div class="card mx-2 mb-3 p-2 light-beige-colored shadow-sm">
-    <p>
-      <strong>Tx tva:</strong>
-      <%= admin_parameter.tx_tva %>
-    </p>
 
-    <p>
-      <strong>coef_prix_achat_vente:</strong>
-      <%= admin_parameter.coef_prix_achat_vente %>
-    </p>
-
-     <p>
-      <strong>majoration longueduree:</strong>
-      <%= admin_parameter.coef_longue_duree %>
-    </p>
-    
-    <p>
-      <strong>durée rdv par défaut:</strong>
-      <%= admin_parameter.duree_rdv %>
-    </p>
-    
+    <div class="d-flex flex-wrap gap-1 mb-1">
+      <%= field_with_label("tx_tva:", admin_parameter.tx_tva) %> 
+      <%= field_with_label("coef_prix_achat_vente:", admin_parameter.coef_prix_achat_vente) %> 
+      <%= field_with_label("coef_longue_duree:", admin_parameter.coef_longue_duree) %> 
+      <%= field_with_label("duree_rdv:", admin_parameter.duree_rdv) %> 
+      
+    </div>
+  
     <%= links_record(admin_parameter) %>  
 
   </div>

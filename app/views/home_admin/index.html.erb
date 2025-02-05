@@ -17,7 +17,7 @@
             @produits.order(updated_at: :desc).map { |produit| { text: produit.nom, path: produit_path(produit) } } ) %>
     </div>
     <div class="col-md-6 m-0 p-0">
-      <%= dashboard_card("Rendez-vous", meetings_path, meetings_path, 'calendar-date',
+      <%= dashboard_card("Rendez-vous", meetings_path(type: "month"), meetings_path, 'calendar-date',
             @meetings.order(updated_at: :desc).map { |meeting| { text:  meeting.meeting_info, path: meeting_path(meeting) } } ) %>
     </div>
   </div>
@@ -27,7 +27,6 @@
       <%= render "blocLarge" %>
     </div>
   </div>
-
 
   <% if user_signed_in? %>
       <div class="container-fluid mt-4 d-flex justify-content-end">
@@ -39,6 +38,3 @@
   <% end %>
 
 </div>
-
-
-

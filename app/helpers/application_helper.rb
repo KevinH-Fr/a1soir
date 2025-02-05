@@ -30,7 +30,7 @@ module ApplicationHelper
 
     def field_with_label(text, value)
       if value.present?
-        content_tag(:div, class: "fs-6") do
+        content_tag(:div, class: "badge lighter-beige-colored text-dark fw-normal fs-6") do
           concat " #{text}"
           concat " #{value}"
         end

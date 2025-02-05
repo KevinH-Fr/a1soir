@@ -4,7 +4,8 @@ class TaillesController < ApplicationController
   before_action :set_taille, only: %i[ show edit update destroy ]
 
   def index
-    
+    @count_tailles = Taille.count
+
     search_params = params.permit(:format, :page, 
       q:[:nom_cont])
     @q = Taille.ransack(search_params[:q])

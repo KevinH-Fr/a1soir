@@ -1,4 +1,4 @@
-<%= bandeau_entete("Commandes", "file-earkmark-fill", Commande.count, 
+<%= bandeau_entete("Commandes", "file-earkmark-fill", @count_commandes, 
   :nom_or_type_locvente_or_typeevent_cont, commandes_path) %>
 
 <%= bloc_nouveau(Commande) %>

@@ -5,36 +5,12 @@
     <div data-turbo="false">
 
       <%= link_to fournisseur, class: "text-decoration-none text-dark" do %>
-        <p>
-          <strong>Nom:</strong>
-          <%= fournisseur.nom %>
-        </p>
-
-        <p>
-          <strong>Tel:</strong>
-          <%= fournisseur.tel %>
-        </p>
-
-        <p>
-          <strong>Mail:</strong>
-          <%= fournisseur.mail %>
-        </p>
-
-        <p>
-          <strong>Contact:</strong>
-          <%= fournisseur.contact %>
-        </p>
-
-        <p>
-          <strong>Site:</strong>
-          <%= fournisseur.site %>
-        </p>
-
-        <p>
-          <strong>Notes:</strong>
-          <%= fournisseur.notes %>
-        </p>
-      
+        <%= field_with_label("Nom:", fournisseur.nom) %> 
+        <%= field_with_label("Tel:", fournisseur.tel) %> 
+        <%= field_with_label("Mail:", fournisseur.mail) %> 
+        <%= field_with_label("Contact:", fournisseur.contact) %> 
+        <%= field_with_label("Site:", fournisseur.site) %> 
+        <%= field_with_label("Notes:", fournisseur.notes) %>       
       <% end %>
     
     </div>

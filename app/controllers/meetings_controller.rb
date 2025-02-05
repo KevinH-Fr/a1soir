@@ -5,6 +5,7 @@ class MeetingsController < ApplicationController
   before_action :set_meeting, only: %i[ show edit update destroy ]
 
   def index
+    @count_meetings = Meeting.count
 
     search_params = params.permit(:format, :page, 
       q:[:nom_or_datedebut_or_datefin_or_lieu_cont])

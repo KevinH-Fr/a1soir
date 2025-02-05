@@ -6,6 +6,8 @@ class CommandesController < ApplicationController
 
   def index
 
+    @count_commandes = Commande.count
+
     search_params = params.permit(:format, :page, 
       q:[:nom_or_type_locvente_or_typeevent_cont])
    @q = Commande.ransack(search_params[:q])

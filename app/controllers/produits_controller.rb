@@ -4,6 +4,7 @@ class ProduitsController < ApplicationController
   before_action :set_produit, only: %i[ show edit update destroy ]
 
   def index
+    @count_produits = Produit.count
 
     search_params = params.permit(:format, :page, 
        q:[:nom_or_reffrs_or_handle_or_categorie_produit_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont])

@@ -2,25 +2,18 @@
 
   <div class="card mx-2 my-3 p-3 light-beige-colored shadow-sm">
 
-  <div class="row">
-    <div class="col-2">
-      <%= image_tag(profile.default_image, width: 100)  %>    
+    <div class="row">
+      <div class="col-2">
+        <%= image_tag(profile.default_image, class: "img-fluid")  %>    
+      </div>
+      <div class="col-10">
+        <div class="d-flex flex-wrap gap-1">
+          <%= field_with_label("Prenom:", profile.prenom) %> 
+          <%= field_with_label("Nom:", profile.nom) %> 
+        </div>
+      </div>
     </div>
-    <div class="col-10">
-      <p>
-        <strong>Prenom:</strong>
-        <%= profile.prenom %>
-      </p>
-
-      <p>
-        <strong>Nom:</strong>
-        <%= profile.nom %>
-      </p>
-    </div>
-  </div>
-  
-
-
+    
     <%= links_record(profile) %>  
 
   </div>
