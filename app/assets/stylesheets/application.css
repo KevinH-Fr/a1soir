@@ -13,7 +13,8 @@
  /* scroll bar */
 
  ::-webkit-scrollbar {
-   width: 5px; /* Width of the vertical scrollbar */
+  width: 8px;   /* Vertical scrollbar width */
+  height: 4px;  /* Horizontal scrollbar height */
  }
  
  ::-webkit-scrollbar-thumb {

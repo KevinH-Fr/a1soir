@@ -1,4 +1,4 @@
-<%= bandeau_entete("Friends", "user", @friends.count, "your-search") %>
+<%#= bandeau_entete("Friends", "user", @friends.count, "your-search") %>
 
 <%= bloc_nouveau(Friend) %>
 
@@ -9,5 +9,5 @@
 </div>
 
 
-
+<%= link_to "Download Sample File", download_file_friends_path, class: "btn btn-primary" %>
 

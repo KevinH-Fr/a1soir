@@ -8,6 +8,11 @@ Rails.application.routes.draw do
   end
 
   resources :friends do 
+
+    collection do
+      get :download_file  # Define the download_file action
+    end
+    
     member do
       post :edit
     end

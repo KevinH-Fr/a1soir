@@ -1,0 +1,39 @@
+<%= button_tag("Copier webcal url", 
+  type: "button", 
+  class: "btn btn-sm btn-dark", 
+  id: "copy-url-btn", 
+  data: { 
+    url: "webcal://#{request.host_with_port}/meetings.ics",  # Correct webcal URL
+    id: "btn_abonnement", 
+    only_path: false 
+  }) %>
+
+<script>
+  document.addEventListener("turbo:load", function() {
+    var copyButton = document.getElementById("copy-url-btn");
+    if (copyButton) {
+      copyButton.addEventListener("click", function() {
+        var url = this.getAttribute("data-url");  // Get the URL from the button's data-url attribute
+        if (url) {
+          // Ensure the document is focused before attempting to copy
+          document.body.focus();
+
+          // Copy to clipboard
+          navigator.clipboard.writeText(url).then(function() {
+            copyButton.textContent = "Copié!";  // Update button label to "Copied"
+            alert("Webcal url copié!");
+
+            // Optional: Revert the label back to "Invite" after a few seconds
+            setTimeout(function() {
+              copyButton.textContent = "S'abonner au calendrier";
+            }, 3000);  // 3 seconds delay
+          }).catch(function(error) {
+            console.error("Error copying URL: ", error);
+          });
+        } else {
+          console.error("No URL found to copy");
+        }
+      });
+    }
+  });
+</script>

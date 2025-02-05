@@ -9,7 +9,7 @@
   <%= link_to 'Mois', { type: 'month' }, class: 'btn btn-outline-primary' %>
 </div>
 
-<div class="text-center my-4 m-2"> 
+<div class="text-center my-4 m-2 overflow-auto" style="max-width: 100%; white-space: nowrap;">
 
   <% if @calendar_type == "day" %>
     <%= calendar(number_of_days: 1, events: @meetings_periode.includes(:commande, :client)) do |date, meetings| %>
@@ -25,7 +25,9 @@
     <% end %>
   <% end %>
 
+</div>
 
+<div>
   <hr>
 
   <% if params[:q].present? %>
@@ -41,11 +43,11 @@
 
 
   <div class="container text-end">
-    <%= link_to "S'abonner au calendrier", meetings_url(protocol: :webcal, format: :ics), 
+    <%#= link_to "S'abonner au calendrier", meetings_url(protocol: :webcal, format: :ics), 
           class:"btn btn-sm btn-dark fw-bold" %>  
+    <%= render 'copy_url_button' %>
+    <%#= link_to "Download Calendar (ICS)", download_ics_meetings_path, class: "btn btn-primary" %>
+
   </div>
  
-  <%#= link_to "Download Calendar (ICS)", download_ics_meetings_path, class: "btn btn-primary" %>
-
 </div>
-

@@ -18,6 +18,14 @@ class FriendsController < ApplicationController
     @friend = Friend.new friend_params
   end
 
+  
+  def download_file
+    file_content = "Hello, this is a sample file content for downloading."
+    filename = "sample_file.txt"
+
+    send_data file_content, filename: filename, type: "text/plain"
+  end
+
   # GET /friends/1/edit
   def edit
 
