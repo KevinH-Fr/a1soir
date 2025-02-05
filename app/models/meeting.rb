@@ -26,6 +26,9 @@ class Meeting < ApplicationRecord
     end 
   end
 
+  def adresse_rdv
+    lieu == "boutique" ? "Autour d'un Soir 27-29 Boulevard Carnot 06400 Cannes" : lieu
+  end
 
   def start_time
     datedebut

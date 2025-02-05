@@ -16,12 +16,16 @@ class MeetingInviteIcsService
       e.dtstart = Icalendar::Values::DateTime.new(@meeting.start_time, tzid: "Europe/Paris")
       e.dtend = Icalendar::Values::DateTime.new(@meeting.end_time, tzid: "Europe/Paris")
 
-      e.summary = @meeting.full_name
-      e.description = @meeting.full_details || ""
-      e.location = @meeting.lieu || "Unknown location"
+      e.summary = @meeting.nom
+      e.description = @meeting.nom
+      e.location = @meeting.adresse_rdv
       e.uid = "a1soir-#{@meeting.id}@a1soir.com"  # Unique and persistent UID
       e.sequence = @meeting.updated_at.to_i if @meeting.updated_at
       e.status = "CONFIRMED"  # Set the status to confirmed
+
+      # Set the organizer
+      e.organizer = Icalendar::Values::CalAddress.new("mailto:contact@a1soir.com", cn: "A1soir Organizer")
+
     end
 
     cal.publish
