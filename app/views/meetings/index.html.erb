@@ -9,7 +9,7 @@
   <%= link_to 'Mois', { type: 'month' }, class: 'btn btn-outline-primary' %>
 </div>
 
-<div class="text-center my-4 m-2 overflow-auto" style="max-width: 100%; white-space: nowrap;">
+<div class="d-flex text-center my-4 m-2 overflow-auto" style="max-width: 100%; white-space: nowrap;">
 
   <% if @calendar_type == "day" %>
     <%= calendar(number_of_days: 1, events: @meetings_periode.includes(:commande, :client)) do |date, meetings| %>
