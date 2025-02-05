@@ -19,31 +19,47 @@ module StockHelper
     total_quantite += Sousarticle.joins(:produit).where(produits: { id: produits }).merge(Produit.not_service).vente_only.count
     total_quantite
   end
-  
-  
 
-  def produits_restants(produits, date = Date.today)
-    if Produit.is_ensemble.exists?(id: produits) 
-      1 # defaut stock for ensemble
+
+  def statut_disponibilite(produits, datedebut, datefin)
+    if Produit.is_service.exists?(id: produits) || Produit.is_ensemble.exists?(id: produits)
+      initial_stock = 1
+      loues_a_date = 0
+      vendus = 0
+      disponibles = 1
     else
-      total_produits(produits) - total_loues(produits) - total_vendus(produits) + locations_terminees_a_date(produits, date)
+      loues_a_date = Article.joins(:commande)
+                           .where(produit_id: produits)
+                           .where("commandes.debutloc <= ? AND commandes.finloc >= ?", datedebut, datefin)
+                           .location_only.sum(:quantite).to_i
+  
+      loues_a_date += Sousarticle.joins(article: :commande)
+                           .where(produit_id: produits)
+                           .where("commandes.debutloc <= ? AND commandes.finloc >= ?", datedebut, datefin)
+                           .location_only.sum(:quantite).to_i
+
+      initial_stock = total_produits(produits)
+      vendus = total_vendus(produits)
     end
+
+    disponibles = initial_stock - (loues_a_date + vendus)
+  
+    # Ensure we are returning a hash with all the necessary keys
+    {
+      produit_id: produits.id,
+      nom: produits.nom,
+      datedebut: datedebut,
+      datefin: datefin,
+      initial: initial_stock,
+      loues_a_date: loues_a_date,
+      vendus: vendus,
+      disponibles: disponibles,
+      statut: disponibles > 0 ? "disponible" : "indisponible"
+    }
   end
-    
-  def locations_terminees_a_date(produits,  date = Date.today)
+  
 
-    #only check status rendu, not end date of location
-    total_quantite = Article.joins(:commande)
-      .where(commande: { statutarticles: "rendu" }, produit_id: produits)
-      .location_only.sum(:quantite).to_i
 
-    total_quantite += Sousarticle.joins(article: :commande)
-      .where(commandes: { statutarticles: "rendu" })
-      .where(produit_id: produits).location_only.sum(:quantite).to_i
-
-    total_quantite
-  end
-    
   # statut des articles
   def articles_loues_in_commandes_non_retires
     Commande.non_retire.sum { |commande| commande.articles.location_only.sum(:quantite) }
@@ -67,27 +83,6 @@ module StockHelper
     total_count
   end
   
-
-  def est_disponible(produits, date = Date.today)
-    unless is_archived(produits)
-      produits_restants(produits, date) > 0 || Produit.where(id: produits).is_service.exists?
-    end
-  end
-  
-
-  def badge_disponibilite(produits, date = Date.today)
-    if Produit.where(id: produits).is_service.exists?
-      restants = 1
-    else 
-      restants = produits_restants(produits,  date = Date.today)
-    end
-
-    if est_disponible(produits,  date = Date.today)
-      content_tag(:span, "Disponibles : #{restants}", class: "badge fs-6 border border-success text-success")
-    else
-      content_tag(:span, "Indisponible", class: "badge fs-6 border border-danger text-danger")
-    end
-  end
       
 end
   

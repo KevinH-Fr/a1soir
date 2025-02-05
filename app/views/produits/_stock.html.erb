@@ -11,13 +11,17 @@
             <% if Produit.is_ensemble.exists?(id: @produit.id) %>
                 Stock illimité pour ensemble
             <% end %>
-
          </p> 
+
+        <hr>
+
         <p> Total loués : <span class="fw-bold"> <%= total_loues(extract_ids(@produit)) %> </span> </p> 
         <p> Total vendus : <span class="fw-bold"> <%= total_vendus(extract_ids(@produit)) %> </span> </p> 
-        <p> Loc terminées : <span class="fw-bold"> <%= locations_terminees_a_date(extract_ids(@produit)) %> </span> </p> 
 
-        <%= badge_disponibilite(@produit, Time.now.to_date) %>
+        <% statut = statut_disponibilite(@produit, Date.today.to_date, Date.today.to_date) %>
+
+        <p> Loués en ce moment : <span class="fw-bold"> <%= statut[:loues_a_date] %> </span> </p> 
+        <p> Disponibles : <span class="fw-bold"> <%= statut[:disponibles] %> </span> </p> 
 
     </div>
 </div>

@@ -1,24 +1,16 @@
-<div class="container-fluid m-0 p-0">
-    <div class="row mx-1 py-2 align-items-center">
-        <div class="col text-start">
+<div class="container-fluid m-0 p-0 d-flex align-items-center justify-content-between gap-1 p-2">
 
-            <span class="badge bg-secondary fw-bold m-1 fs-6 shadow-sm text-light">
-                <%= @commande.ref_commande %>        
-            </span>
+    <span class="badge bg-secondary fw-bold m-1 fs-6 shadow-sm text-light">
+        <%= @commande.ref_commande %>        
+    </span>
 
+    <%= render 'synthese' %>
 
-            <%#= custom_badge("", @commande.client.full_name, "secondary", "") %>
-        </div>
-        <div class="col-7 text-center p-0">
-            <%= render 'synthese' %>
-        </div>
-        <div class="col-2 text-end">
-            <button class="btn btn-primary fa fa-bounce" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
-                <i class="bi bi-file-earmark-text"></i>
-                <span class="d-none d-md-inline ms-1">editer</span>
-            </button>
-        </div>
-    </div>
+    <button class="btn btn-primary fa fa-bounce" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+        <i class="bi bi-file-earmark-text"></i>
+        <span class="d-none d-md-inline ms-1">editer</span>
+    </button>
+
 </div>
 
 <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">

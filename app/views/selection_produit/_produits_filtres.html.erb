@@ -2,13 +2,16 @@
 
     <% if @produits.any? %>
         <% @produits.each do |produit| %>
-            <% if est_disponible(produit, @commande&.date_retenue.to_date ) %>            
-                <%= link_to selection_produit_path(produit: produit, article: @article), class: "text-decoration-none" do %>
-                    <%= produit_selection(produit, @commande) %>
-                <% end %>
-            <% else %>
-                <%= produit_selection(produit, @commande ) %>
-            <% end %>
+
+            <%= produit_selection(produit, @commande) %>
+
+            <%# if statut_disponibilite(produit, @commande&.date_retenue.to_date, @commande.finloc.to_date ) %>   
+                <%#= link_to selection_produit_path(produit: produit, article: @article), class: "text-decoration-none" do %>
+                <%# end %>
+            <%# else %>
+                <%#= produit_selection(produit, @commande ) %>
+            <%# end %>
         <% end %>
+
     <% end %>
 </div>

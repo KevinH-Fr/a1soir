@@ -32,7 +32,19 @@
                 <%= badge_prixvente_produit(produit) %>
                 <%= badge_couleur_produit(produit) %> 
                 <%= badge_taille_produit(produit) %> 
-                <p class="m-1"><%= badge_disponibilite(produit, Time.now.to_date) %> </p> 
+
+                <% statut = statut_disponibilite(produit, Date.today.to_date, Date.today.to_date) %>
+                <% disponibles = statut[:disponibles] %>
+
+                <% unless controller_name="selection_produit" %>
+                  <p class="m-1 mt-3">
+                    <span class="badge <%= disponibles > 0 ? 'bg-success' : 'bg-danger' %>">
+                      Disponibles: <%= disponibles %>
+                    </span>
+                  </p>
+                  
+                <% end %>
+                
                 <%= is_archived(produit) %> 
             </div>
 
