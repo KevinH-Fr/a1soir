@@ -1,8 +1,9 @@
 <%# produits infinite scroll pagination %>
 
 <%= turbo_stream.append :etiquettes do %>
-    <%= render @produits %>
+  <%= render partial: 'etiquettes/produit', collection: @produits, as: :produit %>
 <% end %>
+
 
 <% if @pagy.next.present? %>
     <%= turbo_stream.replace :pagination do %>

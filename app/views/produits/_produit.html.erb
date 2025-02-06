@@ -33,10 +33,9 @@
                 <%= badge_couleur_produit(produit) %> 
                 <%= badge_taille_produit(produit) %> 
 
-                <% statut = statut_disponibilite(produit, Date.today.to_date, Date.today.to_date) %>
-                <% disponibles = statut[:disponibles] %>
-
                 <% unless controller_name="selection_produit" %>
+                  <% statut = statut_disponibilite(produit, Date.today.to_date, Date.today.to_date) %>
+                  <% disponibles = statut[:disponibles] %>
                   <p class="m-1 mt-3">
                     <span class="badge <%= disponibles > 0 ? 'bg-success' : 'bg-danger' %>">
                       Disponibles: <%= disponibles %>
@@ -61,34 +60,7 @@
                 
               <% end %>
 
-              <% if controller_name == "etiquettes"  && action_name == "index" %> 
-                <div class="container text-end">
-
-                  <% if session[:selection_etiquettes].count < 4 %>
-                    
-                    <%= form_with url: update_selection_etiquettes_path, method: :post, local: true, data: { turbo: false } do |form| %>
-                      <%= form.hidden_field :new_product, value: produit.id %>
-                        <button type="submit" class="btn btn-warning my-4">
-                          <span class="fw-bold ms-2"> Sélection étiquette</span>
-                          <i class="bi-tags"></i> 
-                        </button>
-                    <% end %>
-                  
-                  <% else %>
-
-                    <%= link_to etiquettes_path, class: "btn btn-secondary my-4" do %>
-                      <span class="fw-bold ms-2"> Limite atteinte</span>
-                      <i class="bi fa-tags"></i> 
-                    <% end %>
-                    
-                  
-                  <% end %>
-                  
-                  
-                </div>           
-              <% else %>
-                <%= links_record(produit) %>  
-              <% end %>
+              <%= links_record(produit) %>  
             </div>
           </p>
         </div>
