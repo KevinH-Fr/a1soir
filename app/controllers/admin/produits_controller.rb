@@ -1,4 +1,4 @@
-class ProduitsController < ApplicationController
+class Admin::ProduitsController < ApplicationController
 
   before_action :authenticate_vendeur_or_admin!
   before_action :set_produit, only: %i[ show edit update destroy ]

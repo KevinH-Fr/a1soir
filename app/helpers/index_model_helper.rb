@@ -47,14 +47,14 @@ module IndexModelHelper
   end
   
   def index_search_form(q, chemin_recherche, champs_recherche)
-    render partial: 'shared/search_form', locals: {chemin_recherche: chemin_recherche, champs_recherche: champs_recherche }
+    render partial: 'admin/shared/search_form', locals: {chemin_recherche: chemin_recherche, champs_recherche: champs_recherche }
   end
 
   def bloc_nouveau(model_class)
 
       content_tag(:div, class: "collapse", id: "collapseNew") do
           concat(content_tag(:div, id: "new") do
-              render partial: "#{model_class.to_s.underscore.pluralize}/form", 
+              render partial: "admin/#{model_class.to_s.underscore.pluralize}/form", 
               locals: { model_class.to_s.underscore.to_sym => model_class.new }
           end)
       end
