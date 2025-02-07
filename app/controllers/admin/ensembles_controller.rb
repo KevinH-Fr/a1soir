@@ -1,5 +1,5 @@
-class EnsemblesController < ApplicationController
-  before_action :authenticate_vendeur_or_admin!
+class Admin::EnsemblesController < Admin::ApplicationController
+  #before_action :authenticate_vendeur_or_admin!
 
   before_action :set_ensemble, only: %i[ show edit update destroy ]
 
@@ -26,7 +26,7 @@ class EnsemblesController < ApplicationController
       format.html 
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@ensemble, 
-          partial: "ensembles/form", 
+          partial: "admin/ensembles/form", 
           locals: {ensemble: @ensemble})
       end
     end
@@ -43,11 +43,11 @@ class EnsemblesController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('new',
-                                partial: "ensembles/form",
+                                partial: "admin/ensembles/form",
                                 locals: { ensemble: Ensemble.new }),
   
             turbo_stream.prepend('ensembles',
-                                  partial: "ensembles/ensemble",
+                                  partial: "admin/ensembles/ensemble",
                                   locals: { ensemble: @ensemble }),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
             
@@ -71,7 +71,7 @@ class EnsemblesController < ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update(@ensemble, partial: "ensembles/ensemble", locals: {ensemble: @ensemble}),
+            turbo_stream.update(@ensemble, partial: "admin/ensembles/ensemble", locals: {ensemble: @ensemble}),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
           ]
         end

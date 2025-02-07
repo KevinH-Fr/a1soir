@@ -3,22 +3,22 @@
 
 <%= render @commande %>
 
-<%= render partial: 'clients/client_mini', locals: { client: @commande.client } %>
+<%= render partial: 'admin/clients/client_mini', locals: { client: @commande.client } %>
 
-<%= render 'articles/articles' %>
+<%= render 'admin/articles/articles' %>
 
-<%= render 'paiement_recus/paiement_recus' %>
+<%= render 'admin/paiement_recus/paiement_recus' %>
 
-<%= render 'avoir_rembs/avoir_rembs' %>
+<%= render 'admin/avoir_rembs/avoir_rembs' %>
 
-<%= render 'meetings/meetings' %>
+<%= render 'admin/meetings/meetings' %>
 
 <hr>
 
-<%= return_model_index_button("Retour vers commandes", commandes_path) %>
+<%= return_model_index_button("Retour vers commandes", admin_commandes_path) %>
 
 <br> <br>
 
 <footer class="fixed-bottom footer-index bg-dark">
-    <%= render 'commandes/footer' %>
+    <%= render 'admin/commandes/footer' %>
 </footer>

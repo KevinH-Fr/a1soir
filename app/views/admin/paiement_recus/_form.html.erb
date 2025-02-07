@@ -1,6 +1,6 @@
 <div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
 
-  <%= form_with(model: paiement_recu) do |form| %>
+  <%= form_with(model: paiement_recu, url: paiement_recu.persisted? ? admin_paiement_recu_path(paiement_recu) : admin_paiement_recus_path, method: paiement_recu.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
     <% if paiement_recu.errors.any? %>
       <div style="color: red">
         <h2><%= pluralize(paiement_recu.errors.count, "error") %> prohibited this paiement_recu from being saved:</h2>

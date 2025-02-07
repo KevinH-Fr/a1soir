@@ -1,4 +1,4 @@
-class DocEditionsController < ApplicationController
+class Admin::DocEditionsController < Admin::ApplicationController
 
  # before_action :authenticate_vendeur_or_admin!
 
@@ -41,7 +41,7 @@ class DocEditionsController < ApplicationController
       format.html 
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@doc_edition, 
-          partial: "doc_editions/form", 
+          partial: "admin/doc_editions/form", 
           locals: {doc_edition: @doc_edition})
       end
     end
@@ -67,7 +67,7 @@ class DocEditionsController < ApplicationController
 
         format.turbo_stream do
           render turbo_stream: turbo_stream.update(@doc_edition, 
-                    partial: 'doc_editions/form', 
+                    partial: 'admin/doc_editions/form', 
                     locals: { doc_edition: @doc_edition })
         end
 
@@ -97,7 +97,7 @@ class DocEditionsController < ApplicationController
      #         locals: { doc_edition: @doc_edition }),
 
               turbo_stream.update('synthese-doc-editions', 
-                partial: "doc_editions/synthese"),
+                partial: "admin/doc_editions/synthese"),
  
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
 
@@ -151,11 +151,11 @@ class DocEditionsController < ApplicationController
     pdf_html = render_to_string(template: 'pdf_commande/document', layout: 'pdf')
     pdf_options = {
       header: {
-        content: render_to_string('shared/doc_entete', layout: 'pdf'),
+        content: render_to_string('admin/shared/doc_entete', layout: 'pdf'),
         spacing: 10
       },
       footer: {
-        content: render_to_string('shared/doc_footer', layout: 'pdf'),
+        content: render_to_string('admin/shared/doc_footer', layout: 'pdf'),
         spacing: 10
       }
     }

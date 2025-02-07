@@ -47,7 +47,7 @@ class Admin::CommandesController < Admin::ApplicationController
       format.html 
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@commande, 
-          partial: "commandes/form", 
+          partial: "admin/commandes/form", 
           locals: {commande: @commande})
       end
     end
@@ -81,7 +81,7 @@ class Admin::CommandesController < Admin::ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update(@commande, partial: "commandes/commande", locals: {commande: @commande}),
+            turbo_stream.update(@commande, partial: "admin/commandes/commande", locals: {commande: @commande}),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
           ]
         end
@@ -93,7 +93,7 @@ class Admin::CommandesController < Admin::ApplicationController
         
         format.turbo_stream do
           render turbo_stream: turbo_stream.update(@commande, 
-                    partial: 'commandes/form', 
+                    partial: 'admin/commandes/form', 
                     locals: { commande: @commande })
         end
 

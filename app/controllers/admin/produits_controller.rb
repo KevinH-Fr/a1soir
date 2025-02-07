@@ -59,7 +59,7 @@ class Admin::ProduitsController < Admin::ApplicationController
       format.html 
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@produit, 
-          partial: "produits/form", 
+          partial: "admin/produits/form", 
           locals: {produit: @produit})
       end
     end
@@ -99,7 +99,7 @@ class Admin::ProduitsController < Admin::ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update(@produit, partial: "produits/produit", locals: {produit: @produit}),
+            turbo_stream.update(@produit, partial: "admin/produits/produit", locals: {produit: @produit}),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
           ]
         end
@@ -110,7 +110,7 @@ class Admin::ProduitsController < Admin::ApplicationController
 
         format.turbo_stream do
           render turbo_stream: turbo_stream.update(@produit, 
-                    partial: 'produits/form', 
+                    partial: 'admin/produits/form', 
                     locals: { produit: @produit })
         end
 
@@ -174,11 +174,11 @@ class Admin::ProduitsController < Admin::ApplicationController
   
         copy.save!
    
-        redirect_to produit_path(copy), notice: "Duplication du produit effectuée !"
+        redirect_to admin_produit_path(copy), notice: "Duplication du produit effectuée !"
       end
   
     else
-      redirect_to produit_path(@produit), notice: "Aucun produit de base spécifié."
+      redirect_to admin_produit_path(@produit), notice: "Aucun produit de base spécifié."
     end
   end
   

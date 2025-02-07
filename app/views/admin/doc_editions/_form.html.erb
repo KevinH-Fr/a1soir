@@ -2,7 +2,7 @@
 <div class="card mx-2 my-3 p-3 shadow-sm">
 
 
-<%= form_with(model: doc_edition) do |form| %>
+  <%= form_with(model: doc_edition, url: doc_edition.persisted? ? admin_doc_edition_path(doc_edition) : admin_doc_editions_path, method: doc_edition.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
   <% if doc_edition.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(doc_edition.errors.count, "error") %> prohibited this doc_edition from being saved:</h2>
@@ -21,7 +21,7 @@
 
   
   <div data-controller="form-element">
-    <%= form.button "Validate", formaction: new_doc_edition_path, formmethod: :get, 
+    <%= form.button "Validate", formaction: new_admin_doc_edition_path, formmethod: :get, 
           data: { turbo_frame: :content_field, form_element_target: "submitbtn" } %>
 
 

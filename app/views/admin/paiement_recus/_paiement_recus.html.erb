@@ -8,16 +8,16 @@
 
 <div class="collapse" id="collapseNewPaiement">
     <div id="new_paiement" class="mb-3">
-        <%= render partial: 'paiement_recus/form', locals: { commande_id: @commande.id, paiement_recu: PaiementRecu.new } %>
+        <%= render partial: 'admin/paiement_recus/form', locals: { commande_id: @commande.id, paiement_recu: PaiementRecu.new } %>
     </div>
 </div>
 
 <div id="paiement_recus">
   <% @commande.paiement_recus.each do |paiement_recu| %>
-    <%= render partial: 'paiement_recus/paiement_recu', locals: { paiement_recu: paiement_recu } %>
+    <%= render partial: 'admin/paiement_recus/paiement_recu', locals: { paiement_recu: paiement_recu } %>
   <% end %>
 </div>
 
 <div class="card mx-2 rounded bg-secondary mb-3">
-  <%= render 'paiement_recus/synthese' %>
+  <%= render 'admin/paiement_recus/synthese' %>
 </div>

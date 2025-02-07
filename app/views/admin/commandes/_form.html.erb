@@ -2,7 +2,7 @@
 
   <div class="card mx-2 mb-3 p-2 light-beige-colored shadow-sm">
 
-    <%= form_with(model: commande, url: admin_commandes_path) do |form| %>
+    <%= form_with(model: commande, url: commande.persisted? ? admin_commande_path(commande) : admin_commandes_path, method: commande.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
       <% if commande.errors.any? %>
         <div style="color: red">
           <h2><%= pluralize(commande.errors.count, "error") %> prohibited this commande from being saved:</h2>

@@ -1,6 +1,6 @@
-class TypeProduitsController < ApplicationController
+class Admin::TypeProduitsController < Admin::ApplicationController
 
-  before_action :authenticate_vendeur_or_admin!
+ # before_action :authenticate_vendeur_or_admin!
   before_action :set_type_produit, only: %i[ show edit update destroy ]
 
   def index
@@ -27,7 +27,7 @@ class TypeProduitsController < ApplicationController
       format.html 
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@type_produit, 
-          partial: "type_produits/form", 
+          partial: "admin/type_produits/form", 
           locals: {type_produit: @type_produit})
       end
     end
@@ -44,11 +44,11 @@ class TypeProduitsController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('new',
-                               partial: "type_produits/form",
+                               partial: "admin/type_produits/form",
                                 locals: { type_produit: TypeProduit.new }),
   
             turbo_stream.prepend('type_produits',
-                                  partial: "type_produits/type_produit",
+                                  partial: "admin/type_produits/type_produit",
                                   locals: { type_produit: @type_produit }),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
             
@@ -72,7 +72,7 @@ class TypeProduitsController < ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update(@type_produit, partial: "type_produits/type_produit", locals: {type_produit: @type_produit}),
+            turbo_stream.update(@type_produit, partial: "admin/type_produits/type_produit", locals: {type_produit: @type_produit}),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
           ]
         end

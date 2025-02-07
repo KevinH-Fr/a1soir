@@ -1,6 +1,6 @@
 <div class="card mx-2 my-3 p-2 light-beige-colored shadow-sm">
 
-  <%= form_with(model: type_produit) do |form| %>
+  <%= form_with(model: type_produit, url: type_produit.persisted? ? admin_type_produit_path(type_produit) : admin_type_produits_path, method: type_produit.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
     <% if type_produit.errors.any? %>
       <div style="color: red">
         <h2><%= pluralize(type_produit.errors.count, "error") %> prohibited this type_produit from being saved:</h2>

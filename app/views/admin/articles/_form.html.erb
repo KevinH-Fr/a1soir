@@ -1,6 +1,6 @@
 <div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
 
-  <%= form_with(model: article) do |form| %>
+  <%= form_with(model: article, url: article.persisted? ? admin_article_path(article) : admin_articles_path, method: article.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
     <% if article.errors.any? %>
       <div style="color: red">
         <h2><%= pluralize(article.errors.count, "error") %> prohibited this article from being saved:</h2>

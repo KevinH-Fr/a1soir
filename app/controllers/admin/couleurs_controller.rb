@@ -1,6 +1,6 @@
-class CouleursController < ApplicationController
+class Admin::CouleursController < Admin::ApplicationController
   
-  before_action :authenticate_vendeur_or_admin!
+ # before_action :authenticate_vendeur_or_admin!
   before_action :set_couleur, only: %i[ show edit update destroy ]
 
   def index
@@ -27,7 +27,7 @@ class CouleursController < ApplicationController
       format.html 
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@couleur, 
-          partial: "couleurs/form", 
+          partial: "admin/couleurs/form", 
           locals: {couleur: @couleur})
       end
     end
@@ -44,11 +44,11 @@ class CouleursController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('new',
-                                partial: "couleurs/form",
+                                partial: "admin/couleurs/form",
                                 locals: { couleur: Couleur.new }),
   
             turbo_stream.prepend('couleurs',
-                                  partial: "couleurs/couleur",
+                                  partial: "admin/couleurs/couleur",
                                   locals: { couleur: @couleur }),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
             
@@ -73,7 +73,7 @@ class CouleursController < ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update(@couleur, partial: "couleurs/couleur", locals: {couleur: @couleur}),
+            turbo_stream.update(@couleur, partial: "admin/couleurs/couleur", locals: {couleur: @couleur}),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
           ]
         end
@@ -84,7 +84,7 @@ class CouleursController < ApplicationController
 
         format.turbo_stream do
           render turbo_stream: turbo_stream.update(@couleur, 
-                    partial: 'couleurs/form', 
+                    partial: 'admin/couleurs/form', 
                     locals: { couleur: @couleur })
         end
 

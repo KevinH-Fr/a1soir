@@ -1,5 +1,5 @@
-class AnalysesController < ApplicationController
-  before_action :authenticate_vendeur_or_admin!
+class Admin::AnalysesController < Admin::ApplicationController
+ # before_action :authenticate_vendeur_or_admin!
 
   def index
     datedebut = DateTime.parse(params[:debut]) if params[:debut].present?

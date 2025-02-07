@@ -1,23 +1,23 @@
 <%= card_main_model(
   "Articles", 
   "person-standing-dress", 
-  link_to("", selection_produit_path(commande: @commande), 
+  link_to("", admin_selection_produit_path(commande: @commande), 
   class: "bi bi-plus-lg btn btn-sm btn-warning fw-bold"
 )) %>
 
 <div class="collapse" id="collapseNewArticle">
   <div id="new_article" class="mb-3">
-    <%= render partial: 'articles/form', locals: { commande_id: @commande.id, article: Article.new } %>
+    <%= render partial: 'admin/articles/form', locals: { commande_id: @commande.id, article: Article.new } %>
   </div>
 </div>
 
 <div id="articles">
   <% @articles.includes(:sousarticles).each do |article| %>
-    <%= render partial: 'articles/article', locals: { article: article } %>
+    <%= render partial: 'admin/articles/article', locals: { article: article } %>
   <% end %>
 </div>
 
 
 <div class="card mx-2 rounded bg-secondary mb-3">
-  <%= render 'articles/synthese' %>
+  <%= render 'admin/articles/synthese' %>
 </div>

@@ -1,6 +1,6 @@
 
 <%= bandeau_entete("Types produits", "list-ul", @count_type_produits, 
-:nom_cont, type_produits_path) %>
+:nom_cont, admin_type_produits_path) %>
 
 <%= bloc_nouveau(TypeProduit) %>
 
@@ -8,6 +8,6 @@
     <div id="type_produits"> </div> 
 
     <%= turbo_frame_tag :pagination, loading: :lazy, 
-                        src: type_produits_path(format: :turbo_stream,
+                        src: admin_type_produits_path(format: :turbo_stream,
                         q: params[:q]&.to_unsafe_h) %>
 <% end %>

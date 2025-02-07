@@ -1,5 +1,5 @@
-class TaillesController < ApplicationController
-  before_action :authenticate_vendeur_or_admin!
+class Admin::TaillesController < Admin::ApplicationController
+  #before_action :authenticate_vendeur_or_admin!
 
   before_action :set_taille, only: %i[ show edit update destroy ]
 
@@ -28,7 +28,7 @@ class TaillesController < ApplicationController
       format.html 
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@taille, 
-          partial: "tailles/form", 
+          partial: "admin/tailles/form", 
           locals: {taille: @taille})
       end
     end
@@ -45,11 +45,11 @@ class TaillesController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('new',
-                                partial: "tailles/form",
+                                partial: "admin/tailles/form",
                                 locals: { taille: Taille.new }),
   
             turbo_stream.prepend('tailles',
-                                  partial: "tailles/taille",
+                                  partial: "admin/tailles/taille",
                                   locals: { taille: @taille }),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
             
@@ -74,7 +74,7 @@ class TaillesController < ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update(@taille, partial: "tailles/taille", locals: {taille: @taille}),
+            turbo_stream.update(@taille, partial: "admin/tailles/taille", locals: {taille: @taille}),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
           ]
         end
@@ -85,7 +85,7 @@ class TaillesController < ApplicationController
 
         format.turbo_stream do
           render turbo_stream: turbo_stream.update(@taille, 
-                    partial: 'tailles/form', 
+                    partial: 'admin/tailles/form', 
                     locals: { taille: @taille })
         end
 

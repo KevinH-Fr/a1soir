@@ -1,7 +1,7 @@
 
   <div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
 
-    <%= form_with(model: taille) do |form| %>
+    <%= form_with(model: taille, url: taille.persisted? ? admin_taille_path(taille) : admin_tailles_path, method: taille.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
       <% if taille.errors.any? %>
         <div style="color: red">
           <h2><%= pluralize(taille.errors.count, "error") %> prohibited this taille from being saved:</h2>

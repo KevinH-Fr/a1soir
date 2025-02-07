@@ -1,7 +1,7 @@
 <div id="synthese-doc-editions">
   <% if @doc_edition.persisted? %>
       
-    <%= link_to generate_commande_doc_editions_path(doc_edition: @doc_edition), 
+    <%= link_to admin_generate_commande_doc_editions_path(doc_edition: @doc_edition), 
         class: "btn btn-outline-danger m-1 w-100", target: "_blank" do %>
         <i class="bi bi-filetype-pdf"></i>
         <span class="fw-bold"> Editer pdf </span>

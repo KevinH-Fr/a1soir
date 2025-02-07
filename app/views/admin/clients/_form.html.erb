@@ -2,7 +2,7 @@
 
   <div class="card mx-2 mb-3 p-2 light-beige-colored shadow-sm">
 
-    <%= form_with(model: client, url: admin_clients_path) do |form| %>
+    <%= form_with(model: client, url: client.persisted? ? admin_client_path(client) : admin_clients_path, method: client.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
       <% if client.errors.any? %>
         <div style="color: red">
           <h2><%= pluralize(client.errors.count, "error") %> prohibited this client from being saved:</h2>

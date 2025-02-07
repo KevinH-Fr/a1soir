@@ -1,6 +1,6 @@
-class CategorieProduitsController < ApplicationController
+class Admin::CategorieProduitsController < Admin::ApplicationController
 
-  before_action :authenticate_vendeur_or_admin!
+ # before_action :authenticate_vendeur_or_admin!
   before_action :set_categorie_produit, only: %i[ show edit update destroy ]
 
   def index
@@ -27,7 +27,7 @@ class CategorieProduitsController < ApplicationController
       format.html 
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@categorie_produit, 
-          partial: "categorie_produits/form", 
+          partial: "admin/categorie_produits/form", 
           locals: {categorie_produit: @categorie_produit})
       end
     end
@@ -44,11 +44,11 @@ class CategorieProduitsController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('new',
-                                partial: "categorie_produits/form",
+                                partial: "admin/categorie_produits/form",
                                 locals: { categorie_produit: CategorieProduit.new }),
   
             turbo_stream.prepend('categorie_produits',
-                                  partial: "categorie_produits/categorie_produit",
+                                  partial: "admin/categorie_produits/categorie_produit",
                                   locals: { categorie_produit: @categorie_produit }),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
             
@@ -74,7 +74,7 @@ class CategorieProduitsController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update(@categorie_produit, 
-                    partial: 'categorie_produits/categorie_produit', 
+                    partial: 'admin/categorie_produits/categorie_produit', 
                     locals: { categorie_produit: @categorie_produit }),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
           ]
@@ -86,7 +86,7 @@ class CategorieProduitsController < ApplicationController
 
         format.turbo_stream do
           render turbo_stream: turbo_stream.update(@categorie_produit, 
-                    partial: 'categorie_produits/form', 
+                    partial: 'admin/categorie_produits/form', 
                     locals: { categorie_produit: @categorie_produit })
         end
 

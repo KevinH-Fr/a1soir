@@ -1,6 +1,6 @@
 <div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
 
-  <%= form_with(model: avoir_remb) do |form| %>
+  <%= form_with(model: avoir_remb, url: avoir_remb.persisted? ? admin_avoir_remb_path(avoir_remb) : admin_avoir_rembs_path, method: avoir_remb.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
     <% if avoir_remb.errors.any? %>
       <div style="color: red">
         <h2><%= pluralize(avoir_remb.errors.count, "error") %> prohibited this avoir_remb from being saved:</h2>

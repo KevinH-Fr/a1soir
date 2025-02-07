@@ -5,7 +5,7 @@
       <!-- Image Column -->
       <div class="col-sm-4 p-1 text-center">
         <div data-turbo="false">
-          <%= link_to image_tag(produit.default_image, class: "img-fluid img-produit"), produit_path(produit)  %>
+          <%= link_to image_tag(produit.default_image, class: "img-fluid img-produit"), admin_produit_path(produit)  %>
         </div>
       </div>
       <!-- Text Column -->
@@ -26,7 +26,7 @@
 
                   <% if session[:selection_etiquettes].count < 4 %>
                     
-                    <%= form_with url: update_selection_etiquettes_path, method: :post, local: true, data: { turbo: false } do |form| %>
+                    <%= form_with url: update_selection_admin_etiquettes_path, method: :post, local: true, data: { turbo: false } do |form| %>
                       <%= form.hidden_field :new_product, value: produit.id %>
                         <button type="submit" class="btn btn-warning my-4">
                           <span class="fw-bold ms-2"> Sélection étiquette</span>

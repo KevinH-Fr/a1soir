@@ -1,5 +1,5 @@
 <%= bandeau_entete("Couleurs", "palette", @count_couleurs, 
-        :nom_cont, couleurs_path) %>
+        :nom_cont, admin_couleurs_path) %>
 
 <%= bloc_nouveau(Couleur) %>
 
@@ -7,6 +7,6 @@
     <div id="couleurs"> </div> 
 
     <%= turbo_frame_tag :pagination, loading: :lazy, 
-                        src: couleurs_path(format: :turbo_stream,
+                        src: admin_couleurs_path(format: :turbo_stream,
                         q: params[:q]&.to_unsafe_h) %>
 <% end %>

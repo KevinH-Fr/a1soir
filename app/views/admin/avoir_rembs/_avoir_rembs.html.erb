@@ -9,16 +9,16 @@
 
 <div class="collapse" id="collapseNewAAvoirremb">
     <div id="new" class="mb-3">
-        <%= render partial: 'avoir_rembs/form', locals: { commande_id: @commande.id, avoir_remb: AvoirRemb.new } %>
+        <%= render partial: 'admin/avoir_rembs/form', locals: { commande_id: @commande.id, avoir_remb: AvoirRemb.new } %>
     </div>
 </div>
 
 <div id="avoir_rembs">
   <% @commande.avoir_rembs.each do |avoir_remb| %>
-    <%= render partial: 'avoir_rembs/avoir_remb', locals: { avoir_remb: avoir_remb } %>
+    <%= render partial: 'admin/avoir_rembs/avoir_remb', locals: { avoir_remb: avoir_remb } %>
   <% end %>
 </div>
 
 <div class="card mx-2 rounded bg-secondary mb-3">
-  <%= render 'avoir_rembs/synthese' %>
+  <%= render 'admin/avoir_rembs/synthese' %>
 </div>

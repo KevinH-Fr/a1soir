@@ -1,4 +1,4 @@
-class EtiquettesController < ApplicationController
+class Admin::EtiquettesController < Admin::ApplicationController
     # before_action :authenticate_vendeur_or_admin!
   
     def index
@@ -18,7 +18,7 @@ class EtiquettesController < ApplicationController
     def reset_selection
       # Reset the session selection
       session[:selection_etiquettes] = []
-      redirect_to etiquettes_path, notice: "Selection a été supprimée."
+      redirect_to admin_etiquettes_path, notice: "Selection a été supprimée."
     end
 
     def update_selection
@@ -29,7 +29,7 @@ class EtiquettesController < ApplicationController
       session[:selection_etiquettes] ||= []  # Ensure it's an array
       session[:selection_etiquettes] << new_product  # Add the new value to the array
     
-      redirect_to etiquettes_path
+      redirect_to admin_etiquettes_path
     end
     
     def generate_pdf
@@ -41,7 +41,7 @@ class EtiquettesController < ApplicationController
         format.pdf do
             render pdf: "etiquette_#{Time.now.strftime('%Y%m%d_%H%M%S')}", # File name for the PDF
             
-            :template => "etiquettes/edition",            
+            :template => "admin/etiquettes/edition",            
             formats: [:html],
             layout: 'pdf',
 
