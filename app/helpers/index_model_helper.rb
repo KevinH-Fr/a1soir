@@ -62,13 +62,14 @@ module IndexModelHelper
 
   def links_record(model, turbo_delete: true)
     content_tag(:div, class: "d-flex justify-content-end") do
-      concat(link_to("", model, class: "btn btn-sm btn-primary bi bi-arrow-up-right-square me-1 p-2", data: { turbo: false }))
-      concat(button_to("", edit_polymorphic_path(model), method: :post, class: "btn btn-sm btn-secondary bi bi-pencil-square me-1 p-2"))
-      concat(button_to("", model, method: :delete, data: { turbo: turbo_delete }, 
-        onclick: "return confirm('Etes-vous certain de vouloir supprimer cet élément et tous les éléments liés ?')",
+      concat(link_to("", [:admin, model], class: "btn btn-sm btn-primary bi bi-arrow-up-right-square me-1 p-2", data: { turbo: false }))
+      concat(button_to("", edit_polymorphic_path([:admin, model]), method: :get, class: "btn btn-sm btn-secondary bi bi-pencil-square me-1 p-2"))
+      concat(button_to("", [:admin, model], method: :delete, data: { turbo: turbo_delete }, 
+        onclick: "return confirm('Êtes-vous certain de vouloir supprimer cet élément et tous les éléments liés ?')",
         class: "btn btn-sm btn-danger bi bi-trash me-1 p-2"))
     end
   end
+  
 
   def return_model_index_button(text, path)
     content_tag(:div, class: "m-1 d-flex align-items-center") do

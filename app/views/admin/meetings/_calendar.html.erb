@@ -6,7 +6,7 @@
 <% meetings.each do |meeting| %>
   <div class="d-flex text-wrap badge text-decoration-none bg-primary mb-1 small p-1" style="width: 150px; font-size: 10px;">
     <div class="flex-grow-1">
-      <%= link_to meeting.full_name, meeting, class: "text-decoration-none text-light" %>
+      <%= link_to meeting.full_name,  [:admin, meeting], class: "text-decoration-none text-light" %>
         <div class="fw-normal mt-1">
           <%= meeting.datedebut.strftime("%H:%M") if meeting.datedebut.present? %>
           <%= meeting.datefin.strftime('%H:%M') if meeting.datefin.present? %>

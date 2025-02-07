@@ -1,4 +1,4 @@
-class MeetingsController < ApplicationController
+class Admin::MeetingsController < ApplicationController
 
   #before_action :authenticate_vendeur_or_admin!
 
