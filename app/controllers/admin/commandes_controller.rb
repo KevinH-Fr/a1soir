@@ -1,5 +1,5 @@
-class CommandesController < ApplicationController
-  before_action :authenticate_vendeur_or_admin!
+class Admin::CommandesController < Admin::ApplicationController
+  #before_action :authenticate_vendeur_or_admin!
 
   before_action :set_commande, only: [:show, :edit, :update, :destroy, 
     :toggle_statut_non_retire, :toggle_statut_retire, :toggle_statut_rendu]

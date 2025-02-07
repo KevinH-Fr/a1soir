@@ -1,6 +1,6 @@
-class ClientsController < ApplicationController
+class Admin::ClientsController < Admin::ApplicationController
 
-  before_action :authenticate_vendeur_or_admin!
+  #before_action :authenticate_vendeur_or_admin!
   before_action :set_client, only: %i[ show edit update destroy ]
 
   def index
@@ -31,7 +31,7 @@ class ClientsController < ApplicationController
       format.html 
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@client, 
-          partial: "clients/form", 
+          partial: "admin/clients/form", 
           locals: {client: @client})
       end
     end

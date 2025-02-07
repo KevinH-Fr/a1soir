@@ -3,7 +3,7 @@
 
   <div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
 
-    <%= form_with(model: fournisseur) do |form| %>
+    <%= form_with(model: fournisseur, url: fournisseur.persisted? ? admin_fournisseur_path(fournisseur) : admin_fournisseurs_path, method: fournisseur.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
       <% if fournisseur.errors.any? %>
         <div style="color: red">
           <h2><%= pluralize(fournisseur.errors.count, "error") %> prohibited this fournisseur from being saved:</h2>

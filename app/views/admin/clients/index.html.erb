@@ -1,5 +1,5 @@
 <%= bandeau_entete("Clients", "person", @count_clients, 
-        :nom_or_prenom_cont, clients_path) %>
+        :nom_or_prenom_cont, admin_clients_path) %>
 
 <%= bloc_nouveau(Client) %>
 
@@ -8,6 +8,6 @@
 <div id="clients"> </div> 
 
 <%= turbo_frame_tag :pagination, loading: :lazy, 
-                        src: clients_path(format: :turbo_stream,
+                        src: admin_clients_path(format: :turbo_stream,
                         q: params[:q]&.to_unsafe_h) %>
 <% end %>

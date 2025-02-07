@@ -10,26 +10,26 @@
 <% if @commande %>
     <div class="collapse" id="collapseNewMeeting">
         <div id="new_meeting" class="mb-3">
-            <%= render partial: 'meetings/form', locals: { commande_id: @commande.id, client_id: nil, meeting: Meeting.new } %>
+            <%= render partial: 'admin/meetings/form', locals: { commande_id: @commande.id, client_id: nil, meeting: Meeting.new } %>
         </div>
     </div>
 
     <div id="meetings">
         <% @commande.meetings.each do |meeting| %>
-            <%= render partial: 'meetings/meeting', locals: { meeting: meeting } %>
+            <%= render partial: 'admin/meetings/meeting', locals: { meeting: meeting } %>
         <% end %>
     </div>
 
 <% elsif @client %>
     <div class="collapse" id="collapseNewMeeting">
         <div id="new_meeting" class="mb-3">
-            <%= render partial: 'meetings/form', locals: { client_id: @client.id, commande_id: nil, meeting: Meeting.new } %>
+            <%= render partial: 'admin/meetings/form', locals: { client_id: @client.id, commande_id: nil, meeting: Meeting.new } %>
         </div>
     </div>
 
     <div id="meetings">
         <%  (@client.meetings + @client.commandes.map(&:meetings).flatten).uniq.each do |meeting| %>
-            <%= render partial: 'meetings/meeting', locals: { meeting: meeting } %>
+            <%= render partial: 'admin/meetings/meeting', locals: { meeting: meeting } %>
         <% end %>
     </div>
 <% end %>

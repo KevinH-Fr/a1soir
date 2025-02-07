@@ -7,7 +7,7 @@
 <% if @pagy.next.present? %>
     <%= turbo_stream.replace :pagination do %>
         <%= turbo_frame_tag :pagination, loading: :lazy,
-                            src: fournisseurs_path(format: :turbo_stream,
+                            src: admin_fournisseurs_path(format: :turbo_stream,
                             page: @pagy.next, q: params[:q]&.to_unsafe_h ) %>
     <% end %>
 

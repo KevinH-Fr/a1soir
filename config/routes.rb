@@ -1,7 +1,26 @@
 Rails.application.routes.draw do
 
+    # Public area (accessible to all)
+    scope module: :public do
+      devise_for :users, path: '', path_names: { sign_in: 'login', sign_out: 'logout' }, controllers: {
+        sessions: 'public/sessions',  # Optional if you need custom behavior for public login/logout
+        registrations: 'public/registrations'  # Add custom registrations controller
+
+      }
+      
+      get 'about', to: 'pages#about'
+      get 'home', to: 'pages#home'  
+  
+      root to: "pages#home"
+    end
+
+    
   # Admin namespace (requires authentication)
   namespace :admin do
+
+    devise_for :users, path: '', path_names: { sign_in: 'login', sign_out: 'logout' }, controllers: {
+      sessions: 'admin/sessions'  # Optional: If you are overriding the sessions controller for admins
+    }
 
     get 'analyses/index'
     
@@ -48,6 +67,7 @@ Rails.application.routes.draw do
     
     resources :fournisseurs do 
       member do
+        #post :toggle_status, defaults: { format: :turbo_stream }
         post :edit
       end
     end
@@ -131,9 +151,7 @@ Rails.application.routes.draw do
       
     resources :textes
     resources :messages
-    
-    devise_for :users
-    
+        
     resources :users do
       member do
         #get :toggle_status
@@ -196,12 +214,6 @@ Rails.application.routes.draw do
   end
 
 
-  # Public area (accessible to all)
-  scope module: :public do
-    resources :products, only: [:index, :show]
-    get 'about', to: 'pages#about'
-    root to: "home#index"
-  end
 
 
 end

@@ -1,5 +1,5 @@
 <%= bandeau_entete("Commandes", "file-earkmark-fill", @count_commandes, 
-  :nom_or_type_locvente_or_typeevent_cont, commandes_path) %>
+  :nom_or_type_locvente_or_typeevent_cont, admin_commandes_path) %>
 
 <%= bloc_nouveau(Commande) %>
 
@@ -7,6 +7,6 @@
   <div id="commandes"> </div> 
 
   <%= turbo_frame_tag :pagination, loading: :lazy, 
-                        src: commandes_path(format: :turbo_stream,
+                        src: admin_commandes_path(format: :turbo_stream,
                         q: params[:q]&.to_unsafe_h) %>
 <% end %>

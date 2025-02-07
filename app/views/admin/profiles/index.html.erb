@@ -1,4 +1,4 @@
-<%= bandeau_entete("Profiles", "person-check", @profiles.count, :nom_or_prenom_cont, profiles_path) %>
+<%= bandeau_entete("Profiles", "person-check", @profiles.count, :nom_or_prenom_cont, admin_profiles_path) %>
 
 <%= bloc_nouveau(Profile) %>
 
@@ -6,6 +6,6 @@
     <div id="profiles"> </div> 
 
     <%= turbo_frame_tag :pagination, loading: :lazy, 
-                        src: profiles_path(format: :turbo_stream,
+                        src: admin_profiles_path(format: :turbo_stream,
                         q: params[:q]&.to_unsafe_h) %>
 <% end %>

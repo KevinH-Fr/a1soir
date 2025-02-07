@@ -1,6 +1,6 @@
-class HomeAdminController < ApplicationController
+class Admin::HomeAdminController < Admin::ApplicationController
 
-  before_action :authenticate_vendeur_or_admin!
+  #before_action :authenticate_vendeur_or_admin!
 
   def index
     @clients = Client.limit(6)

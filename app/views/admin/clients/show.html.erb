@@ -13,7 +13,7 @@
 
 <div class="collapse" id="collapseNewCommande">
     <div id="new_commande" class="mb-3">
-        <%= render partial: 'commandes/form', locals: { client_id: @client.id, commande: Commande.new } %>
+        <%= render partial: 'admin/commandes/form', locals: { client_id: @client.id, commande: Commande.new } %>
     </div>
 </div>
 
@@ -23,8 +23,8 @@
     <% end %>
 </div>
 
-<%= render 'meetings/meetings' %>
+<%= render 'admin/meetings/meetings' %>
 
 <hr>
 
-<%= return_model_index_button("Retour vers clients", clients_path) %>
+<%= return_model_index_button("Retour vers clients", admin_clients_path) %>

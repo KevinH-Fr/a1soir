@@ -4,7 +4,7 @@
 
         <div class="card-title d-flex">
           <div data-turbo="false">
-            <%= link_to client_path(client), class: "text-decoration-none text-dark" do %>
+            <%= link_to admin_client_path(client), class: "text-decoration-none text-dark" do %>
               <%= custom_badge("", "", "", "fw-bold", client.full_name) %>
             <% end %>
           </div>

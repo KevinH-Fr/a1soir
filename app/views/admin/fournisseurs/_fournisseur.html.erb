@@ -4,7 +4,7 @@
 
     <div data-turbo="false">
 
-      <%= link_to fournisseur, class: "text-decoration-none text-dark" do %>
+      <%= link_to admin_fournisseur_path(fournisseur), class: "text-decoration-none text-dark" do %>
         <%= field_with_label("Nom:", fournisseur.nom) %> 
         <%= field_with_label("Tel:", fournisseur.tel) %> 
         <%= field_with_label("Mail:", fournisseur.mail) %> 
@@ -15,7 +15,7 @@
     
     </div>
     
-    <%= links_record(fournisseur) %>  
+    <%= links_record(fournisseur) %>        
 
   </div>
 

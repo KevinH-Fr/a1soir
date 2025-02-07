@@ -1,7 +1,7 @@
-class Admin::UsersController < ApplicationController
+class Admin::UsersController < Admin::ApplicationController
 
   before_action :authenticate_user!
-  before_action :authenticate_vendeur_or_admin!
+  #before_action :authenticate_vendeur_or_admin!
   
   before_action :set_user, only: [:toggle_status_user, :toggle_status_vendeur, :toggle_status_admin]
 

@@ -1,6 +1,6 @@
-class FournisseursController < ApplicationController
+class Admin::FournisseursController < Admin::ApplicationController
 
-  before_action :authenticate_vendeur_or_admin!
+ # before_action :authenticate_vendeur_or_admin!
   before_action :set_fournisseur, only: %i[ show edit update destroy ]
 
   def index
@@ -10,7 +10,6 @@ class FournisseursController < ApplicationController
    @q = Fournisseur.ransack(search_params[:q])
    fournisseurs = @q.result(distinct: true).order(created_at: :desc)
    @pagy, @fournisseurs = pagy_countless(fournisseurs, items: 2)
-
 
   end
 
@@ -37,7 +36,6 @@ class FournisseursController < ApplicationController
       sum + (quantite * prixachat)
     end
     
-
     @vente_produits = Article.where(produit_id: @produitsFiltres.ids)
     .vente_only
 
@@ -51,11 +49,12 @@ class FournisseursController < ApplicationController
   end
 
   def edit
+
     respond_to do |format|
-      format.html 
+      format.html  
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@fournisseur, 
-          partial: "fournisseurs/form", 
+          partial: "admin/fournisseurs/form", 
           locals: {fournisseur: @fournisseur})
       end
     end
@@ -72,11 +71,11 @@ class FournisseursController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('new',
-                                partial: "fournisseurs/form",
+                                partial: "admin/fournisseurs/form",
                                 locals: { fournisseur: Fournisseur.new }),
   
             turbo_stream.prepend('fournisseurs',
-                                  partial: "fournisseurs/fournisseur",
+                                  partial: "admin/fournisseurs/fournisseur",
                                   locals: { fournisseur: @fournisseur }),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
             
@@ -90,7 +89,7 @@ class FournisseursController < ApplicationController
 
         format.turbo_stream { render turbo_stream: turbo_stream.replace(
           'fournisseur_form', 
-          partial: 'fournisseurs/form', 
+          partial: 'admin/fournisseurs/form', 
           locals: { fournisseur: @fournisseur }
         ) }
 
@@ -108,7 +107,7 @@ class FournisseursController < ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update(@fournisseur, partial: "fournisseurs/fournisseur", locals: {fournisseur: @fournisseur}),
+            turbo_stream.update(@fournisseur, partial: "admin/fournisseurs/fournisseur", locals: {fournisseur: @fournisseur}),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
           ]
         end
@@ -119,7 +118,7 @@ class FournisseursController < ApplicationController
 
         format.turbo_stream do
           render turbo_stream: turbo_stream.update(@fournisseur, 
-                    partial: 'fournisseurs/form', 
+                    partial: 'admin/fournisseurs/form', 
                     locals: { fournisseur: @fournisseur })
         end
 

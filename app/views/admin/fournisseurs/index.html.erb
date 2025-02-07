@@ -1,5 +1,5 @@
 <%= bandeau_entete("Fournisseurs", "buildings", @fournisseurs.count, 
-:nom_or_tel_or_mail_cont, fournisseurs_path) %>
+:nom_or_tel_or_mail_cont, admin_fournisseurs_path) %>
 
 <%= bloc_nouveau(Fournisseur) %>
 
@@ -7,6 +7,6 @@
     <div id="fournisseurs"> </div> 
 
     <%= turbo_frame_tag :pagination, loading: :lazy, 
-                        src: fournisseurs_path(format: :turbo_stream,
+                        src: admin_fournisseurs_path(format: :turbo_stream,
                         q: params[:q]&.to_unsafe_h) %>
 <% end %>

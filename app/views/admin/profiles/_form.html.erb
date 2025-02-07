@@ -1,7 +1,7 @@
 <div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
 
 
-  <%= form_with(model: profile) do |form| %>
+  <%= form_with(model: profile, url: admin_profiles_path) do |form| %>
     <% if profile.errors.any? %>
       <div style="color: red">
         <h2><%= pluralize(profile.errors.count, "error") %> prohibited this profile from being saved:</h2>

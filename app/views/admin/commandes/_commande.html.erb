@@ -4,7 +4,7 @@
     
     <div class="row">
       <div data-turbo="false" class="col-10">
-        <%= link_to commande_path(commande), class: "text-decoration-none text-dark" do %>
+        <%= link_to admin_commande_path(commande), class: "text-decoration-none text-dark" do %>
 
           <%#= custom_badge("", "", "", commande.ref_commande) %>
           <%= custom_badge("", "", "", "fw-bold", commande.full_name) %>
@@ -19,7 +19,7 @@
             role: "button", "aria-expanded": "false", "aria-controls": "collapseCommande#{dom_id(commande)}" %>
 
           <div class="my-2 p-1">
-            <%= render partial: 'commandes/toggles_statut', locals: { commande: commande } %>
+            <%= render partial: 'admin/commandes/toggles_statut', locals: { commande: commande } %>
           </div>
 
         <% end %>
