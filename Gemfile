@@ -63,3 +63,4 @@ gem 'bullet', group: 'development'
 
 gem 'icalendar'
 
+gem 'google-apis-calendar_v3'

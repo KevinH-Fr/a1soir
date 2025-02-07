@@ -3,6 +3,10 @@ class Meeting < ApplicationRecord
   belongs_to :client, optional: true
 
   validates :datedebut, presence: true #, uniqueness: true
+  
+  after_create :add_calendar_event
+  after_update :update_calendar_event
+  after_destroy :delete_calendar_event
 
   LIEU_OPTIONS = ['boutique', 'exterieur']
 
@@ -59,4 +63,22 @@ class Meeting < ApplicationRecord
     ["client", "commande"]
   end
 
+  private
+  
+  def add_calendar_event
+    google_calendar_service = GoogleCalendarService.new
+    event_id = google_calendar_service.create_event_from_meeting(self)
+    self.update(google_calendar_event_id: event_id)
+  end
+
+  def update_calendar_event
+    google_calendar_service = GoogleCalendarService.new
+    google_calendar_service.update_event_from_meeting(self)
+  end
+
+  def delete_calendar_event
+    google_calendar_service = GoogleCalendarService.new
+    google_calendar_service.delete_event(self.google_calendar_event_id)
+  end
+  
 end

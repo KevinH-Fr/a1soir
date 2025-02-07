@@ -4,28 +4,30 @@
 <%= bloc_nouveau(Meeting) %>
 
 <div class="container my-3 text-center">
-  <%= link_to 'Jour', { type: 'day' }, class: active_date_range_class('day') %>
-  <%= link_to 'Semaine', { type: 'week' }, class: active_date_range_class('week') %>
-  <%= link_to 'Mois', { type: 'month' }, class: active_date_range_class('month') %>
+  <%#= link_to 'Jour', { type: 'day' }, class: active_date_range_class('day') %>
+  <%#= link_to 'Semaine', { type: 'week' }, class: active_date_range_class('week') %>
+  <%#= link_to 'Mois', { type: 'month' }, class: active_date_range_class('month') %>
 </div>
 
 <div class="d-flex justify-content-center text-center my-4 m-2 overflow-auto" style="max-width: 100%; white-space: nowrap;">
 
-  <% if @calendar_type == "day" %>
-    <%= calendar(number_of_days: 1, events: @meetings_periode.includes(:commande, :client)) do |date, meetings| %>
-      <%= render partial: 'calendar', locals: { date: date, meetings: meetings } %>
-    <% end %>
-  <% elsif @calendar_type == "week" %>
-    <%= week_calendar(events: @meetings_periode.includes(:commande, :client)) do |date, meetings| %>
-      <%= render partial: 'calendar', locals: { date: date, meetings: meetings } %>
-    <% end %>
-  <% elsif @calendar_type == "month" %>
-    <%= month_calendar(events: @meetings_periode.includes(:commande, :client)) do |date, meetings| %>
-      <%= render partial: 'calendar', locals: { date: date, meetings: meetings } %>
-    <% end %>
-  <% end %>
+  <%# if @calendar_type == "day" %>
+    <%#= calendar(number_of_days: 1, events: @meetings_periode.includes(:commande, :client)) do |date, meetings| %>
+      <%#= render partial: 'calendar', locals: { date: date, meetings: meetings } %>
+    <%# end %>
+  <%# elsif @calendar_type == "week" %>
+    <%#= week_calendar(events: @meetings_periode.includes(:commande, :client)) do |date, meetings| %>
+      <%#= render partial: 'calendar', locals: { date: date, meetings: meetings } %>
+    <%# end %>
+  <%# elsif @calendar_type == "month" %>
+    <%#= month_calendar(events: @meetings_periode.includes(:commande, :client)) do |date, meetings| %>
+      <%#= render partial: 'calendar', locals: { date: date, meetings: meetings } %>
+    <%# end %>
+  <%# end %>
 
 </div>
+
+<iframe src="https://calendar.google.com/calendar/embed?src=a1soir.app%40gmail.com&ctz=Europe%2FParis" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
 
 <div>
   <hr>
@@ -45,7 +47,7 @@
   <div class="container-fluid text-end">
     <%#= link_to "S'abonner au calendrier", meetings_url(protocol: :webcal, format: :ics), 
           class:"btn btn-sm btn-dark fw-bold" %>  
-    <%= render 'copy_url_button' %>
+    <%#= render 'copy_url_button' %>
     <%#= link_to "Download Calendar (ICS)", download_ics_meetings_path, class: "btn btn-primary" %>
 
   </div>

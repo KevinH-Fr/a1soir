@@ -1,6 +1,6 @@
 class MeetingsController < ApplicationController
 
-  #before_action :authenticate_vendeur_or_admin!
+  before_action :authenticate_vendeur_or_admin!
 
   before_action :set_meeting, only: %i[ show edit update destroy ]
 
@@ -13,7 +13,6 @@ class MeetingsController < ApplicationController
     meetings = @q.result(distinct: true).order(created_at: :desc)
     @pagy, @meetings = pagy_countless(meetings, items: 2)
 
-    
     @commandes = Commande.all
     @clients = Client.all
 
@@ -26,26 +25,26 @@ class MeetingsController < ApplicationController
     respond_to do |format|
       format.html
       format.turbo_stream
-      format.ics do
+      # format.ics do
 
-        puts " _____________ call ics cal __________"
-        ics_file = MeetingIcsService.new(@meetings).generate
-        puts " _____________ data: #{ics_file} __________"
+      #   puts " _____________ call ics cal __________"
+      #   ics_file = MeetingIcsService.new(@meetings).generate
+      #   puts " _____________ data: #{ics_file} __________"
 
-        response.headers['Content-Type'] = 'text/calendar; charset=UTF-8'
-        render plain: ics_file
-      end 
+      #   response.headers['Content-Type'] = 'text/calendar; charset=UTF-8'
+      #   render plain: ics_file
+      # end 
     end
   end
 
   def download_ics
-    @meetings = Meeting.all.includes(commande: :client)
+    # @meetings = Meeting.all.includes(commande: :client)
 
-    # Generate ICS content
-    ics_file = MeetingIcsService.new(@meetings).generate
+    # # Generate ICS content
+    # ics_file = MeetingIcsService.new(@meetings).generate
 
-    # Set the response headers and render the ICS file
-    send_data ics_file, filename: "meetings.ics", type: "text/calendar", disposition: "attachment"
+    # # Set the response headers and render the ICS file
+    # send_data ics_file, filename: "meetings.ics", type: "text/calendar", disposition: "attachment"
   end
 
   # GET /meetings/1 or /meetings/1.json
@@ -64,7 +63,6 @@ class MeetingsController < ApplicationController
   def edit
     @commande = @meeting.commande
     @client = @meeting.client
-    
 
     respond_to do |format|
       format.html 
