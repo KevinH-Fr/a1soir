@@ -1,7 +1,5 @@
 class Admin::MeetingsController < Admin::ApplicationController
 
-  before_action :authenticate_vendeur_or_admin!
-
   before_action :set_meeting, only: %i[ show edit update destroy ]
 
   def index
@@ -26,11 +24,9 @@ class Admin::MeetingsController < Admin::ApplicationController
       format.html
       format.turbo_stream
       # format.ics do
-
       #   puts " _____________ call ics cal __________"
       #   ics_file = MeetingIcsService.new(@meetings).generate
       #   puts " _____________ data: #{ics_file} __________"
-
       #   response.headers['Content-Type'] = 'text/calendar; charset=UTF-8'
       #   render plain: ics_file
       # end 
@@ -39,19 +35,15 @@ class Admin::MeetingsController < Admin::ApplicationController
 
   def download_ics
     # @meetings = Meeting.all.includes(commande: :client)
-
     # # Generate ICS content
     # ics_file = MeetingIcsService.new(@meetings).generate
-
     # # Set the response headers and render the ICS file
     # send_data ics_file, filename: "meetings.ics", type: "text/calendar", disposition: "attachment"
   end
 
-  # GET /meetings/1 or /meetings/1.json
   def show
   end
 
-  # GET /meetings/new
   def new
     @meeting = Meeting.new
 
@@ -68,7 +60,7 @@ class Admin::MeetingsController < Admin::ApplicationController
       format.html 
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@meeting, 
-          partial: "meetings/form", 
+          partial: "admin/meetings/form", 
           locals: {meeting: @meeting})
       end
     end
@@ -92,11 +84,11 @@ class Admin::MeetingsController < Admin::ApplicationController
           format.turbo_stream do
             render turbo_stream: [
               turbo_stream.update('new_meeting',
-                partial: "meetings/form",
+                partial: "admin/meetings/form",
                   locals: { meeting: Meeting.new, commande_id: @meeting.commande_id, client_id: @meeting.client_id}),
                   
               turbo_stream.prepend('meetings',
-                partial: "meetings/meeting",
+                partial: "admin/meetings/meeting",
                 locals: { meeting: @meeting }),
                 turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
               ]
@@ -109,7 +101,7 @@ class Admin::MeetingsController < Admin::ApplicationController
         format.turbo_stream do
           render turbo_stream: 
             turbo_stream.update(@meeting,
-              partial: "meetings/form", 
+              partial: "admin/meetings/form", 
               locals: {meeting: @meeting, commande_id: @meeting.commande_id, client_id: @meeting.client_id}
             )
         end
@@ -120,7 +112,6 @@ class Admin::MeetingsController < Admin::ApplicationController
     end
   end
 
-  # PATCH/PUT /meetings/1 or /meetings/1.json
   def update
     respond_to do |format|
       if @meeting.update(meeting_params)
@@ -129,7 +120,7 @@ class Admin::MeetingsController < Admin::ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update(@meeting, partial: "meetings/meeting", locals: {meeting: @meeting}),
+            turbo_stream.update(@meeting, partial: "admin/meetings/meeting", locals: {meeting: @meeting}),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
           ]
         end
@@ -143,12 +134,11 @@ class Admin::MeetingsController < Admin::ApplicationController
     end
   end
 
-  # DELETE /meetings/1 or /meetings/1.json
   def destroy
     @meeting.destroy!
 
     respond_to do |format|
-      format.html { redirect_to meetings_url, notice: "Meeting was destroyed" }
+      format.html { redirect_to admin_meetings_url, notice: "Meeting was destroyed" }
       format.json { head :no_content }
     end
   end
@@ -162,13 +152,12 @@ class Admin::MeetingsController < Admin::ApplicationController
     respond_to do |format|
       flash.now[:success] = "Email was successfully created"
 
-      format.html { redirect_to meeting_path(@meeting), notice: "email was successfully sended." }
+      format.html { redirect_to admin_meeting_path(@meeting), notice: "email was successfully sended." }
 
     end
   end
 
   def send_reminder_job
-    puts " ___________ call send reminder job _______________"
     @meeting = Meeting.find(params[:meeting])
     
     # Trigger the job asynchronously
@@ -181,12 +170,10 @@ class Admin::MeetingsController < Admin::ApplicationController
 
   
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_meeting
       @meeting = Meeting.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def meeting_params
       params.require(:meeting).permit(:nom, :datedebut, :datefin, :commande_id, :client_id, :lieu)
     end

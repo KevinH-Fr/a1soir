@@ -19,11 +19,11 @@ class MeetingMailer < ApplicationMailer
     @subject = I18n.t('reminders.subject')
 
     attachments.inline['logo_a1soir_2025.png'] = File.read(Rails.root.join('app/assets/images/logo_a1soir_2025.png'))
-  
-    mail(
-      to: @recipient.mail,
-      subject: @subject
-    )
+
+    mail(to:  @recipient.mail, subject: @subject) do |format|
+      format.html { render template: "admin/meeting_mailer/reminder_email", layout: "mailer" }
+    end
+
   end
   
 

@@ -38,7 +38,7 @@
         <div id="meetings"> </div> 
 
         <%= turbo_frame_tag :pagination, loading: :lazy, 
-                            src: meetings_path(format: :turbo_stream,
+                            src: admin_meetings_path(format: :turbo_stream,
                             q: params[:q]&.to_unsafe_h) %>
     <% end %>
 
