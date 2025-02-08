@@ -42,7 +42,7 @@ class Admin::AdminParametersController < Admin::ApplicationController
   def update
     respond_to do |format|
       if @admin_parameter.update(admin_parameter_params)
-        format.html { redirect_to admin_parameter_url(@admin_parameter), notice:  "Mise à jour réussie" }
+        format.html { redirect_to admin_admin_parameter_url(@admin_parameter), notice:  "Mise à jour réussie" }
         format.json { render :show, status: :ok, location: @admin_parameter }
       else
         format.html { render :edit, status: :unprocessable_entity }

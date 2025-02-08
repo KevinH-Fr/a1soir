@@ -1,9 +1,6 @@
 class Admin::SelectionProduitController < Admin::ApplicationController
   include EnsemblesHelper 
-  
-  #before_action :authenticate_user!
-  #before_action :authenticate_vendeur_or_admin!
-      
+        
   def index
 
     @commande = Commande.find(session[:commande])

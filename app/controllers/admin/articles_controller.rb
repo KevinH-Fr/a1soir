@@ -43,7 +43,7 @@ class Admin::ArticlesController < Admin::ApplicationController
 
         @commande = @article.commande
 
-        format.html { redirect_to selection_produit_path(commande: @commande.id), notice:  "Création à jour réussie" }
+        format.html { redirect_to admin_selection_produit_path(commande: @commande.id), notice:  "Création à jour réussie" }
         format.json { render :show, status: :created, location: @article }
       else
         format.html { render :new, status: :unprocessable_entity }

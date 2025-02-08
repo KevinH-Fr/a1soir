@@ -1,6 +1,6 @@
 <div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
 
-  <%= form_with(model: admin_parameter) do |form| %>
+  <%= form_with(model: admin_parameter, url: admin_parameter.persisted? ? admin_admin_parameter_path(admin_parameter) : admin_admin_parameters_path, method: admin_parameter.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
     <% if admin_parameter.errors.any? %>
       <div style="color: red">
         <h2><%= pluralize(admin_parameter.errors.count, "error") %> prohibited this admin_parameter from being saved:</h2>

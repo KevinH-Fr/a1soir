@@ -22,6 +22,7 @@ module StockHelper
 
 
   def statut_disponibilite(produits, datedebut, datefin)
+    
     if Produit.is_service.exists?(id: produits) || Produit.is_ensemble.exists?(id: produits)
       initial_stock = 1
       loues_a_date = 0

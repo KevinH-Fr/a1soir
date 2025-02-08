@@ -13,6 +13,7 @@
           <%= custom_badge("fa-calendar", "", "", "", commande.full_event) %>
 
           <%= custom_badge("", "", "", "", commande.profile&.prenom) %>
+          <%= custom_badge("", "devis", "", "", "") if commande.devis?  %>
 
           <%= link_to "", "#collapseCommande#{dom_id(commande)}", 
             class: "btn btn-sm btn-outline-primary bi bi-eye m-1", "data-bs-toggle": "collapse", 
@@ -39,7 +40,6 @@
         <%= field_with_label("finloc: ", commande.finloc)  %>
         <%= field_with_label("dateevent: ", commande.dateevent)  %>
         <%= field_with_label("commentaires: ", commande.commentaires) %>
-        <%= field_with_label("devis: ", commande.devis)  %>
       
 
       </div>

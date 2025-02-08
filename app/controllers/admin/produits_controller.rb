@@ -72,10 +72,11 @@ class Admin::ProduitsController < Admin::ApplicationController
 
     @couleurs = Couleur.all 
     @tailles = Taille.all 
+    @fournisseurs = Fournisseur.all 
 
     respond_to do |format|
       if @produit.save
-        format.html { redirect_to produit_url(@produit), notice: "Création réussie" }
+        format.html { redirect_to admin_produit_url(@produit), notice: "Création réussie" }
         format.json { render :show, status: :created, location: @produit }
       else
         format.html { render :new, status: :unprocessable_entity }

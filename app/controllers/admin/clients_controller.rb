@@ -40,7 +40,7 @@ class Admin::ClientsController < Admin::ApplicationController
     respond_to do |format|
       if @client.save
 
-        format.html { redirect_to client_url(@client), notice:  "Création à jour réussie"}
+        format.html { redirect_to admin_client_url(@client), notice:  "Création à jour réussie"}
         format.json { render :show, status: :created, location: @client }
       else
         format.html { render :new, status: :unprocessable_entity }

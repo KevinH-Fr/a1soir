@@ -26,7 +26,7 @@ class Admin::ProfilesController < Admin::ApplicationController
       format.html 
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@profile, 
-          partial: "profiles/form", 
+          partial: "admin/profiles/form", 
           locals: {profile: @profile})
       end
     end
@@ -43,11 +43,11 @@ class Admin::ProfilesController < Admin::ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('new',
-                                partial: "profiles/form",
+                                partial: "admin/profiles/form",
                                 locals: { profile: Profile.new }),
   
             turbo_stream.prepend('profiles',
-                                  partial: "profiles/profile",
+                                  partial: "admin/profiles/profile",
                                   locals: { profile: @profile }),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
             
@@ -72,7 +72,7 @@ class Admin::ProfilesController < Admin::ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update(@profile, partial: "profiles/profile", locals: {profile: @profile}),
+            turbo_stream.update(@profile, partial: "admin/profiles/profile", locals: {profile: @profile}),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
           ]
         end
@@ -83,7 +83,7 @@ class Admin::ProfilesController < Admin::ApplicationController
 
         format.turbo_stream do
           render turbo_stream: turbo_stream.update(@profile, 
-                    partial: 'profiles/form', 
+                    partial: 'admin/profiles/form', 
                     locals: { profile: @profile })
         end
 
