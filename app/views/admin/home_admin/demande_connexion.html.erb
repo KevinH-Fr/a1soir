@@ -2,8 +2,10 @@
 <div class="card">
   <div class="card-header bg-dark text-light p-1 text-center">
     <strong>Demande de connexion</strong> 
+
   </div>
   <div class="card-body light-beige-colored text-center">
+
     <% unless current_admin_user.present? %>
 
       <%= link_to new_admin_user_session_path, class: "btn btn-warning m-1 p-2 rounded-pill" do %>
@@ -20,9 +22,9 @@
     <% end %>
 
     <% if admin_user_signed_in? %>
-      <% if current_admin_user.user? %>
+      <% if current_admin_user.user? || current_admin_user.vendeur? %>
        <span class="text-dark fs-6"> Reconnectez-vous en tant qu'administrateur pour accéder aux informations</span> <br>
-        <%= button_to "", destroy_user_session_path, method: :delete, 
+        <%= button_to "", destroy_admin_user_session_path, method: :delete, 
                     class:"btn btn-sm btn-danger fa-solid fa-right-from-bracket" %>
       <% end %>
     <% end %>

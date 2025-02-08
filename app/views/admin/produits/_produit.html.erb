@@ -100,7 +100,7 @@
           <%= custom_badge("", "quantité:", "", "", produit.quantite ) if produit.quantite %>
           <%= custom_badge("", "date achat:", "", "", produit.dateachat ) if produit.dateachat %>
 
-          <% if current_user.admin? %>
+          <% if current_admin_user.admin? %>
             <%= custom_badge("", "prixachat", "", "", produit.prixachat ) if produit.prixachat %>
           <% end %>
           

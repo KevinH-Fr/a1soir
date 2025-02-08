@@ -3,7 +3,7 @@
 
   <div class="card card-connexion m-2 p-4 text-center light-beige-colored shadow-lg">
 
-    <h2 class="my-4 fs-1">Connexion</h2>
+    <h2 class="my-4 fs-1">Connexion Admin</h2>
 
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
         <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "email...",
@@ -29,7 +29,7 @@
     <% end %>
 
     <div class="my-4">
-      <%= render "devise/shared/links" %>
+      <%= render "admin/devise/shared/links" %>
     </div>
 
   </div>

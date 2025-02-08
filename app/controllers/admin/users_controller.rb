@@ -1,12 +1,11 @@
 class Admin::UsersController < Admin::ApplicationController
 
-  before_action :authenticate_user!
-  #before_action :authenticate_vendeur_or_admin!
+  before_action :authenticate_admin!
   
   before_action :set_user, only: [:toggle_status_user, :toggle_status_vendeur, :toggle_status_admin]
 
   def index
-    @users = User.all
+    @users = User.where(role: "user")
     @vendeurs = User.where(role: "vendeur")
     @admins = User.where(role: "admin")
 

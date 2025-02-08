@@ -1,6 +1,6 @@
 
-<% if user_signed_in? %>
-    <% if current_user.admin? %>
+<% if current_admin_user %>
+    <% if current_admin_user.admin? %>
 
         <%= bandeau_entete("Comptes", "person-circle", "", "", "") %>
 
@@ -112,10 +112,10 @@
                 </div>
             </div>
         </div>
+    <% else %>
+        Vous devez être connecté(e) à un compte Admin
+        <%#= render "admin/home_admin/demande_connexion" %>
     <% end %>
 
-<% else %>
-    Vous devez être connecté(e) à un compte Admin
-    <%= render "home_admin/demande_connexion" %>
 <% end %>
 
