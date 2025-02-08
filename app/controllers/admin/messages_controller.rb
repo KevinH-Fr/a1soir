@@ -1,4 +1,4 @@
-class Admin:MessagesController < Admin::ApplicationController
+class Admin::MessagesController < Admin::ApplicationController
 
   before_action :authenticate_admin!
 
