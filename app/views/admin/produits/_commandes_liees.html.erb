@@ -10,7 +10,7 @@
           
             <% @commandes_liees.each do |commande|  %>
 
-                <%= link_to commande_path(commande), class: "text-decoration-none" do %>
+                <%= link_to admin_commande_path(commande), class: "text-decoration-none" do %>
                     <div class="mx-2 mb-3 p-2 bg-light shadow-sm">
                         <%= custom_badge("", "", "", "fw-bold", commande.client.full_name ) %>
                         <%= custom_badge("", "", "", "", commande.full_name ) %>
