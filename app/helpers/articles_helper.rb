@@ -22,7 +22,7 @@ module ArticlesHelper
   end
 
   def produit_selection(produit, commande)
-    statut = statut_disponibilite(produit, commande.debutloc&.to_date, commande.finloc.to_date)
+    statut = statut_disponibilite(produit, commande.debutloc&.to_date, commande.finloc&.to_date)
     disponibles = statut[:disponibles]
   
     # Define the card content, as it's the same in both cases
@@ -51,7 +51,7 @@ module ArticlesHelper
   
     # Conditionally wrap the card content in a link if disponibles > 0
     if disponibles > 0
-      link_to(selection_produit_path(produit: produit, article: @article), class: "card shadow-sm mb-3 text-decoration-none") do
+      link_to(admin_selection_produit_path(produit: produit, article: @article), class: "card shadow-sm mb-3 text-decoration-none") do
         card_content
       end
     else

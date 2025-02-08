@@ -1,0 +1,29 @@
+<div class="">
+
+  <%= form_with(model: sousarticle, url: sousarticle.persisted? ? admin_sousarticle_path(sousarticle) : admin_sousarticles_path, method: sousarticle.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
+    <% if sousarticle.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(sousarticle.errors.count, "error") %> prohibited this sousarticle from being saved:</h2>
+
+        <ul>
+          <% sousarticle.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form.hidden_field :article_id, value: @article.id if @article %>
+    <%= form.hidden_field :produit_id, value: @produit.id if @produit %>
+
+    <%= custom_form_elements(form, 
+      [:nature, :text_field], [:description, :text_area],
+      [:prix, :number_field], [:caution, :number_field], [:commentaires, :text_area])
+    %>
+
+
+    <%= custom_submit_button(form) %>
+
+  <% end %>
+
+</div>

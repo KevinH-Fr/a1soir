@@ -1,0 +1,45 @@
+<div class="card m-2 shadow-sm">
+
+    <div class="card-header bg-dark text-light p-1 px-2 fw-bold text-center fs-5">
+
+        <div class="row align-items-center m-0 p-0">
+            <div class="col text-start m-0 p-0 ">
+                <i class="bi bi-xl fs-3 brand-colored bi-compass me-2"></i>
+            </div>
+            <div class="col text-center fw-bold text-nowrap fs-6">
+                Accès
+            </div>
+            <div class="col text-end m-0 p-0">
+            
+            </div>
+        </div>
+
+    </div>
+
+    <div class= "card-body p-2 light-beige-colored text-center gap-2">
+        <%= options_supplementaires_link(admin_users_path, "bi-person-circle", "Comptes", "btn-outline-primary") %>
+        <%= options_supplementaires_link(admin_profiles_path, "bi-person-check", "Profiles", "btn-outline-dark") %>
+        <%= options_supplementaires_link(root_path, "bi-flag", "Marketing", "btn-outline-warning") %>
+        <%= options_supplementaires_link(admin_analyses_index_path, "bi-graph-up-arrow", "Analyses", "btn-outline-success") %>
+        <%= options_supplementaires_link(admin_etiquettes_index_path, "bi-tags", "Etiquettes", "btn-outline-secondary") %>
+        <%= options_supplementaires_link(admin_stock_index_path, "bi-boxes", "Stocks", "btn-outline-danger") %>
+        <%= options_supplementaires_link(admin_fournisseurs_path, "bi-buildings", "Fournisseurs", "btn-outline-dark") %>
+        <%= options_supplementaires_link(admin_ensembles_path, "bi-collection", "Ensembles", "btn-outline-primary") %>
+        <%= options_supplementaires_link(admin_categorie_produits_path, "bi-layers", "Cat. produits", "btn-outline-dark") %>
+        <%= options_supplementaires_link(admin_type_produits_path, "bi-list-ul", "Types produits", "btn-outline-primary") %>
+        <%= options_supplementaires_link(admin_couleurs_path, "bi-palette", "Couleurs", "btn-outline-dark") %>
+        <%= options_supplementaires_link(admin_tailles_path, "bi-rulers", "Tailles", "btn-outline-secondary") %>
+        <%= options_supplementaires_link(admin_admin_parameters_path, "bi-gear", "Parametres", "btn-outline-warning") %>
+
+        <%= options_supplementaires_link(root_path, "bi-house", "Site public", "btn-outline-primary") %>
+
+        <%= link_to admin_home_admin_scan_qr_path, class: "btn btn-sm btn-primary fa fa-bounce" do %>
+            <i class="bi bi-qr-code-scan"></i>
+            <span class="d-none d-md-inline">Scan</span>
+        <% end %>
+        
+
+    </div>
+
+</div>
+

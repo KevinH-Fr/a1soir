@@ -1,0 +1,12 @@
+<%= bandeau_entete("Commandes", 'file-earmark-fill', @count_commandes, 
+  :nom_or_type_locvente_or_typeevent_cont, admin_commandes_path) %>
+
+<%= bloc_nouveau(Commande) %>
+
+<%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+  <div id="commandes"> </div> 
+
+  <%= turbo_frame_tag :pagination, loading: :lazy, 
+                        src: admin_commandes_path(format: :turbo_stream,
+                        q: params[:q]&.to_unsafe_h) %>
+<% end %>

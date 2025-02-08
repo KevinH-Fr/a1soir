@@ -1,0 +1,13 @@
+<div id="<%= dom_id type_produit %>" class="my-2">
+
+  <div class="card d-flex flex-row mx-2 my-3 p-3 light-beige-colored shadow-sm">
+    <div data-turbo="false">
+      <%= link_to type_produit.nom, admin_type_produit_path(type_produit), class: "text-dark text-decoration-none" %>
+    </div>
+
+    <div class="container-fluid p-0 text-end">
+      <%= links_record(type_produit) %>  
+    </div>
+
+  </div>
+</div>

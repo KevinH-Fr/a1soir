@@ -1,0 +1,39 @@
+<h1>Welcome to Our Public Page</h1>
+<p>Explore our products, services, and more.</p>
+
+current_user: <%= current_user %> <br>
+current_admin_user: <%= current_admin_user %> <br>
+
+<hr>
+
+<% if user_signed_in? %>
+    <div class="container-fluid mt-4 d-flex justify-content-end">
+        <%= button_to destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-sm btn-danger d-flex align-items-center" do %>
+            <i class="bi bi-box-arrow-left me-1"></i>
+            <span class="fw-bold"><%= current_user.role %> </span>
+        <% end %>
+    </div>
+
+<% elsif current_admin_user %>
+    <div class="container-fluid mt-4 d-flex justify-content-end">
+        <%= button_to destroy_admin_user_session_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-sm btn-danger d-flex align-items-center" do %>
+            <i class="bi bi-box-arrow-left me-1"></i>
+            <span class="fw-bold"><%= current_admin_user.role %> </span>
+        <% end %>
+    </div>
+<% else %>
+
+    <%= link_to new_user_session_path, class: "btn btn-sm btn-outline-warning" do %>
+        <i class="bi bi-person-lock"></i>
+        <span class="fw-bold">Connexion</span>
+    <% end %>
+
+    <%= link_to new_user_registration_path, class: "btn btn-sm btn-outline-primary" do %>
+        <i class="bi bi-person-add"></i>
+        <span class="fw-bold">Nouveau</span>
+    <% end %>
+
+
+<% end %>
+
+<%= link_to "admin", admin_home_admin_path, class: "btn btn-sm btn-dark" %>

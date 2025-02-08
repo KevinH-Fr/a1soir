@@ -1,0 +1,23 @@
+<div class="card mx-2 my-3 p-2 light-beige-colored shadow-sm">
+
+  <%= form_with(model: categorie_produit, url: categorie_produit.persisted? ? admin_categorie_produit_path(categorie_produit) : admin_categorie_produits_path, method: categorie_produit.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
+    <% if categorie_produit.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(categorie_produit.errors.count, "error") %> prohibited this categorie_produit from being saved:</h2>
+
+        <ul>
+          <% categorie_produit.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= custom_form_elements(form, 
+      [:nom, :text_field], [:texte_annonce, :text_area], [:label, :text_field],  [:service, :check_box]) %>
+
+    <%= custom_submit_button(form) %>
+
+  <% end %>
+
+</div>

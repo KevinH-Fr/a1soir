@@ -1,0 +1,30 @@
+
+  <div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
+
+    <%= form_with(model: couleur, url: couleur.persisted? ? admin_couleur_path(couleur) : admin_couleurs_path, method: couleur.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
+      <% if couleur.errors.any? %>
+        <div style="color: red">
+          <h2><%= pluralize(couleur.errors.count, "error") %> prohibited this couleur from being saved:</h2>
+
+          <ul>
+            <% couleur.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= custom_form_elements(form, [:nom, :text_field]) %>
+
+      <div class="input-group input-group-sm my-1 px-1">
+        <%= form.label :couleur_code, class: "input-group-text input-colored" %>
+        <%= form.color_field :couleur_code, class: "form-control py-1 label-colored" %>
+      </div>
+
+
+      <%= custom_submit_button(form) %>
+
+    <% end %>
+  
+  
+  </div>

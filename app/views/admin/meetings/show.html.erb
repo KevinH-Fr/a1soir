@@ -1,0 +1,16 @@
+
+<%= render @meeting %>
+
+<div class="text-end">   
+
+  <%#= button_to send_reminder_path(meeting: @meeting), 
+        method: :post, class: 'btn btn-sm m-1 btn-primary fw-bold' do %>
+    <!--i class="bi bi-envelope-at"></i>
+    <span>Envoyer mail</span-->
+  <%# end %>
+
+  <%#= button_to 'Send Reminder (Job)', send_reminder_job_path(meeting: @meeting), method: :post, class: 'btn btn-warning' %>
+
+</div>
+
+<%= return_model_index_button("Retour vers rendez-vous", admin_meetings_path) %>

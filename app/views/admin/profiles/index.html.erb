@@ -1,0 +1,11 @@
+<%= bandeau_entete("Profiles", "person-check", @profiles.count, :nom_or_prenom_cont, admin_profiles_path) %>
+
+<%= bloc_nouveau(Profile) %>
+
+<%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+    <div id="profiles"> </div> 
+
+    <%= turbo_frame_tag :pagination, loading: :lazy, 
+                        src: admin_profiles_path(format: :turbo_stream,
+                        q: params[:q]&.to_unsafe_h) %>
+<% end %>

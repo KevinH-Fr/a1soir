@@ -1,0 +1,24 @@
+
+<%= card_main_model("Commande", "file-earmark-fill", "") %>
+
+<%= render @commande %>
+
+<%= render partial: 'admin/clients/client_mini', locals: { client: @commande.client } %>
+
+<%= render 'admin/articles/articles' %>
+
+<%= render 'admin/paiement_recus/paiement_recus' %>
+
+<%= render 'admin/avoir_rembs/avoir_rembs' %>
+
+<%= render 'admin/meetings/meetings' %>
+
+<hr>
+
+<%= return_model_index_button("Retour vers commandes", admin_commandes_path) %>
+
+<br> <br>
+
+<footer class="fixed-bottom footer-index bg-dark">
+    <%= render 'admin/commandes/footer' %>
+</footer>

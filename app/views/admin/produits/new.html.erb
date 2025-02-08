@@ -1,0 +1,7 @@
+<%= bandeau_entete_simple("Nouveau produit", "shirt") %>
+
+<%= render "form", produit: @produit %>
+
+<br>
+
+<%= return_model_index_button("Retour vers produits", admin_produits_path) %>

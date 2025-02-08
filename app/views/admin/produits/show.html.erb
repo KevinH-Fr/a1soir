@@ -1,0 +1,12 @@
+
+<%= card_main_model("Produit", "person-standing-dress") %>
+
+<%= render @produit %>
+
+<%= render 'stock' %>
+
+<%# afficher les commandes avec cet article triées par date %>
+
+<%= render 'commandes_liees' %>
+
+<%= return_model_index_button("Retour vers produits", admin_produits_path) %>

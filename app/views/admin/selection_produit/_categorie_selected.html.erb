@@ -1,0 +1,34 @@
+<div class="text-center fw-bold">tailles</div> <hr>
+
+<div class="d-flex flex-wrap justify-content-center align-items-center mb-3">
+
+  <%# if @tailles.any? %>
+
+      <%= button_to display_taille_selected_admin_selection_produit_index_path(
+          categorie_produit: @categorie_produits, taille: "all"), 
+          class: "btn btn-outline-primary m-1 btn-topic",
+          data: { controller: "button-color", action: "click->button-color#handleClick" },
+          "data-original-color": "text-primary" do %>
+          <span class="fw-bold">Tout</span>
+      <% end %>
+      
+
+    <% @tailles.each do |taille| %>
+      <%= button_to display_taille_selected_admin_selection_produit_index_path(categorie_produit: @categorie_produits, taille: taille), 
+          class: "btn btn-outline-primary m-1 btn-topic",
+          data: { controller: "button-color", action: "click->button-color#handleClick" },
+          "data-original-color": "text-primary" do %>
+          <span class="fw-bold"><%= taille.nom %></span>
+      <% end %>
+    <% end %>
+
+  <%# end %>
+  
+</div>
+
+
+<div id="partial-taille-selected" class="">
+  <%# recoit le turbo stream avec elements cliqués %>
+</div>
+
+

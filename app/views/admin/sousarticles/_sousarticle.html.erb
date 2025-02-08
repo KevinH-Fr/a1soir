@@ -1,0 +1,40 @@
+<div id="<%= dom_id sousarticle %>" class="mb-2">
+
+    <div class="row d-flex align-items-center">
+      <div class="col-sm-2 text-center">
+        <%= image_tag(sousarticle.produit.default_image, class: "img-fluid rounded") %>  
+      </div>
+
+      <div class="col-sm-10">
+        <div class="d-flex justify-content-between align-items-center">
+          <!-- Left Section: Fields with Labels -->
+          <div>
+            <h6 class="fw-bold"><%= sousarticle.produit.nom %></h6>
+            <%= field_with_label("Couleur", sousarticle.produit&.couleur&.nom) %>
+            <%= field_with_label("Taille", sousarticle.produit&.taille&.nom) if sousarticle.produit.taille.present? %>
+            <%= field_with_label("Nature", sousarticle.nature) if sousarticle.nature.present? %>
+            <%= field_with_label("Description", sousarticle.description) if sousarticle.description.present? %>
+            <%= field_with_label("Prix", sousarticle.prix) if sousarticle.prix.present? %>
+            <%= field_with_label("Caution", sousarticle.caution) if sousarticle.caution.present? %>
+            <%= field_with_label("Commentaires", sousarticle.commentaires) if sousarticle.commentaires.present? %>
+          </div>
+
+          <!-- Right Section: Buttons -->
+          <div class="d-flex gap-2">
+            <%= link_to "", "#collapseSousarticle#{dom_id(sousarticle)}", 
+              class: "btn btn-sm btn-primary bi bi-eye", 
+              "data-bs-toggle": "collapse", role: "button", 
+              "aria-expanded": "false", "aria-controls": "collapseSousarticle#{dom_id(sousarticle)}" %>
+
+            <%= button_to "", edit_admin_sousarticle_path(sousarticle), method: :post, 
+              class: "btn btn-sm btn-secondary bi bi-pencil-square" %>
+            
+            <%= button_to "", admin_sousarticle_path(sousarticle), method: :delete, 
+              data: { confirm: 'Confirmer suppression ?' }, 
+              class: "btn btn-sm btn-danger bi bi-trash" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>

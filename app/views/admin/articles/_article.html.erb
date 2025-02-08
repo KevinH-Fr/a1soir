@@ -1,0 +1,81 @@
+
+<div id="<%= dom_id article %>">
+
+  <div class="card mx-2 mb-3 p-2 light-beige-colored shadow-sm">
+
+
+    <div class="row d-flex align-items-center">
+      <div class="col-sm-3 text-center">
+        <%= image_tag(article.produit.default_image, class: "img-produit rounded") %>  
+      </div>
+      
+      <div class="col-sm-9 ps-2">
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+          <!-- Left Section: Fields with labels -->
+          <div>
+            <h5 class="fw-bold m-1"><%= article.produit.nom %></h5>
+            <div class="d-flex flex-wrap gap-2">
+              <%= field_with_label("", article.locvente) %> 
+              <%= field_with_label("couleur", article.produit&.couleur&.nom) %> 
+              <%= field_with_label("taille", article.produit&.taille&.nom) %> 
+              <%= field_with_label("qté", article.quantite) %> 
+              <%= field_with_label("prix", custom_currency_no_decimals_format(article.prix)) %> 
+              <%= field_with_label("total", custom_currency_no_decimals_format(article.total)) %> 
+              
+              <% if article.caution %>
+                <%= field_with_label("caution", custom_currency_no_decimals_format(article.caution)) %> 
+              <% end %>
+              
+              <% if article.longueduree %>
+                <%= field_with_label("longue durée", article.longueduree) %> 
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Right Section: Buttons -->
+          <div class="d-flex justify-content-end gap-2 m-1">
+            <%= link_to "", "#collapseArticle#{dom_id(article)}", 
+              class: "btn btn-sm btn-primary bi bi-eye", 
+              "data-bs-toggle": "collapse", role: "button", 
+              "aria-expanded": "false", "aria-controls": "collapseArticle#{dom_id(article)}" %>
+            
+            <%= button_to "", edit_admin_article_path(article), method: :post, 
+              class: "btn btn-sm btn-secondary bi bi-pencil-square" %>
+            
+            <%= button_to "", admin_article_path(article), method: :delete,  
+              onclick: "return confirm('Confirmer suppression ?');", 
+              class: "btn btn-sm btn-danger bi bi-trash" %>
+          </div>
+        </div>
+        
+        <div class="mt-3">
+          <%= link_to admin_selection_produit_path(commande: @commande, article: article), 
+            class: "btn btn-sm btn-warning fw-bold" do %>
+            <i class="bi bi-plus-lg"></i>
+            <span>Sous-article</span>          
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+
+    <% if article.sousarticles.present? %>
+      <div class="container-fluid card my-2 p-3">
+          <h6 class="fw-bold">Sous-articles:</h6>
+          <% article.sousarticles.each do |sousarticle| %>
+            <%= render partial: 'admin/sousarticles/sousarticle', locals: { sousarticle: sousarticle } %>
+          <% end %>    
+        
+      </div>
+    <% end %>
+     
+    <div class="collapse" id="collapseArticle<%= dom_id(article) %>">
+      <p>
+        <strong>Commentaires:</strong>
+        <%= article.commentaires %>
+      </p>
+    </div>
+
+  </div>
+
+</div>

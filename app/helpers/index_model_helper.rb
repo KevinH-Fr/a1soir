@@ -47,14 +47,14 @@ module IndexModelHelper
   end
   
   def index_search_form(q, chemin_recherche, champs_recherche)
-    render partial: 'shared/search_form', locals: {chemin_recherche: chemin_recherche, champs_recherche: champs_recherche }
+    render partial: 'admin/shared/search_form', locals: {chemin_recherche: chemin_recherche, champs_recherche: champs_recherche }
   end
 
   def bloc_nouveau(model_class)
 
       content_tag(:div, class: "collapse", id: "collapseNew") do
           concat(content_tag(:div, id: "new") do
-              render partial: "#{model_class.to_s.underscore.pluralize}/form", 
+              render partial: "admin/#{model_class.to_s.underscore.pluralize}/form", 
               locals: { model_class.to_s.underscore.to_sym => model_class.new }
           end)
       end
@@ -62,13 +62,14 @@ module IndexModelHelper
 
   def links_record(model, turbo_delete: true)
     content_tag(:div, class: "d-flex justify-content-end") do
-      concat(link_to("", model, class: "btn btn-sm btn-primary bi bi-arrow-up-right-square me-1 p-2", data: { turbo: false }))
-      concat(button_to("", edit_polymorphic_path(model), method: :post, class: "btn btn-sm btn-secondary bi bi-pencil-square me-1 p-2"))
-      concat(button_to("", model, method: :delete, data: { turbo: turbo_delete }, 
-        onclick: "return confirm('Etes-vous certain de vouloir supprimer cet élément et tous les éléments liés ?')",
+      concat(link_to("", [:admin, model], class: "btn btn-sm btn-primary bi bi-arrow-up-right-square me-1 p-2", data: { turbo: false }))
+      concat(button_to("", edit_polymorphic_path([:admin, model]), method: :post, class: "btn btn-sm btn-secondary bi bi-pencil-square me-1 p-2"))
+      concat(button_to("", [:admin, model], method: :delete, data: { turbo: turbo_delete }, 
+        onclick: "return confirm('Êtes-vous certain de vouloir supprimer cet élément et tous les éléments liés ?')",
         class: "btn btn-sm btn-danger bi bi-trash me-1 p-2"))
     end
   end
+  
 
   def return_model_index_button(text, path)
     content_tag(:div, class: "m-1 d-flex align-items-center") do

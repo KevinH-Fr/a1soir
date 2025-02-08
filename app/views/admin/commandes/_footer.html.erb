@@ -1,0 +1,24 @@
+<div class="container-fluid m-0 p-0 d-flex align-items-center justify-content-between gap-1 p-2">
+
+    <span class="badge bg-secondary fw-bold m-1 fs-6 shadow-sm text-light">
+        <%= @commande.ref_commande %>        
+    </span>
+
+    <%= render 'synthese' %>
+
+    <button class="btn btn-primary fa fa-bounce" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+        <i class="bi bi-file-earmark-text"></i>
+        <span class="d-none d-md-inline ms-1">editer</span>
+    </button>
+
+</div>
+
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Edition</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <%= render 'admin/doc_editions/new' %>
+    </div>
+</div>

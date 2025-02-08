@@ -1,0 +1,53 @@
+<div id="<%= dom_id commande %>"class="mb-2">
+
+  <div class="card mx-2 mb-3 p-1 light-beige-colored shadow-sm">
+    
+    <div class="row">
+      <div data-turbo="false" class="col-10">
+        <%= link_to admin_commande_path(commande), class: "text-decoration-none text-dark" do %>
+
+          <%#= custom_badge("", "", "", commande.ref_commande) %>
+          <%= custom_badge("", "", "", "fw-bold", commande.full_name) %>
+          <%= custom_badge("", "", "", "", commande.client.full_name) %>
+          <%= custom_badge("", "", "", "", commande.type_locvente) if commande.type_locvente %>
+          <%= custom_badge("fa-calendar", "", "", "", commande.full_event) %>
+
+          <%= custom_badge("", "", "", "", commande.profile&.prenom) %>
+          <%= custom_badge("", "devis", "", "", "") if commande.devis?  %>
+
+          <%= link_to "", "#collapseCommande#{dom_id(commande)}", 
+            class: "btn btn-sm btn-outline-primary bi bi-eye m-1", "data-bs-toggle": "collapse", 
+            role: "button", "aria-expanded": "false", "aria-controls": "collapseCommande#{dom_id(commande)}" %>
+
+          <div class="my-2 p-1">
+            <%= render partial: 'admin/commandes/toggles_statut', locals: { commande: commande } %>
+          </div>
+
+        <% end %>
+
+      </div>
+      <div class="col-2 text-end">
+        <%= links_record(commande, turbo_delete: true) %>
+      </div>
+
+      <div class="collapse" id="collapseCommande<%= dom_id(commande) %>">
+
+        <%= image_tag(commande.qr_code, class:"rounded-start") if commande.qr_code.attached? %>
+
+        <%= field_with_label("nom: ", commande.nom)  %>
+        <%= field_with_label("description: ", commande.description)  %>
+        <%= field_with_label("debutloc: ", commande.debutloc)  %>
+        <%= field_with_label("finloc: ", commande.finloc)  %>
+        <%= field_with_label("dateevent: ", commande.dateevent)  %>
+        <%= field_with_label("commentaires: ", commande.commentaires) %>
+      
+
+      </div>
+    </div>
+
+  
+  </div>
+
+
+
+</div>

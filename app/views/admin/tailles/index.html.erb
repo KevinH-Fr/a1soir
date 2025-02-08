@@ -1,0 +1,12 @@
+<%= bandeau_entete("Tailles", "rulers", @count_tailles, :nom_cont, admin_tailles_path) %>
+
+<%= bloc_nouveau(Taille) %>
+
+
+<%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+    <div id="tailles"> </div> 
+
+    <%= turbo_frame_tag :pagination, loading: :lazy, 
+                        src: admin_tailles_path(format: :turbo_stream,
+                        q: params[:q]&.to_unsafe_h) %>
+<% end %>

@@ -1,0 +1,13 @@
+<br>  <hr> <br>
+
+<div class="container-fluid d-flex justify-content-between">
+
+    <%= return_model_index_button("Retour vers etiquettes", admin_etiquettes_index_path) %>
+    <%= link_to url_for(prod1: @produit1, prod2: @produit2, prod3: @produit3, prod4: @produit4, format: :pdf), 
+        class:"btn m-1 btn-danger",
+        title: "Editer étiquette", target: "_blank" do %> 
+    <i class="fa-solid fa-xl fa-file-pdf fa-bounce "></i>
+    <span class="fw-bold">Editer</span>
+    <% end %>
+    
+</div>

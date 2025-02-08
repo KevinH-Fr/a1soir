@@ -1,0 +1,14 @@
+
+<%= bandeau_entete("Ensembles", "collection", @count_ensembles, 
+    :produit_nom_cont, admin_ensembles_path) %>
+
+<%= bloc_nouveau(Ensemble) %>
+
+<%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+    <div id="ensembles"> </div> 
+
+    <%= turbo_frame_tag :pagination, loading: :lazy, 
+                        src: admin_ensembles_path(format: :turbo_stream,
+                        q: params[:q]&.to_unsafe_h) %>
+<% end %>
+

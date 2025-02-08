@@ -3,7 +3,6 @@ class GenerateQr < ApplicationService
 
     def initialize(model)
         @model = model
-        puts "_________________model from generate qr : #{model}"
     end
 
     include Rails.application.routes.url_helpers
@@ -14,16 +13,16 @@ class GenerateQr < ApplicationService
 
       host = Rails.env.production? ? 'admin.a1soir.com' : 'localhost:3000'
 
-      qr_url = url_for(controller: model.class.name.underscore.pluralize,
-            action: "show",
-            id: model.id,
-            only_path: false,
-            host: host, #'a1soir.herokuapp.com',
-            source: 'from_qr')
+      qr_url = url_for(controller: "admin/#{model.class.name.underscore.pluralize}",
+        action: "show",
+        id: model.id,
+        only_path: false,
+        host: host, #'a1soir.herokuapp.com',
+        source: 'from_qr')
 
-    qrcode = RQRCode::QRCode.new(qr_url)
+      qrcode = RQRCode::QRCode.new(qr_url)
 
-    png = qrcode.as_png(
+      png = qrcode.as_png(
         bit_depth: 1,
         border_modules: 4,
         color_mode: ChunkyPNG::COLOR_GRAYSCALE,

@@ -1,0 +1,9 @@
+<%= bandeau_entete_simple("Nouveau rendez-vous", "calendar") %>
+
+<%= render partial: 'meetings/form', locals: { commande_id: nil, client_id: nil, meeting: Meeting.new } %>
+
+
+
+<br>
+
+<%= return_model_index_button("Retour vers rendez-vous", admin_meetings_path) %>

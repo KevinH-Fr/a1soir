@@ -1,0 +1,11 @@
+<%= link_to '', toggle_statut_non_retire_admin_commande_path(commande), 
+        class: "bi bi-person-standing-dress btn btn-sm mb-2 #{commande.statutarticles == 'non-retiré' ? 'btn-danger' : 'btn-outline-danger'}",
+        title: "non-retiré" %>
+
+<%= link_to '', toggle_statut_retire_admin_commande_path(commande), 
+        class: "bi bi-person-standing-dress btn btn-sm mb-2 #{commande.statutarticles == 'retiré' ? 'btn-warning' : 'btn-outline-warning'}",
+        title: "retiré" %>
+
+<%= link_to '', toggle_statut_rendu_admin_commande_path(commande), 
+        class: "bi bi-person-standing-dress btn btn-sm mb-2 #{commande.statutarticles == 'rendu' ? 'btn-success' : 'btn-outline-success'}",
+        title: "rendu" %>
