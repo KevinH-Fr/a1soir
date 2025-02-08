@@ -1,7 +1,7 @@
 <div class="text-center fw-bold">couleurs</div> <hr>
 
 <div class="d-flex flex-wrap justify-content-center align-items-center mb-3">
-  <%= button_to display_couleur_selected_selection_produit_index_path(
+  <%= button_to display_couleur_selected_admin_selection_produit_index_path(
       categorie_produit: @categorie_produits, taille: @tailles, couleur: "all"), 
       class: "btn btn-outline-primary m-1 btn-topic",
       data: { controller: "button-color", action: "click->button-color#handleClick" },
@@ -10,7 +10,7 @@
   <% end %>
 
   <% @couleurs.each do |couleur| %>
-    <%= button_to display_couleur_selected_selection_produit_index_path(
+    <%= button_to display_couleur_selected_admin_selection_produit_index_path(
         categorie_produit: @categorie_produits, taille: @tailles, couleur: couleur), 
         class: "btn btn-outline-primary m-1 btn-topic",
         data: { controller: "button-color", action: "click->button-color#handleClick" },

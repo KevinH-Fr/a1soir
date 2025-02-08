@@ -1,5 +1,5 @@
-class PaiementRecusController < ApplicationController
-  before_action :authenticate_vendeur_or_admin!
+class Admin::PaiementRecusController < Admin::ApplicationController
+  #before_action :authenticate_vendeur_or_admin!
 
   before_action :set_paiement_recu, only: %i[ show edit update destroy ]
 
@@ -19,7 +19,7 @@ class PaiementRecusController < ApplicationController
       format.html 
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@paiement_recu, 
-          partial: "paiement_recus/form", 
+          partial: "admin/paiement_recus/form", 
           locals: {commande_id: @paiement_recu.commande_id, paiement_recu: @paiement_recu})
       end
     end
@@ -38,19 +38,19 @@ class PaiementRecusController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('new_paiement',
-              partial: "paiement_recus/form",
+              partial: "admin/paiement_recus/form",
               locals: { commande_id: @paiement_recu.commande.id, paiement_recu: PaiementRecu.new }),
   
             turbo_stream.append('paiement_recus',
-              partial: "paiement_recus/paiement_recu",
+              partial: "admin/paiement_recus/paiement_recu",
               locals: { paiement_recu: @paiement_recu }),
 
             turbo_stream.update('synthese-paiements', 
-                partial: "paiement_recus/synthese", 
+                partial: "admin/paiement_recus/synthese", 
                 locals: { paiement_recus: @commande.paiement_recus }),
 
             turbo_stream.update('synthese-commande', 
-              partial: "commandes/synthese"),    
+              partial: "admin/commandes/synthese"),    
 
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
           ]
@@ -63,7 +63,7 @@ class PaiementRecusController < ApplicationController
         format.turbo_stream do
           render turbo_stream: 
             turbo_stream.update('new_paiement',
-              partial: "paiement_recus/form",
+              partial: "admin/paiement_recus/form",
               locals: {commande_id: @paiement_recu.commande.id, paiement_recu: @paiement_recu })
         end
         
@@ -86,15 +86,15 @@ class PaiementRecusController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update(@paiement_recu, 
-              partial: "paiement_recus/paiement_recu", 
+              partial: "admin/paiement_recus/paiement_recu", 
               locals: {paiement_recu: @paiement_recu}),
 
             turbo_stream.update('synthese-paiements', 
-              partial: "paiement_recus/synthese", 
+              partial: "admin/paiement_recus/synthese", 
               locals: { paiement_recus: @commande.paiement_recus }),
 
             turbo_stream.update('synthese-commande', 
-              partial: "commandes/synthese"),    
+              partial: "admin/commandes/synthese"),    
 
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
 
@@ -108,7 +108,7 @@ class PaiementRecusController < ApplicationController
         format.turbo_stream do
           render turbo_stream: 
             turbo_stream.update(@paiement_recu,
-                                partial: "paiement_recus/form",
+                                partial: "admin/paiement_recus/form",
                                 locals: {commande_id: @paiement_recu.commande.id, paiement_recu: @paiement_recu })
         end
 
@@ -129,11 +129,11 @@ class PaiementRecusController < ApplicationController
         render turbo_stream: [
           turbo_stream.remove(@paiement_recu),
           turbo_stream.update('synthese-paiements', 
-            partial: "paiement_recus/synthese", 
+            partial: "admin/paiement_recus/synthese", 
             locals: { paiement_recus: @commande.paiement_recus }),
 
           turbo_stream.update('synthese-commande', 
-            partial: "commandes/synthese") 
+            partial: "admin/commandes/synthese") 
 
         ]
       end 

@@ -1,8 +1,8 @@
-class SelectionProduitController < ApplicationController
+class Admin::SelectionProduitController < Admin::ApplicationController
   include EnsemblesHelper 
   
-  before_action :authenticate_user!
-  before_action :authenticate_vendeur_or_admin!
+  #before_action :authenticate_user!
+  #before_action :authenticate_vendeur_or_admin!
       
   def index
 
@@ -31,7 +31,7 @@ class SelectionProduitController < ApplicationController
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.update(
-          'partial-container', partial: 'selection_produit/selection_qr'
+          'partial-container', partial: 'admin/selection_produit/selection_qr'
         )
       end
     end
@@ -45,7 +45,7 @@ class SelectionProduitController < ApplicationController
       format.html
       format.turbo_stream do
         render turbo_stream: turbo_stream.update(
-          'partial-container', partial: 'selection_produit/selection_manuelle'
+          'partial-container', partial: 'admin/selection_produit/selection_manuelle'
 
         )
       end
@@ -69,7 +69,7 @@ class SelectionProduitController < ApplicationController
       format.turbo_stream do
         render turbo_stream: [
           turbo_stream.update(
-           'partial-categorie-selected', partial: 'selection_produit/categorie_selected'
+           'partial-categorie-selected', partial: 'admin/selection_produit/categorie_selected'
         )
       ]
       end
@@ -97,7 +97,7 @@ class SelectionProduitController < ApplicationController
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.update(
-          'partial-taille-selected', partial: 'selection_produit/taille_selected'
+          'partial-taille-selected', partial: 'admin/selection_produit/taille_selected'
         )
       end
     end    
@@ -140,7 +140,7 @@ class SelectionProduitController < ApplicationController
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.update(
-          'partial-couleur-selected', partial: 'selection_produit/couleur_selected'
+          'partial-couleur-selected', partial: 'admin/selection_produit/couleur_selected'
         )
       end
     end    
@@ -211,7 +211,5 @@ class SelectionProduitController < ApplicationController
                 notice: "Transformation en ensemble effectuée avec succès."
   end
   
-
-
 end
   

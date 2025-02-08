@@ -1,6 +1,6 @@
-class SousarticlesController < ApplicationController
+class Admin::SousarticlesController < Admin::ApplicationController
 
-  before_action :authenticate_vendeur_or_admin!
+ # before_action :authenticate_vendeur_or_admin!
 
   before_action :set_sousarticle, only: %i[ show edit update destroy ]
 
@@ -20,7 +20,7 @@ class SousarticlesController < ApplicationController
       format.html 
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@sousarticle, 
-          partial: "sousarticles/form", 
+          partial: "admin/sousarticles/form", 
           locals: { commande_id: @sousarticle.article.commande_id, 
                     produit_id: @sousarticle.produit_id, 
                     article: @sousarticle.article,
@@ -37,7 +37,7 @@ class SousarticlesController < ApplicationController
 
         @commande = @sousarticle.article.commande
 
-        format.html { redirect_to commande_url(@commande), notice:  'sous article successfully_created'}
+        format.html { redirect_to admin_commande_url(@commande), notice:  'sous article successfully_created'}
         format.json { render :show, status: :created, location: @sousarticle }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -58,14 +58,14 @@ class SousarticlesController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update(@sousarticle, 
-              partial: "sousarticles/sousarticle", 
+              partial: "admin/sousarticles/sousarticle", 
               locals: {sousarticle: @sousarticle}),
 
             turbo_stream.update('synthese-commande', 
-              partial: "commandes/synthese") ,
+              partial: "admin/commandes/synthese") ,
   
               turbo_stream.update('synthese-articles', 
-                partial: "articles/synthese", 
+                partial: "admin/articles/synthese", 
                 locals: { articles: @commande.articles }),
               turbo_stream.prepend('flash', 
                 partial: 'layouts/flash', 
@@ -93,11 +93,11 @@ class SousarticlesController < ApplicationController
         render turbo_stream: [
           turbo_stream.remove(@sousarticle),     
           turbo_stream.update('synthese-articles', 
-            partial: "articles/synthese", 
+            partial: "admin/articles/synthese", 
             locals: { articles: @commande.articles }),
 
           turbo_stream.update('synthese-commande', 
-            partial: "commandes/synthese") 
+            partial: "admin/commandes/synthese") 
   
           ]
       end

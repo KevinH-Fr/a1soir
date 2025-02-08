@@ -26,10 +26,10 @@
               "data-bs-toggle": "collapse", role: "button", 
               "aria-expanded": "false", "aria-controls": "collapseSousarticle#{dom_id(sousarticle)}" %>
 
-            <%= button_to "", edit_sousarticle_path(sousarticle), method: :post, 
+            <%= button_to "", edit_admin_sousarticle_path(sousarticle), method: :post, 
               class: "btn btn-sm btn-secondary bi bi-pencil-square" %>
             
-            <%= button_to "", sousarticle, method: :delete, 
+            <%= button_to "", admin_sousarticle_path(sousarticle), method: :delete, 
               data: { confirm: 'Confirmer suppression ?' }, 
               class: "btn btn-sm btn-danger bi bi-trash" %>
           </div>

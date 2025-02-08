@@ -1,6 +1,6 @@
-class ArticlesController < ApplicationController
+class Admin::ArticlesController < Admin::ApplicationController
   
-  before_action :authenticate_vendeur_or_admin!
+  #before_action :authenticate_vendeur_or_admin!
 
   before_action :set_article, only: %i[ show edit update destroy ]
 
@@ -27,7 +27,7 @@ class ArticlesController < ApplicationController
       format.html 
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@article, 
-          partial: "articles/form", 
+          partial: "admin/articles/form", 
           locals: { commande_id: @article.commande_id, produit_id: @article.produit_id, article: @article})
       end
     end
@@ -65,14 +65,14 @@ class ArticlesController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update(@article, 
-              partial: "articles/article", 
+              partial: "admin/articles/article", 
               locals: {article: @article}),
 
             turbo_stream.update('synthese-commande', 
-              partial: "commandes/synthese") ,
+              partial: "admin/commandes/synthese") ,
   
               turbo_stream.update('synthese-articles', 
-                partial: "articles/synthese", 
+                partial: "admin/articles/synthese", 
                 locals: { articles: @commande.articles }),
               turbo_stream.prepend('flash', 
                 partial: 'layouts/flash', 
@@ -101,11 +101,11 @@ class ArticlesController < ApplicationController
         render turbo_stream: [
           turbo_stream.remove(@article),     
           turbo_stream.update('synthese-articles', 
-            partial: "articles/synthese", 
+            partial: "admin/articles/synthese", 
             locals: { articles: @commande.articles }),
 
           turbo_stream.update('synthese-commande', 
-            partial: "commandes/synthese") 
+            partial: "admin/commandes/synthese") 
   
           ]
       end

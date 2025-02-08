@@ -1,6 +1,6 @@
 <div class="">
 
-  <%= form_with(model: sousarticle) do |form| %>
+  <%= form_with(model: sousarticle, url: sousarticle.persisted? ? admin_sousarticle_path(sousarticle) : admin_sousarticles_path, method: sousarticle.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
     <% if sousarticle.errors.any? %>
       <div style="color: red">
         <h2><%= pluralize(sousarticle.errors.count, "error") %> prohibited this sousarticle from being saved:</h2>

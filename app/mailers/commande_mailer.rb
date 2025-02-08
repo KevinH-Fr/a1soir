@@ -13,7 +13,7 @@ class CommandeMailer < ApplicationMailer
     attachments.inline['logo_a1soir_2025.png'] = File.read(Rails.root.join('app/assets/images/logo_a1soir_2025.png'))
 
     mail(to: doc_edition.destinataire, subject: doc_edition.sujet, body: @message_full) do |format|
-      format.html { render layout: "mailer" }  # Force HTML and layout
+      format.html { render template: "admin/commande_mailer/email_commande", layout: "mailer" }
     end
 
   end

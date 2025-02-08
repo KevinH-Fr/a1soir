@@ -1,6 +1,6 @@
-class AvoirRembsController < ApplicationController
+class Admin::AvoirRembsController < Admin::ApplicationController
 
-  before_action :authenticate_vendeur_or_admin!
+  #before_action :authenticate_vendeur_or_admin!
 
   before_action :set_avoir_remb, only: %i[ show edit update destroy ]
 
@@ -24,7 +24,7 @@ class AvoirRembsController < ApplicationController
       format.html 
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@avoir_remb, 
-          partial: "avoir_rembs/form", 
+          partial: "admin/avoir_rembs/form", 
           locals: {commande_id: @avoir_remb.commande_id, avoir_remb: @avoir_remb})
       end
     end
@@ -44,19 +44,19 @@ class AvoirRembsController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('new',
-              partial: "avoir_rembs/form",
+              partial: "admin/avoir_rembs/form",
               locals: { commande_id: @avoir_remb.commande.id, avoir_remb: AvoirRemb.new }),
   
             turbo_stream.append('avoir_rembs',
-              partial: "avoir_rembs/avoir_remb",
+              partial: "admin/avoir_rembs/avoir_remb",
               locals: { avoir_remb: @avoir_remb }),
 
             turbo_stream.update('synthese-avoirrembs', 
-                partial: "avoir_rembs/synthese", 
+                partial: "admin/avoir_rembs/synthese", 
                 locals: { avoir_rembs: @commande.avoir_rembs }),
 
             turbo_stream.update('synthese-commande', 
-              partial: "commandes/synthese"),
+              partial: "admin/commandes/synthese"),
                         
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
             
@@ -85,14 +85,14 @@ class AvoirRembsController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update(@avoir_remb, 
-              partial: "avoir_rembs/avoir_remb", 
+              partial: "admin/avoir_rembs/avoir_remb", 
               locals: {avoir_remb: @avoir_remb}),
 
             turbo_stream.update('synthese-commande', 
-              partial: "commandes/synthese"),
+              partial: "admin/commandes/synthese"),
 
             turbo_stream.update('synthese-avoirrembs', 
-              partial: "avoir_rembs/synthese", 
+              partial: "admin/avoir_rembs/synthese", 
               locals: { avoir_rembs: @commande.avoir_rembs }),
   
             turbo_stream.prepend('flash', 
@@ -123,11 +123,11 @@ class AvoirRembsController < ApplicationController
           turbo_stream.remove(@avoir_remb),
 
           turbo_stream.update('synthese-avoirrembs', 
-            partial: "avoir_rembs/synthese", 
+            partial: "admin/avoir_rembs/synthese", 
             locals: { avoir_rembs: @commande.avoir_rembs }),
 
           turbo_stream.update('synthese-commande', 
-            partial: "commandes/synthese") 
+            partial: "admin/commandes/synthese") 
 
         ]
       end 

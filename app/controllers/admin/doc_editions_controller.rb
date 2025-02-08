@@ -133,22 +133,14 @@ class Admin::DocEditionsController < Admin::ApplicationController
 
     respond_to do |format|
       flash.now[:success] = "Email was successfully created"
-
-      # format.turbo_stream do
-      #   render turbo_stream: [
-      #     turbo_stream.prepend('flash', partial: 'layouts/notice', locals: { flash: flash })
-      #   ]
-      # end
-
-      format.html { redirect_to commande_path(@doc_edition.commande), notice: "email was successfully sended." }
-
+      format.html { redirect_to admin_commande_path(@doc_edition.commande), notice: "email was successfully sended." }
     end
   end
 
   private
 
   def generate_pdf_data
-    pdf_html = render_to_string(template: 'pdf_commande/document', layout: 'pdf')
+    pdf_html = render_to_string(template: 'admin/pdf_commande/document', layout: 'pdf')
     pdf_options = {
       header: {
         content: render_to_string('admin/shared/doc_entete', layout: 'pdf'),

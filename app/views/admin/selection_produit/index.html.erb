@@ -6,14 +6,14 @@
 
   <div class="container-fluid d-flex justify-content-center align-items-center p-2">
 
-    <%= search_form_for @q, url: selection_produit_path, method: :get, class: "w-100" do |f| %>
+    <%= search_form_for @q, url: admin_selection_produit_path, method: :get, class: "w-100" do |f| %>
 
       <div class="input-group mt-2">
         <%= f.search_field :nom_or_reffrs_or_couleur_nom_or_taille_nom_cont, class: "form-control rounded mx-1", placeholder: 'Chercher...' %>
 
         <%= hidden_field_tag 'article', params[:article] if params[:article] %>
 
-        <%= link_to selection_produit_path(article: params[:article]), class: 'btn btn-outline-danger rounded mx-1' do %>
+        <%= link_to admin_selection_produit_path(article: params[:article]), class: 'btn btn-outline-danger rounded mx-1' do %>
           <i class="bi bi-xl bi-x-circle"></i>
         <% end %>
         
@@ -27,13 +27,13 @@
   </div>
 
   <% if params[:q] %>
-    <%= render "selection_produit/produits_filtres" %>
+    <%= render "admin/selection_produit/produits_filtres" %>
   <% end %>
 
   <% unless @produit.present? || params[:q] %>
     <% button_configs = [
-      { path: display_qr_selection_produit_index_path, icon: "fa-qrcode", text: "QR code", color: "text-secondary" },
-      { path: display_manuelle_selection_produit_index_path(article: @article), icon: "fa-hand", text: "Manuelle", color: "text-secondary" }
+      { path: display_qr_admin_selection_produit_index_path, icon: "fa-qrcode", text: "QR code", color: "text-secondary" },
+      { path: display_manuelle_admin_selection_produit_index_path(article: @article), icon: "fa-hand", text: "Manuelle", color: "text-secondary" }
     ] %>
 
     <div class="d-flex flex-wrap justify-content-center align-items-center mb-3">
@@ -55,10 +55,10 @@
       <%= render @produit %>
 
       <% if @article %>
-        <%= render partial: 'sousarticles/form', 
+        <%= render partial: 'admin/sousarticles/form', 
             locals: { commande_id: @commande.id, produit_id: @produit.id, article: @article.id, sousarticle: Sousarticle.new } %>    
       <% else %>
-        <%= render partial: 'articles/form', 
+        <%= render partial: 'admin/articles/form', 
             locals: { commande_id: @commande.id, produit_id: @produit.id, article: Article.new } %>
       <% end %>
       
@@ -73,6 +73,6 @@
 <br> <br>
 
 <div class="fixed-bottom bg-light">
-  <%= return_model_index_button("Retour vers commande", commande_path(@commande)) %>
+  <%= return_model_index_button("Retour vers commande", admin_commande_path(@commande)) %>
 </div>
 

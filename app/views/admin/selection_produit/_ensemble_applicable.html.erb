@@ -4,10 +4,10 @@
       <% if result[:matching_articles].any? %>
         <h5>Articles correspondant à un ensemble:</h5>
         <% result[:matching_articles].each do |article| %>
-          <%= render partial: 'articles/article_mini', locals: { article: article } %>
+          <%= render partial: 'admin/articles/article_mini', locals: { article: article } %>
         <% end %>
         <h5>Vers l'ensemble: </h5>
-        <%= render partial: 'produits/produit_mini', locals: { produit: result[:ensemble].produit } %>
+        <%= render partial: 'admin/produits/produit_mini', locals: { produit: result[:ensemble].produit } %>
 
       <% else %>
         <p>No matching articles found for this ensemble.</p>
