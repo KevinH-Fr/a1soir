@@ -1,5 +1,10 @@
 <h1>Welcome to Our Public Page</h1>
-<p>Explore our products, services, and more.</p>
+
+<%= link_to "Produits", produits_path %>
+<%= link_to "About", about_path %>
+
+
+<hr>
 
 current_user: <%= current_user %> <br>
 current_admin_user: <%= current_admin_user %> <br>
@@ -36,4 +41,5 @@ current_admin_user: <%= current_admin_user %> <br>
 
 <% end %>
 
-<%= link_to "admin", admin_home_admin_path, class: "btn btn-sm btn-dark" %>
+<%#= link_to "admin", admin_home_admin_path, class: "btn btn-sm btn-dark" %>
+<%= link_to "admin", admin_root_url(subdomain: "admin"), class: "btn btn-sm btn-dark" %>

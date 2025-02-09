@@ -5,7 +5,7 @@ module Public
       # before_action :authenticate_user!
 
       # tempo pour construire en cachant
-      before_action :authenticate_vendeur_or_admin! 
+      #before_action :authenticate_vendeur_or_admin! 
 
       private
 

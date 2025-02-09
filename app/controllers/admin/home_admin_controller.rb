@@ -14,5 +14,4 @@ class Admin::HomeAdminController < Admin::ApplicationController
   end
 
 
-
 end
