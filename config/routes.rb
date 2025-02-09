@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  constraints subdomain: 'public' do
+  constraints subdomain: 'shop' do
 
     scope module: :public do
       devise_for :users, path: '', path_names: { sign_in: 'login', sign_out: 'logout' }, controllers: {

@@ -93,7 +93,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
 
-  config.hosts << "public.lvh.me:3000"
+  config.hosts << "shop.lvh.me:3000"
   config.hosts << "admin.lvh.me:3000"
 
 end
