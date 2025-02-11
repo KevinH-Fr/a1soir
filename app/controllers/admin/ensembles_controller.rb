@@ -89,7 +89,7 @@ class Admin::EnsemblesController < Admin::ApplicationController
     @ensemble.destroy!
 
     respond_to do |format|
-      format.html { redirect_to ensembles_url, notice:  "Suppression réussie"  }
+      format.html { redirect_to admin_ensembles_url, notice:  "Suppression réussie"  }
       format.json { head :no_content }
     end
   end

@@ -75,7 +75,7 @@ class Admin::ClientsController < Admin::ApplicationController
     @client.destroy!
 
     respond_to do |format|
-      format.html { redirect_to clients_url, notice:  "Suppression réussie" }
+      format.html { redirect_to admin_clients_url, notice:  "Suppression réussie" }
       format.json { head :no_content }
     end
   end

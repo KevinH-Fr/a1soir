@@ -114,7 +114,7 @@ class Admin::CommandesController < Admin::ApplicationController
       #   render turbo_stream: turbo_stream.remove(@commande)
       # end
 
-      format.html { redirect_to root_path, notice:  "Suppression réussie" }
+      format.html { redirect_to admin_root_url, notice:  "Suppression réussie" }
       format.json { head :no_content }
     end
   end

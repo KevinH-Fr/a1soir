@@ -195,16 +195,16 @@ class Admin::SelectionProduitController < Admin::ApplicationController
     matching_articles.each do |matching_article|
       Sousarticle.create!(
         article_id: new_article.id,
-        produit_id: matching_article.produit.id
+        produit_id: matching_article.produit.id,
+        commentaires: matching_article.commentaires
       )
-      # Optionally reset the price of matching articles (e.g., matching_article.update(prix: 0))
     end
   
     # Delete the original articles after transformation
     matching_articles.each(&:destroy)
   
     # Redirect with a success notice
-    redirect_to commande_path(@commande),
+    redirect_to admin_commande_path(@commande),
                 notice: "Transformation en ensemble effectuée avec succès."
   end
   
