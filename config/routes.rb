@@ -6,14 +6,12 @@ Rails.application.routes.draw do
       devise_for :users, path: '', path_names: { sign_in: 'login', sign_out: 'logout' }, controllers: {
         sessions: 'public/sessions',  # Optional if you need custom behavior for public login/logout
         registrations: 'public/registrations'  # Add custom registrations controller
-
       }
       
       get 'about', to: 'pages#about'
       get 'home', to: 'pages#home'  
       get 'produits', to: 'pages#produits'  
 
-      #root to: "pages#home"
     end
 
   end 

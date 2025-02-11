@@ -22,21 +22,15 @@
   </head>
 
   <body>
-    <%#= render "shared/navbar_admin" %>
+    <%= render "public/shared/navbar" %>
 
-    <div class="d-flex justify-content-center align-items-center mb-3">
-      <div class="page-max-widthed">
-        <main class="p-2">
-          <div id="flash" class="mt-4" style="z-index: 10;">
-            <%= render partial: "layouts/flash" %>
-          </div>        
-          <div style="z-index: 0;">
-            <%= yield %>
-          </div>
-        </main>
-      </div>
+    <div class="m-0 p-0">
+      <%= yield %>
     </div>
-
+    
+    <footer>
+      <%= render "public/shared/footer" %>
+    </footer>
   </body>
 
 
