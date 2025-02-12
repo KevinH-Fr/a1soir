@@ -15,6 +15,8 @@ class Produit < ApplicationRecord
   has_many :ensembles
 
   has_one_attached :image1
+  validate :image1_is_valid
+
   has_many_attached :images
   has_one_attached :qr_code
 
@@ -97,5 +99,20 @@ class Produit < ApplicationRecord
       self.quantite = 1
     end
   end
+
+  def image1_is_valid
+    if image1.attached?
+      # Check file size (5MB max)
+      if image1.byte_size > 5.megabytes
+        errors.add(:image1, 'is too big. Maximum size is 5MB.')
+      end
+
+      # Check file type (allow only images)
+      unless image1.content_type.in?(%w[image/jpeg image/png image/gif image/jpg image/webp])
+        errors.add(:image1, 'must be a JPG, JPEG, PNG, WEBP or GIF image.')
+      end
+    end
+  end
+
 
 end

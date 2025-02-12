@@ -14,9 +14,12 @@
         </div>
       <% end %>
 
-      <div class="container text-center p-2">
-        <%= image_tag(produit.default_image, class: "img-fluid rounded") %>
-      </div>
+      <% if produit.persisted? && produit.default_image.attached? %>
+        <div class="container text-center p-2">
+          <%= image_tag(produit.default_image, class: "img-fluid rounded") %>
+        </div>
+      <% end %>
+
 
 
       <div class="container-fluid">

@@ -2,16 +2,15 @@
 
   <div class="card mx-2 my-3 p-3 light-beige-colored shadow-sm">
 
-    <p>
-      <strong>Nom:</strong>
-      <%= categorie_produit.nom %>
-    </p>
+    <div class="d-flex flex-wrap gap-1 text-truncate">
+      <%= field_with_label("Nom:", categorie_produit.nom) %>
 
-    <%= icon_true_field_with_label("service", categorie_produit.service)  %>
+      <%= icon_true_field_with_label("service", categorie_produit.service)  %>
 
-    <%= field_with_label("Texte", categorie_produit.texte_annonce) %>
-    <%= field_with_label("Label", categorie_produit.label) %>
+      <%= field_with_label("Texte:", categorie_produit.texte_annonce) %>
+      <%= field_with_label("Label:", categorie_produit.label) %>
 
+    </div>
 
     <%= links_record(categorie_produit) %>  
 

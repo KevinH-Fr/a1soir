@@ -11,13 +11,18 @@
 </div>
 
 <div class="container-fluid my-4">
-    <h3 class="brand-colored"> Notre sélection </h3>
-    <div>
-        Autour D'un Soir c'est avant tout une boutique 100% conseil à Cannes.
-        Nous souhaitons ici vous proposer le meilleur de nos produits à la vente.
-    </div>
+  <h3 class="brand-colored"> Notre sélection </h3>
+  <div>
+      Autour D'un Soir c'est avant tout une boutique 100% conseil à Cannes.
+      Nous souhaitons ici vous proposer le meilleur de nos produits à la vente.
+  </div>
 </div>
 
-<% @categories.each do |categorie| %>
-    <%= card_categorie(categorie) %>
-<% end %>
+<div class="row row-cols-1 row-cols-md-4 g-2 p-2 m-0">
+  <% @categories.each do |categorie| %>
+    <div class="col">
+      <%= card_categorie(categorie) %>
+    </div>
+  <% end %>
+</div>
+

@@ -12,6 +12,9 @@ Rails.application.routes.draw do
       get 'home', to: 'pages#home'  
       get 'produits', to: 'pages#produits'  
 
+     get 'categorie/:slug-:id', to: 'pages#categorie', as: :categorie
+     get 'produit/:slug-:id', to: 'pages#produit', as: :produit
+
     end
 
   end 

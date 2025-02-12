@@ -1,0 +1,44 @@
+<div class="position-relative d-inline-block text-center w-100">
+  <%= image_tag(@categorie.default_image, class: "w-100", style: "object-fit: cover; height: 400px;") %>
+  <div class="container-fluid d-flex flex-column justify-content-center align-items-center position-absolute top-50 start-50 translate-middle">
+    <h1 class="public-text-overlay brand-colored fs-1 mb-2 text-uppercase">
+        <%= @categorie.nom %> 
+    </h1>
+  </div>
+</div>
+
+<div class="container-fluid mt-4">
+    <h2>
+        <%= @categorie.texte_annonce %> 
+    </h2>
+</div>
+
+<div class="container-fluid mt-4">
+    <div class="brand-colored text-uppercase">
+        Catégories
+    </div>
+    <div>
+        <% @categories.each do |categorie| %>
+            <%= category_with_class(categorie) %>
+        <% end %>
+    </div>
+</div>
+
+<div class="container-fluid mt-4">
+    <% @tailles.each do |taille| %>
+        <%= link_to taille.nom, url_for(taille: taille), 
+            class: "badge bg-brand-colored fs-3 text-uppercase text-decoration-none" %>
+    <% end %>
+</div>
+
+<div class="container-fluid mt-4 m-0">
+
+    <div class="row row-cols-1 row-cols-sm-2 g-2 p-2 m-0">
+        <% @produits_uniques.each do |produit| %>
+            <div class="col">
+            <%= card_produit(produit) %>
+            </div>
+        <% end %>
+    </div>
+
+</div>
