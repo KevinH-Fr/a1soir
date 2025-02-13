@@ -99,6 +99,16 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp
 
+  config.action_mailer.smtp_settings = {
+    address:              'smtp.ionos.fr',
+    port:                 587,
+    user_name:            ENV['IONOS_USERNAME'],
+    password:             ENV['IONOS_PASSWORD'],
+    authentication:       'plain',        # Try 'plain' or 'login'
+    enable_starttls_auto: true,           # Enable STARTTLS
+    openssl_verify_mode:  'none'          # Disable verification temporarily
+  }
+
   # config.action_mailer.smtp_settings = {
   #   address:              'smtp.gmail.com',
   #   port:                 587,
@@ -111,31 +121,5 @@ Rails.application.configure do
   #   openssl_verify_mode: 'none'
   # }
 
-  # config.action_mailer.smtp_settings = {
-  #   address:              'smtp.ionos.fr',  # Use this instead of 'auth.smtp.ionos.fr'
-  #   domain:               'a1soir.com',  # Replace with your domain
-  #   port:                 587,               # 587 for TLS, 465 for SSL if needed
-  #   user_name:            ENV['IONOS_USERNAME'],
-  #   password:             ENV['IONOS_PASSWORD'],
-  #   authentication:       'login',           # You can use 'plain', 'login', or 'cram_md5'
-  #   enable_starttls_auto: true
-  # }
-  
-  config.action_mailer.smtp_settings = {
-    address:              'smtp.ionos.fr',   # Use the correct IONOS SMTP address
-    port:                 465,                # Port 465 for SSL
-    user_name:            ENV['IONOS_USERNAME'],
-    password:             ENV['IONOS_PASSWORD'],
-    authentication:       'login',            # Use 'login' or 'plain'
-    ssl:                  true,               # Enables SSL
-    enable_starttls_auto: false               # Not needed when using SSL
-  }
-
-  
-  # enable_starttls_auto: true,
-  # open_timeout:         5,
-  # read_timeout:         5,
-   #openssl_verify_mode: 'none'
-  
 
 end

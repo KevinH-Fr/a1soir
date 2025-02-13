@@ -93,6 +93,24 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
 
+
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #   address:              'smtp.ionos.fr',
+  #   port:                 587,
+  #   user_name:            ENV['IONOS_USERNAME'],
+  #   password:             ENV['IONOS_PASSWORD'],
+  #   authentication:       'plain',        # Try 'plain' or 'login'
+  #   enable_starttls_auto: true,           # Enable STARTTLS
+  #   openssl_verify_mode:  'none'          # Disable verification temporarily
+  # }
+  
+  # config.action_mailer.raise_delivery_errors = true
+  # config.action_mailer.perform_deliveries = true
+  # config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  
+
+
   config.hosts << "shop.lvh.me:3000"
   config.hosts << "admin.lvh.me:3000"
 
