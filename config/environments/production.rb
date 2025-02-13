@@ -98,11 +98,24 @@ Rails.application.configure do
   config.action_mailer.default_url_options = {host:'a1soir-2-2a03802389d6.herokuapp.com', protocol: "https"}
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp
+
+  # config.action_mailer.smtp_settings = {
+  #   address:              'smtp.gmail.com',
+  #   port:                 587,
+  #   user_name:            ENV["GMAIL_USERNAME"],
+  #   password:             ENV["GMAIL_PASSWORD"],
+  #   authentication:       'plain',
+  #   enable_starttls_auto: true,
+  #   open_timeout:         5,
+  #   read_timeout:         5,
+  #   openssl_verify_mode: 'none'
+  # }
+
   config.action_mailer.smtp_settings = {
-    address:              'smtp.gmail.com',
-    port:                 587,
-    user_name:            ENV["GMAIL_USERNAME"],
-    password:             ENV["GMAIL_PASSWORD"],
+    address:              'smtp.ionos.fr',
+    port:                 465, #587
+    user_name:            ENV["IONOS_USERNAME"],
+    password:             ENV["IONOS_PASSWORD"],
     authentication:       'plain',
     enable_starttls_auto: true,
     open_timeout:         5,

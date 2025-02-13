@@ -1,5 +1,6 @@
 <div class="position-relative d-inline-block text-center w-100">
-  <%= image_tag('/images/img1.png', class: 'img-fluid') %>
+  <%= image_tag('/images/img1.png', class: "w-100", style: "object-fit: cover; height: 400px;") %>
+
   <div class="container-fluid d-flex flex-column justify-content-center align-items-center position-absolute top-50 start-50 translate-middle">
     <h1 class="public-text-overlay brand-colored fs-1 mb-2 text-uppercase">
       Notre boutique en ligne
@@ -26,3 +27,35 @@
   <% end %>
 </div>
 
+<div class="container-fluid my-4">
+  <h3 class="brand-colored"> Autour d'un Soir </h3>
+  <div>
+    Notre enseigne existe depuis 1980 ! 
+    Depuis toujours notre ambition est de proposer des produits de qualité pour tous vos événements.
+    Entreprise familiale, notre boutique est à Cannes et bien connue pour ses bons conseils. 
+    Aussi n'hésitez pas à nous contacter par mail ou téléphone en cas de questions sur un produit.  
+  </div>
+</div>
+
+<%= image_tag('/images/party.jpg', class: "w-100 p-2", style: "object-fit: cover; height: 400px;") %>
+
+<div class="container text-center">
+  <div class="d-flex flex-column align-items-center mb-3">
+    <i class="bi bi-truck m-0 p-0" style="font-size: 80px; vertical-align: middle; line-height: 1;"></i>
+    <div class="brand-colored m-0 fs-3">Livraison rapide</div>
+    <div class="text-secondary text-uppercase fs-6">sous 7 jours en france</div>
+  </div>
+
+  <div class="d-flex flex-column align-items-center mb-3">
+    <i class="bi bi-truck m-0 p-0" style="font-size: 80px; vertical-align: middle; line-height: 1;"></i>
+    <div class="brand-colored m-0 fs-3">Retour possible</div>
+    <div class="text-secondary text-uppercase fs-6">sous 14 jours</div>
+  </div>
+
+  <div class="d-flex flex-column align-items-center mb-3">
+    <i class="bi bi-truck m-0 p-0" style="font-size: 80px; vertical-align: middle; line-height: 1;"></i>
+    <div class="brand-colored m-0 fs-3">Paiement sécurisé</div>
+    <div class="text-secondary text-uppercase fs-6">votre shopping en toute tranquilité</div>
+  </div>
+
+</div>
