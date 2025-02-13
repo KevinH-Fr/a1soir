@@ -112,7 +112,7 @@ Rails.application.configure do
   # }
 
   config.action_mailer.smtp_settings = {
-    address:              'smtp.ionos.fr',
+    address:              'smtp.ionos.fr', #'smtp.a1soir.com'
     port:                 587, #465
     user_name:            ENV["IONOS_USERNAME"],
     password:             ENV["IONOS_PASSWORD"],
@@ -120,7 +120,7 @@ Rails.application.configure do
     enable_starttls_auto: true,
     open_timeout:         5,
     read_timeout:         5,
-    openssl_verify_mode: 'none'
+    #openssl_verify_mode: 'none'
   }
   
 
