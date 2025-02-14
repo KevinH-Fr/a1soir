@@ -10,7 +10,7 @@ module Public
 
       def authenticate_vendeur_or_admin!
          unless current_admin_user && (current_admin_user.vendeur? || current_admin_user.admin?)
-          #  render "public/home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
+            #render "public/home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
          end
       end
 

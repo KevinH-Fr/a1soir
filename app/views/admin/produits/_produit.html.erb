@@ -48,8 +48,9 @@
             </div>
 
             <div class="mt-auto m-1">
-              <% if controller_name == "produits"  && action_name == "show" %>            
-                <%= link_to dupliquer_produit_path(produitbase: produit.id),
+
+              <% if controller_name == "produits" || controller_name == "selection_produit"  && action_name == "show" %>            
+                <%= link_to dupliquer_admin_produit_path(produitbase: produit.id),
                       class: "btn btn-sm btn-dark",
                       :onclick => "return confirm('Etes-vous certain de vouloir dupliquer ce produit ?')",
                       title: 'Dupliquer' do %>
@@ -106,6 +107,16 @@
           
         </div>
       </div>
+
+      <% if produit.images %>
+
+          <div class="container-fluid my-2">
+              <% produit.images.each do |image| %>
+                  <%= image_tag(image, class: "w-25", style: "object-fit: cover; height: 150px;") %>
+              <% end %> 
+          </div>
+        
+      <% end %>
 
 
     </div>
