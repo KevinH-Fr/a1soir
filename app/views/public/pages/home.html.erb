@@ -11,51 +11,55 @@
   </div>
 </div>
 
-<div class="container-fluid my-4">
-  <h3 class="brand-colored"> Notre sélection </h3>
-  <div>
-      Autour D'un Soir c'est avant tout une boutique 100% conseil à Cannes.
-      Nous souhaitons ici vous proposer le meilleur de nos produits à la vente.
-  </div>
-</div>
+<div class="public-main-content">
 
-<div class="row row-cols-1 row-cols-md-4 g-2 p-2 m-0">
-  <% @categories.each do |categorie| %>
-    <div class="col">
-      <%= card_categorie(categorie) %>
+  <div class="container-fluid my-4">
+    <h3 class="brand-colored"> Notre sélection </h3>
+    <div>
+        Autour D'un Soir c'est avant tout une boutique 100% conseil à Cannes.
+        Nous souhaitons ici vous proposer le meilleur de nos produits à la vente.
     </div>
-  <% end %>
-</div>
-
-<div class="container-fluid my-4">
-  <h3 class="brand-colored"> Autour d'un Soir </h3>
-  <div>
-    Notre enseigne existe depuis 1980 ! 
-    Depuis toujours notre ambition est de proposer des produits de qualité pour tous vos événements.
-    Entreprise familiale, notre boutique est à Cannes et bien connue pour ses bons conseils. 
-    Aussi n'hésitez pas à nous contacter par mail ou téléphone en cas de questions sur un produit.  
-  </div>
-</div>
-
-<%= image_tag('/images/party.jpg', class: "w-100 p-2", style: "object-fit: cover; height: 400px;") %>
-
-<div class="container text-center">
-  <div class="d-flex flex-column align-items-center mb-3">
-    <i class="bi bi-truck m-0 p-0" style="font-size: 80px; vertical-align: middle; line-height: 1;"></i>
-    <div class="brand-colored m-0 fs-3">Livraison rapide</div>
-    <div class="text-secondary text-uppercase fs-6">sous 7 jours en france</div>
   </div>
 
-  <div class="d-flex flex-column align-items-center mb-3">
-    <i class="bi bi-truck m-0 p-0" style="font-size: 80px; vertical-align: middle; line-height: 1;"></i>
-    <div class="brand-colored m-0 fs-3">Retour possible</div>
-    <div class="text-secondary text-uppercase fs-6">sous 14 jours</div>
+  <div class="row row-cols-1 row-cols-md-4 g-2 p-2 m-0">
+    <% @categories.each do |categorie| %>
+      <div class="col">
+        <%= card_categorie(categorie) %>
+      </div>
+    <% end %>
   </div>
 
-  <div class="d-flex flex-column align-items-center mb-3">
-    <i class="bi bi-truck m-0 p-0" style="font-size: 80px; vertical-align: middle; line-height: 1;"></i>
-    <div class="brand-colored m-0 fs-3">Paiement sécurisé</div>
-    <div class="text-secondary text-uppercase fs-6">votre shopping en toute tranquilité</div>
+  <div class="container-fluid my-4">
+    <h3 class="brand-colored"> Autour d'un Soir </h3>
+    <div>
+      Notre enseigne existe depuis 1980 ! 
+      Depuis toujours notre ambition est de proposer des produits de qualité pour tous vos événements.
+      Entreprise familiale, notre boutique est à Cannes et bien connue pour ses bons conseils. 
+      Aussi n'hésitez pas à nous contacter par mail ou téléphone en cas de questions sur un produit.  
+    </div>
+  </div>
+
+  <%= image_tag('/images/party.jpg', class: "w-100 p-2", style: "object-fit: cover; height: 400px;") %>
+
+  <div class="container text-center">
+    <div class="d-flex flex-column align-items-center mb-4">
+      <i class="bi bi-truck m-0 p-0" style="font-size: 80px; vertical-align: middle; line-height: 1;"></i>
+      <div class="brand-colored m-0 fs-3">Livraison rapide</div>
+      <div class="text-secondary text-uppercase fs-6">sous 7 jours en france</div>
+    </div>
+
+    <div class="d-flex flex-column align-items-center mb-4">
+      <i class="bi bi-hand-thumbs-up m-0 p-0" style="font-size: 80px; vertical-align: middle; line-height: 1;"></i>
+      <div class="brand-colored m-0 fs-3">Retour possible</div>
+      <div class="text-secondary text-uppercase fs-6">sous 14 jours</div>
+    </div>
+
+    <div class="d-flex flex-column align-items-center mb-4">
+      <i class="bi bi-credit-card m-0 p-0" style="font-size: 80px; vertical-align: middle; line-height: 1;"></i>
+      <div class="brand-colored m-0 fs-3">Paiement sécurisé</div>
+      <div class="text-secondary text-uppercase fs-6">votre shopping en toute tranquilité</div>
+    </div>
+
   </div>
 
 </div>

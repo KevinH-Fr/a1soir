@@ -1,4 +1,15 @@
-<div class="fixed-bottom px-1 d-flex gap-2 bg-light">
+<div class="sticky-bottom px-1 gap-2 bg-light">
+
+    <div>
+        <%= link_to "CGV", root_url(subdomain: "shop"), class: "fw-bold text-dark text-decoration-none" %>
+        <%= link_to "Instagram", root_url(subdomain: "shop"), class: "fw-bold text-dark text-decoration-none" %>
+        <%= link_to "Facebook", root_url(subdomain: "shop"), class: "fw-bold text-dark text-decoration-none" %>
+        <%= link_to "La boutique de Cannes", root_url(subdomain: "shop"), class: "fw-bold text-dark text-decoration-none" %>
+        <%= link_to "Notre équipe", root_url(subdomain: "shop"), class: "fw-bold text-dark text-decoration-none" %>
+    </div>
+
+    <hr>
+
     <% if user_signed_in? %>
         <div class="container-fluid mt-4 d-flex justify-content-end">
             <%= button_to destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: "text-danger d-flex align-items-center" do %>
@@ -16,12 +27,12 @@
         </div>
     <% else %>
 
-        <%= link_to new_user_session_path, class: "text-warning" do %>
+        <%= link_to new_user_session_path, class: "text-warning text-decoration-none" do %>
             <i class="bi bi-person-lock"></i>
             <span class="fw-bold">Connexion</span>
         <% end %>
 
-        <%= link_to new_user_registration_path, class: "text-primary" do %>
+        <%= link_to new_user_registration_path, class: "text-primary text-decoration-none" do %>
             <i class="bi bi-person-add"></i>
             <span class="fw-bold">Nouveau</span>
         <% end %>
@@ -30,5 +41,5 @@
     <% end %>
 
     <%#= link_to "admin", admin_home_admin_path, class: "btn btn-sm btn-dark" %>
-    <%= link_to "admin", admin_root_url(subdomain: "admin"), class: "fw-bold text-dark" %>
+    <%= link_to "admin", admin_root_url(subdomain: "admin"), class: "fw-bold text-dark text-decoration-none" %>
 </div>

@@ -75,3 +75,8 @@
   border-radius: 4px;                  /* Rounded corners */
   padding: 4px;                  /* Padding for better spacing */
 }
+
+.public-main-content{
+  max-width: 800px;
+  margin: 0 auto;
+}
