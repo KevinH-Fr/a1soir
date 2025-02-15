@@ -1,57 +1,45 @@
 <div id="<%= dom_id produit %>" class="my-2">
-
-  <div class="card mx-2 mb-3 light-beige-colored shadow-sm">
-    <div class="row g-0">
+  <div class="card mx-2 mb-3 light-beige-colored shadow-sm h-100 d-flex flex-column">
+    <div class="row g-0 flex-grow-1">
       <!-- Image Column -->
-      <div class="col-sm-4 p-1 text-center">
+      <div class="col-sm-4 text-center">
         <div data-turbo="false">
-          <%= link_to image_tag(produit.default_image, class: "img-fluid img-produit"), admin_produit_path(produit)  %>
+          <%= link_to image_tag(produit.default_image, class: "img-fluid img-produit"), admin_produit_path(produit) %>
         </div>
       </div>
+
       <!-- Text Column -->
-      <div class="col-sm-8">
-        <div class="card-body p-1">
+      <div class="col-sm-8 d-flex flex-column">
+        <div class="card-body p-1 flex-grow-1">
           <h5 class="card-title">
             <%= produit.nom %>
           </h5>
-          
+
           <p class="card-text">
-            <p>
-              <%= produit.categorie_produit.nom if produit.categorie_produit %>
-            </p>
-
-            <%= produit.description %>
-
-                <div class="container text-end">
-
-                  <% if session[:selection_etiquettes].count < 4 %>
-                    
-                    <%= form_with url: update_selection_admin_etiquettes_path, method: :post, local: true, data: { turbo: false } do |form| %>
-                      <%= form.hidden_field :new_product, value: produit.id %>
-                        <button type="submit" class="btn btn-warning my-4">
-                          <span class="fw-bold ms-2"> Sélection étiquette</span>
-                          <i class="bi-tags"></i> 
-                        </button>
-                    <% end %>
-                  
-                  <% else %>
-
-                    <%= link_to admin_etiquettes_path, class: "btn btn-secondary my-4" do %>
-                      <span class="fw-bold ms-2"> Limite atteinte</span>
-                      <i class="bi fa-tags"></i> 
-                    <% end %>
-                    
-                  
-                  <% end %>
-                  
-                  
-                </div>           
-            </div>
+            <div> <%= produit.categorie_produit.nom if produit.categorie_produit %> </div>
+            <div> <%= produit.description %> </div>
+            <div> <%= badge_taille_produit(produit) %> </div>
           </p>
         </div>
 
+        <!-- Button Section - Forces to Bottom -->
+        <div class="mt-auto text-end p-3">
+          <% if session[:selection_etiquettes].count < 4 %>
+            <%= form_with url: update_selection_admin_etiquettes_path, method: :post, local: true, data: { turbo: false } do |form| %>
+              <%= form.hidden_field :new_product, value: produit.id %>
+              <button type="submit" class="btn btn-warning w-50">
+                <span class="fw-bold ms-2"> Sélection étiquette</span>
+                <i class="bi-tags"></i> 
+              </button>
+            <% end %>
+          <% else %>
+            <%= link_to admin_etiquettes_path, class: "btn btn-secondary w-50" do %>
+              <span class="fw-bold ms-2"> Limite atteinte</span>
+              <i class="bi fa-tags"></i> 
+            <% end %>
+          <% end %>
+        </div>
       </div>
     </div>
-
   </div>
 </div>

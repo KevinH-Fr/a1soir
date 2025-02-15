@@ -26,7 +26,7 @@ class Produit < ApplicationRecord
   before_validation :fix_quantity_for_ensemble
 
   after_create :generate_qr
-  after_create :set_initial_vente_price
+  #after_create :set_initial_vente_price
 
   scope :is_ensemble, -> { joins(:type_produit).where(type_produits: { nom: 'ensemble' }) }
   scope :is_service, -> { joins(:categorie_produit).where(categorie_produits: { service: true }) }
@@ -70,12 +70,12 @@ class Produit < ApplicationRecord
 
   private
 
-  def set_initial_vente_price
-    if prixachat && AdminParameter.first
-      montant_vente = prixachat * (1 + AdminParameter.first.tx_tva.to_f / 100) * AdminParameter.first.coef_prix_achat_vente
-      self.update(prixvente: montant_vente )
-    end
-  end
+  # def set_initial_vente_price
+  #   if prixachat && AdminParameter.first
+  #     montant_vente = prixachat * (1 + AdminParameter.first.tx_tva.to_f / 100) * AdminParameter.first.coef_prix_achat_vente
+  #     self.update(prixvente: montant_vente )
+  #   end
+  # end
 
   def generate_handle
     # handle used to regroup products for colors and tailles

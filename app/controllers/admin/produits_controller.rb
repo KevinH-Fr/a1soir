@@ -1,7 +1,7 @@
 class Admin::ProduitsController < Admin::ApplicationController
 
   #before_action :authenticate_vendeur_or_admin!
-  before_action :set_produit, only: %i[ show edit update destroy ]
+  before_action :set_produit, only: %i[ show edit update destroy delete_image_attachment ]
 
   def index
     @count_produits = Produit.count
@@ -93,6 +93,13 @@ class Admin::ProduitsController < Admin::ApplicationController
     @tailles = Taille.all 
     @fournisseurs = Fournisseur.all 
 
+    # Retain existing medias if the field is left empty
+    if params[:produit][:images].present?
+      params[:produit][:images].each do |image|
+        @produit.images.attach(image)
+      end
+    end
+    
     respond_to do |format|
       if @produit.update(produit_params)
 
@@ -119,6 +126,13 @@ class Admin::ProduitsController < Admin::ApplicationController
         format.json { render json: @produit.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def delete_image_attachment
+    @media = @produit.images.find(params[:image_id])
+    @media.purge
+  
+    redirect_to admin_produit_path(@produit), notice: "Media has been deleted successfully."
   end
 
   def destroy
@@ -193,7 +207,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     def produit_params
       params.require(:produit).permit(:nom, :prixvente, :prixlocation, :description, :categorie_produit_id, :type_produit_id,
         :caution, :handle, :reffrs, :quantite, :fournisseur_id, :dateachat, :prixachat, :actif,
-        :image1, :couleur_id, :taille_id, images: [] )
+        :image1, :couleur_id, :taille_id)
     end
 
 end

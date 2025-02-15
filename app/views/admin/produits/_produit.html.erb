@@ -74,7 +74,7 @@
 
       <div class="row g-0">
       <!-- Image Column -->
-        <div class="col-sm-4 p-1 text-center">
+        <div class="col-sm-4 p-1">
           <div data-turbo="false">
             <%= image_tag(produit.qr_code, class:"img-fluid") if produit.qr_code.attached? %>
           </div>
@@ -94,7 +94,6 @@
           <br>
 
           <%= custom_badge("", "caution", "", "", produit.caution ) if produit.caution %>
-
           <%= custom_badge("", "handle:", "", "", produit.handle ) if produit.handle %>
           <%= custom_badge("", "ref. fournisseur:", "", "", produit.reffrs ) if produit.reffrs %>
           <%= custom_badge("", "fournisseur:", "", "", produit.fournisseur&.nom ) if produit.fournisseur&.nom %>

@@ -81,6 +81,8 @@ Rails.application.routes.draw do
         member do
           post :edit
           get :dupliquer
+          get 'delete_image_attachment', to: 'produits#delete_image_attachment', as: :delete_image_attachment
+
         end
       end
       

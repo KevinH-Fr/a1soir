@@ -4,15 +4,15 @@ module Public
       # before_action :authenticate_user!
 
       # tempo pour construire en cachant
-      before_action :authenticate_vendeur_or_admin! 
+     # before_action :authenticate_vendeur_or_admin! 
 
       private
 
-      def authenticate_vendeur_or_admin!
-         unless current_admin_user && (current_admin_user.vendeur? || current_admin_user.admin?)
-            #render "public/home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
-         end
-      end
+      # def authenticate_vendeur_or_admin!
+      #    unless current_admin_user && (current_admin_user.vendeur? || current_admin_user.admin?)
+      #       render "admin/home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
+      #    end
+      # end
 
    end 
    
