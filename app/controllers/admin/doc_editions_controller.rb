@@ -135,6 +135,10 @@ class Admin::DocEditionsController < Admin::ApplicationController
       flash.now[:success] = "Email was successfully created"
       format.html { redirect_to admin_commande_path(@doc_edition.commande), notice: "email was successfully sended." }
     end
+
+    # If email is successfully sent, update mail_sent field to true
+    @doc_edition.update(mail_sent: true)
+  
   end
 
   private

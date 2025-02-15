@@ -3,5 +3,15 @@
 
 <br>
 
-
 <%= render "admin/doc_editions/synthese", doc_edition: @doc_edition %>
+
+<div class="small text-wrap">
+    <% if @mails_envoyes.any? %>
+        Mails envoyés: <hr>
+        <% @mails_envoyes.each do |doc_edition| %>
+            <div class="mb-1">
+                Envoi <%= doc_edition.doc_type %> à <%= doc_edition.destinataire %> le <%= format_date_in_french(doc_edition.updated_at) %>
+            </div>
+        <% end %>  
+    <% end %>
+</div>

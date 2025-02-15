@@ -14,7 +14,7 @@
         </div>
       <% end %>
 
-      <% if produit.persisted? && produit.default_image %>
+      <% if produit.persisted? && produit.save %>
         <div class="container text-center p-2">
           <%= image_tag(produit.default_image, class: "img-fluid rounded") %>
         </div>
@@ -84,20 +84,21 @@
           <%= form.file_field :images, multiple: true, class:"form-control m-1 p-1" %>
         </div>
 
-        <% if produit.images.any? %>
-          
-          <div> Images actuelles:</div>
-          <div class="mb-1">
-            <% produit.images.each do |image| %>
-              <% if image.present? %>
-                  <%= image_tag image, width: 100 %>
+        <% if produit.persisted? && produit.save %>
+          <% if produit.images.any? %>
+            <div> Images actuelles:</div>
+            <div class="mb-1">
+              <% produit.images.each do |image| %>
+                <% if image.present? %>
+                    <%= image_tag image, width: 100 %>
 
-                  <%= link_to '', delete_image_attachment_admin_produit_path(produit, image_id: image.id),
-                    class: 'btn btn-outline-danger bi bi-trash', method: :delete %>
+                    <%= link_to '', delete_image_attachment_admin_produit_path(produit, image_id: image.id),
+                      class: 'btn btn-outline-danger bi bi-trash', method: :delete %>
 
+                <% end %>
               <% end %>
-            <% end %>
-          </div>
+            </div>
+          <% end %>
         <% end %>
 
         <div class="input-group mb-1">

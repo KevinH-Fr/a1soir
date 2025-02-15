@@ -18,6 +18,8 @@ class Produit < ApplicationRecord
   validate :image1_is_valid
 
   has_many_attached :images
+  validate :images_are_valid
+
   has_one_attached :qr_code
 
   before_validation :generate_handle
@@ -114,5 +116,22 @@ class Produit < ApplicationRecord
     end
   end
 
+  def images_are_valid
+    # Ensure that there are attached images before running validations
+    if images.attached? && images.any?
+      images.each do |image|
+        # Check file size (5MB max for each image)
+        if image.byte_size > 5.megabytes
+          errors.add(:images, "#{image.filename} is too big. Maximum size is 5MB.")
+        end
+  
+        # Check file type (allow only images)
+        unless image.content_type.in?(%w[image/jpeg image/png image/gif image/jpg image/webp])
+          errors.add(:images, "#{image.filename} must be a JPG, JPEG, PNG, WEBP or GIF image.")
+        end
+      end
+    end
+  end
+  
 
 end

@@ -29,6 +29,8 @@ class Admin::CommandesController < Admin::ApplicationController
     @produits = Produit.all 
     @doc_edition = DocEdition.new
 
+    @mails_envoyes = @commande.doc_editions.where(mail_sent: true)
+
   end
 
   def new
