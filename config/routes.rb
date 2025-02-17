@@ -8,12 +8,17 @@ Rails.application.routes.draw do
         registrations: 'public/registrations'  # Add custom registrations controller
       }
       
-      get 'about', to: 'pages#about'
       get 'home', to: 'pages#home'  
-      get 'produits', to: 'pages#produits'  
+      get 'about', to: 'pages#about'
+      get 'cgv', to: 'pages#cgv'
+      get 'laboutique', to: 'pages#laboutique'
+      get 'contact', to: 'pages#contact'
+      get 'categories', to: 'pages#categories'
+      get 'rdv', to: 'pages#rdv'
 
-     get 'categorie/:slug-:id', to: 'pages#categorie', as: :categorie
-     get 'produit/:slug-:id', to: 'pages#produit', as: :produit
+
+      get 'categorie/:slug-:id', to: 'pages#categorie', as: :categorie
+      get 'produit/:slug-:id', to: 'pages#produit', as: :produit
 
     end
 
@@ -156,7 +161,12 @@ Rails.application.routes.draw do
         end
       end
         
-      resources :textes
+      resources :textes do 
+        member do
+          post :edit
+        end
+      end
+      
       resources :messages
           
       resources :users do

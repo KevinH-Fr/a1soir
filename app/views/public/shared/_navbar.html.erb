@@ -8,11 +8,9 @@
     <div class="collapse navbar-collapse" id="navbar">
       <ul class="navbar-nav me-auto my-2 my-lg-0">
         <%= nav_link_public(home_path, "Accueil") %>
-        <%= nav_link_public(home_path, "Produits") %>
-        <%= nav_link_public(home_path, "Catégories") %>
-        <%= nav_link_public(home_path, "Notre équipe") %>
-        <%= nav_link_public(home_path, "La boutique de Cannes") %>
-        <%= nav_link_public(home_path, "Contact") %>
+        <%= nav_link_public(categories_url, "Catégories") %>
+        <%= nav_link_public(laboutique_url, "La boutique de Cannes") %>
+        <%= nav_link_public(contact_url, "Contact") %>
       </ul>
     </div>
   </div>

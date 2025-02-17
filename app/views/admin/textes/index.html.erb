@@ -1,4 +1,3 @@
-<p style="color: green"><%= notice %></p>
 
 <h1>Textes</h1>
 
@@ -6,9 +5,11 @@
   <% @textes.each do |texte| %>
     <%= render texte %>
     <p>
-      <%= link_to "Show this texte", texte %>
+      <%= button_to("", edit_admin_texte_path(texte), method: :post, class: "btn btn-sm btn-secondary bi bi-pencil-square me-1 p-2") %>
     </p>
   <% end %>
 </div>
 
-<%= link_to "New texte", new_texte_path %>
+<% unless @textes.any? %>
+  <%= link_to "New texte", new_admin_texte_path %>
+<% end %>

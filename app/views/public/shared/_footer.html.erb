@@ -1,11 +1,28 @@
-<div class="sticky-bottom px-1 gap-2 bg-light">
+<div class="sticky-bottom px-1 mt-5 gap-2">
 
-    <div>
-        <%= link_to "CGV", root_url(subdomain: "shop"), class: "fw-bold text-dark text-decoration-none" %>
-        <%= link_to "Instagram", root_url(subdomain: "shop"), class: "fw-bold text-dark text-decoration-none" %>
-        <%= link_to "Facebook", root_url(subdomain: "shop"), class: "fw-bold text-dark text-decoration-none" %>
-        <%= link_to "La boutique de Cannes", root_url(subdomain: "shop"), class: "fw-bold text-dark text-decoration-none" %>
-        <%= link_to "Notre équipe", root_url(subdomain: "shop"), class: "fw-bold text-dark text-decoration-none" %>
+
+    <div class="d-flex gap-5">
+
+        <%= link_to image_tag('/images/logo_courant_public.png', class: 'navbar-brand me-4', width: "200"), root_url %>
+        
+        <div>
+            <div class="fw-bold">Légal</div>
+            <%= link_to "CGV", cgv_url(subdomain: "shop"), class: "text-secondary text-decoration-none" %>
+        </div>
+
+        <div>
+            <div class="fw-bold">Suivez-nous</div>
+            <%= link_to "Instagram", "https://www.instagram.com/autourdunsoir/", class: "d-block text-secondary text-decoration-none", target: "_blank", rel: "noopener noreferrer" %>
+            <%= link_to "Facebook", "https://www.facebook.com/autourdunsoir/", class: "d-block text-secondary text-decoration-none", target: "_blank", rel: "noopener noreferrer" %>
+        </div>
+
+        <div>
+            <div class="fw-bold">Pages</div>
+            <%= link_to "La boutique de Cannes", laboutique_url(subdomain: "shop"), class: "d-block text-secondary text-decoration-none" %>
+            <%= link_to "Catégories", categories_url(subdomain: "shop"), class: "d-block text-secondary text-decoration-none" %>
+            <%= link_to "Prendre Rendez-vous", rdv_url(subdomain: "shop"), class: "d-block text-secondary text-decoration-none" %>
+        </div>        
+        
     </div>
 
     <hr>

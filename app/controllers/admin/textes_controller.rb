@@ -15,6 +15,14 @@ class Admin::TextesController < Admin::ApplicationController
   end
 
   def edit
+    respond_to do |format|
+      format.html 
+      format.turbo_stream do  
+        render turbo_stream: turbo_stream.update(@texte, 
+          partial: "admin/textes/form", 
+          locals: {texte: @texte})
+      end
+    end
   end
 
   def create
@@ -22,7 +30,7 @@ class Admin::TextesController < Admin::ApplicationController
 
     respond_to do |format|
       if @texte.save
-        format.html { redirect_to texte_url(@texte), notice:  "Création à jour réussie" }
+        format.html { redirect_to admin_textes_url, notice:  "Création à jour réussie" }
         format.json { render :show, status: :created, location: @texte }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -34,7 +42,7 @@ class Admin::TextesController < Admin::ApplicationController
   def update
     respond_to do |format|
       if @texte.update(texte_params)
-        format.html { redirect_to texte_url(@texte), notice:  "Mise à jour réussie" }
+        format.html { redirect_to admin_textes_url, notice:  "Mise à jour réussie" }
         format.json { render :show, status: :ok, location: @texte }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -47,7 +55,7 @@ class Admin::TextesController < Admin::ApplicationController
     @texte.destroy!
 
     respond_to do |format|
-      format.html { redirect_to textes_url, notice:  "Suppression réussie"  }
+      format.html { redirect_to admin_textes_url, notice:  "Suppression réussie"  }
       format.json { head :no_content }
     end
   end
@@ -60,7 +68,7 @@ class Admin::TextesController < Admin::ApplicationController
 
     # Only allow a list of trusted parameters through.
     def texte_params
-      params.require(:texte).permit(:titre, :content)
+      params.require(:texte).permit(:titre, :boutique, :contact, :horaire, :adresse)
     end
 
 end

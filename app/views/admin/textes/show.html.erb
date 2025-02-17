@@ -3,8 +3,8 @@
 <%= render @texte %>
 
 <div>
-  <%= link_to "Edit this texte", edit_texte_path(@texte) %> |
-  <%= link_to "Back to textes", textes_path %>
+  <%= link_to "Edit this texte", edit_admin_texte_path(@texte) %> |
+  <%= link_to "Back to textes", admin_textes_path %>
 
-  <%= button_to "Destroy this texte", @texte, method: :delete %>
+  <%= button_to "Destroy this texte", [:admin, @texte], method: :delete %>
 </div>

@@ -7,6 +7,7 @@ module Public
     end
 
     def categories
+      @categories = CategorieProduit.all
     end
 
     def categorie
@@ -21,18 +22,31 @@ module Public
       @categories = CategorieProduit.all
     end
 
-    def produits
-    end
-
     def produit
       @produit = Produit.find(params[:id])
       @tailles = [@produit.taille].compact.uniq
     end
 
-    def about
+    def contact
+      if Texte.last.present?
+        @texteContact = Texte.last.contact
+        @texteAdresse = Texte.last.adresse
+      end
     end
 
-    def contact
+    def cgv
+    end
+
+    def rdv
+    end
+
+    def laboutique
+      if Texte.last.present?
+        @texteContact = Texte.last.contact
+        @texteHoraire = Texte.last.horaire
+        @texteBoutique = Texte.last.boutique
+        @texteAdresse = Texte.last.adresse
+      end
     end
 
   end
