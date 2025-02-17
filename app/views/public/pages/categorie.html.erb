@@ -26,23 +26,8 @@
         </div>
     </div>
 
-    <div class="container-fluid mt-4">
-        <% @tailles.each do |taille| %>
-            <%= link_to taille.nom, url_for(taille: taille.nom), 
-                class: "badge bg-brand-colored fs-3 text-uppercase text-decoration-none" %>
-        <% end %>
-    </div>
 
-    <div class="container-fluid mt-4 m-0">
 
-        <div class="row row-cols-1 row-cols-sm-2 g-2 p-2 m-0">
-            <% @produits_uniques.each do |produit| %>
-                <div class="col">
-                <%= card_produit(produit) %>
-                </div>
-            <% end %>
-        </div>
-
-    </div>
+    <%= render  "taille_selected" %>
 
 </div>

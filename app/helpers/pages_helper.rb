@@ -29,6 +29,7 @@ module PagesHelper
       categorie.nom
     end
   end
+  
 
   def card_produit(produit)
     link_to produit_path(slug: produit.nom.parameterize, id: produit.id), class: "text-decoration-none" do
