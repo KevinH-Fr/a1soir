@@ -12,7 +12,12 @@ module Public
 
     def categorie
       @categorie = CategorieProduit.find(params[:id])
-      @produits = @categorie.produits
+      @produits = @categorie.produits.eshop_diffusion
+
+      if params[:taille].present?
+        @produits = @produits.joins(:taille).where(tailles: { nom: params[:taille] })
+      end
+
       # Group produits by handle and pick the first product for each unique handle
       @produits_uniques = @produits.group_by(&:handle).map { |_, produits| produits.first }
 

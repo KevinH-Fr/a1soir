@@ -34,6 +34,7 @@ class Produit < ApplicationRecord
   scope :is_service, -> { joins(:categorie_produit).where(categorie_produits: { service: true }) }
   scope :not_service, -> { joins(:categorie_produit).where(categorie_produits: { service: [false, nil] }) }
   scope :actif, -> { where(actif: true) } 
+  scope :eshop_diffusion, -> { where(eshop: true) }
 
   # filtres analyses
   scope :filtredatedebut, -> (debut) { where("created_at >= ?", debut.beginning_of_day) }

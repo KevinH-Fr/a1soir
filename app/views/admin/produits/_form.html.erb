@@ -110,12 +110,13 @@
         <div class="input-group mb-1">
           <%= form.label :taille_id, class: "input-group-text" %>
           <%= form.collection_select :taille_id, @tailles.all.order(:nom), :id, :nom, 
-          { include_blank: 'Sélectionner' }, class: "form-select" %>
+          { include_blank: 'Sélectionner' }, class: "form-select text-uppercase" %>
         </div>
       </div>
       
         <%= custom_form_elements(form, 
-          [:actif, :check_box]
+          [:actif, :check_box], 
+          [:eshop, :check_box]    
         ) %>
 
       </div>

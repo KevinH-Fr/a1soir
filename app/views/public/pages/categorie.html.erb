@@ -28,7 +28,7 @@
 
     <div class="container-fluid mt-4">
         <% @tailles.each do |taille| %>
-            <%= link_to taille.nom, url_for(taille: taille), 
+            <%= link_to taille.nom, url_for(taille: taille.nom), 
                 class: "badge bg-brand-colored fs-3 text-uppercase text-decoration-none" %>
         <% end %>
     </div>

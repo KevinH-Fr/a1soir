@@ -35,11 +35,11 @@
     <div class="mt-2">
         Taille(s): 
         <% if produit.taille.present? %>
-            <span style="border: 2px solid black; border-radius: 5px; margin-right: 2px; padding: 1px;">
+            <span class="text-uppercase" style="border: 2px solid black; border-radius: 5px; margin-right: 2px; padding: 1px;">
                 <%= produit.taille&.nom %>
             </span>
             <% same_produit_same_couleur_others_tailles(produit).each do |prod| %>
-                <span style="border: 2px solid grey; border-radius: 5px; color: grey; margin-right: 2px; padding: 1px;">
+                <span class="text-uppercase" style="border: 2px solid grey; border-radius: 5px; color: grey; margin-right: 2px; padding: 1px;">
                     <%= prod.taille&.nom %>
                 </span>
             <% end %>

@@ -33,6 +33,8 @@
                 <%= badge_couleur_produit(produit) %> 
                 <%= badge_taille_produit(produit) %> 
 
+                <%= badge_eshop(produit) %>
+
                 <% unless controller_name="selection_produit" %>
                   <% statut = statut_disponibilite(produit, Date.today.to_date, Date.today.to_date) %>
                   <% disponibles = statut[:disponibles] %>

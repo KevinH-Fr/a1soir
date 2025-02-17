@@ -26,7 +26,7 @@ module ProduitsHelper
 
     def badge_taille_produit(produit)
         if produit.taille
-            content_tag(:span, class: "badge fs-6 border border-secondary text-secondary m-1") do
+            content_tag(:span, class: "badge fs-6 border border-secondary text-secondary text-uppercase m-1") do
                 concat content_tag(:i, "", class: "bi bi-rulers me-2")
                 concat content_tag(:span, produit.taille.nom, class: "")
             end
@@ -51,6 +51,14 @@ module ProduitsHelper
         end
     end
     
+
+    def badge_eshop(produit)
+        color_status = produit.eshop? ? "text-success" : "text-danger"
+        content_tag(:span, class: "badge fs-6 border border-secondary m-1 #{color_status}") do
+            concat content_tag(:i, nil, class: "bi bi-house me-1")
+            concat content_tag(:span, "eshop", class: "ms-1" )
+        end
+    end
 
 end
  
