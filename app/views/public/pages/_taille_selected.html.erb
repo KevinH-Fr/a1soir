@@ -8,11 +8,9 @@
              #{params[:taille].nil? ? "bg-brand-colored text-light" : ""}" %>
 
       <% @toutes_tailles_categorie.each do |taille| %>
-
-          <%= button_to taille.nom, public_display_taille_selected_path(categorie: @categorie, taille: taille.nom),
-                  class: "badge border brand-colored fs-6 text-uppercase text-decoration-none 
-                  #{taille.nom == params[:taille] ? "bg-brand-colored text-light" : ""}" %>
-
+        <%= button_to taille.nom, public_display_taille_selected_path(categorie: @categorie, taille: taille.nom),
+             class: "badge border brand-colored fs-6 text-uppercase text-decoration-none 
+             #{taille.nom == params[:taille] ? "bg-brand-colored text-light" : ""}" %>
       <% end %>
   </div>
 

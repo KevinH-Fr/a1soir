@@ -197,7 +197,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     end
   end
   
-  
+
 
   private
     def set_produit

@@ -23,3 +23,15 @@
   <% end %>
 </div>
 
+<%#= button_to 'Importer Produits', admin_import_data_produits_path, method: :post, class: 'btn btn-primary' %>
+
+<%= form_with url: admin_import_data_produits_path, method: :post, local: true, multipart: true do |form| %>
+  <div class="form-group">
+    <%= form.label :csv_file, "Choose CSV file to import" %>
+    <%= form.file_field :csv_file, accept: '.csv' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit "Import Products", class: 'btn btn-primary' %>
+  </div>
+<% end %>

@@ -60,6 +60,24 @@ class Admin::AdminParametersController < Admin::ApplicationController
     end
   end
 
+  def import_data_produits
+    # Retrieve the uploaded file
+    uploaded_file = params[:csv_file]
+  
+    if uploaded_file.present?
+      # Pass the uploaded file to the service for processing
+      service = ImportProduitsCsvService.new
+      service.import_data_from_file(uploaded_file.path, 3)  # Pass the file path to the service - remove limit of 3
+  
+      redirect_to admin_root_path, notice: 'Products imported successfully!'
+    else
+      redirect_to admin_root_path, alert: 'No file selected. Please choose a CSV file.'
+    end
+  rescue StandardError => e
+    redirect_to admin_root_path, alert: "Error importing data: #{e.message}"
+  end
+  
+
   private
 
     def set_admin_parameter

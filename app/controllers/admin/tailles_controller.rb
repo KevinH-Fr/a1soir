@@ -100,7 +100,7 @@ class Admin::TaillesController < Admin::ApplicationController
     @taille.destroy!
 
     respond_to do |format|
-      format.html { redirect_to tailles_url, notice:  "Suppression réussie"  }
+      format.html { redirect_to admin_tailles_url, notice:  "Suppression réussie"  }
       format.json { head :no_content }
     end
   end
