@@ -37,8 +37,6 @@ Rails.application.routes.draw do
       get 'analyses/index'
       
       post 'admin_parameters/import_data_produits', to: 'admin_parameters#import_data_produits', as: 'import_data_produits'
-      # Define route for importing the next product
-      post 'admin_parameters/import_next_product/:product_index', to: 'admin_parameters#import_next_product', as: 'import_next_product_admin_admin_parameters'
 
       resources :admin_parameters do 
         member do
