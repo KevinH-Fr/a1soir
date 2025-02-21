@@ -14,12 +14,28 @@
       <% end %>
   </div>
 
+
+
+  <div class="container-fluid mt-4 m-0">
+
+      <%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+        <div id="produits" class="row row-cols-1 row-cols-sm-2 g-2 p-2 m-0"> </div> 
+
+        <%= turbo_frame_tag :pagination, loading: :lazy,
+            src: categorie_url(id: @categorie.id, slug: @categorie.nom.parameterize, format: :turbo_stream, subdomain: "shop") %>
+
+      <% end %>
+  </div>
+
+
+
+
   <div class="container-fluid mt-4 m-0">
 
     <div class="row row-cols-1 row-cols-sm-2 g-2 p-2 m-0">
       <% @produits_uniques.each do |produit| %>
           <div class="col">
-            <%= card_produit(produit) %>
+            <%#= card_produit(produit) %>
           </div>
       <% end %>
     </div>

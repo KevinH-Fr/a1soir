@@ -1,6 +1,9 @@
 module Public
    class ApplicationController < ActionController::Base
       layout "public"
+
+      include Pagy::Backend
+
       # before_action :authenticate_user!
 
       # tempo pour construire en cachant

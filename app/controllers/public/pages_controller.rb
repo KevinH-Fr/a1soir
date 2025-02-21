@@ -14,17 +14,26 @@ module Public
       @categorie = CategorieProduit.find(params[:id])
       @produits = @categorie.produits.eshop_diffusion
 
-      # Group produits by handle and pick the first product for each unique handle
-      @produits_uniques = @produits.group_by(&:handle).map { |_, produits| produits.first }
+      
+      # # Group produits by handle and pick the first product for each unique handle
+      produits_uniques = @categorie.produits.eshop_diffusion.to_a
+      .group_by(&:handle)
+      .map { |_, produits| produits.first }
 
-      @toutes_tailles_categorie = @produits.map { |produit| produit.taille }.compact.uniq
+      produits_uniques = Produit.where(id: produits_uniques.map(&:id))
 
-      @categories = CategorieProduit.all
+      # Paginate the results
+      @pagy, @produits_uniques = pagy(produits_uniques, items: 2)
 
+      @toutes_tailles_categorie = @produits.map { |produit| produit.taille }.compact.uniq.sort_by(&:nom)
+
+      @categories = CategorieProduit.all.order(nom: :asc)
 
     end
 
     def display_taille_selected
+
+      puts " _______ call display taille selected: #{params[:taille]}"
       @categorie = CategorieProduit.find(params[:categorie])
       @produits = @categorie.produits.eshop_diffusion
       @toutes_tailles_categorie =  @produits.map { |produit| produit.taille }.compact.uniq
@@ -32,6 +41,9 @@ module Public
       if params[:taille].present?
         @produits = @produits.joins(:taille).where(tailles: { nom: params[:taille] })
       end
+
+      # Paginate the results
+      @pagy, @produits_uniques = pagy(@produits, items: 2)
 
       # Group produits by handle and pick the first product for each unique handle
       @produits_uniques = @produits.group_by(&:handle).map { |_, produits| produits.first }
