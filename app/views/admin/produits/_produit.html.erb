@@ -21,9 +21,14 @@
           </h5>
           
           <p class="card-text">
-            <p>
-              <%= produit.categorie_produit.nom if produit.categorie_produit %>
-            </p>
+
+            <div>
+              <% if produit.categorie_produits.any? %>
+                <% produit.categorie_produits.each do |categorie| %>
+                  <%= custom_badge("", "", "", "", categorie.nom ) %>
+                <% end %>
+              <% end %>
+            </div>
 
             <%= produit.description %>
 

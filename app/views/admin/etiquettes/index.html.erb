@@ -1,7 +1,7 @@
 <%= bandeau_entete("Etiquettes", "tags", "", "", "") %>
 
 <div class="p-2">
-  <%= index_search_form(@q, admin_etiquettes_path, :nom_or_reffrs_or_handle_or_categorie_produit_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont ) %>
+  <%= index_search_form(@q, admin_etiquettes_path, :nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont ) %>
 
   <% if session[:selection_etiquettes].present? %>
     <div class="d-flex flex-wrap align-items-center m-2">

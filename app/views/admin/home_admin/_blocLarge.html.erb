@@ -10,7 +10,6 @@
                 Accès
             </div>
             <div class="col text-end m-0 p-0">
-            
             </div>
         </div>
 
@@ -32,15 +31,13 @@
         <%= options_supplementaires_link(admin_admin_parameters_path, "bi-gear", "Parametres", "btn-outline-warning") %>
 
         <%= options_supplementaires_link(root_url(subdomain: "shop"), "bi-house", "Site public", "btn-outline-primary") %>
+        <%= options_supplementaires_link(admin_home_admin_scan_qr_path, "bi-qr-code-scan", "Scan", "btn-primary") %>
 
-
-        <%= link_to admin_home_admin_scan_qr_path, class: "btn btn-sm btn-primary fa fa-bounce" do %>
-            <i class="bi bi-qr-code-scan"></i>
-            <span class="d-none d-md-inline">Scan</span>
-        <% end %>
-        
+        <%#= link_to admin_home_admin_scan_qr_path, class: "btn btn-sm btn-primary" do %>
+            <!--i class="bi bi-qr-code-scan"></i>
+            <span class="d-none d-md-inline">Scan</span-->
+        <%# end %>
 
     </div>
 
 </div>
-

@@ -14,12 +14,20 @@ class ImportProduitsCsvService
 
     rows_to_process.each_with_index do |row, index|
       begin
-        categorie = CategorieProduit.find_or_create_by(nom: row['Product Categories'].to_s.strip.downcase)
+        # Split the categories by semicolon (or another separator if necessary)
+        category_names = row['Product Categories'].to_s.strip.split(';')
+    
+        # Create categories and collect their IDs
+        categorie_ids = category_names.map do |category_name|
+          CategorieProduit.find_or_create_by(nom: category_name.strip.downcase).id
+        end
+    
+        # Create or find the size (taille)
         taille = Taille.find_or_create_by(nom: row['Option1 Value'].to_s.strip.downcase)
-
+    
+        # Create the product (produit)
         produit = Produit.create!(
           nom: row['Product Name'],
-          categorie_produit_id: categorie.id,
           prixvente: row['Variant Price'].gsub('€', ''),
           description: row['Product Description'],
           quantite: row['Variant Inventory'],
@@ -27,15 +35,20 @@ class ImportProduitsCsvService
           eshop: true,
           taille_id: taille&.id
         )
-
+    
+        # Associate the created categories with the product
+        produit.categorie_produits = CategorieProduit.find(categorie_ids)
+    
+        # Attach images
         attach_image(produit, row['Main Variant Image'], :image1)
         attach_images(produit, row['More Variant Images'])
-
-        puts "Produit #{produit.nom} (#{index + start_row}) importé!"
+    
+        puts "_______________________ Produit #{produit.nom} (#{index + start_row}) importé! _____________________"
       rescue StandardError => e
         puts "Erreur d'import pour #{row['Product Name']}: #{e.message}"
       end
     end
+
   end
 
   private

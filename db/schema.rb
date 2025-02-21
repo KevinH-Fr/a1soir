@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_17_163253) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_21_134142) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -94,6 +94,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_17_163253) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "service"
+  end
+
+  create_table "categorie_produits_produits", id: false, force: :cascade do |t|
+    t.integer "produit_id", null: false
+    t.integer "categorie_produit_id", null: false
+    t.index ["categorie_produit_id"], name: "index_categorie_produits_produits_on_categorie_produit_id"
+    t.index ["produit_id"], name: "index_categorie_produits_produits_on_produit_id"
   end
 
   create_table "clients", force: :cascade do |t|

@@ -30,12 +30,6 @@
       <div class="mx-1">
       
         <div class="input-group mb-1">
-          <%= form.label :categorie_produit_id, class: "input-group-text" %>
-          <%= form.collection_select :categorie_produit_id, @categorie_produits.all.order(:nom), :id, :nom, 
-          { include_blank: '' }, class: "form-select" %>
-        </div>
-
-        <div class="input-group mb-1">
           <%= form.label :type_produit_id, class: "input-group-text" %>
           <%= form.collection_select :type_produit_id, @type_produits.all.order(:nom), :id, :nom, 
           { include_blank: '' }, class: "form-select" %>
@@ -118,6 +112,18 @@
           [:actif, :check_box], 
           [:eshop, :check_box]    
         ) %>
+
+        <div class="input-group mb-1">
+          <%= form.label :categorie_produit_ids, "Catégories", class: "form-label fw-bold" %>
+          <div class="form-check">
+            <%= form.collection_check_boxes :categorie_produit_ids, @categorie_produits.order(:nom), :id, :nom do |b| %>
+              <div class="form-check form-check-inline">
+                <%= b.check_box class: "form-check-input" %>
+                <%= b.label class: "form-check-label" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
 
       </div>
 

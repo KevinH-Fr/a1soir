@@ -9,14 +9,22 @@
       </div>
 
       <!-- Text Column -->
-      <div class="col-sm-8 d-flex flex-column">
+      <div class="col-sm-8 d-flex flex-column ps-1">
         <div class="card-body p-1 flex-grow-1">
           <h5 class="card-title">
             <%= produit.nom %>
           </h5>
 
           <p class="card-text">
-            <div> <%= produit.categorie_produit.nom if produit.categorie_produit %> </div>
+
+            <div>
+              <% if produit.categorie_produits.any? %>
+                <% produit.categorie_produits.each do |categorie| %>
+                  <%= custom_badge("", "", "", "", categorie.nom ) %>
+                <% end %>
+              <% end %>
+            </div>
+
             <div> <%= produit.description %> </div>
             <div> <%= badge_taille_produit(produit) %> </div>
           </p>

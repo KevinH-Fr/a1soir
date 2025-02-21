@@ -5,7 +5,7 @@ class Admin::EtiquettesController < Admin::ApplicationController
       #@produits = Produit.all 
       session[:selection_etiquettes] = [] unless session[:selection_etiquettes]
       search_params = params.permit(:format, :page, 
-        q:[:nom_or_reffrs_or_handle_or_categorie_produit_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont])
+        q:[:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont])
         
       @q = Produit.ransack(search_params[:q])
       produits = @q.result(distinct: true).order(nom: :asc)

@@ -59,7 +59,11 @@ class Admin::SelectionProduitController < Admin::ApplicationController
       type_mono_multi = "mono"
       selected_categorie_produit_id = CategorieProduit.find(params[:categorie_produit]).id
       @categorie_produits = [selected_categorie_produit_id]
-      @tailles = Taille.joins(:produits).where(produits: { categorie_produit: selected_categorie_produit_id }).distinct
+
+      @tailles = Taille.joins(produits: :categorie_produits)
+      .where(categorie_produits: { id: selected_categorie_produit_id })
+      .distinct
+
     end
     
     respond_to do |format|
@@ -89,7 +93,9 @@ class Admin::SelectionProduitController < Admin::ApplicationController
       selected_taille_id = Taille.find(params[:taille]).id
       @tailles = [selected_taille_id]
     end
-    @couleurs = Couleur.joins(:produits).where(produits: { categorie_produit: @categorie_produits, taille: @tailles }).distinct
+
+    @couleurs = Couleur.joins(produits: :categorie_produits)
+      .where(produits: { categorie_produits: { id: selected_categorie_produits_ids }, taille: @tailles }).distinct
 
     respond_to do |format|
       format.turbo_stream do
@@ -130,9 +136,10 @@ class Admin::SelectionProduitController < Admin::ApplicationController
       @couleurs = selected_couleur_ids
     end
       
-    @produits = Produit.where(categorie_produit: [@categorie_produits, nil])
-                       .where(taille: [@tailles, nil])
-                       .where(couleur: [@couleurs, nil])
+    @produits = Produit.joins(:categorie_produits)
+                  .where(categorie_produits: { id: @categorie_produits })
+                  .where(taille: [@tailles, nil])
+                  .where(couleur: [@couleurs, nil])
 
     respond_to do |format|
       format.turbo_stream do

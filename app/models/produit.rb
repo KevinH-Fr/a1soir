@@ -1,5 +1,6 @@
 class Produit < ApplicationRecord
-  belongs_to :categorie_produit
+  has_and_belongs_to_many :categorie_produits
+    
   belongs_to :type_produit, optional: true
 
   belongs_to :fournisseur, optional: true
@@ -31,8 +32,8 @@ class Produit < ApplicationRecord
   #after_create :set_initial_vente_price
 
   scope :is_ensemble, -> { joins(:type_produit).where(type_produits: { nom: 'ensemble' }) }
-  scope :is_service, -> { joins(:categorie_produit).where(categorie_produits: { service: true }) }
-  scope :not_service, -> { joins(:categorie_produit).where(categorie_produits: { service: [false, nil] }) }
+  scope :is_service, -> { joins(:categorie_produits).where(categorie_produits: { service: true }) }
+  scope :not_service, -> { joins(:categorie_produits).where(categorie_produits: { service: [false, nil] }) }
   scope :actif, -> { where(actif: true) } 
   scope :eshop_diffusion, -> { where(eshop: true) }
 
@@ -66,10 +67,8 @@ class Produit < ApplicationRecord
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["articles", "categorie_produit", "couleur", "ensembles", "fournisseur", "taille", "type_produit"]
+    super +  ["articles", "categorie_produits", "couleur", "ensembles", "fournisseur", "taille", "type_produit"]
   end
-
-
 
   private
 
@@ -91,7 +90,7 @@ class Produit < ApplicationRecord
 
   def fix_quantity_for_service 
     #if produit is a service empty the quantity
-    if categorie_produit&.service 
+    if categorie_produits.first&.service 
       self.quantite = 1
     end
   end

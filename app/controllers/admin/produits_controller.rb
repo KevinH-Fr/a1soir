@@ -7,12 +7,12 @@ class Admin::ProduitsController < Admin::ApplicationController
     @count_produits = Produit.count
 
     search_params = params.permit(:format, :page, 
-       q:[:nom_or_reffrs_or_handle_or_categorie_produit_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont])
+       q:[:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont])
        # without integer to prevent error on pg search, if needed add custom function to be able to search also on price
        # or_prixvente_or_prixlocation 
        
     @q = Produit.ransack(search_params[:q])
-    produits = @q.result(distinct: true).order(nom: :asc)
+    produits = @q.result(distinct: true).includes(:categorie_produits).order(nom: :asc)
     @pagy, @produits = pagy_countless(produits, items: 2)
 
 
@@ -158,8 +158,6 @@ class Admin::ProduitsController < Admin::ApplicationController
 
   end
 
-
-
   def dupliquer
     @produit = Produit.find(params[:id])
   
@@ -171,6 +169,9 @@ class Admin::ProduitsController < Admin::ApplicationController
         copy = original.dup
         copy.nom = "#{original.nom}_new"
   
+        # Copy associated categories (if any)
+        copy.categorie_produits = original.categorie_produits
+
         if original.image1.attached?
           copy.image1.attach \
             io: StringIO.new(original.image1.download),
@@ -205,9 +206,10 @@ class Admin::ProduitsController < Admin::ApplicationController
     end
 
     def produit_params
-      params.require(:produit).permit(:nom, :prixvente, :prixlocation, :description, :categorie_produit_id, :type_produit_id,
+      params.require(:produit).permit(:nom, :prixvente, :prixlocation, :description, :type_produit_id,
         :caution, :handle, :reffrs, :quantite, :fournisseur_id, :dateachat, :prixachat, :actif,
-        :image1, :couleur_id, :taille_id, :eshop)
+        :image1, :couleur_id, :taille_id, :eshop, 
+        categorie_produit_ids: [])
     end
 
 end

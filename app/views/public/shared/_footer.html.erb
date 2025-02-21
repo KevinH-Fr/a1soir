@@ -1,29 +1,29 @@
 <div class="sticky-bottom px-1 mt-5 gap-2">
 
+    <div class="d-flex flex-wrap gap-5">
 
-    <div class="d-flex gap-5">
-
-        <%= link_to image_tag('/images/logo_courant_public.png', class: 'navbar-brand me-4', width: "200"), root_url %>
+        <%#= link_to image_tag('/images/logo_courant_public.png', class: 'navbar-brand me-4', width: "200"), root_url %>
         
-        <div>
+        <div class=""> 
             <div class="fw-bold">Légal</div>
             <%= link_to "CGV", cgv_url(subdomain: "shop"), class: "text-secondary text-decoration-none" %>
         </div>
 
-        <div>
+        <div class=""> 
             <div class="fw-bold">Suivez-nous</div>
             <%= link_to "Instagram", "https://www.instagram.com/autourdunsoir/", class: "d-block text-secondary text-decoration-none", target: "_blank", rel: "noopener noreferrer" %>
             <%= link_to "Facebook", "https://www.facebook.com/autourdunsoir/", class: "d-block text-secondary text-decoration-none", target: "_blank", rel: "noopener noreferrer" %>
         </div>
 
-        <div>
+        <div class=""> 
             <div class="fw-bold">Pages</div>
             <%= link_to "La boutique de Cannes", laboutique_url(subdomain: "shop"), class: "d-block text-secondary text-decoration-none" %>
             <%= link_to "Catégories", categories_url(subdomain: "shop"), class: "d-block text-secondary text-decoration-none" %>
             <%= link_to "Prendre Rendez-vous", rdv_url(subdomain: "shop"), class: "d-block text-secondary text-decoration-none" %>
         </div>        
-        
+
     </div>
+
 
     <hr>
 
