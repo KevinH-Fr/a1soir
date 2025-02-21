@@ -32,7 +32,8 @@ module PagesHelper
   
 
   def card_produit(produit)
-    link_to produit_path(slug: produit.nom.parameterize, id: produit.id), class: "text-decoration-none" do
+    link_to produit_path(slug: produit.nom.parameterize, id: produit.id), 
+      class: "text-decoration-none", data: { turbo: false } do
       content_tag :div, class: "card text-bg-light " do
         image_tag(produit.default_image, class: "card-img", style: "max-height: 400px; object-fit: cover;") +
         content_tag(:div, class: "card-img-overlay") do

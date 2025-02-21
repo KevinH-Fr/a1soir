@@ -1,20 +1,20 @@
-<div id="partial-taille-selected" class="">
+<div id="partial-taille-selected">
+
   <%# recoit le turbo stream avec elements cliqués %>
 
   <div class="container-fluid mt-4 d-flex gap-1">
 
-      <%= button_to "Toutes", public_display_taille_selected_path(categorie: @categorie), 
+      <%= link_to "Toutes", categorie_path(categorie: @categorie), 
             class: "badge border brand-colored fs-6 text-uppercase text-decoration-none
              #{params[:taille].nil? ? "bg-brand-colored text-light" : ""}" %>
 
       <% @toutes_tailles_categorie.each do |taille| %>
-        <%= button_to taille.nom, public_display_taille_selected_path(categorie: @categorie, taille: taille.nom),
+        <%= link_to taille.nom, 
+            categorie_path(categorie: @categorie, taille: taille.id),
              class: "badge border brand-colored fs-6 text-uppercase text-decoration-none 
-             #{taille.nom == params[:taille] ? "bg-brand-colored text-light" : ""}" %>
+             #{taille.id == params[:taille].to_i ? "bg-brand-colored text-light" : ""}" %>
       <% end %>
   </div>
-
-
 
   <div class="container-fluid mt-4 m-0">
 
@@ -22,24 +22,12 @@
         <div id="produits" class="row row-cols-1 row-cols-sm-2 g-2 p-2 m-0"> </div> 
 
         <%= turbo_frame_tag :pagination, loading: :lazy,
-            src: categorie_url(id: @categorie.id, slug: @categorie.nom.parameterize, format: :turbo_stream, subdomain: "shop") %>
-
+            src: categorie_path(
+              id: @categorie.id, 
+              slug: @categorie.nom.parameterize, 
+              taille: params[:taille],
+              format: :turbo_stream, subdomain: "shop") %>
       <% end %>
-  </div>
-
-
-
-
-  <div class="container-fluid mt-4 m-0">
-
-    <div class="row row-cols-1 row-cols-sm-2 g-2 p-2 m-0">
-      <% @produits_uniques.each do |produit| %>
-          <div class="col">
-            <%#= card_produit(produit) %>
-          </div>
-      <% end %>
-    </div>
   </div>
 
 </div>
-

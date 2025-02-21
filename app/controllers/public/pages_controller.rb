@@ -12,6 +12,8 @@ module Public
 
     def categorie
       @categorie = CategorieProduit.find(params[:id])
+
+      puts " ___ params taille: #{params[:taille]} "
       @produits = @categorie.produits.eshop_diffusion
 
       
@@ -21,7 +23,11 @@ module Public
       .map { |_, produits| produits.first }
 
       produits_uniques = Produit.where(id: produits_uniques.map(&:id))
-
+      
+      if params[:taille]
+        produits_uniques = produits_uniques.where(taille: params[:taille])
+      end
+      
       # Paginate the results
       @pagy, @produits_uniques = pagy(produits_uniques, items: 2)
 
@@ -31,34 +37,38 @@ module Public
 
     end
 
-    def display_taille_selected
+    # def display_taille_selected
 
-      puts " _______ call display taille selected: #{params[:taille]}"
-      @categorie = CategorieProduit.find(params[:categorie])
-      @produits = @categorie.produits.eshop_diffusion
-      @toutes_tailles_categorie =  @produits.map { |produit| produit.taille }.compact.uniq
+    #   puts " _______ call display taille selected: #{params[:taille]}_______________"
+    #   @categorie = CategorieProduit.find(params[:categorie])
+    #   @produits = @categorie.produits.eshop_diffusion
+    #   @toutes_tailles_categorie =  @produits.map { |produit| produit.taille }.compact.uniq
 
-      if params[:taille].present?
-        @produits = @produits.joins(:taille).where(tailles: { nom: params[:taille] })
-      end
+    #   if params[:taille].present?
+    #     puts " _______ taille is present: #{params[:taille]}_______________"
 
-      # Paginate the results
-      @pagy, @produits_uniques = pagy(@produits, items: 2)
+    #     @produits = @produits.joins(:taille).where(tailles: { nom: params[:taille] })
+    #   end
 
-      # Group produits by handle and pick the first product for each unique handle
-      @produits_uniques = @produits.group_by(&:handle).map { |_, produits| produits.first }
+    #   # Paginate the results
+    #   @pagy, @produits_uniques = pagy(@produits, items: 2)
+
+
+    #   # Group produits by handle and pick the first product for each unique handle
+    #   #@produits_uniques = @produits.group_by(&:handle).map { |_, produits| produits.first }
             
-      respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.update(
-             'partial-taille-selected', partial: 'public/pages/taille_selected'
-            )
-          ]
-        end
-      end    
+    #   respond_to do |format|
+    #     format.turbo_stream do
+    #       render turbo_stream: [
+    #         turbo_stream.update(
+    #          'partial-taille-selected', partial: 'public/pages/taille_selected'
+    #          #, locals: {produits_uniques: @produits_uniques }
+    #         )
+    #       ]
+    #     end
+    #   end    
   
-    end 
+    # end 
 
 
 
