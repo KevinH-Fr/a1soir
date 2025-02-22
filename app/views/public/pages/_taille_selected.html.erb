@@ -9,13 +9,13 @@
     </div>
     
     <div>
-      <%= link_to "Toutes", categorie_path(categorie: @categorie), 
+      <%= link_to "Toutes", produits_path(categorie: @categorie), 
             class: "badge border brand-colored fs-6 text-uppercase text-decoration-none
               #{params[:taille].nil? ? "bg-brand-colored text-light" : ""}" %>
 
       <% @toutes_tailles_categorie.each do |taille| %>
         <%= link_to taille.nom, 
-            categorie_path(categorie: @categorie, taille: taille.id),
+            produits_path(categorie: @categorie, taille: taille.id),
               class: "badge border brand-colored fs-6 text-uppercase text-decoration-none 
               #{taille.id == params[:taille].to_i ? "bg-brand-colored text-light" : ""}" %>
       <% end %>
@@ -25,10 +25,10 @@
   <div class="container-fluid mt-4 m-0">
 
       <%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
-        <div id="produits" class="row row-cols-1 row-cols-sm-2 g-2 p-2 m-0"> </div> 
+        <div id="produits" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2 m-0 justify-content-center"></div>
 
         <%= turbo_frame_tag :pagination, loading: :lazy,
-            src: categorie_path(
+            src: produits_path(
               id: @categorie.id, 
               slug: @categorie.nom.parameterize, 
               taille: params[:taille],

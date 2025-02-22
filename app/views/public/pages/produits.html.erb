@@ -1,1 +1,26 @@
-produits page shop
+<div class="public-main-content">
+
+    <div class="container-fluid mt-4">
+        <h2>
+            <%= @categorie.texte_annonce %> 
+        </h2>
+    </div>
+
+    <div class="container-fluid mt-4">
+        <div class="text-uppercase fw-bold mb-1">
+            Catégories
+        </div>
+        <div>
+            <% @categories.each do |categorie| %>
+                <%= link_to categorie.nom, 
+                    produits_path(slug: categorie.nom.parameterize, id: categorie.id),
+                    class: "badge border brand-colored fs-6 text-downcase text-decoration-none mb-1 
+                    #{categorie.nom == @categorie.nom ? "bg-brand-colored text-light" : ""}" %>
+            <% end %>
+            
+        </div>
+    </div>
+
+    <%= render "taille_selected" %>
+
+</div>

@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
       get 'rdv', to: 'pages#rdv'
 
-      get 'categorie/:slug-:id', to: 'pages#categorie', as: :categorie
+      get 'produits/:slug-:id', to: 'pages#produits', as: :produits
       get 'produit/:slug-:id', to: 'pages#produit', as: :produit
 
     end

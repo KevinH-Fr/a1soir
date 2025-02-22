@@ -77,6 +77,15 @@
 }
 
 .public-main-content{
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
+}
+
+.text-truncate-multiline {
+  max-height: 4.5rem; /* Adjust based on how much text you want */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Show only 3 lines */
+  -webkit-box-orient: vertical;
 }

@@ -10,7 +10,7 @@ module Public
       @categories = CategorieProduit.all
     end
 
-    def categorie
+    def produits
       @categorie = CategorieProduit.find(params[:id])
 
       @produits = @categorie.produits.eshop_diffusion
@@ -27,46 +27,13 @@ module Public
       end
 
       # Paginate the results
-      @pagy, @produits_uniques = pagy(produits_uniques, items: 2)
+      @pagy, @produits_uniques = pagy(produits_uniques, items: 6)
 
       @toutes_tailles_categorie = @produits.map { |produit| produit.taille }.compact.uniq.sort_by(&:nom)
 
       @categories = CategorieProduit.all.order(nom: :asc)
 
     end
-
-    # def display_taille_selected
-
-    #   puts " _______ call display taille selected: #{params[:taille]}_______________"
-    #   @categorie = CategorieProduit.find(params[:categorie])
-    #   @produits = @categorie.produits.eshop_diffusion
-    #   @toutes_tailles_categorie =  @produits.map { |produit| produit.taille }.compact.uniq
-
-    #   if params[:taille].present?
-    #     puts " _______ taille is present: #{params[:taille]}_______________"
-
-    #     @produits = @produits.joins(:taille).where(tailles: { nom: params[:taille] })
-    #   end
-
-    #   # Paginate the results
-    #   @pagy, @produits_uniques = pagy(@produits, items: 2)
-
-
-    #   # Group produits by handle and pick the first product for each unique handle
-    #   #@produits_uniques = @produits.group_by(&:handle).map { |_, produits| produits.first }
-            
-    #   respond_to do |format|
-    #     format.turbo_stream do
-    #       render turbo_stream: [
-    #         turbo_stream.update(
-    #          'partial-taille-selected', partial: 'public/pages/taille_selected'
-    #          #, locals: {produits_uniques: @produits_uniques }
-    #         )
-    #       ]
-    #     end
-    #   end    
-  
-    # end 
 
     def produit
       @produit = Produit.find(params[:id])
