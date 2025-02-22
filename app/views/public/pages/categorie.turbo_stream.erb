@@ -11,7 +11,7 @@
                             src: categorie_path(format: :turbo_stream,
                             id: params[:id],
                             slug: params[:slug], 
-                    #        taille: params[:taille],
+                            taille: params[:taille],
                             page: @pagy.next, 
                             q: params[:q]&.to_unsafe_h 
         ) %>

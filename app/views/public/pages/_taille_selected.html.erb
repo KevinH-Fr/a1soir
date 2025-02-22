@@ -2,18 +2,24 @@
 
   <%# recoit le turbo stream avec elements cliqués %>
 
-  <div class="container-fluid mt-4 d-flex gap-1">
+  <div class="container-fluid mt-3">
 
+    <div class="text-uppercase fw-bold mb-1">
+        Couleurs
+    </div>
+    
+    <div>
       <%= link_to "Toutes", categorie_path(categorie: @categorie), 
             class: "badge border brand-colored fs-6 text-uppercase text-decoration-none
-             #{params[:taille].nil? ? "bg-brand-colored text-light" : ""}" %>
+              #{params[:taille].nil? ? "bg-brand-colored text-light" : ""}" %>
 
       <% @toutes_tailles_categorie.each do |taille| %>
         <%= link_to taille.nom, 
             categorie_path(categorie: @categorie, taille: taille.id),
-             class: "badge border brand-colored fs-6 text-uppercase text-decoration-none 
-             #{taille.id == params[:taille].to_i ? "bg-brand-colored text-light" : ""}" %>
+              class: "badge border brand-colored fs-6 text-uppercase text-decoration-none 
+              #{taille.id == params[:taille].to_i ? "bg-brand-colored text-light" : ""}" %>
       <% end %>
+    </div>
   </div>
 
   <div class="container-fluid mt-4 m-0">

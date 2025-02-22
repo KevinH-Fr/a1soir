@@ -15,8 +15,6 @@ Rails.application.routes.draw do
       get 'contact', to: 'pages#contact'
       get 'categories', to: 'pages#categories'
 
-      post 'pages/display_taille_selected', to: 'pages#display_taille_selected', as: 'public_display_taille_selected'
-
       get 'rdv', to: 'pages#rdv'
 
       get 'categorie/:slug-:id', to: 'pages#categorie', as: :categorie

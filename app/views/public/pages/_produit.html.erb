@@ -1,3 +1,53 @@
 <div class="col">
-    <%= card_produit(produit) %>
+    <%#= card_produit(produit) %>
+    
+    <div data-controller="placeholder-card">
+
+        <!-- Card with Placeholder -->
+        <div class="card card-placeholder" style="width: 18rem;">
+
+            <div class="placeholder">
+                <span class="placeholder-glow col-12"></span>
+            </div>
+        
+            <div class="card-body">
+                <h5 class="card-title placeholder-glow" data-placeholder-card-target="placeholder">
+                <span class="placeholder col-6"></span>
+                </h5>
+            </div>
+        </div>
+
+        <!-- Real Content -->
+        <div class="card card-content" data-placeholder-card-target="content" style="display:none; width: 18rem;">
+
+            <%# link_to produit_path(slug: produit.nom.parameterize, id: produit.id), 
+                class: "text-decoration-none" do %>
+
+                <%= image_tag(produit.default_image, class: "card-img-top", style: "max-height: 400px; object-fit: cover;") %>
+
+                <div class="card-body">
+                    <h5 class="card-title">
+                    <%= produit.nom %>
+                    </h5>
+                </div>
+            
+            <%# end %>
+
+        </div>
+
+    </div>
+
 </div>
+
+
+  <%# def card_produit(produit) %>
+    <%# link_to produit_path(slug: produit.nom.parameterize, id: produit.id), 
+      class: "text-decoration-none", data: { turbo: false } do
+      content_tag :div, class: "card text-bg-light " do
+        image_tag(produit.default_image, class: "card-img", style: "max-height: 400px; object-fit: cover;") +
+        content_tag(:div, class: "card-img-overlay") do
+          content_tag(:h5, produit.nom, class: "card-title badge bg-brand-colored fs-6")
+        end
+      end
+    end
+  end %>

@@ -13,9 +13,7 @@ module Public
     def categorie
       @categorie = CategorieProduit.find(params[:id])
 
-      puts " ___ params taille: #{params[:taille]} "
       @produits = @categorie.produits.eshop_diffusion
-
       
       # # Group produits by handle and pick the first product for each unique handle
       produits_uniques = @categorie.produits.eshop_diffusion.to_a
@@ -27,7 +25,7 @@ module Public
       if params[:taille]
         produits_uniques = produits_uniques.where(taille: params[:taille])
       end
-      
+
       # Paginate the results
       @pagy, @produits_uniques = pagy(produits_uniques, items: 2)
 
@@ -70,8 +68,6 @@ module Public
   
     # end 
 
-
-
     def produit
       @produit = Produit.find(params[:id])
       @tailles = [@produit.taille].compact.uniq
@@ -84,7 +80,7 @@ module Public
       end
     end
 
-    def cgv
+    def cgv  
     end
 
     def rdv

@@ -16,13 +16,21 @@
     </div>
 
     <div class="container-fluid mt-4">
-        <div class="brand-colored text-uppercase">
+        <div class="text-uppercase fw-bold mb-1">
             Catégories
         </div>
         <div>
+            <%# @categories.each do |categorie| %>
+                <%#= category_with_class(categorie) %>
+            <%# end %>
+
             <% @categories.each do |categorie| %>
-                <%= category_with_class(categorie) %>
+                <%= link_to categorie.nom, 
+                    categorie_path(slug: categorie.nom.parameterize, id: categorie.id),
+                    class: "badge border brand-colored fs-6 text-downcase text-decoration-none mb-1 
+                    #{categorie.nom == @categorie.nom ? "bg-brand-colored text-light" : ""}" %>
             <% end %>
+            
         </div>
     </div>
 
