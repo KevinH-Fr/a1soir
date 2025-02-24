@@ -3,7 +3,8 @@
     <div class="card m-2">
         <div class="row g-0">
             <div class="col-md-4">
-                <%= image_tag(@produit.default_image, class: "img-fluid rounded-start", alt: @produit.nom) %>
+                <%= render  "carousel" %>
+                <%#= image_tag(@produit.default_image, class: "img-fluid rounded-start", alt: @produit.nom) %>
             </div>
 
             <%# faire diapo avec autres images %>
@@ -26,21 +27,41 @@
                     </p>
                     <p class="card-text">
                         <%= badge_taille(@produit) %>
+                        <%= badge_prix("Vente", @produit.prixvente) %>
+                        <%= badge_prix("Location", @produit.prixlocation) if @produit.prixlocation.present? %>
                     </p>
-                    <p class="card-text">
-                        <%= custom_currency_no_decimals_format(@produit.prixvente) %>
-                    </p>
-                    <p class="card-text">
 
-                        <span class="brand-colored me-2">
-                            Autres tailles
-                        </span>
-                        <% @meme_produit_autres_tailles.each do |produit| %>
-                            <%= link_to produit.taille.nom, produit_path(slug: produit.nom.parameterize, id: produit.id), 
-                                class: "badge bg-brand-colored fs-5 text-uppercase text-decoration-none" %>
+                    <p class="card-text small">
+                        <% if @produit.prixlocation.present? %>
+                            La location se fait uniquement au magasin.
                         <% end %>
-
                     </p>
+                    
+                    <% if @meme_produit_meme_couleur_autres_tailles.any? %>
+                        <p class="card-text">
+                            <span class="brand-colored me-2">
+                                Autres tailles
+                            </span>
+                            <% @meme_produit_meme_couleur_autres_tailles.each do |produit| %>
+                                <%= link_to produit.taille.nom, produit_path(slug: produit.nom.parameterize, id: produit.id), 
+                                    class: "badge bg-brand-colored fs-5 text-uppercase text-decoration-none" %>
+                            <% end %>
+                        </p>
+                    <% end %>
+
+                    <%# reprende vers autres couleurs meme taille %>
+                    <% if @meme_produit_meme_taille_autres_couleurs.any? %>
+                        <p class="card-text">
+                            <span class="brand-colored me-2">
+                                Autres couleurs
+                            </span>
+                            <% @meme_produit_meme_taille_autres_couleurs.each do |produit| %>
+                                <%= link_to produit.couleur.nom, produit_path(slug: produit.nom.parameterize, id: produit.id), 
+                                    class: "badge bg-brand-colored fs-5 text-uppercase text-decoration-none" %>
+                            <% end %>
+                        </p>
+                    <% end %>
+
                 </div>
             </div>
         </div>

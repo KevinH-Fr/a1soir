@@ -27,7 +27,11 @@ module PagesHelper
   end
   
   def badge_taille(produit)
-    content_tag :span, "Taille : #{produit.taille.nom}", class: "border p-1 rounded"
+    content_tag :span, "Taille : #{produit.taille.nom.upcase}", class: "border p-1 rounded"
+  end
+  
+  def badge_prix(type, montant)
+    content_tag :span, "#{type} : #{custom_currency_no_decimals_format(montant)}", class: "border p-1 rounded"
   end
   
 

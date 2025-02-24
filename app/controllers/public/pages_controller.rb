@@ -16,28 +16,19 @@ module Public
       @produits = @categorie.produits.eshop_diffusion
       @toutes_tailles_categorie = @produits.map { |produit| produit.taille }.compact.uniq.sort_by(&:nom)
 
-      # # Group produits by handle and pick the first product for each unique handle
-      # produits_uniques = @categorie.produits.eshop_diffusion.to_a
-      # .group_by(&:handle)
-      # .map { |_, produits| produits.first }
-
-      # produits_uniques = Produit.where(id: produits_uniques.map(&:id))
-      
-      # if params[:taille]
-      #   produits_uniques = produits_uniques.where(taille: params[:taille])
-      # end
-
-      # Paginate the results
-      # @pagy, @produits_uniques = pagy(produits_uniques, items: 6)
-
       if params[:taille]
         produits = @produits.where(taille: params[:taille])
       else
-        produits = @produits
+        # Group produits by handle and pick the first product for each unique handle
+        produits_uniques = @produits
+        .group_by { |produit| [produit.handle, produit.couleur] } # Group by handle and couleur
+        .map { |_, produits| produits.first }
+      
+        produits = Produit.where(id: produits_uniques.map(&:id))
+       
       end
 
       @pagy, @produits = pagy(produits, items: 6)
-
 
       @categories = CategorieProduit.all.order(nom: :asc)
 
@@ -45,14 +36,17 @@ module Public
 
     def produit
       @produit = Produit.find(params[:id])
-      @meme_produit_autres_tailles = Produit
+      @meme_produit_meme_couleur_autres_tailles = Produit
       .where(handle: @produit.handle, couleur_id: @produit.couleur_id)
       .where.not(id: @produit.id)
-      .joins(:taille)  # Assuming there's a `taille` association on Produit
-      .order('tailles.nom')  # Sort by the `nom` field of the `taille` model
+      .joins(:taille) 
+      .order('tailles.nom') 
     
+      @meme_produit_meme_taille_autres_couleurs = Produit
+      .where(handle: @produit.handle, taille_id: @produit.taille_id)
+      .where.not(id: @produit.id)
+      .joins(:couleur) 
 
-      #[@produit.taille].compact.uniq
     end
 
     def contact
