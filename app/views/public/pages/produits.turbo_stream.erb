@@ -2,7 +2,7 @@
 
 <%= turbo_stream.append :produits do %>
     <%= render partial: "public/pages/produit", 
-            collection: @produits_uniques %>
+            collection: @produits %>
 <% end %>
 
 <% if @pagy.next.present? %>

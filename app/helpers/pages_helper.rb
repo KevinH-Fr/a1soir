@@ -22,4 +22,13 @@ module PagesHelper
     end
   end
 
+  def statut_disponibilite_shop(statut)
+    content_tag :span, statut, class: "border p-1 rounded text-capitalize #{statut == 'disponible' ? 'text-success' : 'text-danger'}"
+  end
+  
+  def badge_taille(produit)
+    content_tag :span, "Taille : #{produit.taille.nom}", class: "border p-1 rounded"
+  end
+  
+
 end

@@ -1,43 +1,50 @@
 <div class="public-main-content">
-    <div class="container-fluid">
-        <%= image_tag(@produit.default_image, class: "w-100", style: "object-fit: cover; height: 600px;") %>
-    </div>
 
+    <div class="card m-2">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <%= image_tag(@produit.default_image, class: "img-fluid rounded-start", alt: @produit.nom) %>
+            </div>
 
-    <% if @produit.images %>
+            <%# faire diapo avec autres images %>
+        
+            <%# if @produit.images %>
 
-        <div class="container-fluid mt-2">
-            <% @produit.images.each do |image| %>
-                <%= image_tag(image, class: "w-25", style: "object-fit: cover; height: 200px;") %>
-            <% end %> 
-        </div>
-    
-    <% end %>
-
-    <div class="container-fluid mt-4">
-        <h1 class="brand-colored">
-            <%= @produit.nom %> 
-        </h1>
-        <div class="mt-4">
-            <%= @produit.description %>
-        </div>
-        <div class="mt-4 fs-4">
-            <%= custom_currency_no_decimals_format(@produit.prixvente) %>
-        </div>
-        <div class="mt-4">
-            <%= @produit.description %>
-        </div>
-
-        <div class="my-4">
-            <span class="brand-colored me-2">
-                Tailles
-            </span>
+                <!--div class="container-fluid mt-2">
+                    <%# @produit.images.each do |image| %>
+                        <%#= image_tag(image, class: "w-25", style: "object-fit: cover; height: 200px;") %>
+                    <%# end %> 
+                </div-->
             
-            <% @tailles.each do |taille| %>
-                <%= link_to taille.nom, url_for(taille: taille), 
-                    class: "badge bg-brand-colored fs-3 text-uppercase text-decoration-none" %>
-            <% end %>
-        </div>
+            <%# end %>
+            
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title brand-colored"> <%= @produit.nom %> </h5>
+                    <p class="card-text">
+                        <%= @produit.description %>
+                    </p>
+                    <p class="card-text">
+                        <%= badge_taille(@produit) %>
+                    </p>
+                    <p class="card-text">
+                        <%= custom_currency_no_decimals_format(@produit.prixvente) %>
+                    </p>
+                    <p class="card-text">
 
+                        <span class="brand-colored me-2">
+                            Autres tailles
+                        </span>
+                        <% @meme_produit_autres_tailles.each do |produit| %>
+                            <%= link_to produit.taille.nom, produit_path(slug: produit.nom.parameterize, id: produit.id), 
+                                class: "badge bg-brand-colored fs-5 text-uppercase text-decoration-none" %>
+                        <% end %>
+
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
+
 </div>
+

@@ -47,6 +47,11 @@
       
       </div>
 
+      <div class="input-group mb-1">
+        <%= form.label :poids, "Poids (grammes)", class: "input-group-text" %>
+        <%= form.number_field :poids, step: "any", class: "form-control" %>
+      </div>
+      
         <%= custom_form_elements(form, 
           [:description, :text_area], 
           [:reffrs, :text_field], [:quantite, :number_field],

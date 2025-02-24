@@ -14,7 +14,7 @@
   <div class="row m-0 p-0">
     <div class="col-md-6 m-0 p-0">
       <%= dashboard_card("Produits", admin_produits_path, new_admin_produit_path, 'person-standing-dress',
-            @produits.order(updated_at: :desc).map { |produit| { text: produit.nom, path: admin_produit_path(produit) } } ) %>
+            @produits.order(updated_at: :desc).map { |produit| { text: produit.nom_couleur_taille, path: admin_produit_path(produit) } } ) %>
     </div>
     <div class="col-md-6 m-0 p-0">
       <%= dashboard_card("Rendez-vous", admin_meetings_path, admin_meetings_path, 'calendar-date',

@@ -14,22 +14,30 @@ module Public
       @categorie = CategorieProduit.find(params[:id])
 
       @produits = @categorie.produits.eshop_diffusion
-      
-      # # Group produits by handle and pick the first product for each unique handle
-      produits_uniques = @categorie.produits.eshop_diffusion.to_a
-      .group_by(&:handle)
-      .map { |_, produits| produits.first }
+      @toutes_tailles_categorie = @produits.map { |produit| produit.taille }.compact.uniq.sort_by(&:nom)
 
-      produits_uniques = Produit.where(id: produits_uniques.map(&:id))
+      # # Group produits by handle and pick the first product for each unique handle
+      # produits_uniques = @categorie.produits.eshop_diffusion.to_a
+      # .group_by(&:handle)
+      # .map { |_, produits| produits.first }
+
+      # produits_uniques = Produit.where(id: produits_uniques.map(&:id))
       
-      if params[:taille]
-        produits_uniques = produits_uniques.where(taille: params[:taille])
-      end
+      # if params[:taille]
+      #   produits_uniques = produits_uniques.where(taille: params[:taille])
+      # end
 
       # Paginate the results
-      @pagy, @produits_uniques = pagy(produits_uniques, items: 6)
+      # @pagy, @produits_uniques = pagy(produits_uniques, items: 6)
 
-      @toutes_tailles_categorie = @produits.map { |produit| produit.taille }.compact.uniq.sort_by(&:nom)
+      if params[:taille]
+        produits = @produits.where(taille: params[:taille])
+      else
+        produits = @produits
+      end
+
+      @pagy, @produits = pagy(produits, items: 6)
+
 
       @categories = CategorieProduit.all.order(nom: :asc)
 
@@ -37,7 +45,14 @@ module Public
 
     def produit
       @produit = Produit.find(params[:id])
-      @tailles = [@produit.taille].compact.uniq
+      @meme_produit_autres_tailles = Produit
+      .where(handle: @produit.handle, couleur_id: @produit.couleur_id)
+      .where.not(id: @produit.id)
+      .joins(:taille)  # Assuming there's a `taille` association on Produit
+      .order('tailles.nom')  # Sort by the `nom` field of the `taille` model
+    
+
+      #[@produit.taille].compact.uniq
     end
 
     def contact

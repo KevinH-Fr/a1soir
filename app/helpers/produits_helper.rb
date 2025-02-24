@@ -51,7 +51,6 @@ module ProduitsHelper
         end
     end
     
-
     def badge_eshop(produit)
         color_status = produit.eshop? ? "text-success" : "text-danger"
         content_tag(:span, class: "badge fs-6 border border-secondary m-1 #{color_status}") do

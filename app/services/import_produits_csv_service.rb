@@ -3,52 +3,74 @@ class ImportProduitsCsvService
   require 'open-uri'
 
   def import_data_from_file(file_path, start_row, end_row)
-    csv_data = CSV.read(file_path, headers: true)
-    
-    # Validate row range
-    start_row = [start_row, 1].max
-    end_row = [end_row, csv_data.size].min
-    rows_to_process = csv_data[(start_row - 1)..(end_row - 1)] || []
+    start_time = Time.now
 
-    return if rows_to_process.empty?
+    # Load existing categories and types in memory
+    categories_hash = CategorieProduit.pluck(:nom, :id).to_h
+    types_hash = TypeProduit.pluck(:nom, :id).to_h
 
-    rows_to_process.each_with_index do |row, index|
+    # Stream CSV rows instead of reading everything into memory
+    CSV.foreach(file_path, headers: true).with_index(1) do |row, index|
+      next if index < start_row
+      break if index > end_row
+
       begin
-        # Split the categories by semicolon (or another separator if necessary)
-        category_names = row['Product Categories'].to_s.strip.split(';')
-    
-        # Create categories and collect their IDs
+        # Normalize category names
+        category_names = row['Product Categories'].to_s.strip.split(';').map(&:strip).map(&:downcase)
+
+        # Fetch or create categories in memory
         categorie_ids = category_names.map do |category_name|
-          CategorieProduit.find_or_create_by(nom: category_name.strip.downcase).id
+          categories_hash[category_name] ||= CategorieProduit.find_or_create_by!(nom: category_name).id
         end
-    
+
+        # Define category mapping for type_produit
+        category_to_type = {
+          "robes courtes" => "robes",
+          "robes longues" => "robes",
+          "robes de mariée longues" => "robes",
+          "robes de mariée courtes"  => "robes",
+          "chaussures" => "chaussures"
+        }
+
+        # Determine type_produit_id efficiently
+        type_name = category_names.map { |cat| category_to_type[cat] }.compact.first
+        type_produit_id = type_name ? (types_hash[type_name] ||= TypeProduit.find_or_create_by!(nom: type_name).id) : nil
+
         # Create or find the size (taille)
         taille = Taille.find_or_create_by(nom: row['Option1 Value'].to_s.strip.downcase)
-    
-        # Create the product (produit)
-        produit = Produit.create!(
+
+        # Prepare product attributes
+        produit_attrs = {
           nom: row['Product Name'],
-          prixvente: row['Variant Price'].gsub('€', ''),
+          prixvente: row['Variant Price'].gsub('€', '').to_f,
           description: row['Product Description'],
-          quantite: row['Variant Inventory'],
+          quantite: row['Variant Inventory'].to_i,
+          poids: row['Variant Weight'].to_f,
+          reffrs: row['Variant Sku'],
           actif: true,
           eshop: true,
-          taille_id: taille&.id
-        )
-    
+          taille_id: taille&.id,
+          type_produit_id: type_produit_id
+        }
+
+        # Insert the product
+        produit = Produit.create!(produit_attrs)
+
         # Associate the created categories with the product
         produit.categorie_produits = CategorieProduit.find(categorie_ids)
-    
-        # Attach images
+
+        # Attach images (Consider running in background jobs)
         attach_image(produit, row['Main Variant Image'], :image1)
         attach_images(produit, row['More Variant Images'])
-    
-        puts "_______________________ Produit #{produit.nom} (#{index + start_row}) importé! _____________________"
+
+        puts "________________Produit #{produit.nom} (#{index}) importé!________________"
+
       rescue StandardError => e
         puts "Erreur d'import pour #{row['Product Name']}: #{e.message}"
       end
     end
 
+    puts "Import terminé en #{Time.now - start_time} secondes."
   end
 
   private
@@ -85,20 +107,3 @@ class ImportProduitsCsvService
     end
   end
 end
-
-# voir d'où viennet les couleurs dans le csv et comment les faire correspondre?
-# possible de trouver ou créer la couleur à la volée comme les tailles
-# voir si traitement sur ces champs : type_produit_id, :reffrs, :fournisseur_id, :dateachat, :prixachat, 
-
-
-#   def import_all
-#     CSV.foreach(@file_path, headers: true) do |row|
-#       Produit.create!(
-#         name: row['name'],
-#         description: row['description'],
-#         price: row['price'].to_f,
-#         stock: row['stock'].to_i
-#       )
-#     end
-#   end
-

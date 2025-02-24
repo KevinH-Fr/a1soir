@@ -31,6 +31,8 @@ class Produit < ApplicationRecord
   after_create :generate_qr
   #after_create :set_initial_vente_price
 
+  after_initialize :set_default_poids
+
   scope :is_ensemble, -> { joins(:type_produit).where(type_produits: { nom: 'ensemble' }) }
   scope :is_service, -> { joins(:categorie_produits).where(categorie_produits: { service: true }) }
   scope :not_service, -> { joins(:categorie_produits).where(categorie_produits: { service: [false, nil] }) }
@@ -57,6 +59,11 @@ class Produit < ApplicationRecord
   def nom_ref_couleur_taille 
     "#{nom} | #{reffrs} | #{couleur&.nom} | #{taille&.nom}"
   end 
+
+  def nom_couleur_taille
+    [nom, couleur&.nom, taille&.nom].compact.join(' | ')
+  end
+  
 
   def generate_qr
       GenerateQr.call(self)
@@ -131,6 +138,10 @@ class Produit < ApplicationRecord
         end
       end
     end
+  end
+
+  def set_default_poids
+    self.poids ||= 2000
   end
   
 
