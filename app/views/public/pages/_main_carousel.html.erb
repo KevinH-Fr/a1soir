@@ -1,12 +1,10 @@
 <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
 
-        <% if @carousel_images.any? %>
-            <% @carousel_images.each_with_index do |image, index| %>
-                <div class="carousel-item <%= 'active' if index == 0 %>">
-                    <%= image_tag(image, class: "w-100", style: "object-fit: cover; height: 400px;", alt: "image accueil #{index}") %>
-                </div>
-            <% end %>
+        <% @carousel_images.each_with_index do |image, index| %>
+            <div class="carousel-item <%= 'active' if index == 0 %>">
+                <%= image_tag(image, class: "w-100", style: "object-fit: cover; height: 400px;", alt: "image accueil #{index}") %>
+            </div>
         <% end %>
 
     </div>
