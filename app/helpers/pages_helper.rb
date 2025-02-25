@@ -34,5 +34,19 @@ module PagesHelper
     content_tag :span, "#{type} : #{custom_currency_no_decimals_format(montant)}", class: "border p-1 rounded"
   end
   
+  def link_badge_class(taille_id = nil)
+    badge_class = "badge border brand-colored fs-6 text-uppercase text-decoration-none"
+    
+    # If taille_id is nil (for "Toutes"), don't apply active class if a taille is selected
+    if taille_id.nil?
+      active_class = params[:taille].nil? ? "bg-brand-colored text-light" : ""
+    else
+      # If taille_id is not nil, apply active class when the size matches
+      active_class = taille_id.to_i == params[:taille].to_i ? "bg-brand-colored text-light" : ""
+    end
+    
+    "#{badge_class} #{active_class}"
+  end
+  
 
 end

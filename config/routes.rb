@@ -18,6 +18,8 @@ Rails.application.routes.draw do
       get 'rdv', to: 'pages#rdv'
 
       get 'produits/:slug-:id', to: 'pages#produits', as: :produits
+      get 'produits', to: 'pages#produits', as: :produits_index
+      
       get 'produit/:slug-:id', to: 'pages#produit', as: :produit
 
     end

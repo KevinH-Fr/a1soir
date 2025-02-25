@@ -1,21 +1,44 @@
 <div class="public-main-content">
 
-    <div class="container-fluid mt-4">
-        <h2>
-            <%= @categorie.texte_annonce %> 
-        </h2>
+
+    <!-- reprendre search bar -->
+
+    <div class="p-4">
+
+        <%= search_form_for @q, url: produits_index_path, html: { class: "d-flex align-items-center w-100 position-relative" }, data: { turbo_frame: :results } do |f| %>
+            <%= f.search_field :nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont, 
+                class: "form-control w-100 me-1 ps-5", autofocus: false, autocomplete: 'off', 
+                placeholder: "Rechercher", oninput: 'this.form.requestSubmit()' %>
+            <i class="bi bi-search position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%);"></i>
+        <% end %>
+
+
     </div>
+
+
+    <% if @categorie %>      
+        <div class="container-fluid mt-4">
+            <h2>
+                <%= @categorie.texte_annonce %> 
+            </h2>
+        </div>
+    <% end %>
 
     <div class="container-fluid mt-4">
         <div class="text-uppercase fw-bold mb-1">
             Catégories
         </div>
         <div>
+
+            <%= link_to "Toutes", produits_index_url, 
+              class: "badge border brand-colored fs-6 text-uppercase text-decoration-none
+                #{params[:id].nil? ? "bg-brand-colored text-light" : ""}" %>
+
             <% @categories.each do |categorie| %>
                 <%= link_to categorie.nom, 
                     produits_path(slug: categorie.nom.parameterize, id: categorie.id),
                     class: "badge border brand-colored fs-6 text-downcase text-decoration-none mb-1 
-                    #{categorie.nom == @categorie.nom ? "bg-brand-colored text-light" : ""}" %>
+                    #{categorie.nom == @categorie&.nom ? "bg-brand-colored text-light" : ""}" %>
             <% end %>
             
         </div>

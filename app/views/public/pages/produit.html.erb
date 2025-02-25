@@ -4,20 +4,7 @@
         <div class="row g-0">
             <div class="col-md-4">
                 <%= render  "carousel" %>
-                <%#= image_tag(@produit.default_image, class: "img-fluid rounded-start", alt: @produit.nom) %>
             </div>
-
-            <%# faire diapo avec autres images %>
-        
-            <%# if @produit.images %>
-
-                <!--div class="container-fluid mt-2">
-                    <%# @produit.images.each do |image| %>
-                        <%#= image_tag(image, class: "w-25", style: "object-fit: cover; height: 200px;") %>
-                    <%# end %> 
-                </div-->
-            
-            <%# end %>
             
             <div class="col-md-8">
                 <div class="card-body">
@@ -44,7 +31,7 @@
                             </span>
                             <% @meme_produit_meme_couleur_autres_tailles.each do |produit| %>
                                 <%= link_to produit.taille.nom, produit_path(slug: produit.nom.parameterize, id: produit.id), 
-                                    class: "badge bg-brand-colored fs-5 text-uppercase text-decoration-none" %>
+                                    class: "badge bg-brand-colored fs-6 text-uppercase text-decoration-none" %>
                             <% end %>
                         </p>
                     <% end %>
@@ -57,7 +44,7 @@
                             </span>
                             <% @meme_produit_meme_taille_autres_couleurs.each do |produit| %>
                                 <%= link_to produit.couleur.nom, produit_path(slug: produit.nom.parameterize, id: produit.id), 
-                                    class: "badge bg-brand-colored fs-5 text-uppercase text-decoration-none" %>
+                                    class: "badge bg-brand-colored fs-6 text-uppercase text-decoration-none" %>
                             <% end %>
                         </p>
                     <% end %>

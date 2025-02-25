@@ -9,30 +9,47 @@
     </div>
     
     <div>
-      <%= link_to "Toutes", produits_path(categorie: @categorie), 
-            class: "badge border brand-colored fs-6 text-uppercase text-decoration-none
-              #{params[:taille].nil? ? "bg-brand-colored text-light" : ""}" %>
+      <% if @categorie %>       
+        <%= link_to "Toutes", produits_path(categorie: @categorie), class: link_badge_class(nil) %>
 
-      <% @toutes_tailles_categorie.each do |taille| %>
-        <%= link_to taille.nom, 
-            produits_path(categorie: @categorie, taille: taille.id),
-              class: "badge border brand-colored fs-6 text-uppercase text-decoration-none 
-              #{taille.id == params[:taille].to_i ? "bg-brand-colored text-light" : ""}" %>
+        <% @toutes_tailles.each do |taille| %>
+          <%= link_to taille.nom, produits_path(categorie: @categorie, taille: taille.id),
+                      class: link_badge_class(taille.id) %>
+        <% end %>
+
+      <% else %>
+        <%= link_to "Toutes", produits_index_path, class: link_badge_class %>
+
+        <% @toutes_tailles.each do |taille| %>
+          <%= link_to taille.nom, produits_index_path(taille: taille.id),
+                      class: link_badge_class(taille.id) %>
+          <% end %>
       <% end %>
+
+
     </div>
   </div>
 
   <div class="container-fluid mt-4 m-0">
 
-      <%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
-        <div id="produits" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2 m-0 justify-content-center"></div>
+    <%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+      <div id="produits" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2 m-0 justify-content-center"></div>
 
         <%= turbo_frame_tag :pagination, loading: :lazy,
-            src: produits_path(
-              id: @categorie.id, 
-              slug: @categorie.nom.parameterize, 
-              taille: params[:taille],
-              format: :turbo_stream, subdomain: "shop") %>
+            src: @categorie ? 
+              produits_path(
+                id: @categorie.id, 
+                slug: @categorie.nom.parameterize, 
+                taille: params[:taille], 
+                format: :turbo_stream, 
+                subdomain: "shop") : 
+                
+              produits_index_path(
+                taille: params[:taille], 
+                format: :turbo_stream, 
+                q: params[:q]&.to_unsafe_h,
+                subdomain: "shop") %>
+
       <% end %>
   </div>
 
