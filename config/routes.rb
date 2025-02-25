@@ -168,6 +168,7 @@ Rails.application.routes.draw do
       resources :textes do 
         member do
           post :edit
+          get 'delete_image_attachment', to: 'textes#delete_image_attachment', as: :delete_image_attachment
         end
       end
       

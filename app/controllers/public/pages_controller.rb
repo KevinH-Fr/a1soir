@@ -4,6 +4,7 @@ module Public
 
     def home
       @categories = CategorieProduit.all
+      @carousel_images = Texte&.first&.carousel_images
     end
 
     def categories

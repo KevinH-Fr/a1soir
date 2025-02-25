@@ -1,7 +1,7 @@
 class Admin::TextesController < Admin::ApplicationController
 
   before_action :authenticate_admin!
-  before_action :set_texte, only: %i[ show edit update destroy ]
+  before_action :set_texte, only: %i[ show edit update destroy delete_image_attachment ]
 
   def index
     @textes = Texte.all
@@ -40,6 +40,14 @@ class Admin::TextesController < Admin::ApplicationController
   end
 
   def update
+
+    # Retain existing medias if the field is left empty
+    if params[:texte][:carousel_images].present?
+      params[:texte][:carousel_images].each do |image|
+        @texte.carousel_images.attach(image)
+      end
+    end
+
     respond_to do |format|
       if @texte.update(texte_params)
         format.html { redirect_to admin_textes_url, notice:  "Mise à jour réussie" }
@@ -49,6 +57,13 @@ class Admin::TextesController < Admin::ApplicationController
         format.json { render json: @texte.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def delete_image_attachment
+    @media = @texte.carousel_images.find(params[:image_id])
+    @media.purge
+  
+    redirect_to admin_texte_path(@texte), notice: "Media has been deleted successfully."
   end
 
   def destroy

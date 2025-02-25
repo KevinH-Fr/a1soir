@@ -25,5 +25,15 @@
       <%= texte.adresse %>
   </p>
 
+  <% if texte.carousel_images %>
+
+    <div class="container-fluid my-2">
+        <% texte.carousel_images.each do |image| %>
+            <%= image_tag(image, class: "w-25 m-1", style: "object-fit: cover; height: 150px;") %>
+        <% end %> 
+    </div>
+  
+  <% end %>
+
 
 </div>

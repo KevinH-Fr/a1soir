@@ -31,6 +31,28 @@
     <%= form.rich_text_area :adresse, class:"bg-light" %>
   </div>
 
+  <div class="input-group mb-1">
+    <%= form.label :carousel_images, class:"input-group-text label-with-format" %>
+    <%= form.file_field :carousel_images, multiple: true, class:"form-control m-1 p-1" %>
+  </div>
+
+  <% if texte.persisted? && texte.save %>
+    <% if texte.carousel_images.any? %>
+      <div> Images actuelles:</div>
+      <div class="mb-1">
+        <% texte.carousel_images.each do |image| %>
+          <% if image.present? %>
+              <%= image_tag image, width: 100 %>
+
+              <%= link_to '', delete_image_attachment_admin_texte_path(texte, image_id: image.id),
+                class: 'btn btn-outline-danger bi bi-trash', method: :delete %>
+
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
   <div class="float-end mt-2 mb-4">
     <%= link_to "Fermer", "", data:{turbo_frame: "modal"}, 
         class:"btn btn-sm btn-secondary" %>
