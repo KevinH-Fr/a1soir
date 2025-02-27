@@ -13,7 +13,7 @@
                         <%= @produit.description %>
                     </p>
                     <p class="card-text">
-                        <%= badge_taille(@produit) %>
+                        <%= badge_taille(@produit) if @produit.taille.present? %>
                         <%= badge_prix("Vente", @produit.prixvente) %>
                         <%= badge_prix("Location", @produit.prixlocation) if @produit.prixlocation.present? %>
                     </p>
@@ -36,7 +36,6 @@
                         </p>
                     <% end %>
 
-                    <%# reprende vers autres couleurs meme taille %>
                     <% if @meme_produit_meme_taille_autres_couleurs.any? %>
                         <p class="card-text">
                             <span class="brand-colored me-2">
@@ -48,6 +47,10 @@
                             <% end %>
                         </p>
                     <% end %>
+
+                    <%= button_to "Buy Now", stripe_payments_path(produit_id: @produit.id), 
+                            method: :post, class: "btn btn-primary",
+                            data: { turbo: false } %>
 
                 </div>
             </div>

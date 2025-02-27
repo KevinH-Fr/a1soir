@@ -208,7 +208,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     def produit_params
       params.require(:produit).permit(:nom, :prixvente, :prixlocation, :description, :type_produit_id,
         :caution, :handle, :reffrs, :quantite, :fournisseur_id, :dateachat, :prixachat, :actif,
-        :image1, :couleur_id, :taille_id, :eshop, :poids,
+        :image1, :couleur_id, :taille_id, :eshop, :poids, :stripe_product_id, :stripe_price_id,
         categorie_produit_ids: [])
     end
 

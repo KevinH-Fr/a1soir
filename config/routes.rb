@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'stripe/purchase_success'
 
   constraints subdomain: 'shop' do
 
@@ -22,6 +23,12 @@ Rails.application.routes.draw do
       
       get 'produit/:slug-:id', to: 'pages#produit', as: :produit
 
+      # stripe
+      resources :stripe_payments
+
+      get 'purchase_success', to: 'stripe_payments#purchase_success'
+      get 'purchase_error', to: 'stripe_payments#purchase_error'
+      
     end
 
   end 

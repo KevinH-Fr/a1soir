@@ -33,6 +33,9 @@ class Produit < ApplicationRecord
 
   after_initialize :set_default_poids
 
+  # After save (create or update), call the method to handle product/price sync with Stripe
+  after_save :sync_stripe_product_and_price
+
   scope :is_ensemble, -> { joins(:type_produit).where(type_produits: { nom: 'ensemble' }) }
   scope :is_service, -> { joins(:categorie_produits).where(categorie_produits: { service: true }) }
   scope :not_service, -> { joins(:categorie_produits).where(categorie_produits: { service: [false, nil] }) }
@@ -144,5 +147,45 @@ class Produit < ApplicationRecord
     self.poids ||= 2000
   end
   
+  # Sync the product and price with Stripe on create or update
+  def sync_stripe_product_and_price
+    if stripe_product_id.present? && stripe_price_id.present?
+      # Update product and price if Stripe IDs already exist
+      Stripe::Product.update(self.stripe_product_id, {
+        name: self.nom,
+        description: self.description
+      })
+
+      # Deactivate the old price by setting `active` to false
+      Stripe::Price.update(self.stripe_price_id, { active: false })
+      
+      # Create a new price with the updated `unit_amount`
+      new_stripe_price = Stripe::Price.create({
+        product: self.stripe_product_id,
+        unit_amount: (self.prixvente * 100).to_i,  # Convert price to cents
+        currency: 'eur',  # Adjust as needed
+      })
+
+      # Save the new price ID to the model
+      self.update_column(:stripe_price_id, new_stripe_price.id)
+      
+    else
+      # Create product and price in Stripe if not already present
+      stripe_product = Stripe::Product.create({
+        name: self.nom,
+        description: self.description
+      })
+
+      stripe_price = Stripe::Price.create({
+        unit_amount: (self.prixvente * 100).to_i,
+        currency: 'eur',
+        product: stripe_product.id
+      })
+
+      # Store the Stripe IDs in the local database
+      self.update_column(:stripe_product_id, stripe_product.id)
+      self.update_column(:stripe_price_id, stripe_price.id)
+    end
+  end
 
 end
