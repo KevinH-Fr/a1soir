@@ -1,0 +1,19 @@
+<div class="p-4">
+  <% if @payment.present? %>
+    <h1>Payment Status</h1>
+    
+    <p><strong>Product:</strong> <%= @payment.produit.nom if @payment.produit %></p>
+    <p><strong>Amount:</strong> <%= @payment.amount / 100.0 %> <%= @payment.currency.upcase %></p>
+    <p><strong>Status:</strong> <%= @payment.status.capitalize %></p>
+    <p><strong>Payment Method:</strong> <%= @payment.payment_method.capitalize %></p>
+
+    <% if @payment.status == 'paid' %>
+      <p>Thank you for your purchase!</p>
+    <% else %>
+      <p>There was an issue with your payment. Please try again later.</p>
+    <% end %>
+  <% else %>
+    <p>Payment information could not be found.</p>
+  <% end %>
+
+</div>

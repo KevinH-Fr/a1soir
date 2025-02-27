@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_27_113342) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_27_202921) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -296,6 +296,19 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_27_113342) do
     t.index ["produit_id"], name: "index_sousarticles_on_produit_id"
   end
 
+  create_table "stripe_payments", force: :cascade do |t|
+    t.string "stripe_payment_id"
+    t.integer "produit_id", null: false
+    t.integer "amount"
+    t.string "currency"
+    t.string "status"
+    t.string "payment_method"
+    t.string "charge_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["produit_id"], name: "index_stripe_payments_on_produit_id"
+  end
+
   create_table "tailles", force: :cascade do |t|
     t.string "nom"
     t.datetime "created_at", null: false
@@ -357,4 +370,5 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_27_113342) do
   add_foreign_key "produits", "type_produits"
   add_foreign_key "sousarticles", "articles"
   add_foreign_key "sousarticles", "produits"
+  add_foreign_key "stripe_payments", "produits"
 end

@@ -54,16 +54,21 @@
       
         <%= custom_form_elements(form, 
           [:description, :text_area], 
-          [:reffrs, :text_field], [:quantite, :number_field],
+          [:quantite, :number_field],
           [:dateachat, :date_field]
         ) %>
 
+      <div class="input-group mb-1">
+        <%= form.label :reffrs, "Ref. Fournisseur", class: "input-group-text" %>
+        <%= form.text_field :reffrs, class: "form-control" %>
+      </div>
+      
       <div class="mx-1">
 
         <div class="input-group mb-1">
           <%= form.label :fournisseur_id, class: "input-group-text" %>
           <%= form.collection_select :fournisseur_id, @fournisseurs.all.order(:nom), :id, :nom, 
-          { include_blank: 'Sélectionner' }, class: "form-select" %>
+          { include_blank: '' }, class: "form-select" %>
         </div>
 
         <% if current_admin_user.admin? %>
@@ -103,13 +108,13 @@
         <div class="input-group mb-1">
           <%= form.label :couleur_id, class: "input-group-text" %>
           <%= form.collection_select :couleur_id, @couleurs.all.order(:nom), :id, :nom, 
-          { include_blank: 'Sélectionner' }, class: "form-select" %>
+          { include_blank: '' }, class: "form-select" %>
         </div>
 
         <div class="input-group mb-1">
           <%= form.label :taille_id, class: "input-group-text" %>
           <%= form.collection_select :taille_id, @tailles.all.order(:nom), :id, :nom, 
-          { include_blank: 'Sélectionner' }, class: "form-select text-uppercase" %>
+          { include_blank: '' }, class: "form-select text-uppercase" %>
         </div>
       </div>
       

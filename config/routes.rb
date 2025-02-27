@@ -26,6 +26,8 @@ Rails.application.routes.draw do
       # stripe
       resources :stripe_payments
 
+      get 'status/:id', to: 'stripe_payments#status', as: 'status_payment'
+
       get 'purchase_success', to: 'stripe_payments#purchase_success'
       get 'purchase_error', to: 'stripe_payments#purchase_error'
       

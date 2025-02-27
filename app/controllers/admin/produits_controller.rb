@@ -76,6 +76,8 @@ class Admin::ProduitsController < Admin::ApplicationController
 
     respond_to do |format|
       if @produit.save
+        StripeProductService.new(@produit).update_product_and_price
+
         format.html { redirect_to admin_produit_url(@produit), notice: "Création réussie" }
         format.json { render :show, status: :created, location: @produit }
       else
@@ -102,6 +104,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     
     respond_to do |format|
       if @produit.update(produit_params)
+        StripeProductService.new(@produit).update_product_and_price
 
         flash.now[:success] =  "Mise à jour réussie"
 
