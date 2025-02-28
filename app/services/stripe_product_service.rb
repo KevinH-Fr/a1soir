@@ -4,8 +4,9 @@ class StripeProductService
   end
 
   def create_product_and_price
+      
     return if @produit.stripe_product_id.present? && @produit.stripe_price_id.present?
-
+  
     stripe_product = Stripe::Product.create({
       name: @produit.nom,
       description: @produit.description
@@ -21,8 +22,9 @@ class StripeProductService
   end
 
   def update_product_and_price
+
     return unless @produit.stripe_product_id.present? && @produit.stripe_price_id.present?
-  
+
     # Update product details (name and description)
     Stripe::Product.update(@produit.stripe_product_id, {
       name: @produit.nom,

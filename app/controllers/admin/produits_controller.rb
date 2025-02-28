@@ -159,11 +159,14 @@ class Admin::ProduitsController < Admin::ApplicationController
 
   end
 
+
   def dupliquer
     @produit = Produit.find(params[:id])
   
     if params[:produitbase].present?
       @produitBase = Produit.find(params[:produitbase])
+  
+      copy = nil
   
       Produit.transaction do
         original = @produitBase
@@ -172,32 +175,36 @@ class Admin::ProduitsController < Admin::ApplicationController
   
         # Copy associated categories (if any)
         copy.categorie_produits = original.categorie_produits
-
-        if original.image1.attached?
-          copy.image1.attach \
-            io: StringIO.new(original.image1.download),
-            filename: original.image1.filename,
-            content_type: original.image1.content_type
-        end
   
-        original.images.each do |image|
-          #if image.attached?
-            copy.images.attach \
-              io: StringIO.new(image.download),
-              filename: image.filename,
-              content_type: image.content_type
-          #end
-        end
-  
-        copy.save!
-   
-        redirect_to admin_produit_path(copy), notice: "Duplication du produit effectuée !"
+        copy.save! # Save the copy inside the transaction
       end
   
+      # Move attachments outside transaction
+      if @produitBase.image1.attached?
+        copy.image1.attach(
+          io: StringIO.new(@produitBase.image1.download),
+          filename: @produitBase.image1.filename,
+          content_type: @produitBase.image1.content_type
+        )
+      end
+  
+      @produitBase.images.each do |image|
+        copy.images.attach(
+          io: StringIO.new(image.download),
+          filename: image.filename,
+          content_type: image.content_type
+        )
+      end
+  
+      # Call Stripe Service outside the transaction
+      StripeProductService.new(copy).create_product_and_price
+  
+      redirect_to admin_produit_path(copy), notice: "Duplication du produit effectuée !"
     else
       redirect_to admin_produit_path(@produit), notice: "Aucun produit de base spécifié."
     end
   end
+  
   
 
 
