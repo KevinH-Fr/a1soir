@@ -47,13 +47,16 @@
                             <% end %>
                         </p>
                     <% end %>
+                
+                    <% if ENV["ONLINE_SALES_AVAILABLE"]  =="true" %>
 
-                    <% if @cart.include?(@produit) %>
-                        <%= button_to "Remove from cart", remove_from_cart_path(@produit), method: :delete %>
-                    <% else %>
-                        <%= button_to "Add to cart", add_to_cart_path(@produit) %>
+                        <% if @cart.include?(@produit) %>
+                            <%= button_to "Remove from cart", remove_from_cart_path(@produit), method: :delete %>
+                        <% else %>
+                            <%= button_to "Add to cart", add_to_cart_path(@produit) %>
+                        <% end %>
                     <% end %>
-
+                    
                 </div>
             </div>
         </div>
