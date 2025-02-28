@@ -4,6 +4,9 @@ module Public
 
       include Pagy::Backend
 
+      before_action :initialize_session
+      before_action :load_cart
+    
       # before_action :authenticate_user!
 
       # tempo pour construire en cachant
@@ -11,6 +14,14 @@ module Public
 
       private
 
+      def initialize_session
+         session[:cart] ||= [] # empty cart = empty array
+      end
+   
+      def load_cart
+         @cart = Produit.find(session[:cart])
+      end
+      
       # def authenticate_vendeur_or_admin!
       #    unless current_admin_user && (current_admin_user.vendeur? || current_admin_user.admin?)
       #       render "admin/home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."

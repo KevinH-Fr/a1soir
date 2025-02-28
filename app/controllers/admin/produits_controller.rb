@@ -76,7 +76,7 @@ class Admin::ProduitsController < Admin::ApplicationController
 
     respond_to do |format|
       if @produit.save
-        StripeProductService.new(@produit).update_product_and_price
+        StripeProductService.new(@produit).create_product_and_price
 
         format.html { redirect_to admin_produit_url(@produit), notice: "Création réussie" }
         format.json { render :show, status: :created, location: @produit }
@@ -144,9 +144,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     if @produit.destroy
       respond_to do |format|
 
-        
         flash.now[:success] = "Destruction réussie"
-
 
         format.turbo_stream do
           render turbo_stream: [

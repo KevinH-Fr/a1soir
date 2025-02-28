@@ -77,6 +77,13 @@ class Produit < ApplicationRecord
     super +  ["articles", "categorie_produits", "couleur", "ensembles", "fournisseur", "taille", "type_produit"]
   end
 
+  def to_builder
+    Jbuilder.new do |produit|
+      produit.prixvente stripe_price_id
+      produit.quantity 1
+    end
+  end
+
   private
 
   # def set_initial_vente_price

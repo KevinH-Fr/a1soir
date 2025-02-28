@@ -4,55 +4,29 @@ module Public
     layout 'public' 
 
     def create
-      # Retrieve the produit_id from the params
-      produit_id = params[:produit_id]
+      # Create a Stripe Checkout Session
+      session = Stripe::Checkout::Session.create(
+        payment_method_types: ['card'],
+        line_items: @cart.collect { |item| item.to_builder.attributes! },
+        mode: 'payment',
+        success_url: root_url + "purchase_success?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url: root_url + "purchase_error"
+      )
 
-      # Ensure that the produit_id exists
-      if produit_id.nil?
-        flash[:alert] = "Product ID is missing."
-        redirect_to root_path
-        return
-      end
+      # Redirect to Stripe Checkout
+      redirect_to session.url, allow_other_host: true
+    end
 
-      # Find the product in the database (adjust according to your model)
-      produit = Produit.find_by(id: produit_id)
-
-      # Ensure that the product exists
-      if produit.nil?
-        flash[:alert] = "Product not found."
-        redirect_to root_path
-        return
-      end
-
-      # Retrieve the price_id associated with the product
-      stripe_price_id = produit.stripe_price_id  # Assuming your `Produit` model has a `price_id` attribute
-
-      # Ensure price_id exists
-      if stripe_price_id.nil?
-        flash[:alert] = "Price information is missing for this product."
-        redirect_to root_path
-        return
-      end
-
-      begin
-        # Create a Stripe Checkout Session
-        session = Stripe::Checkout::Session.create(
-          payment_method_types: ['card'],
-          line_items: [{
-            price: stripe_price_id,  # Use the price_id retrieved from the product
-            quantity: 1
-          }],
-          mode: 'payment',
-          success_url: root_url + "purchase_success?session_id={CHECKOUT_SESSION_ID}",
-          cancel_url: root_url + "purchase_error"
-        )
-
-        # Redirect to Stripe Checkout
-        redirect_to session.url, allow_other_host: true
-      rescue Stripe::StripeError => e
-        flash[:error] = "Stripe error: #{e.message}"
-        redirect_to root_path
-      end
+    def add_to_cart
+      id = params[:id].to_i
+      session[:cart] << id unless session[:cart].include?(id)
+      redirect_to produit_path(id)
+    end
+  
+    def remove_from_cart
+      id = params[:id].to_i
+      session[:cart].delete(id)
+      redirect_to produit_path(id)
     end
 
     def purchase_success
@@ -82,7 +56,7 @@ module Public
     
       produit = Produit.find_by(stripe_price_id: session.list_line_items.data[0].price.id)
     
-      StripePayment.create!(
+      payment = StripePayment.create!(
         stripe_payment_id: session.payment_intent,
         produit_id: produit&.id,
         amount: session.amount_total,
@@ -106,8 +80,6 @@ module Public
         redirect_to root_path
       end
     end
-
-    
 
   end
 

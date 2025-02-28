@@ -31,6 +31,9 @@ Rails.application.routes.draw do
       get 'purchase_success', to: 'stripe_payments#purchase_success'
       get 'purchase_error', to: 'stripe_payments#purchase_error'
       
+      post "stripe_payments/add_to_cart/:id", to: "stripe_payments#add_to_cart", as: "add_to_cart"
+      delete "stripe_payments/remove_from_cart/:id", to: "stripe_payments#remove_from_cart", as: "remove_from_cart"
+
     end
 
   end 

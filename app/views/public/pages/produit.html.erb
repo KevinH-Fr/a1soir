@@ -48,9 +48,11 @@
                         </p>
                     <% end %>
 
-                    <%= button_to "Buy Now", stripe_payments_path(produit_id: @produit.id), 
-                            method: :post, class: "btn btn-primary",
-                            data: { turbo: false } %>
+                    <% if @cart.include?(@produit) %>
+                        <%= button_to "Remove from cart", remove_from_cart_path(@produit), method: :delete %>
+                    <% else %>
+                        <%= button_to "Add to cart", add_to_cart_path(@produit) %>
+                    <% end %>
 
                 </div>
             </div>
