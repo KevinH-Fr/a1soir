@@ -29,8 +29,8 @@ class CategorieProduit < ApplicationRecord
     def image1_is_valid
         if image1.attached?
           # Check file size (5MB max)
-          if image1.byte_size > 3.megabytes
-            errors.add(:image1, 'is too big. Maximum size is 3MB.')
+          if image1.byte_size > 5.megabytes
+            errors.add(:image1, 'is too big. Maximum size is 5MB.')
           end
     
           # Check file type (allow only images)
