@@ -1,7 +1,8 @@
 module Public
-
   class StripePaymentsController < ApplicationController
-    layout 'public' 
+    before_action :check_online_sales
+
+    layout 'public'
 
     def create
       # Create a Stripe Checkout Session
@@ -22,7 +23,7 @@ module Public
       session[:cart] << id unless session[:cart].include?(id)
       redirect_to produit_path(id)
     end
-  
+
     def remove_from_cart
       id = params[:id].to_i
       session[:cart].delete(id)
@@ -32,10 +33,8 @@ module Public
     def purchase_success
       session = Stripe::Checkout::Session.retrieve(params[:session_id])
     
-      # Find the product
       produit = Produit.find_by(stripe_price_id: session.list_line_items.data[0].price.id)
     
-      # Create a payment record for both successful and unsuccessful payments
       payment = StripePayment.create!(
         stripe_payment_id: session.payment_intent,
         produit_id: produit&.id,
@@ -46,10 +45,8 @@ module Public
         charge_id: session.payment_intent
       )
       
-      # Redirect to the status page with payment info
       redirect_to status_payment_path(payment.id)
     end
-    
 
     def purchase_error
       session = Stripe::Checkout::Session.retrieve(params[:session_id])
@@ -66,21 +63,23 @@ module Public
         charge_id: session.payment_intent
       )
     
-      # Redirect to the status page with payment info
       redirect_to status_payment_path(payment.id)
-
     end
 
-    # Status page to display payment details
     def status
       @payment = StripePayment.find(params[:id])
-
       if @payment.nil?
         flash[:alert] = "Payment not found."
         redirect_to root_path
       end
     end
 
-  end
+    private
 
+    def check_online_sales
+      unless ENV["ONLINE_SALES_AVAILABLE"] == "true"
+        redirect_to root_path, alert: "Online sales are currently unavailable."
+      end
+    end
+  end
 end

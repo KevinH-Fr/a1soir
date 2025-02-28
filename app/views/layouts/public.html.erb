@@ -23,7 +23,10 @@
 
   <body class="pb-4">
     <%= render "public/shared/navbar" %>
-    <%= render "public/shared/cart" %>
+
+    <% if ENV["ONLINE_SALES_AVAILABLE"]  %>
+      <%= render "public/shared/cart" %>  
+    <% end %>
 
     <div class="m-0 p-0">
       <%= yield %>

@@ -23,16 +23,19 @@ Rails.application.routes.draw do
       
       get 'produit/:slug-:id', to: 'pages#produit', as: :produit
 
-      # stripe
-      resources :stripe_payments
-
-      get 'status/:id', to: 'stripe_payments#status', as: 'status_payment'
-
-      get 'purchase_success', to: 'stripe_payments#purchase_success'
-      get 'purchase_error', to: 'stripe_payments#purchase_error'
-      
-      post "stripe_payments/add_to_cart/:id", to: "stripe_payments#add_to_cart", as: "add_to_cart"
-      delete "stripe_payments/remove_from_cart/:id", to: "stripe_payments#remove_from_cart", as: "remove_from_cart"
+      if ENV["ONLINE_SALES_AVAILABLE"].present?
+        # stripe
+        resources :stripe_payments
+  
+        get 'status/:id', to: 'stripe_payments#status', as: 'status_payment'
+  
+        get 'purchase_success', to: 'stripe_payments#purchase_success'
+        get 'purchase_error', to: 'stripe_payments#purchase_error'
+        
+        post "stripe_payments/add_to_cart/:id", to: "stripe_payments#add_to_cart", as: "add_to_cart"
+        delete "stripe_payments/remove_from_cart/:id", to: "stripe_payments#remove_from_cart", as: "remove_from_cart"
+        
+      end
 
     end
 

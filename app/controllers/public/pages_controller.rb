@@ -13,7 +13,7 @@ module Public
 
     def produits
       # Determine the category and associated produits
-      if params[:id]
+      if params[:id].present?
         @categorie = CategorieProduit.find(params[:id])
         @produits = @categorie.produits.eshop_diffusion
       else
@@ -21,10 +21,11 @@ module Public
       end
      
       @toutes_tailles = @produits.map(&:taille).compact.uniq.sort_by(&:nom)
+      @toutes_couleurs = @produits.map(&:couleur).compact.uniq.sort_by(&:nom)
     
       # Filter by taille if provided, otherwise group by handle and couleur
-      if params[:taille]
-        produits = @produits.where(taille: params[:taille])
+      if params[:taille].present?
+        produits = @produits.where(taille: params[:taille], couleur: params[:couleur])
       else
         produits_uniques = @produits
           .group_by { |produit| [produit.handle, produit.couleur] } # Group by handle and couleur
@@ -32,6 +33,13 @@ module Public
         produits = Produit.where(id: produits_uniques.map(&:id))
       end
     
+      # Filter by couelur if provided, 
+      # if params[:couleur].present?
+      #   produits = @produits.where(couleur: params[:couleur])
+      #   puts " ____________ couleur is set : #{params[:couleur]} lsite: #{@produits.ids} ___________"
+
+      # end
+      
       search_params = params.permit(:format, :page, 
         q:[:nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont])
 

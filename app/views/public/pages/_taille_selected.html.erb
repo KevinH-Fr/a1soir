@@ -10,26 +10,53 @@
     
     <div>
       <% if @categorie %>       
-        <%= link_to "Toutes", produits_path(categorie: @categorie), class: link_badge_class(nil) %>
+        <%= link_to "Toutes", produits_path(categorie: @categorie), class: link_badge_taille_class(nil) %>
 
         <% @toutes_tailles.each do |taille| %>
           <%= link_to taille.nom, produits_path(categorie: @categorie, taille: taille.id),
-                      class: link_badge_class(taille.id) %>
+                      class: link_badge_taille_class(taille.id) %>
         <% end %>
 
       <% else %>
-        <%= link_to "Toutes", produits_index_path, class: link_badge_class %>
+        <%= link_to "Toutes", produits_index_path, class: link_badge_taille_class %>
 
         <% @toutes_tailles.each do |taille| %>
           <%= link_to taille.nom, produits_index_path(taille: taille.id),
-                      class: link_badge_class(taille.id) %>
+                      class: link_badge_taille_class(taille.id) %>
           <% end %>
       <% end %>
 
-
     </div>
+
   </div>
 
+  <!--div class="container-fluid mt-3">
+
+    <div class="text-uppercase fw-bold mb-1">
+      Couleurs
+    </div>
+    
+    <div>
+      <%# if @categorie %>       
+        <%#= link_to "Toutes", produits_path(categorie: @categorie), class: link_badge_couleur_class(nil) %>
+
+        <%# @toutes_couleurs.each do |couleur| %>
+          <%#= link_to couleur.nom, produits_path(categorie: @categorie, taille: params[:taille], couleur: couleur&.id),
+                      class: link_badge_couleur_class(couleur.id) %>
+        <%# end %>
+
+      <%# else %>
+        <%#= link_to "Toutes", produits_index_path, class: link_badge_couleur_class %>
+
+        <%# @toutes_couleurs.each do |couleur| %>
+          <%#= link_to couleur.nom, produits_index_path(couleur: couleur.id),
+                      class: link_badge_couleur_class(couleur.id) %>
+          <%# end %>
+      <%# end %>
+
+    </div>
+  </div-->
+  
   <div class="container-fluid mt-4 m-0">
 
     <%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
