@@ -20,8 +20,10 @@ Rails.application.routes.draw do
 
       get 'produits/:slug-:id', to: 'pages#produits', as: :produits
       get 'produits', to: 'pages#produits', as: :produits_index
-      
+  
       get 'produit/:slug-:id', to: 'pages#produit', as: :produit
+
+      post 'update_filters', to: 'pages#update_filters'
 
       if ENV["ONLINE_SALES_AVAILABLE"].present?
         # stripe

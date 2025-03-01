@@ -1,0 +1,16 @@
+<div id="filtres-taille">
+
+    <div class="text-uppercase fw-bold mt-2">
+        Tailles
+    </div>
+
+    <div class="d-flex flex-wrap gap-1">
+        <%= button_to "Toutes", update_filters_path, class: link_badge_taille_class(nil) %>
+
+        <% @toutes_tailles.each do |taille| %>
+            <%= button_to taille.nom, update_filters_path(slug: params[:slug], id: params[:id], taille: taille.id),
+                        class: link_badge_taille_class(taille.id) %>
+        <% end %>
+    </div>
+
+</div>

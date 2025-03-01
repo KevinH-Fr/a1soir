@@ -1,7 +1,6 @@
 <div class="public-main-content">
 
-
-    <!-- reprendre search bar -->
+    <%= Time.now %>
 
     <div class="p-4">
 
@@ -14,34 +13,14 @@
 
     </div>
 
-    <% if @categorie %>      
-        <div class="container-fluid mt-4">
-            <h2>
-                <%= @categorie.texte_annonce %> 
-            </h2>
-        </div>
-    <% end %>
+    <%= render "texte_categorie" %>
 
     <div class="container-fluid mt-4">
-        <div class="text-uppercase fw-bold mb-1">
-            Catégories
-        </div>
-        <div>
 
-            <%= link_to "Toutes", produits_index_url, 
-              class: "badge border brand-colored fs-6 text-uppercase text-decoration-none
-                #{params[:id].nil? ? "bg-brand-colored text-light" : ""}" %>
-
-            <% @categories.each do |categorie| %>
-                <%= link_to categorie.nom, 
-                    produits_path(slug: categorie.nom.parameterize, id: categorie.id),
-                    class: "badge border brand-colored fs-6 text-downcase text-decoration-none mb-1 
-                    #{categorie.nom == @categorie&.nom ? "bg-brand-colored text-light" : ""}" %>
-            <% end %>
-            
-        </div>
+        <%= render  "filtres_categorie" %>
+        <%= render  "filtres_taille" %>
+        <%= render  "filtres_couleur" %>
+        <%= render  "produits_filtres" %>
+   
     </div>
-
-    <%= render "taille_selected" %>
-
 </div>

@@ -20,6 +20,10 @@
                     <span class="placeholder col-8"></span>
                 </p>
                 <p class="card-text placeholder-glow d-flex justify-content-between">
+                    <span class="placeholder col-5"></span>
+                    <span class="placeholder col-6"></span>
+                </p>
+                <p class="card-text placeholder-glow d-flex justify-content-between">
                     <span class="placeholder col-4"></span>
                     <span class="placeholder col-4"></span>
                 </p>
@@ -42,6 +46,11 @@
                         </span>
                     </p>
 
+                    <p class="card-text d-flex justify-content-between">
+                        <%= badge_prix("Vente", produit.prixvente) %>
+                        <%= badge_prix("Location", produit.prixlocation) if produit.prixlocation.present? %>
+                    </p>
+                    
                     <p class="card-text d-flex justify-content-between">
                         <% if params[:taille].present? %>
                             <%= badge_taille(produit) %>

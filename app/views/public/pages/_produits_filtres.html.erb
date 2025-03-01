@@ -1,0 +1,31 @@
+
+<div id="produits-filtres">
+ 
+  <div class="container-fluid mt-4 m-0">
+
+    <%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+      <div id="produits" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2 m-0 justify-content-center"></div>
+
+        <%= turbo_frame_tag :pagination, loading: :lazy,
+            src: params[:id].present? ? 
+              produits_path(
+                id: params[:id], 
+                slug: params[:slug], 
+                taille: params[:taille], 
+                couleur: params[:couleur],
+                format: :turbo_stream, 
+                subdomain: "shop") : 
+                
+              produits_index_path(
+                taille: params[:taille], 
+                couleur: params[:couleur],
+                format: :turbo_stream, 
+                q: params[:q]&.to_unsafe_h,
+                subdomain: "shop") %>
+
+      <% end %>
+  </div>
+
+
+</div>
+

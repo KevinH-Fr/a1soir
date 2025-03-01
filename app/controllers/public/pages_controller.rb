@@ -12,26 +12,36 @@ module Public
     end
 
     def produits
+      @toutes_categories = CategorieProduit.all.order(nom: :asc)
+      @toutes_tailles = Produit.all.map(&:taille).compact.uniq.sort_by(&:nom)
+      @toutes_couleurs = Produit.all.map(&:couleur).compact.uniq.sort_by(&:nom)
+
       # Determine the category and associated produits
-      if params[:id]
-        @categorie = CategorieProduit.find(params[:id])
-        @produits = @categorie.produits.eshop_diffusion
-      else
-        @produits = Produit.all.eshop_diffusion
-      end
+      # if params[:id]
+      #   @categorie = CategorieProduit.find(params[:id])
+      #   @produits = @categorie.produits.eshop_diffusion
+      # else
+      #   @produits = Produit.all.eshop_diffusion
+      # end
      
-      @toutes_tailles = @produits.map(&:taille).compact.uniq.sort_by(&:nom)
+      # @toutes_tailles = @produits.map(&:taille).compact.uniq.sort_by(&:nom)
     
-      # Filter by taille if provided, otherwise group by handle and couleur
-      if params[:taille]
-        produits = @produits.where(taille: params[:taille])
-      else
-        produits_uniques = @produits
-          .group_by { |produit| [produit.handle, produit.couleur] } # Group by handle and couleur
-          .map { |_, produits| produits.first }
-        produits = Produit.where(id: produits_uniques.map(&:id))
-      end
+      # # Filter by taille if provided, otherwise group by handle and couleur
+      # if params[:taille]
+      #   produits = @produits.where(taille: params[:taille])
+      # else
+      #   produits_uniques = @produits
+      #     .group_by { |produit| [produit.handle, produit.couleur] } # Group by handle and couleur
+      #     .map { |_, produits| produits.first }
+      #   produits = Produit.where(id: produits_uniques.map(&:id))
+      # end
     
+
+      # produits = Produit.all.eshop_diffusion
+     # puts "==== Incoming Params: #{params[:id]} ===="
+
+      produits = FiltersProduitsService.new(params[:id], params[:taille], params[:couleur]).call
+
       search_params = params.permit(:format, :page, 
         q:[:nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont])
 
@@ -39,8 +49,55 @@ module Public
       produits = @q.result(distinct: true).order(nom: :asc)
 
       @pagy, @produits = pagy(produits, items: 6)
-      @categories = CategorieProduit.all.order(nom: :asc)
-    end    
+
+      # respond_to do |format|
+
+      #   format.turbo_stream do
+      #     render turbo_stream: [
+      #       turbo_stream.update("produits-filtres", 
+      #         partial: "public/pages/produits_filtres", 
+      #         locals: {produits: @produits}),
+      #     ]
+      #   end
+      #   format.html
+
+      # end
+
+    end  
+
+    def update_filters
+      puts " _________ call update filters __________"
+      puts " _________ update filters taille: #{params[:taille]} __________"
+      puts " _________ update filters couleur: #{params[:couleur]} __________"
+
+      @toutes_categories = CategorieProduit.all.order(nom: :asc)
+      @toutes_tailles = Produit.all.map(&:taille).compact.uniq.sort_by(&:nom)
+      @toutes_couleurs = Produit.all.map(&:couleur).compact.uniq.sort_by(&:nom)
+
+      respond_to do |format|
+
+        format.turbo_stream do
+          render turbo_stream: [
+
+            turbo_stream.update("filtres-categorie",
+              partial: "public/pages/filtres_categorie"),
+              
+            turbo_stream.update("filtres-taille", 
+              partial: "public/pages/filtres_taille"),
+
+            turbo_stream.update("filtres-couleur", 
+              partial: "public/pages/filtres_couleur"),
+                
+            turbo_stream.update("produits-filtres", 
+              partial: "public/pages/produits_filtres")
+          ]
+        end
+        format.html
+
+      end
+
+    end
+
 
     def produit
       @produit = Produit.find(params[:id])
