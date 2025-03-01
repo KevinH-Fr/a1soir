@@ -13,12 +13,16 @@
                 slug: params[:slug], 
                 taille: params[:taille], 
                 couleur: params[:couleur],
+                prixmax: params[:prixmax],
+                type: params[:type],
                 format: :turbo_stream, 
                 subdomain: "shop") : 
                 
               produits_index_path(
                 taille: params[:taille], 
                 couleur: params[:couleur],
+                prixmax: params[:prixmax],
+                type: params[:type],
                 format: :turbo_stream, 
                 q: params[:q]&.to_unsafe_h,
                 subdomain: "shop") %>

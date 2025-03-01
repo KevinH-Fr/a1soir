@@ -1,19 +1,17 @@
 <div id="filtres-categorie">
     
-    <div class="text-uppercase fw-bold">
+    <div class="text-uppercase">
         Catégories
     </div>
 
     <div class="d-flex flex-wrap gap-1">
         <%= button_to "Toutes", update_filters_path, 
-            class: "badge border brand-colored fs-6 text-uppercase text-decoration-none
-            #{params[:id].nil? ? "bg-brand-colored text-light" : ""}" %>
+            class: link_badge_categorie_class(nil) %>
 
         <% @toutes_categories.each do |categorie| %>
             <%= button_to categorie.nom, 
                 update_filters_path(slug: categorie.nom.parameterize, id: categorie.id),
-                class: "badge border brand-colored fs-6 text-downcase text-decoration-none mb-1 
-                #{categorie.id == params[:id].to_i ? "bg-brand-colored text-light" : ""}" %>
+                class: link_badge_categorie_class(categorie.id) %>
     
         <% end %>
     </div>

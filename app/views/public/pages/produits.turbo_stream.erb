@@ -10,10 +10,15 @@
         <%= turbo_frame_tag :pagination, loading: :lazy,
             src: params[:id].present? ? 
                 produits_path(format: :turbo_stream, 
-                    id: params[:id], slug: params[:slug], taille: params[:taille], couleur: params[:couleur], 
+                    id: params[:id], slug: params[:slug], 
+                    taille: params[:taille], couleur: params[:couleur], 
+                    prixmax: params[:prixmax],
+                    type: params[:type],
                     page: @pagy.next, q: params[:q]&.to_unsafe_h) : 
                 produits_index_path(format: :turbo_stream, 
                     taille: params[:taille], couleur: params[:couleur], 
+                    prixmax: params[:prixmax],
+                    type: params[:type],
                     page: @pagy.next, q: params[:q]&.to_unsafe_h) %>
     <% end %>
 

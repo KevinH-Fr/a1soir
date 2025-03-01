@@ -35,7 +35,7 @@ module PagesHelper
   end
   
   def link_badge_taille_class(taille_id = nil)
-    badge_class = "badge border brand-colored fs-6 text-uppercase text-decoration-none"
+    badge_class = "badge border brand-colored text-uppercase text-decoration-none"
     
     # If taille_id is nil (for "Toutes"), don't apply active class if a taille is selected
     if taille_id.nil?
@@ -49,7 +49,7 @@ module PagesHelper
   end
   
   def link_badge_couleur_class(couleur_id = nil)
-    badge_class = "badge border brand-colored fs-6 text-uppercase text-decoration-none"
+    badge_class = "badge border brand-colored text-uppercase text-decoration-none"
     
     # If taille_id is nil (for "Toutes"), don't apply active class if a taille is selected
     if couleur_id.nil?
@@ -62,5 +62,46 @@ module PagesHelper
     "#{badge_class} #{active_class}"
   end
   
+  def link_badge_prix_class(prix = nil)
+    badge_class = "badge border brand-colored text-downcase text-decoration-none"
+    
+    # If taille_id is nil (for "Toutes"), don't apply active class if a taille is selected
+    if prix.nil?
+      active_class = params[:prixmax].nil? ? "bg-brand-colored text-light" : ""
+    else
+      # If taille_id is not nil, apply active class when the size matches
+      active_class = prix.to_i == params[:prixmax].to_i ? "bg-brand-colored text-light" : ""
+    end
+    
+    "#{badge_class} #{active_class}"
+  end
+  
+  def link_badge_categorie_class(categorie_id = nil)
+    badge_class = "badge border brand-colored text-downcase text-decoration-none"
+    
+    # If taille_id is nil (for "Toutes"), don't apply active class if a taille is selected
+    if categorie_id.nil?
+      active_class = params[:categorie].nil? ? "bg-brand-colored text-light" : ""
+    else
+      # If taille_id is not nil, apply active class when the size matches
+      active_class = categorie_id.to_i == params[:categorie].to_i ? "bg-brand-colored text-light" : ""
+    end
+    
+    "#{badge_class} #{active_class}"
+  end
+
+  def link_badge_type_class(type = nil)
+    badge_class = "badge border brand-colored text-downcase text-decoration-none"
+    
+    # If taille_id is nil (for "Toutes"), don't apply active class if a taille is selected
+    if type.nil?
+      active_class = params[:type].nil? ? "bg-brand-colored text-light" : ""
+    else
+      # If taille_id is not nil, apply active class when the size matches
+      active_class = type == params[:type] ? "bg-brand-colored text-light" : ""
+    end
+    
+    "#{badge_class} #{active_class}"
+  end
 
 end

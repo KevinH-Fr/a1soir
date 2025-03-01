@@ -15,6 +15,8 @@ module Public
       @toutes_categories = CategorieProduit.all.order(nom: :asc)
       @toutes_tailles = Produit.all.map(&:taille).compact.uniq.sort_by(&:nom)
       @toutes_couleurs = Produit.all.map(&:couleur).compact.uniq.sort_by(&:nom)
+      @tranches_prix = [50, 100, 200, 500, 1000]
+      @types = ["Vente", "Location"]
 
       # Determine the category and associated produits
       # if params[:id]
@@ -40,7 +42,10 @@ module Public
       # produits = Produit.all.eshop_diffusion
      # puts "==== Incoming Params: #{params[:id]} ===="
 
-      produits = FiltersProduitsService.new(params[:id], params[:taille], params[:couleur]).call
+      produits = FiltersProduitsService.new(
+        params[:id], params[:taille], params[:couleur], 
+        params[:prixmax], params[:type]
+      ).call
 
       search_params = params.permit(:format, :page, 
         q:[:nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont])
@@ -50,29 +55,20 @@ module Public
 
       @pagy, @produits = pagy(produits, items: 6)
 
-      # respond_to do |format|
-
-      #   format.turbo_stream do
-      #     render turbo_stream: [
-      #       turbo_stream.update("produits-filtres", 
-      #         partial: "public/pages/produits_filtres", 
-      #         locals: {produits: @produits}),
-      #     ]
-      #   end
-      #   format.html
-
-      # end
-
     end  
 
     def update_filters
       puts " _________ call update filters __________"
       puts " _________ update filters taille: #{params[:taille]} __________"
       puts " _________ update filters couleur: #{params[:couleur]} __________"
+      puts " _________ update filters prix: #{params[:prixmax]} __________"
+      puts " _________ update filters type: #{params[:type]} __________"
 
       @toutes_categories = CategorieProduit.all.order(nom: :asc)
       @toutes_tailles = Produit.all.map(&:taille).compact.uniq.sort_by(&:nom)
       @toutes_couleurs = Produit.all.map(&:couleur).compact.uniq.sort_by(&:nom)
+      @tranches_prix = [50, 100, 200, 500, 1000]
+      @types = ["Vente", "Location"]
 
       respond_to do |format|
 
@@ -87,7 +83,13 @@ module Public
 
             turbo_stream.update("filtres-couleur", 
               partial: "public/pages/filtres_couleur"),
-                
+
+            turbo_stream.update("filtres-prix", 
+              partial: "public/pages/filtres_prix"),
+
+            turbo_stream.update("filtres-type", 
+              partial: "public/pages/filtres_type"),
+              
             turbo_stream.update("produits-filtres", 
               partial: "public/pages/produits_filtres")
           ]

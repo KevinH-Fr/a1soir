@@ -1,7 +1,5 @@
 <div class="public-main-content">
 
-    <%= Time.now %>
-
     <div class="p-4">
 
         <%= search_form_for @q, url: produits_index_path, html: { class: "d-flex align-items-center w-100 position-relative" }, data: { turbo_frame: :results } do |f| %>
@@ -20,6 +18,8 @@
         <%= render  "filtres_categorie" %>
         <%= render  "filtres_taille" %>
         <%= render  "filtres_couleur" %>
+        <%= render  "filtres_prix" %>
+        <%= render  "filtres_type" %>
         <%= render  "produits_filtres" %>
    
     </div>
