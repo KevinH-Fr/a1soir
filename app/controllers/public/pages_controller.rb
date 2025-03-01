@@ -12,11 +12,7 @@ module Public
     end
 
     def produits
-      @toutes_categories = CategorieProduit.all.order(nom: :asc)
-      @toutes_tailles = Produit.all.map(&:taille).compact.uniq.sort_by(&:nom)
-      @toutes_couleurs = Produit.all.map(&:couleur).compact.uniq.sort_by(&:nom)
-      @tranches_prix = [50, 100, 200, 500, 1000]
-      @types = ["Vente", "Location"]
+      load_data
 
       # Determine the category and associated produits
       # if params[:id]
@@ -38,9 +34,7 @@ module Public
       #   produits = Produit.where(id: produits_uniques.map(&:id))
       # end
     
-
       # produits = Produit.all.eshop_diffusion
-     # puts "==== Incoming Params: #{params[:id]} ===="
 
       produits = FiltersProduitsService.new(
         params[:id], params[:taille], params[:couleur], 
@@ -64,11 +58,7 @@ module Public
       puts " _________ update filters prix: #{params[:prixmax]} __________"
       puts " _________ update filters type: #{params[:type]} __________"
 
-      @toutes_categories = CategorieProduit.all.order(nom: :asc)
-      @toutes_tailles = Produit.all.map(&:taille).compact.uniq.sort_by(&:nom)
-      @toutes_couleurs = Produit.all.map(&:couleur).compact.uniq.sort_by(&:nom)
-      @tranches_prix = [50, 100, 200, 500, 1000]
-      @types = ["Vente", "Location"]
+      load_data
 
       respond_to do |format|
 
@@ -136,6 +126,16 @@ module Public
         @texteBoutique = Texte.last.boutique
         @texteAdresse = Texte.last.adresse
       end
+    end
+
+    private
+
+    def load_data
+      @toutes_categories = CategorieProduit.all.order(nom: :asc)
+      @toutes_tailles = Produit.all.map(&:taille).compact.uniq.sort_by(&:nom)
+      @toutes_couleurs = Produit.all.map(&:couleur).compact.uniq.sort_by(&:nom)
+      @tranches_prix = [50, 100, 200, 500, 1000]
+      @types = ["Vente", "Location"]
     end
 
   end

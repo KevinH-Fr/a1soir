@@ -81,10 +81,10 @@ module PagesHelper
     
     # If taille_id is nil (for "Toutes"), don't apply active class if a taille is selected
     if categorie_id.nil?
-      active_class = params[:categorie].nil? ? "bg-brand-colored text-light" : ""
+      active_class = params[:id].nil? ? "bg-brand-colored text-light" : ""
     else
       # If taille_id is not nil, apply active class when the size matches
-      active_class = categorie_id.to_i == params[:categorie].to_i ? "bg-brand-colored text-light" : ""
+      active_class = categorie_id.to_i == params[:id].to_i ? "bg-brand-colored text-light" : ""
     end
     
     "#{badge_class} #{active_class}"

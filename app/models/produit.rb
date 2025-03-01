@@ -39,6 +39,27 @@ class Produit < ApplicationRecord
   scope :actif, -> { where(actif: true) } 
   scope :eshop_diffusion, -> { where(eshop: true) }
 
+  scope :by_categorie, ->(categorie) { joins(:categorie_produits).where(categorie_produits: { id: categorie.id }) }
+  scope :by_taille, ->(taille) { where(taille: taille) }
+  scope :by_couleur, ->(couleur) { where(couleur: couleur) }
+
+  # Scope to filter by prixvente or prixlocation being less than or equal to prixmax
+  scope :by_prixmax, ->(prixmax) { 
+    where("prixvente <= ? OR prixlocation <= ?", prixmax, prixmax) if prixmax.present? 
+  }
+  
+   # Scope to filter by type (Vente or Location)
+   scope :by_type, ->(type) {
+    case type
+    when "Vente"
+      where("prixvente > 0")
+    when "Location"
+      where("prixlocation > 0")
+    else
+      all
+    end
+   }
+   
   # filtres analyses
   scope :filtredatedebut, -> (debut) { where("created_at >= ?", debut.beginning_of_day) }
   scope :filtredatefin, -> (fin) { where("created_at <= ?", fin.end_of_day) }
