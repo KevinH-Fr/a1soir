@@ -23,8 +23,10 @@
                         id: params[:id], 
                         couleur: params[:couleur],
                         prixmax: params[:prixmax],
-                        taille: taille.id),
-                        class: link_badge_taille_class(taille.id) %>
+                        taille: taille.id,
+                        type: params[:type]
+                    ),
+                    class: link_badge_taille_class(taille.id) %>
         <% end %>
     </div>
 

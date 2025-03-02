@@ -17,9 +17,17 @@
             class: link_badge_couleur_class(nil) %>
 
         <% @toutes_couleurs.each do |couleur| %>
-            <%= button_to couleur.nom, update_filters_path(slug: params[:slug], id: params[:id], 
-                    taille: params[:taille], couleur: couleur.id),
-                        class: link_badge_couleur_class(couleur.id) %>
+            <%= button_to couleur.nom, update_filters_path(
+                    slug: params[:slug], 
+                    id: params[:id], 
+                    taille: params[:taille], 
+                    couleur: couleur.id,
+                    prixmax: params[:prixmax],
+                    type: params[:type]
+
+
+                ),
+                class: link_badge_couleur_class(couleur.id) %>
         <% end %>
     </div>
 

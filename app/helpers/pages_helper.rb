@@ -35,7 +35,7 @@ module PagesHelper
   end
   
   def link_badge_taille_class(taille_id = nil)
-    badge_class = "badge border brand-colored text-uppercase text-decoration-none"
+    badge_class = "badge border brand-colored text-decoration-none"
     
     # If taille_id is nil (for "Toutes"), don't apply active class if a taille is selected
     if taille_id.nil?
@@ -49,7 +49,7 @@ module PagesHelper
   end
   
   def link_badge_couleur_class(couleur_id = nil)
-    badge_class = "badge border brand-colored text-uppercase text-decoration-none"
+    badge_class = "badge border brand-colored text-downcase text-decoration-none"
     
     # If taille_id is nil (for "Toutes"), don't apply active class if a taille is selected
     if couleur_id.nil?

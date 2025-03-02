@@ -22,7 +22,8 @@
                 id: params[:id], 
                 taille: params[:taille], 
                 couleur: params[:couleur],
-                prixmax: prix
+                prixmax: prix,
+                type: params[:type]
                 ),
                 class: link_badge_prix_class(prix) %>
         <% end %>

@@ -11,15 +11,27 @@
 
     </div>
 
-    <%= render "texte_categorie" %>
+    <%#= render "texte_categorie" %>
 
-    <div class="container-fluid mt-4">
+    <div class="container-fluid">
 
         <%= render  "filtres_categorie" %>
         <%= render  "filtres_taille" %>
         <%= render  "filtres_couleur" %>
         <%= render  "filtres_prix" %>
         <%= render  "filtres_type" %>
+
+        <%= button_to "Tous les produits", 
+            update_filters_path(
+                slug: nil, 
+                id: nil, 
+                couleur: nil,
+                prixmax: nil,
+                taille: nil,
+                type: nil
+            ),
+            class: "badge border brand-colored text-decoration-none mt-2" %>
+
         <%= render  "produits_filtres" %>
    
     </div>
