@@ -13,16 +13,6 @@ module Public
 
     def produits
       load_data
-
-      # Determine the category and associated produits
-      # if params[:id]
-      #   @categorie = CategorieProduit.find(params[:id])
-      #   @produits = @categorie.produits.eshop_diffusion
-      # else
-      #   @produits = Produit.all.eshop_diffusion
-      # end
-     
-      # @toutes_tailles = @produits.map(&:taille).compact.uniq.sort_by(&:nom)
     
       # # Filter by taille if provided, otherwise group by handle and couleur
       # if params[:taille]
@@ -34,8 +24,6 @@ module Public
       #   produits = Produit.where(id: produits_uniques.map(&:id))
       # end
     
-      # produits = Produit.all.eshop_diffusion
-
       produits = FiltersProduitsService.new(
         params[:id], params[:taille], params[:couleur], 
         params[:prixmax], params[:type]
@@ -52,11 +40,6 @@ module Public
     end  
 
     def update_filters
-      puts " _________ call update filters __________"
-      puts " _________ update filters taille: #{params[:taille]} __________"
-      puts " _________ update filters couleur: #{params[:couleur]} __________"
-      puts " _________ update filters prix: #{params[:prixmax]} __________"
-      puts " _________ update filters type: #{params[:type]} __________"
 
       load_data
 
@@ -89,7 +72,6 @@ module Public
       end
 
     end
-
 
     def produit
       @produit = Produit.find(params[:id])
@@ -132,7 +114,7 @@ module Public
 
     def load_data
       @toutes_categories = CategorieProduit.all.order(nom: :asc)
-      @toutes_tailles = Produit.all.map(&:taille).compact.uniq.sort_by(&:nom)
+      @toutes_tailles = Produit.all.map(&:taille).compact.uniq.sort_by(&:nom) 
       @toutes_couleurs = Produit.all.map(&:couleur).compact.uniq.sort_by(&:nom)
       @tranches_prix = [50, 100, 200, 500, 1000]
       @types = ["Vente", "Location"]

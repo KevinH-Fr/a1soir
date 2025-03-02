@@ -1,4 +1,5 @@
 class FiltersProduitsService
+
   def initialize(categorie, taille, couleur, prixmax, type)
     @categorie = CategorieProduit.find(categorie) if categorie.present?
     @taille = taille
@@ -9,20 +10,15 @@ class FiltersProduitsService
   end
 
   def call
-    puts " __________ call filter service: categorie #{@categorie} _______"
-    puts " __________ call filter service: taille #{@taille} _______"
-    puts " __________ call filter service: couleur #{@couleur} _______"
-    puts " __________ call filter service: prixmax #{@prixmax} _______"
-    puts " __________ call filter service: type #{@type} _______"
-
     produits = Produit.eshop_diffusion
     produits = produits.by_categorie(@categorie) if @categorie.present?
     produits = produits.by_taille(@taille) if @taille.present?
     produits = produits.by_couleur(@couleur) if @couleur.present?
-
     produits = produits.by_prixmax(@prixmax) if @prixmax.present?
     produits = produits.by_type(@type)
-    
+  
     produits
+
   end
+
 end

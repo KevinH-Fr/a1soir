@@ -5,10 +5,25 @@
     </div>
 
     <div class="d-flex flex-wrap gap-1">
-        <%= button_to "Toutes", update_filters_path, class: link_badge_taille_class(nil) %>
+        <%= button_to "Toutes", 
+                update_filters_path(
+                    slug: params[:slug], 
+                    id: params[:id], 
+                    taille: nil, 
+                    couleur: params[:couleur],
+                    prixmax: params[:prixmax],
+                    type: params[:type]
+                ), 
+                class: link_badge_taille_class(nil) %>
 
         <% @toutes_tailles.each do |taille| %>
-            <%= button_to taille.nom, update_filters_path(slug: params[:slug], id: params[:id], taille: taille.id),
+            <%= button_to taille.nom, 
+                    update_filters_path(
+                        slug: params[:slug], 
+                        id: params[:id], 
+                        couleur: params[:couleur],
+                        prixmax: params[:prixmax],
+                        taille: taille.id),
                         class: link_badge_taille_class(taille.id) %>
         <% end %>
     </div>

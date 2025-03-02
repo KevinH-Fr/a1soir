@@ -5,12 +5,23 @@
     </div>
 
     <div class="d-flex flex-wrap gap-1">
-        <%= button_to "Tous", update_filters_path, class: link_badge_prix_class(nil) %>
+        <%= button_to "Tous", 
+            update_filters_path(
+                slug: params[:slug], 
+                id: params[:id], 
+                taille: params[:taille], 
+                couleur: params[:couleur],
+                prixmax: nil,
+                type: params[:type]
+            ), 
+            class: link_badge_prix_class(nil) %>
 
         <% @tranches_prix.each do |prix| %>
             <%= button_to "< #{custom_currency_no_decimals_format(prix)}", update_filters_path(
-                slug: params[:slug], id: params[:id], 
-                taille: params[:taille], couleur: params[:couleur],
+                slug: params[:slug], 
+                id: params[:id], 
+                taille: params[:taille], 
+                couleur: params[:couleur],
                 prixmax: prix
                 ),
                 class: link_badge_prix_class(prix) %>
