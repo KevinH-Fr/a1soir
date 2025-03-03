@@ -1,7 +1,7 @@
 class StripeProductService
   def initialize(produit)
     @produit = produit
-    return if ENV["ONLINE_SALES_AVAILABLE"] == "true"
+    return unless ENV["ONLINE_SALES_AVAILABLE"] == "true"
   end
 
   def create_product_and_price
