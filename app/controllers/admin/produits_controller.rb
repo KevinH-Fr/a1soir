@@ -201,8 +201,10 @@ class Admin::ProduitsController < Admin::ApplicationController
       end
   
       # Call Stripe Service outside the transaction
-      StripeProductService.new(copy).create_product_and_price 
-  
+      if ENV["ONLINE_SALES_AVAILABLE"] == "true"
+        StripeProductService.new(copy).create_product_and_price 
+      end
+      
       redirect_to admin_produit_path(copy), notice: "Duplication du produit effectuée !"
     else
       redirect_to admin_produit_path(@produit), notice: "Aucun produit de base spécifié."
