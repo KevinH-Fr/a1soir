@@ -183,28 +183,20 @@ class Admin::ProduitsController < Admin::ApplicationController
         copy.save! # Save the copy inside the transaction
       end
   
-      # Move attachments outside transaction
+      # Attach existing blobs directly
       if @produitBase.image1.attached?
-        copy.image1.attach(
-          io: StringIO.new(@produitBase.image1.download),
-          filename: @produitBase.image1.filename,
-          content_type: @produitBase.image1.content_type
-        )
+        copy.image1.attach(@produitBase.image1.blob)
       end
-  
+
       @produitBase.images.each do |image|
-        copy.images.attach(
-          io: StringIO.new(image.download),
-          filename: image.filename,
-          content_type: image.content_type
-        )
+        copy.images.attach(image.blob)
       end
   
       # Call Stripe Service outside the transaction
       if ENV["ONLINE_SALES_AVAILABLE"] == "true"
         StripeProductService.new(copy).create_product_and_price 
       end
-      
+
       redirect_to admin_produit_path(copy), notice: "Duplication du produit effectuée !"
     else
       redirect_to admin_produit_path(@produit), notice: "Aucun produit de base spécifié."
