@@ -67,6 +67,13 @@ class Admin::ProduitsController < Admin::ApplicationController
 
   def create
     @produit = Produit.new(produit_params)
+
+    same_existing_produit = Produit.find_by(
+      reffrs: @produit.reffrs,
+      nom: @produit.nom,
+      taille: @produit.taille
+    )
+    
     @categorie_produits = CategorieProduit.all
     @type_produits = TypeProduit.all
 
@@ -75,7 +82,12 @@ class Admin::ProduitsController < Admin::ApplicationController
     @fournisseurs = Fournisseur.all 
 
     respond_to do |format|
-      if @produit.save
+
+      if same_existing_produit
+
+        format.html { redirect_to new_admin_produit_path, notice: "Un produit avec la même référence existe déjà"}
+      
+      elsif @produit.save
         if ENV["ONLINE_SALES_AVAILABLE"] == "true"
           StripeProductService.new(@produit).create_product_and_price
         end
