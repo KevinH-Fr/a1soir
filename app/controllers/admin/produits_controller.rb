@@ -76,8 +76,10 @@ class Admin::ProduitsController < Admin::ApplicationController
 
     respond_to do |format|
       if @produit.save
-        StripeProductService.new(@produit).create_product_and_price
-
+        if ENV["ONLINE_SALES_AVAILABLE"] == "true"
+          StripeProductService.new(@produit).create_product_and_price
+        end
+        
         format.html { redirect_to admin_produit_url(@produit), notice: "Création réussie" }
         format.json { render :show, status: :created, location: @produit }
       else
@@ -104,8 +106,10 @@ class Admin::ProduitsController < Admin::ApplicationController
     
     respond_to do |format|
       if @produit.update(produit_params)
-        StripeProductService.new(@produit).update_product_and_price
-
+        if ENV["ONLINE_SALES_AVAILABLE"] == "true"
+          StripeProductService.new(@produit).update_product_and_price
+        end
+        
         flash.now[:success] =  "Mise à jour réussie"
 
         format.turbo_stream do
@@ -197,7 +201,7 @@ class Admin::ProduitsController < Admin::ApplicationController
       end
   
       # Call Stripe Service outside the transaction
-      StripeProductService.new(copy).create_product_and_price
+      StripeProductService.new(copy).create_product_and_price 
   
       redirect_to admin_produit_path(copy), notice: "Duplication du produit effectuée !"
     else
