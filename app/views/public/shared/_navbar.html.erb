@@ -2,9 +2,27 @@
 <nav class="navbar bg-light sticky-top navbar-expand-lg">
   <div class="container-fluid">
     <%= link_to image_tag('/images/logo_courant_public.png', class: 'navbar-brand me-4', width: "200"), root_url %>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+   
+    <div class="d-flex text-end align-items-center">
+
+      <% if ENV["ONLINE_SALES_AVAILABLE"] == "true" %>
+        <%= link_to cart_url, class: "text-decoration-none text-dark me-2 fs-4 position-relative d-inline-block" do %>
+          <i class="bi bi-bag-fill"></i>
+          <span class="position-absolute top-50 start-50 translate-middle badge rounded-pill pt-2" style="font-size: 12px;">
+            <%= @cart.size %>
+            <span class="visually-hidden">items in cart</span>
+          </span>
+        <% end %>
+      <% end %>
+
+
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+    </div>
+
     <div class="collapse navbar-collapse" id="navbar">
       <ul class="navbar-nav me-auto my-2 my-lg-0">
         <%= nav_link_public(home_path, "Accueil") %>

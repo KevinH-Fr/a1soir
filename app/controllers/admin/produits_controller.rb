@@ -81,6 +81,12 @@ class Admin::ProduitsController < Admin::ApplicationController
     @tailles = Taille.all 
     @fournisseurs = Fournisseur.all 
 
+    if params[:produit][:images].present?
+      params[:produit][:images].each do |image|
+        @produit.images.attach(image)
+      end
+    end
+    
     respond_to do |format|
 
       if same_existing_produit

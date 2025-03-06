@@ -88,6 +88,9 @@ module Public
 
     end
 
+    def cart
+    end
+
     def contact
       if Texte.last.present?
         @texteContact = Texte.last.contact

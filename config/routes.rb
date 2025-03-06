@@ -39,6 +39,8 @@ Rails.application.routes.draw do
         
       end
 
+      get 'cart', to: 'pages#cart'
+
     end
 
   end 

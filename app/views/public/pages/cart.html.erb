@@ -1,0 +1,24 @@
+<div class="public-main-content">
+
+    <div class="p-2">
+
+        <h1>Mon panier</h1>
+        <%= pluralize(@cart.size, "produit") %> 
+
+        <br>
+        <% @cart.each do |cart_item| %>
+            <br>
+            <%= cart_item.nom %>
+            <%= link_to "x", remove_from_cart_path(cart_item), method: :delete %>
+        <% end %>
+
+        <hr>
+
+        <% if @cart.present? %>
+            <%= @cart.collect { |item| item.to_builder.attributes! } %>
+            <%= button_to "Passer au paiement", stripe_payments_path, 
+                method: :post, class: "btn btn-primary", data: { turbo: false } %>  
+        <% end %>
+
+    </div>
+</div>

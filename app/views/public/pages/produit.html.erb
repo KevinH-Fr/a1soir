@@ -51,9 +51,17 @@
                     <% if ENV["ONLINE_SALES_AVAILABLE"]  =="true" %>
 
                         <% if @cart.include?(@produit) %>
-                            <%= button_to "Remove from cart", remove_from_cart_path(@produit), method: :delete %>
+                            <%= button_to remove_from_cart_path(@produit), method: :delete, class: "btn btn-sm btn-secondary" do %>
+                                <i class="bi bi-bag-x"></i>
+                                <span>Retirer du panier</span>
+                            <% end %>
                         <% else %>
-                            <%= button_to "Add to cart", add_to_cart_path(@produit) %>
+
+                            <%= button_to add_to_cart_path(@produit), class: "btn btn-sm btn-primary" do %>
+                                <i class="bi bi-bag-plus"></i>
+                                <span>Ajouter au panier</span>
+                            <% end %>
+
                         <% end %>
                     <% end %>
                     
