@@ -66,3 +66,10 @@ gem 'icalendar'
 gem 'google-apis-calendar_v3'
 
 gem 'stripe'
+
+group :development do
+  gem 'derailed_benchmarks'
+  gem 'syntax_suggest'
+end
+
+gem 'scout_apm'
