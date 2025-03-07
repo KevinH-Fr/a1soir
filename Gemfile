@@ -4,7 +4,7 @@ ruby "3.1.2"
 gem "rails", "~> 7.1.3"
 gem "sprockets-rails"
 gem "puma", ">= 5.0"
-gem "importmap-rails"
+#gem "importmap-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "jbuilder"
@@ -73,3 +73,5 @@ group :development do
 end
 
 gem 'scout_apm'
+
+gem "jsbundling-rails"

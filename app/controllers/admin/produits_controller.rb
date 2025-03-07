@@ -12,9 +12,8 @@ class Admin::ProduitsController < Admin::ApplicationController
        # or_prixvente_or_prixlocation 
        
     @q = Produit.ransack(search_params[:q])
-    produits = @q.result(distinct: true).includes(:categorie_produits).order(nom: :asc)
+    produits = @q.result(distinct: true).order(nom: :asc)
     @pagy, @produits = pagy_countless(produits, items: 2)
-
 
     @categorie_produits = CategorieProduit.all
     @type_produits = TypeProduit.all
