@@ -12,7 +12,7 @@ class Admin::ProduitsController < Admin::ApplicationController
        # or_prixvente_or_prixlocation 
        
     @q = Produit.ransack(search_params[:q])
-    produits = @q.result(distinct: true).order(nom: :asc)
+    produits = @q.result(distinct: true).order(created_at: :desc)
     @pagy, @produits = pagy_countless(produits, items: 2)
 
     @categorie_produits = CategorieProduit.all
