@@ -124,19 +124,19 @@ class Admin::CommandesController < Admin::ApplicationController
 
   def toggle_statut_retire
     @commande.update(statutarticles: "retiré" )
-    redirect_to commande_path(@commande),
+    redirect_to admin_commande_url(@commande),
       notice: "commande retirée par client" 
   end
 
   def toggle_statut_non_retire
     @commande.update(statutarticles: "non-retiré" )
-    redirect_to commande_path(@commande),
+    redirect_to admin_commande_url(@commande),
       notice: "commande non-retirée par client" 
   end
 
   def toggle_statut_rendu
     @commande.update(statutarticles: "rendu" )
-    redirect_to commande_path(@commande),
+    redirect_to admin_commande_url(@commande),
       notice: "commande rendue par client" 
   end
 

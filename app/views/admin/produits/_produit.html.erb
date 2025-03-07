@@ -56,7 +56,7 @@
 
             <div class="mt-auto m-1">
 
-              <% if controller_name == "produits" && action_name == "show"  %>        <%# || controller_name == "selection_produit" %>    
+              <% if controller_name == "produits" && action_name == "show" %>    <%# || controller_name == "selection_produit"%>
                 <%= link_to dupliquer_admin_produit_path(produitbase: produit.id),
                       class: "btn btn-sm btn-dark",
                       :onclick => "return confirm('Etes-vous certain de vouloir dupliquer ce produit ?')",

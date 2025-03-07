@@ -1,0 +1,19 @@
+{
+  "name": "app",
+  "private": true,
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets"
+  },
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo-rails": "^8.0.13",
+    "@kurkle/color": "^0.3.4",
+    "@rails/actiontext": "^8.0.100",
+    "@zxing/browser": "^0.1.5",
+    "@zxing/library": "^0.21.3",
+    "trix": "^2.1.12"
+  }
+}
