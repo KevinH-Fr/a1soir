@@ -43,19 +43,18 @@ gem "wkhtmltopdf-heroku", group: :production
 
 gem "letter_opener", group: :development
 
-gem "simple_calendar"
+#gem "simple_calendar"
 
 gem "rqrcode", "~> 2.0"
 
 gem 'ransack'
 
-gem 'jquery-rails'
+#gem 'jquery-rails'
 
 gem 'cloudinary'
 gem 'dotenv', groups: [:development, :test]
 
 gem 'pagy'
-
 
 gem 'whenever', require: false
 
@@ -67,11 +66,13 @@ gem 'google-apis-calendar_v3'
 
 gem 'stripe'
 
+gem 'stringio'
+
 group :development do
   gem 'derailed_benchmarks'
   gem 'syntax_suggest'
 end
 
-gem 'scout_apm'
+#gem 'scout_apm'
 
 gem "jsbundling-rails"
