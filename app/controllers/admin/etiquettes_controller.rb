@@ -8,7 +8,7 @@ class Admin::EtiquettesController < Admin::ApplicationController
       q:[:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont])
       
     @q = Produit.ransack(search_params[:q])
-    produits = @q.result(distinct: true).order(nom: :asc)
+    produits = @q.result(distinct: true).order(updated_at: :desc)
     @pagy, @produits = pagy_countless(produits, items: 6)
 
     @selection_produits = []
