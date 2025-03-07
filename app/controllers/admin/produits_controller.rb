@@ -115,6 +115,12 @@ class Admin::ProduitsController < Admin::ApplicationController
     @tailles = Taille.all 
     @fournisseurs = Fournisseur.all 
 
+    same_existing_produit = Produit.find_by(
+      reffrs: @produit.reffrs,
+      nom: @produit.nom,
+      taille: @produit.taille
+    )
+
     # Retain existing medias if the field is left empty
     if params[:produit][:images].present?
       params[:produit][:images].each do |image|
@@ -123,7 +129,12 @@ class Admin::ProduitsController < Admin::ApplicationController
     end
     
     respond_to do |format|
-      if @produit.update(produit_params)
+
+      if same_existing_produit
+
+        format.html { redirect_to admin_produit_path(@produit), notice: "Un produit avec la même référence existe déjà"}
+      
+      elsif @produit.update(produit_params)
         if ENV["ONLINE_SALES_AVAILABLE"] == "true"
           StripeProductService.new(@produit).update_product_and_price
         end
