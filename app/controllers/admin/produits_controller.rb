@@ -12,9 +12,8 @@ class Admin::ProduitsController < Admin::ApplicationController
        # or_prixvente_or_prixlocation 
        
     @q = Produit.ransack(search_params[:q])
-    produits = @q.result(distinct: true).includes(:categorie_produits).order(nom: :asc)
+    produits = @q.result(distinct: true).order(nom: :asc)
     @pagy, @produits = pagy_countless(produits, items: 2)
-
 
     @categorie_produits = CategorieProduit.all
     @type_produits = TypeProduit.all
@@ -115,11 +114,12 @@ class Admin::ProduitsController < Admin::ApplicationController
     @tailles = Taille.all 
     @fournisseurs = Fournisseur.all 
 
-    same_existing_produit = Produit.find_by(
+    same_existing_produit = Produit.where.not(id: @produit.id).find_by(
       reffrs: params[:produit][:reffrs],
       nom: params[:produit][:nom],
       taille: params[:produit][:taille_id]
     )
+    
 
     #puts " __________________ data same existing produit : #{params[:produit][:taille_id]} "
 
