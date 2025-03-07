@@ -116,10 +116,12 @@ class Admin::ProduitsController < Admin::ApplicationController
     @fournisseurs = Fournisseur.all 
 
     same_existing_produit = Produit.find_by(
-      reffrs: @produit.reffrs,
-      nom: @produit.nom,
-      taille: @produit.taille
+      reffrs: params[:produit][:reffrs],
+      nom: params[:produit][:nom],
+      taille: params[:produit][:taille_id]
     )
+
+    #puts " __________________ data same existing produit : #{params[:produit][:taille_id]} "
 
     # Retain existing medias if the field is left empty
     if params[:produit][:images].present?
