@@ -1,5 +1,5 @@
 <!-- Section Image -->
-<div class="text-center" style="height: 500px; padding-top: 20px; padding-right: 20px; padding-left: 20px; box-sizing: border-box; position: relative; overflow: hidden;">
+<div class="text-center" style="height: 490px; padding-top: 0px; padding-right: 20px; padding-left: 20px; box-sizing: border-box; position: relative; overflow: hidden;">
   <div style="width: 100%; height: 100%; background-image: url('<%= produit.image1.present? ? produit.image1.url : no_photo_url %>'); background-size: cover; background-repeat: no-repeat; background-position: center;">
   </div>
 </div>
@@ -8,7 +8,7 @@
 <div style="height: 70px; padding-left: 5px; padding-right: 5px;">
     <table style="width: 100%; border-color: white; padding: 0px;">
         <tr>
-            <td style="width: 80px; padding: 0px;">
+            <td style="width: 70px; padding: 0px;">
                 <%= image_tag(produit.qr_code, class:"img-fluid") if produit.qr_code.present? %>              
             </td>
 
@@ -16,10 +16,15 @@
                 <h3 class="bolded text-dark"><%= produit.nom %></h3> 
 
                 <!-- Pricing Section -->
-                <div>
+                <div class="gap-2">
                     <% if produit.prixvente %>
                         <span>Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>                      
                     <% end %>
+                    
+                    <% if produit.prixvente.present? && produit.prixlocation.present? %>
+                        <span class="px-1">-</span>
+                    <% end %>
+
                     <% if produit.prixlocation %>
                         <span>Location: <%= number_to_currency(produit.prixlocation, locale: :fr, precision: 0) %></span> 
                     <% end %>
@@ -45,7 +50,7 @@
             <% end %>
         <% end %>
     </div>
-    <div class="mt-1">
+    <div class="mt-2">
         Couleur(s): 
         <% if produit.couleur.present? %>
             <span style="border: 1px solid black; border-radius: 5px; margin-right: 2px; padding: 2px;">
