@@ -100,7 +100,7 @@ class Produit < ApplicationRecord
 
   def to_builder
     Jbuilder.new do |produit|
-      produit.prixvente stripe_price_id
+      produit.price stripe_price_id
       produit.quantity 1
     end
   end

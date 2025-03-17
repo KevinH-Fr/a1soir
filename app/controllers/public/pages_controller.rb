@@ -89,6 +89,7 @@ module Public
     end
 
     def cart
+      @total_amount = @cart.sum { |item| item.prixvente } # Sum of all item prices
     end
 
     def contact

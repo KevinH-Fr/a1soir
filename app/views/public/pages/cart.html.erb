@@ -2,23 +2,67 @@
 
     <div class="p-2">
 
-        <h1>Mon panier</h1>
-        <%= pluralize(@cart.size, "produit") %> 
-
-        <br>
+        <div class="d-flex align-items-center">
+            <h1> Mon panier </h1>
+            <div class="fst-italic ms-2">  <%= pluralize(@cart.size, "produit") %>  </div>
+        </div>
+       
         <% @cart.each do |cart_item| %>
-            <br>
-            <%= cart_item.nom %>
-            <%= link_to "x", remove_from_cart_path(cart_item), method: :delete %>
+            <div class="card shadow mb-3 h-100 d-flex">
+                <div class="row g-0 flex-grow-1">
+                    <div class="col-auto">
+                        <%= image_tag(cart_item.default_image, 
+                            class: "rounded-start", style: "max-height: 200px; object-fit: cover;") %>
+                    </div>
+
+                    <div class="col p-2 d-flex flex-column">
+                        <div class="fs-5 fw-bold">
+                            <%= cart_item.nom %> 
+                        </div>                      
+                        <small class="fs-6 my-1 text-truncate-multiline">
+                            <%= cart_item.description %>
+                        </small>
+
+                        <div>
+                            <%= badge_taille(cart_item) if cart_item.taille %>
+                        </div>
+
+                        <!-- Pushes the price & button to the bottom -->
+                        <div class="mt-auto d-flex gap-2 align-items-center">
+                            <div class="fw-bold"> 
+                                <%= custom_currency_no_decimals_format(cart_item.prixvente) %> 
+                            </div> 
+
+                            <%= button_to "supprimer", remove_from_cart_path(cart_item), method: :delete, 
+                                    class: "btn btn-sm btn-outline-dark p-0 border-0" %>   
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         <% end %>
 
         <hr>
-
+      
         <% if @cart.present? %>
-            <%= @cart.collect { |item| item.to_builder.attributes! } %>
-            <%= button_to "Passer au paiement", stripe_payments_path, 
-                method: :post, class: "btn btn-primary", data: { turbo: false } %>  
+
+            <div class="d-inline">
+                Sous-total <%= custom_currency_no_decimals_format(@total_amount) %>
+            </div>
+            
+            <br>
+
+            <%#= @cart %>
+            <%#= @cart.collect { |item| item.to_builder.attributes! } %>
+            
         <% end %>
 
+        <div class="d-flex gap-2 mt-3">
+            <%= button_to "Passer au paiement", stripe_payments_path, 
+                method: :post, class: "btn btn-primary", data: { turbo: false } %>  
+
+            <%= link_to  "Voir plus de produits", produits_index_url, class: "btn btn-outline-primary" %>
+        
+        </div>
     </div>
 </div>
