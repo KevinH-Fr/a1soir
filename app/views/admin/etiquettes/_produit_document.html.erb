@@ -1,70 +1,68 @@
-<!-- Section Image -->
-<div class="text-center" style="height: 490px; padding-top: 0px; padding-right: 20px; padding-left: 20px; box-sizing: border-box; position: relative; overflow: hidden;">
-  <div style="width: 100%; height: 100%; background-image: url('<%= produit.image1.present? ? produit.image1.url : no_photo_url %>'); background-size: cover; background-repeat: no-repeat; background-position: center;">
-  </div>
-</div>
 
-<!-- Footer Section (Sizes and Colors) -->
-<div style="height: 70px; padding-left: 5px; padding-right: 5px;">
-    <table style="width: 100%; border-color: white; padding: 0px;">
-        <tr>
-            <td style="width: 70px; padding: 0px;">
-                <%= image_tag(produit.qr_code, class:"img-fluid") if produit.qr_code.present? %>              
-            </td>
+<table style="width: 100%; border-color: white; padding: 20px;">
+    <tr>
+        <td colspan="2" style="height: 420px; 
+            background-image: url('<%= produit.image1.present? ? produit.image1.url : no_photo_url %>'); 
+            background-size: cover; background-repeat: no-repeat; background-position: center;">
 
-            <td style="width: 300px; padding-left: 0px;">
-                <h3 class="bolded text-dark"><%= produit.nom %></h3> 
+        </td>
+    </tr>
 
-                <!-- Pricing Section -->
-                <div class="gap-2">
-                    <% if produit.prixvente %>
-                        <span>Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>                      
-                    <% end %>
-                    
-                    <% if produit.prixvente.present? && produit.prixlocation.present? %>
-                        <span class="px-1">-</span>
-                    <% end %>
+    <tr>
+        <td style="width: 85px;">
+            <%= image_tag(produit.qr_code, width: 85) if produit.qr_code.present? %>        
+        </td>
+        <td style="height: 110px; text-align: left;">
+            <h3 class="bolded text-dark"><%= produit.nom %></h3> 
 
-                    <% if produit.prixlocation %>
-                        <span>Location: <%= number_to_currency(produit.prixlocation, locale: :fr, precision: 0) %></span> 
-                    <% end %>
-                </div>
-
-            </td>
-        </tr>
-    </table>
-</div>
-
-<div style="height: 40px; padding-right: 20px; padding-left: 20px; margin-top: 0px">
-
-    <div class="mt-2">
-        Taille(s): 
-        <% if produit.taille.present? %>
-            <span class="text-uppercase" style="border: 2px solid black; border-radius: 5px; margin-right: 2px; padding: 1px;">
-                <%= produit.taille&.nom %>
-            </span>
-            <% same_produit_same_couleur_others_tailles(produit).each do |prod| %>
-                <span class="text-uppercase" style="border: 2px solid grey; border-radius: 5px; color: grey; margin-right: 2px; padding: 1px;">
-                    <%= prod.taille&.nom %>
-                </span>
+            <% if produit.prixvente %>
+                <span>Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>                      
             <% end %>
-        <% end %>
-    </div>
-    <div class="mt-2">
-        Couleur(s): 
-        <% if produit.couleur.present? %>
-            <span style="border: 1px solid black; border-radius: 5px; margin-right: 2px; padding: 2px;">
-                <%= produit.couleur&.nom %>
-                <div style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: <%= produit.couleur&.couleur_code %>"></div>
-            </span>
-            <% same_produit_same_taille_others_couleurs(produit).each do |prod| %>
-                <% if prod.couleur.present? %>    
-                    <span style="border: 1px solid grey; border-radius: 5px; color: grey; margin-right: 2px; padding: 2px;">
-                        <%= prod.couleur&.nom %>
-                        <div style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: <%= prod.couleur&.couleur_code %>"></div>
+            
+            <% if produit.prixvente.present? && produit.prixlocation.present? %>
+                <span class="px-1">-</span>
+            <% end %>
+
+            <% if produit.prixlocation %>
+                <span>Location: <%= number_to_currency(produit.prixlocation, locale: :fr, precision: 0) %></span> 
+            <% end %>
+       </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" style="padding-left: 10px;">
+            <div class="mt-1">
+                Taille(s): 
+                <% if produit.taille.present? %>
+                    <span class="text-uppercase" style="border: 2px solid black; border-radius: 5px; margin-right: 2px; padding: 1px;">
+                        <%= produit.taille&.nom %>
                     </span>
+                    <% same_produit_same_couleur_others_tailles(produit).each do |prod| %>
+                        <span class="text-uppercase" style="border: 2px solid grey; border-radius: 5px; color: grey; margin-right: 2px; padding: 1px;">
+                            <%= prod.taille&.nom %>
+                        </span>
+                    <% end %>
                 <% end %>
-            <% end %>
-        <% end %>
-    </div>
-</div>
+            </div>
+            <div class="mt-2">
+                Couleur(s): 
+                <% if produit.couleur.present? %>
+                    <span style="border: 1px solid black; border-radius: 5px; margin-right: 2px; padding: 2px;">
+                        <%= produit.couleur&.nom %>
+                        <div style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: <%= produit.couleur&.couleur_code %>"></div>
+                    </span>
+                    <% same_produit_same_taille_others_couleurs(produit).each do |prod| %>
+                        <% if prod.couleur.present? %>    
+                            <span style="border: 1px solid grey; border-radius: 5px; color: grey; margin-right: 2px; padding: 2px;">
+                                <%= prod.couleur&.nom %>
+                                <div style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: <%= prod.couleur&.couleur_code %>"></div>
+                            </span>
+                        <% end %>
+                    <% end %>
+                <% end %>
+            </div>
+
+        </td>
+    </tr>
+
+</table>
