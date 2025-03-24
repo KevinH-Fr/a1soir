@@ -22,7 +22,14 @@
       <%= form_with url: toggle_transformer_ensemble_admin_selection_produit_index_path, method: :post, local: true do %>
         <%= hidden_field_tag :ensemble_id, result[:ensemble].id %>
 
-        <%= result.inspect %>
+
+        <hr>
+        matching_reffrs_count: <%= result[:matching_reffrs_count] %> <br>
+        ref frs dans ensemble: <%= result[:ensemble].produit.reffrs %> <br>
+        ref frs dans articles: <%= @commande.articles.includes(:produit).map { |a| a.produit&.reffrs } %><br>
+ 
+
+        <hr>
 
         <%= submit_tag "Transformer en ensemble", 
             class: "btn btn-primary my-2 w-100 fw-bold",

@@ -62,8 +62,10 @@ module EnsemblesHelper
       ].compact
 
       # Count how many ensemble reffrs match those in the commande
-      match_count = (ensemble_reffrs & reffrs).size
-
+      match_count = reffrs.count do |commande_reffrs|
+        ensemble_reffrs.any? { |ens_reffrs| ens_reffrs.include?(commande_reffrs) }
+      end
+      
       { ensemble: ensemble, matching_reffrs_count: match_count }
     end
 
