@@ -1,6 +1,7 @@
 class Admin::ProduitsController < Admin::ApplicationController
 
-  #before_action :authenticate_vendeur_or_admin!
+  before_action :authenticate_admin!, only: %i[ edit update ]
+
   before_action :set_produit, only: %i[ show edit update destroy delete_image_attachment ]
 
   def index

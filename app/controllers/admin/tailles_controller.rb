@@ -1,5 +1,6 @@
 class Admin::TaillesController < Admin::ApplicationController
-  #before_action :authenticate_vendeur_or_admin!
+
+  before_action :authenticate_admin!
 
   before_action :set_taille, only: %i[ show edit update destroy ]
 

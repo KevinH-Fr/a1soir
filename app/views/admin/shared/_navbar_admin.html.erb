@@ -12,8 +12,8 @@
         <%= nav_link(admin_produits_path, "Produits", "bi-person-standing-dress") %>
         <%= nav_link(admin_commandes_path, "Commandes", "bi-file-earmark-post") %>
         <%= nav_link(admin_meetings_path, "Calendrier", "bi-calendar-date") %>
-        <%= nav_link(admin_analyses_index_path, "Analyses", "bi-graph-up-arrow") %>
-        <%= nav_link(admin_home_admin_path, "Marketing", "bi-flag") %>
+        <%= nav_link(admin_analyses_index_path, "Analyses", "bi-graph-up-arrow") if current_admin_user&.admin? %>
+        <%= nav_link(admin_home_admin_path, "Marketing", "bi-flag") if current_admin_user&.admin? %>
       </ul>
       <!--form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Recherche..." aria-label="Search">

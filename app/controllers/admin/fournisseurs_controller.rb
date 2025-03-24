@@ -1,6 +1,6 @@
 class Admin::FournisseursController < Admin::ApplicationController
 
- # before_action :authenticate_vendeur_or_admin!
+  before_action :authenticate_admin!
   before_action :set_fournisseur, only: %i[ show edit update destroy ]
 
   def index

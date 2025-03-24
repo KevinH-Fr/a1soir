@@ -1,6 +1,6 @@
 class Admin::CouleursController < Admin::ApplicationController
   
- # before_action :authenticate_vendeur_or_admin!
+  before_action :authenticate_admin!
   before_action :set_couleur, only: %i[ show edit update destroy ]
 
   def index

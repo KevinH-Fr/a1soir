@@ -57,18 +57,19 @@
             <div class="mt-auto m-1">
 
               <% if controller_name == "produits" && action_name == "show" %>    <%# || controller_name == "selection_produit"%>
-                <%= link_to dupliquer_admin_produit_path(produitbase: produit.id),
-                      class: "btn btn-sm btn-dark",
-                      :onclick => "return confirm('Etes-vous certain de vouloir dupliquer ce produit ?')",
-                      title: 'Dupliquer' do %>
-                  <i class="bi-copy me-1"></i>
-                  <span class="fw-bold">Dupliquer</span>
-                
-                <% end %>
-                
+                <% if current_admin_user.admin? %>
+                  <%= link_to dupliquer_admin_produit_path(produitbase: produit.id),
+                        class: "btn btn-sm btn-dark",
+                        :onclick => "return confirm('Etes-vous certain de vouloir dupliquer ce produit ?')",
+                        title: 'Dupliquer' do %>
+                    <i class="bi-copy me-1"></i>
+                    <span class="fw-bold">Dupliquer</span>
+                  
+                  <% end %>
+                <% end %>  
               <% end %>
 
-              <%= links_record(produit) %>  
+              <%= links_record(produit) if current_admin_user.admin? %>
             </div>
           </p>
         </div>
@@ -103,13 +104,13 @@
           <%= custom_badge("", "caution", "", "", produit.caution ) if produit.caution %>
           <%= custom_badge("", "handle:", "", "", produit.handle ) if produit.handle %>
           <%= custom_badge("", "ref. fournisseur:", "", "", produit.reffrs ) if produit.reffrs %>
-          <%= custom_badge("", "fournisseur:", "", "", produit.fournisseur&.nom ) if produit.fournisseur&.nom %>
-          <%= custom_badge("", "quantité:", "", "", produit.quantite ) if produit.quantite %>
-          <%= custom_badge("", "date achat:", "", "", produit.dateachat ) if produit.dateachat %>
+          <%#= custom_badge("", "quantité:", "", "", produit.quantite ) if produit.quantite %>
           <%= custom_badge("", "poids (grammes):", "", "", produit.poids ) %>
 
           <% if current_admin_user.admin? %>
             <%= custom_badge("", "prixachat", "", "", produit.prixachat ) if produit.prixachat %>
+            <%= custom_badge("", "fournisseur:", "", "", produit.fournisseur&.nom ) if produit.fournisseur&.nom  %>
+            <%= custom_badge("", "date achat:", "", "", produit.dateachat ) if produit.dateachat %>
           <% end %>
           
         </div>

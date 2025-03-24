@@ -16,19 +16,19 @@
     </div>
 
     <div class= "card-body p-2 light-beige-colored text-center gap-2">
-        <%= options_supplementaires_link(admin_users_path, "bi-person-circle", "Comptes", "btn-outline-primary") %>
-        <%= options_supplementaires_link(admin_profiles_path, "bi-person-check", "Profiles", "btn-outline-dark") %>
-        <%= options_supplementaires_link(admin_textes_path, "bi-flag", "Marketing", "btn-outline-warning") %>
-        <%= options_supplementaires_link(admin_analyses_index_path, "bi-graph-up-arrow", "Analyses", "btn-outline-success") %>
+        <%= options_supplementaires_link(admin_users_path, "bi-person-circle", "Comptes", "btn-outline-primary") if current_admin_user.admin? %>
+        <%= options_supplementaires_link(admin_profiles_path, "bi-person-check", "Profiles", "btn-outline-dark") if current_admin_user.admin? %>
+        <%= options_supplementaires_link(admin_textes_path, "bi-flag", "Marketing", "btn-outline-warning") if current_admin_user.admin? %>
+        <%= options_supplementaires_link(admin_analyses_index_path, "bi-graph-up-arrow", "Analyses", "btn-outline-success") if current_admin_user.admin? %>
         <%= options_supplementaires_link(admin_etiquettes_index_path, "bi-tags", "Etiquettes", "btn-outline-secondary") %>
         <%= options_supplementaires_link(admin_stock_index_path, "bi-boxes", "Stocks", "btn-outline-danger") %>
-        <%= options_supplementaires_link(admin_fournisseurs_path, "bi-buildings", "Fournisseurs", "btn-outline-dark") %>
-        <%= options_supplementaires_link(admin_ensembles_path, "bi-collection", "Ensembles", "btn-outline-primary") %>
-        <%= options_supplementaires_link(admin_categorie_produits_path, "bi-layers", "Cat. produits", "btn-outline-dark") %>
-        <%= options_supplementaires_link(admin_type_produits_path, "bi-list-ul", "Types produits", "btn-outline-primary") %>
-        <%= options_supplementaires_link(admin_couleurs_path, "bi-palette", "Couleurs", "btn-outline-dark") %>
-        <%= options_supplementaires_link(admin_tailles_path, "bi-rulers", "Tailles", "btn-outline-secondary") %>
-        <%= options_supplementaires_link(admin_admin_parameters_path, "bi-gear", "Parametres", "btn-outline-warning") %>
+        <%= options_supplementaires_link(admin_fournisseurs_path, "bi-buildings", "Fournisseurs", "btn-outline-dark") if current_admin_user.admin? %>
+        <%= options_supplementaires_link(admin_ensembles_path, "bi-collection", "Ensembles", "btn-outline-primary") if current_admin_user.admin? %>
+        <%= options_supplementaires_link(admin_categorie_produits_path, "bi-layers", "Cat. produits", "btn-outline-dark") if current_admin_user.admin? %>
+        <%= options_supplementaires_link(admin_type_produits_path, "bi-list-ul", "Types produits", "btn-outline-primary") if current_admin_user.admin? %>
+        <%= options_supplementaires_link(admin_couleurs_path, "bi-palette", "Couleurs", "btn-outline-dark") if current_admin_user.admin? %>
+        <%= options_supplementaires_link(admin_tailles_path, "bi-rulers", "Tailles", "btn-outline-secondary") if current_admin_user.admin? %>
+        <%= options_supplementaires_link(admin_admin_parameters_path, "bi-gear", "Parametres", "btn-outline-warning") if current_admin_user.admin? %>
 
         <%= options_supplementaires_link(root_url(subdomain: "shop"), "bi-house", "Site public", "btn-outline-primary") %>
         <%= options_supplementaires_link(admin_home_admin_scan_qr_path, "bi-qr-code-scan", "Scan", "btn-primary") %>

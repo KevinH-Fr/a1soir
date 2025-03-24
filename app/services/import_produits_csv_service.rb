@@ -13,6 +13,7 @@ class ImportProduitsCsvService
     CSV.foreach(file_path, headers: true).with_index(1) do |row, index|
       next if index < start_row
       break if index > end_row
+      next if row['Published On'].to_s.strip.empty?  # Skip if 'Published On' is blank
 
       begin
         # Normalize category names
