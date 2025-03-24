@@ -39,8 +39,9 @@ module ApplicationHelper
 
     def colored_value_format(amount)
       css_style = amount.to_i > 0 ? 'color: red;' : 'color: green;'
-      content_tag(:span, number_to_currency(amount), style: css_style)
+      content_tag(:span, custom_currency_format(amount), style: css_style)
     end
+    
 
     def color_icon(couleur)
       content_tag(:i, '', class: "bi bi-circle-fill mx-1", style: "color: #{couleur.couleur_code}")

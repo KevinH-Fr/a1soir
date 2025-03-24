@@ -55,21 +55,33 @@ module EnsemblesHelper
       (ensemble_type_produits - matching_type_produits).empty?
     end
   
-    # Step 4: Order ensembles by whether ensemble.produit.reffrs match reffrs
-    ordered_ensembles = ensembles.sort_by do |ensemble|
-      produit_reffrs = ensemble.produit&.reffrs
-      reffrs.include?(produit_reffrs) ? 0 : 1 # Put matches first
+    # ✅ Step 4: Order ensembles by number of matching reffrs
+    ordered_ensembles_with_match_count = ensembles.map do |ensemble|
+      ensemble_reffrs = [
+        ensemble.produit&.reffrs
+      ].compact
+
+      # Count how many ensemble reffrs match those in the commande
+      match_count = (ensemble_reffrs & reffrs).size
+
+      { ensemble: ensemble, matching_reffrs_count: match_count }
     end
-  
-    # Step 5: Find matching articles for each ordered ensemble and return results
-    result = ordered_ensembles.map do |ensemble|
+
+    ordered_ensembles_with_match_count.sort_by! { |e| -e[:matching_reffrs_count] } # descending order
+
+    # ✅ Step 5: Prepare result with matching articles and matching count
+    ordered_ensembles_with_match_count.map do |entry|
+      ensemble = entry[:ensemble]
       matching_articles = find_matching_articles(commande, ensemble)
-      article_ids = matching_articles.map(&:id)
   
-      { ensemble: ensemble, matching_articles: matching_articles }
+      {
+        ensemble: ensemble,
+        matching_articles: matching_articles,
+        matching_reffrs_count: entry[:matching_reffrs_count]
+      }
     end
   
-    result
+    #result
   end
   
   
