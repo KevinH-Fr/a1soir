@@ -47,16 +47,16 @@
                 <tr>
                   <td colspan=2> </td>
 
-                  <td class="">
-                    <div style="display: inline-block; vertical-align: middle;">
+                  <td style="">
+                    <div style="display: inline-block; vertical-align: middle; ">
                       <!-- Image on the left -->
-                      <%= image_tag(sousarticle.produit.default_image, style: "width: 40px; height: auto;", class: "img-fluid rounded") %> 
+                      <%= image_tag(sousarticle.produit.default_image, style: "width: 40px; height: auto;") %> 
                     </div>
                     
-                    <div style="display: inline-block; margin-left: 10px; vertical-align: middle;">
+                    <div style="display: inline-block; margin-left: 10px; vertical-align: middle; width: 260px;">
                       <!-- Text on the right -->
                       <div>
-                        <strong><%= sousarticle.produit.nom %></strong>
+                        <strong><%= sousarticle.produit.nom %> </strong>
                       </div>
                       <div>
                         <%= sousarticle.produit&.couleur&.nom %> 
