@@ -154,7 +154,8 @@ class Admin::SelectionProduitController < Admin::ApplicationController
 
   def toggle_transformer_ensemble
     @commande = Commande.find(session[:commande])
-  
+    ensemble_id = params[:ensemble_id]
+
     # Fetch the results (array of hashes)
     results = find_ensemble_matching_type_produits(@commande)
   
@@ -163,9 +164,13 @@ class Admin::SelectionProduitController < Admin::ApplicationController
       return redirect_to commande_path(@commande), alert: "Aucun ensemble correspondant trouvé."
     end
   
-    # Select the first result (you can adapt this to allow user choice if needed)
-    selected_result = results.first
-  
+    # Select the ensemble chosen by user
+    selected_result = results.find { |res| res[:ensemble].id == ensemble_id.to_i }
+
+    if selected_result.blank?
+      return redirect_to commande_path(@commande), alert: "Ensemble sélectionné introuvable."
+    end
+    
     # Extract ensemble and matching articles
     ensemble = selected_result[:ensemble]
     matching_articles = selected_result[:matching_articles]

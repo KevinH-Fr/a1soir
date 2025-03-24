@@ -13,11 +13,21 @@
         <p>No matching articles found for this ensemble.</p>
       <% end %>
 
-      <%= button_to "Transformer en ensemble", 
+      <%#= button_to "Transformer en ensemble", 
           toggle_transformer_ensemble_admin_selection_produit_index_path,
           class: "btn btn-primary my-2 w-100 fw-bold",
           method: :post,
           onclick: "return confirm('Certain(e) de transformer les articles en ensemble ?');" %>
+
+      <%= form_with url: toggle_transformer_ensemble_admin_selection_produit_index_path, method: :post, local: true do %>
+        <%= hidden_field_tag :ensemble_id, result[:ensemble].id %>
+
+        <%= submit_tag "Transformer en ensemble", 
+            class: "btn btn-primary my-2 w-100 fw-bold",
+            data: { confirm: "Certain(e) de transformer les articles en ensemble ?" } %>
+      <% end %>
+
+
     </div>
   <% end %>
 <% end %>

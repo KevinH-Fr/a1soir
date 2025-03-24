@@ -1,7 +1,7 @@
 
 <table style="width: 100%; border-color: white; padding: 20px;">
     <tr>
-        <td colspan="2" style="height: 420px; 
+        <td colspan="2" style="height: 410px; 
             background-image: url('<%= produit.image1.present? ? produit.image1.url : no_photo_url %>'); 
             background-size: contain; background-repeat: no-repeat; background-position: center;">
 
@@ -9,10 +9,10 @@
     </tr>
 
     <tr>
-        <td style="width: 85px;">
+        <td style="width: 80px;">
             <%= image_tag(produit.qr_code, width: 85) if produit.qr_code.present? %>        
         </td>
-        <td style="height: 110px; text-align: left;">
+        <td style="height: 100px; text-align: left;">
             <h3 class="bolded text-dark"><%= produit.nom %></h3> 
 
             <% if produit.prixvente %>
