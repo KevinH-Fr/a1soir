@@ -9,16 +9,41 @@ module StockHelper
   end
     
   def total_loues(produits)
-    total_quantite = Article.joins(:produit).where(produits: { id: produits }).location_only.sum(:quantite)
-    total_quantite += Sousarticle.joins(:produit).where(produits: { id: produits }).location_only.count
+    total_quantite = Article.joins(:produit, :commande)
+                            .where(produits: { id: produits })
+                            .merge(Commande.hors_devis)
+                            .location_only
+                            .sum(:quantite)
+  
+    total_quantite += Sousarticle.joins(article: :commande)
+                                 .joins(:produit)
+                                 .where(produits: { id: produits })
+                                 .merge(Commande.hors_devis)
+                                 .location_only
+                                 .count
+  
     total_quantite
   end
   
   def total_vendus(produits)
-    total_quantite = Article.joins(:produit).where(produits: { id: produits }).merge(Produit.not_service).vente_only.sum(:quantite)
-    total_quantite += Sousarticle.joins(:produit).where(produits: { id: produits }).merge(Produit.not_service).vente_only.count
+    total_quantite = Article.joins(:produit, :commande)
+                            .where(produits: { id: produits })
+                            .merge(Produit.not_service)
+                            .merge(Commande.hors_devis)
+                            .vente_only
+                            .sum(:quantite)
+  
+    total_quantite += Sousarticle.joins(article: :commande)
+                                 .joins(:produit)
+                                 .where(produits: { id: produits })
+                                 .merge(Produit.not_service)
+                                 .merge(Commande.hors_devis)
+                                 .vente_only
+                                 .count
+  
     total_quantite
   end
+  
 
 
   def statut_disponibilite(produits, datedebut, datefin)
