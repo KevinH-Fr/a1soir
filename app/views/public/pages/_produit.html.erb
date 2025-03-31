@@ -59,7 +59,7 @@
                         <% else %>
                            <span></span>
                         <% end %>
-                        <%= statut_disponibilite_shop(statut_disponibilite(produit, Time.now, Time.now)[:statut]) %>
+                        <%= statut_disponibilite_shop(produit.statut_disponibilite(Time.now, Time.now)[:statut]) %>
                     </p>                
                 </div>
 

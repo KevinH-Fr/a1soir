@@ -7,7 +7,7 @@
 
     <div class="card-body">         
         <p> 
-            Stock initial : <span class="fw-bold"> <%= total_produits(extract_ids(@produit)) %> </span> 
+            Stock initial : <span class="fw-bold"> <%= @produit.quantite %> </span> 
             <% if Produit.is_ensemble.exists?(id: @produit.id) %>
                 Stock illimité pour ensemble
             <% end %>
@@ -18,7 +18,7 @@
         <p> Total loués : <span class="fw-bold"> <%= total_loues(extract_ids(@produit)) %> </span> </p> 
         <p> Total vendus : <span class="fw-bold"> <%= total_vendus(extract_ids(@produit)) %> </span> </p> 
 
-        <% statut = statut_disponibilite(@produit, Date.today.to_date, Date.today.to_date) %>
+        <% statut = @produit.statut_disponibilite(Date.today.to_date, Date.today.to_date) %>
 
         <p> Loués en ce moment : <span class="fw-bold"> <%= statut[:loues_a_date] %> </span> </p> 
         <p> Disponibles : <span class="fw-bold"> <%= statut[:disponibles] %> </span> </p> 

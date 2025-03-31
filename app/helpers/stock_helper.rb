@@ -1,5 +1,6 @@
 module StockHelper
 
+   # sans dates
   def total_produits(produits)
     Produit.where(id: produits).not_service.sum(:quantite)    
   end
@@ -46,43 +47,45 @@ module StockHelper
   
 
 
-  def statut_disponibilite(produits, datedebut, datefin)
+  # def statut_disponibilite(produits, datedebut, datefin)
     
-    if Produit.is_service.exists?(id: produits) || Produit.is_ensemble.exists?(id: produits)
-      initial_stock = 1
-      loues_a_date = 0
-      vendus = 0
-      disponibles = 1
-    else
-      loues_a_date = Article.joins(:commande)
-                           .where(produit_id: produits)
-                           .where("commandes.debutloc <= ? AND commandes.finloc >= ?", datedebut, datefin)
-                           .location_only.sum(:quantite).to_i
+  #   if Produit.is_service.exists?(id: produits) || Produit.is_ensemble.exists?(id: produits)
+  #     initial_stock = 1
+  #     loues_a_date = 0
+  #     vendus = 0
+  #     disponibles = 1
+  #   else
+  #     loues_a_date = Article.joins(:commande)
+  #                          .where(produit_id: produits)
+  #                          .where("commandes.debutloc <= ? AND commandes.finloc >= ?", datedebut, datefin)
+  #                          .merge(Commande.hors_devis)                         
+  #                          .location_only.sum(:quantite).to_i
   
-      loues_a_date += Sousarticle.joins(article: :commande)
-                           .where(produit_id: produits)
-                           .where("commandes.debutloc <= ? AND commandes.finloc >= ?", datedebut, datefin)
-                           .location_only.sum(:quantite).to_i
+  #     loues_a_date += Sousarticle.joins(article: :commande)
+  #                          .where(produit_id: produits)
+  #                          .merge(Commande.hors_devis)
+  #                          .where("commandes.debutloc <= ? AND commandes.finloc >= ?", datedebut, datefin)
+  #                          .location_only.sum(:quantite).to_i
 
-      initial_stock = total_produits(produits)
-      vendus = total_vendus(produits)
-    end
+  #     initial_stock = total_produits(produits)
+  #     vendus = total_vendus(produits)
+  #   end
 
-    disponibles = initial_stock - (loues_a_date + vendus)
+  #   disponibles = initial_stock - (loues_a_date + vendus)
   
-    # Ensure we are returning a hash with all the necessary keys
-    {
-      produit_id: produits.id,
-      nom: produits.nom,
-      datedebut: datedebut,
-      datefin: datefin,
-      initial: initial_stock,
-      loues_a_date: loues_a_date,
-      vendus: vendus,
-      disponibles: disponibles,
-      statut: disponibles > 0 ? "disponible" : "indisponible"
-    }
-  end
+  #   # Ensure we are returning a hash with all the necessary keys
+  #   {
+  #     produit_id: produits.id,
+  #     nom: produits.nom,
+  #     datedebut: datedebut,
+  #     datefin: datefin,
+  #     initial: initial_stock,
+  #     loues_a_date: loues_a_date,
+  #     vendus: vendus,
+  #     disponibles: disponibles,
+  #     statut: disponibles > 0 ? "disponible" : "indisponible"
+  #   }
+  # end
   
 
 

@@ -22,7 +22,7 @@ module ArticlesHelper
   end
 
   def produit_selection(produit, commande)
-    statut = statut_disponibilite(produit, commande.debutloc&.to_date, commande.finloc&.to_date)
+    statut = produit.statut_disponibilite(commande.debutloc&.to_date, commande.finloc&.to_date)
     disponibles = statut[:disponibles]
   
     # Define the card content, as it's the same in both cases

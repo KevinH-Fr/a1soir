@@ -109,6 +109,73 @@ class Produit < ApplicationRecord
     end
   end
 
+  #gestion stock du produit
+
+  def is_service?
+    categorie_produits.where(service: true).exists?
+  end
+  
+  def total_vendus
+    total_quantite = Article.joins(:commande, :produit)
+    .merge(Produit.not_service)
+    .merge(Commande.hors_devis)
+    .vente_only
+    .where(produit_id: id)
+    .sum(:quantite)
+
+    total_quantite += Sousarticle.joins(article: [:commande, :produit])
+    .where(produit_id: id)
+    .merge(Produit.not_service)
+    .merge(Commande.hors_devis)
+    .vente_only
+    .count
+
+    total_quantite
+  
+  end
+  
+  def statut_disponibilite(datedebut, datefin)
+    
+    if self.is_service?
+      initial_stock = 1
+      loues_a_date = 0
+      vendus = 0
+      disponibles = 1
+    else
+      loues_a_date = Article.joins(:commande)
+                            .where(produit_id: id)
+                            .where("commandes.debutloc <= ? AND commandes.finloc >= ?", datedebut, datefin)
+                            .merge(Commande.hors_devis)                         
+                            .location_only.sum(:quantite).to_i
+  
+      loues_a_date += Sousarticle.joins(article: :commande)
+                                .where(produit_id: id)
+                                .merge(Commande.hors_devis)
+                                .where("commandes.debutloc <= ? AND commandes.finloc >= ?", datedebut, datefin)
+                                .location_only.sum(:quantite).to_i
+
+      initial_stock = self.quantite.to_i
+      vendus = total_vendus
+    end
+
+    disponibles = initial_stock - (loues_a_date + vendus)
+  
+      # returning a hash with all the necessary keys
+      {
+        produit_id: id,
+        nom: nom,
+        datedebut: datedebut,
+        datefin: datefin,
+        initial: initial_stock,
+        loues_a_date: loues_a_date,
+        vendus: vendus,
+        disponibles: disponibles,
+        statut: disponibles > 0 ? "disponible" : "indisponible"
+      }
+  end
+
+  
+
   private
 
   # def set_initial_vente_price

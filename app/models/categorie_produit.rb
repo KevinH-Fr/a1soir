@@ -19,6 +19,9 @@ class CategorieProduit < ApplicationRecord
         end
     end
 
+    def is_service?
+      categorie_produits.where(service: true).exists?
+    end
 
     private
 
