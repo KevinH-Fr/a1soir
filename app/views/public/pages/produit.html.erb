@@ -3,7 +3,7 @@
     <div class="card m-2">
         <div class="row g-0">
             <div class="col-md-4">
-                <%= render  "carousel" %>
+                <%= render partial: "carousel", locals: { produit: @produit, carousel_class: "carousel-single"} %>
             </div>
             
             <div class="col-md-8">

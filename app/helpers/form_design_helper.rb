@@ -5,40 +5,44 @@ module FormDesignHelper
   def custom_form_elements(form, *fields)
     content_tag(:div, class: "p-1") do
       fields.each do |field_data|
-        field, field_type, label = field_data
-        label = label.is_a?(String) ? label : nil  # Use the third argument as label text if it's a string
+        field, field_type, label, options = field_data
+        label = label.is_a?(String) ? label : nil
+        options ||= {}
   
         concat(content_tag(:div, class: "form-group input-group mb-1") do
-          if field_type != :check_box && label
+          # Label rendering (skip for check_box)
+          if field_type != :check_box
             concat(content_tag(:div, class: "input-group-text") do
-              concat(form.label(field, label, class: "form-label"))  # Use provided label if present
-            end)
-          elsif field_type != :check_box
-            concat(content_tag(:div, class: "input-group-text") do
-              concat(form.label(field, class: "form-label"))  # Default behavior if no label passed
+              concat(form.label(field, label || form.object.class.human_attribute_name(field), class: ""))
             end)
           end
   
-          field_options = { class: "form-control" }
-  
-          if field_type == :text_field || field_type == :text_area
-            concat(form.public_send(field_type, field, field_options))
-          elsif field_type == :number_field
-            concat(form.public_send(field_type, field, field_options.merge(type: "number")))
-          elsif field_type == :date_field
-            concat(form.public_send(field_type, field, field_options.merge(type: "date")))
-          elsif field_type == :check_box
+          # Field rendering
+          case field_type
+          when :text_field, :text_area
+            concat(form.public_send(field_type, field, { class: "form-control" }.merge(options)))
+          when :number_field
+            concat(form.number_field(field, { class: "form-control", step: "any" }.merge(options)))
+          when :date_field
+            concat(form.date_field(field, { class: "form-control" }.merge(options)))
+          when :collection_select
+            collection = options.delete(:collection)
+            value_method = options.delete(:value_method)
+            label_method = options.delete(:label_method)
+            select_options = options.delete(:select_options) || {}
+            concat(form.collection_select(field, collection, value_method, label_method, select_options, { class: "form-select" }.merge(options)))
+          when :check_box
             concat(content_tag(:div, class: "form-check form-switch text-start fs-5 my-2 d-flex align-items-center") do
               concat(form.check_box(field, class: "form-check-input me-2"))
-              concat(form.label(field, form.object.class.human_attribute_name(field), class: "form-check-label fs-6"))
+              concat(form.label(field, form.object.class.human_attribute_name(field), class: "form-check-label"))
             end)
-          else
-            # Handle other field types as needed
+          when :file_field
+            concat(form.file_field(field, { class: "form-control" }.merge(options)))          
           end
         end)
       end
     end
-  end
+  end  
   
 
   def custom_submit_button(form)

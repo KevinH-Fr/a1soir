@@ -18,6 +18,10 @@ class Produit < ApplicationRecord
   has_one_attached :image1
   validate :image1_is_valid
 
+  has_one_attached :video1
+  validate :video1_is_valid
+
+
   has_many_attached :images
   validate :images_are_valid
 
@@ -147,6 +151,20 @@ class Produit < ApplicationRecord
       # Check file type (allow only images)
       unless image1.content_type.in?(%w[image/jpeg image/png image/gif image/jpg image/webp])
         errors.add(:image1, 'must be a JPG, JPEG, PNG, WEBP or GIF image.')
+      end
+    end
+  end
+
+  
+  def video1_is_valid
+    if video1.attached?
+      if video1.byte_size > 50.megabytes
+        errors.add(:video1, 'is too big. Maximum size is 50MB.')
+      end
+
+      # Check file type (allow only images)
+      unless video1.content_type.in?(%w[video/mp4 video/webm])
+        errors.add(:video1, 'must be a MP4 or WebM video.')
       end
     end
   end

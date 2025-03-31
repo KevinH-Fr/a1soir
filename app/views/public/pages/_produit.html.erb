@@ -34,7 +34,9 @@
         <%= link_to produit_path(slug: produit.nom.parameterize, id: produit.id), class: "text-decoration-none", data: { turbo: false } do %>
             <div class="card card-content" data-placeholder-card-target="content" style="display:none;">
 
-                <%= image_tag(produit.default_image, class: "card-img-top", style: "max-height: 300px; object-fit: cover;") %>
+                <%#= image_tag(produit.default_image, class: "card-img-top", style: "max-height: 300px; object-fit: cover;") %>
+                
+                <%= render partial: "carousel", locals: { produit: produit, carousel_class: "card-img-top carousel-multiple" } %>
 
                 <div class="card-body">
                     <h5 class="card-title">

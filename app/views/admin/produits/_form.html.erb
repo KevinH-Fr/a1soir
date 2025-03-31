@@ -1,75 +1,64 @@
 <%#= turbo_frame_tag "produit_form" do %>
 
-  <div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
+<div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
 
-    <%= form_with(model: produit, url: produit.persisted? ? admin_produit_path(produit) : admin_produits_path, method: produit.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
-      <% if produit.errors.any? %>
-        <div style="color: red">
-          <h2><%= pluralize(produit.errors.count, "error") %> prohibited this produit from being saved:</h2>
-          <ul>
-            <% produit.errors.each do |error| %>
-              <li><%= error.full_message %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
+  <%= form_with(model: produit, url: produit.persisted? ? admin_produit_path(produit) : admin_produits_path, method: produit.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
 
-      <% if produit.persisted? && produit.save %>
-        <div class="container text-center p-2">
-          <%= image_tag(produit.default_image, class: "img-fluid rounded") %>
-        </div>
-      <% end %>
-
-
-
-      <div class="container-fluid">
-        
-        <%= custom_form_elements(form, 
-          [:nom, :text_field] ) %>
-
-      <div class="mx-1">
-      
-        <div class="input-group mb-1">
-          <%= form.label :type_produit_id, class: "input-group-text" %>
-          <%= form.collection_select :type_produit_id, @type_produits.all.order(:nom), :id, :nom, 
-          { include_blank: '' }, class: "form-select" %>
-        </div>
-
-        <div class="input-group mb-1">
-          <%= form.label :prixvente, "Prix vente TTC", class: "input-group-text" %>
-          <%= form.number_field :prixvente, step: "any", class: "form-control" %>
-        </div>
-
-        <div class="input-group mb-1">
-          <%= form.label :prixlocation, "Prix location TTC", class: "input-group-text" %>
-          <%= form.number_field :prixlocation, step: "any", class: "form-control" %>
-        </div>
-      
+    <% if produit.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(produit.errors.count, "error") %> prohibited this produit from being saved:</h2>
+        <ul>
+          <% produit.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
       </div>
+    <% end %>
 
-      <div class="input-group mb-1">
-        <%= form.label :poids, "Poids (grammes)", class: "input-group-text" %>
-        <%= form.number_field :poids, step: "any", class: "form-control" %>
+    <div class="row g-0">
+
+      <!-- Image Column -->
+      <div class="col-sm-4 p-1 text-center">
+
+        <% if produit.persisted? && produit.save %>
+          <div class="container text-center p-2">
+            <%= image_tag(produit.default_image, class: "img-fluid rounded") %>
+          </div>
+        <% end %>
+
       </div>
       
-        <%= custom_form_elements(form, 
+      <!-- Text Column -->
+      <div class="col-sm-8">
+
+        <%= custom_form_elements(form,
+          [:nom, :text_field],
+          [:type_produit_id, :collection_select, nil, {
+            collection: @type_produits.all.order(:nom),
+            value_method: :id,
+            label_method: :nom,
+            select_options: { include_blank: '' }}],
+          [:prixvente, :number_field, "Prix vente TTC", { step: "any" }],
+          [:prixlocation, :number_field, "Prix location TTC", { step: "any" }],
+          [:poids, :number_field, "Poids (grammes)", { step: "any" }],
           [:description, :text_area], 
           [:quantite, :number_field],
-          [:dateachat, :date_field]
+          [:dateachat, :date_field, "date d'achat"],
+          [:reffrs, :text_field],
+          [:fournisseur_id, :collection_select, nil, {
+            collection: @fournisseurs.all.order(:nom),
+            value_method: :id,
+            label_method: :nom,
+            select_options: { include_blank: '' }
+          }],
+          [:image1, :file_field, "Image principale", { class: "form-control m-1 p-1" }],
+          [:images, :file_field, "Images (multiples)", { multiple: true, class: "form-control m-1 p-1" }],
+          [:video1, :file_field, "Vidéo", { class: "form-control m-1 p-1" }]
+
         ) %>
 
-      <div class="input-group mb-1">
-        <%= form.label :reffrs, "Ref. Fournisseur", class: "input-group-text" %>
-        <%= form.text_field :reffrs, class: "form-control" %>
-      </div>
       
       <div class="mx-1">
-
-        <div class="input-group mb-1">
-          <%= form.label :fournisseur_id, class: "input-group-text" %>
-          <%= form.collection_select :fournisseur_id, @fournisseurs.all.order(:nom), :id, :nom, 
-          { include_blank: '' }, class: "form-select" %>
-        </div>
 
         <% if current_admin_user.admin? %>
           <div class="input-group mb-1">
@@ -78,15 +67,6 @@
           </div>
         <% end %>
 
-        <div class="input-group mb-1">
-          <%= form.label :image_principale, class:"input-group-text label-with-format" %>
-          <%= form.file_field :image1, class:"form-control m-1 p-1" %>
-        </div>
-        
-        <div class="input-group mb-1">
-          <%= form.label :images, class:"input-group-text label-with-format" %>
-          <%= form.file_field :images, multiple: true, class:"form-control m-1 p-1" %>
-        </div>
 
         <% if produit.persisted? && produit.save %>
           <% if produit.images.any? %>
@@ -140,9 +120,10 @@
 
       <%= custom_submit_button(form) %>
 
-    <% end %>
+    </div>
   
-  
-  </div>
+  <% end %>
+
+</div>
 
 <%# end %>

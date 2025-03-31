@@ -90,3 +90,10 @@
   -webkit-box-orient: vertical;
 }
 
+.carousel-multiple{
+  height: 300px; 
+  object-fit: cover;
+}
+
+.carousel-single{
+}
