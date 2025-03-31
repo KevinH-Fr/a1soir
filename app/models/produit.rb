@@ -117,7 +117,7 @@ class Produit < ApplicationRecord
   
   def total_vendus
     total_quantite = Article.joins(:commande, :produit)
-    .merge(Produit.not_service)
+  #  .merge(Produit.not_service)
     .merge(Commande.hors_devis)
     .vente_only
     .where(produit_id: id)
@@ -125,7 +125,7 @@ class Produit < ApplicationRecord
 
     total_quantite += Sousarticle.joins(article: [:commande, :produit])
     .where(produit_id: id)
-    .merge(Produit.not_service)
+  #  .merge(Produit.not_service)
     .merge(Commande.hors_devis)
     .vente_only
     .count

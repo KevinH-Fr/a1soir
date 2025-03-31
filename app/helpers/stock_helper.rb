@@ -29,7 +29,7 @@ module StockHelper
   def total_vendus(produits)
     total_quantite = Article.joins(:produit, :commande)
                             .where(produits: { id: produits })
-                            .merge(Produit.not_service)
+                          #  .merge(Produit.not_service)
                             .merge(Commande.hors_devis)
                             .vente_only
                             .sum(:quantite)
@@ -37,7 +37,7 @@ module StockHelper
     total_quantite += Sousarticle.joins(article: :commande)
                                  .joins(:produit)
                                  .where(produits: { id: produits })
-                                 .merge(Produit.not_service)
+                           #      .merge(Produit.not_service)
                                  .merge(Commande.hors_devis)
                                  .vente_only
                                  .count
