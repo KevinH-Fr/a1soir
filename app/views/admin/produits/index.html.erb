@@ -13,6 +13,9 @@
             src: admin_produits_path(format: :turbo_stream,
             filter_taille: params[:filter_taille], 
             filter_couleur: params[:filter_couleur], 
+            filter_categorie: params[:filter_categorie],
+            filter_statut: params[:filter_statut],
+            sort: params[:sort],
             q: params[:q]&.to_unsafe_h) %>
 <% end %>
 

@@ -41,6 +41,7 @@ class Produit < ApplicationRecord
   scope :is_service, -> { joins(:categorie_produits).where(categorie_produits: { service: true }) }
   scope :not_service, -> { joins(:categorie_produits).where(categorie_produits: { service: [false, nil] }) }
   scope :actif, -> { where(actif: true) } 
+  scope :inactif, -> { where(actif: [false, nil]) }
   scope :eshop_diffusion, -> { where(eshop: true) }
 
   scope :by_categorie, ->(categorie) { joins(:categorie_produits).where(categorie_produits: { id: categorie.id }) }

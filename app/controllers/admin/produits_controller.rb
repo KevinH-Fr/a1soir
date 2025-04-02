@@ -6,37 +6,32 @@ class Admin::ProduitsController < Admin::ApplicationController
 
   def index
     @count_produits = Produit.count
-
-    search_params = params.permit(:format, :page, :filter_taille, :filter_couleur,
-      q: [:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont])
-    
+  
+    search_params = params.permit(
+      :format, :page, :filter_taille, :filter_couleur, :filter_categorie, :filter_statut,
+      q: [:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont]
+    )
+  
     produits = Produit.all
-    
-    if search_params[:filter_taille].present?
-      taille = Taille.find(search_params[:filter_taille])
-      produits = produits.by_taille(taille)
-    end
-    
-    if search_params[:filter_couleur].present?
-      couleur = Couleur.find(search_params[:filter_couleur])
-      produits = produits.by_couleur(couleur)
-    end
-
+  
+    produits = apply_taille_filter(produits, search_params[:filter_taille])
+    produits = apply_couleur_filter(produits, search_params[:filter_couleur])
+    produits = apply_categorie_filter(produits, search_params[:filter_categorie])
+    produits = apply_statut_filter(produits, search_params[:filter_statut])
+    produits = apply_sort(produits, params[:sort])
+  
     @q = produits.ransack(search_params[:q])
     produits = @q.result(distinct: true).order(updated_at: :desc)
-
+  
     @pagy, @produits = pagy_countless(produits, items: 2)
-
-    @categorie_produits = CategorieProduit.all
-    @type_produits = TypeProduit.all
-
-    @couleurs = Couleur.all 
-    @tailles = Taille.all 
-    @fournisseurs = Fournisseur.all 
-
+  
+    @categorie_produits = CategorieProduit.order(:nom)
+    @type_produits = TypeProduit.order(:nom)
+    @couleurs = Couleur.order(:nom)
+    @tailles = Taille.order(:nom)
+    @fournisseurs = Fournisseur.all
   end
-
-
+  
 
   def show
     @commandes_liees = Commande
@@ -259,5 +254,66 @@ class Admin::ProduitsController < Admin::ApplicationController
         :image1, :video1, :couleur_id, :taille_id, :eshop, :poids, :stripe_product_id, :stripe_price_id,
         categorie_produit_ids: [])
     end
+
+
+  def apply_taille_filter(scope, value)
+    return scope unless value.present?
+
+    if value == "na"
+      scope.where(taille_id: nil)
+    else
+      scope.by_taille(value)
+    end
+  end
+
+  def apply_couleur_filter(scope, value)
+    return scope unless value.present?
+
+    if value == "na"
+      scope.where(couleur_id: nil)
+    else
+      scope.by_couleur(value)
+    end
+  end
+
+  def apply_categorie_filter(scope, value)
+    return scope unless value.present?
+
+    if value == "na"
+      scope.left_outer_joins(:categorie_produits).where(categorie_produits: { id: nil })
+    else
+      scope.by_categorie(CategorieProduit.find(value))
+    end
+  end
+
+  def apply_statut_filter(scope, value)
+    return scope unless value.present?
+
+    case value
+    when "na"
+      scope.where(actif: nil)
+    when "true"
+      scope.actif
+    when "false"
+      scope.inactif
+    else
+      scope
+    end
+  end
+
+  def apply_sort(scope, sort_param)
+    case sort_param
+    when "name_asc"         then scope.order(nom: :asc)
+    when "name_desc"        then scope.order(nom: :desc)
+    when "created_at_asc"   then scope.order(created_at: :asc)
+    when "created_at_desc"  then scope.order(created_at: :desc)
+    when "prixlocation_asc" then scope.order(prixlocation: :asc)
+    when "prixlocation_desc" then scope.order(prixlocation: :desc)
+    when "prixvente_asc"    then scope.order(prixvente: :asc)
+    when "prixvente_desc"   then scope.order(prixvente: :desc)
+    else scope
+    end
+  end
+
 
 end
