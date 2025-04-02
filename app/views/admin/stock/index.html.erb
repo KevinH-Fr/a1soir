@@ -8,7 +8,8 @@
   <div class="card-body"> 
     <p> Total produits : <span class="fw-bold"> <%= total_produits(@produits) %> </span> </p> 
     <p> Total loués : <span class="fw-bold"> <%= total_loues(@produits) %> </span> </p> 
-    <p> Total vendus : <span class="fw-bold"> <%= total_vendus(@produits) %> </span> </p> 
+    <p> Total vendus : <span class="fw-bold"> <%= total_vendus(@produits) + total_vendus_eshop(@produits) %> </span> </p> 
+    <p> dont eshop : <span class="fw-bold"> <%= total_vendus_eshop(@produits) %> </span> </p> 
 
     <hr>
     <p> Total services : <span class="fw-bold"> <%= total_services(@produits) %> </span> </p> 

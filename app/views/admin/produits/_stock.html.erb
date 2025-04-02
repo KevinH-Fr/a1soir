@@ -16,13 +16,22 @@
         <hr>
 
         <p> Total loués : <span class="fw-bold"> <%= total_loues(extract_ids(@produit)) %> </span> </p> 
-        <p> Total vendus : <span class="fw-bold"> <%= total_vendus(extract_ids(@produit)) %> </span> </p> 
+        <p> 
+            Total vendus : 
+            <span class="fw-bold"> 
+                <%= total_vendus(extract_ids(@produit)) + total_vendus_eshop(extract_ids(@produit)) %>        
+            </span> 
+            <% if total_vendus_eshop(extract_ids(@produit)) > 0 %>
+                <span class="small">
+                    dont <%= total_vendus_eshop(extract_ids(@produit)) %> sur Eshop
+                </span>
+            <% end %>
+        </p> 
 
         <% statut = @produit.statut_disponibilite(Date.today.to_date, Date.today.to_date) %>
 
         <p> Loués en ce moment : <span class="fw-bold"> <%= statut[:loues_a_date] %> </span> </p> 
 
-        <p> Loués en ce moment : <span class="fw-bold"> <%= statut[:loues_a_date] %> </span> </p> 
         <p> Disponibles : <span class="fw-bold"> <%= statut[:disponibles] %> </span> </p> 
 
     </div>

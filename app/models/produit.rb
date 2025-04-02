@@ -48,6 +48,7 @@ class Produit < ApplicationRecord
   scope :by_taille, ->(taille) { where(taille: taille) }
   scope :by_couleur, ->(couleur) { where(couleur: couleur) }
 
+
   # Scope to filter by prixvente or prixlocation being less than or equal to prixmax
   scope :by_prixmax, ->(prixmax) { 
     where("prixvente <= ? OR prixlocation <= ?", prixmax, prixmax) if prixmax.present? 
@@ -69,6 +70,7 @@ class Produit < ApplicationRecord
   scope :filtredatedebut, -> (debut) { where("created_at >= ?", debut.beginning_of_day) }
   scope :filtredatefin, -> (fin) { where("created_at <= ?", fin.end_of_day) }
 
+  
   
   def full_name
     nom
@@ -135,12 +137,24 @@ class Produit < ApplicationRecord
   
   end
   
+  def total_vendus_eshop
+
+    # Stripe payments (only if marked as 'paid')
+    total_quantite = StripePayment
+      .where(produit_id: id, status: 'paid')
+      .count
+    
+    total_quantite
+  
+  end
+
   def statut_disponibilite(datedebut, datefin)
     
     if self.is_service?
       initial_stock = 1
       loues_a_date = 0
       vendus = 0
+      vendus_eshop = 0
       disponibles = 1
     else
       loues_a_date = Article.joins(:commande)
@@ -156,7 +170,7 @@ class Produit < ApplicationRecord
                                 .location_only.sum(:quantite).to_i
 
       initial_stock = self.quantite.to_i
-      vendus = total_vendus
+      vendus = total_vendus + total_vendus_eshop
     end
 
     disponibles = initial_stock - (loues_a_date + vendus)
@@ -170,6 +184,7 @@ class Produit < ApplicationRecord
         initial: initial_stock,
         loues_a_date: loues_a_date,
         vendus: vendus,
+        vendus_eshop: total_vendus_eshop,
         disponibles: disponibles,
         statut: disponibles > 0 ? "disponible" : "indisponible"
       }

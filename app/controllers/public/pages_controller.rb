@@ -12,17 +12,8 @@ module Public
     end
 
     def produits
+
       load_data
-    
-      # # Filter by taille if provided, otherwise group by handle and couleur
-      # if params[:taille]
-      #   produits = @produits.where(taille: params[:taille])
-      # else
-      #   produits_uniques = @produits
-      #     .group_by { |produit| [produit.handle, produit.couleur] } # Group by handle and couleur
-      #     .map { |_, produits| produits.first }
-      #   produits = Produit.where(id: produits_uniques.map(&:id))
-      # end
     
       produits = FiltersProduitsService.new(
         params[:id], params[:taille], params[:couleur], 
@@ -117,9 +108,11 @@ module Public
     private
 
     def load_data
+
+      puts " ______________ call load data ____________________"
       @toutes_categories = CategorieProduit.all.order(nom: :asc)
-      @toutes_tailles = Produit.all.map(&:taille).compact.uniq.sort_by(&:nom) 
-      @toutes_couleurs = Produit.all.map(&:couleur).compact.uniq.sort_by(&:nom)
+      @toutes_tailles = Taille.all.sort_by(&:nom)
+      @toutes_couleurs = Couleur.all.sort_by(&:nom)
       @tranches_prix = [50, 100, 200, 500, 1000]
       @types = ["Vente", "Location"]
     end

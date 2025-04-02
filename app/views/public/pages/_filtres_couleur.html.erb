@@ -1,35 +1,48 @@
 <div id="filtres-couleur">
 
-    <div class="text-uppercase mt-2">
-        Couleurs
-    </div>
+    <div class="dropdown">
+        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="couleurDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-palette"></i>
+            <span class="ms-1 d-none d-md-inline">
+            <%= if params[:couleur].present?
+                    @toutes_couleurs.find { |c| c.id == params[:couleur].to_i }&.nom || "Couleur"
+                else
+                    "Couleur"
+                end %>
+            </span>
+        </button>
 
-    <div class="d-flex flex-wrap gap-1">
-        <%= button_to "Toutes", 
-            update_filters_path(
-                slug: params[:slug], 
-                id: params[:id], 
-                taille: params[:taille], 
-                couleur: nil,
-                prixmax: params[:prixmax],
-                type: params[:type]
-            ), 
-            class: link_badge_couleur_class(nil) %>
+        <ul class="dropdown-menu" aria-labelledby="couleurDropdown">
+            <li>
+            <%= button_to "Toutes",
+                update_filters_path(
+                    slug: params[:slug],
+                    id: params[:id],
+                    taille: params[:taille],
+                    couleur: nil,
+                    prixmax: params[:prixmax],
+                    type: params[:type]
+                ),
+                class: "dropdown-item #{'fw-bold' if params[:couleur].blank?}" %>
+            </li>
 
-        <% @toutes_couleurs.each do |couleur| %>
-            <%= button_to couleur.nom, update_filters_path(
-                    slug: params[:slug], 
-                    id: params[:id], 
-                    taille: params[:taille], 
+            <% @toutes_couleurs.each do |couleur| %>
+            <li>
+                <%= button_to couleur.nom,
+                    update_filters_path(
+                    slug: params[:slug],
+                    id: params[:id],
+                    taille: params[:taille],
                     couleur: couleur.id,
                     prixmax: params[:prixmax],
                     type: params[:type]
-
-
-                ),
-                class: link_badge_couleur_class(couleur.id) %>
-        <% end %>
+                    ),
+                    class: "dropdown-item #{'fw-bold' if params[:couleur].to_s == couleur.id.to_s}" %>
+            </li>
+            <% end %>
+        </ul>
     </div>
+
 
 
 </div>

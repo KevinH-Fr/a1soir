@@ -13,7 +13,7 @@
 
     <%#= render "texte_categorie" %>
 
-    <div class="container-fluid">
+    <div class="container-fluid d-flex flex-wrap gap-1">
 
         <%= render  "filtres_categorie" %>
         <%= render  "filtres_taille" %>
@@ -30,7 +30,7 @@
                 taille: nil,
                 type: nil
             ),
-            class: "badge border brand-colored text-decoration-none mt-2" %>
+            class: "btn btn-sm btn-outline-dark" %>
 
         <%= render  "produits_filtres" %>
    

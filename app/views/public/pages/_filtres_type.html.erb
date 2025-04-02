@@ -1,33 +1,43 @@
 <div id="filtres-type">
 
-    <div class="text-uppercase mt-2">
-        Type
-    </div>
+    <div class="dropdown">
+        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="typeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-tags"></i>
+            <span class="ms-1 d-none d-md-inline">
+            <%= params[:type].present? ? params[:type].capitalize : "Type" %>
+            </span>
+        </button>
 
-    <div class="d-flex flex-wrap gap-1">
-        <%= button_to "Tous", 
-        update_filters_path(
-            slug: params[:slug], 
-            id: params[:id], 
-            taille: params[:taille], 
-            couleur: params[:couleur],
-            prixmax: params[:prixmax],
-            type: nil
-        ), 
-            class: link_badge_type_class(nil) %>
-
-        <% @types.each do |type| %>
-            <%= button_to type, 
+        <ul class="dropdown-menu" aria-labelledby="typeDropdown">
+            <li>
+            <%= button_to "Tous",
                 update_filters_path(
-                        slug: params[:slug], 
-                        id: params[:id], 
-                        taille: params[:taille], 
-                        couleur: params[:couleur],
-                        prixmax: params[:prixmax],
-                        type: type
+                    slug: params[:slug],
+                    id: params[:id],
+                    taille: params[:taille],
+                    couleur: params[:couleur],
+                    prixmax: params[:prixmax],
+                    type: nil
                 ),
-                class: link_badge_type_class(type) %>
-        <% end %>
+                class: "dropdown-item #{'fw-bold' if params[:type].blank?}" %>
+            </li>
+
+            <% @types.each do |type| %>
+            <li>
+                <%= button_to type.capitalize,
+                    update_filters_path(
+                    slug: params[:slug],
+                    id: params[:id],
+                    taille: params[:taille],
+                    couleur: params[:couleur],
+                    prixmax: params[:prixmax],
+                    type: type
+                    ),
+                    class: "dropdown-item #{'fw-bold' if params[:type].to_s == type.to_s}" %>
+            </li>
+            <% end %>
+        </ul>
     </div>
+
 
 </div>

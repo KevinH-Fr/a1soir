@@ -41,10 +41,19 @@ module StockHelper
                                  .merge(Commande.hors_devis)
                                  .vente_only
                                  .count
-  
+    
     total_quantite
   end
   
+  def total_vendus_eshop(produits)
+  
+   # Stripe payments (only if marked as 'paid')
+    total_quantite = StripePayment
+    .where(produit_id: produits, status: 'paid')
+    .count
+    
+    total_quantite
+  end
 
 
   # def statut_disponibilite(produits, datedebut, datefin)
