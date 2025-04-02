@@ -141,10 +141,11 @@ class Produit < ApplicationRecord
   def total_vendus_eshop
 
     # Stripe payments (only if marked as 'paid')
-    total_quantite = StripePayment
-      .where(produit_id: id, status: 'paid')
-      .count
-    
+    total_quantite = StripePaymentItem
+    .joins(:stripe_payment)
+    .where(stripe_payments: { status: 'paid' }, produit_id: id)
+    .count
+
     total_quantite
   
   end

@@ -48,9 +48,11 @@ module StockHelper
   def total_vendus_eshop(produits)
   
    # Stripe payments (only if marked as 'paid')
-    total_quantite = StripePayment
-    .where(produit_id: produits, status: 'paid')
-    .count
+   total_quantite = StripePaymentItem
+   .joins(:stripe_payment)
+   .where(stripe_payments: { status: 'paid' }, produit_id: produits)
+   .count
+ 
     
     total_quantite
   end
