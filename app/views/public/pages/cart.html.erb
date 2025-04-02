@@ -4,9 +4,9 @@
 
         <div class="d-flex align-items-center">
             <h1> Mon panier </h1>
-            <div class="fst-italic ms-2">  <%= pluralize(@cart.size, "produit") %>  </div>
+            <div class="fst-italic ms-2">  <%= pluralize(@cart.size, "produit", "produits") %>  </div>
         </div>
-       
+
         <% @cart.each do |cart_item| %>
             <div class="card shadow mb-3 h-100 d-flex">
                 <div class="row g-0 flex-grow-1">
@@ -33,7 +33,7 @@
                                 <%= custom_currency_no_decimals_format(cart_item.prixvente) %> 
                             </div> 
 
-                            <%= button_to "supprimer", remove_from_cart_path(cart_item), method: :delete, 
+                            <%= button_to "supprimer", remove_from_cart_go_back_to_cart_path(cart_item), method: :delete, 
                                     class: "btn btn-sm btn-outline-dark p-0 border-0" %>   
                         </div>
                     </div>

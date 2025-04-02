@@ -48,7 +48,7 @@
                         </p>
                     <% end %>
                 
-                    <% if ENV["ONLINE_SALES_AVAILABLE"]  =="true" %>
+                    <% if ENV["ONLINE_SALES_AVAILABLE"] == "true" %>
 
                         <% if @cart.include?(@produit) %>
                             <%= button_to remove_from_cart_path(@produit), method: :delete, class: "btn btn-sm btn-secondary" do %>

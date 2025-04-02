@@ -30,23 +30,42 @@ module Public
       redirect_to produit_path(id)
     end
 
+    def remove_from_cart_go_back_to_cart
+      id = params[:id].to_i
+      session[:cart].delete(id)
+      redirect_to cart_path
+    end
+
     def purchase_success
-      session = Stripe::Checkout::Session.retrieve(params[:session_id])
-    
-      produit = Produit.find_by(stripe_price_id: session.list_line_items.data[0].price.id)
+      stripe_session = Stripe::Checkout::Session.retrieve({
+        id: params[:session_id],
+        expand: ['line_items.data.price.product']
+      })
     
       payment = StripePayment.create!(
-        stripe_payment_id: session.payment_intent,
-        produit_id: produit&.id,
-        amount: session.amount_total,
-        currency: session.currency,
-        status: session.payment_status,
-        payment_method: session.payment_method_types.first,
-        charge_id: session.payment_intent
+        stripe_payment_id: stripe_session.payment_intent,
+        amount: stripe_session.amount_total,
+        currency: stripe_session.currency,
+        status: stripe_session.payment_status,
+        payment_method: stripe_session.payment_method_types.first,
+        charge_id: stripe_session.payment_intent
       )
+    
+      session[:cart].each do |item|
+        produit = Produit.find(item) 
+        StripePaymentItem.create!(
+          stripe_payment: payment,
+          produit: produit
+        )
+      end
+    
+      if stripe_session.payment_status == 'paid'
+        session[:cart] = []
+      end
       
       redirect_to status_payment_path(payment.id)
     end
+    
 
     def purchase_error
       session = Stripe::Checkout::Session.retrieve(params[:session_id])

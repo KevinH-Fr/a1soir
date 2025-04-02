@@ -106,11 +106,12 @@ class Produit < ApplicationRecord
   end
 
   def to_builder
-    Jbuilder.new do |produit|
-      produit.price stripe_price_id
-      produit.quantity 1
+    Jbuilder.new do |json|
+      json.price stripe_price_id
+      json.quantity 1
     end
   end
+
 
   #gestion stock du produit
 

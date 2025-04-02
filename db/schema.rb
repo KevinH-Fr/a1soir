@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_27_202921) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_02_204806) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -296,9 +296,20 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_27_202921) do
     t.index ["produit_id"], name: "index_sousarticles_on_produit_id"
   end
 
+  create_table "stripe_payment_items", force: :cascade do |t|
+    t.integer "stripe_payment_id", null: false
+    t.integer "produit_id", null: false
+    t.integer "quantity"
+    t.integer "unit_amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["produit_id"], name: "index_stripe_payment_items_on_produit_id"
+    t.index ["stripe_payment_id"], name: "index_stripe_payment_items_on_stripe_payment_id"
+  end
+
   create_table "stripe_payments", force: :cascade do |t|
     t.string "stripe_payment_id"
-    t.integer "produit_id", null: false
+    t.integer "produit_id"
     t.integer "amount"
     t.string "currency"
     t.string "status"
@@ -370,5 +381,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_27_202921) do
   add_foreign_key "produits", "type_produits"
   add_foreign_key "sousarticles", "articles"
   add_foreign_key "sousarticles", "produits"
+  add_foreign_key "stripe_payment_items", "produits"
+  add_foreign_key "stripe_payment_items", "stripe_payments"
   add_foreign_key "stripe_payments", "produits"
 end

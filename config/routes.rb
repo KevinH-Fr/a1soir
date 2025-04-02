@@ -37,6 +37,8 @@ Rails.application.routes.draw do
         post "stripe_payments/add_to_cart/:id", to: "stripe_payments#add_to_cart", as: "add_to_cart"
         delete "stripe_payments/remove_from_cart/:id", to: "stripe_payments#remove_from_cart", as: "remove_from_cart"
         
+        delete "stripe_payments/remove_from_cart_go_back_to_cart/:id", to: "stripe_payments#remove_from_cart_go_back_to_cart", as: "remove_from_cart_go_back_to_cart"
+
       end
 
       get 'cart', to: 'pages#cart'

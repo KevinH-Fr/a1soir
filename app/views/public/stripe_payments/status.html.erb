@@ -1,14 +1,39 @@
 <div class="p-4">
   <% if @payment.present? %>
-    <h1>Payment Status</h1>
+    <h1>Statut du paiement</h1>
+
+    <div><strong>Produit(s) :</strong></div>
     
-    <p><strong>Product:</strong> <%= @payment.produit.nom if @payment.produit %></p>
-    <p><strong>Amount:</strong> <%= @payment.amount / 100.0 %> <%= @payment.currency.upcase %></p>
-    <p><strong>Status:</strong> <%= @payment.status.capitalize %></p>
-    <p><strong>Payment Method:</strong> <%= @payment.payment_method.capitalize %></p>
+    <% @payment.stripe_payment_items.each do |item| %>
+
+      <div class="card mb-2 h-100 d-flex">
+        <div class="row g-0 flex-grow-1">
+            <div class="col-auto">
+                <%= image_tag(item.produit.default_image, 
+                    class: "rounded-start", style: "max-height: 80px; object-fit: cover;") %>
+            </div>
+
+            <div class="col p-2 d-flex flex-column">
+                <div class="fs-6 fw-bold">
+                    <%= item.produit.nom %> 
+                </div>                      
+
+                <div class="mt-2">
+                    <%= badge_taille(item.produit) if item.produit.taille %>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <% end %>
+    
+    <p><strong>Montant :</strong> <%= @payment.amount / 100.0 %> <%= @payment.currency.upcase %></p>
+    <p><strong>Statut :</strong> <%= @payment.status.capitalize %></p>
+    <p><strong>Moyen de paiement :</strong> <%= @payment.payment_method.capitalize %></p>
 
     <% if @payment.status == 'paid' %>
-      <p>Thank you for your purchase!</p>
+      <p class="text-success">Merci pour votre achat !</p>
     <% else %>
       <p>There was an issue with your payment. Please try again later.</p>
     <% end %>
