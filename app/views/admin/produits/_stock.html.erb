@@ -21,6 +21,8 @@
         <% statut = @produit.statut_disponibilite(Date.today.to_date, Date.today.to_date) %>
 
         <p> Loués en ce moment : <span class="fw-bold"> <%= statut[:loues_a_date] %> </span> </p> 
+
+        <p> Loués en ce moment : <span class="fw-bold"> <%= statut[:loues_a_date] %> </span> </p> 
         <p> Disponibles : <span class="fw-bold"> <%= statut[:disponibles] %> </span> </p> 
 
     </div>

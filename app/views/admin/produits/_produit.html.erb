@@ -10,18 +10,12 @@
       </div>
       <!-- Text Column -->
       <div class="col-sm-8">
-        <div class="card-body p-1">
+        <div class="card-body p-1 px-2">
           <h5 class="card-title">
             <%= produit.nom %>
-            <div data-turbo="false">
-              <%= link_to "", "#collapseProduit#{dom_id(produit)}", 
-                    class: "btn btn-sm btn-outline-primary bi bi-eye m-1", "data-bs-toggle": "collapse", 
-                    role: "button", "aria-expanded": "false", "aria-controls": "collapseProduit#{dom_id(produit)}" %>
-            </div>
           </h5>
           
-          <p class="card-text">
-
+          <div class="card-text">
             <div>
               <% if produit.categorie_produits.any? %>
                 <% produit.categorie_produits.each do |categorie| %>
@@ -30,7 +24,9 @@
               <% end %>
             </div>
 
-            <%= produit.description %>
+            <div class="px-2 small my-1">
+              <%= produit.description %>
+            </div>
 
             <div class="container-fluid p-0">
                 <%= badge_prixlocation_produit(produit) %>
@@ -43,7 +39,7 @@
                 <% unless controller_name == "selection_produit" %>
                   <% statut = produit.statut_disponibilite(Date.today.to_date, Date.today.to_date) %>
                   <% disponibles = statut[:disponibles] %>
-                  <p class="m-1 mt-3">
+                  <p class="m-1">
                     <span class="badge <%= disponibles > 0 ? 'bg-success' : 'bg-danger' %>">
                       Disponibles: <%= disponibles %>
                     </span>
@@ -69,9 +65,23 @@
                 <% end %>  
               <% end %>
 
-              <%= links_record(produit) if current_admin_user.admin? %>
+   
+                <div class="d-flex justify-content-between mt-2">
+
+                  <div>
+                    <div data-turbo="false">
+                      <%= link_to "", "#collapseProduit#{dom_id(produit)}", 
+                            class: "btn btn-sm btn-outline-primary bi bi-eye", "data-bs-toggle": "collapse", 
+                            role: "button", "aria-expanded": "false", "aria-controls": "collapseProduit#{dom_id(produit)}" %>
+                    </div> 
+                    
+                  </div>     
+
+                  <%= links_record(produit) if current_admin_user.admin? %>
+                </div>
+
             </div>
-          </p>
+          </div>
         </div>
 
       </div>
@@ -101,17 +111,19 @@
 
           <br>
 
-          <%= custom_badge("", "caution", "", "", produit.caution ) if produit.caution %>
-          <%= custom_badge("", "handle:", "", "", produit.handle ) if produit.handle %>
-          <%= custom_badge("", "ref. fournisseur:", "", "", produit.reffrs ) if produit.reffrs %>
-          <%#= custom_badge("", "quantité:", "", "", produit.quantite ) if produit.quantite %>
-          <%= custom_badge("", "poids (grammes):", "", "", produit.poids ) %>
+          <div class="text-break">
+            <%= custom_badge("", "caution", "", "", produit.caution ) if produit.caution %>
+            <%= custom_badge("", "handle:", "", "", produit.handle ) if produit.handle %>
+            <%= custom_badge("", "ref. fournisseur:", "", "", produit.reffrs ) if produit.reffrs %>
+            <%#= custom_badge("", "quantité:", "", "", produit.quantite ) if produit.quantite %>
+            <%= custom_badge("", "poids (grammes):", "", "", produit.poids ) %>
 
-          <% if current_admin_user.admin? %>
-            <%= custom_badge("", "prixachat", "", "", produit.prixachat ) if produit.prixachat %>
-            <%= custom_badge("", "fournisseur:", "", "", produit.fournisseur&.nom ) if produit.fournisseur&.nom  %>
-            <%= custom_badge("", "date achat:", "", "", produit.dateachat ) if produit.dateachat %>
-          <% end %>
+            <% if current_admin_user.admin? %>
+              <%= custom_badge("", "prixachat", "", "", produit.prixachat ) if produit.prixachat %>
+              <%= custom_badge("", "fournisseur:", "", "", produit.fournisseur&.nom ) if produit.fournisseur&.nom  %>
+              <%= custom_badge("", "date achat:", "", "", produit.dateachat ) if produit.dateachat %>
+            <% end %>
+          </div>
           
         </div>
       </div>

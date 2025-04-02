@@ -7,13 +7,24 @@ class Admin::ProduitsController < Admin::ApplicationController
   def index
     @count_produits = Produit.count
 
-    search_params = params.permit(:format, :page, 
-       q:[:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont])
-       # without integer to prevent error on pg search, if needed add custom function to be able to search also on price
-       # or_prixvente_or_prixlocation 
-       
-    @q = Produit.ransack(search_params[:q])
+    search_params = params.permit(:format, :page, :filter_taille, :filter_couleur,
+      q: [:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont])
+    
+    produits = Produit.all
+    
+    if search_params[:filter_taille].present?
+      taille = Taille.find(search_params[:filter_taille])
+      produits = produits.by_taille(taille)
+    end
+    
+    if search_params[:filter_couleur].present?
+      couleur = Couleur.find(search_params[:filter_couleur])
+      produits = produits.by_couleur(couleur)
+    end
+
+    @q = produits.ransack(search_params[:q])
     produits = @q.result(distinct: true).order(updated_at: :desc)
+
     @pagy, @produits = pagy_countless(produits, items: 2)
 
     @categorie_produits = CategorieProduit.all
@@ -24,6 +35,8 @@ class Admin::ProduitsController < Admin::ApplicationController
     @fournisseurs = Fournisseur.all 
 
   end
+
+
 
   def show
     @commandes_liees = Commande

@@ -10,16 +10,19 @@ module ApplicationHelper
       number_to_currency(amount, precision: 0, unit: "€", format: "%n %u", delimiter: " ")
   end
 
-    def custom_badge(icon_class, text, color, bold, value)
-        content_tag(:div, class: "badge lighter-beige-colored fw-normal #{bold} bg-#{color} m-1 fs-6 shadow-sm text-dark") do
-          if icon_class.present?
-            concat content_tag(:i, '', class: "fa #{icon_class} me-1")
-          end
-          concat " #{text}"
-          concat " #{value}"
-        end
+  def custom_badge(icon_class, text, color, bold, value)
+    content_tag(:div,
+      class: "badge lighter-beige-colored fw-normal #{bold} bg-#{color} m-1 fs-6 shadow-sm text-dark text-break",
+      style: "white-space: normal;"
+    ) do
+      if icon_class.present?
+        concat content_tag(:i, '', class: "fa #{icon_class} me-1")
+      end
+      concat " #{text}"
+      concat " #{value}"
     end
-
+  end
+  
     def custom_badge_boolean(text, value)
         color = (value != 0) ? "danger" : "success"
         content_tag(:div, class: "badge bg-#{color} me-1 fs-6") do

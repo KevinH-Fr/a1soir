@@ -1,0 +1,54 @@
+<%# filtres
+- menu deroulant categories
+- menu deroulant couleur
+- menu deroulant taille
+- menu deroulant statut : actif / archivé
+
+tris
+- nom haut bas
+- prix haut bas
+%>
+
+<div class="container-fluid d-flex flex-wrap gap-1">
+    <div class="dropdown">
+        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="tailleDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Tailles
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="tailleDropdown">
+            <li>
+            <%= link_to "Toutes les tailles", url_for(filter_taille: nil, filter_couleur: params[:filter_couleur]), class: "dropdown-item" %>
+            </li>
+            <% @tailles.each do |taille| %>
+            <li>
+                <%= link_to taille.nom, url_for(filter_taille: taille, filter_couleur: params[:filter_couleur]), class: "dropdown-item" %>
+            </li>
+            <% end %>
+        </ul>
+    </div>
+
+    <div class="dropdown">
+        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="couleurDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Couleurs
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="couleurDropdown">
+            <li>
+            <%= link_to "Toutes les couleurs", url_for(
+                filter_couleur: nil, 
+                filter_taille: params[:filter_taille]), 
+                class: "dropdown-item" %>
+            </li>
+            <% @couleurs.each do |couleur| %>
+            <li>
+                <%= link_to couleur.nom, url_for(filter_couleur: couleur, filter_taille: params[:filter_taille]), class: "dropdown-item" %>
+            </li>
+            <% end %>
+        </ul>
+    </div>
+
+
+</div>
+
+    <hr>
+
+    taille active: <%= Taille.find(params[:filter_taille]).nom if params[:filter_taille].present? %> <br>
+    couleur active: <%= Couleur.find(params[:filter_couleur]).nom if params[:filter_couleur].present? %> <br>

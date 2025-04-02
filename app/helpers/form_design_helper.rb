@@ -32,7 +32,7 @@ module FormDesignHelper
             select_options = options.delete(:select_options) || {}
             concat(form.collection_select(field, collection, value_method, label_method, select_options, { class: "form-select" }.merge(options)))
           when :check_box
-            concat(content_tag(:div, class: "form-check form-switch text-start fs-5 my-2 d-flex align-items-center") do
+            concat(content_tag(:div, class: "form-check form-switch text-start fs-6 my-1 d-flex align-items-center") do
               concat(form.check_box(field, class: "form-check-input me-2"))
               concat(form.label(field, form.object.class.human_attribute_name(field), class: "form-check-label"))
             end)

@@ -32,8 +32,8 @@
 
   <% unless @produit.present? || params[:q] %>
     <% button_configs = [
-      { path: display_qr_admin_selection_produit_index_path, icon: "fa-qrcode", text: "QR code", color: "text-secondary" },
-      { path: display_manuelle_admin_selection_produit_index_path(article: @article), icon: "fa-hand", text: "Manuelle", color: "text-secondary" }
+      { path: display_qr_admin_selection_produit_index_path, icon: "bi-qr-code-scan", text: "QR code", color: "text-secondary" },
+      { path: display_manuelle_admin_selection_produit_index_path(article: @article), icon: "bi-hand-index", text: "Manuelle", color: "text-secondary" }
     ] %>
 
     <div class="d-flex flex-wrap justify-content-center align-items-center mb-3">
