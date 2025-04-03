@@ -14,7 +14,7 @@ class Meeting < ApplicationRecord
     if client.present?
       "#{nom} - #{client.full_name}"
     elsif commande.present?
-      "#{commande.client.full_name}" 
+      "#{nom} - #{commande.client.full_name}" 
     else
       nom 
     end 
