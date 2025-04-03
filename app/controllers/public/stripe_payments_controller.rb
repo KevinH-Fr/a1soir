@@ -11,7 +11,7 @@ module Public
         line_items: @cart.collect { |item| item.to_builder.attributes! },
         mode: 'payment',
         success_url: root_url + "purchase_success?session_id={CHECKOUT_SESSION_ID}",
-        cancel_url: root_url + "purchase_error"
+        cancel_url: root_url + "purchase_error?session_id={CHECKOUT_SESSION_ID}"
       )
 
       # Redirect to Stripe Checkout
@@ -68,21 +68,21 @@ module Public
     
 
     def purchase_error
-      session = Stripe::Checkout::Session.retrieve(params[:session_id])
+      # stripe_session = Stripe::Checkout::Session.retrieve({
+      #   id: params[:session_id],
+      #   expand: ['line_items.data.price.product']
+      # })
     
-      produit = Produit.find_by(stripe_price_id: session.list_line_items.data[0].price.id)
+      # payment = StripePayment.create!(
+      #   stripe_payment_id: stripe_session.payment_intent,
+      #   amount: stripe_session.amount_total,
+      #   currency: stripe_session.currency,
+      #   status: stripe_session.payment_status,
+      #   payment_method: stripe_session.payment_method_types.first,
+      #   charge_id: stripe_session.payment_intent
+      # )
     
-      payment = StripePayment.create!(
-        stripe_payment_id: session.payment_intent,
-        produit_id: produit&.id,
-        amount: session.amount_total,
-        currency: session.currency,
-        status: session.payment_status,
-        payment_method: session.payment_method_types.first,
-        charge_id: session.payment_intent
-      )
-    
-      redirect_to status_payment_path(payment.id)
+      redirect_to cart_path
     end
 
     def status

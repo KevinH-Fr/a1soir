@@ -7,6 +7,8 @@ class CategorieProduit < ApplicationRecord
     has_one_attached :image1
     validate :image1_is_valid
 
+    scope :not_service, -> { where(service: [false, nil] ) }
+
     def self.ransackable_attributes(auth_object = nil)
         ["nom"]
     end

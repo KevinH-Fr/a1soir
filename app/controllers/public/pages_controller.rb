@@ -3,7 +3,7 @@ module Public
     layout 'public' 
 
     def home
-      @categories = CategorieProduit.all
+      @categories = CategorieProduit.not_service
       @carousel_images = Texte&.first&.carousel_images
     end
 
@@ -27,7 +27,7 @@ module Public
       searched_produits = @q.result(distinct: true).order(nom: :asc)
     
       # 🔁 Paginate first
-      @pagy, produits_page = pagy(searched_produits, items: 6)
+      @pagy, produits_page = pagy(searched_produits, items: 5)
     
       # ✅ Now apply availability filter only to paginated produits
       datedebut = Time.current

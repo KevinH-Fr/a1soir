@@ -1,4 +1,4 @@
-<div class="position-relative d-inline-block text-center w-100">
+<div class="position-relative d-inline-block text-center w-100" data-aos="fade">
   <%= render  "main_carousel" %>
   <%#= image_tag('/images/img1.png', class: "w-100", style: "object-fit: cover; height: 400px;") %>
 
@@ -14,7 +14,7 @@
 
 <div class="public-main-content">
 
-  <div class="container-fluid my-4">
+  <div class="container-fluid my-4" data-aos="fade">
     <h3 class="brand-colored"> Notre sélection </h3>
     <div>
         Autour D'un Soir c'est avant tout une boutique 100% conseil à Cannes.
@@ -24,13 +24,13 @@
 
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-2 p-2 m-0">
     <% @categories.each do |categorie| %>
-      <div class="col">
+      <div class="col" data-aos="fade">
         <%= card_categorie(categorie) %>
       </div>
     <% end %>
   </div>
 
-  <div class="container-fluid my-4">
+  <div class="container-fluid my-4" data-aos="fade">
     <h3 class="brand-colored"> Autour d'un Soir </h3>
     <div>
       Notre enseigne existe depuis 1980 ! 
@@ -40,22 +40,24 @@
     </div>
   </div>
 
-  <%= image_tag('/images/party.jpg', class: "w-100 p-2", style: "object-fit: cover; height: 400px;") %>
+  <div data-aos="fade">
+    <%= image_tag('/images/party.jpg', class: "w-100 p-2", style: "object-fit: cover; height: 400px;") %>
+  </div>
 
   <div class="container text-center">
-    <div class="d-flex flex-column align-items-center mb-4">
+    <div class="d-flex flex-column align-items-center mb-4" data-aos="fade">
       <i class="bi bi-truck m-0 p-0" style="font-size: 80px; vertical-align: middle; line-height: 1;"></i>
       <div class="brand-colored m-0 fs-3">Livraison rapide</div>
       <div class="text-secondary text-uppercase fs-6">sous 7 jours en france</div>
     </div>
 
-    <div class="d-flex flex-column align-items-center mb-4">
+    <div class="d-flex flex-column align-items-center mb-4" data-aos="fade">
       <i class="bi bi-hand-thumbs-up m-0 p-0" style="font-size: 80px; vertical-align: middle; line-height: 1;"></i>
       <div class="brand-colored m-0 fs-3">Retour possible</div>
       <div class="text-secondary text-uppercase fs-6">sous 14 jours</div>
     </div>
 
-    <div class="d-flex flex-column align-items-center mb-4">
+    <div class="d-flex flex-column align-items-center mb-4" data-aos="fade">
       <i class="bi bi-credit-card m-0 p-0" style="font-size: 80px; vertical-align: middle; line-height: 1;"></i>
       <div class="brand-colored m-0 fs-3">Paiement sécurisé</div>
       <div class="text-secondary text-uppercase fs-6">votre shopping en toute tranquilité</div>

@@ -2,8 +2,14 @@
 import "@hotwired/turbo-rails"
 import "./controllers"
 
+
 //import "trix"
 //import "@rails/actiontext"
 
 // require jquery
 // require jquery_ujs
+
+document.addEventListener("turbo:load", () => {
+    AOS.init();
+  });
+  
