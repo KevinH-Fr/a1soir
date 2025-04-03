@@ -12,23 +12,34 @@ module Public
     end
 
     def produits
-
       load_data
     
-      produits = FiltersProduitsService.new(
-        params[:id], params[:taille], params[:couleur], 
+      produits_scope = FiltersProduitsService.new(
+        params[:id], params[:taille], params[:couleur],
         params[:prixmax], params[:type]
       ).call
-
-      search_params = params.permit(:format, :page, 
-        q:[:nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont])
-
-      @q = produits.ransack(search_params[:q])
-      produits = @q.result(distinct: true).order(nom: :asc)
-
-      @pagy, @produits = pagy(produits, items: 6)
-
-    end  
+    
+      search_params = params.permit(:format, :page,
+        q: [:nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont]
+      )
+    
+      @q = produits_scope.ransack(search_params[:q])
+      searched_produits = @q.result(distinct: true).order(nom: :asc)
+    
+      # 🔁 Paginate first
+      @pagy, produits_page = pagy(searched_produits, items: 6)
+    
+      # ✅ Now apply availability filter only to paginated produits
+      datedebut = Time.current
+      datefin   = Time.current
+    
+      produits_ids = produits_page.select do |produit|
+        produit.statut_disponibilite(datedebut, datefin)[:disponibles] > 0
+      end.map(&:id)
+    
+      @produits = Produit.where(id: produits_ids).order(nom: :asc)
+    end
+    
 
     def update_filters
 

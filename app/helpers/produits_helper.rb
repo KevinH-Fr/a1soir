@@ -8,6 +8,33 @@ module ProduitsHelper
         Produit.where(handle: produit.handle, taille_id: produit.taille_id).where.not(id: produit.id)
     end
 
+    # with statut disponibilite
+    def same_produit_same_couleur_others_tailles_with_statut_disponibilite(produit)
+        datedebut = Time.current
+        datefin   = Time.current
+      
+        produits = Produit.actif.where(handle: produit.handle, couleur_id: produit.couleur_id)
+                          .where.not(id: produit.id)
+      
+        produits.select do |p|
+          p.statut_disponibilite(datedebut, datefin)[:disponibles] > 0
+        end
+      end
+      
+      def same_produit_same_taille_others_couleurs_with_statut_disponibilite(produit)
+        datedebut = Time.current
+        datefin   = Time.current
+      
+        produits = Produit.actif.where(handle: produit.handle, taille_id: produit.taille_id)
+                          .where.not(id: produit.id)
+      
+        produits.select do |p|
+          p.statut_disponibilite(datedebut, datefin)[:disponibles] > 0
+        end
+      end
+
+      
+
     def badge_prixvente_produit(produit)
         if produit.prixvente
             content_tag(:span, class: "badge fs-6 border border-secondary text-secondary m-1 p-1") do

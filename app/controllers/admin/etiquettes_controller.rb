@@ -2,19 +2,32 @@ class Admin::EtiquettesController < Admin::ApplicationController
   # before_action :authenticate_vendeur_or_admin!
 
   def index
-    #@produits = Produit.all 
-    session[:selection_etiquettes] = [] unless session[:selection_etiquettes]
-    search_params = params.permit(:format, :page, 
-      q:[:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont])
-      
+    session[:selection_etiquettes] ||= []
+  
+    search_params = params.permit(
+      :format, :page,
+      q: [:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont]
+    )
+  
     @q = Produit.ransack(search_params[:q])
-          
     produits = @q.result(distinct: true).order(updated_at: :desc)
-    @pagy, @produits = pagy_countless(produits, items: 6)
-
+  
+    # ✅ Use pagy to paginate BEFORE filtering by availability
+    @pagy, produits_page = pagy(produits, items: 6)
+  
+    # ✅ Filter only those with available stock (on this page only)
+    datedebut = Time.current
+    datefin   = Time.current
+  
+    produits_ids = produits_page.select do |produit|
+      produit.statut_disponibilite(datedebut, datefin)[:disponibles] > 0
+    end.map(&:id)
+  
+    @produits = Produit.where(id: produits_ids).order(updated_at: :desc)
+  
     @selection_produits = []
-
   end
+  
 
   def reset_selection
     # Reset the session selection

@@ -4,7 +4,6 @@
         <td colspan="2" style="height: 410px; 
             background-image: url('<%= produit.image1.present? ? produit.image1.url : no_photo_url %>'); 
             background-size: contain; background-repeat: no-repeat; background-position: center;">
-
         </td>
     </tr>
 
@@ -37,7 +36,7 @@
                     <span class="text-uppercase" style="border: 2px solid black; border-radius: 5px; margin-right: 2px; padding: 1px;">
                         <%= produit.taille&.nom %>
                     </span>
-                    <% same_produit_same_couleur_others_tailles(produit).each do |prod| %>
+                    <% same_produit_same_couleur_others_tailles_with_statut_disponibilite(produit).sort_by { |p| p.taille&.nom.to_s }.each do |prod| %>
                         <span class="text-uppercase" style="border: 2px solid grey; border-radius: 5px; color: grey; margin-right: 2px; padding: 1px;">
                             <%= prod.taille&.nom %>
                         </span>
@@ -51,7 +50,7 @@
                         <%= produit.couleur&.nom %>
                         <div style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: <%= produit.couleur&.couleur_code %>"></div>
                     </span>
-                    <% same_produit_same_taille_others_couleurs(produit).each do |prod| %>
+                    <% same_produit_same_taille_others_couleurs_with_statut_disponibilite(produit).each do |prod| %>
                         <% if prod.couleur.present? %>    
                             <span style="border: 1px solid grey; border-radius: 5px; color: grey; margin-right: 2px; padding: 2px;">
                                 <%= prod.couleur&.nom %>
@@ -61,7 +60,6 @@
                     <% end %>
                 <% end %>
             </div>
-
         </td>
     </tr>
 
