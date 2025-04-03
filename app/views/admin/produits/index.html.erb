@@ -4,7 +4,7 @@
 
 <%= bloc_nouveau(Produit) %>
 
-<%= render  "filtres" %>
+<%= render "filtres" %>
 
 <%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
       <div id="produits"> </div> 

@@ -52,7 +52,6 @@ module StockHelper
    .joins(:stripe_payment)
    .where(stripe_payments: { status: 'paid' }, produit_id: produits)
    .count
- 
     
     total_quantite
   end

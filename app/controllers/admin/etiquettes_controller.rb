@@ -9,7 +9,6 @@ class Admin::EtiquettesController < Admin::ApplicationController
       
     @q = Produit.ransack(search_params[:q])
           
-
     produits = @q.result(distinct: true).order(updated_at: :desc)
     @pagy, @produits = pagy_countless(produits, items: 6)
 

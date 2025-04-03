@@ -12,7 +12,9 @@
               filter_couleur: params[:filter_couleur], 
               filter_categorie: params[:filter_categorie],
               filter_statut: params[:filter_statut],
-              sort: params[:sort], page: @pagy.next) %>
+              sort: params[:sort], 
+              q: params[:q]&.to_unsafe_h,
+              page: @pagy.next) %>
 
     <% end %>
 <% end %>
