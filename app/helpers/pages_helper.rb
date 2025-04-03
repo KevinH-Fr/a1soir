@@ -15,7 +15,7 @@ module PagesHelper
   def card_categorie(categorie)
     link_to produits_url(subdomain: "shop", slug: categorie.nom.parameterize, id: categorie.id), class: "text-decoration-none" do
       content_tag :div, class: "card text-bg-light mb-1" do
-        image_tag(categorie.default_image, class: "card-img", style: "height: 300px; object-fit: cover;") +
+        image_tag(categorie.default_image, class: "card-img", style: "height: 350px; object-fit: cover;") +
         content_tag(:div, class: "card-img-overlay") do
           content_tag(:h5, categorie.nom, class: "card-title badge bg-brand-colored fs-6")
         end
