@@ -2,6 +2,9 @@ module Public
   class PagesController < ApplicationController
     layout 'public' 
 
+    def animation 
+    end
+    
     def home
       @categories = CategorieProduit.not_service
       @carousel_images = Texte&.first&.carousel_images

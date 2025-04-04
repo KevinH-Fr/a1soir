@@ -13,3 +13,7 @@ document.addEventListener("turbo:load", () => {
     AOS.init();
   });
   
+// Your Three.js scene
+import "./three/scene"
+
+//import "./three/scene_test"

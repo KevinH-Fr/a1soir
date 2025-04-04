@@ -42,6 +42,7 @@ Rails.application.routes.draw do
       end
 
       get 'cart', to: 'pages#cart'
+      get 'animation', to: 'pages#animation'
 
     end
 
