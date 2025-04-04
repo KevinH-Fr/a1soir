@@ -9,11 +9,13 @@ import "./controllers"
 // require jquery
 // require jquery_ujs
 
-document.addEventListener("turbo:load", () => {
-    AOS.init();
-  });
+// document.addEventListener("turbo:load", () => {
+//     AOS.init();
+//   });
   
 // Your Three.js scene
-import "./three/scene"
+import "./three/main"
+// import "./three/scene1"
+// import "./three/scene2"
 
 //import "./three/scene_test"
