@@ -5,33 +5,36 @@ let camera, renderer, scene;
 const image1 = {
   path: 'images/image1.png',
   scrollStart: 0,
-  scrollEnd: 1000,
+  scrollEnd: 1500,
   mesh: null,
   material: null,
-  zOffset: -0.1
+  zOffset: 0,
+  zoomTarget: { x: -1.9, y: -1, z: 1 } // stronger zoom (was 2.5)
 };
 
 const otherImages = [
   {
     path: 'images/image2.png',
-    scrollStart: 1000,
-    scrollEnd: 2000,
-    mesh: null,
-    material: null,
-    zOffset: 0
-  },
-  {
-    path: 'images/image3.png',
-    scrollStart: 2000,
+    scrollStart: 1500,
     scrollEnd: 3000,
     mesh: null,
     material: null,
-    zOffset: 0.1
+    zOffset: 0,
+    zoomTarget: { x: 2.8, y: 1, z: 0.8 } // stronger zoom
+  },
+  {
+    path: 'images/image3.png',
+    scrollStart: 3000,
+    scrollEnd: 4500,
+    mesh: null,
+    material: null,
+    zOffset: 0,
+    zoomTarget: { x: -1, y: -1, z: 1.2 } // stronger zoom
   }
 ];
 
+
 const initialCameraZ = 5;
-const minCameraZ = 2;
 
 export function initScene1() {
   const container = document.getElementById('canvas1');
@@ -43,7 +46,7 @@ export function initScene1() {
     0.1,
     1000
   );
-  camera.position.z = initialCameraZ;
+  camera.position.set(0, 0, initialCameraZ);
 
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -52,33 +55,32 @@ export function initScene1() {
 
   const textureLoader = new THREE.TextureLoader();
 
-  // === IMAGE 1 ===
-  textureLoader.load(image1.path, (texture) => {
-    const aspect = texture.image.width / texture.image.height;
-    const geometry = new THREE.PlaneGeometry(aspect * 5, 5);
-    const material = new THREE.MeshBasicMaterial({
-      map: texture,
-      transparent: true,
-      opacity: 1 // fully visible at start
-    });
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.z = image1.zOffset;
-
-    image1.mesh = mesh;
-    image1.material = material;
-
-    scene.add(mesh);
-  });
-
-  // === OTHER IMAGES ===
-  otherImages.forEach((img) => {
+  // === IMAGE LOADING FUNCTION WITH "COVER" BEHAVIOR ===
+  const loadImageCover = (img, isVisible = false) => {
     textureLoader.load(img.path, (texture) => {
-      const aspect = texture.image.width / texture.image.height;
-      const geometry = new THREE.PlaneGeometry(aspect * 5, 5);
+      const screenHeight = 2 * Math.tan((camera.fov * Math.PI) / 360) * camera.position.z;
+      const screenWidth = screenHeight * camera.aspect;
+
+      const imgAspect = texture.image.width / texture.image.height;
+      const screenAspect = screenWidth / screenHeight;
+
+      let planeWidth, planeHeight;
+
+      if (imgAspect > screenAspect) {
+        // Image is wider → fit height, crop width
+        planeHeight = screenHeight;
+        planeWidth = screenHeight * imgAspect;
+      } else {
+        // Image is taller → fit width, crop height
+        planeWidth = screenWidth;
+        planeHeight = screenWidth / imgAspect;
+      }
+
+      const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
       const material = new THREE.MeshBasicMaterial({
         map: texture,
         transparent: true,
-        opacity: 0 // hidden at start
+        opacity: isVisible ? 1 : 0
       });
 
       const mesh = new THREE.Mesh(geometry, material);
@@ -89,13 +91,19 @@ export function initScene1() {
 
       scene.add(mesh);
     });
-  });
+  };
 
+  // === LOAD IMAGES ===
+  loadImageCover(image1, true);
+  otherImages.forEach((img) => loadImageCover(img, false));
+
+  // === EVENTS ===
   window.addEventListener('scroll', onScroll);
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    // Optionally, rescale planes on resize if needed
   });
 
   return { scene, camera, renderer };
@@ -104,7 +112,7 @@ export function initScene1() {
 function onScroll() {
   const scrollY = window.scrollY;
 
-  // === IMAGE 1: fade out and zoom ===
+  // === FADE IMAGE 1 ===
   if (image1.material) {
     if (scrollY <= image1.scrollStart) {
       image1.material.opacity = 1;
@@ -116,46 +124,41 @@ function onScroll() {
     }
   }
 
-  // === OTHER IMAGES: fade in then fade out ===
+  // === FADE OTHER IMAGES ===
   otherImages.forEach(({ scrollStart, scrollEnd, material }) => {
     if (!material) return;
 
-    if (scrollY <= scrollStart) {
-      material.opacity = 0;
-    } else if (scrollY >= scrollEnd) {
+    if (scrollY <= scrollStart || scrollY >= scrollEnd) {
       material.opacity = 0;
     } else {
       const mid = (scrollStart + scrollEnd) / 2;
-      if (scrollY < mid) {
-        const t = (scrollY - scrollStart) / (mid - scrollStart);
-        material.opacity = t;
-      } else {
-        const t = (scrollY - mid) / (scrollEnd - mid);
-        material.opacity = 1 - t;
-      }
+      const t = scrollY < mid
+        ? (scrollY - scrollStart) / (mid - scrollStart)
+        : 1 - (scrollY - mid) / (scrollEnd - mid);
+      material.opacity = t;
     }
   });
 
-  // === ZOOM: active image based ===
-  let currentZoom = initialCameraZ;
+  // === CAMERA ZOOM & PAN (X, Y, Z) ===
+  let targetPosition = { x: 0, y: 0, z: initialCameraZ };
 
-  // Image 1 zoom
+  // Image 1 scroll-based zoom + pan
   if (scrollY >= image1.scrollStart && scrollY <= image1.scrollEnd) {
     const t = (scrollY - image1.scrollStart) / (image1.scrollEnd - image1.scrollStart);
-    currentZoom = THREE.MathUtils.lerp(initialCameraZ, minCameraZ, t);
+    targetPosition.x = THREE.MathUtils.lerp(0, image1.zoomTarget.x, t);
+    targetPosition.y = THREE.MathUtils.lerp(0, image1.zoomTarget.y, t);
+    targetPosition.z = THREE.MathUtils.lerp(initialCameraZ, image1.zoomTarget.z, t);
   }
 
-  // Other images zoom
-  otherImages.forEach(({ scrollStart, scrollEnd }) => {
-    if (scrollY >= scrollStart && scrollY <= scrollEnd) {
-      const t = (scrollY - scrollStart) / (scrollEnd - scrollStart);
-      currentZoom = THREE.MathUtils.lerp(initialCameraZ, minCameraZ, t);
+  // Other images
+  otherImages.forEach((img) => {
+    if (scrollY >= img.scrollStart && scrollY <= img.scrollEnd) {
+      const t = (scrollY - img.scrollStart) / (img.scrollEnd - img.scrollStart);
+      targetPosition.x = THREE.MathUtils.lerp(0, img.zoomTarget.x, t);
+      targetPosition.y = THREE.MathUtils.lerp(0, img.zoomTarget.y, t);
+      targetPosition.z = THREE.MathUtils.lerp(initialCameraZ, img.zoomTarget.z, t);
     }
   });
 
-  camera.position.z = currentZoom;
-}
-
-export function animateScene1() {
-  // Scroll-driven animation
+  camera.position.set(targetPosition.x, targetPosition.y, targetPosition.z);
 }
