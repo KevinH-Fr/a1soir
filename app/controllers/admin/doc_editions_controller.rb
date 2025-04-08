@@ -172,7 +172,7 @@ class Admin::DocEditionsController < Admin::ApplicationController
   end
   
   def doc_edition_params
-    params.fetch(:doc_edition, {}).permit(:commande_id, :doc_type, :edition_type, :commentaires, :sujet, :destinataire, :message)
+    params.fetch(:doc_edition, {}).permit(:commande_id, :doc_type, :edition_type, :commentaires, :sujet, :destinataire, :message, :label_facture_simple)
   end
 
 

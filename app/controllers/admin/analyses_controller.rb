@@ -1,6 +1,6 @@
 class Admin::AnalysesController < Admin::ApplicationController
 
-  before_action :authenticate_admin!
+  #before_action :authenticate_admin!
 
   def index
     datedebut = DateTime.parse(params[:debut]) if params[:debut].present?

@@ -4,12 +4,14 @@
 </head>
 
 <br> 
-<h4 class="h4-doc"> 
-  <%= "Devis" if @doc_edition.commande.devis? %>
-</h4>
 
 <%= render "admin/pdf_commande/infos" %> <br>
-<%= render "admin/pdf_commande/articles" %> 
-<%= render "admin/pdf_commande/paiements" %> 
-<%= render "admin/pdf_commande/avoirrembs" %> 
-<%= render "admin/pdf_commande/synthese" %> 
+
+<% unless @doc_edition.doc_type == "facture simple" %>
+  <%= render "admin/pdf_commande/articles" %> 
+  <%= render "admin/pdf_commande/paiements" %> 
+  <%= render "admin/pdf_commande/avoirrembs" %> 
+  <%= render "admin/pdf_commande/synthese" %> 
+<% else %>
+    <%= render "admin/pdf_commande/facture_simple" %> 
+<% end %>

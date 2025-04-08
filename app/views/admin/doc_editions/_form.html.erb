@@ -1,5 +1,5 @@
 
-<div class="card mx-2 my-3 p-3 shadow-sm">
+<div class="card mx-2 my-1 p-3 shadow-sm">
 
   <%= form_with(model: doc_edition, url: doc_edition.persisted? ? admin_doc_edition_path(doc_edition) : admin_doc_editions_path, method: doc_edition.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
     <% if doc_edition.errors.any? %>
@@ -30,25 +30,37 @@
 
       <hr>
 
-      <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-        <% DocEdition::DOCUMENT_TYPES.each do |doc_type| %>
-          <%= form.radio_button :doc_type, doc_type, id: "btnradio-#{doc_type}", class: "btn-check", data: { action: "change->form-element#remotesubmit" } %>
-          <label class="btn btn-outline-primary" for="btnradio-<%= doc_type %>"><%= doc_type %></label>
-        <% end %>
+      <div class="d-flex justify-content-center">
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+          <% DocEdition::DOCUMENT_TYPES.each do |doc_type| %>
+            <%= form.radio_button :doc_type, doc_type, id: "btnradio-#{doc_type}", class: "btn-check", data: { action: "change->form-element#remotesubmit" } %>
+            <label class="btn btn-sm btn-outline-primary" for="btnradio-<%= doc_type %>"><%= doc_type %></label>
+          <% end %>
+        </div>
       </div>
+
 
 
       <%= turbo_frame_tag :content_field do %>
         <% if doc_edition.doc_type? %>
 
-          <div class="container text-center fs-5 mt-4">
+          <% if doc_edition.doc_type == "facture simple" %>
+            <div class="container text-center fs-6 mt-4">
+              <i class="bi bi-card-text me-1"></i>
+              <span>Label facture simple</span>
+            </div> 
+            
+            <div class="input-group mt-1">
+              <%= form.text_area :label_facture_simple, class: "form-control" %>
+            </div>
+          <% end %>
+
+          <div class="container text-center fs-6 mt-4">
             <i class="fa-regular fa-message me-1"></i>
             <span>Commentaires</span>
           </div> 
-
-          <hr>
           
-          <div class="input-group mt-4">
+          <div class="input-group mt-1">
             <%#= form.label :commentaires, class: "input-group-text" %>
             <%= form.text_area :commentaires, class: "form-control" %>
           </div>

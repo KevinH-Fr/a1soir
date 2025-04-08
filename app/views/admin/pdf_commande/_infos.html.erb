@@ -34,11 +34,24 @@
 
     </td>
 
-    <!-- Right Side: Doc Type & Ref Commande -->
-    <td style="vertical-align: top; text-align: right; width: 20%; border-style: hidden;">
-      <span class="doc-important"> <%= @doc_edition.doc_type %> </span>
-      <span class="doc-important"> <%= @doc_edition.commande.ref_commande %> </span> 
-      <%= image_tag(@doc_edition.commande.qr_code, class:"img-qr-etiquette") if @doc_edition.commande.qr_code.present? %>
+    <td style="vertical-align: top; text-align: center; width: 20%; border-style: hidden;">
+
+      <% if @doc_edition.commande.devis? %>
+        <div class="doc-important">
+          Devis
+        </div>
+      <% else %>
+        <div class="doc-important"><%= @doc_edition.doc_type.capitalize %></div>
+      <% end %>
+      <div class="doc-important"><%= @doc_edition.commande.ref_commande %></div>
+
+      <% if @doc_edition.commande.qr_code.present? %>
+        <div>
+          <%= image_tag(@doc_edition.commande.qr_code, class: "img-qr-etiquette") %>
+        </div>
+      <% end %>
+
     </td>
+
   </tr>
 </table>

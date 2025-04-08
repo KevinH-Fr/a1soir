@@ -1,0 +1,15 @@
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td style="vertical-align: center; width: 80%; padding: 5px;">
+      <%= @doc_edition.label_facture_simple %>
+    </td>
+    <td style="vertical-align: top; padding: 5px;">
+      <div>total HT: <%= du_prix_ht(@doc_edition.commande) %></div>
+      <div>TVA: <%= tva_sur_prix(@doc_edition.commande) %></div>
+      <div>total TTC: <%= du_prix(@doc_edition.commande) %></div>
+    </td>
+  </tr>
+</table>
+
+
+<%= render  "admin/pdf_commande/mentions" %>
