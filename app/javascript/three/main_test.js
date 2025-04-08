@@ -1,9 +1,13 @@
 import { initScene1, animateScene1 } from './scene1.js';
-//import { initScene2, animateScene2 } from './scene2.js';
+import { initScene2, animateScene2 } from './scene2.js';
+import { initScene3, animateScene3 } from './scene3.js';
+import { initScene4, animateScene4 } from './scene4.js';
 
 const scenes = [
   { init: initScene1, animate: animateScene1, canvasId: 'canvas1' },
- // { init: initScene2, animate: animateScene2, canvasId: 'canvas2' }
+  { init: initScene2, animate: animateScene2, canvasId: 'canvas2' },
+  { init: initScene3, animate: animateScene3, canvasId: 'canvas3' },
+  { init: initScene4, animate: animateScene4, canvasId: 'canvas4' }
 ];
 
 const initializedScenes = scenes.map(({ init, animate, canvasId }) => {
@@ -14,6 +18,7 @@ const initializedScenes = scenes.map(({ init, animate, canvasId }) => {
 function animate() {
   requestAnimationFrame(animate);
 
+  
   const scrollY = window.scrollY;
   document.getElementById('scrollPosition').textContent = `Scroll Y: ${scrollY.toFixed(0)}px`;
   const windowHeight = window.innerHeight;

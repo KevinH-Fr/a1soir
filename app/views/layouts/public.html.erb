@@ -26,8 +26,10 @@
   </head>
 
   <body class="pb-4">
-    <%= render "public/shared/navbar" %>
-
+    <% unless controller_name == 'pages' && action_name == 'animation' %> 
+      <%= render "public/shared/navbar" %>
+    <% end %>
+    
     <div class="m-0 p-0">
       <%= yield %>
     </div>
