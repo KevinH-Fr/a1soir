@@ -1,71 +1,68 @@
-
-  <div class="chartBox mx-auto">
-    <canvas id="myChartBarArticles"></canvas>
-  </div>
-
+<div class="chartBox mx-auto">
+  <canvas id="myChartBarArticles"></canvas>
+</div>
 
 <% @data = [@nbLoc, @nbVente] %>
 
-
 <script>
-   
   var couleur1 = 'rgb(174, 189, 202)';
   var couleur2 = 'rgb(120, 149, 178)';
 
+  var dataBarArticles = {
+    labels: ['location', 'vente'],
+    datasets: [{
+      data: <%= @data.to_json.html_safe %>,
+      fill: true,
+      backgroundColor: [couleur1, couleur2],
+      borderColor: 'rgb(0, 0, 0)',
+      borderWidth: 1
+    }]
+  };
 
+  var delayedBarArticles;
 
-// CHART BAR
-    var dataBarArticles = {
-      labels: ['location', 'vente'],
-      datasets: [{
-      
-        data: <%= @data.to_json.html_safe %>,
-        fill: true,
-        backgroundColor: [ couleur1, couleur2 ],
-        borderWidth: 1
-      }]
-    };
+  var configBarArticles = {
+    type: 'bar',
+    data: dataBarArticles,
+    options: {
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      aspectRatio: 1,
 
-    var delayedBarArticles;
-
-    var configBarArticles = {
-      type: 'bar',
-      data: dataBarArticles,
-      options: {
-
-        plugins: {
-            legend: {
-                display: false
-            },
+      animation: {
+        onComplete: () => {
+          delayedBarArticles = true;
         },
-        aspectRatio: 1,
-
-         animation: {
-                onComplete: () => {
-                    delayed = true;
-                },
-                delay: (context) => {
-                    let delay = 0;
-                    if (context.type === 'data' && context.mode === 'default' && !delayedBarArticles) {
-                    delay = context.dataIndex * 2000  + context.datasetIndex * 10;
-                    }
-                    return delay;
-                },
-            },
-
-            borderColor:'rgb(0, 0, 0)',
-            pointBorderWidth: 1,
-            pointHoverBorderWidth: 20,
-            lineTension: 0.4,
-
+        delay: (context) => {
+          let delay = 0;
+          if (context.type === 'data' && context.mode === 'default' && !delayedBarArticles) {
+            delay = context.dataIndex * 200 + context.datasetIndex * 10;
           }
-      };
+          return delay;
+        }
+      },
 
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1,
+            callback: function(value) {
+              if (Number.isInteger(value)) {
+                return value;
+              }
+            }
+          }
+        }
+      }
+    }
+  };
 
-    // render init block
-    var myChartBarArticles = new Chart(
-      document.getElementById('myChartBarArticles'),
-      configBarArticles
-    );
-    
+  var myChartBarArticles = new Chart(
+    document.getElementById('myChartBarArticles'),
+    configBarArticles
+  );
 </script>

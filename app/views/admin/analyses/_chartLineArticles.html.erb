@@ -1,67 +1,69 @@
-
-  <div class="chartBox mx-auto">
-    <canvas id="myChartLineArticles"></canvas>
-  </div>
-
-  <%# @data = Article.group('DATE(created_at)').sum('quantite') %>
-
+<div class="chartBox mx-auto">
+  <canvas id="myChartLineArticles"></canvas>
+</div>
 
 <script>
-   
   var couleur1 = 'rgb(174, 189, 202)';
   var couleur2 = 'rgb(120, 149, 178)';
 
-// CHART BAR
-    var dataLineArticles = {
-      datasets: [{
-        data: <%= @groupedByDateArticles.to_json.html_safe %>,
-        fill: true,
-        backgroundColor: [couleur2, couleur1],
-        borderWidth: 1
-      }]
-    };
+  var dataLineArticles = {
+    labels: <%= @groupedByDateArticles.keys.to_json.html_safe %>,
+    datasets: [{
+      data: <%= @groupedByDateArticles.values.to_json.html_safe %>,
+      fill: true,
+      backgroundColor: [couleur2, couleur1],
+      borderColor: 'rgb(0, 0, 0)',
+      borderWidth: 1,
+      pointBorderWidth: 1,
+      pointHoverBorderWidth: 20,
+      tension: 0.4
+    }]
+  };
 
-    var delayedLineArticles;
+  var delayedLineArticles;
 
-    var configLineArticles = {
-      type: 'line',
-      data: dataLineArticles,
-      options: {
+  var configLineArticles = {
+    type: 'line',
+    data: dataLineArticles,
+    options: {
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      aspectRatio: 1,
 
-        plugins: {
-            legend: {
-                display: false
-            },
+      animation: {
+        onComplete: () => {
+          delayedLineArticles = true;
         },
-        aspectRatio: 1,
-
-         animation: {
-                onComplete: () => {
-                    delayed = true;
-                },
-                delay: (context) => {
-                    let delay = 0;
-                    if (context.type === 'data' && context.mode === 'default' && !delayedLineArticles) {
-                    delay = context.dataIndex * 2000  + context.datasetIndex * 10;
-                    }
-                    return delay;
-                },
-            },
-
-            borderColor:'rgb(0, 0, 0)',
-            pointBorderWidth: 1,
-            pointHoverBorderWidth: 20,
-            lineTension: 0.4,
-
+        delay: (context) => {
+          let delay = 0;
+          if (context.type === 'data' && context.mode === 'default' && !delayedLineArticles) {
+            delay = context.dataIndex * 200 + context.datasetIndex * 10;
           }
-      };
+          return delay;
+        }
+      },
 
-        // render init block
-    var myChartLineArticles = new Chart(
-      document.getElementById('myChartLineArticles'),
-      configLineArticles
-    );
-  
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1,
+            callback: function(value) {
+              if (Number.isInteger(value)) {
+                return value;
+              }
+            }
+          }
+        }
+      }
+    }
+  };
 
-
+  var myChartLineArticles = new Chart(
+    document.getElementById('myChartLineArticles'),
+    configLineArticles
+  );
 </script>

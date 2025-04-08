@@ -12,7 +12,7 @@ module AnalysesHelper
         concat(content_tag(:div, class: "card-body p-0 light-beige-colored") do
           concat(content_tag(:div, class: "row p-2") do
             partials.each do |partial|
-              concat(content_tag(:div, class: "col-md-4 my-2") do
+              concat(content_tag(:div, class: "col-sm-4 my-2") do
                 render partial
               end)
             end
