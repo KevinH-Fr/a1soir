@@ -3,10 +3,10 @@ import * as THREE from 'three';
 let imageMeshes = [];
 let logoMesh = null;
 let logoReady = false;
+let scene, camera, renderer;
 
-// === CONFIGURABLE CONSTANTS ===
-const baseScroll = 6000;               // When dresses begin appearing
-const step = 500;                     // Scroll span per dress group
+const baseScroll = 6000;
+const step = 500;
 const dressScaleMin = 0.4;
 const dressScaleMax = 1;
 
@@ -14,36 +14,28 @@ const logoStart = 5000;
 const logoEnd = 6000;
 const logoCenterScale = 5;
 const logoCornerScale = 2;
-const logoCornerPosition = { x: -2.5, y: 2.8 };
+const logoCornerPosition = { x: -2.4, y: 2.8 };
+
+let lastScrollY = 0;
+let starLayers = [];
 
 export function initScene2() {
   const container = document.getElementById('canvas2');
 
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x000000);
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color("#1e2120");
 
-  const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-  );
+  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.z = 5;
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
 
-  const textureLoader = new THREE.TextureLoader();
+  createStarLayers();
 
-  // === Dress Images ===
-  const imagePaths = [
-    'images/dress.png',
-    'images/dress2.png',
-    'images/dress.png',
-    'images/dress2.png',
-    'images/dress.png',
-  ];
+  const textureLoader = new THREE.TextureLoader();
+  const imagePaths = ['images/dress.png', 'images/dress2.png', 'images/dress.png', 'images/dress2.png', 'images/dress.png'];
 
   imagePaths.forEach((path, index) => {
     const texture = textureLoader.load(path);
@@ -70,10 +62,9 @@ export function initScene2() {
     scene.add(mesh);
   });
 
-  // === Logo with aspect ratio
-  textureLoader.load('images/logo_courant.png', (texture) => {
+  textureLoader.load('images/a1soir_logo_white.png', (texture) => {
     const aspect = texture.image.width / texture.image.height;
-    const baseHeight = 0.1;
+    const baseHeight = 0.3
     const baseWidth = baseHeight * aspect;
 
     const geometry = new THREE.PlaneGeometry(baseWidth, baseHeight);
@@ -92,7 +83,6 @@ export function initScene2() {
   return { scene, camera, renderer };
 }
 
-// === Create text as a sprite
 function createTextSprite(message, fontSize = 100, color = "#ffffff") {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
@@ -112,11 +102,44 @@ function createTextSprite(message, fontSize = 100, color = "#ffffff") {
   const sprite = new THREE.Sprite(material);
 
   const scale = 0.01 * fontSize;
-  sprite.scale.set(canvas.width / canvas.height * scale, scale, 1);
+  sprite.scale.set((canvas.width / canvas.height) * scale, scale, 1);
   return sprite;
 }
 
-// === Logo Animation
+function createStarLayers() {
+  const configs = [
+    { count: 300, speed: 0.6, size: 0.2 },
+    { count: 600, speed: 0.3, size: 0.15 },
+    { count: 1000, speed: 0.15, size: 0.1 }
+  ];
+
+  configs.forEach(({ count, speed, size }) => {
+    const geometry = new THREE.BufferGeometry();
+    const positions = [];
+
+    for (let i = 0; i < count; i++) {
+      positions.push(
+        THREE.MathUtils.randFloatSpread(400),
+        THREE.MathUtils.randFloatSpread(400),
+        THREE.MathUtils.randFloatSpread(400)
+      );
+    }
+
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    const material = new THREE.PointsMaterial({ color: 0xffffff, size, transparent: true, opacity: 0.6 });
+    const points = new THREE.Points(geometry, material);
+    points.userData.speed = speed;
+    scene.add(points);
+    starLayers.push(points);
+  });
+}
+
+function animateStars(scrollDelta) {
+  starLayers.forEach(layer => {
+    layer.position.x -= scrollDelta * layer.userData.speed * 0.01;
+  });
+}
+
 function updateLogo(scrollY) {
   if (!logoReady || !logoMesh) return;
 
@@ -147,10 +170,13 @@ function updateLogo(scrollY) {
   }
 }
 
-// === Main Scroll Logic
 function onScroll() {
   const scrollY = window.scrollY;
+  const scrollDelta = scrollY - lastScrollY;
+  lastScrollY = scrollY;
+
   updateLogo(scrollY);
+  animateStars(scrollDelta);
 
   imageMeshes.forEach(({ mesh, mainText, subText }, i) => {
     const start = baseScroll + i * step;
@@ -161,28 +187,31 @@ function onScroll() {
       mesh.material.opacity = t;
       mesh.position.x = THREE.MathUtils.lerp(6, 0, t);
       mesh.position.y = THREE.MathUtils.lerp(-0.5, 0, t);
-      mesh.scale.set(THREE.MathUtils.lerp(dressScaleMin, dressScaleMax, t), THREE.MathUtils.lerp(dressScaleMin, dressScaleMax, t), 1);
-
+      mesh.scale.set(
+        THREE.MathUtils.lerp(dressScaleMin, dressScaleMax, t),
+        THREE.MathUtils.lerp(dressScaleMin, dressScaleMax, t),
+        1
+      );
       mainText.material.opacity = t >= 0.7 ? (t - 0.7) / 0.3 : 0;
       subText.material.opacity = t >= 0.9 ? (t - 0.9) / 0.1 : 0;
-
     } else if (scrollY > start + step && scrollY < end - step) {
       mesh.material.opacity = 1;
       mesh.position.set(0, 0, 0);
       mesh.scale.set(dressScaleMax, dressScaleMax, 1);
       mainText.material.opacity = 1;
       subText.material.opacity = 1;
-
     } else if (scrollY >= end - step && scrollY <= end) {
       const t = (scrollY - (end - step)) / step;
       mesh.material.opacity = 1 - t;
       mesh.position.x = THREE.MathUtils.lerp(0, -6, t);
       mesh.position.y = THREE.MathUtils.lerp(0, -0.5, t);
-      mesh.scale.set(THREE.MathUtils.lerp(dressScaleMax, dressScaleMin, t), THREE.MathUtils.lerp(dressScaleMax, dressScaleMin, t), 1);
-
+      mesh.scale.set(
+        THREE.MathUtils.lerp(dressScaleMax, dressScaleMin, t),
+        THREE.MathUtils.lerp(dressScaleMax, dressScaleMin, t),
+        1
+      );
       subText.material.opacity = t <= 0.3 ? 1 - (t / 0.3) : 0;
       mainText.material.opacity = t <= 0.7 ? 1 - (t / 0.7) : 0;
-
     } else {
       mesh.material.opacity = 0;
       mesh.position.set(6, -0.5, 0);
@@ -192,4 +221,3 @@ function onScroll() {
     }
   });
 }
-
