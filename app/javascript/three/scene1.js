@@ -146,7 +146,7 @@ function updateTextReveal(sprite, progress) {
       lineText = line.slice(0, charsRemaining);
       charsRemaining = 0;
     }
-    context.fillText(lineText + (charsRemaining === 0 ? '|' : ''), 0, yOffset);
+    context.fillText(lineText, 0, yOffset);
     yOffset += fontSize * 1.2;
   }
 
