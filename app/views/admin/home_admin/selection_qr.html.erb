@@ -1,22 +1,31 @@
-
 <div data-controller="qr-code">
   <div class="container-fluid p-2"> 
 
     <div class="container d-flex justify-content-center align-items-center">
       <div class="m-2" id="sourceSelectPanel">
-        <select id="sourceSelect" class="form-select m-2" style="max-width:400px;"> </select>
+        <select id="sourceSelect" class="form-select m-2" style="max-width:400px;"></select>
       </div>
       <a class="button btn btn-primary m-2" id="startButton" data-action="click->qr-code#startScan">Démarrer</a>
-      <a class="button btn btn-danger m-2" id="resetButton"  data-action="click->qr-code#stopScan" style="display: none;">Arrêter</a>
+      <a class="button btn btn-danger m-2" id="resetButton" data-action="click->qr-code#stopScan" style="display: none;">Arrêter</a>
     </div>
 
     <div class="text-center mt-2">
-      <video id="video" style=" width: 100%; max-width: 600px; height: auto;"></video>
+      <video id="video" style="width: 100%; max-width: 600px; height: auto;"></video>
     </div>
 
-    <div id="results">  </div>
+    <!-- 🔍 Champ douchette -->
+    <div class="text-center mt-3">
+      <input
+        type="text"
+        id="scannerInput"
+        class="form-control text-center"
+        style="max-width: 400px; margin: 0 auto;"
+        placeholder="Scannez ici avec la douchette"
+        data-action="change->qr-code#handleScannerInput"
+        autofocus
+      />
+    </div>
 
+    <div id="results"></div>
   </div>
 </div>
-
-

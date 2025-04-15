@@ -70,12 +70,23 @@ class Commande < ApplicationRecord
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    ["id", "nom", "montant", "description", "client_id", "debutloc", "finloc", "dateevent", "statutarticles", "typeevent", "profile_id", "commentaires", "commentaires_doc", "type_locvente", "devis"]
+    [
+      "id", "nom", "montant", "description", "client_id",
+      "debutloc", "finloc", "dateevent", "statutarticles", "typeevent",
+      "profile_id", "commentaires", "commentaires_doc", "type_locvente",
+      "devis", "ref_commande" # <-- Ajouté ici
+    ]
   end
+  
 
   def self.ransackable_associations(auth_object = nil)
     ["articles", "avoir_rembs", "client", "meetings", "paiement_recus", "profile"]
   end
+
+  ransacker :ref_commande, formatter: proc { |v| v } do |_parent|
+    Arel.sql("CONCAT('C', 1000 + commandes.id)")
+  end
+  
 
   private
 

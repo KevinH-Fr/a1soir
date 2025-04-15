@@ -4,21 +4,27 @@ class Admin::CommandesController < Admin::ApplicationController
   before_action :set_commande, only: [:show, :edit, :update, :destroy, 
     :toggle_statut_non_retire, :toggle_statut_retire, :toggle_statut_rendu]
 
-  def index
-
-    @count_commandes = Commande.count
-
-    search_params = params.permit(:format, :page, 
-      q:[:nom_or_type_locvente_or_typeevent_cont])
-   @q = Commande.ransack(search_params[:q])
-   commandes = @q.result(distinct: true).order(created_at: :desc)
-   @pagy, @commandes = pagy_countless(commandes, items: 2)
-
+    def index
+      @count_commandes = Commande.count
     
-    @clients = Client.all
-    @profiles = Profile.all 
-
-  end
+      search_params = params.permit(:format, :page,
+        q: [:nom_or_type_locvente_or_typeevent_or_ref_commande_or_client_nom_or_client_prenom_cont]
+      )
+    
+      @q = Commande.joins(:client).ransack(search_params[:q])
+    
+      commandes = @q.result(distinct: true)
+                    .select("commandes.*")
+                    .order("commandes.created_at DESC")
+    
+    #  Rails.logger.debug commandes.to_sql  # <-- à retirer ensuite
+    
+      @pagy, @commandes = pagy_countless(commandes, items: 2)
+    
+      @clients = Client.all
+      @profiles = Profile.all
+    end
+    
 
   def show
     @commande = Commande.includes(articles: [:produit, :sousarticles]).find(params[:commande]) if params[:commande]
