@@ -1,86 +1,89 @@
-// stimulus/controllers/qr_code_controller.js
 import { Controller } from "@hotwired/stimulus";
 import { BrowserQRCodeReader } from "@zxing/library";
 
 export default class extends Controller {
   connect() {
+    console.log("[Stimulus] Contrôleur connecté");
 
     this.codeReader = new BrowserQRCodeReader();
     this.selectedDeviceId = null;
-    this.resultsDiv = document.getElementById('results');
+    this.resultsDiv = document.getElementById("results");
     this.sourceSelect = this.element.querySelector("#sourceSelect");
 
     this.populateSources();
 
-    // Restart scan if previously active
+    const scannerInput = this.element.querySelector("#scannerInput");
+    if (scannerInput) {
+      console.log("[Stimulus] Champ douchette trouvé, focus appliqué");
+      scannerInput.focus();
+    }
+
     if (sessionStorage.getItem("scanning") === "true") {
       this.startScan();
     }
   }
-  
+
   populateSources() {
-    if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(() => {
-                navigator.mediaDevices.enumerateDevices()
-                    .then((devices) => {
-                        const videoInputDevices = devices.filter(device => device.kind === 'videoinput');
+    console.log("[Stimulus] Initialisation des sources vidéo...");
 
-                        if (videoInputDevices.length >= 1) {
-                            // Retrieve the previously used device from sessionStorage
-                            const storedDeviceId = sessionStorage.getItem("selectedCamera");
+    if (
+      navigator.mediaDevices &&
+      navigator.mediaDevices.enumerateDevices &&
+      navigator.mediaDevices.getUserMedia
+    ) {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(() => {
+          navigator.mediaDevices.enumerateDevices()
+            .then((devices) => {
+              const videoInputDevices = devices.filter(device => device.kind === "videoinput");
+              console.log("[Stimulus] Appareils vidéo détectés :", videoInputDevices);
 
-                            // Default to the first camera if no previous selection exists
-                            this.selectedDeviceId = storedDeviceId || videoInputDevices[0].deviceId;
+              if (videoInputDevices.length >= 1) {
+                const storedDeviceId = sessionStorage.getItem("selectedCamera");
+                this.selectedDeviceId = storedDeviceId || videoInputDevices[0].deviceId;
 
-                            // Populate the dropdown with camera options
-                            this.sourceSelect.innerHTML = ""; // Clear previous options
-                            videoInputDevices.forEach((element) => {
-                                const sourceOption = document.createElement('option');
-                                sourceOption.text = element.label || `Camera ${this.sourceSelect.length + 1}`;
-                                sourceOption.value = element.deviceId;
-                                this.sourceSelect.appendChild(sourceOption);
+                this.sourceSelect.innerHTML = "";
+                videoInputDevices.forEach((device) => {
+                  const sourceOption = document.createElement("option");
+                  sourceOption.text = device.label || `Camera ${this.sourceSelect.length + 1}`;
+                  sourceOption.value = device.deviceId;
+                  this.sourceSelect.appendChild(sourceOption);
 
-                                // Preselect the previously used camera
-                                if (element.deviceId === this.selectedDeviceId) {
-                                    sourceOption.selected = true;
-                                }
-                            });
+                  if (device.deviceId === this.selectedDeviceId) {
+                    sourceOption.selected = true;
+                  }
+                });
 
-                            this.sourceSelect.onchange = () => {
-                                this.selectedDeviceId = this.sourceSelect.value;
-                                sessionStorage.setItem("selectedCamera", this.selectedDeviceId); // Save selection
-                            };
+                this.sourceSelect.onchange = () => {
+                  this.selectedDeviceId = this.sourceSelect.value;
+                  sessionStorage.setItem("selectedCamera", this.selectedDeviceId);
+                };
 
-                            // Show camera selection dropdown
-                            const sourceSelectPanel = this.element.querySelector('#sourceSelectPanel');
-                            sourceSelectPanel.style.display = 'inline';
+                const sourceSelectPanel = this.element.querySelector("#sourceSelectPanel");
+                sourceSelectPanel.style.display = "inline";
 
-                            // Automatically start scanning if it was active before
-                            if (sessionStorage.getItem("scanning") === "true") {
-                                this.startScan();
-                            }
-                        } else {
-                            console.error("No video input devices detected.");
-                        }
-                    })
-                    .catch((err) => {
-                        console.error("Error enumerating devices:", err);
-                    });
+                if (sessionStorage.getItem("scanning") === "true") {
+                  this.startScan();
+                }
+              } else {
+                console.error("[Stimulus] Aucun périphérique vidéo détecté.");
+              }
             })
             .catch((err) => {
-                console.error('Camera access denied:', err);
+              console.error("[Stimulus] Erreur lors de l’énumération des périphériques :", err);
             });
+        })
+        .catch((err) => {
+          console.error("[Stimulus] Accès à la caméra refusé :", err);
+        });
     } else {
-        console.error('getUserMedia or enumerateDevices() not supported on this browser.');
+      console.error("[Stimulus] API caméra non supportée par le navigateur.");
     }
   }
 
-
   startScan() {
+    console.log("[Stimulus] Démarrage du scan...");
 
-    console.log('Scan started!');
-        
     const btnStart = this.element.querySelector("#startButton");
     btnStart.style.display = "none";
 
@@ -88,23 +91,22 @@ export default class extends Controller {
     btnReset.style.display = "inline";
 
     if (!this.selectedDeviceId) {
-      console.error("No video input devices available");
+      console.error("[Stimulus] Aucune caméra sélectionnée");
       return;
     }
 
-    this.codeReader.decodeFromInputVideoDevice(this.selectedDeviceId, 'video').then((result) => {
+    this.codeReader.decodeFromInputVideoDevice(this.selectedDeviceId, "video").then((result) => {
       if (result) {
-        console.log('Found QR code!', result);
+        console.log("[Stimulus] QR Code détecté via caméra :", result);
         this.handleResult(result);
       }
     });
-
   }
 
   stopScan() {
+    console.log("[Stimulus] Arrêt du scan");
     this.codeReader.reset();
     this.resultsDiv.textContent = "";
-    console.log('Scan stopped.');
 
     const btnStart = this.element.querySelector("#startButton");
     btnStart.style.display = "inline";
@@ -112,59 +114,66 @@ export default class extends Controller {
     const btnReset = this.element.querySelector("#resetButton");
     btnReset.style.display = "none";
 
-    // Remove scanning state (only when manually stopped)
     sessionStorage.removeItem("scanning");
   }
 
-
   handleResult(result) {
+    const raw = result.toString();
+    console.log("[Stimulus] Traitement du QR code (caméra) :", raw);
 
-    // Display product information on the page
-    // transforme value
-    var  resultTransforme = result.toString().split('produits/')[1];
-    var  resultTransforme2 = resultTransforme.split('?')[0];
-    
-    const resultElement = document.createElement('p');
-    resultElement.textContent = `Product ID: ${resultTransforme2}`;
-    this.resultsDiv.appendChild(resultElement);
+    try {
+      const resultTransforme = raw.split("produits/")[1];
+      const resultTransforme2 = resultTransforme.split("?")[0];
 
-    console.log(resultTransforme2);
+      this.resultsDiv.innerHTML += `<p>Product ID (caméra) : ${resultTransforme2}</p>`;
+      this.element.querySelector("#produit").value = resultTransforme2;
 
-    this.element.querySelector("#produit").value = resultTransforme2
+      this.codeReader.stopStreams();
+      const btnReset = this.element.querySelector("#resetButton");
+      btnReset.style.display = "none";
 
-    this.codeReader.stopStreams();
-    const btnReset = this.element.querySelector("#resetButton");
-    btnReset.style.display = "none";
-
-    // Ensure scanning continues
-    this.startScan();
-
-    this.refreshWithParam(resultTransforme2);
-
+      this.startScan();
+      this.refreshWithParam(resultTransforme2);
+    } catch (e) {
+      console.error("[Stimulus] Erreur dans le format du QR Code :", e);
+    }
   }
 
+  handleScannerInput(event) {
+    const value = event.target.value.trim();
+    console.log("[Stimulus] Saisie reçue depuis la douchette :", value);
+
+    if (!value) return;
+
+    try {
+      const resultTransforme = value.split("produits/")[1];
+      const resultTransforme2 = resultTransforme.split("?")[0];
+
+      this.resultsDiv.innerHTML += `<p>Product ID (douchette) : ${resultTransforme2}</p>`;
+      this.element.querySelector("#produit").value = resultTransforme2;
+
+      this.refreshWithParam(resultTransforme2);
+    } catch (e) {
+      console.error("[Stimulus] Format de QR code incorrect (douchette) :", e);
+    }
+
+    event.target.value = '';
+  }
 
   async refreshWithParam(resultTransforme2) {
     const currentUrl = window.location.href;
-  
-    // Create a URL object
     const updatedUrl = new URL(currentUrl);
-  
-    // Add the new parameter
-    updatedUrl.searchParams.set('produit', resultTransforme2);
-  
-    // Preserve existing parameters
+
+    updatedUrl.searchParams.set("produit", resultTransforme2);
+
     const existingParams = new URLSearchParams(updatedUrl.search);
     existingParams.forEach((value, key) => {
       updatedUrl.searchParams.set(key, value);
     });
-  
-    // Save scanning state
+
     sessionStorage.setItem("scanning", "true");
 
-    // Redirect to the updated URL
+    console.log("[Stimulus] Redirection vers :", updatedUrl.toString());
     window.location.href = updatedUrl.toString();
   }
-  
-
 }
