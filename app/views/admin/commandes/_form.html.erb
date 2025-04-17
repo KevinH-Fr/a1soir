@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <div class="m-1">
+      <div class="mx-1">
         <div class="input-group mb-1">
           <%= form.label :profile_id, class: "input-group-text" %>
           <%= form.collection_select :profile_id, @profiles.all.order(:nom), :id, :full_name, 
@@ -47,11 +47,36 @@
         </div>
         
       </div>
-    
+
       <%= custom_form_elements(form, 
+        [:dateevent, :date_field, "Date événement"]
+      ) %>
+
+
+      <%# nouveau date fields debut et fin %>
+    
+      <div data-controller="date-fields-commande" class="mx-1">
+        <div class="input-group mb-1">
+          <%= form.label :debutloc, "Début location", class: "input-group-text label-with-format" %>
+          <%= form.date_field :debutloc,
+                class: "form-control",
+                data: { action: "change->date-fields-commande#updateDateFin", date_fields_commande_target: "debutloc" } %>
+        </div>
+
+        <div class="input-group mb-1">
+          <%= form.label :finloc, "Fin location", class: "input-group-text label-with-format" %>
+          <%= form.date_field :finloc,
+                class: "form-control",
+                data: { date_fields_commande_target: "finloc" } %>
+        </div>
+      </div>
+
+
+
+      <%= custom_form_elements(form, 
+      #  [:debutloc, :date_field, "Début location"], [:finloc, :date_field, "Fin location"], 
+      #  [:dateevent, :date_field, "Date événement"],
         [:description, :text_area], 
-        [:debutloc, :date_field, "Début location"], [:finloc, :date_field, "Fin location"], 
-        [:dateevent, :date_field, "Date événement"],
         [:commentaires, :text_area], [:devis, :check_box]
       ) %>
 
