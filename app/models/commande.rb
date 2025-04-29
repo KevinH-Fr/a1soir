@@ -24,7 +24,7 @@ class Commande < ApplicationRecord
   scope :filtredatefin, -> (fin) { where("created_at <= ?", fin.end_of_day) }
 
 
-  EVENEMENTS_OPTIONS = ['mariage', 'soirée', 'divers']
+  EVENEMENTS_OPTIONS = ['mariage', 'soirée', 'festival de Cannes', 'divers']
 
   def full_name
     "#{ref_commande} #{created_at.strftime("%d/%m/%Y")}"
