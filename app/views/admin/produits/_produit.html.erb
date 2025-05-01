@@ -1,144 +1,155 @@
-<div id="<%= dom_id produit %>" class="my-2">
+<div id="<%= dom_id produit %>">
 
-  <div class="card mx-2 mb-3 light-beige-colored shadow-sm">
-    <div class="row g-0">
-      <!-- Image Column -->
-      <div class="col-sm-4 p-1 text-center">
-        <div data-turbo="false">
-          <%= link_to image_tag(produit.default_image, class: "img-fluid img-produit"), admin_produit_path(produit)  %>
-        </div>
-      </div>
-      <!-- Text Column -->
-      <div class="col-sm-8">
-        <div class="card-body p-1 px-2">
-          <h5 class="card-title">
-            <%= produit.nom %>
-          </h5>
-          
-          <div class="card-text">
-            <div>
-              <% if produit.categorie_produits.any? %>
-                <% produit.categorie_produits.each do |categorie| %>
-                  <%= custom_badge("", "", "", "", categorie.nom ) %>
-                <% end %>
-              <% end %>
-            </div>
 
-            <div class="px-2 small my-1">
-              <%= produit.description %>
-            </div>
-
-            <div class="container-fluid p-0">
-                <%= badge_prixlocation_produit(produit) %>
-                <%= badge_prixvente_produit(produit) %>
-                <%= badge_couleur_produit(produit) %> 
-                <%= badge_taille_produit(produit) %> 
-
-                <%= badge_eshop(produit) %>
-
-                <% unless controller_name == "selection_produit" %>
-                  <% statut = produit.statut_disponibilite(Date.today.to_date, Date.today.to_date) %>
-                  <% disponibles = statut[:disponibles] %>
-                  <p class="m-1">
-                    <span class="badge <%= disponibles > 0 ? 'bg-success' : 'bg-danger' %>">
-                      Disponibles: <%= disponibles %>
-                    </span>
-                  </p>
-                  
-                <% end %>
-
-                <%= is_archived(produit) %> 
-            </div>
-
-            <div class="mt-auto m-1">
-
-              <% if controller_name == "produits" && action_name == "show" %>    <%# || controller_name == "selection_produit"%>
-                <% if current_admin_user.admin? %>
-                  <%= link_to dupliquer_admin_produit_path(produitbase: produit.id),
-                        class: "btn btn-sm btn-dark",
-                        :onclick => "return confirm('Etes-vous certain de vouloir dupliquer ce produit ?')",
-                        title: 'Dupliquer' do %>
-                    <i class="bi-copy me-1"></i>
-                    <span class="">Dupliquer</span>
-                  
-                  <% end %>
-                <% end %>  
-              <% end %>
-
-   
-                <div class="d-flex justify-content-between mt-2">
-
-                  <div>
-                    <div data-turbo="false">
-                      <%= link_to "", "#collapseProduit#{dom_id(produit)}", 
-                            class: "btn btn-sm btn-outline-primary bi bi-eye", "data-bs-toggle": "collapse", 
-                            role: "button", "aria-expanded": "false", "aria-controls": "collapseProduit#{dom_id(produit)}" %>
-                    </div> 
-                    
-                  </div>     
-
-                  <%= links_record(produit) if current_admin_user.admin? %>
-                </div>
-
-            </div>
-          </div>
-        </div>
-
-      </div>
+  <% if @analysis_mode %>
+    <div>
+      <%= produit.nom %>
     </div>
+  <% else %>
 
-    <div class="collapse px-2" id="collapseProduit<%= dom_id(produit) %>">
-      <hr>
-
+    <div class="card mx-2 mb-3 light-beige-colored shadow-sm my-2">
       <div class="row g-0">
-      <!-- Image Column -->
-        <div class="col-sm-4 p-1">
+        <!-- Image Column -->
+        <div class="col-sm-4 p-1 text-center">
           <div data-turbo="false">
-            <%= image_tag(produit.qr_code, class:"img-fluid") if produit.qr_code.attached? %>
+            <%= link_to image_tag(produit.default_image, class: "img-fluid img-produit"), admin_produit_path(produit)  %>
           </div>
         </div>
         <!-- Text Column -->
         <div class="col-sm-8">
-          Autres couleur(s) : 
-          <% same_produit_same_taille_others_couleurs(produit).each do |produit| %>
-            <%= produit.couleur.nom if produit.couleur %>
-          <% end %>
+          <div class="card-body p-1 px-2">
+            <h5 class="card-title">
+              <%= produit.nom %>
+            </h5>
+            
+            <div class="card-text">
+              <div>
+                <% if produit.categorie_produits.any? %>
+                  <% produit.categorie_produits.each do |categorie| %>
+                    <%= custom_badge("", "", "", "", categorie.nom ) %>
+                  <% end %>
+                <% end %>
+              </div>
 
-          Autres taille(s) : 
-          <% same_produit_same_couleur_others_tailles(produit).each do |produit| %>
-            <%= produit.taille.nom if produit.taille %>
-          <% end %>
+              <div class="px-2 small my-1">
+                <%= produit.description %>
+              </div>
 
-          <br>
+              <div class="container-fluid p-0">
+                  <%= badge_prixlocation_produit(produit) %>
+                  <%= badge_prixvente_produit(produit) %>
+                  <%= badge_couleur_produit(produit) %> 
+                  <%= badge_taille_produit(produit) %> 
 
-          <div class="text-break">
-            <%= custom_badge("", "caution", "", "", produit.caution ) if produit.caution %>
-            <%= custom_badge("", "handle:", "", "", produit.handle ) if produit.handle %>
-            <%= custom_badge("", "ref. fournisseur:", "", "", produit.reffrs ) if produit.reffrs %>
-            <%#= custom_badge("", "quantité:", "", "", produit.quantite ) if produit.quantite %>
-            <%= custom_badge("", "poids (grammes):", "", "", produit.poids ) %>
+                  <%= badge_eshop(produit) %>
 
-            <% if current_admin_user.admin? %>
-              <%= custom_badge("", "prixachat", "", "", produit.prixachat ) if produit.prixachat %>
-              <%= custom_badge("", "fournisseur:", "", "", produit.fournisseur&.nom ) if produit.fournisseur&.nom  %>
-              <%= custom_badge("", "date achat:", "", "", produit.dateachat ) if produit.dateachat %>
-            <% end %>
+                  <% unless controller_name == "selection_produit" %>
+                    <% statut = produit.statut_disponibilite(Date.today.to_date, Date.today.to_date) %>
+                    <% disponibles = statut[:disponibles] %>
+                    <p class="m-1">
+                      <span class="badge <%= disponibles > 0 ? 'bg-success' : 'bg-danger' %>">
+                        Disponibles: <%= disponibles %>
+                      </span>
+                    </p>
+                    
+                  <% end %>
+
+                  <%= is_archived(produit) %> 
+              </div>
+
+              <div class="mt-auto m-1">
+
+                <% if controller_name == "produits" && action_name == "show" %>    <%# || controller_name == "selection_produit"%>
+                  <% if current_admin_user.admin? %>
+                    <%= link_to dupliquer_admin_produit_path(produitbase: produit.id),
+                          class: "btn btn-sm btn-dark",
+                          :onclick => "return confirm('Etes-vous certain de vouloir dupliquer ce produit ?')",
+                          title: 'Dupliquer' do %>
+                      <i class="bi-copy me-1"></i>
+                      <span class="">Dupliquer</span>
+                    
+                    <% end %>
+                  <% end %>  
+                <% end %>
+
+    
+                  <div class="d-flex justify-content-between mt-2">
+
+                    <div>
+                      <div data-turbo="false">
+                        <%= link_to "", "#collapseProduit#{dom_id(produit)}", 
+                              class: "btn btn-sm btn-outline-primary bi bi-eye", "data-bs-toggle": "collapse", 
+                              role: "button", "aria-expanded": "false", "aria-controls": "collapseProduit#{dom_id(produit)}" %>
+                      </div> 
+                      
+                    </div>     
+
+                    <%= links_record(produit) if current_admin_user.admin? %>
+                  </div>
+
+              </div>
+            </div>
           </div>
-          
+
         </div>
       </div>
 
-      <% if produit.images %>
+      <div class="collapse px-2" id="collapseProduit<%= dom_id(produit) %>">
+        <hr>
 
-          <div class="container-fluid my-2">
-              <% produit.images.each do |image| %>
-                  <%= image_tag(image, class: "w-25", style: "object-fit: cover; height: 150px;") %>
-              <% end %> 
+        <div class="row g-0">
+        <!-- Image Column -->
+          <div class="col-sm-4 p-1">
+            <div data-turbo="false">
+              <%= image_tag(produit.qr_code, class:"img-fluid") if produit.qr_code.attached? %>
+            </div>
           </div>
-        
-      <% end %>
+          <!-- Text Column -->
+          <div class="col-sm-8">
+            Autres couleur(s) : 
+            <% same_produit_same_taille_others_couleurs(produit).each do |produit| %>
+              <%= produit.couleur.nom if produit.couleur %>
+            <% end %>
+
+            Autres taille(s) : 
+            <% same_produit_same_couleur_others_tailles(produit).each do |produit| %>
+              <%= produit.taille.nom if produit.taille %>
+            <% end %>
+
+            <br>
+
+            <div class="text-break">
+              <%= custom_badge("", "caution", "", "", produit.caution ) if produit.caution %>
+              <%= custom_badge("", "handle:", "", "", produit.handle ) if produit.handle %>
+              <%= custom_badge("", "ref. fournisseur:", "", "", produit.reffrs ) if produit.reffrs %>
+              <%#= custom_badge("", "quantité:", "", "", produit.quantite ) if produit.quantite %>
+              <%= custom_badge("", "poids (grammes):", "", "", produit.poids ) %>
+
+              <% if current_admin_user.admin? %>
+                <%= custom_badge("", "prixachat", "", "", produit.prixachat ) if produit.prixachat %>
+                <%= custom_badge("", "fournisseur:", "", "", produit.fournisseur&.nom ) if produit.fournisseur&.nom  %>
+                <%= custom_badge("", "date achat:", "", "", produit.dateachat ) if produit.dateachat %>
+              <% end %>
+            </div>
+            
+          </div>
+        </div>
+
+        <% if produit.images %>
+
+            <div class="container-fluid my-2">
+                <% produit.images.each do |image| %>
+                    <%= image_tag(image, class: "w-25", style: "object-fit: cover; height: 150px;") %>
+                <% end %> 
+            </div>
+          
+        <% end %>
 
 
+      </div>
     </div>
-  </div>
+
+
+  <% end %>
+
 </div>

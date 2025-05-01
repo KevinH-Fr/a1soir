@@ -2,14 +2,14 @@ module ProduitsFiltersHelper
   def filter_dropdown(label:, icon:, param_key:, collection: nil, model: nil, current_params: {}, all_label: nil)
     selected_value = params[param_key]
     selected_label =
-      if selected_value == "na"
-        "NA"
-      elsif selected_value.present? && model
+      if selected_value.present? && model
         model.find_by(id: selected_value)&.nom
       elsif selected_value.present? && param_key == :filter_statut
         selected_value == "true" ? "actif" : "archivé"
+      elsif selected_value.present? && param_key == :filter_mode
+        selected_value == "analyse" ? "analyse" : "défaut"
       end
-
+  
     content_tag(:div, class: "dropdown") do
       # Button
       concat(
@@ -19,47 +19,52 @@ module ProduitsFiltersHelper
           id: "#{param_key}Dropdown",
           data: { bs_toggle: "dropdown" },
           aria: { expanded: false }) do
-
+  
           button_parts = []
           button_parts << tag.i(class: icon, aria: { hidden: true })
-
+  
           if selected_label.present?
             button_parts << content_tag(:span, "#{label} :", class: "ms-1 d-none d-md-inline")
             button_parts << content_tag(:span, selected_label, class: "ms-1")
           else
             button_parts << content_tag(:span, label, class: "ms-1 d-none d-md-inline")
           end
-
+  
           safe_join(button_parts)
         end
       )
-
+  
       # Dropdown menu
       concat(
         content_tag(:ul, class: "dropdown-menu", aria: { labelledby: "#{param_key}Dropdown" }) do
-          # "All" option
-          concat(
-            content_tag(:li) do
-              link_to(
-                all_label || "Tous",
-                url_for(current_params.merge(param_key => nil)),
-                class: "dropdown-item #{'fw-bold' if selected_value.blank?}"
+  
+          if param_key == :filter_mode
+            [
+              { value: "analyse", label: "Analyse" },
+              { value: "défaut", label: "Défaut" }
+            ].each do |option|
+              active = selected_value == option[:value]
+              concat(
+                content_tag(:li) do
+                  link_to(
+                    option[:label],
+                    url_for(current_params.merge(param_key => option[:value])),
+                    class: "dropdown-item #{'fw-bold' if active}"
+                  )
+                end
               )
             end
-          )
-
-          # "NA" option
-          concat(
-            content_tag(:li) do
-              link_to(
-                "NA",
-                url_for(current_params.merge(param_key => "na")),
-                class: "dropdown-item #{'fw-bold' if selected_value == 'na'}"
-              )
-            end
-          )
-
-          if collection
+          elsif collection
+            concat(
+              content_tag(:li) do
+                link_to(
+                  all_label || "Tous",
+                  url_for(current_params.merge(param_key => nil)),
+                  class: "dropdown-item #{'fw-bold' if selected_value.blank?}"
+                )
+              end
+            )
+  
             collection.each do |item|
               active = selected_value.to_s == item.id.to_s
               concat(
@@ -72,16 +77,17 @@ module ProduitsFiltersHelper
                 end
               )
             end
-          else
-            # Special case for :filter_statut
-            %w[true false].each do |value|
-              label_text = value == "true" ? "actif" : "archivé"
-              active = selected_value == value
+          elsif param_key == :filter_statut
+            [
+              { value: "true", label: "actif" },
+              { value: "false", label: "archivé" }
+            ].each do |option|
+              active = selected_value == option[:value]
               concat(
                 content_tag(:li) do
                   link_to(
-                    label_text,
-                    url_for(current_params.merge(param_key => value)),
+                    option[:label],
+                    url_for(current_params.merge(param_key => option[:value])),
                     class: "dropdown-item #{'fw-bold' if active}"
                   )
                 end

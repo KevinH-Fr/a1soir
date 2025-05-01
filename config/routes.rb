@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   get 'stripe/purchase_success'
 
   constraints subdomain: 'shop' do

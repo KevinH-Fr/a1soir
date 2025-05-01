@@ -19,6 +19,9 @@ class Admin::ProduitsController < Admin::ApplicationController
     produits = apply_categorie_filter(produits, search_params[:filter_categorie])
     produits = apply_statut_filter(produits, search_params[:filter_statut])
     produits = apply_sort(produits, params[:sort])
+
+    @analysis_mode = params[:filter_mode] == "analyse" ? true : false
+
   
     @q = produits.ransack(search_params[:q])
     produits = @q.result(distinct: true).order(updated_at: :desc)
@@ -30,6 +33,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     @couleurs = Couleur.order(:nom)
     @tailles = Taille.order(:nom)
     @fournisseurs = Fournisseur.all
+
   end
   
 

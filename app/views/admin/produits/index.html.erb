@@ -6,6 +6,12 @@
 
 <%= render "filtres" %>
 
+<% if @analysis_mode %>
+      <div class="card mx-2 mb-1 light-beige-colored shadow-sm my-2">
+            synthese chiffrées des elemetns dans la lsite a mettre par dessus le reste ou en haut
+      </div>
+<% end %>
+
 <%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
       <div id="produits"> </div> 
 
@@ -15,7 +21,9 @@
             filter_couleur: params[:filter_couleur], 
             filter_categorie: params[:filter_categorie],
             filter_statut: params[:filter_statut],
+            filter_mode: params[:filter_mode],
             sort: params[:sort],
             q: params[:q]&.to_unsafe_h) %>
 <% end %>
+
 
