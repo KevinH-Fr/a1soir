@@ -10,16 +10,19 @@ module CommandesHelper
         if commande 
             prix_articles = commande.articles.sum(:total)
             prix_sous_articles = commande.articles.joins(:sousarticles).sum('sousarticles.prix')
-            prix_articles + prix_sous_articles
+            du_prix = prix_articles + prix_sous_articles
+            du_prix.round(2)
         end
     end
 
-    def tva_sur_prix(commande)
-        du_prix(commande) * (AdminParameter.first.tx_tva.to_f / 100)
+    def du_prix_ht(commande)
+        prix_ht = du_prix(commande) /  ( 1 + (AdminParameter.first.tx_tva.to_f / 100 ) )
+        prix_ht.round(2)
     end
 
-    def du_prix_ht(commande)
-        du_prix(commande) - tva_sur_prix(commande)
+    def tva_sur_prix(commande)
+        tva = du_prix(commande) - du_prix_ht(commande)
+        tva.round(2)
     end
    
     def du_caution(commande)
