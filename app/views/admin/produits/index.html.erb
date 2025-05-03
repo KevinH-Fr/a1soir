@@ -7,12 +7,24 @@
 <%= render "filtres" %>
 
 <% if @analysis_mode %>
-      <div class="card mx-2 mb-1 light-beige-colored shadow-sm mt-2 mb-3 p-2">
-            <div class="fw-bold"> Synthese chiffrée : </div>
+      <div class="card small mx-2 mb-1 light-beige-colored shadow-sm mt-2 mb-3 p-2">
+            <div class="fw-bold"> Analyse : </div>
             <div> Produits sélectionnés : <%= @produits_analyse_count %> </div>
-            <div> Stock : <%= @produits_analyse_count %> </div>
-            <div> Nb tailles : <%= @produits_analyse_count %> </div>
-            <div> Nb couleurs : <%= @produits_analyse_count %> </div>
+            <div> Stock : <%= @stock_disponible_total %> </div>
+
+            <div> 
+                  Tailles (<%= @tailles_count %>) :
+                  <% @tailles_utilisees.each do |taille| %>
+                        <span class="me-1"><%= taille.nom %> </span>
+                  <% end %>
+            </div>
+
+            <div> 
+                  Couleurs (<%= @couleurs_count %>) :
+                  <% @couleurs_utilisees.each do |couleur| %>
+                        <span class="me-1"><%= couleur.nom %> </span>
+                  <% end %>
+            </div>
 
       </div>
 <% end %>

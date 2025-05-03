@@ -24,6 +24,23 @@ class Admin::ProduitsController < Admin::ApplicationController
   
     if @analysis_mode
       @produits_analyse_count = produits.count
+
+      today = Date.today
+      @stock_disponible_total = produits.map do |produit|
+        statut = produit.statut_disponibilite(today, today)
+        statut[:disponibles].to_i
+      end.sum
+      
+      # Chargement des tailles et couleurs distinctes utilisées
+      taille_ids = produits.where.not(taille_id: nil).distinct.pluck(:taille_id)
+      couleur_ids = produits.where.not(couleur_id: nil).distinct.pluck(:couleur_id)
+
+      @tailles_utilisees = Taille.where(id: taille_ids).order(:nom)
+      @couleurs_utilisees = Couleur.where(id: couleur_ids).order(:nom)
+    
+      @tailles_count = @tailles_utilisees.size
+      @couleurs_count = @couleurs_utilisees.size
+
     end
   
     # Traitement de la recherche multi-mots

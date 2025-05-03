@@ -4,6 +4,9 @@
   <% if @analysis_mode %>
         <div class="card small mx-2 px-1 mb-1">
           <%= produit.nom_ref_couleur_taille %>
+
+          <% statut = produit.statut_disponibilite(Date.today.to_date, Date.today.to_date) %>
+          stock: <%= statut[:disponibles] %>
         </div>
 
   <% else %>
@@ -120,7 +123,7 @@
             <br>
 
             <div class="text-break">
-              <%= custom_badge("", "caution", "", "", produit.caution ) if produit.caution %>
+              <%= custom_badge("", "caution", "", "", custom_currency_no_decimals_format(produit.caution)) if produit.caution %>
               <%= custom_badge("", "handle:", "", "", produit.handle ) if produit.handle %>
               <%= custom_badge("", "ref. fournisseur:", "", "", produit.reffrs ) if produit.reffrs %>
               <%#= custom_badge("", "quantité:", "", "", produit.quantite ) if produit.quantite %>

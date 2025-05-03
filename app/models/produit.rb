@@ -33,6 +33,9 @@ class Produit < ApplicationRecord
   before_validation :fix_quantity_for_ensemble
 
   after_create :generate_qr
+
+  after_create :set_default_caution, if: -> { caution.blank? }
+
   #after_create :set_initial_vente_price
 
   after_initialize :set_default_poids
@@ -239,7 +242,6 @@ class Produit < ApplicationRecord
       end
     end
   end
-
   
   def video1_is_valid
     if video1.attached?
@@ -273,6 +275,11 @@ class Produit < ApplicationRecord
 
   def set_default_poids
     self.poids ||= 2000
+  end
+
+  def set_default_caution
+    return unless prixlocation.present?
+    update_column(:caution, (prixlocation.to_f * 3.5).round)
   end
 
 end

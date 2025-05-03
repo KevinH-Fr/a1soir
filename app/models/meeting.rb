@@ -12,9 +12,9 @@ class Meeting < ApplicationRecord
 
   def full_name
     if client.present?
-      "#{nom} - #{client.full_name}"
+      "#{client.full_name} - #{nom}"
     elsif commande.present?
-      "#{nom} - #{commande.client.full_name}" 
+      "#{commande.client.full_name} - #{nom}" 
     else
       nom 
     end 

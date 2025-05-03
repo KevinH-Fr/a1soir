@@ -1,35 +1,67 @@
 
 <%= bandeau_entete("Ventes", "graph-up-arrow", "", "", "") %>
 
+<% q_params = params[:q].respond_to?(:to_unsafe_h) ? params[:q].to_unsafe_h : params[:q] %>
+<% base_params = params.permit(:sort, :filter_mode, :filter_taille, :filter_couleur, :filter_categorie, :filter_statut).to_h.merge(q: q_params) %>
+<% today = Date.today %>
 
 <div class="card m-2 shadow-sm">
+  <div class="card-body text-dark">
 
-  <div class="card-body text-dark ">
+    <!-- Boutons rapides -->
+    <div class="d-flex flex-wrap gap-1 align-items-center justify-content-start mb-1">
+      <%= date_range_filter_buttons(base_params: base_params) %>
 
-    <%= form_tag url_for, method: :get do %>
+      <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#customDateFilter" aria-expanded="false" aria-controls="customDateFilter">
+        Personnalisé
+      </button>
+    </div>
 
-      <div class="input-group mb-1">
-        <%= label_tag :début, "début", class:"input-group-text label-with-format centered" %>
-        <%= date_field_tag :debut, params[:debut], class:"form-control field-with-format" %>
+    <!-- Dates personnalisées -->
+    <div class="collapse" id="customDateFilter">
+      <%= form_tag url_for, method: :get, class: "row gy-2 gx-3 align-items-center" do %>
+        <div class="col-md-auto d-flex align-items-center">
+          <%= label_tag :debut, "Début", class: "me-2 mb-0" %>
+          <%= date_field_tag :debut, params[:debut], class: "form-control form-control-sm" %>
+        </div>
 
-        <%= label_tag :fin, "fin", class:"input-group-text label-with-format centered" %>
-        <%= date_field_tag :fin, params[:fin], class:"form-control field-with-format" %>
+        <div class="col-md-auto d-flex align-items-center">
+          <%= label_tag :fin, "Fin", class: "me-2 mb-0" %>
+          <%= date_field_tag :fin, params[:fin], class: "form-control form-control-sm" %>
+        </div>
 
-        <%= link_to "Effacer", url_for(), class:"btn btn-outline-danger rounded mx-1" %> 
+        <%# conserver les autres paramètres %>
+        <% base_params.each do |key, value| %>
+          <% if key.to_s == "q" && value.is_a?(Hash) %>
+            <% value.each do |sub_key, sub_val| %>
+              <%= hidden_field_tag "q[#{sub_key}]", sub_val %>
+            <% end %>
+          <% else %>
+            <%= hidden_field_tag key, value %>
+          <% end %>
+        <% end %>
 
-        <%= submit_tag "Go", class:"btn btn-success fw-bold rounded" %>
+        <div class="col-md-auto">
+          <%= submit_tag "Filtrer", class: "btn btn-success btn-sm" %>
+        </div>
+      <% end %>
+    </div>
 
-      </div>
-
-    <% end %>
-
+    <!-- Filtre actif + bouton effacer -->
     <% if @datedebut.present? && @datefin.present? %>
-      <div class="fw-bold">
-        filtre actif: <%= @datedebut.strftime("%d/%m/%y")  %> - <%= @datefin.strftime("%d/%m/%y") %>
+      <div class="d-flex justify-content-between align-items-center mt-1 flex-wrap">
+        <div class="fw-bold">
+          Actif : <%= @datedebut.strftime("%d/%m/%y")  %> – <%= @datefin.strftime("%d/%m/%y") %>
+        </div>
+        <%= link_to url_for(debut: Date.today, fin: Date.today), class: "btn btn-outline-danger btn-sm" do %>
+          <i class="bi bi-x-circle"></i>
+        <% end %>
       </div>
     <% end %>
+
   </div>
 </div>
+
     
 <%= render_dashboard_section("Commandes", ["chartPieCommandes", "chartBarCommandes", "chartLineCommandes"]) %>
 <%= render_dashboard_section("Articles", ["chartPieArticles", "chartBarArticles", "chartLineArticles"]) %>
