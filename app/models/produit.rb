@@ -85,7 +85,7 @@ class Produit < ApplicationRecord
   end
 
   def nom_ref_couleur_taille 
-    "#{nom} | #{reffrs} | #{couleur&.nom} | #{taille&.nom}"
+    [nom, reffrs, couleur&.nom, taille&.nom].compact.join(' | ')
   end 
 
   def nom_couleur_taille

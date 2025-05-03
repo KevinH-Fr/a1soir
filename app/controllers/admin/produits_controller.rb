@@ -19,11 +19,31 @@ class Admin::ProduitsController < Admin::ApplicationController
     produits = apply_categorie_filter(produits, search_params[:filter_categorie])
     produits = apply_statut_filter(produits, search_params[:filter_statut])
     produits = apply_sort(produits, params[:sort])
-
-    @analysis_mode = params[:filter_mode] == "analyse" ? true : false
-
   
-    @q = produits.ransack(search_params[:q])
+    @analysis_mode = params[:filter_mode] == "analyse"
+  
+    if @analysis_mode
+      @produits_analyse_count = produits.count
+    end
+  
+    # Traitement de la recherche multi-mots
+    if search_params[:q].present? &&
+       search_params[:q][:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont].present?
+  
+      keywords = search_params[:q][:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont]
+                 .to_s.strip.split
+  
+      groupings = keywords.map do |word|
+        {
+          nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont: word
+        }
+      end
+  
+      @q = produits.ransack(combinator: 'and', groupings: groupings)
+    else
+      @q = produits.ransack(search_params[:q])
+    end
+  
     produits = @q.result(distinct: true).order(updated_at: :desc)
   
     @pagy, @produits = pagy_countless(produits, items: 2)
@@ -33,8 +53,8 @@ class Admin::ProduitsController < Admin::ApplicationController
     @couleurs = Couleur.order(:nom)
     @tailles = Taille.order(:nom)
     @fournisseurs = Fournisseur.all
-
   end
+  
   
 
   def show

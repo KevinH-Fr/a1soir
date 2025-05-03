@@ -7,13 +7,20 @@
 <%= render "filtres" %>
 
 <% if @analysis_mode %>
-      <div class="card mx-2 mb-1 light-beige-colored shadow-sm my-2">
-            synthese chiffrées des elemetns dans la lsite a mettre par dessus le reste ou en haut
+      <div class="card mx-2 mb-1 light-beige-colored shadow-sm mt-2 mb-3 p-2">
+            <div class="fw-bold"> Synthese chiffrée : </div>
+            <div> Produits sélectionnés : <%= @produits_analyse_count %> </div>
+            <div> Stock : <%= @produits_analyse_count %> </div>
+            <div> Nb tailles : <%= @produits_analyse_count %> </div>
+            <div> Nb couleurs : <%= @produits_analyse_count %> </div>
+
       </div>
 <% end %>
 
 <%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+
       <div id="produits"> </div> 
+
 
       <%= turbo_frame_tag :pagination, loading: :lazy, 
             src: admin_produits_path(format: :turbo_stream,
