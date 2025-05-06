@@ -2,13 +2,20 @@ module ProduitsFiltersHelper
   def filter_dropdown(label:, icon:, param_key:, collection: nil, model: nil, current_params: {}, all_label: nil)
     selected_value = params[param_key]
     selected_label =
-      if selected_value.present? && model
+    if selected_value.present? && model
+      case param_key
+      when :filter_taille, :filter_categorie, :filter_couleur
+        selected_value == "na" ? "NA" : model.find_by(id: selected_value)&.nom
+      else
         model.find_by(id: selected_value)&.nom
-      elsif selected_value.present? && param_key == :filter_statut
-        selected_value == "true" ? "actif" : "archivé"
-      elsif selected_value.present? && param_key == :filter_mode
-        selected_value == "analyse" ? "analyse" : "défaut"
       end
+    
+    elsif selected_value.present? && param_key == :filter_statut
+      selected_value == "true" ? "actif" : "archivé"
+    elsif selected_value.present? && param_key == :filter_mode
+      selected_value == "analyse" ? "analyse" : "défaut"
+    end
+  
   
     content_tag(:div, class: "dropdown") do
       # Button
@@ -64,7 +71,20 @@ module ProduitsFiltersHelper
                 )
               end
             )
-  
+          
+            if [:filter_taille, :filter_categorie, :filter_couleur, :filter_statut].include?(param_key)
+              concat(
+                content_tag(:li) do
+                  link_to(
+                    "NA",
+                    url_for(current_params.merge(param_key => "na")),
+                    class: "dropdown-item #{'fw-bold' if selected_value == "na"}"
+                  )
+                end
+              )
+            end
+            
+          
             collection.each do |item|
               active = selected_value.to_s == item.id.to_s
               concat(
@@ -77,6 +97,7 @@ module ProduitsFiltersHelper
                 end
               )
             end
+          
           elsif param_key == :filter_statut
             [
               { value: "true", label: "actif" },
