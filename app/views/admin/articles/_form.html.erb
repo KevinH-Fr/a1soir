@@ -26,6 +26,9 @@
       <%= form.hidden_field :prixvente_initial, value: @produit&.prixvente,  
             data: { form_article_target: "prixvente_initial" } %>
 
+      <%= form.hidden_field :caution_initial, value: @produit&.caution,  
+            data: { form_article_target: "caution_initial" } %>
+
       <%# prevoir cas ou absence de admin param fisrt %>
       <%= form.hidden_field :coef_longue_duree, value: AdminParameter&.first&.coef_longue_duree,  
             data: { form_article_target: "coef_longue_duree" } %>
@@ -75,7 +78,7 @@
       <div class="input-group input-group-sm my-1">
         <%= form.label :caution, class: "input-group-text fs-6 input-colored" %>
         <%= form.number_field :caution, 
-                              data: { form_article_target: "caution" }, 
+                              data: { action: "change->form-article#calculTotal", form_article_target: "caution" }, 
                               class: "form-control label-colored" %>
       </div>
 

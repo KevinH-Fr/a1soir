@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["prixvente_initial", "prixlocation_initial", 
+  static targets = ["prixvente_initial", "prixlocation_initial", "caution_initial",
     "type", "location", "vente", "prix", "quantite", "total", "caution", "is_new_article", "coef_longue_duree", "longueduree"]
   
   connect() {
@@ -12,7 +12,7 @@ export default class extends Controller {
 
     const prixventeInitialValue = this.prixvente_initialTarget.value;
     const prixlocationInitialValue = this.prixlocation_initialTarget.value;
-    const cautionInitialValue = prixventeInitialValue;
+    const cautionInitialValue = this.caution_initialTarget.value;
 
     const location = this.locationTarget.checked;
     const vente = this.venteTarget.checked;
@@ -46,7 +46,7 @@ export default class extends Controller {
     const prixventeInitialValue = this.prixvente_initialTarget.value;
     const quantiteValue = this.quantiteTarget.value;
     const prixValue = this.prixTarget.value;
-    const cautionInitialValue = prixventeInitialValue;
+    const cautionInitialValue = this.caution_initialTarget.value;
     const location = this.locationTarget.checked;
     const vente = this.venteTarget.checked;
 

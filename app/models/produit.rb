@@ -123,7 +123,7 @@ class Produit < ApplicationRecord
   end
 
   def is_ensemble?
-    type_produit.nom == 'ensemble'
+    type_produit.nom == 'ensemble' if type_produit
   end
   
   def total_vendus
