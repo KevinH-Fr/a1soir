@@ -121,6 +121,10 @@ class Produit < ApplicationRecord
   def is_service?
     categorie_produits.where(service: true).exists?
   end
+
+  def is_ensemble?
+    type_produit.nom == 'ensemble'
+  end
   
   def total_vendus
     total_quantite = Article.joins(:commande, :produit)
@@ -155,7 +159,7 @@ class Produit < ApplicationRecord
 
   def statut_disponibilite(datedebut, datefin)
     
-    if self.is_service?
+    if self.is_service? || self.is_ensemble?
       initial_stock = 1
       loues_a_date = 0
       vendus = 0
