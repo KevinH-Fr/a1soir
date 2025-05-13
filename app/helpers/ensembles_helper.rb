@@ -2,7 +2,8 @@ module EnsemblesHelper
   def type_produits_in_commande(commande)
     # Find locvente values from the commande articles
     locvente_values = commande.articles.pluck(:locvente).uniq
-  
+     # puts " -________  locvente_values: #{ locvente_values} ___________"
+
     if locvente_values.one?
       # Collect type_produits.nom and produit.reffrs for matching
       commande.articles
@@ -18,6 +19,8 @@ module EnsemblesHelper
   def find_ensemble_matching_type_produits(commande)
     # Step 1: Fetch type_produits and reffrs from the commande
     type_produits_and_reffrs = type_produits_in_commande(commande)
+
+   # puts " -________  type_produits_in_commande: #{ type_produits_and_reffrs} ___________"
   
     # Separate type_produits and reffrs into distinct arrays
     type_produits = type_produits_and_reffrs.map(&:first) # Extract type_produits.nom

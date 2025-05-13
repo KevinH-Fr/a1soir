@@ -53,8 +53,11 @@ export default class extends Controller {
     this.totalTarget.value = quantiteValue * prixValue;
 
     if (location) {
-      this.cautionTarget.value = quantiteValue * cautionInitialValue; 
-
+      if (cautionInitialValue > 0) {
+        this.cautionTarget.value = quantiteValue * cautionInitialValue;
+      } else {
+        this.cautionTarget.value = quantiteValue * this.cautionTarget.value;
+      }
     } else if (vente) {
       this.cautionTarget.value = 0;
     }
