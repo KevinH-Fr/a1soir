@@ -15,6 +15,17 @@
     <p> Total services : <span class="fw-bold"> <%= total_services(@produits) %> </span> </p> 
     <p> Total services vendus : <span class="fw-bold"> <%= articles_services_in_commandes %> </span> </p> 
 
+    <div class="d-flex gap-1">
+
+      <% current_year = Date.today.year %>
+      <% [0, 1, 2].each do |offset| %>
+        <% year = current_year - offset %>
+        <%= link_to "Charger inventaire - fin #{year}",
+                      admin_export_products_csv_path(year: year),
+                      class: 'btn btn-sm btn-primary' %>
+      <% end %>
+    </div>
+
   </div>
 </div>
 

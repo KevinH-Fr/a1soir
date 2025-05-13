@@ -12,7 +12,6 @@
           <th class="th-doc">#</th>
           <th class="th-doc">type</th>
           <th class="th-doc">date</th>
-          <th class="th-doc"></th>
           <th class="th-doc">prix</th>  
           <th class="th-doc">caution</th>
 
@@ -25,7 +24,6 @@
             <td class="td-doc-valeurs centered"> <%= i + 1 %> </td>
             <td class="td-doc centered"> <%= paiement.moyen %> </td>
             <td class="td-doc centered"> <%= paiement.custom_date.strftime("%d/%m/%y") if paiement.custom_date.present? %> </td>
-            <td></td>
             <td class="td-doc-valeurs ended">  <%= custom_currency_format(paiement.montant) if paiement.typepaiement == "prix" %> </td>
             <td class="td-doc-valeurs ended">  <%= custom_currency_format(paiement.montant)  if paiement.typepaiement == "caution" %> </td>
           </tr> 
@@ -34,7 +32,7 @@
       
       <tfoot>
         <tr>
-          <td colspan=4 class="tfoot-doc centered">  TOTAUX  </td>
+          <td colspan=3 class="tfoot-doc centered">  TOTAUX  </td>
           <td class="tfoot-doc ended"> 
             <%= custom_currency_format(recu_prix(@doc_edition.commande)) %> 
           </td>
