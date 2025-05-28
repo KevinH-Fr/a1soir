@@ -5,6 +5,14 @@
       <span>Client </span> 
       <span class="doc-important"> <%= @doc_edition.commande.client.full_name %> </span> <br>
 
+      <br>
+
+      <span>Langue : <%= @doc_edition.commande.client.language_label %>  </span> 
+
+      <% if @doc_edition.commande.client.contact.present? %>
+        <div>Contact : <%= @doc_edition.commande.client.contact %>  </div> 
+      <% end %>
+
       <% if @doc_edition.commande.typeevent.present? %>
           <br>
           <span>Evénement</span>
@@ -16,21 +24,15 @@
       <% end %>
 
       <br>
-      courriel: <span class="doc-important"> <%= @doc_edition.commande.client.mail %> </span> <br>
-      téléphone: <span class="doc-important"> <%= @doc_edition.commande.client.tel %> </span> <br>
+      Mail : <span class="doc-important"> <%= @doc_edition.commande.client.mail %> </span> <br>
+      Téléphone : <span class="doc-important"> <%= @doc_edition.commande.client.tel %> </span> <br>
 
-      <%= @doc_edition.commande.client.adresse %> <br>
-      <%= @doc_edition.commande.client.cp %> 
-      <%= @doc_edition.commande.client.ville %>  
-
-      <br>
-      <span>Servi par </span> 
-      <span class="doc-important"> <%= @doc_edition.commande.profile.full_name %> </span> <br>
-      <br>
-
-      <span>Statut commande </span> 
-      <span class="doc-important"> <%= @doc_edition.commande.statutarticles %> </span> <br>
-      <br>
+      <% if @doc_edition.commande.client.adresse.present? %>
+        Adresse :
+        <%= @doc_edition.commande.client.adresse %> <br>
+        <%= @doc_edition.commande.client.cp %> 
+        <%= @doc_edition.commande.client.ville %>          
+      <% end %>
 
     </td>
 
@@ -50,6 +52,15 @@
           <%= image_tag(@doc_edition.commande.qr_code, class: "img-qr-etiquette") %>
         </div>
       <% end %>
+
+      <div>
+        Servi par 
+        <span class="doc-important"> <%= @doc_edition.commande.profile.full_name %> </span> 
+      </div>
+
+      <div>Statut 
+        <span class="doc-important"> <%= @doc_edition.commande.statutarticles %> </span> 
+      </div>
 
     </td>
 

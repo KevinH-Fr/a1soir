@@ -35,6 +35,14 @@ class Client < ApplicationRecord
         ["commandes", "meetings"]
     end
 
+    def language_label
+      case language
+      when 'fr' then 'Français'
+      when 'en' then 'Anglais'
+      else language
+      end
+    end
+    
     private
   
     def capitalize_names

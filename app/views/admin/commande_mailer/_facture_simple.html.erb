@@ -1,0 +1,29 @@
+<h5 class="h5-doc"> ARTICLES </h5>
+
+<table class="table table-doc">
+  <thead class="">
+    <tr>
+      <th class="th-doc">Désignation</th>
+      <th class="th-doc">Montants</th>
+    </tr>
+  </thead>
+
+  <tbody>
+      <tr>
+        <td style="vertical-align: center; width: 80%; padding: 5px;">
+          <%= @doc_edition.label_facture_simple %>
+        </td>
+
+        <td style="vertical-align: top; padding: 5px; text-align: right;">
+          <div>Total HT: <%= number_to_currency(du_prix_ht(@doc_edition.commande), unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></div>
+          <div>TVA: <%= number_to_currency(tva_sur_prix(@doc_edition.commande), unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></div>
+          <div>Total TTC: <%= number_to_currency(du_prix(@doc_edition.commande), unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></div>
+        </td>
+        
+      </tr>
+  </tbody>
+</table>
+
+<%= render "admin/pdf_commande/paiements" %> 
+
+<%= render  "admin/pdf_commande/mentions" %>
