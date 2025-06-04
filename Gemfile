@@ -76,3 +76,5 @@ end
 #gem 'scout_apm'
 
 gem "jsbundling-rails"
+
+gem 'ruby-openai'

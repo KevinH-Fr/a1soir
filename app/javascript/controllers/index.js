@@ -10,6 +10,9 @@ application.register("autohide", AutohideController)
 import ButtonColorController from "./button_color_controller"
 application.register("button-color", ButtonColorController)
 
+import ChatController from "./chat_controller"
+application.register("chat", ChatController)
+
 import DateFieldsCommandeController from "./date_fields_commande_controller"
 application.register("date-fields-commande", DateFieldsCommandeController)
 

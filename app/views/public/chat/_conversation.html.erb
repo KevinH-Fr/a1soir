@@ -1,0 +1,35 @@
+<div class="position-fixed bottom-0 end-0 m-3" style="z-index: 1050;">
+  <!-- Bouton Bootstrap -->
+  <button
+    class="btn btn-primary"
+    type="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#chatBox"
+    aria-expanded="false"
+    aria-controls="chatBox"
+  >
+    💬 Chat
+  </button>
+
+  <!-- Conteneur collapsible au-dessus du bouton -->
+  <div
+    id="chatBox"
+    class="collapse bg-white border rounded shadow p-3 position-absolute end-0 mb-2"
+    style="width: 24rem; height: 24rem; bottom: 3rem;"
+    data-controller="chat"
+  >
+    <div data-chat-target="messages" class="overflow-auto mb-2" style="height: 70%;"></div>
+
+    <form data-action="submit->chat#send">
+      <div class="input-group">
+        <input
+          type="text"
+          data-chat-target="input"
+          class="form-control"
+          placeholder="Votre message..."
+        />
+        <button type="submit" class="btn btn-success">Envoyer</button>
+      </div>
+    </form>
+  </div>
+</div>
