@@ -1,26 +1,38 @@
-<div class="position-fixed bottom-0 end-0 m-3" style="z-index: 1050;">
-  <!-- Bouton Bootstrap -->
-  <button
-    class="btn btn-primary"
-    type="button"
-    data-bs-toggle="collapse"
-    data-bs-target="#chatBox"
-    aria-expanded="false"
-    aria-controls="chatBox"
-  >
-    💬 Chat
-  </button>
 
-  <!-- Conteneur collapsible au-dessus du bouton -->
+
+<div class="position-fixed bottom-0 end-0 m-3" style="z-index: 1050;" data-controller="chat">
+  <!-- Bouton -->
+  <div id="chatbot-toggle-wrapper">
+    <button
+      id="chatbot-toggle"
+      type="button"
+      data-action="click->chat#toggle"
+      style=""
+    >
+      <i class="bi bi-chat-dots-fill text-white fs-2"></i>
+    </button>
+  </div>
+
+  <!-- Conteneur du chatbot -->
   <div
     id="chatBox"
-    class="collapse bg-white border rounded shadow p-3 position-absolute end-0 mb-2"
-    style="width: 24rem; height: 24rem; bottom: 3rem;"
-    data-controller="chat"
+    class="chatbox bg-white rounded shadow d-flex flex-column"
+    data-chat-target="box"
+    style="position: absolute; width: 24rem; height: 80vh; bottom: 100px; right: 0;"
   >
-    <div data-chat-target="messages" class="overflow-auto mb-2" style="height: 70%;"></div>
 
-    <form data-action="submit->chat#send">
+    <div id="chatbot-header">
+        <%= image_tag('/images/logo_courant_public.png', class: '', width: "200") %>
+        <span>Discutez avec notre assistant 👋</span>
+    </div>
+
+
+    <div
+      data-chat-target="messages"
+      class="flex-grow-1 overflow-auto p-2 rounded"
+    ></div>
+
+    <form data-action="submit->chat#send" class="p-2">
       <div class="input-group">
         <input
           type="text"
@@ -28,8 +40,11 @@
           class="form-control"
           placeholder="Votre message..."
         />
-        <button type="submit" class="btn btn-success">Envoyer</button>
+        <button type="submit" class="btn btn-success">
+           <i class="bi bi-arrow-right-circle-fill"></i> 
+        </button>
       </div>
     </form>
   </div>
+
 </div>

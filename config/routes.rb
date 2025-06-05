@@ -45,6 +45,7 @@ Rails.application.routes.draw do
       get 'cart', to: 'pages#cart'
 
       # assistant ia
+      get "chat/history", to: "chat#history"
       post "chat", to: "chat#chat"
 
 
