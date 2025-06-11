@@ -49,7 +49,7 @@ export default class extends Controller {
     const cautionInitialValue = this.caution_initialTarget.value;
     
     const cautionEditedValue = this.cautionTarget.value;
-    console.log("caution edited: ", cautionEditedValue);
+   // console.log("caution edited: ", cautionEditedValue);
 
     const location = this.locationTarget.checked;
     const vente = this.venteTarget.checked;
@@ -75,7 +75,7 @@ export default class extends Controller {
     const coefLongueDuree = this.coef_longue_dureeTarget.value;
     const longueduree = this.longuedureeTarget.checked;
 
-    console.log("change longue duree");
+   // console.log("change longue duree");
 
     if (longueduree) {
       this.prixTarget.value = parseFloat(this.prixTarget.value) * ( 1 + (parseFloat(coefLongueDuree) / 100) ) ; 
