@@ -101,12 +101,20 @@ class Produit < ApplicationRecord
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    ["categorie_produit_id", "caution", "couleur_id", "created_at", "dateachat", "description", "fournisseur_id", "handle", "id", "id_value", "nom", "prixachat", "prixlocation", "prixvente", "quantite", "reffrs", "taille_id", "updated_at"]
+    ["categorie_produit_id", "caution", "couleur_id", "created_at", 
+      "dateachat", "description", "handle", "id", "id_value", "nom", 
+      "prixachat", "prixlocation", "prixvente", "quantite", "reffrs", 
+      "taille_id", "fournisseur_id", "updated_at"]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    super +  ["articles", "categorie_produits", "couleur", "ensembles", "fournisseur", "taille", "type_produit"]
+    super +  ["articles", "categorie_produits", "couleur", "ensembles", 
+              "fournisseur", "taille", "type_produit"]
   end
+
+  # def self.ransackable_associations(auth_object = nil)
+  #   ["couleur", "taille", "fournisseur", "categorie_produits", "type_produit", "articles", "ensembles"]
+  # end
 
   def to_builder
     Jbuilder.new do |json|

@@ -7,22 +7,21 @@
   <div class="container-fluid d-flex justify-content-center align-items-center p-2">
 
     <%= search_form_for @q, url: admin_selection_produit_path, method: :get, class: "w-100" do |f| %>
-
       <div class="input-group mt-2">
-        <%= f.search_field :nom_or_reffrs_or_couleur_nom_or_taille_nom_cont, class: "form-control rounded mx-1", placeholder: 'Chercher...' %>
+        <%= f.search_field :nom_or_reffrs_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont, class: "form-control rounded mx-1", placeholder: 'Chercher…' %>
 
-        <%= hidden_field_tag 'article', params[:article] if params[:article] %>
+        <%= hidden_field_tag 'article', params[:article] if params[:article].present? %>
 
         <%= link_to admin_selection_produit_path(article: params[:article]), class: 'btn btn-outline-danger rounded mx-1' do %>
           <i class="bi bi-xl bi-x-circle"></i>
         <% end %>
-        
+
         <%= f.button class: 'btn btn-outline-success rounded mx-1' do %>
           <i class="bi bi-xl bi-search mx-3"></i>
-        <% end %>        
+        <% end %>
       </div>
-
     <% end %>
+
 
   </div>
 

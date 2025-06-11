@@ -17,9 +17,32 @@ class Admin::SelectionProduitController < Admin::ApplicationController
     @titre_complet = "#{@titre}" " pour commande #{ @commande.ref_commande }"
     
     @produit = Produit.find(params[:produit]) if params[:produit]
-    # search
-    @q = Produit.ransack(params[:q])
-    @produits = @q.result.includes(:couleur, :taille)
+   
+    produits = Produit.all
+
+    # Traitement de la recherche multi-mots
+    if params[:q].present? &&
+       params[:q][:nom_or_reffrs_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont].present?
+  
+      keywords = params[:q][:nom_or_reffrs_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont]
+                 .to_s.strip.split
+  
+      groupings = keywords.map do |word|
+        {
+          nom_or_reffrs_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont: word
+        }
+      end
+  
+      @q = produits.ransack(combinator: 'and', groupings: groupings)
+    else
+      @q = produits.ransack(params[:q])
+    end
+  
+    @produits = @q.result(distinct: true).order(updated_at: :desc)
+  
+    # # search
+    # @q = Produit.ransack(params[:q])
+    # @produits = @q.result.includes(:couleur, :taille)
 
   end
 

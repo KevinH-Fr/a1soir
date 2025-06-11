@@ -9,7 +9,7 @@ class Admin::ProduitsController < Admin::ApplicationController
   
     search_params = params.permit(
       :format, :page, :filter_taille, :filter_couleur, :filter_categorie, :filter_statut,
-      q: [:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont]
+      q: [:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont]
     )
   
     produits = Produit.all
@@ -45,14 +45,14 @@ class Admin::ProduitsController < Admin::ApplicationController
   
     # Traitement de la recherche multi-mots
     if search_params[:q].present? &&
-       search_params[:q][:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont].present?
+       search_params[:q][:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont].present?
   
-      keywords = search_params[:q][:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont]
+      keywords = search_params[:q][:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont]
                  .to_s.strip.split
   
       groupings = keywords.map do |word|
         {
-          nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont: word
+          nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont: word
         }
       end
   

@@ -103,8 +103,8 @@
 
   #chatbot-toggle-wrapper {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 25px;
+    right: 25px;
     z-index: 9999;
     animation: bounce 2s ease-in-out infinite;
   }
