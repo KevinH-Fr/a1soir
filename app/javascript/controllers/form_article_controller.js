@@ -47,17 +47,23 @@ export default class extends Controller {
     const quantiteValue = this.quantiteTarget.value;
     const prixValue = this.prixTarget.value;
     const cautionInitialValue = this.caution_initialTarget.value;
+    
+    const cautionEditedValue = this.cautionTarget.value;
+    console.log("caution edited: ", cautionEditedValue);
+
     const location = this.locationTarget.checked;
     const vente = this.venteTarget.checked;
 
     this.totalTarget.value = quantiteValue * prixValue;
 
     if (location) {
-      if (cautionInitialValue > 0) {
-        this.cautionTarget.value = quantiteValue * cautionInitialValue;
-      } else {
-        this.cautionTarget.value = quantiteValue * this.cautionTarget.value;
-      }
+      // if (cautionInitialValue > 0) {
+      //   this.cautionTarget.value = quantiteValue * cautionEditedValue;
+      // } else {
+        this.cautionTarget.value = quantiteValue * cautionEditedValue;
+     // }
+
+     // verif si pas d'autres bugs, corriger le pb sur quantité pas parfait
     } else if (vente) {
       this.cautionTarget.value = 0;
     }
