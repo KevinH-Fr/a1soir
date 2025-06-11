@@ -6,11 +6,34 @@ class Admin::EtiquettesController < Admin::ApplicationController
   
     search_params = params.permit(
       :format, :page,
-      q: [:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont]
+      q: [:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont]
     )
   
-    @q = Produit.ransack(search_params[:q])
+    produits = Produit.all
+
+    # Traitement de la recherche multi-mots
+    if params[:q].present? &&
+       params[:q][:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont].present?
+  
+      keywords = params[:q][:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont]
+                 .to_s.strip.split
+  
+      groupings = keywords.map do |word|
+        {
+          nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont: word
+        }
+      end
+  
+      @q = produits.ransack(combinator: 'and', groupings: groupings)
+    else
+      @q = produits.ransack(params[:q])
+    end
+  
     produits = @q.result(distinct: true).order(updated_at: :desc)
+  
+
+    # @q = Produit.ransack(search_params[:q])
+    # produits = @q.result(distinct: true).order(updated_at: :desc)
   
     # ✅ Use pagy to paginate BEFORE filtering by availability
     @pagy, produits_page = pagy(produits, items: 6)
