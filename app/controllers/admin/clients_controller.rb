@@ -7,7 +7,7 @@ class Admin::ClientsController < Admin::ApplicationController
     @count_clients = Client.count
 
     search_params = params.permit(:format, :page, 
-      q:[:nom_or_prenom_cont])
+      q:[:nom_or_prenom_or_tel_or_tel2_or_mail_or_mail2_cont])
     @q = Client.ransack(search_params[:q])
     clients = @q.result(distinct: true).order(created_at: :desc)
     @pagy, @clients = pagy_countless(clients, items: 2)
