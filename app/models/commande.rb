@@ -23,6 +23,8 @@ class Commande < ApplicationRecord
   scope :filtredatedebut, -> (debut) { where("created_at >= ?", debut.beginning_of_day) }
   scope :filtredatefin, -> (fin) { where("created_at <= ?", fin.end_of_day) }
 
+  scope :par_profile, ->(profile) { where(profile: profile) if profile.present? }
+
 
   EVENEMENTS_OPTIONS = ['mariage', 'soirée', 'festival de Cannes', 'divers']
 

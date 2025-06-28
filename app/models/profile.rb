@@ -1,7 +1,8 @@
 class Profile < ApplicationRecord
     
     has_one_attached :profile_pic
-
+    has_many :commandes
+    
     def full_name
         prenom + " " + nom
     end
@@ -13,6 +14,7 @@ class Profile < ApplicationRecord
           '/images/no_photo.png'
         end
     end
+
 
     def self.ransackable_attributes(auth_object = nil)
         ["created_at", "id", "id_value", "nom", "prenom", "updated_at"]

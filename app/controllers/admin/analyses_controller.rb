@@ -66,6 +66,37 @@ class Admin::AnalysesController < Admin::ApplicationController
     @groupedByDateCa = groupedByDateCa.transform_keys do |date|
       I18n.l(Date.parse(date.to_s), format: '%d/%m/%Y')
     end
+
+    #profiles
+      # Couleur de base (rose framboise)
+    base_r, base_g, base_b = 208, 77, 123
+    variation = 40 # amplitude de variation claire/foncée
+    profiles = Profile.includes(commandes: [:paiement_recus, :articles])
+    total = profiles.size
+
+    @stats_par_profile = profiles.map.with_index do |profile, index|
+      commandes = @commandesFiltres.where(profile_id: profile.id)
+
+      # Ratio de 0 (foncé) à 1 (clair)
+      ratio = index.to_f / [total - 1, 1].max
+
+      # Appliquer un éclaircissement (vers 255) ou assombrissement (vers 0) en fonction du ratio
+      r = (base_r + (255 - base_r) * ratio).clamp(0, 255).round
+      g = (base_g + (255 - base_g) * ratio).clamp(0, 255).round
+      b = (base_b + (255 - base_b) * ratio).clamp(0, 255).round
+
+      couleur = "rgb(#{r}, #{g}, #{b})"
+
+      {
+        profile: profile&.prenom,
+        commandes: commandes.size,
+        couleur: couleur
+      }
+    end
+
+
+
+
   end
 
 

@@ -1,25 +1,24 @@
 module AnalysesHelper
-    def render_dashboard_section(title, partials)
-      content_tag(:div, class: "card m-2 shadow-sm") do
-        concat(content_tag(:div, class: "card-header bg-secondary text-light py-2") do
-          concat(content_tag(:div, class: "row align-items-center m-0 p-1") do
-            concat(content_tag(:div, class: "col text-center fw-bold m-0 p-0") do
-              concat(title)
+  def render_dashboard_section(title, icon_name = nil, partials)
+    content_tag(:div, class: "card m-2 shadow-sm") do
+      concat(content_tag(:div, class: "card-header bg-secondary text-light py-1") do
+        concat(content_tag(:div, class: "d-flex align-items-center gap-2") do
+          concat(content_tag(:i, "", class: "bi bi-#{icon_name}")) if icon_name.present?
+          concat(content_tag(:span, title, class: "fw-bold"))
+        end)
+      end)
+  
+      concat(content_tag(:div, class: "card-body p-0 light-beige-colored") do
+        concat(content_tag(:div, class: "row p-2") do
+          partials.each do |partial|
+            concat(content_tag(:div, class: "col-sm-4 my-2") do
+              render partial
             end)
-          end)
+          end
         end)
-    
-        concat(content_tag(:div, class: "card-body p-0 light-beige-colored") do
-          concat(content_tag(:div, class: "row p-2") do
-            partials.each do |partial|
-              concat(content_tag(:div, class: "col-sm-4 my-2") do
-                render partial
-              end)
-            end
-          end)
-        end)
-      end
+      end)
     end
+  end
 
     def date_range_filter_buttons(base_params:)
       today = Date.today
