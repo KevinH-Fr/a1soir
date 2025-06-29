@@ -68,34 +68,37 @@ class Admin::AnalysesController < Admin::ApplicationController
     end
 
     #profiles
-      # Couleur de base (rose framboise)
     base_r, base_g, base_b = 208, 77, 123
-    variation = 40 # amplitude de variation claire/foncée
+    target_r, target_g, target_b = 245, 190, 210  # limite claire contrôlée
+
     profiles = Profile.includes(commandes: [:paiement_recus, :articles])
     total = profiles.size
-
+      
     @stats_par_profile = profiles.map.with_index do |profile, index|
       commandes = @commandesFiltres.where(profile_id: profile.id)
+      commandes_ids = commandes.pluck(:id)
+      paiements = @paiementsFiltres.where(commande_id: commandes_ids)
+      ca = paiements.sum(:montant)
 
-      # Ratio de 0 (foncé) à 1 (clair)
+      groupedByDateAndByProfileCa =  paiements.group('DATE(created_at)').order('DATE(paiement_recus.created_at)').sum(:montant)
+
+
       ratio = index.to_f / [total - 1, 1].max
 
-      # Appliquer un éclaircissement (vers 255) ou assombrissement (vers 0) en fonction du ratio
-      r = (base_r + (255 - base_r) * ratio).clamp(0, 255).round
-      g = (base_g + (255 - base_g) * ratio).clamp(0, 255).round
-      b = (base_b + (255 - base_b) * ratio).clamp(0, 255).round
+      r = (base_r + (target_r - base_r) * ratio).round
+      g = (base_g + (target_g - base_g) * ratio).round
+      b = (base_b + (target_b - base_b) * ratio).round
 
       couleur = "rgb(#{r}, #{g}, #{b})"
 
       {
-        profile: profile&.prenom,
+        profile: profile.prenom, # ou .nom
         commandes: commandes.size,
+        ca: ca,
+        ca_par_date: groupedByDateAndByProfileCa,
         couleur: couleur
       }
     end
-
-
-
 
   end
 

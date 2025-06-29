@@ -1,17 +1,14 @@
 
   <div class="chartBox mx-auto">
-    <canvas id="myChartBarCommandesProfiles"></canvas>
+    <canvas id="dataBarCaProfiles"></canvas>
   </div>
 
     <% @labels_profiles = @stats_par_profile.map { |stat| stat[:profile] } %>
-    <% @data_profiles = @stats_par_profile.map { |stat| stat[:commandes] } %>
+    <% @data_profiles = @stats_par_profile.map { |stat| stat[:ca] } %>
     <% @colors_profiles = @stats_par_profile.map { |stat| stat[:couleur] } %>
 
 <script>
    
-  var couleur1 = 'rgb(116, 159, 130)';
-  var couleur2 = 'rgb(66, 95, 87)';
-
 // CHART BAR
     var dataBarCa = {
       labels: <%= @labels_profiles.to_json.html_safe %>,
@@ -34,7 +31,7 @@
             legend: { display: false },
             title: {
                 display: true,
-                text: 'Commandes par profil',
+                text: "Chiffre d'affaires",
                 font: {
                 size: 14
                 },
@@ -50,7 +47,7 @@
                 }
             }
             },
-            aspectRatio: 1.5,
+            aspectRatio: 1,
             scales: {
             y: {
                 beginAtZero: true,
@@ -74,8 +71,8 @@
 
         // render init block
   
-    var myChartBarCommandesProfiles = new Chart(
-      document.getElementById('myChartBarCommandesProfiles'),
+    var dataBarCaProfiles = new Chart(
+      document.getElementById('dataBarCaProfiles'),
       configBarCa
     );
 

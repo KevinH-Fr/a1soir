@@ -1,0 +1,72 @@
+<div class="chartBox mx-auto">
+  <canvas id="myChartLinePaiements"></canvas>
+</div>
+
+<%# 1. Récupérer toutes les dates triées %>
+<% all_dates = @stats_par_profile.flat_map { |stat| stat[:ca_par_date].keys }.uniq.sort %>
+
+<%# 2. Construire les datasets (lignes du graphe) %>
+<% datasets = @stats_par_profile.map do |stat| 
+  {
+    label: stat[:profile],
+    data: all_dates.map { |date| stat[:ca_par_date][date] || 0 },
+    fill: false,
+    borderColor: stat[:couleur],
+    borderWidth: 2,
+    tension: 0.4,
+    pointBorderWidth: 2,
+    pointHoverBorderWidth: 6
+  }
+end %>
+
+<script>
+  const allDates = <%= all_dates.to_json.html_safe %>;
+
+  const dataLinePaiements = {
+    labels: allDates,
+    datasets: <%= datasets.to_json.html_safe %>
+  };
+
+  let delayedLinePaiements;
+
+  const configLinePaiements = {
+    type: 'line',
+    data: dataLinePaiements,
+    options: {
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom'
+        }
+      },
+      aspectRatio: 1,
+      animation: {
+        onComplete: () => {
+          delayedLinePaiements = true;
+        },
+        delay: (context) => {
+          let delay = 0;
+          if (context.type === 'data' && context.mode === 'default' && !delayedLinePaiements) {
+            delay = context.dataIndex * 100 + context.datasetIndex * 10;
+          }
+          return delay;
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function(value) {
+              return value + ' €';
+            }
+          }
+        }
+      }
+    }
+  };
+
+  new Chart(
+    document.getElementById('myChartLinePaiements'),
+    configLinePaiements
+  );
+</script>

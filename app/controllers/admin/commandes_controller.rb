@@ -69,7 +69,7 @@ class Admin::CommandesController < Admin::ApplicationController
 
     respond_to do |format|
       if @commande.save
-        format.html { redirect_to admin_commande_url(@commande), notice:  "Création à jour réussie" }
+        format.html { redirect_to admin_commande_url(@commande), notice:  "Création réussie" }
         format.json { render :show, status: :created, location: @commande }
       else
         format.html { render :new, status: :unprocessable_entity }
