@@ -14,6 +14,8 @@ class Commande < ApplicationRecord
   after_create :generate_qr
 
   scope :hors_devis, ->  { where("devis = ?", false)}
+  scope :est_devis, ->  { where("devis = ?", true)}
+
   scope :non_retire, -> { where("statutarticles = ?", "non-retiré")}
   scope :retire, -> { where("statutarticles = ?", "retiré")}
   scope :rendu, -> { where("statutarticles = ?", "rendu")}

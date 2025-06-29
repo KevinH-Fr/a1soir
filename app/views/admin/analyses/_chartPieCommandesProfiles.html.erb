@@ -9,8 +9,23 @@
 
 <script>
    
-  var couleur1 = 'rgb(116, 159, 130)';
-  var couleur2 = 'rgb(66, 95, 87)';
+   // Plugin pour texte au centre du doughnut
+  var nbTotal = <%= @nbTotal %>;
+
+  var centerTextDoghnut = {
+    id: 'centerTextDoghnut',
+    afterDatasetsDraw(chart, args, pluginOptions){
+      const { ctx } = chart;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.font = "bold 12px sans-serif";
+      const text = "total " +  nbTotal ;
+      const textWidth = ctx.measureText(text).width;
+      const x = chart.getDatasetMeta(0).data[0].x;
+      const y = chart.getDatasetMeta(0).data[0].y;
+      ctx.fillText(text, x, y);
+    }
+  }
 
 // CHART BAR
     var dataBarCa = {
@@ -53,7 +68,10 @@
           }
         },
         aspectRatio: 1
-      }
+      },
+    
+      plugins: [centerTextDoghnut]
+
     };
 
         // render init block

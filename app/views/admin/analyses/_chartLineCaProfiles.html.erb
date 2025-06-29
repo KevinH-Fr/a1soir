@@ -1,5 +1,5 @@
 <div class="chartBox mx-auto">
-  <canvas id="myChartLinePaiements"></canvas>
+  <canvas id="myChartLineCaProfiles"></canvas>
 </div>
 
 <%# 1. Récupérer toutes les dates triées %>
@@ -10,9 +10,8 @@
   {
     label: stat[:profile],
     data: all_dates.map { |date| stat[:ca_par_date][date] || 0 },
-    fill: false,
     borderColor: stat[:couleur],
-    borderWidth: 2,
+    backgroundColor: stat[:couleur],
     tension: 0.4,
     pointBorderWidth: 2,
     pointHoverBorderWidth: 6
@@ -22,42 +21,51 @@ end %>
 <script>
   const allDates = <%= all_dates.to_json.html_safe %>;
 
-  const dataLinePaiements = {
+  const dataLinePaiementsProfiles = {
     labels: allDates,
     datasets: <%= datasets.to_json.html_safe %>
   };
 
-  let delayedLinePaiements;
+  let delayedLinePaiementsProfiles;
 
-  const configLinePaiements = {
+  const configLinePaiementsProfiles = {
     type: 'line',
-    data: dataLinePaiements,
+    data: dataLinePaiementsProfiles,
     options: {
-      plugins: {
-        legend: {
-          display: true,
-          position: 'bottom'
-        }
-      },
       aspectRatio: 1,
       animation: {
         onComplete: () => {
-          delayedLinePaiements = true;
+          delayedLinePaiementsProfiles = true;
         },
         delay: (context) => {
           let delay = 0;
-          if (context.type === 'data' && context.mode === 'default' && !delayedLinePaiements) {
+          if (context.type === 'data' && context.mode === 'default' && !delayedLinePaiementsProfiles) {
             delay = context.dataIndex * 100 + context.datasetIndex * 10;
           }
           return delay;
         }
       },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom'
+        },
+        title: {
+          display: true,
+          text: "Chiffre d'affaires",
+          font: {
+            size: 14
+          },
+        },
+
+      },
+      aspectRatio: 1,
       scales: {
         y: {
           beginAtZero: true,
           ticks: {
             callback: function(value) {
-              return value + ' €';
+              return value ;
             }
           }
         }
@@ -65,8 +73,8 @@ end %>
     }
   };
 
-  new Chart(
-    document.getElementById('myChartLinePaiements'),
-    configLinePaiements
+  var myChartLineCaProfiles = new Chart(
+    document.getElementById('myChartLineCaProfiles'),
+    configLinePaiementsProfiles
   );
 </script>

@@ -1,6 +1,6 @@
 module AnalysesHelper
   def render_dashboard_section(title, icon_name = nil, partials)
-    content_tag(:div, class: "card m-2 shadow-sm") do
+    content_tag(:div, class: "card m-2 my-4 shadow-sm") do
       concat(content_tag(:div, class: "card-header bg-secondary text-light py-1") do
         concat(content_tag(:div, class: "d-flex align-items-center gap-2") do
           concat(content_tag(:i, "", class: "bi bi-#{icon_name}")) if icon_name.present?

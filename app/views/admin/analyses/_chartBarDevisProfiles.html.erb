@@ -1,16 +1,16 @@
 
   <div class="chartBox mx-auto">
-    <canvas id="dataBarCaProfiles"></canvas>
+    <canvas id="myChartBarDevisProfiles"></canvas>
   </div>
 
     <% @labels_profiles = @stats_par_profile.map { |stat| stat[:profile] } %>
-    <% @data_profiles = @stats_par_profile.map { |stat| stat[:ca] } %>
+    <% @data_profiles = @stats_par_profile.map { |stat| stat[:devis] } %>
     <% @colors_profiles = @stats_par_profile.map { |stat| stat[:couleur] } %>
 
 <script>
    
 // CHART BAR
-    var dataBarCa = {
+    var dataBarDevisProfiles = {
       labels: <%= @labels_profiles.to_json.html_safe %>,
       datasets: [{
       
@@ -21,17 +21,17 @@
       }]
     };
 
-    var delayedBarCa;
+    var delayedBarDevis;
 
-    var configBarCa = {
+    var configBarDevisProfiles = {
         type: 'bar',
-        data: dataBarCa,
+        data: dataBarDevisProfiles,
         options: {
             plugins: {
             legend: { display: false },
             title: {
                 display: true,
-                text: "Chiffre d'affaires",
+                text: "Devis",
                 font: {
                 size: 14
                 },
@@ -42,7 +42,7 @@
                     const label = context.dataset.label || '';
                     const value = context.parsed.y;
                     const profil = context.label;
-                    return `${value} commandes`;
+                    return `${value} rdv`;
                 }
                 }
             }
@@ -57,10 +57,10 @@
             }
             },
             animation: {
-            onComplete: () => { delayedBarCa = true; },
+            onComplete: () => { configBarDevisProfiles = true; },
             delay: (context) => {
                 let delay = 0;
-                if (context.type === 'data' && context.mode === 'default' && !delayedBarCa) {
+                if (context.type === 'data' && context.mode === 'default' && !delayedBarDevis) {
                 delay = context.dataIndex * 200 + context.datasetIndex * 10;
                 }
                 return delay;
@@ -71,9 +71,9 @@
 
         // render init block
   
-    var dataBarCaProfiles = new Chart(
-      document.getElementById('dataBarCaProfiles'),
-      configBarCa
+    var myChartBarDevisProfiles = new Chart(
+      document.getElementById('myChartBarDevisProfiles'),
+      configBarDevisProfiles
     );
 
 

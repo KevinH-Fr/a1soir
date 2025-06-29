@@ -79,8 +79,14 @@ class Admin::AnalysesController < Admin::ApplicationController
       commandes_ids = commandes.pluck(:id)
       paiements = @paiementsFiltres.where(commande_id: commandes_ids)
       ca = paiements.sum(:montant)
+  
+     devis_count = commandes.est_devis.size
 
-      groupedByDateAndByProfileCa =  paiements.group('DATE(created_at)').order('DATE(paiement_recus.created_at)').sum(:montant)
+      groupedByDateAndByProfileCa = paiements.group('DATE(created_at)').order('DATE(paiement_recus.created_at)').sum(:montant)
+
+      groupedByDateAndByProfileCaFr = groupedByDateAndByProfileCa.transform_keys do |date|
+        I18n.l(Date.parse(date.to_s), format: '%d/%m/%Y')
+      end
 
 
       ratio = index.to_f / [total - 1, 1].max
@@ -94,8 +100,9 @@ class Admin::AnalysesController < Admin::ApplicationController
       {
         profile: profile.prenom, # ou .nom
         commandes: commandes.size,
+        devis: devis_count,
         ca: ca,
-        ca_par_date: groupedByDateAndByProfileCa,
+        ca_par_date: groupedByDateAndByProfileCaFr,
         couleur: couleur
       }
     end
