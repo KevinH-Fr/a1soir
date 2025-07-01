@@ -80,7 +80,13 @@ class Admin::AnalysesController < Admin::ApplicationController
       paiements = @paiementsFiltres.where(commande_id: commandes_ids)
       ca = paiements.sum(:montant)
   
-     devis_count = commandes.est_devis.size
+      if datedebut.present? && datefin.present? 
+        commandesDevis = Commande.est_devis.filtredatedebut(datedebut).filtredatefin(datefin)
+      else
+        commandesDevis = Commande.est_devis.all 
+      end
+
+      devis_count = commandesDevis.where(profile_id: profile.id).count
 
       groupedByDateAndByProfileCa = paiements.group('DATE(created_at)').order('DATE(paiement_recus.created_at)').sum(:montant)
 
@@ -106,6 +112,29 @@ class Admin::AnalysesController < Admin::ApplicationController
         couleur: couleur
       }
     end
+
+      # chart line ca profiles
+      all_dates = @stats_par_profile.flat_map { |stat| stat[:ca_par_date].keys }.uniq.sort
+
+      datasets = @stats_par_profile.map do |stat|
+        {
+          label: stat[:profile],
+          data: all_dates.map { |date| stat[:ca_par_date][date] || 0 },
+          borderColor: stat[:couleur],
+          backgroundColor: stat[:couleur],
+          tension: 0.4,
+          pointBorderWidth: 2,
+          pointHoverBorderWidth: 6
+        }
+      end
+
+      @chart_line_profiles_data = {
+        labels: all_dates,
+        datasets: datasets
+      }
+
+
+
 
   end
 

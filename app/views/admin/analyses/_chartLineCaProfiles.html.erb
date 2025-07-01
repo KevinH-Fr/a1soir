@@ -2,79 +2,63 @@
   <canvas id="myChartLineCaProfiles"></canvas>
 </div>
 
-<%# 1. Récupérer toutes les dates triées %>
-<% all_dates = @stats_par_profile.flat_map { |stat| stat[:ca_par_date].keys }.uniq.sort %>
-
-<%# 2. Construire les datasets (lignes du graphe) %>
-<% datasets = @stats_par_profile.map do |stat| 
-  {
-    label: stat[:profile],
-    data: all_dates.map { |date| stat[:ca_par_date][date] || 0 },
-    borderColor: stat[:couleur],
-    backgroundColor: stat[:couleur],
-    tension: 0.4,
-    pointBorderWidth: 2,
-    pointHoverBorderWidth: 6
-  }
-end %>
-
 <script>
-  const allDates = <%= all_dates.to_json.html_safe %>;
+  document.addEventListener("turbo:load", function () {
+    const canvas = document.getElementById('myChartLineCaProfiles');
 
-  const dataLinePaiementsProfiles = {
-    labels: allDates,
-    datasets: <%= datasets.to_json.html_safe %>
-  };
+    // ✅ Détruire l'ancienne instance si elle existe
+    if (canvas.chartInstance) {
+      canvas.chartInstance.destroy();
+    }
 
-  let delayedLinePaiementsProfiles;
+    const dataLinePaiementsProfiles = <%= @chart_line_profiles_data.to_json.html_safe %>;
 
-  const configLinePaiementsProfiles = {
-    type: 'line',
-    data: dataLinePaiementsProfiles,
-    options: {
-      aspectRatio: 1,
-      animation: {
-        onComplete: () => {
-          delayedLinePaiementsProfiles = true;
-        },
-        delay: (context) => {
-          let delay = 0;
-          if (context.type === 'data' && context.mode === 'default' && !delayedLinePaiementsProfiles) {
-            delay = context.dataIndex * 100 + context.datasetIndex * 10;
-          }
-          return delay;
-        }
-      },
-      plugins: {
-        legend: {
-          display: true,
-          position: 'bottom'
-        },
-        title: {
-          display: true,
-          text: "Chiffre d'affaires",
-          font: {
-            size: 14
+    let delayedLinePaiementsProfiles;
+
+    const configLinePaiementsProfiles = {
+      type: 'line',
+      data: dataLinePaiementsProfiles,
+      options: {
+        aspectRatio: 1,
+        animation: {
+          onComplete: () => {
+            delayedLinePaiementsProfiles = true;
           },
+          delay: (context) => {
+            let delay = 0;
+            if (context.type === 'data' && context.mode === 'default' && !delayedLinePaiementsProfiles) {
+              delay = context.dataIndex * 100 + context.datasetIndex * 10;
+            }
+            return delay;
+          }
         },
-
-      },
-      aspectRatio: 1,
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            callback: function(value) {
-              return value ;
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom'
+          },
+          title: {
+            display: true,
+            text: "Chiffre d'affaires",
+            font: {
+              size: 14
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function (value) {
+                return value;
+              }
             }
           }
         }
       }
-    }
-  };
+    };
 
-  var myChartLineCaProfiles = new Chart(
-    document.getElementById('myChartLineCaProfiles'),
-    configLinePaiementsProfiles
-  );
+    // ✅ Stocker l’instance dans le canvas pour pouvoir la détruire plus tard
+    canvas.chartInstance = new Chart(canvas, configLinePaiementsProfiles);
+  });
 </script>
