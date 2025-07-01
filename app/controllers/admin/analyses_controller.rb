@@ -91,7 +91,7 @@ class Admin::AnalysesController < Admin::ApplicationController
       groupedByDateAndByProfileCa = paiements.group('DATE(created_at)').order('DATE(paiement_recus.created_at)').sum(:montant)
 
       groupedByDateAndByProfileCaFr = groupedByDateAndByProfileCa.transform_keys do |date|
-        I18n.l(Date.parse(date.to_s), format: '%d/%m/%Y')
+        I18n.l(Date.parse(date.to_s), format: '%d/%m')
       end
 
 
