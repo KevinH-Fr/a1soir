@@ -8,7 +8,6 @@ class Admin::AnalysesController < Admin::ApplicationController
     @datedebut = DateTime.parse(params[:debut]) if params[:debut].present?
     @datefin = DateTime.parse(params[:fin]) if params[:fin].present?
 
-
     if datedebut.present? && datefin.present? 
       @commandesFiltres = Commande.hors_devis.filtredatedebut(datedebut).filtredatefin(datefin)
       @articlesFiltres = Article.joins(:commande).merge(Commande.hors_devis).filtredatedebut(datedebut).filtredatefin(datefin)
@@ -77,7 +76,7 @@ class Admin::AnalysesController < Admin::ApplicationController
     @stats_par_profile = profiles.map.with_index do |profile, index|
       commandes = @commandesFiltres.where(profile_id: profile.id)
       commandes_ids = commandes.pluck(:id)
-      paiements = @paiementsFiltres.where(commande_id: commandes_ids)
+      paiements = @paiementsFiltres.only_prix.where(commande_id: commandes_ids)
       ca = paiements.sum(:montant)
   
       if datedebut.present? && datefin.present? 
@@ -90,9 +89,9 @@ class Admin::AnalysesController < Admin::ApplicationController
 
       groupedByDateAndByProfileCa = paiements.group('DATE(created_at)').order('DATE(paiement_recus.created_at)').sum(:montant)
 
-      groupedByDateAndByProfileCaFr = groupedByDateAndByProfileCa.transform_keys do |date|
-        I18n.l(Date.parse(date.to_s), format: '%d/%m')
-      end
+      # groupedByDateAndByProfileCaFr = groupedByDateAndByProfileCa.transform_keys do |date|
+      #   I18n.l(Date.parse(date.to_s), format: '%d/%m')
+      # end
 
 
       ratio = index.to_f / [total - 1, 1].max
@@ -108,32 +107,30 @@ class Admin::AnalysesController < Admin::ApplicationController
         commandes: commandes.size,
         devis: devis_count,
         ca: ca,
-        ca_par_date: groupedByDateAndByProfileCaFr,
+    #    ca_par_date: groupedByDateAndByProfileCa,
         couleur: couleur
       }
     end
 
-      # chart line ca profiles
-      all_dates = @stats_par_profile.flat_map { |stat| stat[:ca_par_date].keys }.uniq.sort
+      # # chart line ca profiles
+      # all_dates = @stats_par_profile.flat_map { |stat| stat[:ca_par_date].keys }.uniq.sort
 
-      datasets = @stats_par_profile.map do |stat|
-        {
-          label: stat[:profile],
-          data: all_dates.map { |date| stat[:ca_par_date][date] || 0 },
-          borderColor: stat[:couleur],
-          backgroundColor: stat[:couleur],
-          tension: 0.4,
-          pointBorderWidth: 2,
-          pointHoverBorderWidth: 6
-        }
-      end
+      # datasets = @stats_par_profile.map do |stat|
+      #   {
+      #     label: stat[:profile],
+      #     data: all_dates.map { |date| stat[:ca_par_date][date] || 0 },
+      #     borderColor: stat[:couleur],
+      #     backgroundColor: stat[:couleur],
+      #     tension: 0.4,
+      #     pointBorderWidth: 2,
+      #     pointHoverBorderWidth: 6
+      #   }
+      # end
 
-      @chart_line_profiles_data = {
-        labels: all_dates,
-        datasets: datasets
-      }
-
-
+      # @chart_line_profiles_data = {
+      #   labels: all_dates,
+      #   datasets: datasets
+      # }
 
 
   end

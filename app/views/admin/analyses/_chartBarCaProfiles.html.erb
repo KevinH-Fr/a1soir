@@ -1,0 +1,80 @@
+
+  <div class="chartBox mx-auto">
+    <canvas id="myChartBarCaProfiles"></canvas>
+  </div>
+
+    <% @labels_profiles = @stats_par_profile.map { |stat| stat[:profile] } %>
+    <% @data_profiles = @stats_par_profile.map { |stat| stat[:ca] } %>
+    <% @colors_profiles = @stats_par_profile.map { |stat| stat[:couleur] } %>
+
+<script>
+   
+// CHART BAR
+    var dataBarCaProfiles = {
+      labels: <%= @labels_profiles.to_json.html_safe %>,
+      datasets: [{
+      
+        data: <%= @data_profiles.to_json.html_safe %>,
+        fill: true,
+        backgroundColor: <%= @colors_profiles.to_json.html_safe %>,
+        borderWidth: 1
+      }]
+    };
+
+    var delayedBarDevis;
+
+    var configBarCaProfiles = {
+        type: 'bar',
+        data: dataBarCaProfiles,
+        options: {
+            plugins: {
+            legend: { display: false },
+            title: {
+                display: true,
+                text: "Chiffre d'affaires",
+                font: {
+                size: 14
+                },
+            },
+            tooltip: {
+                callbacks: {
+                label: function(context) {
+                    const label = context.dataset.label || '';
+                    const value = context.parsed.y;
+                    const profil = context.label;
+                    return `${value} €`;
+                }
+                }
+            }
+            },
+            aspectRatio: 1,
+            scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                stepSize: 1,
+                }
+            }
+            },
+            animation: {
+            onComplete: () => { configBarCaProfiles = true; },
+            delay: (context) => {
+                let delay = 0;
+                if (context.type === 'data' && context.mode === 'default' && !delayedBarDevis) {
+                delay = context.dataIndex * 200 + context.datasetIndex * 10;
+                }
+                return delay;
+            }
+            }
+        }
+    };
+
+        // render init block
+  
+    var myChartBarCaProfiles = new Chart(
+      document.getElementById('myChartBarCaProfiles'),
+      configBarCaProfiles
+    );
+
+
+</script>
