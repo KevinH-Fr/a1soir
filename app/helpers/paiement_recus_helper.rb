@@ -9,7 +9,7 @@ module PaiementRecusHelper
     
           concat(content_tag(:span, class: "badge fs-6 bg-secondary mx-1") do
             concat("Prix: ")
-            concat(content_tag(:span, custom_currency_no_decimals_format(paiements.only_prix.sum(:montant)), class: ""))
+            concat(content_tag(:span, custom_currency_format(paiements.only_prix.sum(:montant)), class: ""))
           end)
   
           concat(content_tag(:span, class: "badge fs-6 bg-secondary mx-1") do
