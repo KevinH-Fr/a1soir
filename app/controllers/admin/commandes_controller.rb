@@ -27,6 +27,7 @@ class Admin::CommandesController < Admin::ApplicationController
     
 
   def show
+
     @commande = Commande.includes(articles: [:produit, :sousarticles]).find(params[:commande]) if params[:commande]
     session[:commande] = @commande.id if @commande
 

@@ -1,5 +1,22 @@
+<% if display_qr_activated %>
+  <p>QR display a été activé.</p>
+<% end %>
+
 <div data-controller="qr-code-ajout-article">
   <div class="container-fluid p-2"> 
+
+    <!-- 🔍 Ajout du champ pour la douchette -->
+    <div class="text-center mt-3">
+      <input
+        type="text"
+        id="scannerInput"
+        class="form-control text-center"
+        style="max-width: 400px; margin: 0 auto;"
+        placeholder="Scannez un QR code avec la douchette"
+        data-action="change->qr-code-ajout-article#handleScannerInput"
+        autofocus
+      />
+    </div>
 
     <div class="container d-flex justify-content-center align-items-center">
       <div class="m-2" id="sourceSelectPanel">
@@ -14,18 +31,6 @@
       <video id="video" style="width: 100%; max-width: 600px; height: auto;"></video>
     </div>
 
-    <!-- 🔍 Ajout du champ pour la douchette -->
-    <div class="text-center mt-3">
-      <input
-        type="text"
-        id="scannerInput"
-        class="form-control text-center"
-        style="max-width: 400px; margin: 0 auto;"
-        placeholder="Scannez un QR code avec la douchette"
-        data-action="change->qr-code-ajout-article#handleScannerInput"
-        autofocus
-      />
-    </div>
 
     <div id="count"></div>
     <br>

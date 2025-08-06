@@ -3,7 +3,7 @@ import { BrowserQRCodeReader } from "@zxing/library";
 
 export default class extends Controller {
   connect() {
-    console.log("[Stimulus] Contrôleur connecté");
+    console.log("[Stimulus] Contrôleur qr code ajout article connecté");
 
     this.codeReader = new BrowserQRCodeReader();
     this.selectedDeviceId = null;

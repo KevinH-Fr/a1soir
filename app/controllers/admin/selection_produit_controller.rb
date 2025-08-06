@@ -2,7 +2,7 @@ class Admin::SelectionProduitController < Admin::ApplicationController
   include EnsemblesHelper 
         
   def index
-
+   
     @commande = Commande.find(session[:commande])
     @type_locvente = @commande.type_locvente
 
@@ -48,10 +48,15 @@ class Admin::SelectionProduitController < Admin::ApplicationController
 
   def display_qr
 
+    puts " ____ display qr a été activé ___________"
+    session[:display_qr_activated] = true
+
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: turbo_stream.update(
-          'partial-container', partial: 'admin/selection_produit/selection_qr'
+          'partial-container', 
+          partial: 'admin/selection_produit/selection_qr',
+          locals: { display_qr_activated: true }
         )
       end
     end
@@ -59,13 +64,19 @@ class Admin::SelectionProduitController < Admin::ApplicationController
 
   def display_manuelle
 
+    puts " ____ display manuelle a été activé ___________"
+    session[:display_qr_activated] = false
+
     @categorie_produits = CategorieProduit.all
 
     respond_to do |format|
       format.html
       format.turbo_stream do
         render turbo_stream: turbo_stream.update(
-          'partial-container', partial: 'admin/selection_produit/selection_manuelle'
+          'partial-container', 
+          partial: 'admin/selection_produit/selection_manuelle',
+          locals: { display_qr_activated: false }
+
 
         )
       end
