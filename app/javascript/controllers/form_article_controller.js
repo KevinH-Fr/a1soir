@@ -6,6 +6,9 @@ export default class extends Controller {
   
   connect() {
     this.checkIfNew();
+
+    console.log("stimulus called");
+
   }
 
   setInitialPrice() {
