@@ -218,7 +218,7 @@ class Admin::SelectionProduitController < Admin::ApplicationController
     type_locvente = matching_articles.first.locvente
     if type_locvente == "location"
       prix = ensemble.produit.prixlocation
-      caution = ensemble.produit.prixvente
+      caution = ensemble.produit.caution
     elsif type_locvente == "vente"
       prix = ensemble.produit.prixvente
       caution = 0

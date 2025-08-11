@@ -46,20 +46,9 @@
       <% end %>
     </div>
 
-
-  <%# tester ajout partial seleciton qr  %>
-  <%#= render  "selection_qr" %>
-
-  <%# <% if session[:display_qr_activated] == true %>
-      <%#= render "selection_qr" %>  
-  <%# end %>
-
-
-
-
   <% end %>
 
-  <div id="partial-container" class="partial-topic">
+  <div id="partial-container" class="partial-topic pb-2">
     <%# recoit le turbo stream avec elements cliqués %>
 
     <% if @produit.present? %>
@@ -85,34 +74,6 @@
 </div>
 
 <%= render 'ensemble_applicable' %>
-
-
-<%# ajout du 0508 pour avoir tout le temps douchette
-continuer tester, si ok enlever le champ douchette de selection qr pour ajout article ?
-erreur log en js vient de absence de camero donc ok 
-verifier sous article
-verifier commande
-verifier avec qr code camera toujours ok 
-puis prod
- %>
-
-<%# if  params[:produit].nil? %>
-  <!--div data-controller="qr-code-ajout-article" class="container text-center mt-3">
-    <input
-      type="text"
-      id="scannerInput"
-      class="form-control text-center"
-      style="max-width: 400px; margin: 0 auto;"
-      placeholder="Scannez un QR code avec la douchette"
-      data-action="change->qr-code-ajout-article#handleScannerInput"
-      autofocus
-    />
-
-    <input type="hidden" id="produit" name="produit">
-    <div id="results" class="mt-2"></div>
-  </div-->
-  
-<%# end %>
 
 
 <br> <br>

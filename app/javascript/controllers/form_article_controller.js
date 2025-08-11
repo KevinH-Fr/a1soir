@@ -6,9 +6,6 @@ export default class extends Controller {
   
   connect() {
     this.checkIfNew();
-
-    console.log("stimulus called");
-
   }
 
   setInitialPrice() {
@@ -38,6 +35,7 @@ export default class extends Controller {
   }
 
   checkIfNew() {
+
     const isNewArticle = this.is_new_articleTarget.value === "true";
 
     if (isNewArticle) {
@@ -46,6 +44,7 @@ export default class extends Controller {
   }
 
   calculTotal() {
+
     const prixventeInitialValue = this.prixvente_initialTarget.value;
     const quantiteValue = this.quantiteTarget.value;
     const prixValue = this.prixTarget.value;
@@ -77,8 +76,6 @@ export default class extends Controller {
 
     const coefLongueDuree = this.coef_longue_dureeTarget.value;
     const longueduree = this.longuedureeTarget.checked;
-
-   // console.log("change longue duree");
 
     if (longueduree) {
       this.prixTarget.value = parseFloat(this.prixTarget.value) * ( 1 + (parseFloat(coefLongueDuree) / 100) ) ; 

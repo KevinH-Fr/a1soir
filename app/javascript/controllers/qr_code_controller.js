@@ -3,7 +3,7 @@ import { BrowserQRCodeReader } from "@zxing/library";
 
 export default class extends Controller {
   connect() {
-    console.log("[QR Code] Contrôleur qr code connecté");
+    console.log("[QR Code] Contrôleur qr code connecté !");
 
     this.codeReader = new BrowserQRCodeReader();
     this.selectedDeviceId = null;
@@ -14,13 +14,13 @@ export default class extends Controller {
 
     const scannerInput = this.element.querySelector("#scannerInput");
     if (scannerInput) {
-      console.log("[QR Code] Champ douchette détecté, focus appliqué");
+      console.log("[QR Code] Champ douchette détecté, focus appliqué !");
       scannerInput.focus();
     }
   }
 
   populateSources() {
-    console.log("[QR Code] Recherche de caméras disponibles...");
+    console.log("[QR Code] Recherche de caméras disponibles......");
 
     if (
       navigator.mediaDevices &&
