@@ -54,8 +54,12 @@ class Admin::EtiquettesController < Admin::ApplicationController
 
   def reset_selection
     # Reset the session selection
-    session[:selection_etiquettes] = []
+
+    
+    #session[:selection_etiquettes] = []
+    session.delete(:selection_etiquettes)
     redirect_to admin_etiquettes_path, notice: "Selection a été supprimée."
+    puts " _________________________________________ call reset selection etiquettes: #{ session[:selection_etiquettes]}"
   end
 
   def update_selection
@@ -66,10 +70,15 @@ class Admin::EtiquettesController < Admin::ApplicationController
     session[:selection_etiquettes] ||= []  # Ensure it's an array
     session[:selection_etiquettes] << new_product  # Add the new value to the array
   
+    puts " _________________________________________ call update selection etiquettes: #{ session[:selection_etiquettes]}"
+
     redirect_to admin_etiquettes_path
   end
   
   def generate_pdf
+
+    puts " _________________________________________ call generate pdf selection etiquettes: #{ session[:selection_etiquettes]}"
+
     # autoriser plusieurs fois le meme id
     ids = session[:selection_etiquettes] || []
     produits_by_id = Produit.where(id: ids).includes(:taille, :couleur, :image1_attachment, :qr_code_attachment).index_by(&:id)
