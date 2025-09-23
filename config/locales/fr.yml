@@ -249,6 +249,12 @@ fr:
       date_info: " du %{event_date}"
       next_meeting: "\nRDV à venir: %{meeting_details}"
 
+  restitution_email:
+    subject: "Confirmation de restitution - Commande %{ref_commande}"
+    body:
+      greeting: "Bonjour %{client},"
+      confirmation: "Nous vous confirmons que les produits de votre commande %{ref_commande} ont bien été restitués."
+
   document_types:
     commande: "Commande"
     facture: "Facture"

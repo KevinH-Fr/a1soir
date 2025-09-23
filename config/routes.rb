@@ -144,6 +144,8 @@ Rails.application.routes.draw do
           get :toggle_statut_retire
           get :toggle_statut_non_retire
           get :toggle_statut_rendu
+          post :toggle_statut_rendu_with_email
+          post :toggle_statut_rendu_without_email
         end
         
         collection do

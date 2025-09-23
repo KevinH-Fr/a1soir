@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <%= I18n.t('restitution_email.body.greeting', client: @client.full_name) %>
+    <br>
+    <br>
+
+    <%= I18n.t('restitution_email.body.confirmation', ref_commande: @commande.ref_commande) %>
+    <br>
+    <br>
+  </body>
+
+</html>

@@ -6,6 +6,43 @@
         class: "bi bi-person-standing-dress btn btn-sm mb-2 #{commande.statutarticles == 'retiré' ? 'btn-warning' : 'btn-outline-warning'}",
         title: "retiré" %>
 
-<%= link_to '', toggle_statut_rendu_admin_commande_path(commande), 
+<%#= link_to '', toggle_statut_rendu_admin_commande_path(commande), 
         class: "bi bi-person-standing-dress btn btn-sm mb-2 #{commande.statutarticles == 'rendu' ? 'btn-success' : 'btn-outline-success'}",
         title: "rendu" %>
+
+
+
+<!-- Button trigger modal -->
+<%= link_to '',
+      '#',
+      class: "bi bi-person-standing-dress btn btn-sm mb-2 #{commande.statutarticles == 'rendu' ? 'btn-success' : 'btn-outline-success'}",
+      data: { "bs-toggle": "modal", "bs-target": "#modal-mail-confirmation" },
+      form_class: "d-inline",
+      title: "rendu" %>
+
+<!-- Modal -->
+<div class="modal fade" id="modal-mail-confirmation" tabindex="-1" aria-labelledby="modal-mail-confirmation-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modal-mail-confirmation-label">Mail de confirmation</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Voulez-vous envoyer un mail au client pour confirmer la restitution des produits ?
+      </div>
+      <div class="modal-footer">
+        <%= button_to "Avec envoi de mail",
+              toggle_statut_rendu_with_email_admin_commande_path(commande),
+              method: :post,
+              class: "btn btn-success",
+              form_class: "d-inline" %>
+        <%= button_to "Sans envoi de mail",
+              toggle_statut_rendu_without_email_admin_commande_path(commande),
+              method: :post,
+              class: "btn btn-outline-secondary",
+              form_class: "d-inline" %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -27,6 +27,12 @@ en:
       date_info: " on %{event_date}"
       next_meeting: "\nUpcoming appointment: %{meeting_details}"
 
+  restitution_email:
+    subject: "Restitution confirmation - Order %{ref_commande}"
+    body:
+      greeting: "Hello %{client},"
+      confirmation: "We confirm that the products from your order %{ref_commande} have been properly returned."
+
   document_types:
     commande: "Order"
     facture: "Invoice"

@@ -1,8 +1,9 @@
 class Admin::CommandesController < Admin::ApplicationController
   #before_action :authenticate_vendeur_or_admin!
 
-  before_action :set_commande, only: [:show, :edit, :update, :destroy, 
-    :toggle_statut_non_retire, :toggle_statut_retire, :toggle_statut_rendu]
+  before_action :set_commande, only: [:show, :edit, :update, :destroy,
+    :toggle_statut_non_retire, :toggle_statut_retire,
+    :toggle_statut_rendu_with_email, :toggle_statut_rendu_without_email]
 
     def index
       @count_commandes = Commande.count
@@ -141,11 +142,20 @@ class Admin::CommandesController < Admin::ApplicationController
       notice: "commande non-retirée par client" 
   end
 
-  def toggle_statut_rendu
-    @commande.update(statutarticles: "rendu" )
+  def toggle_statut_rendu_with_email
+    @commande.update(statutarticles: "rendu")
+    CommandeMailer.confirmation_restitution(@commande).deliver_later
     redirect_to admin_commande_url(@commande),
-      notice: "commande rendue par client" 
+      notice: "Commande rendue - Email de confirmation envoyé au client"
   end
+
+  def toggle_statut_rendu_without_email
+    @commande.update(statutarticles: "rendu")
+    redirect_to admin_commande_url(@commande),
+      notice: "Commande rendue (sans envoi d'email)"
+  end
+
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
