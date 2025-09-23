@@ -117,11 +117,12 @@
         <% if @doc_edition.doc_type == "facture" %>
           
           <tr>
-            <td colspan=7 class="centered tfoot-doc">  
-              total ht: <%= du_prix_ht(@doc_edition.commande) %> 
-              tva: <%= tva_sur_prix(@doc_edition.commande) %> 
-              total ttc:   <%= du_prix(@doc_edition.commande) %>
+            <td colspan=6 class="text-end foot-doc">  
+              <div>Total HT: <%= number_to_currency(du_prix_ht(@doc_edition.commande), unit: "€", separator: ",", delimiter: " ", format: "%n %u") %> </div>
+              <div>TVA: <%= number_to_currency(tva_sur_prix(@doc_edition.commande), unit: "€", separator: ",", delimiter: " ", format: "%n %u") %> </div>
+              <div>Total TTC:   <%= number_to_currency(du_prix(@doc_edition.commande), unit: "€", separator: ",", delimiter: " ", format: "%n %u") %> </div>
             </td>
+            <td class="foot-doc"></td>
           </tr>
         <% end %>
 
