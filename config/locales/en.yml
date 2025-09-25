@@ -31,7 +31,7 @@ en:
     subject: "Restitution confirmation - Order %{ref_commande}"
     body:
       greeting: "Hello %{client},"
-      confirmation: "We confirm that the products from your order %{ref_commande} have been properly returned."
+      confirmation: "We confirm that the products from your order %{ref_commande} have been properly returned and deposit canceled."
 
   document_types:
     commande: "Order"

@@ -253,7 +253,7 @@ fr:
     subject: "Confirmation de restitution - Commande %{ref_commande}"
     body:
       greeting: "Bonjour %{client},"
-      confirmation: "Nous vous confirmons que les produits de votre commande %{ref_commande} ont bien été restitués."
+      confirmation: "Nous vous confirmons que les produits de votre commande %{ref_commande} ont bien été restitués et votre caution annulée."
 
   document_types:
     commande: "Commande"
