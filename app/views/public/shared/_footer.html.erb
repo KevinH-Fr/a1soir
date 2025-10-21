@@ -1,64 +1,68 @@
-<div class="sticky-bottom px-3 mt-5 gap-2">
+<footer class="mt-5 bg-light border-top">
+  <div class="container py-5">
+    <div class="row g-4">
+      
+      <!-- Navigation -->
+      <div class="col-6 col-md-3">
+        <h6 class="fw-bold text-uppercase mb-3 brand-colored">Navigation</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2"><%= link_to "Accueil", home_path, class: "text-muted text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "La boutique", la_boutique_url, class: "text-muted text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "Nos collections", nos_collections_url, class: "text-muted text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "Le concept", le_concept_url, class: "text-muted text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "Nos autres activités", nos_autres_activites_url, class: "text-muted text-decoration-none hover-link" %></li>
+        </ul>
+      </div>
 
-    <div class="d-flex flex-wrap gap-5">
+      <!-- Services -->
+      <div class="col-6 col-md-3">
+        <h6 class="fw-bold text-uppercase mb-3 brand-colored">Services</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2"><%= link_to "Catégories", categories_url(subdomain: "shop"), class: "text-muted text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "Produits", produits_index_url(subdomain: "shop"), class: "text-muted text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "Rendez-vous", rdv_url(subdomain: "shop"), class: "text-muted text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "Contact", contact_url, class: "text-muted text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "FAQ", faq_url, class: "text-muted text-decoration-none hover-link" %></li>
+        </ul>
+      </div>
 
-        <%#= link_to image_tag('/images/logo_courant_public.png', class: 'navbar-brand me-4', width: "200"), root_url %>
-        
-        <div class=""> 
-            <div class="fw-bold">Légal</div>
-            <%= link_to "CGV", cgv_url(subdomain: "shop"), class: "text-secondary text-decoration-none" %>
+      <!-- Suivez-nous -->
+      <div class="col-6 col-md-3">
+        <h6 class="fw-bold text-uppercase mb-3 brand-colored">Suivez-nous</h6>
+        <div class="d-flex flex-column gap-2">
+          <%= link_to "https://www.instagram.com/autourdunsoir/", class: "text-muted text-decoration-none hover-link d-flex align-items-center gap-2", target: "_blank", rel: "noopener noreferrer" do %>
+            <i class="bi bi-instagram fs-5"></i>
+            <span>Instagram</span>
+          <% end %>
+          <%= link_to "https://www.facebook.com/autourdunsoir/", class: "text-muted text-decoration-none hover-link d-flex align-items-center gap-2", target: "_blank", rel: "noopener noreferrer" do %>
+            <i class="bi bi-facebook fs-5"></i>
+            <span>Facebook</span>
+          <% end %>
         </div>
+      </div>
 
-        <div class=""> 
-            <div class="fw-bold">Suivez-nous</div>
-            <%= link_to "Instagram", "https://www.instagram.com/autourdunsoir/", class: "d-block text-secondary text-decoration-none", target: "_blank", rel: "noopener noreferrer" %>
-            <%= link_to "Facebook", "https://www.facebook.com/autourdunsoir/", class: "d-block text-secondary text-decoration-none", target: "_blank", rel: "noopener noreferrer" %>
-        </div>
-
-        <div class=""> 
-            <div class="fw-bold">Pages</div>
-            <%= link_to "La boutique de Cannes", laboutique_url(subdomain: "shop"), class: "d-block text-secondary text-decoration-none" %>
-            <%= link_to "Catégories", categories_url(subdomain: "shop"), class: "d-block text-secondary text-decoration-none" %>
-            <%= link_to "Produits", produits_index_url(subdomain: "shop"), class: "d-block text-secondary text-decoration-none" %>
-            <%= link_to "Prendre Rendez-vous", rdv_url(subdomain: "shop"), class: "d-block text-secondary text-decoration-none" %>
-        </div>        
+      <!-- Légal -->
+      <div class="col-6 col-md-3">
+        <h6 class="fw-bold text-uppercase mb-3 brand-colored">Légal</h6>
+        <ul class="list-unstyled">
+          <li class="mb-2"><%= link_to "Mentions légales", legal_url, class: "text-muted text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "CGV", cgv_url(subdomain: "shop"), class: "text-muted text-decoration-none hover-link" %></li>
+        </ul>
+      </div>
 
     </div>
+  </div>
 
-
-    <hr>
-
-    <div class="small d-flex gap-4">
-        <% if user_signed_in? %>
-            <div class="container-fluid mt-4 d-flex justify-content-end">
-                <%= button_to destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: "text-danger d-flex align-items-center" do %>
-                    <i class="bi bi-box-arrow-left me-1"></i>
-                    <span class="fw-bold"><%= current_user.role %> </span>
-                <% end %>
-            </div>
-
-        <% elsif current_admin_user %>
-            <div class="container-fluid mt-4 d-flex justify-content-end">
-                <%= button_to destroy_admin_user_session_path, method: :delete, data: { turbo_method: :delete }, class: "text-danger d-flex align-items-center" do %>
-                    <i class="bi bi-box-arrow-left me-1"></i>
-                    <span class="fw-bold"><%= current_admin_user.role %> </span>
-                <% end %>
-            </div>
-        <% else %>
-
-            <%= link_to new_user_session_path, class: "text-warning text-decoration-none" do %>
-                <i class="bi bi-person-lock"></i>
-                <span class="fw-bold">Connexion</span>
-            <% end %>
-
-            <%= link_to new_user_registration_path, class: "text-primary text-decoration-none" do %>
-                <i class="bi bi-person-add"></i>
-                <span class="fw-bold">Nouveau</span>
-            <% end %>
-
-
-        <% end %>
-
-        <%= link_to "admin", admin_root_url(subdomain: "admin"), class: "fw-bold text-dark text-decoration-none" %>
+  <!-- Copyright -->
+  <div class="bg-white border-top py-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <p class="text-muted small mb-0">
+            &copy; <%= Time.current.year %> Autour d'un Soir - Tous droits réservés
+          </p>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+</footer>

@@ -151,3 +151,66 @@
     opacity: 1;
     visibility: visible;
   }
+
+/* Navbar links with stitching effect */
+.nav-link-public {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+/* Stitching line effect that draws from left to right on hover */
+.nav-link-public::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-image: repeating-linear-gradient(
+    to right,
+    #d04d7b 0,
+    #d04d7b 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  transition: width 0.4s ease-in-out;
+}
+
+.nav-link-public:hover::after {
+  width: 100%;
+}
+
+/* Active link with permanent stitching line */
+.nav-link-active::after {
+  width: 100% !important;
+  background-image: repeating-linear-gradient(
+    to right,
+    #d04d7b 0,
+    #d04d7b 5px,
+    transparent 5px,
+    transparent 10px
+  );
+}
+
+.nav-link-active span {
+  color: #d04d7b !important;
+}
+
+/* Footer hover effects */
+.hover-link {
+  transition: color 0.3s ease, padding-left 0.3s ease;
+  display: inline-block;
+}
+
+.hover-link:hover {
+  color: #d04d7b !important;
+  padding-left: 5px;
+}
+
+footer .bi-instagram:hover,
+footer .bi-facebook:hover {
+  color: #d04d7b !important;
+  transform: scale(1.2);
+  transition: all 0.3s ease;
+}

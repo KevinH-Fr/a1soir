@@ -13,7 +13,13 @@ Rails.application.routes.draw do
       get 'home', to: 'pages#home'  
       get 'about', to: 'pages#about'
       get 'cgv', to: 'pages#cgv'
-      get 'laboutique', to: 'pages#laboutique'
+      get 'la_boutique', to: 'pages#la_boutique'
+      get 'nos_collections', to: 'pages#nos_collections'
+      get 'le_concept', to: 'pages#le_concept'
+      get 'nos_autres_activites', to: 'pages#nos_autres_activites'
+      get 'legal', to: 'pages#legal'
+      get 'faq', to: 'pages#faq'
+
       get 'contact', to: 'pages#contact'
       get 'categories', to: 'pages#categories'
 

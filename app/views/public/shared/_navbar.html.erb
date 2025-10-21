@@ -1,43 +1,41 @@
 
-<nav class="navbar bg-light sticky-top navbar-expand-lg">
-  <div class="container-fluid">
-    <%= link_to image_tag('/images/logo_courant_public.png', class: 'navbar-brand me-4', width: "200"), root_url %>
-   
-    <div class="d-flex text-end align-items-center">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+  <div class="container">
+    <%= link_to image_tag('/images/logo_courant_public.png', class: 'navbar-brand', width: "180", alt: "Logo"), root_url %>
 
+    <div class="d-flex align-items-center gap-3 order-lg-2">
       <% if ENV["ONLINE_SALES_AVAILABLE"] == "true" %>
-        <%= link_to cart_url, class: "text-decoration-none text-dark me-2 fs-4 position-relative d-inline-block" do %>
-          <i class="bi bi-bag-fill"></i>
-          <span class="position-absolute top-50 start-50 translate-middle badge rounded-pill pt-2" style="font-size: 12px;">
-            <%= @cart.size %>
-            <span class="visually-hidden">items in cart</span>
-          </span>
+        <%= link_to cart_url, class: "text-decoration-none text-dark position-relative" do %>
+          <i class="bi bi-bag fs-4"></i>
+          <% if @cart.size > 0 %>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark small">
+              <%= @cart.size %>
+              <span class="visually-hidden">articles dans le panier</span>
+            </span>
+          <% end %>
         <% end %>
       <% end %>
 
-
-      
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
     </div>
 
-    <div class="collapse navbar-collapse" id="navbar">
-      <ul class="navbar-nav me-auto my-2 my-lg-0">
+    <div class="collapse navbar-collapse order-lg-1" id="navbar">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <%= nav_link_public(home_path, "Accueil") %>
-        <%= nav_link_public(laboutique_url, "La boutique de Cannes") %>
-        <%= nav_link_public(laboutique_url, "La boutique en ligne") %>
-        <%= nav_link_public(laboutique_url, "Nos collections") %>
-        <%= nav_link_public(laboutique_url, "Le concept") %>
-        <%= nav_link_public(laboutique_url, "Nos autres activités") %>
-        <%= nav_link_public(laboutique_url, "Légal") %>
-        <%= nav_link_public(laboutique_url, "FAQ") %>
+        <%= nav_link_public(la_boutique_url, "La boutique de Cannes") %>
+        <%= nav_link_public(nos_collections_url, "Nos collections") %>
+        <%= nav_link_public(le_concept_url, "Le concept") %>
+        <%= nav_link_public(nos_autres_activites_url, "Nos autres activités") %>
+        <%= nav_link_public(legal_url, "Légal") %>
+        <%= nav_link_public(faq_url, "FAQ") %>
 
         <%#= nav_link_public(produits_index_url, "Produits") %>
         <%#= nav_link_public(categories_url, "Catégories") %>
         <%#= nav_link_public(laboutique_url, "La boutique de Cannes") %>
         <%#= nav_link_public(contact_url, "Contact") %>
+
       </ul>
     </div>
   </div>

@@ -1,11 +1,21 @@
 module PagesHelper
 
+  def page_header(title, subtitle = nil)
+    content_tag :div, class: "container-fluid text-center w-100", data: { aos: "fade" } do
+      concat content_tag(:h1, title, class: "public-text-overlay brand-colored fs-1 my-4 text-uppercase", data: { aos: "fade" })
+      if subtitle.present?
+        concat content_tag(:h2, subtitle, class: "public-text-overlay fs-6", data: { aos: "fade" })
+      end
+    end
+  end
+
   def nav_link_public(path, name)
       classes = ["nav-item text-center m-2"]
-      classes << "active" if current_page?(path)
+      is_active = current_page?(path)
+      classes << "active" if is_active
   
       content_tag :li, class: classes do
-        link_to path, class: "text-decoration-none" do
+        link_to path, class: "text-decoration-none nav-link-public #{is_active ? 'nav-link-active' : ''}" do
           concat content_tag(:span, name, class: "text-dark fw-bold")
         end
       end
