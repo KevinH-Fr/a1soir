@@ -1,9 +1,8 @@
- <%= form_with(model: [:admin, texte]) do |form| %>
-   <% if texte.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(texte.errors.count, "error") %> prohibited this texte from being saved:</h2>
-
-      <ul>
+<%= form_with(model: [:admin, texte]) do |form| %>
+  <% if texte.errors.any? %>
+    <div class="alert alert-danger">
+      <h5><%= pluralize(texte.errors.count, "erreur") %> empêche l'enregistrement:</h5>
+      <ul class="mb-0">
         <% texte.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -11,52 +10,66 @@
     </div>
   <% end %>
 
-  <div class="mb-3">
-    <%= form.label :boutique, class:"input-group-text bg-dark text-light fw-bold  label-with-format mb-1" %>
-    <%= form.rich_text_area :boutique, class:"bg-light" %>
+  <div class="mb-4">
+    <%= form.label :titre, "Titre", class:"form-label fw-bold" %>
+    <%= form.text_field :titre, class:"form-control", placeholder:"Ex: Informations de la boutique" %>
   </div>
 
-  <div class="mb-3">
-    <%= form.label :contact, class:"input-group-text bg-dark text-light fw-bold  label-with-format mb-1" %>
-    <%= form.rich_text_area :contact, class:"bg-light" %>
+  <div class="mb-4">
+    <%= form.label :boutique, "Boutique", class:"form-label fw-bold" %>
+    <%= form.rich_text_area :boutique, class:"form-control" %>
   </div>
 
-  <div class="mb-3">
-    <%= form.label :horaire, class:"input-group-text bg-dark text-light fw-bold  label-with-format mb-1" %>
-    <%= form.rich_text_area :horaire, class:"bg-light" %>
+  <div class="mb-4">
+    <%= form.label :equipe, "Équipe", class:"form-label fw-bold" %>
+    <%= form.rich_text_area :equipe, class:"form-control" %>
   </div>
 
-  <div class="mb-3">
-    <%= form.label :adresse, class:"input-group-text bg-dark text-light fw-bold label-with-format mb-1" %>
-    <%= form.rich_text_area :adresse, class:"bg-light" %>
+  <div class="mb-4">
+    <%= form.label :contact, "Contact", class:"form-label fw-bold" %>
+    <%= form.rich_text_area :contact, class:"form-control" %>
   </div>
 
-  <div class="input-group mb-1">
-    <%= form.label :carousel_images, class:"input-group-text label-with-format" %>
-    <%= form.file_field :carousel_images, multiple: true, class:"form-control m-1 p-1" %>
+  <div class="mb-4">
+    <%= form.label :horaire, "Horaire", class:"form-label fw-bold" %>
+    <%= form.rich_text_area :horaire, class:"form-control" %>
   </div>
 
-  <% if texte.persisted? && texte.save %>
-    <% if texte.carousel_images.any? %>
-      <div> Images actuelles:</div>
-      <div class="mb-1">
+  <div class="mb-4">
+    <%= form.label :adresse, "Adresse", class:"form-label fw-bold" %>
+    <%= form.rich_text_area :adresse, class:"form-control" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :carousel_images, "Images du carousel", class:"form-label fw-bold" %>
+    <%= form.file_field :carousel_images, multiple: true, class:"form-control" %>
+    <div class="form-text">Formats acceptés: JPG, PNG, GIF, WEBP (max 5MB par image)</div>
+  </div>
+
+  <% if texte.persisted? && texte.carousel_images.any? %>
+    <div class="mb-4">
+      <label class="form-label fw-bold">Images actuelles</label>
+      <div class="d-flex flex-wrap gap-3">
         <% texte.carousel_images.each do |image| %>
           <% if image.present? %>
-              <%= image_tag image, width: 100 %>
-
-              <%= link_to '', delete_image_attachment_admin_texte_path(texte, image_id: image.id),
-                class: 'btn btn-outline-danger bi bi-trash', method: :delete %>
-
+            <div class="position-relative">
+              <%= image_tag image, class: "rounded shadow-sm admin-image-preview" %>
+              <%= link_to delete_image_attachment_admin_texte_path(texte, image_id: image.id),
+                  method: :delete,
+                  data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer cette image ?" },
+                  class: "btn btn-sm btn-danger position-absolute top-0 end-0 m-1" do %>
+                <i class="bi bi-trash"></i>
+              <% end %>
+            </div>
           <% end %>
         <% end %>
       </div>
-    <% end %>
+    </div>
   <% end %>
 
-  <div class="float-end mt-2 mb-4">
-    <%= link_to "Fermer", "", data:{turbo_frame: "modal"}, 
-        class:"btn btn-sm btn-secondary" %>
-    <%= form.submit "Valider", class: "btn btn-primary btn-sm" %>
+  <div class="d-flex justify-content-end gap-2 mt-4">
+    <%= link_to "Annuler", admin_textes_path, class:"btn btn-secondary" %>
+    <%= form.submit "Enregistrer", class: "btn btn-primary" %>
   </div>
   
 <% end %>

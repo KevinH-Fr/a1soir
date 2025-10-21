@@ -1,39 +1,85 @@
 <div id="<%= dom_id texte %>">
-  <p>
-    <strong>Titre:</strong>
-    <%= texte.titre %>
-  </p>
+  <div class="mb-4">
+    <h4 class="text-primary"><%= texte.titre %></h4>
+  </div>
 
-  <p>
-    <strong>Boutique:</strong>
-    <%= texte.boutique %>
-  </p>
-
-
-  <p>
-    <strong>Contact:</strong>
-      <%= texte.contact %>
-  </p>
-
-  <p>
-    <strong>Horaire:</strong>
-      <%= texte.horaire %>
-  </p>
-
-  <p>
-    <strong>Adresse:</strong>
-      <%= texte.adresse %>
-  </p>
-
-  <% if texte.carousel_images %>
-
-    <div class="container-fluid my-2">
-        <% texte.carousel_images.each do |image| %>
-            <%= image_tag(image, class: "w-25 m-1", style: "object-fit: cover; height: 150px;") %>
-        <% end %> 
+  <div class="row g-3">
+    <!-- Boutique -->
+    <div class="col-md-12">
+      <div class="card h-100">
+        <div class="card-header bg-secondary text-white">
+          <h6 class="mb-0">Boutique</h6>
+        </div>
+        <div class="card-body">
+          <div class="trix-content"><%= texte.boutique %></div>
+        </div>
+      </div>
     </div>
-  
-  <% end %>
 
+    <!-- Equipe -->
+    <div class="col-md-12">
+      <div class="card h-100">
+        <div class="card-header bg-secondary text-white">
+          <h6 class="mb-0">Equipe</h6>
+        </div>
+        <div class="card-body">
+          <div class="trix-content"><%= texte.equipe %></div>
+        </div>
+      </div>
+    </div>
 
+    <!-- Contact -->
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-header bg-secondary text-white">
+          <h6 class="mb-0">Contact</h6>
+        </div>
+        <div class="card-body">
+          <div class="trix-content"><%= texte.contact %></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Horaire -->
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-header bg-secondary text-white">
+          <h6 class="mb-0">Horaire</h6>
+        </div>
+        <div class="card-body">
+          <div class="trix-content"><%= texte.horaire %></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Adresse -->
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-header bg-secondary text-white">
+          <h6 class="mb-0">Adresse</h6>
+        </div>
+        <div class="card-body">
+          <div class="trix-content"><%= texte.adresse %></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Images du carousel -->
+    <% if texte.carousel_images.present? %>
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header bg-secondary text-white">
+            <h6 class="mb-0">Images du carousel</h6>
+          </div>
+          <div class="card-body">
+            <div class="d-flex flex-wrap gap-2">
+              <% texte.carousel_images.each do |image| %>
+                <%= image_tag(image, class: "rounded shadow-sm admin-carousel-image") %>
+              <% end %> 
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

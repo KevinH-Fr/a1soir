@@ -83,7 +83,7 @@ class Admin::TextesController < Admin::ApplicationController
 
     # Only allow a list of trusted parameters through.
     def texte_params
-      params.require(:texte).permit(:titre, :boutique, :contact, :horaire, :adresse)
+      params.require(:texte).permit(:titre, :boutique, :contact, :horaire, :adresse, :equipe)
     end
 
 end

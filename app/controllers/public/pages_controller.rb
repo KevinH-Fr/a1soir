@@ -13,6 +13,7 @@ module Public
         @texteHoraire = Texte.last.horaire
         @texteBoutique = Texte.last.boutique
         @texteAdresse = Texte.last.adresse
+        @texteEquipe = Texte.last.equipe
       end
     end
 

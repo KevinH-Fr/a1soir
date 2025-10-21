@@ -214,3 +214,31 @@ footer .bi-facebook:hover {
   transform: scale(1.2);
   transition: all 0.3s ease;
 }
+
+/* Admin carousel images */
+.admin-carousel-image {
+  object-fit: cover;
+  height: 150px;
+  width: 200px;
+}
+
+.admin-image-preview {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+/* Bouton rendez-vous avec couleur de marque */
+.btn-lg.shadow {
+  background-color: #d04d7b;
+  color: white;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-lg.shadow:hover {
+  background-color: #b83d65;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(208, 77, 123, 0.4) !important;
+}
