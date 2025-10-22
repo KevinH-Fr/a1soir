@@ -1,13 +1,17 @@
 
 <div id="produits-filtres">
- 
+ <% 
+   # Déterminer si on a une seule catégorie ou plusieurs
+   is_single_category = params[:id].present? && !params[:id].is_a?(Array)
+   is_multiple_categories = params[:id].is_a?(Array)
+ %>
   <div class="container-fluid mt-4 m-0">
 
     <%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
       <div id="produits" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2 m-0 justify-content-center"></div>
 
         <%= turbo_frame_tag :pagination, loading: :lazy,
-            src: params[:id].present? ? 
+            src: if is_single_category
               produits_path(
                 id: params[:id], 
                 slug: params[:slug], 
@@ -16,16 +20,18 @@
                 prixmax: params[:prixmax],
                 type: params[:type],
                 format: :turbo_stream, 
-                subdomain: "shop") : 
-                
+                subdomain: "shop")
+            else
               produits_index_path(
+                id: params[:id],
                 taille: params[:taille], 
                 couleur: params[:couleur],
                 prixmax: params[:prixmax],
                 type: params[:type],
                 format: :turbo_stream, 
                 q: params[:q]&.to_unsafe_h,
-                subdomain: "shop") %>
+                subdomain: "shop")
+            end %>
 
       <% end %>
   </div>

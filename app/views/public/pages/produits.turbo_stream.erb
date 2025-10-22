@@ -6,20 +6,27 @@
 <% end %>
 
 <% if @pagy.next.present? %>
+    <% 
+      # Déterminer si on a une seule catégorie ou plusieurs
+      is_single_category = params[:id].present? && !params[:id].is_a?(Array)
+    %>
     <%= turbo_stream.replace :pagination do %>
         <%= turbo_frame_tag :pagination, loading: :lazy,
-            src: params[:id].present? ? 
+            src: if is_single_category
                 produits_path(format: :turbo_stream, 
                     id: params[:id], slug: params[:slug], 
                     taille: params[:taille], couleur: params[:couleur], 
                     prixmax: params[:prixmax],
                     type: params[:type],
-                    page: @pagy.next, q: params[:q]&.to_unsafe_h) : 
+                    page: @pagy.next, q: params[:q]&.to_unsafe_h)
+            else
                 produits_index_path(format: :turbo_stream, 
+                    id: params[:id],
                     taille: params[:taille], couleur: params[:couleur], 
                     prixmax: params[:prixmax],
                     type: params[:type],
-                    page: @pagy.next, q: params[:q]&.to_unsafe_h) %>
+                    page: @pagy.next, q: params[:q]&.to_unsafe_h)
+            end %>
     <% end %>
 
 <% end %>

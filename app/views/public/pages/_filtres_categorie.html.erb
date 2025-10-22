@@ -1,10 +1,23 @@
 <div id="filtres-categorie">
+    <% 
+      # Gérer params[:id] comme un tableau ou une valeur unique
+      selected_ids = params[:id].present? ? (params[:id].is_a?(Array) ? params[:id].map(&:to_i) : [params[:id].to_i]) : []
+      
+      # Déterminer le texte à afficher
+      display_text = if selected_ids.empty?
+        "Catégorie"
+      elsif selected_ids.size == 1
+        @toutes_categories.find { |c| c.id == selected_ids.first }&.nom || "Catégorie"
+      else
+        "#{selected_ids.size} catégories"
+      end
+    %>
     
     <div class="dropdown">
         <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="categorieDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-list-ul"></i>
             <span class="ms-1 d-none d-md-inline">
-                <%= params[:id].present? ? @toutes_categories.find { |c| c.id == params[:id].to_i }&.nom || "Catégorie" : "Catégorie" %>
+                <%= display_text %>
             </span>
         </button>
 
@@ -20,7 +33,7 @@
                     type: params[:type]
                 ), 
                 method: :get,
-                class: "dropdown-item #{'fw-bold' if params[:id].blank?}" %>
+                class: "dropdown-item #{'fw-bold' if selected_ids.empty?}" %>
             </li>
 
             <% @toutes_categories.each do |categorie| %>
@@ -34,7 +47,7 @@
                     prixmax: params[:prixmax],
                     type: params[:type]
                     ),
-                    class: "dropdown-item #{'fw-bold' if params[:id].to_s == categorie.id.to_s}" %>
+                    class: "dropdown-item #{'fw-bold' if selected_ids.include?(categorie.id)}" %>
             </li>
             <% end %>
         </ul>

@@ -1,7 +1,11 @@
 class FiltersProduitsService
 
   def initialize(categorie, taille, couleur, prixmax, type)
-    @categorie = CategorieProduit.find(categorie) if categorie.present?
+    # Support both single category ID and array of IDs
+    if categorie.present?
+      @categories_ids = categorie.is_a?(Array) ? categorie : [categorie]
+      @categories_ids = @categories_ids.compact.map(&:to_i)
+    end
     @taille = taille
     @couleur = couleur
     @prixmax = prixmax
@@ -13,7 +17,7 @@ class FiltersProduitsService
   def call
     produits = Produit.all.includes([:couleur]).eshop_diffusion
 
-    produits = produits.by_categorie(@categorie) if @categorie.present?
+    produits = produits.by_categories(@categories_ids) if @categories_ids.present?
 
     if @taille.present?
       produits = produits.by_taille(@taille)

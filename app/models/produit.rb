@@ -48,6 +48,7 @@ class Produit < ApplicationRecord
   scope :eshop_diffusion, -> { where(eshop: true) }
 
   scope :by_categorie, ->(categorie) { joins(:categorie_produits).where(categorie_produits: { id: categorie.id }) }
+  scope :by_categories, ->(categories_ids) { joins(:categorie_produits).where(categorie_produits: { id: categories_ids }).distinct }
   scope :by_taille, ->(taille) { where(taille: taille) }
   scope :by_couleur, ->(couleur) { where(couleur: couleur) }
 

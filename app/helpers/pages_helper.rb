@@ -9,6 +9,43 @@ module PagesHelper
     end
   end
 
+  def collection_card(title:, items:, url:, delay: 0, image: nil)
+    content_tag :div, class: "col-12 col-md-6 col-lg-3", data: { aos: "fade-up", aos_delay: delay } do
+      link_to url, class: "text-decoration-none" do
+        content_tag :div, class: "card h-100 shadow-sm hover-card" do
+          # Image section
+          image_section = if image.present?
+            content_tag :div, class: "card-img-top collection-card-image" do
+              image_tag(image, class: "w-100 h-100", style: "object-fit: cover;")
+            end
+          else
+            content_tag :div, class: "card-img-top bg-light d-flex align-items-center justify-content-center collection-card-image" do
+              content_tag :i, nil, class: "bi bi-image text-muted"
+            end
+          end
+
+          # Card body
+          card_body = content_tag :div, class: "card-body text-center" do
+            concat content_tag(:h5, title, class: "card-title brand-colored fw-bold")
+            concat content_tag(:p, items.join(" • ").html_safe, class: "card-text text-muted small")
+          end
+
+          # Card footer
+          card_footer = content_tag :div, class: "card-footer bg-white border-top-0 text-center" do
+            content_tag :span, class: "text-dark" do
+              concat "Découvrir "
+              concat content_tag(:i, nil, class: "bi bi-arrow-right ms-1")
+            end
+          end
+
+          concat image_section
+          concat card_body
+          concat card_footer
+        end
+      end
+    end
+  end
+
   def nav_link_public(path, name)
       classes = ["nav-item text-center m-2"]
       is_active = current_page?(path)
@@ -113,6 +150,37 @@ module PagesHelper
     end
     
     "#{badge_class} #{active_class}"
+  end
+
+  # Helper pour construire les URLs de filtres produits
+  # category_names peut être un String ou un Array de Strings
+  def produits_filter_url(category_names: nil, taille_name: nil, couleur_id: nil, prixmax: nil, type: nil)
+    # Gérer à la fois un string et un tableau de strings
+    category_names = [category_names] if category_names.is_a?(String)
+    
+    # Trouver les catégories par nom
+    categories = []
+    if category_names.present?
+      categories = category_names.map { |name| CategorieProduit.find_by(nom: name.downcase) }.compact
+    end
+    
+    # Construire les paramètres de filtres
+    filter_params = {}
+    if categories.present?
+      # Si une seule catégorie, passer l'ID; si plusieurs, passer un tableau
+      filter_params[:id] = categories.size == 1 ? categories.first.id : categories.map(&:id)
+    end
+    filter_params[:taille] = Taille.find_by(nom: taille_name.downcase)&.id if taille_name
+    filter_params[:couleur] = couleur_id if couleur_id
+    filter_params[:prixmax] = prixmax if prixmax
+    filter_params[:type] = type if type
+    
+    # Générer l'URL
+    if categories.size == 1
+      produits_url(subdomain: "shop", slug: categories.first.nom.parameterize, **filter_params)
+    else
+      produits_index_url(subdomain: "shop", **filter_params)
+    end
   end
 
 end

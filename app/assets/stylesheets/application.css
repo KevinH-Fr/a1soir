@@ -242,3 +242,37 @@ footer .bi-facebook:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(208, 77, 123, 0.4) !important;
 }
+
+/* Hover effect for collection cards */
+.hover-card {
+  transition: all 0.3s ease;
+  border: 1px solid #dee2e6;
+}
+
+.hover-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+  border-color: #d04d7b;
+}
+
+.hover-card .card-footer {
+  transition: all 0.3s ease;
+}
+
+.hover-card:hover .card-footer span {
+  color: #d04d7b !important;
+}
+
+.hover-card:hover .bi-arrow-right {
+  transform: translateX(5px);
+  transition: transform 0.3s ease;
+}
+
+/* Collection card image placeholder */
+.collection-card-image {
+  height: 250px;
+}
+
+.collection-card-image i {
+  font-size: 4rem;
+}

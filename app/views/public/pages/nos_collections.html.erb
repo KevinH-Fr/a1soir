@@ -1,3 +1,37 @@
-<%#= render  "main_carousel" %>
+<%= page_header("Nos collections", "Découvrez notre sélection de tenues d'exception") %>
 
-<%= page_header("Nos collections", "Redirige vers Robes de mariée (Courte/Longues) / Tenues de Soirée (Longues/courtes/ Ensembles pantalon et combinaison) / Costumes (smokings/cérémonies/enfant) / Accessoires (Chaussures Homme/ Chaussures Femmes/ Accessoires Hommes/ Accessoires Femmes)") %>
+<div class="public-main-content">
+  <div class="container-fluid">
+    <div class="row g-4 my-4">
+      
+      <%= collection_card(
+        title: "Robes de mariée",
+        items: ["Courtes", "Longues"],
+        url: produits_filter_url(category_names: ["robes de mariée courtes", "robes de mariée longues"]),
+        delay: 0
+      ) %>
+
+      <%= collection_card(
+        title: "Tenues de Soirée",
+        items: ["Longues", "Courtes", "Ensembles pantalon", "Combinaisons"],
+        url: produits_filter_url(category_names: ["robes courtes", "robes longues", "ensembles pantalons"]),
+        delay: 100
+      ) %>
+
+      <%= collection_card(
+        title: "Costumes",
+        items: ["Smokings", "Cérémonies", "Enfant"],
+        url: produits_filter_url(category_names: "costume"),
+        delay: 200
+      ) %>
+
+      <%= collection_card(
+        title: "Accessoires",
+        items: ["Chaussures Homme", "Chaussures Femmes", "Accessoires Hommes", "Accessoires Femmes"],
+        url: produits_filter_url(category_names: ["chaussures", "accessoires"]),
+        delay: 300
+      ) %>
+
+    </div>
+  </div>
+</div>
