@@ -53,7 +53,7 @@ module PagesHelper
   
       content_tag :li, class: classes do
         link_to path, class: "text-decoration-none nav-link-public #{is_active ? 'nav-link-active' : ''}" do
-          concat content_tag(:span, name, class: "text-dark fw-bold")
+          concat content_tag(:span, name, class: "text-light fw-bold")
         end
       end
   end

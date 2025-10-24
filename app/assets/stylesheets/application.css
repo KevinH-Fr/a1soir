@@ -276,3 +276,220 @@ footer .bi-facebook:hover {
 .collection-card-image i {
   font-size: 4rem;
 }
+
+  /* Slider de références - Défilement automatique */
+  .references-slider-wrapper {
+    overflow: hidden;
+    position: relative;
+    padding: 20px 0;
+    background: linear-gradient(90deg, 
+      rgba(255,255,255,1) 0%, 
+      rgba(255,255,255,0) 5%, 
+      rgba(255,255,255,0) 95%, 
+      rgba(255,255,255,1) 100%
+    );
+  }
+  
+  .references-slider {
+    display: flex;
+    gap: 3rem;
+    animation: scroll 60s linear infinite;
+    width: fit-content;
+  }
+  
+  .references-slider:hover {
+    animation-play-state: paused;
+  }
+  
+  .reference-item {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #2c3e50;
+    padding: 1rem 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+  
+  .reference-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .reference-item i {
+    font-size: 1.3rem;
+  }
+  
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .reference-item {
+      font-size: 0.95rem;
+      padding: 0.75rem 1.5rem;
+    }
+    
+    .reference-item i {
+      font-size: 1.1rem;
+    }
+    
+    .references-slider {
+      gap: 2rem;
+      animation: scroll 40s linear infinite;
+    }
+  }
+
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  }
+
+  /* Smooth scroll */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Style des liens dans les sections */
+  .card-body a {
+    color: #0d6efd;
+  }
+  
+  .card-body a:hover {
+    color: #0a58ca;
+  }
+  
+  /* Espacements des sections */
+  section {
+    scroll-margin-top: 100px;
+  }
+
+
+  
+
+/* Accordions */
+.accordion-button {
+  font-weight: 600;
+  padding: 1.25rem 1.5rem;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #f8f9fa;
+  color: #212529;
+  box-shadow: none;
+}
+
+.accordion-button:focus {
+  border-color: #dee2e6;
+  box-shadow: none;
+}
+
+.accordion-body {
+  padding: 1.5rem;
+  background-color: #fff;
+}
+
+/* Espacements des sections */
+section {
+  scroll-margin-top: 100px;
+}
+
+/* Boutons de navigation */
+.btn-outline-primary:hover,
+.btn-outline-success:hover,
+.btn-outline-warning:hover,
+.btn-outline-info:hover,
+.btn-outline-secondary:hover,
+.btn-outline-dark:hover {
+  transform: translateY(-2px);
+  transition: all 0.2s;
+}
+
+/* ========================================
+   Slider de références - Défilement automatique
+   ======================================== */
+
+.references-slider-wrapper {
+  overflow: hidden;
+  position: relative;
+  padding: 20px 0;
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,1) 0%, 
+    rgba(255,255,255,0) 5%, 
+    rgba(255,255,255,0) 95%, 
+    rgba(255,255,255,1) 100%
+  );
+}
+
+.references-slider {
+  display: flex;
+  gap: 3rem;
+  animation: scroll 60s linear infinite;
+  width: fit-content;
+}
+
+.references-slider:hover {
+  animation-play-state: paused;
+}
+
+.reference-item {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #2c3e50;
+  padding: 1rem 2rem;
+  background: white;
+  border-radius: 50px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.reference-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.reference-item i {
+  font-size: 1.3rem;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Responsive pour références */
+@media (max-width: 768px) {
+  .reference-item {
+    font-size: 0.95rem;
+    padding: 0.75rem 1.5rem;
+  }
+  
+  .reference-item i {
+    font-size: 1.1rem;
+  }
+  
+  .references-slider {
+    gap: 2rem;
+    animation: scroll 40s linear infinite;
+  }
+}

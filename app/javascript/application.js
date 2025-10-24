@@ -5,6 +5,7 @@ import "./controllers"
 
 import "trix"
 import "@rails/actiontext"
+import "./three_scene"
 
 // require jquery
 // require jquery_ujs

@@ -23,12 +23,47 @@
     <%#= javascript_importmap_tags %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
 
+    <style>
+      /* Container Three.js avec gradient CSS (fond étoilé global) */
+      #three-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        z-index: 0;
+        background: linear-gradient(180deg, 
+          #0a0c14 0%,    /* Bleu nuit sombre en haut */
+          #060810 40%,   /* Transition douce */
+          #030508 70%,   /* Encore plus sombre */
+          #000000 100%   /* Noir pur en bas */
+        );
+      }
+
+      /* Contenu par-dessus le fond étoilé */
+      .public-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Footer */
+      footer {
+        position: relative;
+        z-index: 1;
+        background: rgba(10, 10, 20, 0.8);
+        backdrop-filter: blur(10px);
+      }
+    </style>
+
   </head>
 
   <body class="pb-4">
+    <!-- Container Three.js pour le ciel étoilé (toutes les pages) -->
+    <div id="three-container"></div>
+    
     <%= render "public/shared/navbar" %>
 
-    <div class="m-0 p-0">
+    <div class="m-0 p-0 public-content">
       <%= yield %>
     </div>
     

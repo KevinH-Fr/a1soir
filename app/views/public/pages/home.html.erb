@@ -1,2 +1,227 @@
+<!-- Hero section de la page home -->
+<div class="home-hero">
+  <div class="container">
+    <div class="text-center">
+      <!-- Logo qui apparaît en grossissant -->
+      <div class="logo-container">
+        <%= image_tag('/images/a1soir_logo_white.png', alt: "A1soir", class: "home-logo") %>
+      </div>
+      
+      <p class="lead text-white mb-5 mt-4" style="text-shadow: 0 1px 5px rgba(0,0,0,0.5); animation: fadeInUp 1s ease-out 1s both;">
+        L'élégance pour vos événements d'exception
+      </p>
+      
+    </div>
+  </div>
+  
+  <!-- Flèche animée pour inviter au scroll -->
+  <div class="scroll-indicator">
+    <i class="bi bi-chevron-down"></i>
+  </div>
+</div>
 
-<%= page_header("Page d'accueil", "visuel avec animation sympa et liens vers les différentes pages") %>
+<!-- Section d'accueil -->
+<div class="public-main-content">
+  <div class="container-fluid">
+    <div class="text-center my-5 py-5" data-aos="fade-up">
+      <h2 class="h3 mb-4">Découvrez notre univers</h2>
+      <p class="lead text-muted mb-5" style="max-width: 800px; margin: 0 auto;">
+        Spécialistes de la location et vente de tenues d'exception. 
+        Que ce soit pour un mariage, une soirée ou un événement professionnel, 
+        nous vous accompagnons pour sublimer vos plus beaux moments.
+      </p>
+    </div>
+
+    <!-- Cards de navigation complémentaires -->
+    <div class="row g-4 my-5 justify-content-center">
+      <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="0">
+        <%= link_to nos_autres_activites_path, class: "text-decoration-none" do %>
+          <div class="card h-100 border-0 shadow-sm home-nav-card">
+            <div class="card-body p-4 text-center">
+              <i class="bi bi-star fs-1 text-warning mb-3"></i>
+              <h3 class="h5 fw-bold mb-2">Nos Activités</h3>
+              <p class="text-muted small mb-0">Costumes d'époque & Prestations</p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+        <%= link_to la_boutique_path, class: "text-decoration-none" do %>
+          <div class="card h-100 border-0 shadow-sm home-nav-card">
+            <div class="card-body p-4 text-center">
+              <i class="bi bi-shop fs-1 text-info mb-3"></i>
+              <h3 class="h5 fw-bold mb-2">La Boutique</h3>
+              <p class="text-muted small mb-0">Visitez-nous à Cannes</p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+        <%= link_to faq_path, class: "text-decoration-none" do %>
+          <div class="card h-100 border-0 shadow-sm home-nav-card">
+            <div class="card-body p-4 text-center">
+              <i class="bi bi-question-circle fs-1 text-secondary mb-3"></i>
+              <h3 class="h5 fw-bold mb-2">FAQ</h3>
+              <p class="text-muted small mb-0">Questions fréquentes</p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+
+  /* Hero section spécifique à la page home */
+  .home-hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* Animation du logo qui apparaît en grossissant */
+  .logo-container {
+    animation: zoomIn 1.5s ease-out;
+  }
+
+  .home-logo {
+    max-width: 400px;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.5));
+  }
+
+  @keyframes zoomIn {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* Animation fadeInUp pour les autres éléments */
+  @keyframes fadeInUp {
+    0% {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* Flèche animée pour inviter au scroll */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite, fadeInUp 1s ease-out 2s both;
+    cursor: pointer;
+  }
+
+  .scroll-indicator i {
+    font-size: 3rem;
+    color: white;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateX(-50%) translateY(0);
+    }
+    40% {
+      transform: translateX(-50%) translateY(-20px);
+    }
+    60% {
+      transform: translateX(-50%) translateY(-10px);
+    }
+  }
+
+  .scroll-indicator:hover i {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Cards */
+  .home-nav-card {
+    transition: all 0.3s ease;
+  }
+
+  .home-nav-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15) !important;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .home-logo {
+      max-width: 250px;
+    }
+
+    .home-hero .btn {
+      font-size: 0.9rem;
+      padding: 0.75rem 2rem !important;
+    }
+
+    .scroll-indicator i {
+      font-size: 2.5rem;
+    }
+
+    .scroll-indicator {
+      bottom: 30px;
+    }
+  }
+</style>
+
+<script>
+  // Scroll fluide vers le bas quand on clique sur la flèche
+  document.addEventListener('turbo:load', function() {
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+      scrollIndicator.addEventListener('click', function() {
+        window.scrollTo({
+          top: window.innerHeight,
+          behavior: 'smooth'
+        });
+      });
+    }
+  });
+
+  // Pour le chargement initial sans Turbo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      const scrollIndicator = document.querySelector('.scroll-indicator');
+      if (scrollIndicator) {
+        scrollIndicator.addEventListener('click', function() {
+          window.scrollTo({
+            top: window.innerHeight,
+            behavior: 'smooth'
+          });
+        });
+      }
+    });
+  } else {
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+      scrollIndicator.addEventListener('click', function() {
+        window.scrollTo({
+          top: window.innerHeight,
+          behavior: 'smooth'
+        });
+      });
+    }
+  }
+</script>
