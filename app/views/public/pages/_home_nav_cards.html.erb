@@ -1,0 +1,39 @@
+<!-- Cards de navigation complémentaires -->
+<div class="row g-4 my-5 justify-content-center">
+  <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="0">
+    <%= link_to nos_autres_activites_path, class: "text-decoration-none" do %>
+      <div class="card h-100 border-0 shadow-sm hover-lift">
+        <div class="card-body p-4 text-center">
+          <i class="bi bi-star fs-1 text-warning mb-3"></i>
+          <h3 class="h5 fw-bold mb-2">Nos Activités</h3>
+          <p class="text-muted small mb-0">Costumes d'époque & Prestations</p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+    <%= link_to la_boutique_path, class: "text-decoration-none" do %>
+      <div class="card h-100 border-0 shadow-sm hover-lift">
+        <div class="card-body p-4 text-center">
+          <i class="bi bi-shop fs-1 text-info mb-3"></i>
+          <h3 class="h5 fw-bold mb-2">La Boutique</h3>
+          <p class="text-muted small mb-0">Visitez-nous à Cannes</p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+    <%= link_to faq_path, class: "text-decoration-none" do %>
+      <div class="card h-100 border-0 shadow-sm hover-lift">
+        <div class="card-body p-4 text-center">
+          <i class="bi bi-question-circle fs-1 text-secondary mb-3"></i>
+          <h3 class="h5 fw-bold mb-2">FAQ</h3>
+          <p class="text-muted small mb-0">Questions fréquentes</p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+

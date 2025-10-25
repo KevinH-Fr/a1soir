@@ -6,6 +6,8 @@ import "./controllers"
 import "trix"
 import "@rails/actiontext"
 import "./three_scene"
+import "./dress_model"
+import "./home_text_animation"
 
 // require jquery
 // require jquery_ujs
