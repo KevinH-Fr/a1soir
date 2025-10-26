@@ -4,27 +4,19 @@
     <div class="container-fluid">
 
         <!-- Section Boutique -->
-        <div class="text-center m-4 p-4" 
-             data-aos="fade-up" 
-             data-aos-duration="600">
+        <div class="text-center m-4 p-4" data-scroll-reveal>
             <div class="trix-content text-light"><%= @texteBoutique %></div>
         </div>
 
         <!-- Section Équipe -->
         <% if @texteEquipe.present? %>
-          <div class="m-4 p-4">
-              <h3 class="text-center brand-colored mb-4" 
-                  data-aos="fade-up" 
-                  data-aos-duration="500">Notre équipe</h3>
+          <div class="m-4 p-4" data-scroll-reveal>
+              <h3 class="text-center brand-colored mb-4">Notre équipe</h3>
               <div class="row align-items-center g-4">
-                  <div class="col-12 col-md-6" 
-                       data-aos="fade-right" 
-                       data-aos-duration="600">
+                  <div class="col-12 col-md-6">
                       <%= image_tag("equipe1.jpg", class: "img-fluid rounded shadow") %>
                   </div>
-                  <div class="col-12 col-md-6" 
-                       data-aos="fade-left" 
-                       data-aos-duration="600">
+                  <div class="col-12 col-md-6">
                       <div class="trix-content text-light"><%= @texteEquipe %></div>
                   </div>
               </div>
@@ -32,21 +24,17 @@
         <% end %>
         
         <!-- Section Références -->
-        <div data-aos="fade-up" 
-             data-aos-duration="600">
+        <div data-scroll-reveal>
             <%= render "references" %>
         </div>
         
         <!-- Informations pratiques -->
-        <div data-aos="fade-up" 
-             data-aos-duration="600">
+        <div data-scroll-reveal>
             <%= render "infos" %>
         </div>
      
         <!-- Bouton Rendez-vous -->
-        <div class="text-center my-5" 
-             data-aos="fade-up" 
-             data-aos-duration="500">
+        <div class="text-center my-5" data-scroll-reveal>
             <%= link_to rdv_url(subdomain: "shop"), class: "btn btn-lg px-5 py-3 shadow btn-smoke-hover" do %>
               <i class="bi bi-calendar-check me-2"></i>
               <span class="fw-bold">Prendre Rendez-vous</span>

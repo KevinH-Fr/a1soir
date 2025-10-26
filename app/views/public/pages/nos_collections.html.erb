@@ -4,33 +4,37 @@
   <div class="container-fluid">
     <div class="row g-4 my-4">
       
-      <%= collection_card(
-        title: "Robes de mariée",
-        items: ["Courtes", "Longues"],
-        url: produits_filter_url(category_names: ["robes de mariée courtes", "robes de mariée longues"]),
-        delay: 0
-      ) %>
+      <div class="col-12 col-lg-6" data-scroll-reveal>
+        <%= collection_card(
+          title: "Robes de mariée",
+          items: ["Courtes", "Longues"],
+          url: produits_filter_url(category_names: ["robes de mariée courtes", "robes de mariée longues"])
+        ) %>
+      </div>
 
-      <%= collection_card(
-        title: "Tenues de Soirée",
-        items: ["Longues", "Courtes", "Ensembles pantalon", "Combinaisons"],
-        url: produits_filter_url(category_names: ["robes courtes", "robes longues", "ensembles pantalons"]),
-        delay: 100
-      ) %>
+      <div class="col-12 col-lg-6" data-scroll-reveal>
+        <%= collection_card(
+          title: "Tenues de Soirée",
+          items: ["Longues", "Courtes", "Ensembles pantalon", "Combinaisons"],
+          url: produits_filter_url(category_names: ["robes courtes", "robes longues", "ensembles pantalons"])
+        ) %>
+      </div>
 
-      <%= collection_card(
-        title: "Costumes",
-        items: ["Smokings", "Cérémonies", "Enfant"],
-        url: produits_filter_url(category_names: "costume"),
-        delay: 200
-      ) %>
+      <div class="col-12 col-lg-6" data-scroll-reveal>
+        <%= collection_card(
+          title: "Costumes",
+          items: ["Smokings", "Cérémonies", "Enfant"],
+          url: produits_filter_url(category_names: "costume")
+        ) %>
+      </div>
 
-      <%= collection_card(
-        title: "Accessoires",
-        items: ["Chaussures Homme", "Chaussures Femmes", "Accessoires Hommes", "Accessoires Femmes"],
-        url: produits_filter_url(category_names: ["chaussures", "accessoires"]),
-        delay: 300
-      ) %>
+      <div class="col-12 col-lg-6" data-scroll-reveal>
+        <%= collection_card(
+          title: "Accessoires",
+          items: ["Chaussures Homme", "Chaussures Femmes", "Accessoires Hommes", "Accessoires Femmes"],
+          url: produits_filter_url(category_names: ["chaussures", "accessoires"])
+        ) %>
+      </div>
 
     </div>
   </div>

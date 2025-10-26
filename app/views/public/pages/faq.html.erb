@@ -5,587 +5,304 @@
     <div class="row justify-content-center">
       <div class="col-lg-10">
         <!-- Introduction -->
-        <div class="text-center my-5 px-3" data-aos="fade-up">
-          <p class="lead text-muted">
+        <div class="text-center my-5 px-3" data-scroll-reveal>
+          <p class="lead text-light opacity-75">
             Vous avez des questions ? Nous avons les réponses ! Consultez notre FAQ pour trouver 
             rapidement les informations dont vous avez besoin.
           </p>
         </div>
 
         <!-- Recherche rapide par catégorie -->
-        <div class="card border-0 shadow-sm my-4" data-aos="fade-up">
-          <div class="card-body p-4">
-            <h5 class="fw-bold mb-3 text-center">Navigation par catégorie</h5>
-            <div class="d-flex flex-wrap justify-content-center gap-2">
-              <a href="#location" class="btn btn-outline-primary btn-sm">
-                <i class="bi bi-calendar-check me-1"></i>Location
-              </a>
-              <a href="#vente" class="btn btn-outline-success btn-sm">
-                <i class="bi bi-bag-check me-1"></i>Vente
-              </a>
-              <a href="#retouches" class="btn btn-outline-warning btn-sm">
-                <i class="bi bi-scissors me-1"></i>Retouches
-              </a>
-              <a href="#livraison" class="btn btn-outline-info btn-sm">
-                <i class="bi bi-truck me-1"></i>Livraison
-              </a>
-              <a href="#paiement" class="btn btn-outline-secondary btn-sm">
-                <i class="bi bi-credit-card me-1"></i>Paiement
-              </a>
-              <a href="#general" class="btn btn-outline-dark btn-sm">
-                <i class="bi bi-question-circle me-1"></i>Général
-              </a>
-            </div>
+        <div class="concept-card my-4" data-scroll-reveal>
+          <h5 class="fw-bold mb-3 text-center text-light">Navigation par catégorie</h5>
+          <div class="d-flex flex-wrap justify-content-center gap-2">
+            <a href="#location" class="btn btn-outline-light btn-sm">
+              <i class="bi bi-calendar-check me-1"></i>Location
+            </a>
+            <a href="#vente" class="btn btn-outline-light btn-sm">
+              <i class="bi bi-bag-check me-1"></i>Vente
+            </a>
+            <a href="#retouches" class="btn btn-outline-light btn-sm">
+              <i class="bi bi-scissors me-1"></i>Retouches
+            </a>
+            <a href="#livraison" class="btn btn-outline-light btn-sm">
+              <i class="bi bi-truck me-1"></i>Livraison
+            </a>
+            <a href="#paiement" class="btn btn-outline-light btn-sm">
+              <i class="bi bi-credit-card me-1"></i>Paiement
+            </a>
+            <a href="#general" class="btn btn-outline-light btn-sm">
+              <i class="bi bi-question-circle me-1"></i>Général
+            </a>
           </div>
         </div>
 
         <!-- Questions sur la Location -->
-        <section id="location" class="my-5" data-aos="fade-up">
-          <div class="mb-4">
-            <h2 class="h3 fw-bold text-primary">
-              <i class="bi bi-calendar-check me-2"></i>Location de tenues
-            </h2>
-          </div>
+        <%= faq_section(id: "location", icon: "calendar-check", title: "Location de tenues", accordion_id: "accordionLocation") do %>
+          <%= faq_item(id: "location1", parent_id: "accordionLocation", question: "Comment fonctionne la location de tenues ?") do %>
+            <p>La location chez A1soir est simple et flexible :</p>
+            <ol>
+              <li><strong>Parcourez</strong> notre catalogue en ligne ou venez en boutique</li>
+              <li><strong>Réservez</strong> votre tenue en indiquant les dates souhaitées</li>
+              <li><strong>Essayez</strong> la tenue lors d'un rendez-vous (retouches incluses)</li>
+              <li><strong>Récupérez</strong> votre tenue quelques jours avant l'événement</li>
+              <li><strong>Retournez</strong> la tenue dans les délais convenus</li>
+            </ol>
+            <p class="mb-0">L'entretien et le nettoyage sont inclus dans le prix de location !</p>
+          <% end %>
 
-          <div class="accordion" id="accordionLocation">
-            <!-- Question 1 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#location1">
-                  <i class="bi bi-question-circle-fill text-primary me-2"></i>
-                  Comment fonctionne la location de tenues ?
-                </button>
-              </h3>
-              <div id="location1" class="accordion-collapse collapse" data-bs-parent="#accordionLocation">
-                <div class="accordion-body">
-                  <p>La location chez A1soir est simple et flexible :</p>
-                  <ol>
-                    <li><strong>Parcourez</strong> notre catalogue en ligne ou venez en boutique</li>
-                    <li><strong>Réservez</strong> votre tenue en indiquant les dates souhaitées</li>
-                    <li><strong>Essayez</strong> la tenue lors d'un rendez-vous (retouches incluses)</li>
-                    <li><strong>Récupérez</strong> votre tenue quelques jours avant l'événement</li>
-                    <li><strong>Retournez</strong> la tenue dans les délais convenus</li>
-                  </ol>
-                  <p class="mb-0">L'entretien et le nettoyage sont inclus dans le prix de location !</p>
-                </div>
-              </div>
-            </div>
+          <%= faq_item(id: "location2", parent_id: "accordionLocation", question: "Quelle est la durée standard de location ?") do %>
+            <p>La durée standard de location est de <strong>4 jours</strong> :</p>
+            <ul>
+              <li>Retrait : 2 jours avant votre événement</li>
+              <li>Retour : 2 jours après votre événement</li>
+            </ul>
+            <p class="mb-0">Des locations plus longues sont possibles sur demande avec une tarification adaptée.</p>
+          <% end %>
 
-            <!-- Question 2 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#location2">
-                  <i class="bi bi-question-circle-fill text-primary me-2"></i>
-                  Quelle est la durée standard de location ?
-                </button>
-              </h3>
-              <div id="location2" class="accordion-collapse collapse" data-bs-parent="#accordionLocation">
-                <div class="accordion-body">
-                  <p>La durée standard de location est de <strong>4 jours</strong> :</p>
-                  <ul>
-                    <li>Retrait : 2 jours avant votre événement</li>
-                    <li>Retour : 2 jours après votre événement</li>
-                  </ul>
-                  <p class="mb-0">Des locations plus longues sont possibles sur demande avec une tarification adaptée.</p>
-                </div>
-              </div>
-            </div>
+          <%= faq_item(id: "location3", parent_id: "accordionLocation", question: "Combien de temps à l'avance dois-je réserver ?") do %>
+            <p>Nous recommandons de réserver :</p>
+            <ul>
+              <li><strong>2 à 3 mois à l'avance</strong> pour les mariages et grandes occasions</li>
+              <li><strong>3 à 4 semaines</strong> pour les événements classiques</li>
+              <li><strong>1 à 2 semaines minimum</strong> pour les événements urgents</li>
+            </ul>
+            <p class="mb-0">Plus vous réservez tôt, plus vous aurez de choix disponibles !</p>
+          <% end %>
 
-            <!-- Question 3 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#location3">
-                  <i class="bi bi-question-circle-fill text-primary me-2"></i>
-                  Combien de temps à l'avance dois-je réserver ?
-                </button>
-              </h3>
-              <div id="location3" class="accordion-collapse collapse" data-bs-parent="#accordionLocation">
-                <div class="accordion-body">
-                  <p>Nous recommandons de réserver :</p>
-                  <ul>
-                    <li><strong>2 à 3 mois à l'avance</strong> pour les mariages et grandes occasions</li>
-                    <li><strong>3 à 4 semaines</strong> pour les événements classiques</li>
-                    <li><strong>1 à 2 semaines minimum</strong> pour les événements urgents</li>
-                  </ul>
-                  <p class="mb-0">Plus vous réservez tôt, plus vous aurez de choix disponibles !</p>
-                </div>
-              </div>
-            </div>
+          <%= faq_item(id: "location4", parent_id: "accordionLocation", question: "Que se passe-t-il si la tenue ne me va pas ?") do %>
+            <p>Pas de panique ! Nous proposons plusieurs solutions :</p>
+            <ul>
+              <li><strong>Retouches gratuites</strong> : ajustements mineurs inclus dans le prix</li>
+              <li><strong>Essayage préalable</strong> : recommandé 1 à 2 semaines avant l'événement</li>
+              <li><strong>Échange possible</strong> : si la taille ne convient vraiment pas</li>
+            </ul>
+            <p class="mb-0">Notre atelier de retouches s'assure que chaque tenue soit parfaitement ajustée à votre morphologie.</p>
+          <% end %>
 
-            <!-- Question 4 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#location4">
-                  <i class="bi bi-question-circle-fill text-primary me-2"></i>
-                  Que se passe-t-il si la tenue ne me va pas ?
-                </button>
-              </h3>
-              <div id="location4" class="accordion-collapse collapse" data-bs-parent="#accordionLocation">
-                <div class="accordion-body">
-                  <p>Pas de panique ! Nous proposons plusieurs solutions :</p>
-                  <ul>
-                    <li><strong>Retouches gratuites</strong> : ajustements mineurs inclus dans le prix</li>
-                    <li><strong>Essayage préalable</strong> : recommandé 1 à 2 semaines avant l'événement</li>
-                    <li><strong>Échange possible</strong> : si la taille ne convient vraiment pas</li>
-                  </ul>
-                  <p class="mb-0">Notre atelier de retouches s'assure que chaque tenue soit parfaitement ajustée à votre morphologie.</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Question 5 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#location5">
-                  <i class="bi bi-question-circle-fill text-primary me-2"></i>
-                  Quel montant de caution est demandé ?
-                </button>
-              </h3>
-              <div id="location5" class="accordion-collapse collapse" data-bs-parent="#accordionLocation">
-                <div class="accordion-body">
-                  <p>La caution varie selon la valeur de la tenue :</p>
-                  <ul>
-                    <li>Tenues standard : 100 à 200€</li>
-                    <li>Tenues haut de gamme : 300 à 500€</li>
-                    <li>Pièces exceptionnelles : sur devis</li>
-                  </ul>
-                  <p class="mb-0">La caution est restituée intégralement si la tenue est retournée en bon état et dans les délais.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+          <%= faq_item(id: "location5", parent_id: "accordionLocation", question: "Quel montant de caution est demandé ?") do %>
+            <p>La caution varie selon la valeur de la tenue :</p>
+            <ul>
+              <li>Tenues standard : 100 à 200€</li>
+              <li>Tenues haut de gamme : 300 à 500€</li>
+              <li>Pièces exceptionnelles : sur devis</li>
+            </ul>
+            <p class="mb-0">La caution est restituée intégralement si la tenue est retournée en bon état et dans les délais.</p>
+          <% end %>
+        <% end %>
 
         <!-- Questions sur la Vente -->
-        <section id="vente" class="my-5" data-aos="fade-up">
-          <div class="mb-4">
-            <h2 class="h3 fw-bold text-success">
-              <i class="bi bi-bag-check me-2"></i>Vente de tenues
-            </h2>
-          </div>
+        <%= faq_section(id: "vente", icon: "bag-check", title: "Vente de tenues", accordion_id: "accordionVente") do %>
+          <%= faq_item(id: "vente1", parent_id: "accordionVente", question: "Puis-je acheter une tenue que j'ai louée ?") do %>
+            <p>Oui, absolument ! Si vous tombez amoureux d'une tenue pendant votre location, nous vous proposons :</p>
+            <ul>
+              <li><strong>Option d'achat après location</strong> avec déduction du prix de location</li>
+              <li><strong>Tarif préférentiel</strong> pour nos clients fidèles</li>
+              <li><strong>Paiement en plusieurs fois</strong> possible selon le montant</li>
+            </ul>
+            <p class="mb-0">Contactez-nous pour connaître les modalités spécifiques à votre tenue.</p>
+          <% end %>
 
-          <div class="accordion" id="accordionVente">
-            <!-- Question 1 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#vente1">
-                  <i class="bi bi-question-circle-fill text-success me-2"></i>
-                  Puis-je acheter une tenue que j'ai louée ?
-                </button>
-              </h3>
-              <div id="vente1" class="accordion-collapse collapse" data-bs-parent="#accordionVente">
-                <div class="accordion-body">
-                  <p>Oui, absolument ! Si vous tombez amoureux d'une tenue pendant votre location, nous vous proposons :</p>
-                  <ul>
-                    <li><strong>Option d'achat après location</strong> avec déduction du prix de location</li>
-                    <li><strong>Tarif préférentiel</strong> pour nos clients fidèles</li>
-                    <li><strong>Paiement en plusieurs fois</strong> possible selon le montant</li>
-                  </ul>
-                  <p class="mb-0">Contactez-nous pour connaître les modalités spécifiques à votre tenue.</p>
-                </div>
-              </div>
-            </div>
+          <%= faq_item(id: "vente2", parent_id: "accordionVente", question: "Proposez-vous des tenues neuves à la vente ?") do %>
+            <p>Oui, nous proposons une sélection de tenues neuves :</p>
+            <ul>
+              <li>Collections exclusives de créateurs</li>
+              <li>Tenues sur mesure personnalisables</li>
+              <li>Accessoires assortis (chaussures, bijoux, etc.)</li>
+            </ul>
+            <p class="mb-0">Venez en boutique ou contactez-nous pour découvrir nos collections à la vente.</p>
+          <% end %>
 
-            <!-- Question 2 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#vente2">
-                  <i class="bi bi-question-circle-fill text-success me-2"></i>
-                  Proposez-vous des tenues neuves à la vente ?
-                </button>
-              </h3>
-              <div id="vente2" class="accordion-collapse collapse" data-bs-parent="#accordionVente">
-                <div class="accordion-body">
-                  <p>Oui, nous proposons une sélection de tenues neuves :</p>
-                  <ul>
-                    <li>Collections exclusives de créateurs</li>
-                    <li>Tenues sur mesure personnalisables</li>
-                    <li>Accessoires assortis (chaussures, bijoux, etc.)</li>
-                  </ul>
-                  <p class="mb-0">Venez en boutique ou contactez-nous pour découvrir nos collections à la vente.</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Question 3 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#vente3">
-                  <i class="bi bi-question-circle-fill text-success me-2"></i>
-                  Quel est le délai de rétractation ?
-                </button>
-              </h3>
-              <div id="vente3" class="accordion-collapse collapse" data-bs-parent="#accordionVente">
-                <div class="accordion-body">
-                  <p>Conformément à la loi, vous disposez de <strong>14 jours</strong> pour exercer votre droit de rétractation.</p>
-                  <p>Conditions :</p>
-                  <ul>
-                    <li>La tenue doit être dans son état d'origine</li>
-                    <li>Non portée et avec ses étiquettes</li>
-                    <li>Dans son emballage d'origine</li>
-                  </ul>
-                  <p class="mb-0">Le remboursement sera effectué sous 14 jours après réception du produit retourné.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+          <%= faq_item(id: "vente3", parent_id: "accordionVente", question: "Quel est le délai de rétractation ?") do %>
+            <p>Conformément à la loi, vous disposez de <strong>14 jours</strong> pour exercer votre droit de rétractation.</p>
+            <p>Conditions :</p>
+            <ul>
+              <li>La tenue doit être dans son état d'origine</li>
+              <li>Non portée et avec ses étiquettes</li>
+              <li>Dans son emballage d'origine</li>
+            </ul>
+            <p class="mb-0">Le remboursement sera effectué sous 14 jours après réception du produit retourné.</p>
+          <% end %>
+        <% end %>
 
         <!-- Questions sur les Retouches -->
-        <section id="retouches" class="my-5" data-aos="fade-up">
-          <div class="mb-4">
-            <h2 class="h3 fw-bold text-warning">
-              <i class="bi bi-scissors me-2"></i>Retouches et personnalisation
-            </h2>
-          </div>
+        <%= faq_section(id: "retouches", icon: "scissors", title: "Retouches et personnalisation", accordion_id: "accordionRetouches") do %>
+          <%= faq_item(id: "retouches1", parent_id: "accordionRetouches", question: "Les retouches sont-elles incluses dans le prix de location ?") do %>
+            <p>Oui ! Les retouches mineures sont <strong>incluses gratuitement</strong> dans le prix de location :</p>
+            <ul>
+              <li>Ajustement de la longueur (ourlets)</li>
+              <li>Ajustement de la taille</li>
+              <li>Modifications simples</li>
+            </ul>
+            <p>Les retouches importantes ou complexes peuvent faire l'objet d'un devis supplémentaire.</p>
+          <% end %>
 
-          <div class="accordion" id="accordionRetouches">
-            <!-- Question 1 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#retouches1">
-                  <i class="bi bi-question-circle-fill text-warning me-2"></i>
-                  Les retouches sont-elles incluses dans le prix de location ?
-                </button>
-              </h3>
-              <div id="retouches1" class="accordion-collapse collapse" data-bs-parent="#accordionRetouches">
-                <div class="accordion-body">
-                  <p>Oui ! Les retouches mineures sont <strong>incluses gratuitement</strong> dans le prix de location :</p>
-                  <ul>
-                    <li>Ajustement de la longueur (ourlets)</li>
-                    <li>Ajustement de la taille</li>
-                    <li>Modifications simples</li>
-                  </ul>
-                  <p>Les retouches importantes ou complexes peuvent faire l'objet d'un devis supplémentaire.</p>
-                </div>
-              </div>
-            </div>
+          <%= faq_item(id: "retouches2", parent_id: "accordionRetouches", question: "Quel est le délai pour les retouches ?") do %>
+            <p>Les délais varient selon la complexité :</p>
+            <ul>
+              <li><strong>Retouches simples</strong> : 2 à 3 jours ouvrés</li>
+              <li><strong>Retouches standards</strong> : 5 à 7 jours ouvrés</li>
+              <li><strong>Retouches complexes</strong> : 10 à 14 jours ouvrés</li>
+              <li><strong>Service express</strong> : possible avec supplément (24-48h)</li>
+            </ul>
+            <p class="mb-0">Nous vous recommandons de prévoir l'essayage 2 semaines avant votre événement.</p>
+          <% end %>
 
-            <!-- Question 2 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#retouches2">
-                  <i class="bi bi-question-circle-fill text-warning me-2"></i>
-                  Quel est le délai pour les retouches ?
-                </button>
-              </h3>
-              <div id="retouches2" class="accordion-collapse collapse" data-bs-parent="#accordionRetouches">
-                <div class="accordion-body">
-                  <p>Les délais varient selon la complexité :</p>
-                  <ul>
-                    <li><strong>Retouches simples</strong> : 2 à 3 jours ouvrés</li>
-                    <li><strong>Retouches standards</strong> : 5 à 7 jours ouvrés</li>
-                    <li><strong>Retouches complexes</strong> : 10 à 14 jours ouvrés</li>
-                    <li><strong>Service express</strong> : possible avec supplément (24-48h)</li>
-                  </ul>
-                  <p class="mb-0">Nous vous recommandons de prévoir l'essayage 2 semaines avant votre événement.</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Question 3 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#retouches3">
-                  <i class="bi bi-question-circle-fill text-warning me-2"></i>
-                  Proposez-vous des créations sur mesure ?
-                </button>
-              </h3>
-              <div id="retouches3" class="accordion-collapse collapse" data-bs-parent="#accordionRetouches">
-                <div class="accordion-body">
-                  <p>Oui ! Notre atelier peut créer des tenues entièrement personnalisées :</p>
-                  <ul>
-                    <li>Création de robes de mariée sur mesure</li>
-                    <li>Costumes personnalisés</li>
-                    <li>Modifications de créateur</li>
-                    <li>Répliques de costumes d'époque</li>
-                  </ul>
-                  <p class="mb-0">Prenez rendez-vous pour discuter de votre projet et obtenir un devis personnalisé.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+          <%= faq_item(id: "retouches3", parent_id: "accordionRetouches", question: "Proposez-vous des créations sur mesure ?") do %>
+            <p>Oui ! Notre atelier peut créer des tenues entièrement personnalisées :</p>
+            <ul>
+              <li>Création de robes de mariée sur mesure</li>
+              <li>Costumes personnalisés</li>
+              <li>Modifications de créateur</li>
+              <li>Répliques de costumes d'époque</li>
+            </ul>
+            <p class="mb-0">Prenez rendez-vous pour discuter de votre projet et obtenir un devis personnalisé.</p>
+          <% end %>
+        <% end %>
 
         <!-- Questions sur la Livraison -->
-        <section id="livraison" class="my-5" data-aos="fade-up">
-          <div class="mb-4">
-            <h2 class="h3 fw-bold text-info">
-              <i class="bi bi-truck me-2"></i>Livraison et retrait
-            </h2>
-          </div>
+        <%= faq_section(id: "livraison", icon: "truck", title: "Livraison et retrait", accordion_id: "accordionLivraison") do %>
+          <%= faq_item(id: "livraison1", parent_id: "accordionLivraison", question: "Proposez-vous la livraison à domicile ?") do %>
+            <p>Oui, plusieurs options de livraison sont disponibles :</p>
+            <ul>
+              <li><strong>Retrait en boutique</strong> : gratuit</li>
+              <li><strong>Livraison à domicile</strong> : selon la distance (tarif sur devis)</li>
+              <li><strong>Livraison express</strong> : pour les urgences de dernière minute</li>
+              <li><strong>Point relais</strong> : pour plus de flexibilité</li>
+            </ul>
+            <p class="mb-0">Les frais de livraison vous seront communiqués lors de la réservation.</p>
+          <% end %>
 
-          <div class="accordion" id="accordionLivraison">
-            <!-- Question 1 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#livraison1">
-                  <i class="bi bi-question-circle-fill text-info me-2"></i>
-                  Proposez-vous la livraison à domicile ?
-                </button>
-              </h3>
-              <div id="livraison1" class="accordion-collapse collapse" data-bs-parent="#accordionLivraison">
-                <div class="accordion-body">
-                  <p>Oui, plusieurs options de livraison sont disponibles :</p>
-                  <ul>
-                    <li><strong>Retrait en boutique</strong> : gratuit</li>
-                    <li><strong>Livraison à domicile</strong> : selon la distance (tarif sur devis)</li>
-                    <li><strong>Livraison express</strong> : pour les urgences de dernière minute</li>
-                    <li><strong>Point relais</strong> : pour plus de flexibilité</li>
-                  </ul>
-                  <p class="mb-0">Les frais de livraison vous seront communiqués lors de la réservation.</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Question 2 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#livraison2">
-                  <i class="bi bi-question-circle-fill text-info me-2"></i>
-                  Comment retourner ma location ?
-                </button>
-              </h3>
-              <div id="livraison2" class="accordion-collapse collapse" data-bs-parent="#accordionLivraison">
-                <div class="accordion-body">
-                  <p>Vous pouvez retourner votre location de plusieurs façons :</p>
-                  <ul>
-                    <li><strong>En boutique</strong> : pendant nos horaires d'ouverture</li>
-                    <li><strong>Par coursier</strong> : nous pouvons organiser la récupération</li>
-                    <li><strong>Boîte de dépôt</strong> : disponible 24h/24 devant la boutique</li>
-                  </ul>
-                  <p class="mb-0">Important : Ne nettoyez pas la tenue vous-même, retournez-la telle quelle !</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+          <%= faq_item(id: "livraison2", parent_id: "accordionLivraison", question: "Comment retourner ma location ?") do %>
+            <p>Vous pouvez retourner votre location de plusieurs façons :</p>
+            <ul>
+              <li><strong>En boutique</strong> : pendant nos horaires d'ouverture</li>
+              <li><strong>Par coursier</strong> : nous pouvons organiser la récupération</li>
+              <li><strong>Boîte de dépôt</strong> : disponible 24h/24 devant la boutique</li>
+            </ul>
+            <p class="mb-0">Important : Ne nettoyez pas la tenue vous-même, retournez-la telle quelle !</p>
+          <% end %>
+        <% end %>
 
         <!-- Questions sur le Paiement -->
-        <section id="paiement" class="my-5" data-aos="fade-up">
-          <div class="mb-4">
-            <h2 class="h3 fw-bold text-secondary">
-              <i class="bi bi-credit-card me-2"></i>Paiement et tarifs
-            </h2>
-          </div>
+        <%= faq_section(id: "paiement", icon: "credit-card", title: "Paiement et tarifs", accordion_id: "accordionPaiement") do %>
+          <%= faq_item(id: "paiement1", parent_id: "accordionPaiement", question: "Quels moyens de paiement acceptez-vous ?") do %>
+            <p>Nous acceptons tous les moyens de paiement courants :</p>
+            <ul>
+              <li><strong>Cartes bancaires</strong> : Visa, Mastercard, American Express</li>
+              <li><strong>Espèces</strong> : en boutique uniquement</li>
+              <li><strong>Chèques</strong> : à l'ordre de A1soir</li>
+              <li><strong>Virement bancaire</strong> : pour les montants importants</li>
+              <li><strong>Paiement en ligne</strong> : sécurisé via notre site</li>
+            </ul>
+          <% end %>
 
-          <div class="accordion" id="accordionPaiement">
-            <!-- Question 1 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#paiement1">
-                  <i class="bi bi-question-circle-fill text-secondary me-2"></i>
-                  Quels moyens de paiement acceptez-vous ?
-                </button>
-              </h3>
-              <div id="paiement1" class="accordion-collapse collapse" data-bs-parent="#accordionPaiement">
-                <div class="accordion-body">
-                  <p>Nous acceptons tous les moyens de paiement courants :</p>
-                  <ul>
-                    <li><strong>Cartes bancaires</strong> : Visa, Mastercard, American Express</li>
-                    <li><strong>Espèces</strong> : en boutique uniquement</li>
-                    <li><strong>Chèques</strong> : à l'ordre de A1soir</li>
-                    <li><strong>Virement bancaire</strong> : pour les montants importants</li>
-                    <li><strong>Paiement en ligne</strong> : sécurisé via notre site</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+          <%= faq_item(id: "paiement2", parent_id: "accordionPaiement", question: "Faut-il payer un acompte à la réservation ?") do %>
+            <p>Oui, un acompte de <strong>30%</strong> est requis pour confirmer votre réservation.</p>
+            <ul>
+              <li>L'acompte sécurise votre tenue aux dates choisies</li>
+              <li>Le solde est à régler lors du retrait</li>
+              <li>La caution est demandée séparément</li>
+            </ul>
+            <p class="mb-0">Pour les achats, le paiement intégral est demandé à la commande.</p>
+          <% end %>
 
-            <!-- Question 2 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#paiement2">
-                  <i class="bi bi-question-circle-fill text-secondary me-2"></i>
-                  Faut-il payer un acompte à la réservation ?
-                </button>
-              </h3>
-              <div id="paiement2" class="accordion-collapse collapse" data-bs-parent="#accordionPaiement">
-                <div class="accordion-body">
-                  <p>Oui, un acompte de <strong>30%</strong> est requis pour confirmer votre réservation.</p>
-                  <ul>
-                    <li>L'acompte sécurise votre tenue aux dates choisies</li>
-                    <li>Le solde est à régler lors du retrait</li>
-                    <li>La caution est demandée séparément</li>
-                  </ul>
-                  <p class="mb-0">Pour les achats, le paiement intégral est demandé à la commande.</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Question 3 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#paiement3">
-                  <i class="bi bi-question-circle-fill text-secondary me-2"></i>
-                  Proposez-vous des tarifs de groupe ?
-                </button>
-              </h3>
-              <div id="paiement3" class="accordion-collapse collapse" data-bs-parent="#accordionPaiement">
-                <div class="accordion-body">
-                  <p>Oui ! Nous proposons des <strong>tarifs préférentiels pour les groupes</strong> :</p>
-                  <ul>
-                    <li>À partir de 5 personnes : -10%</li>
-                    <li>À partir de 10 personnes : -15%</li>
-                    <li>À partir de 20 personnes : -20%</li>
-                  </ul>
-                  <p class="mb-0">Idéal pour les mariages, cortèges, événements d'entreprise. Contactez-nous pour un devis personnalisé !</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+          <%= faq_item(id: "paiement3", parent_id: "accordionPaiement", question: "Proposez-vous des tarifs de groupe ?") do %>
+            <p>Oui ! Nous proposons des <strong>tarifs préférentiels pour les groupes</strong> :</p>
+            <ul>
+              <li>À partir de 5 personnes : -10%</li>
+              <li>À partir de 10 personnes : -15%</li>
+              <li>À partir de 20 personnes : -20%</li>
+            </ul>
+            <p class="mb-0">Idéal pour les mariages, cortèges, événements d'entreprise. Contactez-nous pour un devis personnalisé !</p>
+          <% end %>
+        <% end %>
 
         <!-- Questions Générales -->
-        <section id="general" class="my-5" data-aos="fade-up">
-          <div class="mb-4">
-            <h2 class="h3 fw-bold text-dark">
-              <i class="bi bi-question-circle me-2"></i>Questions générales
-            </h2>
-          </div>
+        <%= faq_section(id: "general", icon: "question-circle", title: "Questions générales", accordion_id: "accordionGeneral") do %>
+          <%= faq_item(id: "general1", parent_id: "accordionGeneral", question: "Où se trouve votre boutique ?") do %>
+            <p><strong>A1soir</strong><br>
+            [Adresse complète à compléter]<br>
+            [Code postal et Ville]</p>
+            
+            <p><strong>Horaires d'ouverture :</strong><br>
+            Du mardi au samedi : 10h - 19h<br>
+            Dimanche et lundi : Sur rendez-vous uniquement</p>
+            
+            <p class="mb-0"><strong>Contact :</strong><br>
+            Tél : [Numéro à compléter]<br>
+            Email : contact@a1soir.fr</p>
+          <% end %>
 
-          <div class="accordion" id="accordionGeneral">
-            <!-- Question 1 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#general1">
-                  <i class="bi bi-question-circle-fill text-dark me-2"></i>
-                  Où se trouve votre boutique ?
-                </button>
-              </h3>
-              <div id="general1" class="accordion-collapse collapse" data-bs-parent="#accordionGeneral">
-                <div class="accordion-body">
-                  <p><strong>A1soir</strong><br>
-                  [Adresse complète à compléter]<br>
-                  [Code postal et Ville]</p>
-                  
-                  <p><strong>Horaires d'ouverture :</strong><br>
-                  Du mardi au samedi : 10h - 19h<br>
-                  Dimanche et lundi : Sur rendez-vous uniquement</p>
-                  
-                  <p class="mb-0"><strong>Contact :</strong><br>
-                  Tél : [Numéro à compléter]<br>
-                  Email : contact@a1soir.fr</p>
-                </div>
-              </div>
-            </div>
+          <%= faq_item(id: "general2", parent_id: "accordionGeneral", question: "Dois-je prendre rendez-vous ?") do %>
+            <p>Le rendez-vous n'est pas obligatoire mais <strong>fortement recommandé</strong> :</p>
+            <ul>
+              <li>Garantit la disponibilité d'un conseiller dédié</li>
+              <li>Permet de préparer une sélection adaptée à vos goûts</li>
+              <li>Évite l'attente, surtout en haute saison</li>
+              <li>Nécessaire pour les essayages et retouches</li>
+            </ul>
+            <p class="mb-0">Réservez votre créneau en ligne ou par téléphone !</p>
+          <% end %>
 
-            <!-- Question 2 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#general2">
-                  <i class="bi bi-question-circle-fill text-dark me-2"></i>
-                  Dois-je prendre rendez-vous ?
-                </button>
-              </h3>
-              <div id="general2" class="accordion-collapse collapse" data-bs-parent="#accordionGeneral">
-                <div class="accordion-body">
-                  <p>Le rendez-vous n'est pas obligatoire mais <strong>fortement recommandé</strong> :</p>
-                  <ul>
-                    <li>Garantit la disponibilité d'un conseiller dédié</li>
-                    <li>Permet de préparer une sélection adaptée à vos goûts</li>
-                    <li>Évite l'attente, surtout en haute saison</li>
-                    <li>Nécessaire pour les essayages et retouches</li>
-                  </ul>
-                  <p class="mb-0">Réservez votre créneau en ligne ou par téléphone !</p>
-                </div>
-              </div>
-            </div>
+          <%= faq_item(id: "general3", parent_id: "accordionGeneral", question: "Puis-je venir avec mes proches lors de l'essayage ?") do %>
+            <p>Bien sûr ! Nous vous encourageons à venir accompagné(e) :</p>
+            <ul>
+              <li>Cabines d'essayage spacieuses</li>
+              <li>Espace d'attente confortable pour vos accompagnants</li>
+              <li>Rafraîchissements offerts</li>
+              <li>Ambiance conviviale et détendue</li>
+            </ul>
+            <p class="mb-0">Merci de nous indiquer le nombre de personnes lors de la prise de rendez-vous.</p>
+          <% end %>
 
-            <!-- Question 3 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#general3">
-                  <i class="bi bi-question-circle-fill text-dark me-2"></i>
-                  Puis-je venir avec mes proches lors de l'essayage ?
-                </button>
-              </h3>
-              <div id="general3" class="accordion-collapse collapse" data-bs-parent="#accordionGeneral">
-                <div class="accordion-body">
-                  <p>Bien sûr ! Nous vous encourageons à venir accompagné(e) :</p>
-                  <ul>
-                    <li>Cabines d'essayage spacieuses</li>
-                    <li>Espace d'attente confortable pour vos accompagnants</li>
-                    <li>Rafraîchissements offerts</li>
-                    <li>Ambiance conviviale et détendue</li>
-                  </ul>
-                  <p class="mb-0">Merci de nous indiquer le nombre de personnes lors de la prise de rendez-vous.</p>
-                </div>
-              </div>
-            </div>
+          <%= faq_item(id: "general4", parent_id: "accordionGeneral", question: "Que faire en cas d'accident ou de tache sur la tenue ?") do %>
+            <p><strong>Pas de panique !</strong> Voici la marche à suivre :</p>
+            <ol>
+              <li><strong>Contactez-nous immédiatement</strong> pour nous informer</li>
+              <li><strong>Ne tentez pas de nettoyer</strong> vous-même la tache</li>
+              <li><strong>Prenez des photos</strong> si possible</li>
+              <li>Retournez la tenue normalement</li>
+            </ol>
+            <p>Les taches légères et l'usure normale sont couvertes. En cas de dommage important, une partie de la caution pourra être retenue selon l'ampleur des dégâts.</p>
+            <p class="mb-0">Une assurance optionnelle est disponible pour couvrir les accidents.</p>
+          <% end %>
 
-            <!-- Question 4 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#general4">
-                  <i class="bi bi-question-circle-fill text-dark me-2"></i>
-                  Que faire en cas d'accident ou de tache sur la tenue ?
-                </button>
-              </h3>
-              <div id="general4" class="accordion-collapse collapse" data-bs-parent="#accordionGeneral">
-                <div class="accordion-body">
-                  <p><strong>Pas de panique !</strong> Voici la marche à suivre :</p>
-                  <ol>
-                    <li><strong>Contactez-nous immédiatement</strong> pour nous informer</li>
-                    <li><strong>Ne tentez pas de nettoyer</strong> vous-même la tache</li>
-                    <li><strong>Prenez des photos</strong> si possible</li>
-                    <li>Retournez la tenue normalement</li>
-                  </ol>
-                  <p>Les taches légères et l'usure normale sont couvertes. En cas de dommage important, une partie de la caution pourra être retenue selon l'ampleur des dégâts.</p>
-                  <p class="mb-0">Une assurance optionnelle est disponible pour couvrir les accidents.</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Question 5 -->
-            <div class="accordion-item border-0 shadow-sm mb-3">
-              <h3 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#general5">
-                  <i class="bi bi-question-circle-fill text-dark me-2"></i>
-                  Avez-vous des tenues pour enfants ?
-                </button>
-              </h3>
-              <div id="general5" class="accordion-collapse collapse" data-bs-parent="#accordionGeneral">
-                <div class="accordion-body">
-                  <p>Oui ! Nous proposons une belle sélection de tenues pour enfants :</p>
-                  <ul>
-                    <li>Costumes pour garçons (2 à 16 ans)</li>
-                    <li>Robes de cérémonie pour filles (2 à 16 ans)</li>
-                    <li>Tenues de cortège</li>
-                    <li>Accessoires assortis</li>
-                  </ul>
-                  <p class="mb-0">Tarifs adaptés et retouches incluses, comme pour les adultes !</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+          <%= faq_item(id: "general5", parent_id: "accordionGeneral", question: "Avez-vous des tenues pour enfants ?") do %>
+            <p>Oui ! Nous proposons une belle sélection de tenues pour enfants :</p>
+            <ul>
+              <li>Costumes pour garçons (2 à 16 ans)</li>
+              <li>Robes de cérémonie pour filles (2 à 16 ans)</li>
+              <li>Tenues de cortège</li>
+              <li>Accessoires assortis</li>
+            </ul>
+            <p class="mb-0">Tarifs adaptés et retouches incluses, comme pour les adultes !</p>
+          <% end %>
+        <% end %>
 
         <!-- CTA Contact -->
-        <div class="my-5 py-5" data-aos="fade-up">
-          <div class="card border-0 shadow-lg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-            <div class="card-body p-5 text-white text-center">
-              <i class="bi bi-chat-dots fs-1 mb-3 d-block"></i>
-              <h3 class="mb-3">Vous ne trouvez pas la réponse à votre question ?</h3>
-              <p class="lead mb-4">
-                Notre équipe est là pour vous aider ! N'hésitez pas à nous contacter, 
-                nous serons ravis de répondre à toutes vos questions.
-              </p>
-              <div class="d-flex gap-3 justify-content-center flex-wrap">
-                <%= link_to contact_path, class: "btn btn-light btn-lg px-5" do %>
-                  <i class="bi bi-envelope me-2"></i>Nous contacter
-                <% end %>
-                <a href="tel:+33000000000" class="btn btn-outline-light btn-lg px-5">
-                  <i class="bi bi-telephone me-2"></i>Appelez-nous
-                </a>
-              </div>
+        <div class="my-5 py-5" data-scroll-reveal>
+          <div class="concept-card text-center">
+            <i class="bi bi-chat-dots fs-1 mb-3 d-block brand-colored"></i>
+            <h3 class="mb-3 text-light">Vous ne trouvez pas la réponse à votre question ?</h3>
+            <p class="lead mb-4 text-light opacity-75">
+              Notre équipe est là pour vous aider ! N'hésitez pas à nous contacter, 
+              nous serons ravis de répondre à toutes vos questions.
+            </p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+              <%= link_to contact_path, class: "btn btn-brand btn-lg px-5" do %>
+                <i class="bi bi-envelope me-2"></i>Nous contacter
+              <% end %>
+              <a href="tel:+33000000000" class="btn btn-outline-light btn-lg px-5">
+                <i class="bi bi-telephone me-2"></i>Appelez-nous
+              </a>
             </div>
           </div>
         </div>
 
         <!-- Retour en haut -->
         <div class="text-center my-4">
-          <a href="#top" class="btn btn-outline-secondary">
+          <a href="#top" class="btn btn-outline-light">
             <i class="bi bi-arrow-up me-2"></i>Retour en haut
           </a>
         </div>

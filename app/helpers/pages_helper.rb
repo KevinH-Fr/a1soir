@@ -78,29 +78,28 @@ module PagesHelper
   end
 
   def collection_card(title:, items:, url:, delay: 0, image: nil)
-    content_tag :div, class: "col-12 col-md-6 col-lg-3", data: { aos: "fade-up", aos_delay: delay } do
-      link_to url, class: "text-decoration-none" do
-        content_tag :div, class: "card h-100 shadow-sm hover-card" do
+    link_to url, class: "text-decoration-none" do
+        content_tag :div, class: "collection-card h-100" do
           # Image section
           image_section = if image.present?
-            content_tag :div, class: "card-img-top collection-card-image" do
+            content_tag :div, class: "collection-card-image" do
               image_tag(image, class: "w-100 h-100", style: "object-fit: cover;")
             end
           else
-            content_tag :div, class: "card-img-top bg-light d-flex align-items-center justify-content-center collection-card-image" do
-              content_tag :i, nil, class: "bi bi-image text-muted"
+            content_tag :div, class: "collection-card-image collection-card-placeholder" do
+              content_tag :i, nil, class: "bi bi-image"
             end
           end
 
           # Card body
-          card_body = content_tag :div, class: "card-body text-center" do
-            concat content_tag(:h5, title, class: "card-title brand-colored fw-bold")
-            concat content_tag(:p, items.join(" • ").html_safe, class: "card-text text-muted small")
+          card_body = content_tag :div, class: "collection-card-body" do
+            concat content_tag(:h5, title, class: "brand-colored fw-bold mb-3")
+            concat content_tag(:p, items.join(" • ").html_safe, class: "text-light small mb-0")
           end
 
           # Card footer
-          card_footer = content_tag :div, class: "card-footer bg-white border-top-0 text-center" do
-            content_tag :span, class: "text-dark" do
+          card_footer = content_tag :div, class: "collection-card-footer" do
+            content_tag :span, class: "text-light" do
               concat "Découvrir "
               concat content_tag(:i, nil, class: "bi bi-arrow-right ms-1")
             end
@@ -110,13 +109,14 @@ module PagesHelper
           concat card_body
           concat card_footer
         end
-      end
     end
   end
 
   def nav_link_public(path, name)
       classes = ["nav-item text-center m-2"]
-      is_active = current_page?(path)
+      
+      # Considérer la page active si c'est la page courante OU si c'est l'accueil et qu'on est sur root_path
+      is_active = current_page?(path) || (path == home_path && current_page?(root_path))
       classes << "active" if is_active
   
       content_tag :li, class: classes do
@@ -248,6 +248,161 @@ module PagesHelper
       produits_url(subdomain: "shop", slug: categories.first.nom.parameterize, **filter_params)
     else
       produits_index_url(subdomain: "shop", **filter_params)
+    end
+  end
+
+  def info_card(icon:, title:, content:)
+    content_tag :div, class: "col-sm m-2 p-0" do
+      content_tag :div, class: "info-card rounded p-4 h-100" do
+        card_header = content_tag(:div, class: "text-center mb-3") do
+          icon_tag = content_tag(:i, nil, class: "bi bi-#{icon} fs-3 brand-colored me-2")
+          title_tag = content_tag(:span, title, class: "fw-bold fs-4 text-light")
+          (icon_tag + title_tag).html_safe
+        end
+        
+        card_content = content_tag(:div, class: "text-light") do
+          content.to_s.html_safe
+        end
+        
+        (card_header + card_content).html_safe
+      end
+    end
+  end
+
+  def concept_card(icon:, title:, description:, features:, icon_color: "brand-colored")
+    content_tag :div, class: "concept-card h-100" do
+      # Icon section
+      icon_section = content_tag(:div, class: "text-center mb-4") do
+        content_tag(:div, class: "concept-card-icon") do
+          content_tag(:i, nil, class: "bi bi-#{icon} fs-1 #{icon_color}")
+        end
+      end
+      
+      # Title
+      title_section = content_tag(:h3, title, class: "h4 fw-bold mb-3 text-center text-light")
+      
+      # Description
+      desc_section = content_tag(:p, description, class: "text-light mb-4 opacity-75")
+      
+      # Features list
+      features_section = content_tag(:ul, class: "list-unstyled") do
+        features.map do |feature|
+          content_tag(:li, class: "mb-2 text-light") do
+            concat content_tag(:i, nil, class: "bi bi-check-circle-fill brand-colored me-2")
+            concat feature
+          end
+        end.join.html_safe
+      end
+      
+      (icon_section + title_section + desc_section + features_section).html_safe
+    end
+  end
+
+  def activity_card(icon:, title:, description:, icon_color: "brand-colored", &block)
+    content_tag :div, class: "concept-card h-100" do
+      # Icon section
+      icon_section = content_tag(:div, class: "mb-4") do
+        content_tag(:div, class: "concept-card-icon") do
+          content_tag(:i, nil, class: "bi bi-#{icon} fs-1 #{icon_color}")
+        end
+      end
+      
+      # Title
+      title_section = content_tag(:h3, title, class: "h3 fw-bold mb-3 text-light")
+      
+      # Description
+      desc_section = content_tag(:p, description, class: "text-light mb-4 opacity-75")
+      
+      # Custom content from block
+      custom_content = capture(&block) if block_given?
+      
+      (icon_section + title_section + desc_section + custom_content.to_s).html_safe
+    end
+  end
+
+  # Helper for legal sections
+  def legal_section(id:, icon:, title:, alert: nil, &block)
+    content_tag :section, id: id, class: "my-5", "data-scroll-reveal": true do
+      content_tag :div, class: "concept-card" do
+        # Title with icon
+        title_html = content_tag(:h2, class: "h3 fw-bold mb-4 text-light") do
+          concat content_tag(:i, nil, class: "bi bi-#{icon} brand-colored me-2")
+          concat title
+        end
+        
+        # Optional alert
+        alert_html = if alert
+          alert_class = alert[:type] == :warning ? "alert-warning" : "alert-info"
+          alert_style = alert[:type] == :warning ? 
+            "background: rgba(255, 193, 7, 0.15); border: 1px solid rgba(255, 193, 7, 0.3);" :
+            "background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
+          icon_class = alert[:type] == :warning ? "text-warning" : "brand-colored"
+          
+          content_tag(:div, class: "alert #{alert_class} mb-4", style: alert_style) do
+            concat content_tag(:i, nil, class: "bi bi-#{alert[:icon]} #{icon_class} me-2")
+            concat content_tag(:small, alert[:text], class: "text-light")
+          end
+        else
+          "".html_safe
+        end
+        
+        # Content from block
+        content_html = capture(&block) if block_given?
+        
+        (title_html + alert_html + content_html.to_s).html_safe
+      end
+    end
+  end
+
+  # Helper for legal articles
+  def legal_article(number:, title:, content:)
+    content_tag :div do
+      title_html = content_tag(:h4, "Article #{number} - #{title}", class: "h5 fw-bold mt-4 mb-3 text-light")
+      content_html = content_tag(:p, content.html_safe, class: "text-light opacity-75")
+      (title_html + content_html).html_safe
+    end
+  end
+
+  # Helper for FAQ sections
+  def faq_section(id:, icon:, title:, accordion_id:, &block)
+    content_tag :section, id: id, class: "my-5", "data-scroll-reveal": true do
+      title_html = content_tag(:div, class: "mb-4") do
+        content_tag(:h2, class: "h3 fw-bold text-light") do
+          concat content_tag(:i, nil, class: "bi bi-#{icon} brand-colored me-2")
+          concat title
+        end
+      end
+      
+      accordion_html = content_tag(:div, class: "accordion", id: accordion_id) do
+        capture(&block) if block_given?
+      end
+      
+      (title_html + accordion_html).html_safe
+    end
+  end
+
+  # Helper for FAQ accordion items
+  def faq_item(id:, parent_id:, question:, &block)
+    content_tag :div, class: "accordion-item concept-card mb-3" do
+      header_html = content_tag(:h3, class: "accordion-header text-light") do
+        content_tag(:button, 
+          class: "accordion-button collapsed text-light faq-accordion-button", 
+          type: "button", 
+          "data-bs-toggle": "collapse", 
+          "data-bs-target": "##{id}"
+        ) do
+          concat content_tag(:i, nil, class: "bi bi-question-circle-fill brand-colored me-2")
+          concat question
+        end
+      end
+      
+      body_html = content_tag(:div, id: id, class: "accordion-collapse collapse", "data-bs-parent": "##{parent_id}") do
+        content_tag(:div, class: "accordion-body text-light opacity-75 faq-accordion-body") do
+          capture(&block) if block_given?
+        end
+      end
+      
+      (header_html + body_html).html_safe
     end
   end
 

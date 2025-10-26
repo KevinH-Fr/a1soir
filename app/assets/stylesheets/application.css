@@ -34,6 +34,10 @@
     color:rgb(208, 77, 123);
  }
 
+ .brand-bg{
+    background-color:rgb(208, 77, 123);
+ }
+
  .bg-brand-colored{
     background-color:rgb(208, 77, 123);
 }
@@ -374,20 +378,30 @@ footer .bi-facebook:hover {
   padding: 1.25rem 1.5rem;
 }
 
-.accordion-button:not(.collapsed) {
-  background-color: #f8f9fa;
-  color: #212529;
-  box-shadow: none;
-}
-
 .accordion-button:focus {
   border-color: #dee2e6;
   box-shadow: none;
 }
 
-.accordion-body {
+/* FAQ Accordion custom styles */
+.faq-accordion-button {
+  background: transparent !important;
+  border: none !important;
+}
+
+.faq-accordion-button::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='rgb(208, 77, 123)'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.faq-accordion-button:not(.collapsed) {
+  background-color: transparent !important;
+  color: inherit !important;
+  box-shadow: none !important;
+}
+
+.faq-accordion-body {
   padding: 1.5rem;
-  background-color: #fff;
+  background-color: transparent;
 }
 
 /* Espacements des sections */
@@ -423,9 +437,9 @@ section {
   white-space: nowrap;
   font-size: 1.1rem;
   font-weight: 500;
-  color: #2c3e50;
+  color: white;
   padding: 1rem 2rem;
-  background: white;
+  background: linear-gradient(135deg, #2c2c2c 0%, #393939 50%, #2c2c2c 100%);
   border-radius: 50px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
@@ -1407,4 +1421,114 @@ section {
 /* Animation de pulsation pour les éléments AOS */
 [data-aos].aos-animate {
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ================================
+   INFO CARDS & COLLECTION CARDS & CONCEPT CARDS
+   ================================ */
+
+.info-card,
+.collection-card,
+.concept-card {
+  background: linear-gradient(135deg, #2c2c2c 0%, #393939 50%, #2c2c2c 100%);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.info-card:hover,
+.collection-card:hover,
+.concept-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Concept Card Specific Styles */
+.concept-card {
+  padding: 2rem;
+}
+
+.concept-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  margin-bottom: 1rem;
+}
+
+/* Collection Card Specific Styles */
+.collection-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.collection-card-image {
+  height: 200px;
+  overflow: hidden;
+  background: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collection-card-placeholder {
+  font-size: 3rem;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.collection-card-body {
+  padding: 1.5rem;
+  text-align: center;
+  flex: 1;
+}
+
+.collection-card-footer {
+  padding: 1rem 1.5rem;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.collection-card:hover .collection-card-footer {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.collection-card-footer i {
+  transition: transform 0.3s ease;
+}
+
+.collection-card:hover .collection-card-footer i {
+  transform: translateX(5px);
+}
+
+/* ================================
+   SCROLL REVEAL ANIMATIONS
+   ================================ */
+
+/* État initial : invisible */
+[data-scroll-reveal] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* État révélé : visible */
+[data-scroll-reveal].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Variations pour plus de dynamisme (optionnel) */
+[data-scroll-reveal]:nth-child(even) {
+  transition-delay: 0.1s;
+}
+
+[data-scroll-reveal]:nth-child(odd) {
+  transition-delay: 0.05s;
 }

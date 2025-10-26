@@ -3,9 +3,9 @@
 <div class="public-main-content">
   <div class="container-fluid">
     <!-- Introduction -->
-    <div class="text-center my-5 px-3" data-aos="fade-up">
-      <h2 class="mb-4 fw-bold">Une nouvelle façon de vivre la mode</h2>
-      <p class="lead text-muted mx-auto" style="max-width: 800px;">
+    <div class="text-center my-5 px-3" data-scroll-reveal>
+      <h2 class="mb-4 fw-bold text-light">Une nouvelle façon de vivre la mode</h2>
+      <p class="lead text-light opacity-75 mx-auto" style="max-width: 800px;">
         A1soir révolutionne votre expérience vestimentaire avec un concept innovant qui allie élégance, 
         accessibilité et personnalisation. Que ce soit pour un mariage, une soirée ou un événement spécial, 
         nous vous offrons la liberté de choisir comment porter la mode.
@@ -15,124 +15,94 @@
     <!-- Les trois piliers -->
     <div class="row g-4 my-5">
       <!-- Location -->
-      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="0">
-        <div class="card h-100 border-0 shadow-sm hover-lift">
-          <div class="card-body p-4 text-center">
-            <div class="mb-4">
-              <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10" 
-                   style="width: 80px; height: 80px;">
-                <i class="bi bi-calendar-check fs-1 text-primary"></i>
-              </div>
-            </div>
-            <h3 class="h4 fw-bold mb-3">Location</h3>
-            <p class="text-muted mb-4">
-              Portez des tenues d'exception sans engagement. Notre service de location vous permet d'accéder 
-              à une garde-robe haute couture pour vos événements spéciaux, à une fraction du prix d'achat.
-            </p>
-            <ul class="list-unstyled text-start">
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Large choix de tenues</li>
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Réservation flexible</li>
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Entretien inclus</li>
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Prix avantageux</li>
-            </ul>
-          </div>
-        </div>
+      <div class="col-lg-4" data-scroll-reveal>
+        <%= concept_card(
+          icon: "calendar-check",
+          title: "Location",
+          description: "Portez des tenues d'exception sans engagement. Notre service de location vous permet d'accéder à une garde-robe haute couture pour vos événements spéciaux, à une fraction du prix d'achat.",
+          features: [
+            "Large choix de tenues",
+            "Réservation flexible",
+            "Entretien inclus",
+            "Prix avantageux"
+          ]
+        ) %>
       </div>
 
       <!-- Vente -->
-      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-        <div class="card h-100 border-0 shadow-sm hover-lift">
-          <div class="card-body p-4 text-center">
-            <div class="mb-4">
-              <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-success bg-opacity-10" 
-                   style="width: 80px; height: 80px;">
-                <i class="bi bi-bag-check fs-1 text-success"></i>
-              </div>
-            </div>
-            <h3 class="h4 fw-bold mb-3">Vente</h3>
-            <p class="text-muted mb-4">
-              Tombez amoureux d'une pièce ? Faites-en l'acquisition ! Notre boutique propose une sélection 
-              exclusive de tenues et accessoires que vous pouvez acheter pour enrichir votre garde-robe personnelle.
-            </p>
-            <ul class="list-unstyled text-start">
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Collections exclusives</li>
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Pièces uniques</li>
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Conseils personnalisés</li>
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Option d'achat après location</li>
-            </ul>
-          </div>
-        </div>
+      <div class="col-lg-4" data-scroll-reveal>
+        <%= concept_card(
+          icon: "bag-check",
+          title: "Vente",
+          description: "Tombez amoureux d'une pièce ? Faites-en l'acquisition ! Notre boutique propose une sélection exclusive de tenues et accessoires que vous pouvez acheter pour enrichir votre garde-robe personnelle.",
+          features: [
+            "Collections exclusives",
+            "Pièces uniques",
+            "Conseils personnalisés",
+            "Option d'achat après location"
+          ]
+        ) %>
       </div>
 
       <!-- Personnalisation -->
-      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
-        <div class="card h-100 border-0 shadow-sm hover-lift">
-          <div class="card-body p-4 text-center">
-            <div class="mb-4">
-              <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning bg-opacity-10" 
-                   style="width: 80px; height: 80px;">
-                <i class="bi bi-scissors fs-1 text-warning"></i>
-              </div>
-            </div>
-            <h3 class="h4 fw-bold mb-3">Personnalisation</h3>
-            <p class="text-muted mb-4">
-              Chaque personne est unique, votre tenue aussi ! Notre atelier de retouches et de personnalisation 
-              s'assure que chaque pièce s'adapte parfaitement à votre morphologie et à votre style.
-            </p>
-            <ul class="list-unstyled text-start">
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Retouches sur mesure</li>
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Ajustements express</li>
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Création personnalisée</li>
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Service d'atelier expert</li>
-            </ul>
-          </div>
-        </div>
+      <div class="col-lg-4" data-scroll-reveal>
+        <%= concept_card(
+          icon: "scissors",
+          title: "Personnalisation",
+          description: "Chaque personne est unique, votre tenue aussi ! Notre atelier de retouches et de personnalisation s'assure que chaque pièce s'adapte parfaitement à votre morphologie et à votre style.",
+          features: [
+            "Retouches sur mesure",
+            "Ajustements express",
+            "Création personnalisée",
+            "Service d'atelier expert"
+          ]
+        ) %>
       </div>
     </div>
 
     <!-- Comment ça marche -->
-    <div class="my-5 py-5 bg-light rounded-4" data-aos="fade-up">
+    <div class="my-5 py-5 rounded-4" style="background: linear-gradient(135deg, #2c2c2c 0%, #393939 50%, #2c2c2c 100%);" data-scroll-reveal>
       <div class="container">
-        <h2 class="text-center mb-5 fw-bold">Comment ça marche ?</h2>
+        <h2 class="text-center mb-5 fw-bold text-light">Comment ça marche ?</h2>
         <div class="row g-4">
           <div class="col-md-3 text-center">
             <div class="mb-3">
-              <span class="badge rounded-circle bg-primary fs-4 p-3" style="width: 60px; height: 60px; line-height: 36px;">1</span>
+              <span class="badge rounded-circle brand-bg fs-4 p-3" style="width: 60px; height: 60px; line-height: 36px;">1</span>
             </div>
-            <h5 class="fw-bold mb-2">Parcourez</h5>
-            <p class="text-muted small">Explorez nos collections et trouvez la tenue parfaite pour votre événement</p>
+            <h5 class="fw-bold mb-2 text-light">Parcourez</h5>
+            <p class="text-light opacity-75 small">Explorez nos collections et trouvez la tenue parfaite pour votre événement</p>
           </div>
           <div class="col-md-3 text-center">
             <div class="mb-3">
-              <span class="badge rounded-circle bg-primary fs-4 p-3" style="width: 60px; height: 60px; line-height: 36px;">2</span>
+              <span class="badge rounded-circle brand-bg fs-4 p-3" style="width: 60px; height: 60px; line-height: 36px;">2</span>
             </div>
-            <h5 class="fw-bold mb-2">Réservez</h5>
-            <p class="text-muted small">Choisissez vos dates de location ou passez commande pour un achat</p>
+            <h5 class="fw-bold mb-2 text-light">Réservez</h5>
+            <p class="text-light opacity-75 small">Choisissez vos dates de location ou passez commande pour un achat</p>
           </div>
           <div class="col-md-3 text-center">
             <div class="mb-3">
-              <span class="badge rounded-circle bg-primary fs-4 p-3" style="width: 60px; height: 60px; line-height: 36px;">3</span>
+              <span class="badge rounded-circle brand-bg fs-4 p-3" style="width: 60px; height: 60px; line-height: 36px;">3</span>
             </div>
-            <h5 class="fw-bold mb-2">Personnalisez</h5>
-            <p class="text-muted small">Profitez de nos services de retouches pour un ajustement parfait</p>
+            <h5 class="fw-bold mb-2 text-light">Personnalisez</h5>
+            <p class="text-light opacity-75 small">Profitez de nos services de retouches pour un ajustement parfait</p>
           </div>
           <div class="col-md-3 text-center">
             <div class="mb-3">
-              <span class="badge rounded-circle bg-primary fs-4 p-3" style="width: 60px; height: 60px; line-height: 36px;">4</span>
+              <span class="badge rounded-circle brand-bg fs-4 p-3" style="width: 60px; height: 60px; line-height: 36px;">4</span>
             </div>
-            <h5 class="fw-bold mb-2">Brillez</h5>
-            <p class="text-muted small">Portez votre tenue en toute confiance lors de votre événement</p>
+            <h5 class="fw-bold mb-2 text-light">Brillez</h5>
+            <p class="text-light opacity-75 small">Portez votre tenue en toute confiance lors de votre événement</p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Call to action -->
-    <div class="text-center my-5 py-4" data-aos="fade-up">
-      <h3 class="mb-4">Prêt à découvrir nos collections ?</h3>
+    <div class="text-center my-5 py-4" data-scroll-reveal>
+      <h3 class="mb-4 text-light">Prêt à découvrir nos collections ?</h3>
       <div class="d-flex gap-3 justify-content-center flex-wrap">
-        <%= link_to "Explorer les collections", nos_collections_path, class: "btn btn-primary btn-lg px-4" %>
-        <%= link_to "Nous contacter", contact_path, class: "btn btn-outline-secondary btn-lg px-4" %>
+        <%= link_to "Explorer les collections", nos_collections_path, class: "btn btn-lg px-4 shadow btn-smoke-hover" %>
+        <%= link_to "Nous contacter", contact_path, class: "btn btn-outline-light btn-lg px-4" %>
       </div>
     </div>
   </div>
