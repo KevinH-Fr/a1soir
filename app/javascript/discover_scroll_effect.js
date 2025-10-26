@@ -1,178 +1,117 @@
 /**
  * Effets de scroll pour la section "Découvrez notre univers"
- * Effet de disparition en fumée
+ * Animations progressives basées sur la position du scroll
  */
 class DiscoverScrollEffect {
   constructor() {
-    this.section = document.querySelector('.discover-section');
-    this.content = document.querySelector('.discover-content');
-    this.titleWrapper = document.querySelector('.discover-title-wrapper');
-    this.description = document.querySelector('.discover-description');
-    this.icons = document.querySelector('.discover-icons');
+    this.section = document.querySelector('[data-discover]');
+    if (!this.section) return;
     
-    if (!this.section || !this.content) return;
-    
-    this.hasAppeared = false;
-    this.smokeStarted = false;
-    this.smokeEnded = false;
+    this.items = Array.from(this.section.querySelectorAll('[data-discover-item]'));
     this.handleScrollBound = this.handleScroll.bind(this);
     this.init();
   }
 
   init() {
-    // Écouter le scroll pour l'effet de fumée
+    // Écouter le scroll
     window.addEventListener('scroll', this.handleScrollBound, { passive: true });
-    
-    // Vérifier la position initiale immédiatement et après un délai
-    requestAnimationFrame(() => {
-      this.handleScroll();
-      setTimeout(() => this.handleScroll(), 100);
-    });
+    // Appliquer l'effet initial
+    requestAnimationFrame(() => this.handleScroll());
   }
 
   handleScroll() {
-    if (!this.section || !this.content) return;
+    if (!this.section) return;
 
-    const sectionRect = this.section.getBoundingClientRect();
+    const rect = this.section.getBoundingClientRect();
     const windowHeight = window.innerHeight;
+    const sectionHeight = rect.height;
 
-    // Détecter si la section est visible dans le viewport
-    const isInViewport = sectionRect.top < windowHeight * 0.8 && sectionRect.bottom > 0;
+    // Calculer la position de scroll dans la section (0 = début, 1 = fin)
+    const scrollProgress = this.clamp((windowHeight - rect.top) / (sectionHeight + windowHeight), 0, 1);
 
-    // Faire apparaître le contenu quand la section entre dans le viewport
-    if (isInViewport && !this.hasAppeared) {
-      this.showContent();
-      this.hasAppeared = true;
-    }
+    // Phase d'entrée : 0% à 30% du scroll
+    const entryPhaseEnd = 0.3;
+    const entryProgress = this.clamp(scrollProgress / entryPhaseEnd, 0, 1);
 
-    // Calculer la progression du scroll dans la section
-    let progress = 0;
-    
-    // Si la section est dans le viewport
-    if (sectionRect.bottom > 0 && sectionRect.top < windowHeight) {
-      // L'effet de fumée commence quand la section atteint le haut de l'écran
-      if (sectionRect.top <= 0) {
-        // On est dans la phase de disparition
-        const scrolled = Math.abs(sectionRect.top);
-        const scrollableHeight = sectionRect.height - windowHeight;
-        progress = Math.max(0, Math.min(1, scrolled / scrollableHeight));
-      }
-    } else if (sectionRect.top >= windowHeight) {
-      // Section pas encore visible, réinitialiser
-      if (this.hasAppeared) {
-        this.hideContent();
-        this.hasAppeared = false;
-      }
-      progress = 0;
-    } else {
-      // Section déjà dépassée, masquer complètement
-      progress = 1;
-    }
+    // Phase stable : 30% à 60% du scroll (complètement visible)
+    const stablePhaseStart = 0.3;
+    const stablePhaseEnd = 0.6;
 
-    // Appliquer l'effet de fumée seulement si le contenu est apparu
-    if (this.hasAppeared) {
-      this.applySmokeEffect(progress);
-    }
-  }
+    // Phase de sortie : 60% à 90% du scroll
+    const exitPhaseStart = 0.6;
+    const exitPhaseEnd = 0.9;
+    const exitProgress = this.clamp((scrollProgress - exitPhaseStart) / (exitPhaseEnd - exitPhaseStart), 0, 1);
 
-  showContent() {
-    if (!this.content) return;
-    this.content.style.opacity = '1';
-    this.content.style.visibility = 'visible';
-  }
+    // Appliquer les transformations à chaque item
+    this.items.forEach((item, index) => {
+      // Délai pour effet séquentiel
+      const delay = index * 0.15;
+      const adjustedEntryProgress = this.clamp(entryProgress - delay, 0, 1);
+      const adjustedExitProgress = this.clamp(exitProgress - delay, 0, 1);
 
-  hideContent() {
-    if (!this.content) return;
-    this.content.style.opacity = '0';
-    this.content.style.visibility = 'hidden';
-    // Réinitialiser les effets de fumée
-    this.resetElements();
-  }
-
-  applySmokeEffect(progress) {
-    if (!this.content) return;
-
-    // Si progress > 0, on désactive l'animation d'entrée pour permettre l'effet de fumée
-    if (progress > 0.05) {
-      this.content.style.animation = 'none';
-    }
-
-    // Disparition en cascade : chaque élément disparaît l'un après l'autre
-    // Titre : 0% - 33%
-    // Description : 33% - 66%
-    // Icônes : 66% - 100%
-    
-    // Effet de fumée sur le titre (première phase)
-    if (this.titleWrapper) {
-      const titleProgress = Math.max(0, Math.min(1, progress / 0.33));
-      this.applySmokeToElement(this.titleWrapper, titleProgress, 'titre');
-    }
-    
-    // Effet de fumée sur la description (deuxième phase)
-    if (this.description) {
-      const descProgress = Math.max(0, Math.min(1, (progress - 0.33) / 0.33));
-      this.applySmokeToElement(this.description, descProgress, 'description');
-    }
-    
-    // Effet de fumée sur les icônes (troisième phase)
-    if (this.icons) {
-      const iconsProgress = Math.max(0, Math.min(1, (progress - 0.66) / 0.34));
-      this.applySmokeToElement(this.icons, iconsProgress, 'icônes');
-    }
-
-    // Masquer complètement le contenu à la fin
-    if (progress >= 0.95) {
-      this.content.style.visibility = 'hidden';
-      this.content.style.pointerEvents = 'none';
-    } else {
-      this.content.style.visibility = 'visible';
-      this.content.style.pointerEvents = 'none';
-    }
-    
-    // Réinitialiser les flags et styles si on revient en arrière
-    if (progress === 0) {
-      this.resetElements();
-    }
-  }
-
-  applySmokeToElement(element, progress, name) {
-    if (!element) return;
-
-    // Opacité décroissante
-    const opacity = 1 - progress;
-    
-    // Flou croissant
-    const blur = progress * 25; // Jusqu'à 25px de flou
-    
-    // Scale croissant (expansion)
-    const scale = 1 + (progress * 0.4); // Jusqu'à 1.4x
-    
-    // Translation vers le haut (effet de montée de fumée)
-    const translateY = -progress * 30; // Monte de 30px
-
-    element.style.opacity = Math.max(0, opacity);
-    element.style.filter = `blur(${blur}px)`;
-    element.style.transform = `translateY(${translateY}px) scale(${scale})`;
-  }
-
-  resetElements() {
-    // Réinitialiser tous les éléments
-    [this.titleWrapper, this.description, this.icons].forEach(element => {
-      if (element) {
-        element.style.opacity = '';
-        element.style.filter = '';
-        element.style.transform = '';
+      if (scrollProgress > exitPhaseStart) {
+        // Phase de sortie (fumée)
+        this.applyExitEffect(item, adjustedExitProgress);
+      } else if (scrollProgress > 0) {
+        // Phase d'entrée et phase stable
+        if (adjustedEntryProgress >= 1) {
+          // Phase stable - complètement visible
+          item.style.opacity = '1';
+          item.style.transform = 'translateY(0) scale(1)';
+          item.style.filter = 'blur(0px)';
+        } else {
+          // Phase d'entrée en cours
+          this.applyEntryEffect(item, adjustedEntryProgress);
+        }
+      } else {
+        // Pas encore visible
+        this.resetItem(item);
       }
     });
+  }
+
+  applyEntryEffect(item, progress) {
+    // Interpolation pour l'entrée
+    const opacity = progress;
+    const translateY = (1 - progress) * 40; // De 40px à 0
     
-    this.smokeStarted = false;
-    this.smokeEnded = false;
+    item.style.opacity = opacity;
+    item.style.transform = `translateY(${translateY}px)`;
+    item.style.filter = 'blur(0px)';
+  }
+
+  applyExitEffect(item, progress) {
+    // Interpolation pour la sortie (fumée)
+    const opacity = 1 - progress;
+    const translateY = -progress * 60; // Monte jusqu'à -60px
+    const scale = 1 + (progress * 0.3); // Agrandit jusqu'à 1.3x
+    const blur = progress * 20; // Flou jusqu'à 20px
+    
+    item.style.opacity = opacity;
+    item.style.transform = `translateY(${translateY}px) scale(${scale})`;
+    item.style.filter = `blur(${blur}px)`;
+  }
+
+  resetItem(item) {
+    item.style.opacity = '0';
+    item.style.transform = 'translateY(40px)';
+    item.style.filter = 'blur(0px)';
+  }
+
+  clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
   }
 
   destroy() {
     if (this.handleScrollBound) {
       window.removeEventListener('scroll', this.handleScrollBound);
     }
+    // Réinitialiser les items
+    this.items.forEach(item => {
+      item.style.opacity = '';
+      item.style.transform = '';
+      item.style.filter = '';
+    });
   }
 }
 
@@ -190,7 +129,7 @@ function initDiscoverScrollEffect() {
   }
 
   // Créer la nouvelle instance seulement si la section existe sur la page
-  const section = document.querySelector('.discover-section');
+  const section = document.querySelector('[data-discover]');
   if (section) {
     discoverScrollEffectInstance = new DiscoverScrollEffect();
   }

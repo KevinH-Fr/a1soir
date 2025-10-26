@@ -4,24 +4,21 @@
 <div class="public-main-content">
   <div class="container-fluid">
     <!-- Section découverte avec effet de scroll -->
-    <div class="discover-section text-center my-5 py-5">
-      <div class="discover-content">
-        <div class="discover-title-wrapper">
+    <section class="discover-section text-center py-5" data-discover>
+      <div class="container">
+        <div class="discover-title" data-discover-item>
           <h2 class="discover-main-title">
-            <span class="title-line">Découvrez</span>
-            <span class="title-line title-highlight">notre univers</span>
+            Découvrez notre univers
           </h2>
           <div class="title-decoration">
-            <span class="decoration-dot"></span>
             <span class="decoration-line"></span>
-            <span class="decoration-dot"></span>
           </div>
         </div>
         
-        <div class="discover-description">
+        <div class="discover-description" data-discover-item>
           <p class="description-text">
-            <span class="text-highlight">Spécialistes</span> de la location et vente de 
-            <span class="text-highlight">tenues d'exception</span>
+            Spécialistes de la location et vente de 
+            tenues d'exception
           </p>
           <p class="description-subtext">
             Que ce soit pour un mariage, une soirée ou un événement professionnel, 
@@ -29,7 +26,7 @@
           </p>
         </div>
         
-        <div class="discover-icons">
+        <div class="discover-icons" data-discover-item>
           <div class="icon-item">
             <i class="bi bi-gem"></i>
             <span>Excellence</span>
@@ -44,7 +41,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <%= render 'home_nav_cards' %>
   </div>

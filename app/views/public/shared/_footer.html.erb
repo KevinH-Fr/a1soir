@@ -1,4 +1,4 @@
-<footer class="mt-5 bg-light border-top">
+<footer class="mt-5">
   <div class="container py-5">
     <div class="row g-4">
       
@@ -6,11 +6,11 @@
       <div class="col-6 col-md-3">
         <h6 class="fw-bold text-uppercase mb-3 brand-colored">Navigation</h6>
         <ul class="list-unstyled">
-          <li class="mb-2"><%= link_to "Accueil", home_path, class: "text-muted text-decoration-none hover-link" %></li>
-          <li class="mb-2"><%= link_to "La boutique", la_boutique_url, class: "text-muted text-decoration-none hover-link" %></li>
-          <li class="mb-2"><%= link_to "Nos collections", nos_collections_url, class: "text-muted text-decoration-none hover-link" %></li>
-          <li class="mb-2"><%= link_to "Le concept", le_concept_url, class: "text-muted text-decoration-none hover-link" %></li>
-          <li class="mb-2"><%= link_to "Nos autres activités", nos_autres_activites_url, class: "text-muted text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "Accueil", home_path, class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "La boutique", la_boutique_url, class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "Nos collections", nos_collections_url, class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "Le concept", le_concept_url, class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "Nos autres activités", nos_autres_activites_url, class: "text-light text-decoration-none hover-link" %></li>
         </ul>
       </div>
 
@@ -18,11 +18,11 @@
       <div class="col-6 col-md-3">
         <h6 class="fw-bold text-uppercase mb-3 brand-colored">Services</h6>
         <ul class="list-unstyled">
-          <li class="mb-2"><%= link_to "Catégories", categories_url(subdomain: "shop"), class: "text-muted text-decoration-none hover-link" %></li>
-          <li class="mb-2"><%= link_to "Produits", produits_index_url(subdomain: "shop"), class: "text-muted text-decoration-none hover-link" %></li>
-          <li class="mb-2"><%= link_to "Rendez-vous", rdv_url(subdomain: "shop"), class: "text-muted text-decoration-none hover-link" %></li>
-          <li class="mb-2"><%= link_to "Contact", contact_url, class: "text-muted text-decoration-none hover-link" %></li>
-          <li class="mb-2"><%= link_to "FAQ", faq_url, class: "text-muted text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "Catégories", categories_url(subdomain: "shop"), class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "Produits", produits_index_url(subdomain: "shop"), class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "Rendez-vous", rdv_url(subdomain: "shop"), class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "Contact", contact_url, class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "FAQ", faq_url, class: "text-light text-decoration-none hover-link" %></li>
         </ul>
       </div>
 
@@ -30,11 +30,11 @@
       <div class="col-6 col-md-3">
         <h6 class="fw-bold text-uppercase mb-3 brand-colored">Suivez-nous</h6>
         <div class="d-flex flex-column gap-2">
-          <%= link_to "https://www.instagram.com/autourdunsoir/", class: "text-muted text-decoration-none hover-link d-flex align-items-center gap-2", target: "_blank", rel: "noopener noreferrer" do %>
+          <%= link_to "https://www.instagram.com/autourdunsoir/", class: "text-light text-decoration-none hover-link d-flex align-items-center gap-2", target: "_blank", rel: "noopener noreferrer" do %>
             <i class="bi bi-instagram fs-5"></i>
             <span>Instagram</span>
           <% end %>
-          <%= link_to "https://www.facebook.com/autourdunsoir/", class: "text-muted text-decoration-none hover-link d-flex align-items-center gap-2", target: "_blank", rel: "noopener noreferrer" do %>
+          <%= link_to "https://www.facebook.com/autourdunsoir/", class: "text-light text-decoration-none hover-link d-flex align-items-center gap-2", target: "_blank", rel: "noopener noreferrer" do %>
             <i class="bi bi-facebook fs-5"></i>
             <span>Facebook</span>
           <% end %>
@@ -45,8 +45,8 @@
       <div class="col-6 col-md-3">
         <h6 class="fw-bold text-uppercase mb-3 brand-colored">Légal</h6>
         <ul class="list-unstyled">
-          <li class="mb-2"><%= link_to "Mentions légales", legal_url, class: "text-muted text-decoration-none hover-link" %></li>
-          <li class="mb-2"><%= link_to "CGV", cgv_url(subdomain: "shop"), class: "text-muted text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "Mentions légales", legal_url, class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "CGV", cgv_url(subdomain: "shop"), class: "text-light text-decoration-none hover-link" %></li>
         </ul>
       </div>
 
@@ -54,11 +54,11 @@
   </div>
 
   <!-- Copyright -->
-  <div class="bg-white border-top py-3">
+  <div class="py-3">
     <div class="container">
       <div class="row">
         <div class="col-12 text-center">
-          <p class="text-muted small mb-0">
+          <p class="text-light small mb-0 opacity-75">
             &copy; <%= Time.current.year %> Autour d'un Soir - Tous droits réservés
           </p>
         </div>

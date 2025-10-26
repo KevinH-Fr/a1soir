@@ -687,51 +687,34 @@ section {
 .discover-section {
   position: relative;
   height: 200vh; /* Hauteur pour créer l'espace de scroll */
-  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.discover-content {
+/* Conteneur fixe au centre */
+.discover-section .container {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 100;
   max-width: 900px;
   width: 100%;
   padding: 0 2rem;
-  z-index: 150;
   pointer-events: none;
+}
+
+/* Items de la section - Les animations sont gérées par JavaScript */
+[data-discover-item] {
   opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.6s ease-out, 
-              visibility 0.6s ease-out;
+  transform: translateY(40px);
+  will-change: opacity, transform, filter;
 }
 
-.discover-content.fade-in {
-  opacity: 1;
-  visibility: visible;
-  animation: elegantFadeIn 1.2s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
-}
-
-@keyframes elegantFadeIn {
-  0% {
-    opacity: 0;
-    filter: blur(10px);
-    transform: translate(-50%, -48%);
-  }
-  100% {
-    opacity: 1;
-    filter: blur(0px);
-    transform: translate(-50%, -50%);
-  }
-}
-
-/* Titre principal */
-.discover-title-wrapper {
-  margin-bottom: 4rem;
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.8s cubic-bezier(0.4, 0.0, 0.2, 1) 0.3s,
-              transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1) 0.3s;
+/* Titre */
+.discover-title {
+  margin-bottom: 3rem;
 }
 
 .discover-main-title {
@@ -740,42 +723,10 @@ section {
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 2rem;
-  color: #2c3e50;
-}
-
-.title-line {
-  display: block;
-  position: relative;
-}
-
-.title-highlight {
-  background: linear-gradient(135deg, #d04d7b 0%, #e96ba8 100%);
+  background: linear-gradient(135deg, #d04d7b 0%, #ffffff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  position: relative;
-}
-
-.title-highlight::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #d04d7b 0%, #e96ba8 100%);
-  border-radius: 2px;
-  animation: underlineExpand 1.5s ease-out 0.5s forwards;
-}
-
-@keyframes underlineExpand {
-  0% {
-    width: 0;
-  }
-  100% {
-    width: 200px;
-  }
 }
 
 /* Décoration */
@@ -785,38 +736,6 @@ section {
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
-  opacity: 0;
-  animation: fadeInDecoration 1s ease-out 0.8s forwards;
-}
-
-@keyframes fadeInDecoration {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.decoration-dot {
-  width: 8px;
-  height: 8px;
-  background: #d04d7b;
-  border-radius: 50%;
-  animation: pulseDot 2s ease-in-out infinite;
-}
-
-@keyframes pulseDot {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.5);
-    opacity: 0.7;
-  }
 }
 
 .decoration-line {
@@ -831,11 +750,10 @@ section {
 
 /* Description */
 .discover-description {
-  margin-bottom: 4rem;
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.8s cubic-bezier(0.4, 0.0, 0.2, 1) 0.5s,
-              transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1) 0.5s;
+  margin-bottom: 3rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .description-text {
@@ -846,19 +764,10 @@ section {
   font-weight: 300;
 }
 
-.text-highlight {
-  font-weight: 600;
-  color: #d04d7b;
-  position: relative;
-  transition: all 0.3s ease;
-}
-
 .description-subtext {
   font-size: 1.1rem;
   line-height: 1.8;
   color: #6c757d;
-  max-width: 700px;
-  margin: 0 auto;
 }
 
 /* Icônes */
@@ -867,10 +776,6 @@ section {
   justify-content: center;
   gap: 4rem;
   flex-wrap: wrap;
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.8s cubic-bezier(0.4, 0.0, 0.2, 1) 0.7s,
-              transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1) 0.7s;
 }
 
 .icon-item {
@@ -878,8 +783,8 @@ section {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  transition: all 0.3s ease;
   cursor: default;
+  transition: transform 0.3s ease;
 }
 
 .icon-item i {
@@ -894,7 +799,11 @@ section {
   color: #2c3e50;
   letter-spacing: 1px;
   text-transform: uppercase;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
+}
+
+.icon-item:hover {
+  transform: translateY(-5px);
 }
 
 .icon-item:hover i {
@@ -909,10 +818,11 @@ section {
 /* Responsive */
 @media (max-width: 768px) {
   .discover-section {
-    height: 150vh;
+    height: 180vh;
   }
-  
-  .discover-content {
+
+  .discover-section .container {
+    max-width: 90%;
     padding: 0 1rem;
   }
   
