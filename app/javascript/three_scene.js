@@ -385,27 +385,52 @@ class StarryNightScene {
   }
 }
 
-// Initialiser la scène au chargement
-document.addEventListener('turbo:load', () => {
+// Instance globale
+let starryNightInstance = null;
+
+function initStarryNight() {
   const threeContainer = document.getElementById('three-container');
+  
   if (threeContainer) {
-    new StarryNightScene('three-container');
+    // Si une instance existe déjà et que le conteneur est différent, détruire l'ancienne
+    if (starryNightInstance && starryNightInstance.container !== threeContainer) {
+      console.log('🗑️ Destruction de l\'ancienne scène étoilée');
+      starryNightInstance.destroy();
+      starryNightInstance = null;
+    }
+    
+    // Créer une nouvelle instance si nécessaire
+    if (!starryNightInstance) {
+      console.log('✨ Création d\'une nouvelle scène étoilée');
+      starryNightInstance = new StarryNightScene('three-container');
+    }
+  } else {
+    // Si le conteneur n'existe pas et qu'une instance existe, la détruire
+    if (starryNightInstance) {
+      console.log('🗑️ Destruction de la scène étoilée (conteneur introuvable)');
+      starryNightInstance.destroy();
+      starryNightInstance = null;
+    }
+  }
+}
+
+// Nettoyer avant de quitter la page
+document.addEventListener('turbo:before-render', () => {
+  if (starryNightInstance) {
+    console.log('🧹 Nettoyage de la scène étoilée avant changement de page');
+    starryNightInstance.destroy();
+    starryNightInstance = null;
   }
 });
 
-// Initialiser aussi au chargement normal (sans Turbo)
+// Initialiser après le chargement de la page
+document.addEventListener('turbo:load', initStarryNight);
+
+// Pour le chargement initial sans Turbo
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    const threeContainer = document.getElementById('three-container');
-    if (threeContainer && !threeContainer.querySelector('canvas')) {
-      new StarryNightScene('three-container');
-    }
-  });
+  document.addEventListener('DOMContentLoaded', initStarryNight);
 } else {
-  const threeContainer = document.getElementById('three-container');
-  if (threeContainer && !threeContainer.querySelector('canvas')) {
-    new StarryNightScene('three-container');
-  }
+  initStarryNight();
 }
 
 export default StarryNightScene;

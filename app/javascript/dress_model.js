@@ -161,26 +161,83 @@ class DressModel {
   }
 
   handleResize() {
-    window.addEventListener('resize', () => {
+    this.resizeHandler = () => {
       if (!this.container) return;
 
       this.camera.aspect = this.container.clientWidth / this.container.clientHeight;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
-    });
+    };
+    window.addEventListener('resize', this.resizeHandler);
+  }
+
+  destroy() {
+    // Nettoyer les event listeners
+    if (this.resizeHandler) {
+      window.removeEventListener('resize', this.resizeHandler);
+    }
+    
+    // Nettoyer les ressources Three.js
+    if (this.renderer) {
+      this.renderer.dispose();
+      if (this.renderer.domElement && this.renderer.domElement.parentNode) {
+        this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
+      }
+    }
+    
+    if (this.scene) {
+      this.scene.clear();
+    }
+    
+    // Nettoyer les références
+    this.scene = null;
+    this.camera = null;
+    this.renderer = null;
+    this.model = null;
+    this.container = null;
   }
 }
 
-// Initialiser quand le DOM est prêt (une seule fois)
+// Instance globale
 let dressModelInstance = null;
 
 function initDressModel() {
   const dressContainer = document.getElementById('dress-model-container');
-  if (dressContainer && !dressModelInstance) {
-    dressModelInstance = new DressModel('dress-model-container');
+  
+  // Si le conteneur existe
+  if (dressContainer) {
+    // Si une instance existe déjà et que le conteneur est différent, détruire l'ancienne
+    if (dressModelInstance && dressModelInstance.container !== dressContainer) {
+      console.log('🗑️ Destruction de l\'ancienne instance du modèle 3D');
+      dressModelInstance.destroy();
+      dressModelInstance = null;
+    }
+    
+    // Créer une nouvelle instance si nécessaire
+    if (!dressModelInstance) {
+      console.log('🎨 Création d\'une nouvelle instance du modèle 3D');
+      dressModelInstance = new DressModel('dress-model-container');
+    }
+  } else {
+    // Si le conteneur n'existe pas et qu'une instance existe, la détruire
+    if (dressModelInstance) {
+      console.log('🗑️ Destruction de l\'instance (conteneur introuvable)');
+      dressModelInstance.destroy();
+      dressModelInstance = null;
+    }
   }
 }
 
+// Nettoyer avant de quitter la page
+document.addEventListener('turbo:before-render', () => {
+  if (dressModelInstance) {
+    console.log('🧹 Nettoyage avant changement de page');
+    dressModelInstance.destroy();
+    dressModelInstance = null;
+  }
+});
+
+// Initialiser après le chargement de la page
 document.addEventListener('turbo:load', initDressModel);
 
 // Pour le chargement initial sans Turbo

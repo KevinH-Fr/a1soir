@@ -3,13 +3,47 @@
 <!-- Section d'accueil -->
 <div class="public-main-content">
   <div class="container-fluid">
-    <div class="text-center my-5 py-5" data-aos="fade-up">
-      <h2 class="h3 mb-4">Découvrez notre univers</h2>
-      <p class="lead text-muted mb-5" style="max-width: 800px; margin: 0 auto;">
-        Spécialistes de la location et vente de tenues d'exception. 
-        Que ce soit pour un mariage, une soirée ou un événement professionnel, 
-        nous vous accompagnons pour sublimer vos plus beaux moments.
-      </p>
+    <!-- Section découverte avec effet de scroll -->
+    <div class="discover-section text-center my-5 py-5">
+      <div class="discover-content">
+        <div class="discover-title-wrapper">
+          <h2 class="discover-main-title">
+            <span class="title-line">Découvrez</span>
+            <span class="title-line title-highlight">notre univers</span>
+          </h2>
+          <div class="title-decoration">
+            <span class="decoration-dot"></span>
+            <span class="decoration-line"></span>
+            <span class="decoration-dot"></span>
+          </div>
+        </div>
+        
+        <div class="discover-description">
+          <p class="description-text">
+            <span class="text-highlight">Spécialistes</span> de la location et vente de 
+            <span class="text-highlight">tenues d'exception</span>
+          </p>
+          <p class="description-subtext">
+            Que ce soit pour un mariage, une soirée ou un événement professionnel, 
+            nous vous accompagnons pour sublimer vos plus beaux moments.
+          </p>
+        </div>
+        
+        <div class="discover-icons">
+          <div class="icon-item">
+            <i class="bi bi-gem"></i>
+            <span>Excellence</span>
+          </div>
+          <div class="icon-item">
+            <i class="bi bi-heart"></i>
+            <span>Passion</span>
+          </div>
+          <div class="icon-item">
+            <i class="bi bi-stars"></i>
+            <span>Élégance</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <%= render 'home_nav_cards' %>

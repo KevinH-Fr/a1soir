@@ -1,10 +1,78 @@
 module PagesHelper
 
   def page_header(title, subtitle = nil)
-    content_tag :div, class: "container-fluid text-center w-100", data: { aos: "fade" } do
-      concat content_tag(:h1, title, class: "public-text-overlay brand-colored fs-1 my-4 text-uppercase", data: { aos: "fade" })
+    content_tag :div, class: "container-fluid text-center w-100 py-5", data: { aos: "fade" } do
+      concat content_tag(:h1, title, class: "text-white fw-bold fs-1 mb-3 text-uppercase page-title", data: { aos: "fade-up", aos_delay: "100" })
       if subtitle.present?
-        concat content_tag(:h2, subtitle, class: "public-text-overlay fs-6", data: { aos: "fade" })
+        concat content_tag(:h2, subtitle, class: "text-white-50 fs-5 fw-light page-subtitle", data: { aos: "fade-up", aos_delay: "200" })
+      end
+    end
+  end
+
+  def nav_card_scroll(index:, icon:, title:, description:, url:)
+    content_tag :div, class: "scroll-card", data: { card_index: index } do
+      link_to url, class: "text-decoration-none" do
+        content_tag :div, class: "card shadow nav-card rounded-4 bg-darker-gradient text-light overflow-hidden" do
+          content_tag(:div, class: "card-body p-5 text-center position-relative", style: "z-index: 1;") do
+            icon_wrapper = content_tag(:div, class: "nav-card-icon-wrapper rounded-circle d-inline-flex align-items-center justify-content-center mb-4") do
+              content_tag :i, nil, class: "bi bi-#{icon} nav-card-icon d-block"
+            end
+            
+            card_title = content_tag(:h3, title, class: "h4 fw-bold mb-3 nav-card-title position-relative")
+            
+            card_description = content_tag(:p, description, class: "text-light mb-3 nav-card-description position-relative", style: "font-size: 0.95rem; line-height: 1.6;")
+            
+            card_arrow = content_tag(:div, class: "nav-card-arrow mt-3 position-relative") do
+              content_tag :i, nil, class: "bi bi-arrow-right-circle position-relative"
+            end
+            
+            (icon_wrapper + card_title + card_description + card_arrow).html_safe
+          end
+        end
+      end
+    end
+  end
+
+  def reference_item(icon:, name:)
+    content_tag :div, class: "reference-item" do
+      icon_tag = content_tag(:i, nil, class: "bi bi-#{icon} brand-colored me-2")
+      name_tag = content_tag(:span, name)
+      (icon_tag + name_tag).html_safe
+    end
+  end
+
+  def references_slider
+    references = [
+      { icon: 'building-fill', name: 'Le Moulin Rouge à Paris' },
+      { icon: 'gem', name: 'Le Trianon Palace à Paris' },
+      { icon: 'cup-hot-fill', name: 'Le Procope à Paris' },
+      { icon: 'tropical-storm', name: 'Le Baoli à Cannes' },
+      { icon: 'house-fill', name: 'Le Château de Vaux Le Vicomte' },
+      { icon: 'dice-5-fill', name: 'Le Casino La Siesta à Antibes' },
+      { icon: 'cup-straw', name: 'Le Café de Paris à Monaco' },
+      { icon: 'brightness-high-fill', name: 'L\'Hôtel Belles Rives à Juan les Pins' },
+      { icon: 'building', name: 'L\'Hôtel Radisson à Cannes' },
+      { icon: 'star-fill', name: 'L\'Hôtel Fairmont à Monaco' },
+      { icon: 'circle-fill', name: 'Le Cirque Alexis Gruss' },
+      { icon: 'tv-fill', name: 'France 2' },
+      { icon: 'tv', name: 'France 3' },
+      { icon: 'broadcast', name: 'M6' },
+      { icon: 'film', name: 'Canal +' },
+      { icon: 'award-fill', name: 'Lenôtre' }
+    ]
+
+    content_tag :div, class: "references-slider-wrapper" do
+      content_tag :div, class: "references-slider" do
+        items = []
+        # Premier ensemble
+        references.each do |ref|
+          items << reference_item(icon: ref[:icon], name: ref[:name])
+        end
+        # Duplication pour effet de défilement continu
+        references.each do |ref|
+          items << reference_item(icon: ref[:icon], name: ref[:name])
+        end
+        items.join.html_safe
       end
     end
   end

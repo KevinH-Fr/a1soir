@@ -303,19 +303,48 @@ let scrollIndicatorInstance = null;
 let textFadeInstance = null;
 
 /**
+ * Nettoyer toutes les instances
+ */
+function cleanupHomeAnimations() {
+  if (textAnimationInstance) {
+    textAnimationInstance.destroy();
+    textAnimationInstance = null;
+  }
+  if (scrollIndicatorInstance) {
+    scrollIndicatorInstance = null;
+  }
+  if (textFadeInstance) {
+    textFadeInstance = null;
+  }
+}
+
+/**
  * Initialiser les animations de la page d'accueil
  */
 function initHomeAnimations() {
-  // Nettoyer les anciennes instances si elles existent
-  if (textAnimationInstance) {
-    textAnimationInstance.destroy();
+  // Vérifier si les éléments nécessaires existent
+  const changingText = document.getElementById('changing-text');
+  if (!changingText) {
+    console.log('🚫 Éléments de la page d\'accueil non trouvés, pas d\'initialisation des animations');
+    return;
   }
-
+  
+  // Nettoyer les anciennes instances
+  cleanupHomeAnimations();
+  
+  console.log('🎬 Initialisation des animations de la page d\'accueil');
+  
   // Créer les nouvelles instances
   textAnimationInstance = new HomeTextAnimation();
   scrollIndicatorInstance = new ScrollIndicatorHandler();
   textFadeInstance = new TextFadeOnScroll();
 }
+
+// Nettoyer avant de quitter la page
+document.addEventListener('turbo:before-render', () => {
+  console.log('🧹 Nettoyage des animations avant changement de page');
+  cleanupHomeAnimations();
+});
 
 // Initialisation avec Turbo
 document.addEventListener('turbo:load', initHomeAnimations);
