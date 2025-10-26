@@ -364,14 +364,7 @@ footer .bi-facebook:hover {
     scroll-behavior: smooth;
   }
   
-  /* Style des liens dans les sections */
-  .card-body a {
-    color: #0d6efd;
-  }
-  
-  .card-body a:hover {
-    color: #0a58ca;
-  }
+
   
   /* Espacements des sections */
   section {
@@ -408,16 +401,6 @@ section {
   scroll-margin-top: 100px;
 }
 
-/* Boutons de navigation */
-.btn-outline-primary:hover,
-.btn-outline-success:hover,
-.btn-outline-warning:hover,
-.btn-outline-info:hover,
-.btn-outline-secondary:hover,
-.btn-outline-dark:hover {
-  transform: translateY(-2px);
-  transition: all 0.2s;
-}
 
 /* ========================================
    Slider de références - Défilement automatique
@@ -508,6 +491,7 @@ section {
   align-items: flex-start;
   position: relative;
   padding-top: 80px;
+  margin-bottom: 600px; /* Espace avant le contenu suivant */
 }
 
 .home-hero .row {
@@ -712,6 +696,7 @@ section {
 @media (max-width: 768px) {
   .home-hero {
     padding-top: 60px;
+    margin-bottom: 300px; /* Moins d'espace sur mobile */
   }
 
   .home-hero .row {
