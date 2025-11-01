@@ -88,6 +88,14 @@ class Produit < ApplicationRecord
     end
   end
 
+  def default_image_white
+    if image1.attached?
+      image1
+    else
+      '/images/no_photo_white.png'
+    end
+  end
+
   def nom_ref_couleur_taille 
     [nom, reffrs, couleur&.nom, taille&.nom].compact.join(' | ')
   end 

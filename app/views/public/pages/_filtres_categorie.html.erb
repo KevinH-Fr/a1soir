@@ -13,15 +13,15 @@
       end
     %>
     
-    <div class="dropdown">
-        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="categorieDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+    <div class="dropdown" style="position: relative; z-index: 9999;">
+        <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="categorieDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-list-ul"></i>
             <span class="ms-1 d-none d-md-inline">
                 <%= display_text %>
             </span>
         </button>
 
-        <ul class="dropdown-menu" aria-labelledby="categorieDropdown">
+        <ul class="dropdown-menu" aria-labelledby="categorieDropdown" style="position: absolute; z-index: 9999;">
             <li>
             <%= button_to "Toutes", 
                 update_filters_path(

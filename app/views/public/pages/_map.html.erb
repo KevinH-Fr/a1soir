@@ -1,19 +1,23 @@
-
-<div class="text-center m-4 p-4">    
-    <% provide :head_tags do %>
-        <script>
-        document.addEventListener("DOMContentLoaded", function(){
-            initMap(<%= "27 boulevard carnot, cannes"  %>)
-        });
-        </script>
-    <% end %>
-
-    <div>
-        <iframe style="border: 0;" src="https://www.google.com/maps/embed/v1/search?key=<%= ENV["MAPS_API_KEY2"] %>
-        &q=<%= "27 bd carnot cannes" %>
-        &zoom=14&maptype=satellite" width="100%" height="300" frameborder="0" allowfullscreen="allowfullscreen">
-        </iframe>
+<!-- Carte Google Maps -->
+<div class="my-5" data-scroll-reveal>
+  <div class="concept-card">
+    <h3 class="text-center mb-4 fw-bold text-light">Nous trouver</h3>
+    <p class="text-center text-light opacity-75 mb-4">
+      Venez découvrir notre boutique au cœur de Cannes
+    </p>
+    <div class="ratio ratio-16x9 rounded-3 overflow-hidden" style="max-height: 450px;">
+      <iframe 
+        src="https://maps.google.com/maps?q=autour%20d'un%20soir%2006400%20cannes&t=&z=15&ie=UTF8&iwloc=&output=embed"
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
     </div>
-
-
+    <div class="text-center mt-4">
+      <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape('autour d\'un soir 06400 cannes')}", target: "_blank", class: "btn btn-outline-light" do %>
+        <i class="bi bi-arrow-up-right-square me-2"></i>Ouvrir dans une nouvelle fenêtre
+      <% end %>
+    </div>
+  </div>
 </div>

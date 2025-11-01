@@ -3,46 +3,46 @@
     <div data-controller="placeholder-card">
 
         <!-- Card with Placeholder -->
-        <div class="card card-placeholder" aria-hidden="true">
+        <div class="card card-placeholder bg-dark text-light" aria-hidden="true">
 
-            <div class="placeholder col-12" style="height: 300px; background-color: #e0e0e0;">
+            <div class="placeholder col-12" style="height: 300px; background-color: #3a3a3a;">
             </div>
                     
             <div class="card-body">
                 <h5 class="card-title placeholder-glow" data-placeholder-card-target="placeholder">
-                    <span class="placeholder col-6"></span>
+                    <span class="placeholder col-6 bg-secondary"></span>
                 </h5>
                 <p class="card-text placeholder-glow">
-                    <span class="placeholder col-7"></span>
-                    <span class="placeholder col-4"></span>
-                    <span class="placeholder col-4"></span>
-                    <span class="placeholder col-6"></span>
-                    <span class="placeholder col-8"></span>
+                    <span class="placeholder col-7 bg-secondary"></span>
+                    <span class="placeholder col-4 bg-secondary"></span>
+                    <span class="placeholder col-4 bg-secondary"></span>
+                    <span class="placeholder col-6 bg-secondary"></span>
+                    <span class="placeholder col-8 bg-secondary"></span>
                 </p>
                 <p class="card-text placeholder-glow d-flex justify-content-between">
-                    <span class="placeholder col-5"></span>
-                    <span class="placeholder col-6"></span>
+                    <span class="placeholder col-5 bg-secondary"></span>
+                    <span class="placeholder col-6 bg-secondary"></span>
                 </p>
                 <p class="card-text placeholder-glow d-flex justify-content-between">
-                    <span class="placeholder col-4"></span>
-                    <span class="placeholder col-4"></span>
+                    <span class="placeholder col-4 bg-secondary"></span>
+                    <span class="placeholder col-4 bg-secondary"></span>
                 </p>
             </div>
         </div>
 
         <!-- Real Content -->
         <%= link_to produit_path(slug: produit.nom.parameterize, id: produit.id), class: "text-decoration-none", data: { turbo: false } do %>
-            <div class="card card-content" data-placeholder-card-target="content" style="display:none;">
+            <div class="card card-content bg-dark text-light border-secondary" data-placeholder-card-target="content" style="display:none;">
 
                 <%#= image_tag(produit.default_image, class: "card-img-top", style: "max-height: 300px; object-fit: cover;") %>
                 
                 <%= render partial: "carousel", locals: { produit: produit, carousel_class: "card-img-top carousel-multiple" } %>
 
                 <div class="card-body">
-                    <h5 class="card-title">
+                    <h5 class="card-title text-light">
                         <%= produit.nom %>
                     </h5>
-                    <p class="card-text text-truncate-multiline">
+                    <p class="card-text text-truncate-multiline text-light opacity-75">
                         <span>
                             <%= produit.description %>
                         </span>
@@ -59,7 +59,7 @@
                         <% else %>
                            <span></span>
                         <% end %>
-                        <%= statut_disponibilite_shop(produit.statut_disponibilite(Time.now, Time.now)[:statut]) %>
+                        <%#= statut_disponibilite_shop(produit.statut_disponibilite(Time.now, Time.now)[:statut]) %>
                     </p>                
                 </div>
 

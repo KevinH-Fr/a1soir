@@ -18,9 +18,9 @@ module PagesHelper
               content_tag :i, nil, class: "bi bi-#{icon} nav-card-icon d-block"
             end
             
-            card_title = content_tag(:h3, title, class: "h4 fw-bold mb-3 nav-card-title position-relative")
+            card_title = content_tag(:h3, title, class: "h2 fw-bold mb-3 nav-card-title position-relative")
             
-            card_description = content_tag(:p, description, class: "text-light mb-3 nav-card-description position-relative", style: "font-size: 0.95rem; line-height: 1.6;")
+            card_description = content_tag(:p, description, class: "text-light mb-3 nav-card-description position-relative", style: "font-size: 1.15rem; line-height: 1.6;")
             
             card_arrow = content_tag(:div, class: "nav-card-arrow mt-3 position-relative") do
               content_tag :i, nil, class: "bi bi-arrow-right-circle position-relative"
@@ -113,7 +113,7 @@ module PagesHelper
   end
 
   def nav_link_public(path, name)
-      classes = ["nav-item text-center m-2"]
+      classes = ["nav-item text-center m-2 mx-3"]
       
       # Considérer la page active si c'est la page courante OU si c'est l'accueil et qu'on est sur root_path
       is_active = current_page?(path) || (path == home_path && current_page?(root_path))

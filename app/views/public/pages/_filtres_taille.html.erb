@@ -1,7 +1,7 @@
 <div id="filtres-taille">
 
-    <div class="dropdown">
-        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="tailleDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+    <div class="dropdown" style="position: relative; z-index: 9999;">
+        <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="tailleDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-rulers"></i>
             <span class="ms-1 d-none d-md-inline">
             <%= if params[:taille].present?
@@ -12,7 +12,7 @@
             </span>
         </button>
 
-        <ul class="dropdown-menu" aria-labelledby="tailleDropdown">
+        <ul class="dropdown-menu" aria-labelledby="tailleDropdown" style="position: absolute; z-index: 9999;">
             <li>
             <%= button_to "Toutes", 
                 update_filters_path(

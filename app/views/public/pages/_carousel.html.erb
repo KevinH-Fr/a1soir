@@ -10,11 +10,11 @@
                 </video>
             </div>
             <div class="carousel-item">
-                <%= image_tag(produit.default_image, class: "img-fluid rounded-start", alt: produit.nom) %>
+                <%= image_tag(produit.default_image_white, class: "img-fluid rounded-start", alt: produit.nom) %>
             </div>
         <% else %>
             <div class="carousel-item active">
-                <%= image_tag(produit.default_image, class: "img-fluid rounded-start", alt: produit.nom) %>
+                <%= image_tag(produit.default_image_white, class: "img-fluid rounded-start", alt: produit.nom) %>
             </div>
         <% end %>
 

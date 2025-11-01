@@ -10,6 +10,7 @@ import "./dress_model"
 import "./home_text_animation"
 import "./scroll_cards_carousel"
 import "./discover_scroll_effect"
+import "./discover_icons_animation"
 import "./scroll_reveal"
 
 // require jquery

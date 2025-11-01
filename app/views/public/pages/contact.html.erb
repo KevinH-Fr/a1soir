@@ -1,15 +1,122 @@
+<%= page_header("Contact", "Nous sommes à votre écoute") %>
+
 <div class="public-main-content">
-
     <div class="container-fluid">
+    <!-- Introduction -->
+    <div class="text-center my-5 px-3" data-scroll-reveal>
+      <h2 class="mb-4 fw-bold text-light">Restons en contact</h2>
 
-        <%= @texteContact %>
-        <%= @texteAdresse %>
+    </div>
 
-        mail: 
+    <!-- Coordonnées -->
+    <div class="row g-4 my-5">
+      <!-- Téléphone -->
+      <div class="col-lg-4" data-scroll-reveal>
+        <div class="concept-card h-100 text-center">
+          <div class="concept-card-icon mx-auto mb-3">
+            <i class="bi bi-telephone-fill brand-colored"></i>
+          </div>
+          <h4 class="fw-bold mb-3 text-light">Téléphone</h4>
+          <p class="text-light opacity-75 mb-3">
+            Appelez-nous directement pour une réponse immédiate
+          </p>
+          <%= link_to "tel:+33493451717", class: "btn brand-bg text-white px-4" do %>
+            <i class="bi bi-telephone me-2"></i><%= @texteContact.present? ? @texteContact.to_plain_text : '+33 4 93 45 17 17' %>
+          <% end %>
+        </div>
+      </div>
 
-        <%#= render "map" %>
+      <!-- Email -->
+      <div class="col-lg-4" data-scroll-reveal>
+        <div class="concept-card h-100 text-center">
+          <div class="concept-card-icon mx-auto mb-3">
+            <i class="bi bi-envelope-fill brand-colored"></i>
+          </div>
+          <h4 class="fw-bold mb-3 text-light">Email</h4>
+          <p class="text-light opacity-75 mb-3">
+            Écrivez-nous, nous vous répondons rapidement
+          </p>
+          <%= link_to "mailto:contact@a1soir.fr", class: "btn brand-bg text-white px-4" do %>
+            contact@a1soir.fr
+          <% end %>
+        </div>
+      </div>
 
-        <%= link_to "Prendre Rendez-vous", rdv_url(subdomain: "shop"), class: "d-block brand-colored text-decoration-none" %>
+      <!-- Adresse -->
+      <div class="col-lg-4" data-scroll-reveal>
+        <div class="concept-card h-100 text-center">
+          <div class="concept-card-icon mx-auto mb-3">
+            <i class="bi bi-geo-alt-fill brand-colored"></i>
+          </div>
+          <h4 class="fw-bold mb-3 text-light">Boutique</h4>
+          <p class="text-light opacity-75 mb-3">
+            <%= @texteAdresse.present? ? @texteAdresse.to_plain_text : "Venez nous rendre visite en boutique" %>
+            Parking conseillé : Mozart (rue Mozart)
+          </p>
+          <% adresse = "autour d'un soir 06400 cannes" %>
+          <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape(adresse)}", target: "_blank", class: "btn brand-bg text-white px-4" do %>
+            <i class="bi bi-geo-alt me-2"></i>Ouvrir dans Maps
+          <% end %>
+        </div>
+      </div>
+    </div>
 
+    <!-- Rendez-vous -->
+    <div class="my-5 py-5 rounded-4" style="background: linear-gradient(135deg, #2c2c2c 0%, #393939 50%, #2c2c2c 100%);" data-scroll-reveal>
+      <div class="container text-center">
+        <div class="mb-4">
+          <i class="bi bi-calendar-check brand-colored" style="font-size: 4rem;"></i>
+        </div>
+        <h3 class="mb-4 fw-bold text-light">Prendre rendez-vous</h3>
+        <p class="lead text-light opacity-75 mb-4 mx-auto" style="max-width: 700px;">
+          Réservez un créneau pour découvrir nos collections en boutique, bénéficier de conseils personnalisés 
+          ou pour vos essayages. Notre équipe vous accueille dans les meilleures conditions.
+        </p>
+        <%= link_to rdv_url(subdomain: "shop"), class: "btn btn-lg px-5 shadow btn-smoke-hover" do %>
+          <i class="bi bi-calendar-plus me-2"></i>Réserver un rendez-vous
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Horaires -->
+    <div class="my-5" data-scroll-reveal>
+      <div class="concept-card">
+        <h3 class="text-center mb-5 fw-bold text-light">Horaires d'ouverture</h3>
+        <div class="text-light">
+          <% if @texteHoraire.present? %>
+            <% horaires_lignes = @texteHoraire.to_plain_text.split("\n").reject(&:blank?) %>
+            <% horaires_lignes.each_with_index do |ligne, index| %>
+              <div class="<%= 'mb-3 pb-3 border-bottom' unless index == horaires_lignes.size - 1 %>" style="border-color: rgba(255, 255, 255, 0.2) !important;">
+                <%= ligne %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="alert mt-4 mb-0" style="background: rgba(208, 77, 123, 0.1); border: 1px solid rgb(208, 77, 123);">
+          <i class="bi bi-info-circle brand-colored me-2"></i>
+          <small class="text-light">
+            <strong>Note :</strong> Les horaires peuvent varier selon les périodes. N'hésitez pas à nous contacter pour confirmer.
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <%= render "map" %>
+
+    <!-- Call to action final -->
+    <div class="text-center my-5 py-4" data-scroll-reveal>
+      <h3 class="mb-4 text-light">Une question ? Un projet ?</h3>
+      <p class="text-light opacity-75 mb-4">
+        Notre équipe est impatiente de vous rencontrer et de vous accompagner
+      </p>
+      <div class="d-flex gap-3 justify-content-center flex-wrap">
+        <%= link_to nos_collections_url, class: "btn btn-lg px-4 shadow btn-smoke-hover" do %>
+          <i class="bi bi-grid-3x3-gap me-2"></i>Découvrir nos collections
+        <% end %>
+        <%= link_to la_boutique_url, class: "btn btn-outline-light btn-lg px-4" do %>
+          <i class="bi bi-shop me-2"></i>La boutique
+        <% end %>
+      </div>
+    </div>
     </div>
 </div>

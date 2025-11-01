@@ -1,6 +1,6 @@
 /**
- * Carousel de cards contrôlé par le scroll
- * Les cards arrivent une par une depuis la droite et disparaissent
+ * Carousel de cards contrôlé par le scroll - Style manège
+ * Les cartes glissent de droite vers gauche avec chevauchement
  */
 class ScrollCardsCarousel {
   constructor() {
@@ -10,8 +10,10 @@ class ScrollCardsCarousel {
     
     if (!this.carousel || !this.container || this.cards.length === 0) return;
     
-    this.currentCardIndex = -1; // -1 = aucune card visible
     this.isInView = false;
+    this.lastVisibleIndex = -1;
+    this.cardSpacing = 200; // Distance entre les cartes au centre
+    this.exitSpacing = 400; // Distance pour les cartes qui disparaissent
     
     this.init();
   }
@@ -22,10 +24,11 @@ class ScrollCardsCarousel {
     this.container.style.visibility = 'hidden';
     this.container.style.transition = 'opacity 0.3s ease, visibility 0.3s ease';
     
-    // Initialiser toutes les cards hors écran (à droite)
-    this.cards.forEach(card => {
+    // Initialiser toutes les cards
+    this.cards.forEach((card, index) => {
       card.style.opacity = '0';
-      card.style.transform = 'translate(-50%, -50%) translateX(200px)';
+      card.style.transform = 'translateX(0) scale(0.85)';
+      card.style.transition = 'all 1s cubic-bezier(0.4, 0.0, 0.2, 1)';
     });
 
     // Écouter le scroll
@@ -45,7 +48,6 @@ class ScrollCardsCarousel {
     const isInCarousel = carouselRect.top <= 0 && carouselRect.bottom > 0;
     
     if (!isInCarousel) {
-      // Si on est avant ou après la zone du carousel
       if (this.isInView) {
         this.hideContainer();
       }
@@ -60,62 +62,93 @@ class ScrollCardsCarousel {
     this.isInView = true;
     
     // Calculer la progression du scroll dans la zone du carousel
-    // 0 = début du carousel, 1 = fin du carousel
     const scrolled = Math.abs(carouselRect.top);
     const scrollableHeight = carouselRect.height - windowHeight;
     const progress = Math.max(0, Math.min(1, scrolled / scrollableHeight));
     
-    // Déterminer quelle card devrait être visible
-    const numCards = this.cards.length;
-    const segmentSize = 1 / numCards;
-    
-    // Zone de fade out : les 10% finaux du carousel
-    const fadeOutStart = 0.85; // Commence à disparaître à 85% du scroll
+    // Zone de fade out : les 15% finaux du carousel
+    const fadeOutStart = 0.85;
     
     if (progress >= fadeOutStart) {
-      // Calculer l'opacité de disparition
       const fadeProgress = (progress - fadeOutStart) / (1 - fadeOutStart);
       const opacity = 1 - fadeProgress;
-      
       this.container.style.opacity = Math.max(0, opacity).toString();
-      
-      // Log pour debug
-      if (fadeProgress > 0 && fadeProgress < 0.1) {
-        console.log('🌅 Le carousel commence à disparaître...');
-      }
       
       if (progress >= 0.98) {
         this.container.style.visibility = 'hidden';
-        console.log('✨ Le carousel a complètement disparu');
       }
     } else {
-      // Réinitialiser l'opacité si on revient en arrière
       this.container.style.opacity = '1';
       this.container.style.visibility = 'visible';
     }
     
-    // Calculer l'index de la card à afficher
-    let targetCardIndex = -1;
+    // Déterminer l'index de la carte au centre
+    const numCards = this.cards.length;
+    const segmentSize = 1 / numCards;
+    const centerCardIndex = Math.floor(progress / segmentSize);
     
-    for (let i = 0; i < numCards; i++) {
-      const segmentStart = i * segmentSize;
-      const segmentEnd = (i + 1) * segmentSize;
+    // Afficher les cartes selon leur position dans le manège
+    this.cards.forEach((card, index) => {
+      const relativeIndex = index - centerCardIndex;
+      const cardProgress = (progress % segmentSize) / segmentSize;
       
-      if (progress >= segmentStart && progress < segmentEnd) {
-        targetCardIndex = i;
-        break;
+      let x = 0;
+      let scale = 0.85;
+      let opacity = 0;
+      let zIndex = 0;
+      
+      if (relativeIndex === 0) {
+        // Carte au centre - reste centrée plus longtemps
+        // Elle ne commence à bouger qu'après 40% du scroll
+        const adjustedProgress = Math.max(0, (cardProgress - 0.4) / 0.6);
+        x = -adjustedProgress * this.cardSpacing;
+        scale = 1;
+        opacity = 1;
+        zIndex = 10;
+      } else if (relativeIndex === 1) {
+        // Carte suivante (à droite) - arrive progressivement
+        // Elle commence à apparaître à 40% du scroll
+        const adjustedProgress = Math.max(0, (cardProgress - 0.4) / 0.6);
+        x = this.cardSpacing - adjustedProgress * this.cardSpacing;
+        scale = 0.85;
+        opacity = 0.5 + (adjustedProgress * 0.5); // Fade in progressif
+        zIndex = 5;
+      } else if (relativeIndex === -1) {
+        // Carte précédente (à gauche) - disparaît en s'éloignant et rétrécissant
+        const exitProgress = cardProgress;
+        x = -this.cardSpacing - (exitProgress * this.exitSpacing);
+        scale = 0.85 - (exitProgress * 0.5); // Rétrécit de 0.85 à 0.35
+        opacity = Math.max(0, 1 - (exitProgress * 1.5)); // Disparaît plus vite
+        zIndex = 1;
+      } else {
+        // Cartes hors vue
+        opacity = 0;
+        zIndex = 0;
       }
-    }
-    
-    // Si on est à la toute fin, afficher la dernière card
-    if (progress >= 1 - segmentSize * 0.1 && progress < fadeOutStart) {
-      targetCardIndex = numCards - 1;
-    }
-    
-    // Si la card cible a changé, faire la transition
-    if (targetCardIndex !== this.currentCardIndex && targetCardIndex >= 0) {
-      this.transitionToCard(targetCardIndex);
-    }
+      
+      // Appliquer les transformations
+      card.style.transform = `translateX(${x}px) scale(${scale})`;
+      card.style.opacity = opacity.toString();
+      card.style.zIndex = zIndex;
+      
+      // Ajouter la bordure rose pour la carte au centre
+      if (relativeIndex === 0) {
+        card.style.borderColor = 'rgba(208, 77, 123, 0.4)';
+        card.style.boxShadow = '0 20px 40px rgba(208, 77, 123, 0.25), 0 0 60px rgba(208, 77, 123, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1)';
+      } else {
+        card.style.borderColor = 'rgba(208, 77, 123, 0.15)';
+        card.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)';
+      }
+      
+      // Animer les éléments internes pour la carte au centre
+      if (relativeIndex === 0 && this.lastVisibleIndex !== index) {
+        this.animateCardEnter(card);
+        this.lastVisibleIndex = index;
+      } else if (relativeIndex !== 0 && this.lastVisibleIndex === index) {
+        this.animateCardExit(card);
+        this.lastVisibleIndex = -1;
+      }
+    });
   }
   
   showContainer() {
@@ -131,65 +164,16 @@ class ScrollCardsCarousel {
     this.resetCarousel();
   }
 
-  transitionToCard(newIndex) {
-    const oldIndex = this.currentCardIndex;
-    
-    // Faire disparaître l'ancienne card avec animations internes
-    if (oldIndex >= 0 && oldIndex < this.cards.length) {
-      const oldCard = this.cards[oldIndex];
-      
-      // Animer la sortie des éléments internes d'abord
-      this.animateCardExit(oldCard);
-      
-      // Puis faire sortir la card complète
-      setTimeout(() => {
-        oldCard.style.transition = 'all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1)';
-        oldCard.style.opacity = '0';
-        oldCard.style.transform = 'translate(-50%, -50%) translateX(-200px)';
-      }, 100);
-      
-      console.log(`📤 Card ${oldIndex + 1} disparaît vers la gauche`);
-    }
-    
-    // Afficher la nouvelle card avec animations internes
-    if (newIndex >= 0 && newIndex < this.cards.length) {
-      const newCard = this.cards[newIndex];
-      
-      // Réinitialiser la position de départ (à droite)
-      newCard.style.transition = 'none';
-      newCard.style.opacity = '0';
-      newCard.style.transform = 'translate(-50%, -50%) translateX(200px)';
-      
-      // Petit délai pour laisser le temps à l'ancienne card de partir
-      setTimeout(() => {
-        newCard.style.transition = 'all 0.8s cubic-bezier(0.4, 0.0, 0.2, 1)';
-        newCard.style.opacity = '1';
-        newCard.style.transform = 'translate(-50%, -50%) translateX(0)';
-        
-        // Animer l'entrée des éléments internes après que la card soit visible
-        setTimeout(() => {
-          this.animateCardEnter(newCard);
-        }, 200);
-        
-        console.log(`📥 Card ${newIndex + 1}/${this.cards.length} arrive au centre`);
-      }, oldIndex >= 0 ? 200 : 0);
-    }
-    
-    this.currentCardIndex = newIndex;
-  }
-
   animateCardEnter(card) {
     const icon = card.querySelector('.nav-card-icon');
     const title = card.querySelector('.nav-card-title');
     const description = card.querySelector('.nav-card-description');
     const arrow = card.querySelector('.nav-card-arrow');
     
-    // Retirer les classes de sortie si présentes
     [icon, title, description, arrow].forEach(el => {
       if (el) el.classList.remove('animate-out');
     });
     
-    // Ajouter les classes d'entrée séquentiellement
     if (icon) icon.classList.add('animate-in');
     if (title) title.classList.add('animate-in');
     if (description) description.classList.add('animate-in');
@@ -202,35 +186,24 @@ class ScrollCardsCarousel {
     const description = card.querySelector('.nav-card-description');
     const arrow = card.querySelector('.nav-card-arrow');
     
-    // Retirer les classes d'entrée
     [icon, title, description, arrow].forEach(el => {
       if (el) el.classList.remove('animate-in');
     });
-    
-    // Ajouter les classes de sortie séquentiellement
-    if (arrow) arrow.classList.add('animate-out');
-    if (description) description.classList.add('animate-out');
-    if (title) title.classList.add('animate-out');
-    if (icon) icon.classList.add('animate-out');
   }
 
   resetCarousel() {
-    this.currentCardIndex = -1;
+    this.lastVisibleIndex = -1;
     
-    // Réinitialiser toutes les cards
     this.cards.forEach(card => {
       card.style.transition = 'all 0.3s ease';
       card.style.opacity = '0';
-      card.style.transform = 'translate(-50%, -50%) translateX(200px)';
+      card.style.transform = 'translateX(0) scale(0.85)';
       
-      // Réinitialiser les animations des éléments internes
       const elements = card.querySelectorAll('.nav-card-icon, .nav-card-title, .nav-card-description, .nav-card-arrow');
       elements.forEach(el => {
         el.classList.remove('animate-in', 'animate-out');
       });
     });
-    
-    console.log('🔄 Carousel réinitialisé');
   }
 
   destroy() {
@@ -241,17 +214,12 @@ class ScrollCardsCarousel {
 // Instance globale
 let scrollCardsCarouselInstance = null;
 
-/**
- * Initialiser le carousel
- */
 function initScrollCardsCarousel() {
-  // Nettoyer l'ancienne instance
   if (scrollCardsCarouselInstance) {
     scrollCardsCarouselInstance.destroy();
     scrollCardsCarouselInstance = null;
   }
 
-  // Créer la nouvelle instance seulement si le carousel existe sur la page
   const carousel = document.querySelector('.scroll-cards-carousel');
   if (carousel) {
     console.log('🎠 Initialisation du carousel de cards');
@@ -259,7 +227,6 @@ function initScrollCardsCarousel() {
   }
 }
 
-// Nettoyer avant de quitter la page
 document.addEventListener('turbo:before-render', () => {
   if (scrollCardsCarouselInstance) {
     console.log('🧹 Nettoyage du carousel avant changement de page');
@@ -268,10 +235,8 @@ document.addEventListener('turbo:before-render', () => {
   }
 });
 
-// Initialisation avec Turbo
 document.addEventListener('turbo:load', initScrollCardsCarousel);
 
-// Initialisation sans Turbo (chargement initial)
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initScrollCardsCarousel);
 } else {
@@ -279,4 +244,3 @@ if (document.readyState === 'loading') {
 }
 
 export { ScrollCardsCarousel };
-

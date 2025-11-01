@@ -35,13 +35,13 @@
      
         <!-- Bouton Rendez-vous -->
         <div class="text-center my-5" data-scroll-reveal>
-            <%= link_to rdv_url(subdomain: "shop"), class: "btn btn-lg px-5 py-3 shadow btn-smoke-hover" do %>
-              <i class="bi bi-calendar-check me-2"></i>
-              <span class="fw-bold">Prendre Rendez-vous</span>
-            <% end %>
-        </div>
+        <%= link_to rdv_url(subdomain: "shop"), class: "btn btn-lg px-5 py-3 shadow btn-smoke-hover" do %>
+          <i class="bi bi-calendar-check me-2"></i>
+          <span class="fw-bold">Prendre Rendez-vous</span>
+        <% end %>
+      </div>
 
-        <%#= render "map" %>
+      <%= render "map" %>
 
     </div>
 </div>

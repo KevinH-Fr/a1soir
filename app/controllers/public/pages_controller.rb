@@ -66,12 +66,13 @@ module Public
       @total_amount = @cart.sum { |item| item.prixvente } # Sum of all item prices
     end
 
-    # def contact
-    #   if Texte.last.present?
-    #     @texteContact = Texte.last.contact
-    #     @texteAdresse = Texte.last.adresse
-    #   end
-    # end
+    def contact
+      if Texte.last.present?
+        @texteContact = Texte.last.contact
+        @texteAdresse = Texte.last.adresse
+        @texteHoraire = Texte.last.horaire
+      end
+    end
 
     #def cgv  
     #end

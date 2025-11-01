@@ -38,14 +38,64 @@
     background-color:rgb(208, 77, 123);
  }
 
- .bg-brand-colored{
-    background-color:rgb(208, 77, 123);
+.bg-brand-colored{
+   background-color:rgb(208, 77, 123);
 }
 
- .page-max-widthed{
-    width: 100%;
-    max-width: 1000px;
- }
+/* Placeholder light for inputs */
+.placeholder-light::placeholder {
+  color: #f8f9fa !important;
+  opacity: 0.7;
+}
+
+.placeholder-light::-webkit-input-placeholder {
+  color: #f8f9fa !important;
+  opacity: 0.7;
+}
+
+.placeholder-light::-moz-placeholder {
+  color: #f8f9fa !important;
+  opacity: 0.7;
+}
+
+/* Dropdown dark theme */
+.dropdown-menu {
+  background-color: #343a40 !important;
+  border: 1px solid #6c757d !important;
+}
+
+.dropdown-item {
+  color: #f8f9fa !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: #495057 !important;
+  color: #ffffff !important;
+}
+
+.dropdown-item.fw-bold {
+  background-color: #495057 !important;
+  color: #ffffff !important;
+}
+
+/* Navbar elegant font */
+.navbar .nav-link-public span {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.navbar .nav-link-public:hover span {
+  letter-spacing: 1px;
+}
+
+.page-max-widthed{
+   width: 100%;
+   max-width: 1000px;
+}
 
  :root {
    --light-beige-color: rgb(236, 236, 236);
@@ -535,6 +585,7 @@ section {
   font-style: italic;
   color: #ffffff;
   position: relative;
+  font-size: 1.5rem;
 }
 
 /* Animations pour le texte qui change */
@@ -773,7 +824,7 @@ section {
 .description-text {
   font-size: 1.5rem;
   line-height: 1.8;
-  color: #2c3e50;
+  color: #d9d9d9;
   margin-bottom: 1.5rem;
   font-weight: 300;
 }
@@ -781,7 +832,7 @@ section {
 .description-subtext {
   font-size: 1.1rem;
   line-height: 1.8;
-  color: #6c757d;
+  color: #b3b3b3;
 }
 
 /* Icônes */
@@ -881,7 +932,7 @@ section {
 
 .scroll-cards-carousel {
   position: relative;
-  height: 300vh; /* Hauteur pour permettre le scroll (3x la hauteur de l'écran) */
+  height: 400vh; /* Hauteur pour permettre le scroll */
   overflow: visible;
 }
 
@@ -891,13 +942,13 @@ section {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
   height: auto;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   z-index: 100;
-  pointer-events: none; /* Permet de scroller à travers */
+  pointer-events: none;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.6s ease-out;
@@ -905,34 +956,45 @@ section {
 
 .scroll-card {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) translateX(200px);
-  width: 100%;
-  max-width: 450px;
+  width: 450px;
   opacity: 0;
+  transform: translateX(0) scale(0.85);
   z-index: 1;
-  pointer-events: auto; /* Les cards restent cliquables */
+  pointer-events: auto;
+  transition: all 1s cubic-bezier(0.4, 0.0, 0.2, 1);
+  will-change: transform, opacity;
+  border-radius: 1rem;
+  overflow: hidden;
 }
 
-/* Couleur personnalisée - Noir très foncé */
+/* Couleur personnalisée - Dégradé élégant sans coins noirs */
 .bg-darker-gradient {
-  background: linear-gradient(135deg, rgba(208, 77, 123, 0.03) 0%, rgba(233, 107, 168, 0.03) 100%) !important;
+  background: linear-gradient(135deg, 
+    rgba(30, 25, 35, 0.95) 0%, 
+    rgba(45, 35, 50, 0.95) 50%, 
+    rgba(35, 30, 40, 0.95) 100%) !important;
+  backdrop-filter: blur(25px) saturate(180%);
+  border: 1px solid rgba(208, 77, 123, 0.15) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 
+              inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border-radius: 1rem !important;
 }
 
-/* Cards de navigation - Styles personnalisés uniquement */
+/* Cards de navigation - Styles simplifiés et élégants */
 .nav-card {
-  transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
   position: relative;
+  overflow: hidden;
+  border-radius: 1rem !important;
 }
 
 .nav-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(208, 77, 123, 0.03) 0%, rgba(233, 107, 168, 0.03) 100%);
+  background: linear-gradient(135deg, rgba(208, 77, 123, 0.05) 0%, rgba(233, 107, 168, 0.08) 100%);
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.5s ease;
   z-index: 0;
 }
 
@@ -941,35 +1003,37 @@ section {
 }
 
 .nav-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 30px rgba(208, 77, 123, 0.15) !important;
-  border-color: rgba(208, 77, 123, 0.1) !important;
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(208, 77, 123, 0.25), 
+              0 0 60px rgba(208, 77, 123, 0.15),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(208, 77, 123, 0.4) !important;
 }
 
 /* Icône wrapper */
 .nav-card-icon-wrapper {
   width: 90px;
   height: 90px;
-  background: linear-gradient(135deg, rgba(208, 77, 123, 0.08), rgba(233, 107, 168, 0.08));
-  transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+  background: linear-gradient(135deg, rgba(208, 77, 123, 0.1), rgba(233, 107, 168, 0.1));
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .nav-card:hover .nav-card-icon-wrapper {
-  background: linear-gradient(135deg, rgba(208, 77, 123, 0.15), rgba(233, 107, 168, 0.15));
-  transform: scale(1.05);
+  background: linear-gradient(135deg, rgba(208, 77, 123, 0.2), rgba(233, 107, 168, 0.2));
+  transform: scale(1.1) rotate(5deg);
 }
 
 .nav-card-icon {
   font-size: 2.5rem;
   color: #d04d7b;
-  transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   opacity: 0;
   transform: scale(0.8) translateY(20px);
 }
 
 .nav-card:hover .nav-card-icon {
   color: #e96ba8;
-  transform: scale(1.1);
+  transform: scale(1.15) rotate(-5deg);
 }
 
 /* Animations d'entrée pour l'icône */
@@ -1007,14 +1071,14 @@ section {
 /* Titre */
 .nav-card-title {
   font-family: 'Playfair Display', serif;
-  color: #2c3e50;
+  color: #ffffff;
   transition: all 0.3s ease;
   opacity: 0;
   transform: translateX(30px);
 }
 
 .nav-card:hover .nav-card-title {
-  color: #d04d7b;
+  color: #ffffff;
 }
 
 /* Animations d'entrée pour le titre */
@@ -1054,10 +1118,11 @@ section {
   transition: all 0.3s ease;
   opacity: 0;
   transform: translateX(30px);
+  color: #b8b8b8;
 }
 
 .nav-card:hover .nav-card-description {
-  color: #5a6268;
+  color: #c8c8c8;
 }
 
 /* Animations d'entrée pour la description */
@@ -1100,7 +1165,7 @@ section {
 }
 
 .nav-card-arrow i {
-  font-size: 1.75rem;
+  font-size: 2.5rem;
   color: #d04d7b;
   transition: all 0.3s ease;
 }
@@ -1154,7 +1219,6 @@ section {
   }
   
   .scroll-card {
-    max-width: 100%;
     width: calc(100% - 2rem);
   }
   
@@ -1170,6 +1234,18 @@ section {
   .nav-card .card-body {
     padding: 2rem 1.5rem !important;
   }
+  
+  .nav-card-title {
+    font-size: 1.5rem !important;
+  }
+  
+  .nav-card-description {
+    font-size: 1rem !important;
+  }
+  
+  .nav-card-arrow i {
+    font-size: 2rem !important;
+  }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
@@ -1178,11 +1254,11 @@ section {
   }
   
   .scroll-cards-container {
-    max-width: 450px;
+    max-width: 600px;
   }
   
   .scroll-card {
-    max-width: 400px;
+    width: 400px;
   }
   
   .nav-card-icon-wrapper {
@@ -1279,16 +1355,33 @@ section {
   display: inline-block;
 }
 
+@keyframes dotted-line-draw {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
 .page-title::after {
   content: '';
   position: absolute;
   bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, #d04d7b, transparent);
-  border-radius: 2px;
+  width: 100%;
+  height: 2px;
+  background-image: repeating-linear-gradient(
+    to right,
+    #d04d7b 0,
+    #d04d7b 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  clip-path: inset(0 100% 0 0);
+  animation: dotted-line-draw 0.6s ease-in-out forwards;
+  animation-delay: 0.8s;
 }
 
 .page-subtitle {

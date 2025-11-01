@@ -4,9 +4,9 @@
 
         <%= search_form_for @q, url: produits_index_path, html: { class: "d-flex align-items-center w-100 position-relative" }, data: { turbo_frame: :results } do |f| %>
             <%= f.search_field :nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont, 
-                class: "form-control w-100 me-1 ps-5", autofocus: false, autocomplete: 'off', 
+                class: "form-control bg-dark text-light border-secondary placeholder-light w-100 me-1 ps-5", autofocus: false, autocomplete: 'off', 
                 placeholder: "Rechercher", oninput: 'this.form.requestSubmit()' %>
-            <i class="bi bi-search position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%);"></i>
+            <i class="bi bi-search text-light position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%);"></i>
         <% end %>
 
     </div>
@@ -30,7 +30,7 @@
                 taille: nil,
                 type: nil
             ),
-            class: "btn btn-sm btn-outline-dark" %>
+            class: "btn btn-sm btn-outline-light" %>
 
         <%= render  "produits_filtres" %>
    
