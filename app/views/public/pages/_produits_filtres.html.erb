@@ -20,7 +20,8 @@
                 prixmax: params[:prixmax],
                 type: params[:type],
                 format: :turbo_stream, 
-                subdomain: "shop")
+                subdomain: "shop",
+                from_cabine: params[:from_cabine])
             else
               produits_index_path(
                 id: params[:id],
@@ -30,7 +31,8 @@
                 type: params[:type],
                 format: :turbo_stream, 
                 q: params[:q]&.to_unsafe_h,
-                subdomain: "shop")
+                subdomain: "shop",
+                from_cabine: params[:from_cabine])
             end %>
 
       <% end %>

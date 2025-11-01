@@ -1,0 +1,193 @@
+<%= page_header("Cabine d'essayage", "Sélectionner vos produits et venez les essayer en boutique") %>
+
+<div class="public-main-content">
+  <div class="container-fluid">
+
+    <!-- Process -->
+    <div class="my-5" data-scroll-reveal>
+      <div class="row g-4">
+        <div class="col-md-3">
+          <div class="text-center">
+            <div class="concept-card-icon mx-auto mb-3" style="width: 80px; height: 80px;">
+              <i class="bi bi-bag-check brand-colored fs-2"></i>
+            </div>
+            <h5 class="fw-bold mb-3 text-light">1. Sélection</h5>
+            <p class="text-light opacity-75 small mb-0">
+              Parcourez notre collection et ajoutez les tenues qui vous plaisent à votre cabine d'essayage virtuelle.
+            </p>
+          </div>
+          </div>
+        <div class="col-md-3">
+          <div class="text-center">
+            <div class="concept-card-icon mx-auto mb-3" style="width: 80px; height: 80px;">
+              <i class="bi bi-calendar-check brand-colored fs-2"></i>
+            </div>
+            <h5 class="fw-bold mb-3 text-light">2. Réservation</h5>
+            <p class="text-light opacity-75 small mb-0">
+              Indiquez vos coordonnées et choisissez la date qui vous convient pour venir en boutique.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="text-center">
+            <div class="concept-card-icon mx-auto mb-3" style="width: 80px; height: 80px;">
+              <i class="bi bi-bell brand-colored fs-2"></i>
+            </div>
+            <h5 class="fw-bold mb-3 text-light">3. Confirmation</h5>
+            <p class="text-light opacity-75 small mb-0">
+              Recevez un email de confirmation et notre équipe prépare vos tenues pour votre venue.
+            </p>
+          </div>
+            </div>
+        <div class="col-md-3">
+          <div class="text-center">
+            <div class="concept-card-icon mx-auto mb-3" style="width: 80px; height: 80px;">
+              <i class="bi bi-star-fill brand-colored fs-2"></i>
+            </div>
+            <h5 class="fw-bold mb-3 text-light">4. Essayage</h5>
+            <p class="text-light opacity-75 small mb-0">
+              Testez vos tenues dans notre cabine avec l'aide de nos conseillers en image.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panier Cabine d'essayage -->
+    <div class="my-5" data-scroll-reveal>
+      <div class="card bg-dark text-light border-secondary shadow-lg position-relative overflow-hidden"
+           style="border-color: rgba(208, 77, 123, 0.3) !important; background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(30, 25, 30, 0.95) 100%) !important;">
+        
+        <% if @cabine_cart.any? %>
+          <!-- Header -->
+          <div class="card-header bg-transparent border-bottom border-secondary py-3">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+              <div class="d-flex align-items-center gap-3">
+                <h3 class="mb-0 text-light">
+                  <i class="bi bi-bag-check brand-colored me-2"></i>
+                  Ma cabine d'essayage
+                </h3>
+                <span class="badge rounded-pill px-3 py-2" 
+                      style="background: linear-gradient(135deg, rgba(208, 77, 123, 0.8), rgba(233, 107, 168, 0.8)); 
+                             border: 1px solid rgba(208, 77, 123, 0.5); 
+                             font-size: 0.9rem; 
+                             font-weight: 600;">
+                  <%= @cabine_cart.size %> / 10
+                </span>
+              </div>
+              <!-- Bouton Ajouter -->
+              <%= link_to produits_index_path(from_cabine: true), class: "btn btn-lg px-5 shadow-sm btn-cabine-add", 
+                  style: "background: linear-gradient(135deg, rgba(208, 77, 123, 0.3), rgba(233, 107, 168, 0.3)); 
+                         border: 1px solid rgba(208, 77, 123, 0.5); 
+                         color: #ffffff; 
+                         transition: all 0.3s ease;
+                         white-space: nowrap;" do %>
+                <i class="bi bi-plus-circle me-2"></i>Ajouter d'autres produits
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Body -->
+          <div class="card-body p-4">
+            <div class="row g-3">
+              <% @cabine_cart.each do |produit| %>
+                <div class="col-12 col-md-6">
+                  <div class="d-flex align-items-center gap-3 p-3 rounded border border-secondary"
+                       style="background: linear-gradient(135deg, rgba(208, 77, 123, 0.05) 0%, rgba(233, 107, 168, 0.05) 100%);
+                              transition: all 0.3s ease;
+                              border-color: rgba(208, 77, 123, 0.2) !important;">
+                    <!-- Image -->
+                    <div style="width: 80px; height: 80px; flex-shrink: 0;">
+                      <% if produit.default_image.present? %>
+                        <%= image_tag produit.default_image, 
+                            class: "img-fluid rounded",
+                            style: "width: 100%; height: 100%; object-fit: cover;" %>
+                      <% else %>
+                        <div class="d-flex align-items-center justify-content-center h-100 w-100 rounded" 
+                             style="background: linear-gradient(135deg, rgba(208, 77, 123, 0.15), rgba(233, 107, 168, 0.15));">
+                          <i class="bi bi-image text-muted fs-4"></i>
+        </div>
+                      <% end %>
+            </div>
+                    
+                    <!-- Détails -->
+                    <div class="flex-grow-1" style="min-width: 0;">
+                      <h6 class="text-light mb-1" style="font-size: 0.95rem; font-weight: 600;">
+                        <%= produit.nom %>
+                      </h6>
+                      <% if produit.description.present? %>
+                        <p class="text-light opacity-75 mb-0" style="font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                          <%= produit.description %>
+                        </p>
+                      <% end %>
+                    </div>
+                    
+                    <!-- Bouton retirer -->
+                    <%= button_to cabine_remove_from_cabine_path(produit), 
+                        method: :delete,
+                        class: "btn btn-sm btn-outline-danger",
+                        title: "Retirer",
+                        style: "flex-shrink: 0; transition: all 0.3s ease;" do %>
+                      <i class="bi bi-trash"></i>
+                    <% end %>
+              </div>
+              </div>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="card-footer bg-transparent border-top border-secondary text-center py-4">
+            <%= link_to "#", class: "btn btn-lg px-5 shadow btn-smoke-hover" do %>
+              <i class="bi bi-calendar-check me-2"></i>Réserver mon essayage
+            <% end %>
+        </div>
+        <% else %>
+          <!-- Header vide -->
+          <div class="card-header bg-transparent border-bottom border-secondary py-3">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+              <div class="d-flex align-items-center gap-3">
+                <h3 class="mb-0 text-light">
+                  <i class="bi bi-bag-check brand-colored me-2"></i>
+                  Ma cabine d'essayage
+                </h3>
+                <span class="badge rounded-pill px-3 py-2" 
+                      style="background: linear-gradient(135deg, rgba(208, 77, 123, 0.8), rgba(233, 107, 168, 0.8)); 
+                             border: 1px solid rgba(208, 77, 123, 0.5); 
+                             font-size: 0.9rem; 
+                             font-weight: 600;">
+                  0 / 10
+                </span>
+              </div>
+              <!-- Bouton Ajouter -->
+              <%= link_to produits_index_path(from_cabine: true), class: "btn btn-lg px-5 shadow-sm btn-cabine-add", 
+                  style: "background: linear-gradient(135deg, rgba(208, 77, 123, 0.3), rgba(233, 107, 168, 0.3)); 
+                         border: 1px solid rgba(208, 77, 123, 0.5); 
+                         color: #ffffff; 
+                         transition: all 0.3s ease;
+                         white-space: nowrap;" do %>
+                <i class="bi bi-plus-circle me-2"></i>Ajouter des produits
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Body vide -->
+          <div class="card-body p-5 text-center">
+            <i class="bi bi-inbox brand-colored" style="font-size: 4rem; opacity: 0.3;"></i>
+            <h4 class="text-light my-4">Votre cabine est vide</h4>
+            <p class="text-light opacity-75 mb-4">
+              Commencez dès maintenant à sélectionner vos tenues favorites pour votre prochain événement.
+            </p>
+    </div>
+
+          <!-- Footer vide -->
+          <div class="card-footer bg-transparent border-top border-secondary text-center py-4">
+            <%= link_to produits_index_path(from_cabine: true), class: "btn btn-lg px-5 shadow btn-smoke-hover" do %>
+              <i class="bi bi-arrow-right-circle me-2"></i>Voir nos produits
+          <% end %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

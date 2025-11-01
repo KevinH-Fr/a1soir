@@ -1,0 +1,18 @@
+<%# Remplace uniquement le bouton %>
+<%= turbo_stream.replace "produit_#{@produit.id}_button" do %>
+  <%= turbo_frame_tag "produit_#{@produit.id}_button" do %>
+    <div class="card-footer bg-transparent border-top border-secondary mt-3 pt-3 p-0">
+      <%= button_to cabine_add_product_path(@produit), 
+          class: "btn btn-sm w-100 btn-smoke-hover",
+          style: "background: linear-gradient(135deg, rgba(208, 77, 123, 0.8), rgba(233, 107, 168, 0.8)); border: none;" do %>
+        <i class="bi bi-bag-plus me-2"></i>Ajouter à la cabine
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+
+<%# Ajoute la notification flash %>
+<%= turbo_stream.append :flash do %>
+  <%= render partial: "public/pages/flash" %>
+<% end %>
+

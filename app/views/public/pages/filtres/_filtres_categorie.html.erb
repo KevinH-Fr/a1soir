@@ -30,7 +30,8 @@
                     taille: params[:taille],
                     couleur: params[:couleur],
                     prixmax: params[:prixmax],
-                    type: params[:type]
+                    type: params[:type],
+                    from_cabine: params[:from_cabine]
                 ), 
                 method: :get,
                 class: "dropdown-item #{'fw-bold' if selected_ids.empty?}" %>
@@ -45,7 +46,8 @@
                     taille: params[:taille],
                     couleur: params[:couleur],
                     prixmax: params[:prixmax],
-                    type: params[:type]
+                    type: params[:type],
+                    from_cabine: params[:from_cabine]
                     ),
                     class: "dropdown-item #{'fw-bold' if selected_ids.include?(categorie.id)}" %>
             </li>

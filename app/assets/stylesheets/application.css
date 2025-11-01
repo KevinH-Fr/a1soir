@@ -1625,3 +1625,73 @@ section {
 [data-scroll-reveal]:nth-child(odd) {
   transition-delay: 0.05s;
 }
+
+/* ================================
+   FLASH MESSAGES CABINE D'ESSAYAGE
+   ================================ */
+
+.alert-success-cabine {
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(40, 30, 35, 0.98) 100%) !important;
+  border: 1px solid rgba(208, 77, 123, 0.5) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 8px 32px rgba(208, 77, 123, 0.3), 
+              0 0 60px rgba(208, 77, 123, 0.15) !important;
+  animation: slideInFromRight 0.5s ease-out;
+}
+
+.alert-danger-cabine {
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(50, 30, 30, 0.98) 100%) !important;
+  border: 1px solid rgba(220, 53, 69, 0.5) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 8px 32px rgba(220, 53, 69, 0.3), 
+              0 0 60px rgba(220, 53, 69, 0.15) !important;
+  animation: slideInFromRight 0.5s ease-out;
+}
+
+.alert-info-cabine {
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(35, 35, 45, 0.98) 100%) !important;
+  border: 1px solid rgba(108, 117, 125, 0.5) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 8px 32px rgba(108, 117, 125, 0.3), 
+              0 0 60px rgba(108, 117, 125, 0.15) !important;
+  animation: slideInFromRight 0.5s ease-out;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ================================
+   CABINE D'ESSAYAGE CARDS
+   ================================ */
+
+/* Effet hover sur les items produits dans la cabine */
+.d-flex.align-items-center.gap-3.p-3:hover {
+  transform: translateX(5px);
+  border-color: rgba(208, 77, 123, 0.4) !important;
+  background: linear-gradient(135deg, rgba(208, 77, 123, 0.1) 0%, rgba(233, 107, 168, 0.1) 100%) !important;
+}
+
+.d-flex.align-items-center.gap-3.p-3:hover .btn-outline-danger {
+  background-color: rgba(220, 53, 69, 0.1);
+  border-color: rgba(220, 53, 69, 0.8);
+  color: #ff6b7d;
+}
+
+/* Effet hover sur le bouton "Ajouter d'autres produits" */
+.btn-cabine-add:hover {
+  background: linear-gradient(135deg, rgba(208, 77, 123, 0.4), rgba(233, 107, 168, 0.4)) !important;
+  border-color: rgba(208, 77, 123, 0.7) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(208, 77, 123, 0.3) !important;
+}

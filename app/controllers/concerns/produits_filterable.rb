@@ -44,8 +44,8 @@ module ProduitsFilterable
   
     available_produits_scope = Produit.where(id: available_produits_ids).order(nom: :asc)
   
-    # 🔁 Then paginate the available produits (6 per page)
-    @pagy, @produits = pagy(available_produits_scope, items: 6)
+    # 🔁 Then paginate the available produits (3 per page)
+    @pagy, @produits = pagy(available_produits_scope, items: 3)
   end
 
   # Méthode pour mettre à jour les filtres via Turbo Stream
@@ -56,19 +56,19 @@ module ProduitsFilterable
       format.turbo_stream do
         render turbo_stream: [
           turbo_stream.update("filtres-categorie",
-            partial: "public/pages/filtres_categorie"),
+            partial: "public/pages/filtres/filtres_categorie"),
               
           turbo_stream.update("filtres-taille", 
-            partial: "public/pages/filtres_taille"),
+            partial: "public/pages/filtres/filtres_taille"),
 
           turbo_stream.update("filtres-couleur", 
-            partial: "public/pages/filtres_couleur"),
+            partial: "public/pages/filtres/filtres_couleur"),
 
           turbo_stream.update("filtres-prix", 
-            partial: "public/pages/filtres_prix"),
+            partial: "public/pages/filtres/filtres_prix"),
 
           turbo_stream.update("filtres-type", 
-            partial: "public/pages/filtres_type"),
+            partial: "public/pages/filtres/filtres_type"),
 
           turbo_stream.update("produits-filtres", 
             partial: "public/pages/produits_filtres")

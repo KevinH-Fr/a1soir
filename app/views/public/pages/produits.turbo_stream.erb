@@ -18,14 +18,16 @@
                     taille: params[:taille], couleur: params[:couleur], 
                     prixmax: params[:prixmax],
                     type: params[:type],
-                    page: @pagy.next, q: params[:q]&.to_unsafe_h)
+                    page: @pagy.next, q: params[:q]&.to_unsafe_h,
+                    from_cabine: params[:from_cabine])
             else
                 produits_index_path(format: :turbo_stream, 
                     id: params[:id],
                     taille: params[:taille], couleur: params[:couleur], 
                     prixmax: params[:prixmax],
                     type: params[:type],
-                    page: @pagy.next, q: params[:q]&.to_unsafe_h)
+                    page: @pagy.next, q: params[:q]&.to_unsafe_h,
+                    from_cabine: params[:from_cabine])
             end %>
     <% end %>
 

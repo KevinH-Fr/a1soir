@@ -15,11 +15,11 @@
 
     <div class="container-fluid d-flex flex-wrap gap-1 justify-content-center">
 
-        <%= render  "filtres_categorie" %>
-        <%= render  "filtres_taille" %>
-        <%= render  "filtres_couleur" %>
-        <%= render  "filtres_prix" %>
-        <%= render  "filtres_type" %>
+        <%= render partial: "public/pages/filtres/filtres_categorie" %>
+        <%= render partial: "public/pages/filtres/filtres_taille" %>
+        <%= render partial: "public/pages/filtres/filtres_couleur" %>
+        <%= render partial: "public/pages/filtres/filtres_prix" %>
+        <%= render partial: "public/pages/filtres/filtres_type" %>
 
         <%= button_to "Tous les produits", 
             update_filters_path(
@@ -28,7 +28,8 @@
                 couleur: nil,
                 prixmax: nil,
                 taille: nil,
-                type: nil
+                type: nil,
+                from_cabine: params[:from_cabine]
             ),
             class: "btn btn-sm btn-outline-light" %>
 

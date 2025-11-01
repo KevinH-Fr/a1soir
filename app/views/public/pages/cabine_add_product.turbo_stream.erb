@@ -1,0 +1,19 @@
+<%# Remplace uniquement le bouton si le produit a été ajouté avec succès %>
+<% if flash[:success] %>
+  <%= turbo_stream.replace "produit_#{@produit.id}_button" do %>
+    <%= turbo_frame_tag "produit_#{@produit.id}_button" do %>
+      <div class="card-footer bg-transparent border-top border-secondary mt-3 pt-3 p-0">
+        <%= button_to cabine_remove_product_path(@produit), method: :delete, 
+            class: "btn btn-sm w-100 btn-outline-danger" do %>
+          <i class="bi bi-bag-x me-2"></i>Retirer de la cabine
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%# Remplace les notifications flash %>
+<%= turbo_stream.append :flash do %>
+  <%= render partial: "public/pages/flash" %>
+<% end %>
+

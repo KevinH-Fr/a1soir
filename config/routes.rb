@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       get 'nos_autres_activites', to: 'pages#nos_autres_activites'
       get 'legal', to: 'pages#legal'
       get 'faq', to: 'pages#faq'
+      get 'cabine_essayage', to: 'pages#cabine_essayage', as: 'cabine_essayage'
 
       get 'contact', to: 'pages#contact'
       get 'categories', to: 'pages#categories'
@@ -49,6 +50,11 @@ Rails.application.routes.draw do
       end
 
       get 'cart', to: 'pages#cart'
+
+      # Cabine d'essayage cart
+      post "cabine/add_product/:id", to: "pages#cabine_add_product", as: "cabine_add_product"
+      delete "cabine/remove_product/:id", to: "pages#cabine_remove_product", as: "cabine_remove_product"
+      delete "cabine/remove_from_cabine/:id", to: "pages#cabine_remove_from_cabine", as: "cabine_remove_from_cabine"
 
       # assistant ia
       get "chat/history", to: "chat#history"
