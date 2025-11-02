@@ -1,0 +1,8 @@
+<%= bandeau_entete_simple("Nouvelle demande", "bag-check") %>
+
+<%= render "form", demande_cabine_essayage: @demande_cabine_essayage %>
+
+<br>
+
+<%= return_model_index_button("Retour", admin_demande_cabine_essayages_path) %>
+

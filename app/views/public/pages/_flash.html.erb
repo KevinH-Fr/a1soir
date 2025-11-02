@@ -10,9 +10,11 @@
     else
       "alert-info-cabine"
     end
+    unique_id = "flash_#{key}_#{Time.current.to_i}"
   %>
   <div class="alert <%= alert_class %> alert-dismissible fade show position-fixed" 
        role="alert" 
+       id="<%= unique_id %>"
        style="bottom: 20px; right: 20px; z-index: 1100; min-width: 300px; max-width: 500px;"
        data-controller="autohide"
        data-autohide-delay-value="5000">

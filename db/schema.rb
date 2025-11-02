@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_21_182412) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_02_130121) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -149,6 +149,28 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_21_182412) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "couleur_code"
+  end
+
+  create_table "demande_cabine_essayage_items", force: :cascade do |t|
+    t.integer "demande_cabine_essayage_id", null: false
+    t.integer "produit_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["demande_cabine_essayage_id"], name: "idx_on_demande_cabine_essayage_id_a6b675f903"
+    t.index ["produit_id"], name: "index_demande_cabine_essayage_items_on_produit_id"
+  end
+
+  create_table "demande_cabine_essayages", force: :cascade do |t|
+    t.string "prenom"
+    t.string "nom"
+    t.string "mail"
+    t.string "telephone"
+    t.string "evenement"
+    t.date "date_evenement"
+    t.string "statut"
+    t.text "commentaires"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "doc_editions", force: :cascade do |t|
@@ -364,6 +386,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_21_182412) do
   add_foreign_key "avoir_rembs", "commandes"
   add_foreign_key "commandes", "clients"
   add_foreign_key "commandes", "profiles"
+  add_foreign_key "demande_cabine_essayage_items", "demande_cabine_essayages"
+  add_foreign_key "demande_cabine_essayage_items", "produits"
   add_foreign_key "doc_editions", "commandes"
   add_foreign_key "ensembles", "produits"
   add_foreign_key "ensembles", "type_produits", column: "type_produit1_id"

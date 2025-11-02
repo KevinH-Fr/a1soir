@@ -1,0 +1,18 @@
+<div class="px-4" id="reservationForm">
+    <!-- Formulaire de réservation -->
+    <% if @cabine_cart.any? %>
+        <% if @demande_cabine_essayage.nil? %>
+            <% @demande_cabine_essayage = DemandeCabineEssayage.new %>
+            <% if session[:cabine_cart].present? %>
+                    <% session[:cabine_cart].each do |produit_id| %>
+                    <% @demande_cabine_essayage.demande_cabine_essayage_items.build(produit_id: produit_id) %>
+                <% end %>
+            <% end %>
+        <% end %>
+        
+        <div class="collapse <%= 'show' if params[:open_form].present? %>" id="reservationFormCollapse">
+            <hr class="border-secondary my-2">
+            <%= render partial: "public/demande_cabine_essayages/form", locals: { demande_cabine_essayage: @demande_cabine_essayage } %>
+        </div>
+    <% end %>
+</div>

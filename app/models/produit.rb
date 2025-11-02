@@ -27,6 +27,9 @@ class Produit < ApplicationRecord
 
   has_one_attached :qr_code
 
+  has_many :demande_cabine_essayage_items, dependent: :restrict_with_exception
+  has_many :demande_cabine_essayages, through: :demande_cabine_essayage_items
+
   before_validation :generate_handle
 
   before_validation :fix_quantity_for_service

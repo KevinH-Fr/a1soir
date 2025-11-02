@@ -121,9 +121,26 @@ module PagesHelper
   
       content_tag :li, class: classes do
         link_to path, class: "text-decoration-none nav-link-public #{is_active ? 'nav-link-active' : ''}" do
-          concat content_tag(:span, name, class: "text-light fw-bold")
+          content_tag(:span, name, class: "text-light fw-bold")
         end
       end
+  end
+
+  def cabine_nav_link_item(badge_count: nil)
+    classes = ["nav-item text-center m-2 mx-3"]
+    is_active = current_page?(cabine_essayage_path)
+    classes << "active" if is_active
+
+    content_tag :li, class: classes, id: "cabine_badge" do
+      link_to cabine_essayage_url, class: "text-decoration-none nav-link-public #{is_active ? 'nav-link-active' : ''} position-relative" do
+        concat content_tag(:span, "Cabine d'essayage", class: "fw-bold")
+        if badge_count.present? && badge_count > 0
+        concat content_tag(:span, badge_count, 
+          class: "position-absolute top-0 start-100 translate-middle badge rounded-circle text-light",
+          style: "background: linear-gradient(135deg, rgba(208, 77, 123, 0.9), rgba(233, 107, 168, 0.9)); color: #ffffff !important; width: 1.5em; height: 1.5em; display: flex; align-items: center; justify-content: center; padding-top: 0.1em;")
+        end
+      end
+    end
   end
 
   #    laboutique_url(subdomain: "shop"),

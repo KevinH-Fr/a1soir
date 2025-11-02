@@ -3,7 +3,7 @@
   <%= turbo_frame_tag "produit_#{@produit.id}_button" do %>
     <div class="card-footer bg-transparent border-top border-secondary mt-3 pt-3 p-0">
       <%= button_to cabine_add_product_path(@produit), 
-          class: "btn btn-sm w-100 btn-smoke-hover",
+          class: "btn btn-sm w-100 btn-smoke-hover text-light",
           style: "background: linear-gradient(135deg, rgba(208, 77, 123, 0.8), rgba(233, 107, 168, 0.8)); border: none;" do %>
         <i class="bi bi-bag-plus me-2"></i>Ajouter à la cabine
       <% end %>
@@ -11,8 +11,21 @@
   <% end %>
 <% end %>
 
-<%# Ajoute la notification flash %>
-<%= turbo_stream.append :flash do %>
+<%# Remplace les notifications flash %>
+<%= turbo_stream.replace :flash do %>
   <%= render partial: "public/pages/flash" %>
 <% end %>
 
+<%# Met à jour le badge de la navbar %>
+<%= turbo_stream.replace "cabine_badge" do %>
+  <%= render partial: "public/shared/cabine_nav_link" %>
+<% end %>
+
+<%# Met à jour le bouton flottant de réservation %>
+<%= turbo_stream.replace "floating_reservation_btn" do %>
+  <% if session[:cabine_cart].present? && session[:cabine_cart].any? %>
+    <%= render partial: "public/pages/floating_reservation_button" %>
+  <% else %>
+    <div id="floating_reservation_btn"></div>
+  <% end %>
+<% end %>

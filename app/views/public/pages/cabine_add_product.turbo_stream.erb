@@ -13,7 +13,16 @@
 <% end %>
 
 <%# Remplace les notifications flash %>
-<%= turbo_stream.append :flash do %>
+<%= turbo_stream.replace :flash do %>
   <%= render partial: "public/pages/flash" %>
 <% end %>
 
+<%# Met à jour le badge de la navbar %>
+<%= turbo_stream.replace "cabine_badge" do %>
+  <%= render partial: "public/shared/cabine_nav_link" %>
+<% end %>
+
+<%# Affiche le bouton flottant de réservation %>
+<%= turbo_stream.replace "floating_reservation_btn" do %>
+  <%= render partial: "public/pages/floating_reservation_button" %>
+<% end %>

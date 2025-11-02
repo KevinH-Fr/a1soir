@@ -1,0 +1,79 @@
+<%= form_with model: demande_cabine_essayage, url: demande_cabine_essayages_path, local: true, class: "needs-validation" do |form| %>
+  
+  <% if demande_cabine_essayage.errors.any? %>
+    <div class="alert alert-danger">
+      <h6><%= pluralize(demande_cabine_essayage.errors.count, "erreur") %> ont empêché l'enregistrement :</h6>
+      <ul class="mb-0">
+        <% demande_cabine_essayage.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- Coordonnées -->
+  <h5 class="text-light mb-3">
+    <i class="bi bi-person brand-colored me-2"></i>Coordonnées
+  </h5>
+  <div class="row mb-2">
+    <div class="col-md-6 mb-2">
+      <%= form.text_field :prenom, class: "form-control bg-dark text-light border-secondary placeholder-light", placeholder: "Prénom" %>
+    </div>
+    <div class="col-md-6 mb-2">
+      <%= form.text_field :nom, class: "form-control bg-dark text-light border-secondary placeholder-light", placeholder: "Nom *", required: true %>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6 mb-2">
+      <%= form.email_field :mail, class: "form-control bg-dark text-light border-secondary placeholder-light", placeholder: "Email *", required: true %>
+    </div>
+    <div class="col-md-6 mb-2">
+      <%= form.text_field :telephone, class: "form-control bg-dark text-light border-secondary placeholder-light", placeholder: "Téléphone *", required: true %>
+    </div>
+  </div>
+
+  <!-- Événement -->
+  <h5 class="text-light mb-3 mt-4">
+    <i class="bi bi-calendar-event brand-colored me-2"></i>Votre événement
+  </h5>
+  <div class="row mb-3">
+    <div class="col-md-6 mb-2">
+      <%= form.select :evenement, 
+          options_for_select([
+            ["Mariage", "mariage"],
+            ["Soirée", "soiree"],
+            ["Shooting", "shooting"],
+            ["Autre", "autre"]
+          ], demande_cabine_essayage.evenement),
+          { prompt: "Type d'événement" },
+          { class: "form-select bg-dark text-light border-secondary placeholder-light", required: false } %>
+    </div>
+    <div class="col-md-6 mb-2">
+      <%= form.date_field :date_evenement, class: "form-control bg-dark text-light border-secondary", required: false %>
+    </div>
+  </div>
+
+  <!-- Produits sélectionnés - Hidden fields only -->
+  <% if demande_cabine_essayage.demande_cabine_essayage_items.size > 0 %>
+    <%= form.fields_for :demande_cabine_essayage_items do |item_form| %>
+      <% if item_form.object.produit_id.present? %>
+        <%= item_form.hidden_field :produit_id %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <!-- Commentaires -->
+  <div class="mb-3">
+    <%= form.text_area :commentaires, rows: 4, class: "form-control bg-dark text-light border-secondary placeholder-light", 
+        placeholder: "Message (optionnel)" %>
+  </div>
+
+  <!-- Boutons -->
+  <div class="d-flex gap-3 mb-3 justify-content-end">
+    <button type="submit" class="btn btn-lg px-5 shadow btn-smoke-hover">
+      <i class="bi bi-send me-2"></i>Envoyer ma demande
+    </button>
+  </div>
+
+<% end %>

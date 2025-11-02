@@ -2,7 +2,7 @@ module Public
   class PagesController < Public::ApplicationController
     include ProduitsFilterable
     
-    layout 'public' 
+    #layout 'public' 
 
     def home
       #@categories = CategorieProduit.not_service
@@ -38,10 +38,6 @@ module Public
       session[:from_cabine] = true
     end
 
-    # def categories
-    #   @categories = CategorieProduit.all
-    # end
-
     def produits
       # Si le paramètre from_cabine est présent, on active le mode cabine d'essayage
       if params[:from_cabine].present?
@@ -59,21 +55,6 @@ module Public
       update_filters_turbo
     end
     
-    # def produit
-    #   @produit = Produit.find(params[:id])
-    #   @meme_produit_meme_couleur_autres_tailles = Produit
-    #   .where(handle: @produit.handle, couleur_id: @produit.couleur_id)
-    #   .where.not(id: @produit.id)
-    #   .joins(:taille) 
-    #   .order('tailles.nom') 
-    
-    #   @meme_produit_meme_taille_autres_couleurs = Produit
-    #   .where(handle: @produit.handle, taille_id: @produit.taille_id)
-    #   .where.not(id: @produit.id)
-    #   .joins(:couleur) 
-
-    # end
-
     def cart
       @total_amount = @cart.sum { |item| item.prixvente } # Sum of all item prices
     end
@@ -81,11 +62,7 @@ module Public
     def cabine_add_product
       id = params[:id].to_i
       @produit = Produit.find(id)
-      
-      Rails.logger.debug "=== cabine_add_product ==="
-      Rails.logger.debug "Product ID: #{id}"
-      Rails.logger.debug "Cabine cart BEFORE: #{session[:cabine_cart].inspect}"
-      
+            
       respond_to do |format|
         if session[:cabine_cart].include?(id)
           flash[:notice] = "Ce produit est déjà dans votre cabine d'essayage"
@@ -95,7 +72,6 @@ module Public
           format.turbo_stream
         else
           session[:cabine_cart] << id
-          Rails.logger.debug "Cabine cart AFTER: #{session[:cabine_cart].inspect}"
           flash[:success] = "#{@produit.nom} ajouté à votre cabine d'essayage"
           format.turbo_stream
         end
@@ -117,7 +93,7 @@ module Public
       id = params[:id].to_i
       @produit = Produit.find(id)
       session[:cabine_cart].delete(id)
-      flash[:info] = "#{@produit.nom} retiré de votre cabine d'essayage"
+      #flash[:info] = "#{@produit.nom} retiré de votre cabine d'essayage"
       
       redirect_to cabine_essayage_path
     end

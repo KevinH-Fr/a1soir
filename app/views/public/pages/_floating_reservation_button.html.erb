@@ -1,0 +1,12 @@
+<div id="floating_reservation_btn">
+  <%= link_to "#{cabine_essayage_path}?open_form=true#reservationForm", 
+      class: "btn btn-lg shadow-lg position-fixed start-50 translate-middle-x",
+      style: "bottom: 20px; z-index: 1050; 
+              background: linear-gradient(135deg, rgba(208, 77, 123, 0.9), rgba(233, 107, 168, 0.9)); 
+              border: 1px solid rgba(208, 77, 123, 0.5); 
+              color: #ffffff; 
+              border-radius: 50px;" do %>
+    <i class="bi bi-calendar-check me-2"></i>Réserver mon essayage
+  <% end %>
+</div>
+

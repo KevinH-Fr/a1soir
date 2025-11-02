@@ -55,6 +55,9 @@ Rails.application.routes.draw do
       post "cabine/add_product/:id", to: "pages#cabine_add_product", as: "cabine_add_product"
       delete "cabine/remove_product/:id", to: "pages#cabine_remove_product", as: "cabine_remove_product"
       delete "cabine/remove_from_cabine/:id", to: "pages#cabine_remove_from_cabine", as: "cabine_remove_from_cabine"
+      
+      # Demande cabine essayage
+      resources :demande_cabine_essayages, only: [:new, :create], path: "cabine/reservation"
 
       # assistant ia
       get "chat/history", to: "chat#history"
@@ -199,6 +202,12 @@ Rails.application.routes.draw do
         collection do
           get :download_ics # Define the download_ics route
         end
+        member do
+          post :edit
+        end
+      end
+      
+      resources :demande_cabine_essayages do 
         member do
           post :edit
         end
