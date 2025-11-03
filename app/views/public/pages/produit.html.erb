@@ -1,64 +1,79 @@
 <div class="public-main-content">
-  <div class="card m-2">
+  <div class="card concept-card shadow-lg my-3" data-aos="smoke-fade-in" data-aos-duration="1000">
     <div class="row g-0">
       <!-- Image/Carousel Column -->
-      <div class="col-sm-4">
+      <div class="col-md-5" data-aos="smoke-slide-right" data-aos-delay="200">
         <%= render partial: "carousel", locals: { produit: @produit, carousel_class: "carousel-single" } %>
       </div>
 
       <!-- Text Content Column -->
-      <div class="col-sm-8 d-flex align-items-center">
-        <div class="card-body">
-          <h5 class="card-title brand-colored"><%= @produit.nom %></h5>
+      <div class="col-md-7">
+        <div class="card-body p-3 p-md-4 d-flex flex-column h-100">
+          <div class="flex-grow-1">
+            <!-- Title -->
+            <h2 class="card-title text-light mb-2 fw-bold" style="font-family: 'Cormorant Garamond', serif; font-size: 2rem;" data-aos="fade-up" data-aos-delay="300">
+              <%= @produit.nom %>
+            </h2>
 
-          <p class="card-text">
-            <%= @produit.description %>
-          </p>
-
-          <p class="card-text">
-            <%= badge_taille(@produit) if @produit.taille.present? %>
-            <%= badge_prix("Vente", @produit.prixvente) %>
-            <%= badge_prix("Location", @produit.prixlocation) if @produit.prixlocation.present? %>
-          </p>
-
-          <% if @produit.prixlocation.present? %>
-            <p class="card-text small text-muted">
-              La location se fait uniquement au magasin.
+            <!-- Description -->
+            <p class="card-text text-light opacity-75 mb-3" style="line-height: 1.6; font-size: 1rem;" data-aos="fade-up" data-aos-delay="400">
+              <%= @produit.description %>
             </p>
-          <% end %>
 
-          <% if @meme_produit_meme_couleur_autres_tailles.any? %>
-            <p class="card-text">
-              <span class="brand-colored me-2">Autres tailles</span>
-              <% @meme_produit_meme_couleur_autres_tailles.each do |produit| %>
-                <%= link_to produit.taille.nom, produit_path(slug: produit.nom.parameterize, id: produit.id),
-                            class: "badge bg-brand-colored fs-6 text-uppercase text-decoration-none me-1" %>
-              <% end %>
-            </p>
-          <% end %>
+            <!-- Badges: Taille, Prix -->
+            <div class="d-flex flex-wrap gap-2 mb-3" data-aos="fade-up" data-aos-delay="500">
+              <%= badge_taille(@produit) if @produit.taille.present? %>
+              <%= badge_prix("Vente", @produit.prixvente) %>
+              <%= badge_prix("Location", @produit.prixlocation) if @produit.prixlocation.present? %>
+            </div>
 
-          <% if @meme_produit_meme_taille_autres_couleurs.any? %>
-            <p class="card-text">
-              <span class="brand-colored me-2">Autres couleurs</span>
-              <% @meme_produit_meme_taille_autres_couleurs.each do |produit| %>
-                <%= link_to produit.couleur.nom, produit_path(slug: produit.nom.parameterize, id: produit.id),
-                            class: "badge bg-brand-colored fs-6 text-uppercase text-decoration-none me-1" %>
-              <% end %>
-            </p>
-          <% end %>
-
-          <% if ENV["ONLINE_SALES_AVAILABLE"] == "true" %>
-            <% if @cart.include?(@produit) %>
-              <%= button_to remove_from_cart_path(@produit), method: :delete, class: "btn btn-sm btn-secondary mt-3" do %>
-                <i class="bi bi-bag-x"></i> <span>Retirer du panier</span>
-              <% end %>
-            <% else %>
-              <%= button_to add_to_cart_path(@produit), class: "btn btn-sm btn-primary mt-3" do %>
-                <i class="bi bi-bag-plus"></i> <span>Ajouter au panier</span>
-              <% end %>
+            <!-- Location info -->
+            <% if @produit.prixlocation.present? %>
+              <div class="alert mb-3 py-2" style="background: linear-gradient(135deg, rgba(108, 117, 125, 0.2), rgba(108, 117, 125, 0.3)); border: 1px solid rgba(108, 117, 125, 0.5); border-radius: 0.75rem;" data-aos="fade-up" data-aos-delay="600">
+                <i class="bi bi-info-circle brand-colored me-2"></i>
+                <small class="text-light opacity-75">La location se fait uniquement au magasin.</small>
+              </div>
             <% end %>
-          <% end %>
-          
+
+            <!-- Other sizes -->
+            <% if @meme_produit_meme_couleur_autres_tailles.any? %>
+              <div class="mb-3 p-2 rounded" style="background: linear-gradient(135deg, rgba(208, 77, 123, 0.05), rgba(233, 107, 168, 0.05)); border: 1px solid rgba(208, 77, 123, 0.2);" data-aos="smoke-slide-left" data-aos-delay="700">
+                <h6 class="text-light mb-2 d-flex align-items-center" style="font-size: 0.95rem;">
+                  <i class="bi bi-rulers brand-colored me-2"></i>
+                  <span class="fw-bold">Autres tailles disponibles</span>
+                </h6>
+                <div class="d-flex flex-wrap gap-2">
+                  <% @meme_produit_meme_couleur_autres_tailles.each do |produit| %>
+                    <%= badge_taille_link(produit) %>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+
+            <!-- Other colors -->
+            <% if @meme_produit_meme_taille_autres_couleurs.any? %>
+              <div class="mb-3 p-2 rounded" style="background: linear-gradient(135deg, rgba(208, 77, 123, 0.05), rgba(233, 107, 168, 0.05)); border: 1px solid rgba(208, 77, 123, 0.2);" data-aos="smoke-slide-left" data-aos-delay="800">
+                <h6 class="text-light mb-2 d-flex align-items-center" style="font-size: 0.95rem;">
+                  <i class="bi bi-palette brand-colored me-2"></i>
+                  <span class="fw-bold">Autres couleurs disponibles</span>
+                </h6>
+                <div class="d-flex flex-wrap gap-2">
+                  <% @meme_produit_meme_taille_autres_couleurs.each do |produit| %>
+                    <%= badge_couleur_link(produit) %>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+
+          <!-- Cart button -->
+          <div class="mt-auto pt-3">
+            <% if session[:from_cabine] %>
+              <%= render partial: "public/pages/cart_buttons/cabine_product_button", locals: { produit: @produit } %>
+            <% elsif ENV["ONLINE_SALES_AVAILABLE"] == "true" %>
+              <%= render partial: "public/pages/cart_buttons/shop_product_button", locals: { produit: @produit } %>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>

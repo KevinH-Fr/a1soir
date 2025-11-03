@@ -20,6 +20,7 @@ module Public
     end
 
     def nos_collections
+      session[:from_cabine] = false
     end
 
     def le_concept
@@ -45,7 +46,22 @@ module Public
       end
       produits_with_filters
     end
+
+    def produit
+      @produit = Produit.find(params[:id])
+      @meme_produit_meme_couleur_autres_tailles = Produit
+      .where(handle: @produit.handle, couleur_id: @produit.couleur_id)
+      .where.not(id: @produit.id)
+      .joins(:taille) 
+      .order('tailles.nom') 
     
+      @meme_produit_meme_taille_autres_couleurs = Produit
+      .where(handle: @produit.handle, taille_id: @produit.taille_id)
+      .where.not(id: @produit.id)
+      .joins(:couleur) 
+
+    end
+
     
     def update_filters
       # Si le paramètre from_cabine est présent, on active le mode cabine d'essayage
@@ -78,7 +94,7 @@ module Public
             # bouton du produit
             turbo_stream.replace(
               "produit_#{@produit.id}_button",
-              partial: "public/pages/cabine_product_button",
+              partial: "public/pages/cart_buttons/cabine_product_button",
               locals: { produit: @produit }
             ),
             # flash
@@ -122,7 +138,7 @@ module Public
             # bouton du produit
             turbo_stream.replace(
               "produit_#{@produit.id}_button",
-              partial: "public/pages/cabine_product_button",
+              partial: "public/pages/cart_buttons/cabine_product_button",
               locals: { produit: @produit }
             ),
             # flash

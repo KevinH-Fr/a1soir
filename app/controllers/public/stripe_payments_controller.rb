@@ -20,14 +20,69 @@ module Public
 
     def add_to_cart
       id = params[:id].to_i
-      session[:cart] << id unless session[:cart].include?(id)
-      redirect_to produit_path(id)
+      @produit = Produit.find(id)
+
+      respond_to do |format|
+        if session[:cart].include?(id)
+          flash.now[:notice] = "Ce produit est déjà dans votre panier"
+        else
+          session[:cart] << id
+          flash.now[:success] = "#{@produit.nom} ajouté à votre panier"
+        end
+
+        format.turbo_stream do
+          render turbo_stream: [
+            # bouton du produit
+            turbo_stream.replace(
+              "produit_#{@produit.id}_button",
+              partial: "public/pages/cart_buttons/shop_product_button",
+              locals: { produit: @produit }
+            ),
+            # flash
+            turbo_stream.append(
+              :flash,
+              partial: "public/pages/flash"
+            ),
+            # badge navbar
+            turbo_stream.replace(
+              "cart_badge",
+              partial: "public/shared/cart_nav_link"
+            )
+          ]
+        end
+        format.html { redirect_to produit_path(id) }
+      end
     end
 
     def remove_from_cart
       id = params[:id].to_i
+      @produit = Produit.find(id)
       session[:cart].delete(id)
-      redirect_to produit_path(id)
+      flash.now[:info] = "#{@produit.nom} retiré de votre panier"
+
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            # bouton du produit
+            turbo_stream.replace(
+              "produit_#{@produit.id}_button",
+              partial: "public/pages/cart_buttons/shop_product_button",
+              locals: { produit: @produit }
+            ),
+            # flash
+            turbo_stream.append(
+              :flash,
+              partial: "public/pages/flash"
+            ),
+            # badge navbar
+            turbo_stream.replace(
+              "cart_badge",
+              partial: "public/shared/cart_nav_link"
+            )
+          ]
+        end
+        format.html { redirect_to produit_path(id) }
+      end
     end
 
     def remove_from_cart_go_back_to_cart

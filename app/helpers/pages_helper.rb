@@ -159,13 +159,7 @@ module PagesHelper
     content_tag :span, statut, class: "border p-1 rounded text-capitalize #{statut == 'disponible' ? 'text-success' : 'text-danger'}"
   end
   
-  def badge_taille(produit)
-    content_tag :span, "Taille : #{produit.taille.nom.upcase}", class: "border p-1 rounded"
-  end
-  
-  def badge_prix(type, montant)
-    content_tag :span, "#{type} : #{custom_currency_no_decimals_format(montant)}", class: "border p-1 rounded"
-  end
+  # Les méthodes badge_taille et badge_prix ont été déplacées dans BadgesPublicHelper
   
   def link_badge_taille_class(taille_id = nil)
     badge_class = "badge border brand-colored text-decoration-none"
@@ -421,6 +415,62 @@ module PagesHelper
       
       (header_html + body_html).html_safe
     end
+  end
+
+  # Helper pour générer les boutons de panier (cabine ou shop) avec style commun
+  def cart_button_for(produit, type: :shop)
+    turbo_frame_tag "produit_#{produit.id}_button" do
+      card_footer_class = "card-footer bg-transparent border-top border-secondary mt-3 pt-3 p-0"
+      
+      content_tag :div, class: card_footer_class do
+        case type
+        when :cabine
+          render_cabine_button(produit)
+        when :shop
+          render_shop_button(produit)
+        end
+      end
+    end
+  end
+
+  private
+
+  def render_cabine_button(produit)
+    if session[:cabine_cart].include?(produit.id)
+      button_to cabine_remove_product_path(produit), method: :delete,
+          class: "btn btn-sm w-100 btn-outline-danger" do
+        (content_tag(:i, nil, class: "bi bi-bag-x me-2") + "Retirer de la cabine").html_safe
+      end
+    elsif session[:cabine_cart].size >= 10
+      content_tag :button, type: "button", class: "btn btn-sm w-100 btn-secondary", disabled: true do
+        (content_tag(:i, nil, class: "bi bi-exclamation-triangle me-2") + "Limite atteinte (10 produits max)").html_safe
+      end
+    else
+      button_to cabine_add_product_path(produit),
+          class: "btn btn-sm w-100 btn-smoke-hover text-light",
+          style: cart_button_style do
+        (content_tag(:i, nil, class: "bi bi-bag-plus me-2") + "Ajouter à la cabine").html_safe
+      end
+    end
+  end
+
+  def render_shop_button(produit)
+    if session[:cart].include?(produit.id)
+      button_to remove_from_cart_path(produit), method: :delete,
+          class: "btn btn-sm w-100 btn-secondary" do
+        (content_tag(:i, nil, class: "bi bi-bag-x me-2") + "Retirer du panier").html_safe
+      end
+    else
+      button_to add_to_cart_path(produit),
+          class: "btn btn-sm w-100 btn-smoke-hover text-light",
+          style: cart_button_style do
+        (content_tag(:i, nil, class: "bi bi-bag-plus me-2") + "Ajouter au panier").html_safe
+      end
+    end
+  end
+
+  def cart_button_style
+    "background: linear-gradient(135deg, rgba(208, 77, 123, 0.8), rgba(233, 107, 168, 0.8)); border: none;"
   end
 
 end

@@ -13,7 +13,7 @@
       end
     %>
     
-    <div class="dropdown" style="position: relative; z-index: 9999;">
+    <div class="dropdown" style="position: relative;">
         <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="categorieDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-list-ul"></i>
             <span class="ms-1 d-none d-md-inline">
@@ -21,7 +21,7 @@
             </span>
         </button>
 
-        <ul class="dropdown-menu" aria-labelledby="categorieDropdown" style="position: absolute; z-index: 9999;">
+        <ul class="dropdown-menu" aria-labelledby="categorieDropdown" style="position: absolute;">
             <li>
             <%= button_to "Toutes", 
                 update_filters_path(
