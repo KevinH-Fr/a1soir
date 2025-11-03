@@ -1,0 +1,26 @@
+<div style="font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;">
+  <p><strong>Nouvelle demande d’essayage reçue.</strong></p>
+
+  <p>
+    <% if @demande.respond_to?(:prenom) || @demande.respond_to?(:nom) %>
+      Demandeur : <%= [@demande.try(:prenom), @demande.try(:nom)].compact.join(' ') %><br>
+    <% end %>
+    Email : <%= @demande.try(:mail) %><br>
+    Téléphone : <%= @demande.try(:telephone) %>
+  </p>
+
+  <% if @demande.respond_to?(:evenement) && @demande.evenement.present? %>
+    <p>Événement : <%= @demande.evenement %></p>
+  <% end %>
+  <% if @demande.respond_to?(:date_evenement) && @demande.date_evenement.present? %>
+    <p>Date événement : <%= @demande.date_evenement %></p>
+  <% end %>
+  <% if @demande.respond_to?(:commentaires) && @demande.commentaires.present? %>
+    <p>Commentaires : <%= @demande.commentaires %></p>
+  <% end %>
+
+  <hr>
+  <p style="margin: 0; opacity: 0.8; font-size: 12px;">Message automatique d’alerte admin.</p>
+</div>
+
+

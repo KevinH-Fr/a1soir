@@ -1,0 +1,19 @@
+Nouvelle demande d’essayage reçue.
+
+Demandeur : <%= [@demande.try(:prenom), @demande.try(:nom)].compact.join(' ') %>
+Email : <%= @demande.try(:mail) %>
+Téléphone : <%= @demande.try(:telephone) %>
+
+<% if @demande.respond_to?(:evenement) && @demande.evenement.present? %>
+Événement : <%= @demande.evenement %>
+<% end %>
+<% if @demande.respond_to?(:date_evenement) && @demande.date_evenement.present? %>
+Date événement : <%= @demande.date_evenement %>
+<% end %>
+<% if @demande.respond_to?(:commentaires) && @demande.commentaires.present? %>
+Commentaires : <%= @demande.commentaires %>
+<% end %>
+
+--
+Message automatique d’alerte admin.
+

@@ -65,15 +65,47 @@ module Public
             
       respond_to do |format|
         if session[:cabine_cart].include?(id)
-          flash[:notice] = "Ce produit est déjà dans votre cabine d'essayage"
-          format.turbo_stream
+          flash.now[:notice] = "Ce produit est déjà dans votre cabine d'essayage"
         elsif session[:cabine_cart].size >= 10
-          flash[:alert] = "Limite de 10 produits atteinte. Retirez un produit pour en ajouter un autre."
-          format.turbo_stream
+          flash.now[:alert] = "Limite de 10 produits atteinte. Retirez un produit pour en ajouter un autre."
         else
           session[:cabine_cart] << id
-          flash[:success] = "#{@produit.nom} ajouté à votre cabine d'essayage"
-          format.turbo_stream
+          flash.now[:success] = "#{@produit.nom} ajouté à votre cabine d'essayage"
+        end
+
+        format.turbo_stream do
+          render turbo_stream: [
+            # bouton du produit
+            turbo_stream.replace(
+              "produit_#{@produit.id}_button",
+              partial: "public/pages/cabine_product_button",
+              locals: { produit: @produit }
+            ),
+            # flash
+            turbo_stream.append(
+              :flash,
+              partial: "public/pages/flash"
+            ),
+            # badge navbar
+            turbo_stream.replace(
+              "cabine_badge",
+              partial: "public/shared/cabine_nav_link"
+            ),
+            # bouton flottant réservation
+            (
+              if session[:cabine_cart].present? && session[:cabine_cart].any?
+                turbo_stream.replace(
+                  "floating_reservation_btn",
+                  partial: "public/pages/floating_reservation_button"
+                )
+              else
+                turbo_stream.replace(
+                  "floating_reservation_btn",
+                  view_context.tag.div(nil, id: "floating_reservation_btn")
+                )
+              end
+            )
+          ]
         end
       end
     end
@@ -82,10 +114,43 @@ module Public
       id = params[:id].to_i
       @produit = Produit.find(id)
       session[:cabine_cart].delete(id)
-      flash[:info] = "#{@produit.nom} retiré de votre cabine d'essayage"
+      flash.now[:info] = "#{@produit.nom} retiré de votre cabine d'essayage"
       
       respond_to do |format|
-        format.turbo_stream
+        format.turbo_stream do
+          render turbo_stream: [
+            # bouton du produit
+            turbo_stream.replace(
+              "produit_#{@produit.id}_button",
+              partial: "public/pages/cabine_product_button",
+              locals: { produit: @produit }
+            ),
+            # flash
+            turbo_stream.append(
+              :flash,
+              partial: "public/pages/flash"
+            ),
+            # badge navbar
+            turbo_stream.replace(
+              "cabine_badge",
+              partial: "public/shared/cabine_nav_link"
+            ),
+            # bouton flottant réservation
+            (
+              if session[:cabine_cart].present? && session[:cabine_cart].any?
+                turbo_stream.replace(
+                  "floating_reservation_btn",
+                  partial: "public/pages/floating_reservation_button"
+                )
+              else
+                turbo_stream.replace(
+                  "floating_reservation_btn",
+                  view_context.tag.div(nil, id: "floating_reservation_btn")
+                )
+              end
+            )
+          ]
+        end
       end
     end
 

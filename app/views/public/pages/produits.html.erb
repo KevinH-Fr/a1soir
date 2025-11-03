@@ -40,6 +40,8 @@
     <!-- Bouton flottant pour accéder au formulaire -->
     <% if @cabine_cart.any? %>
         <%= render partial: "public/pages/floating_reservation_button" %>
+    <% else %>
+        <div id="floating_reservation_btn"></div>
     <% end %>
     
 </div>

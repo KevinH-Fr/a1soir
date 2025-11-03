@@ -15,7 +15,7 @@
   <div class="alert <%= alert_class %> alert-dismissible fade show position-fixed" 
        role="alert" 
        id="<%= unique_id %>"
-       style="bottom: 20px; right: 20px; z-index: 1100; min-width: 300px; max-width: 500px;"
+       style="bottom: 20px; right: 20px; z-index: 2000; min-width: 300px; max-width: 500px;"
        data-controller="autohide"
        data-autohide-delay-value="5000">
     <i class="bi bi-<%= key == 'success' ? 'check-circle' : key == 'error' || key == 'alert' ? 'exclamation-triangle' : 'info-circle' %> me-2"></i>

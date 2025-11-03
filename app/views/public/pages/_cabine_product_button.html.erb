@@ -1,0 +1,22 @@
+<%= turbo_frame_tag "produit_#{produit.id}_button" do %>
+  <div class="card-footer bg-transparent border-top border-secondary mt-3 pt-3 p-0">
+    <% if session[:cabine_cart].include?(produit.id) %>
+      <%= button_to cabine_remove_product_path(produit), method: :delete, 
+          class: "btn btn-sm w-100 btn-outline-danger" do %>
+        <i class="bi bi-bag-x me-2"></i>Retirer de la cabine
+      <% end %>
+    <% elsif session[:cabine_cart].size >= 10 %>
+      <button type="button" class="btn btn-sm w-100 btn-secondary" disabled>
+        <i class="bi bi-exclamation-triangle me-2"></i>Limite atteinte (10 produits max)
+      </button>
+    <% else %>
+      <%= button_to cabine_add_product_path(produit), 
+          class: "btn btn-sm w-100 btn-smoke-hover text-light",
+          style: "background: linear-gradient(135deg, rgba(208, 77, 123, 0.8), rgba(233, 107, 168, 0.8)); border: none;" do %>
+        <i class="bi bi-bag-plus me-2"></i>Ajouter à la cabine
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+
