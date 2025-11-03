@@ -78,7 +78,12 @@ module Public
     def cabine_add_product
       id = params[:id].to_i
       @produit = Produit.find(id)
-            
+      
+      # S'assurer que session[:cabine_cart] existe et est normalisé
+      session[:cabine_cart] ||= []
+      # Utiliser une réassignation pour s'assurer que Rails détecte le changement
+      session[:cabine_cart] = session[:cabine_cart].map(&:to_i).compact.uniq
+      
       respond_to do |format|
         if session[:cabine_cart].include?(id)
           flash.now[:notice] = "Ce produit est déjà dans votre cabine d'essayage"
@@ -88,6 +93,9 @@ module Public
           session[:cabine_cart] << id
           flash.now[:success] = "#{@produit.nom} ajouté à votre cabine d'essayage"
         end
+
+        # Recharger @cabine_cart après modification
+        @cabine_cart = Produit.where(id: session[:cabine_cart].map(&:to_i))
 
         format.turbo_stream do
           render turbo_stream: [
@@ -129,8 +137,15 @@ module Public
     def cabine_remove_product
       id = params[:id].to_i
       @produit = Produit.find(id)
+      
+      # S'assurer que session[:cabine_cart] existe et est normalisé
+      session[:cabine_cart] ||= []
+      session[:cabine_cart] = session[:cabine_cart].map(&:to_i).compact.uniq
       session[:cabine_cart].delete(id)
       flash.now[:info] = "#{@produit.nom} retiré de votre cabine d'essayage"
+      
+      # Recharger @cabine_cart après modification
+      @cabine_cart = Produit.where(id: session[:cabine_cart].map(&:to_i))
       
       respond_to do |format|
         format.turbo_stream do
@@ -173,6 +188,9 @@ module Public
     def cabine_remove_from_cabine
       id = params[:id].to_i
       @produit = Produit.find(id)
+      # S'assurer que session[:cabine_cart] existe et est normalisé
+      session[:cabine_cart] ||= []
+      session[:cabine_cart] = session[:cabine_cart].map(&:to_i).compact.uniq
       session[:cabine_cart].delete(id)
       #flash[:info] = "#{@produit.nom} retiré de votre cabine d'essayage"
       

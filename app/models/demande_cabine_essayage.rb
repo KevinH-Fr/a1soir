@@ -5,16 +5,15 @@ class DemandeCabineEssayage < ApplicationRecord
     # Enums (gérés en string)
     enum :evenement, {
       mariage: "mariage",
-      soiree: "soiree",
-      shooting: "shooting",
+      soiree: "soirée",
       autre: "autre"
     }, prefix: true
   
     enum :statut, {
       brouillon: "brouillon",
       soumis: "soumis",
-      confirme: "confirme",
-      annule: "annule"
+      confirme: "confirmé",
+      annule: "annulé"
     }, suffix: true
   
     accepts_nested_attributes_for :demande_cabine_essayage_items, allow_destroy: true

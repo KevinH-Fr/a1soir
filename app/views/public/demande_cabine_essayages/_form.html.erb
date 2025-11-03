@@ -1,4 +1,4 @@
-<%= form_with model: demande_cabine_essayage, url: demande_cabine_essayages_path, local: true, class: "needs-validation" do |form| %>
+<%= form_with model: demande_cabine_essayage, url: demande_cabine_essayages_path, class: "needs-validation" do |form| %>
   
   <% if demande_cabine_essayage.errors.any? %>
     <div class="alert alert-danger">
@@ -69,11 +69,56 @@
         placeholder: "Message (optionnel)" %>
   </div>
 
+  <!-- reCAPTCHA -->
+  <div class="mb-3">
+    <%= recaptcha_tags theme: 'dark', callback: 'onRecaptchaSuccess', expired_callback: 'onRecaptchaExpired', error_callback: 'onRecaptchaError' %>
+  </div>
+
   <!-- Boutons -->
   <div class="d-flex gap-3 mb-3 justify-content-end">
-    <button type="submit" class="btn btn-lg px-5 shadow btn-smoke-hover">
+    <button type="submit" id="submit-btn" class="btn btn-lg px-5 shadow btn-smoke-hover" style="display: none;">
       <i class="bi bi-send me-2"></i>Envoyer ma demande
     </button>
   </div>
+
+  <script>
+    // Fonctions globales pour les callbacks reCAPTCHA
+    window.onRecaptchaSuccess = function() {
+      const submitBtn = document.getElementById('submit-btn');
+      if (submitBtn) {
+        submitBtn.style.display = 'block';
+      }
+    };
+
+    window.onRecaptchaExpired = function() {
+      const submitBtn = document.getElementById('submit-btn');
+      if (submitBtn) {
+        submitBtn.style.display = 'none';
+      }
+    };
+
+    window.onRecaptchaError = function() {
+      const submitBtn = document.getElementById('submit-btn');
+      if (submitBtn) {
+        submitBtn.style.display = 'none';
+      }
+    };
+
+    // Réinitialiser le bouton à chaque chargement de page (pour Turbo)
+    document.addEventListener('DOMContentLoaded', function() {
+      const submitBtn = document.getElementById('submit-btn');
+      if (submitBtn) {
+        submitBtn.style.display = 'none';
+      }
+    });
+
+    // Pour Turbo
+    document.addEventListener('turbo:load', function() {
+      const submitBtn = document.getElementById('submit-btn');
+      if (submitBtn) {
+        submitBtn.style.display = 'none';
+      }
+    });
+  </script>
 
 <% end %>

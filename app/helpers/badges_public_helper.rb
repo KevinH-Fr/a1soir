@@ -26,7 +26,6 @@ module BadgesPublicHelper
     link_to produit_path(slug: produit.nom.parameterize, id: produit.id),
         class: badge_public_link_classes,
         style: badge_public_link_style do
-      concat content_tag(:i, nil, class: "bi bi-rulers brand-colored me-2")
       concat content_tag(:span, produit.taille.nom, class: "fw-bold")
     end
   end

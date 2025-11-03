@@ -30,6 +30,9 @@ module Public
           flash.now[:success] = "#{@produit.nom} ajouté à votre panier"
         end
 
+        # Recharger @cart après modification de session[:cart]
+        @cart = Produit.find(session[:cart])
+
         format.turbo_stream do
           render turbo_stream: [
             # bouton du produit
@@ -59,6 +62,9 @@ module Public
       @produit = Produit.find(id)
       session[:cart].delete(id)
       flash.now[:info] = "#{@produit.nom} retiré de votre panier"
+
+      # Recharger @cart après modification de session[:cart]
+      @cart = Produit.find(session[:cart])
 
       respond_to do |format|
         format.turbo_stream do

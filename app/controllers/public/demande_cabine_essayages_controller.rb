@@ -18,10 +18,22 @@ module Public
       @demande_cabine_essayage = DemandeCabineEssayage.new(demande_cabine_essayage_params)
       @demande_cabine_essayage.statut = "soumis"
       
-      # Debug
-      #Rails.logger.debug "Demande params: #{demande_cabine_essayage_params.inspect}"
-      #Rails.logger.debug "Items after build: #{@demande_cabine_essayage.demande_cabine_essayage_items.inspect}"
-      
+      # Vérifier reCAPTCHA
+      unless verify_recaptcha(model: @demande_cabine_essayage)
+        flash.now[:alert] = "Veuillez compléter le reCAPTCHA pour prouver que vous n'êtes pas un robot"
+        
+        respond_to do |format|
+          format.html
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.append(
+              :flash,
+              partial: "public/pages/flash"
+            )
+          end
+        end
+        return
+      end
+            
       if @demande_cabine_essayage.save
         # Vider le panier cabine après création réussie
         session[:cabine_cart] = []
@@ -30,9 +42,6 @@ module Public
         # Notification admin
         DemandeCabineMailer.notification_admin(@demande_cabine_essayage).deliver_later
         redirect_to cabine_essayage_path, notice: "Votre demande de réservation a bien été envoyée. Nous vous contacterons bientôt."
-      else
-        Rails.logger.debug "Errors: #{@demande_cabine_essayage.errors.full_messages.inspect}"
-        render :new, status: :unprocessable_entity
       end
     end
 

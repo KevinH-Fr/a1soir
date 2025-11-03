@@ -24,6 +24,34 @@ module ApplicationHelper
       concat " #{value}"
     end
   end
+
+  # Helper pour obtenir l'icône Bootstrap selon le statut d'une demande cabine
+  def statut_demande_cabine_icon(statut)
+    case statut
+    when "brouillon"
+      "bi-file-earmark-text"
+    when "soumis"
+      "bi-hourglass-split"
+    when "confirmé"
+      "bi-check-circle"
+    when "annulé"
+      "bi-x-circle"
+    else
+      "bi-question-circle"
+    end
+  end
+
+  # Helper pour afficher le badge de statut d'une demande cabine avec icône
+  def badge_statut_demande_cabine(statut)
+    return "" unless statut.present?
+    
+    content_tag(:div, 
+      class: "badge lighter-beige-colored fw-normal m-1 fs-6 shadow-sm text-dark text-break d-inline-flex align-items-center", 
+      style: "white-space: normal;") do
+      concat content_tag(:i, "", class: "bi #{statut_demande_cabine_icon(statut)} me-1")
+      concat content_tag(:span, statut)
+    end
+  end
   
     def custom_badge_boolean(text, value)
         color = (value != 0) ? "danger" : "success"

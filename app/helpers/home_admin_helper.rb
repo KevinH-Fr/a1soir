@@ -34,10 +34,16 @@ module HomeAdminHelper
     end
   end
 
-  def options_supplementaires_link(path, icon_class, text, btn_class)
-    link_to(path, class: "me-1 mb-2 btn btn-sm #{btn_class}") do
+  def options_supplementaires_link(path, icon_class, text, btn_class, badge_count: nil)
+    link_to(path, class: "me-1 mb-2 btn btn-sm #{btn_class} position-relative") do
       concat content_tag(:i, "", class: "bi #{icon_class} me-1")
       concat content_tag(:span, text, class: "fw-bold")
+      # badge pour demande cabine essayage
+      if badge_count.present? && badge_count > 0
+        concat content_tag(:span, badge_count, 
+          class: "position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger", 
+          style: "font-size: 0.65rem; padding: 0.2rem 0.4rem;")
+      end
     end
   end
 

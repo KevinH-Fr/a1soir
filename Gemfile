@@ -78,3 +78,6 @@ end
 gem "jsbundling-rails"
 
 gem 'ruby-openai'
+
+gem 'recaptcha'
+

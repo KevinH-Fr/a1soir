@@ -8,7 +8,7 @@
               <%= custom_badge("", "", "", "fw-bold", demande_cabine_essayage.full_name) if demande_cabine_essayage.full_name.present? %>
             <% end %>
           </div>
-          <%= custom_badge("", "", "", "", demande_cabine_essayage.statut) if demande_cabine_essayage.statut.present? %>
+          <%= badge_statut_demande_cabine(demande_cabine_essayage.statut) %>
           <%= custom_badge("", "", "", "", demande_cabine_essayage.evenement) if demande_cabine_essayage.evenement.present? %>
           <%= custom_badge("", "", "", "", "#{demande_cabine_essayage.produits.count} produit#{'s' if demande_cabine_essayage.produits.count > 1}") if demande_cabine_essayage.produits.any? %>
 
