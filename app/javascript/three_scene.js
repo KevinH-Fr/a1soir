@@ -29,6 +29,7 @@ class StarryNightScene {
     this.setupInteractions();
     this.animate();
     this.handleResize();
+    this.rafId = null;
   }
 
   init() {
@@ -259,7 +260,11 @@ class StarryNightScene {
   }
 
   animate() {
-    requestAnimationFrame(() => this.animate());
+    this.rafId = requestAnimationFrame(() => this.animate());
+
+    if (!this.renderer || !this.scene || !this.camera) {
+      return;
+    }
 
     const elapsedTime = this.clock.getElapsedTime();
     const currentTime = Date.now();
@@ -356,7 +361,9 @@ class StarryNightScene {
     });
 
     // Rendre la scène (le fond est géré par CSS)
-    this.renderer.render(this.scene, this.camera);
+    if (this.renderer && this.scene && this.camera) {
+      this.renderer.render(this.scene, this.camera);
+    }
   }
 
   handleResize() {
@@ -370,6 +377,10 @@ class StarryNightScene {
   }
 
   destroy() {
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
     // Nettoyer les étoiles filantes
     this.shootingStars.forEach(shootingStar => {
       this.scene.remove(shootingStar);

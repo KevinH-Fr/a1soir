@@ -1,4 +1,4 @@
-<%= form_with model: demande_cabine_essayage, url: demande_cabine_essayages_path, class: "needs-validation" do |form| %>
+<%= form_with model: demande_cabine_essayage, url: demande_cabine_essayages_path, class: "needs-validation", data: { controller: "recaptcha-submit" } do |form| %>
   
   <% if demande_cabine_essayage.errors.any? %>
     <div class="alert alert-danger">
@@ -70,55 +70,20 @@
   </div>
 
   <!-- reCAPTCHA -->
-  <div class="mb-3">
+  <div class="mb-3" data-recaptcha-submit-target="recaptcha">
     <%= recaptcha_tags theme: 'dark', callback: 'onRecaptchaSuccess', expired_callback: 'onRecaptchaExpired', error_callback: 'onRecaptchaError' %>
   </div>
 
   <!-- Boutons -->
   <div class="d-flex gap-3 mb-3 justify-content-end">
-    <button type="submit" id="submit-btn" class="btn btn-lg px-5 shadow btn-smoke-hover" style="display: none;">
-      <i class="bi bi-send me-2"></i>Envoyer ma demande
+    <div id="recaptcha-warning" data-recaptcha-submit-target="warning" class="alert alert-warning py-2 px-3 mb-0 me-3" style="display: none;">
+      <i class="bi bi-exclamation-triangle me-2"></i>
+      <small>Veuillez compléter le reCAPTCHA</small>
+    </div>
+    <button type="submit" id="submit-btn" data-recaptcha-submit-target="submitBtn" data-action="click->recaptcha-submit#trySubmit" class="btn btn-lg px-5 shadow btn-secondary disabled" disabled style="opacity: 0.6; cursor: not-allowed;">
+      <i class="bi bi-lock me-2"></i>Validez d'abord le reCAPTCHA
     </button>
   </div>
 
-  <script>
-    // Fonctions globales pour les callbacks reCAPTCHA
-    window.onRecaptchaSuccess = function() {
-      const submitBtn = document.getElementById('submit-btn');
-      if (submitBtn) {
-        submitBtn.style.display = 'block';
-      }
-    };
-
-    window.onRecaptchaExpired = function() {
-      const submitBtn = document.getElementById('submit-btn');
-      if (submitBtn) {
-        submitBtn.style.display = 'none';
-      }
-    };
-
-    window.onRecaptchaError = function() {
-      const submitBtn = document.getElementById('submit-btn');
-      if (submitBtn) {
-        submitBtn.style.display = 'none';
-      }
-    };
-
-    // Réinitialiser le bouton à chaque chargement de page (pour Turbo)
-    document.addEventListener('DOMContentLoaded', function() {
-      const submitBtn = document.getElementById('submit-btn');
-      if (submitBtn) {
-        submitBtn.style.display = 'none';
-      }
-    });
-
-    // Pour Turbo
-    document.addEventListener('turbo:load', function() {
-      const submitBtn = document.getElementById('submit-btn');
-      if (submitBtn) {
-        submitBtn.style.display = 'none';
-      }
-    });
-  </script>
 
 <% end %>

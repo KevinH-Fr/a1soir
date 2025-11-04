@@ -25,24 +25,20 @@ module Public
       end
 
       def initialize_cabine_session
-        # Initialiser si nécessaire
+        # Initialiser uniquement - pas de normalisation ici pour éviter les conflits
         session[:cabine_cart] ||= []
-        # Normaliser les IDs en entiers pour éviter les problèmes de type
-        # Ne modifier que si nécessaire pour éviter de réassigner inutilement
-        if session[:cabine_cart].present? && session[:cabine_cart].any?
-          normalized = session[:cabine_cart].map(&:to_i).compact.uniq
-          # Ne réassigner que si le contenu a réellement changé
-          unless normalized == session[:cabine_cart]
-            session[:cabine_cart] = normalized
-          end
-        end
       end
    
       def load_cabine_cart
-        # Convertir les IDs en entiers pour éviter les problèmes de type
-        ids = session[:cabine_cart].present? ? session[:cabine_cart].map(&:to_i).compact.uniq : []
-        @cabine_cart = Produit.where(id: ids) if ids.any?
-        @cabine_cart ||= Produit.none
+        # Normaliser UNE SEULE FOIS ici à la lecture
+        if session[:cabine_cart].present? && session[:cabine_cart].any?
+          clean_ids = session[:cabine_cart].map(&:to_i).compact.uniq
+          # Mettre à jour la session avec les IDs propres si nécessaire
+          session[:cabine_cart] = clean_ids unless clean_ids == session[:cabine_cart]
+        end
+        
+        ids = session[:cabine_cart] || []
+        @cabine_cart = ids.any? ? Produit.where(id: ids) : Produit.none
       end
       
       # def authenticate_vendeur_or_admin!

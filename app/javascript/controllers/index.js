@@ -39,3 +39,6 @@ application.register("qr-code", QrCodeController)
 
 import ScrollController from "./scroll_controller"
 application.register("scroll", ScrollController)
+
+import RecaptchaSubmitController from "./recaptcha_submit_controller"
+application.register("recaptcha-submit", RecaptchaSubmitController)

@@ -15,6 +15,7 @@ class DressModel {
     this.targetScale = null;
     this.rotationSpeedMultiplier = 1; // Multiplicateur de vitesse de rotation
     this.rotationStarted = false; // Pour le debug
+    this.rafId = null;
 
     this.init();
     this.loadModel();
@@ -112,7 +113,12 @@ class DressModel {
   }
 
   animate() {
-    requestAnimationFrame(() => this.animate());
+    this.rafId = requestAnimationFrame(() => this.animate());
+
+    // Garde-fous si l'animation continue après destruction/changement de page
+    if (!this.renderer || !this.scene || !this.camera) {
+      return;
+    }
 
     const elapsedTime = this.clock.getElapsedTime();
     const delta = this.clock.getDelta();
@@ -150,7 +156,9 @@ class DressModel {
       this.mixer.update(delta);
     }
 
-    this.renderer.render(this.scene, this.camera);
+    if (this.renderer && this.scene && this.camera) {
+      this.renderer.render(this.scene, this.camera);
+    }
   }
 
   listenToRotationSpeed() {
@@ -175,6 +183,11 @@ class DressModel {
     // Nettoyer les event listeners
     if (this.resizeHandler) {
       window.removeEventListener('resize', this.resizeHandler);
+    }
+    // Stopper la boucle d'animation
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
     }
     
     // Nettoyer les ressources Three.js
