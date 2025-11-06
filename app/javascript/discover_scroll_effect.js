@@ -27,20 +27,40 @@ class DiscoverScrollEffect {
     const sectionHeight = rect.height;
 
     // Calculer la position de scroll dans la section (0 = début, 1 = fin)
-    const scrollProgress = this.clamp((windowHeight - rect.top) / (sectionHeight + windowHeight), 0, 1);
+    const rawScrollProgress = (windowHeight - rect.top) / (sectionHeight + windowHeight);
+    
+    // Retarder le début de l'animation : ne commence qu'après 20% de scroll dans la section
+    const animationStartOffset = 0.2;
+    const scrollProgress = rawScrollProgress < animationStartOffset 
+      ? 0 
+      : this.clamp((rawScrollProgress - animationStartOffset) / (1 - animationStartOffset), 0, 1);
 
-    // Phase d'entrée : 0% à 30% du scroll
+    // Phase d'entrée : 0% à 30% du scroll (après le décalage)
     const entryPhaseEnd = 0.3;
     const entryProgress = this.clamp(scrollProgress / entryPhaseEnd, 0, 1);
 
-    // Phase stable : 30% à 60% du scroll (complètement visible)
+    // Phase stable : 30% à 55% du scroll (complètement visible)
     const stablePhaseStart = 0.3;
-    const stablePhaseEnd = 0.6;
+    const stablePhaseEnd = 0.55;
 
-    // Phase de sortie : 60% à 90% du scroll
-    const exitPhaseStart = 0.6;
-    const exitPhaseEnd = 0.9;
+    // Phase de sortie : 55% à 80% du scroll (disparition plus rapide)
+    const exitPhaseStart = 0.55;
+    const exitPhaseEnd = 0.8;
     const exitProgress = this.clamp((scrollProgress - exitPhaseStart) / (exitPhaseEnd - exitPhaseStart), 0, 1);
+
+    // Cacher le conteneur si tous les éléments sont complètement disparus
+    const container = this.section.querySelector('.container');
+    if (scrollProgress > exitPhaseEnd) {
+      if (container) {
+        container.style.opacity = '0';
+        container.style.visibility = 'hidden';
+      }
+    } else if (scrollProgress > 0) {
+      if (container) {
+        container.style.opacity = '1';
+        container.style.visibility = 'visible';
+      }
+    }
 
     // Appliquer les transformations à chaque item
     this.items.forEach((item, index) => {
@@ -49,11 +69,20 @@ class DiscoverScrollEffect {
       const adjustedEntryProgress = this.clamp(entryProgress - delay, 0, 1);
       const adjustedExitProgress = this.clamp(exitProgress - delay, 0, 1);
 
-      if (scrollProgress > exitPhaseStart) {
+      if (scrollProgress > exitPhaseEnd) {
+        // Complètement disparu - cacher les éléments
+        item.style.opacity = '0';
+        item.style.visibility = 'hidden';
+        item.style.transform = 'translateY(-60px) scale(1.3)';
+        item.style.filter = 'blur(20px)';
+      } else if (scrollProgress > exitPhaseStart) {
         // Phase de sortie (fumée)
         this.applyExitEffect(item, adjustedExitProgress);
+        // S'assurer que visibility est visible pendant la transition
+        item.style.visibility = 'visible';
       } else if (scrollProgress > 0) {
         // Phase d'entrée et phase stable
+        item.style.visibility = 'visible';
         if (adjustedEntryProgress >= 1) {
           // Phase stable - complètement visible
           item.style.opacity = '1';
@@ -94,6 +123,7 @@ class DiscoverScrollEffect {
 
   resetItem(item) {
     item.style.opacity = '0';
+    item.style.visibility = 'hidden';
     item.style.transform = 'translateY(40px)';
     item.style.filter = 'blur(0px)';
   }

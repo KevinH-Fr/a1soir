@@ -566,11 +566,14 @@ section {
   position: relative;
   padding-top: 80px;
   margin-bottom: 600px; /* Espace avant le contenu suivant */
+  overflow: hidden; /* Empêche le débordement horizontal */
 }
 
 .home-hero .row {
   width: 100%;
   align-items: center;
+  position: relative;
+  z-index: 2; /* Le texte passe au-dessus du canvas 3D */
 }
 
 /* Colonne de la robe */
@@ -589,6 +592,9 @@ section {
 
 .text-content {
   width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Animation du texte qui change */
@@ -596,10 +602,12 @@ section {
   min-height: 60px;
   display: flex;
   align-items: center;
+  margin-top: 6rem;
 }
 
 .animated-text {
   margin-bottom: 2rem;
+  text-shadow: 0 1px 5px rgba(0,0,0,0.5);
 }
 
 #changing-text {
@@ -650,18 +658,17 @@ section {
   }
 }
 
-/* Conteneur du modèle 3D */
-.logo-container {
-  animation: fadeInUp 0.8s ease-out 0.2s both;
-  width: 100%;
-}
-
 #dress-model-container {
-  width: 100%;
-  max-width: 450px;
-  height: 70vh;
-  margin: 0 auto;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* Le canvas ne bloque pas les clics sur le texte */
+  z-index: 1;
 }
 
 #dress-model-container canvas {
@@ -683,12 +690,15 @@ section {
 
 /* Flèche de scroll */
 .scroll-indicator {
-  position: relative;
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
   display: inline-block;
-  margin-top: 2rem;
   animation: fadeInUp 1s ease-out 1.5s both;
   cursor: pointer;
-  text-align: left;
+  text-align: center;
+  z-index: 100;
 }
 
 .scroll-indicator i {
@@ -720,6 +730,22 @@ section {
   font-size: 5rem;
 }
 
+/* Titre avec gradient */
+.hero-gradient-text {
+  position: relative;
+  width: 100%;
+  z-index: 10;
+  font-family: 'Playfair Display', serif;
+  background: linear-gradient(135deg, 
+    #d04d7b 0%, 
+    #ffffff 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+}
+
 /* Animations d'entrée pour titre et sous-titre */
 .hero-title-animation {
   animation: fadeInUp 1s ease-out 0.3s both;
@@ -729,34 +755,9 @@ section {
   animation: fadeInUp 1s ease-out 0.7s both;
 }
 
-/* Effet de gradient sur le titre principal */
-.hero-gradient-text {
-  background: linear-gradient(135deg, 
-    #d04d7b 0%, 
-    #ffffff 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: none;
-  position: relative;
-}
-
-/* Ajouter une ombre portée au gradient (workaround) */
-.hero-gradient-text::before {
-  content: attr(data-text);
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: -1;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-  -webkit-background-clip: initial;
-  -webkit-text-fill-color: transparent;
-  background-clip: initial;
-}
-
 /* Effet de gradient sur le sous-titre */
 .hero-gradient-subtitle {
+  margin-top: 2rem;
   background: linear-gradient(135deg, 
     #ffffff 0%, 
     #f0c0d0 100%
@@ -1049,8 +1050,8 @@ section {
   font-size: 2.5rem;
   color: #d04d7b;
   transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  opacity: 0;
-  transform: scale(0.8) translateY(20px);
+  opacity: 1;
+  transform: scale(1) translateY(0);
 }
 
 .nav-card:hover .nav-card-icon {
@@ -1095,8 +1096,8 @@ section {
   font-family: 'Playfair Display', serif;
   color: #ffffff;
   transition: all 0.3s ease;
-  opacity: 0;
-  transform: translateX(30px);
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .nav-card:hover .nav-card-title {
@@ -1138,8 +1139,8 @@ section {
 /* Description */
 .nav-card-description {
   transition: all 0.3s ease;
-  opacity: 0;
-  transform: translateX(30px);
+  opacity: 1;
+  transform: translateX(0);
   color: #b8b8b8;
 }
 
@@ -1181,8 +1182,8 @@ section {
 
 /* Flèche */
 .nav-card-arrow {
-  opacity: 0;
-  transform: translateX(30px);
+  opacity: 1;
+  transform: translateX(0);
   transition: all 0.3s ease;
 }
 
@@ -1335,11 +1336,6 @@ section {
     min-height: 50px;
   }
 
-  #dress-model-container {
-    max-width: 300px;
-    height: 75vh;
-  }
-
   .home-hero .btn {
     font-size: 0.9rem;
     padding: 0.75rem 2rem !important;
@@ -1358,11 +1354,6 @@ section {
 @media (min-width: 769px) and (max-width: 1200px) {
   .text-content h1 {
     font-size: 4rem;
-  }
-
-  #dress-model-container {
-    max-width: 520px;
-    height: 75vh;
   }
 }
 
