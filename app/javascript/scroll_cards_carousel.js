@@ -25,6 +25,8 @@ class ScrollCardsCarousel {
     // Initialiser toutes les cards
     this.cards.forEach((card) => {
       card.style.transition = 'all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1)';
+      card.style.left = '0';
+      card.style.top = '0';
     });
 
     // Écouter le scroll
@@ -102,51 +104,55 @@ class ScrollCardsCarousel {
       const cardProgress = Math.max(0, Math.min(1, (progress - cardStart) / (cardEnd - cardStart)));
       
       // Phases pour chaque carte :
-      // - 0% à 30% : Entrée (droite → centre)
-      // - 30% à 70% : Pause au centre
-      // - 70% à 100% : Sortie (centre → gauche)
-      const entryEnd = 0.3;
-      const exitStart = 0.7;
+      // - 0% à 20% : Entrée (droite → centre)
+      // - 20% à 80% : Pause au centre
+      // - 80% à 100% : Sortie (centre → gauche)
+      const entryEnd = 0.2;
+      const exitStart = 0.8;
       
       // Calculer la position relative au conteneur
       const containerRect = this.container.getBoundingClientRect();
       const cardWidth = card.offsetWidth || 450;
+      const cardHeight = card.offsetHeight || 600;
       const containerWidth = containerRect.width;
       
       // Position centrée : le centre de la carte doit être au centre du conteneur
       // Pour centrer : (largeur conteneur - largeur carte) / 2
       const centerCardX = (containerWidth - cardWidth) / 2;
+      const centerCardY = -(cardHeight / 2);
       
       // Positions de départ et de fin par rapport au conteneur
       const startX = containerWidth + cardWidth; // Commence hors écran à droite
       const endX = -cardWidth; // Sort hors écran à gauche
       
-      let x, opacity, scale, zIndex;
+      let desiredX, opacity, scale, zIndex;
       
       if (cardProgress < entryEnd) {
         // Phase d'entrée : droite → centre
         const entryProgress = cardProgress / entryEnd;
-        x = startX + (centerCardX - startX) * entryProgress;
+        desiredX = startX + (centerCardX - startX) * entryProgress;
         opacity = entryProgress;
         scale = 0.85 + (entryProgress * 0.15); // De 0.85 à 1.0
         zIndex = Math.round(entryProgress * 10);
       } else if (cardProgress < exitStart) {
         // Phase de pause : reste au centre
-        x = centerCardX;
+        desiredX = centerCardX;
         opacity = 1;
         scale = 1;
         zIndex = 10;
       } else {
         // Phase de sortie : centre → gauche
         const exitProgress = (cardProgress - exitStart) / (1 - exitStart);
-        x = centerCardX + (endX - centerCardX) * exitProgress;
+        desiredX = centerCardX + (endX - centerCardX) * exitProgress;
         opacity = 1 - exitProgress;
         scale = 1 - (exitProgress * 0.15); // De 1.0 à 0.85
         zIndex = Math.round((1 - exitProgress) * 10);
       }
       
       // Appliquer les transformations
-      card.style.transform = `translateX(${x}px) scale(${scale})`;
+      const compensatedTranslateX = desiredX / scale;
+      const compensatedTranslateY = centerCardY / scale;
+      card.style.transform = `translate(${compensatedTranslateX}px, ${compensatedTranslateY}px) scale(${scale})`;
       card.style.opacity = opacity.toString();
       card.style.zIndex = zIndex;
     });

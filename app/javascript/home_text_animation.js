@@ -121,7 +121,7 @@ class ScrollIndicatorHandler {
     const distanceFromBottom = documentHeight - (scrollPosition + windowHeight);
     
     // Disparaître quand on est à moins de 200px du bas
-    const hideThreshold = 200;
+    const hideThreshold = 400;
     
     if (distanceFromBottom < hideThreshold) {
       const fadeProgress = distanceFromBottom / hideThreshold;

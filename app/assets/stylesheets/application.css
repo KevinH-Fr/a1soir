@@ -692,9 +692,12 @@ section {
 .scroll-indicator {
   position: fixed;
   bottom: 50px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: inline-block;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: max-content;
+  display: flex;
+  justify-content: center;
   animation: fadeInUp 1s ease-out 1.5s both;
   cursor: pointer;
   text-align: center;
@@ -727,7 +730,7 @@ section {
 
 /* Titre A1soir */
 .text-content h1 {
-  font-size: 5rem;
+  font-size: 2rem;
 }
 
 /* Titre avec gradient */
@@ -802,15 +805,16 @@ section {
 
 /* Titre */
 .discover-title {
+  margin-top: 4rem;
   margin-bottom: 3rem;
 }
 
 .discover-main-title {
   font-family: 'Playfair Display', serif;
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: 700;
   line-height: 1.2;
-  margin-bottom: 2rem;
+  margin-bottom: 1.8rem;
   background: linear-gradient(135deg, #d04d7b 0%, #ffffff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -838,7 +842,7 @@ section {
 
 /* Description */
 .discover-description {
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
@@ -862,7 +866,7 @@ section {
 .discover-icons {
   display: flex;
   justify-content: center;
-  gap: 4rem;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
@@ -927,15 +931,15 @@ section {
   }
   
   .discover-icons {
-    gap: 2rem;
+    gap: 0.75rem;
   }
   
   .icon-item i {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
   
   .icon-item span {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 }
 
