@@ -18,7 +18,7 @@ class Admin::SelectionProduitController < Admin::ApplicationController
     
     @produit = Produit.find(params[:produit]) if params[:produit]
    
-    produits = Produit.all
+    produits = Produit.actif
 
     # Traitement de la recherche multi-mots
     if params[:q].present? &&

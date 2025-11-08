@@ -1,68 +1,98 @@
+<%= page_header("Mon panier", "Retrouvez vos sélections prêtes à être validées") %>
+
 <div class="public-main-content">
-
-    <div class="p-2">
-
-        <div class="d-flex align-items-center">
-            <h1> Mon panier </h1>
-            <div class="fst-italic ms-2">  <%= pluralize(@cart.size, "produit", "produits") %>  </div>
-        </div>
-
-        <% @cart.each do |cart_item| %>
-            <div class="card shadow mb-3 h-100 d-flex">
-                <div class="row g-0 flex-grow-1">
-                    <div class="col-auto">
-                        <%= image_tag(cart_item.default_image, 
-                            class: "rounded-start", style: "max-height: 100px; object-fit: cover;") %>
-                    </div>
-
-                    <div class="col p-2 d-flex flex-column">
-                        <div class="fs-5">
-                            <%= cart_item.nom %> 
-                        </div>                      
-                        <small class="fs-6 my-1 text-truncate-multiline">
-                            <%= cart_item.description %>
-                        </small>
-
-                        <div>
-                            <%= badge_taille(cart_item) if cart_item.taille %>
-                        </div>
-
-                        <!-- Pushes the price & button to the bottom -->
-                        <div class="mt-auto d-flex gap-2 align-items-center">
-                            <div class="fw-bold"> 
-                                <%= custom_currency_no_decimals_format(cart_item.prixvente) %> 
-                            </div> 
-
-                            <%= button_to "supprimer", remove_from_cart_go_back_to_cart_path(cart_item), method: :delete, 
-                                    class: "btn btn-sm btn-outline-dark p-0 border-0" %>   
-                        </div>
-                    </div>
+  <div class="container-fluid">
+    <% if @cart.present? %>
+      <div class="row g-4">
+        <div class="col-lg-8 d-flex flex-column gap-4">
+          <% @cart.each do |cart_item| %>
+            <div class="concept-card p-3 p-md-4 h-100" data-scroll-reveal>
+              <div class="row g-3 g-md-4 align-items-center">
+                <div class="col-md-4 col-lg-3">
+                  <%= image_tag(cart_item.default_image,
+                      class: "img-fluid rounded-4 shadow-sm img-produit",
+                      alt: cart_item.nom,
+                      loading: "lazy") %>
                 </div>
+                <div class="col-md-8 col-lg-9 d-flex flex-column gap-3">
+                  <div>
+                    <h2 class="h4 fw-bold text-light mb-2"><%= cart_item.nom %></h2>
+                    <p class="text-light opacity-75 mb-0 text-truncate-multiline">
+                      <%= cart_item.description %>
+                    </p>
+                  </div>
+
+                  <div class="d-flex flex-wrap gap-2">
+                    <%= badge_taille(cart_item) if cart_item.taille %>
+                  </div>
+
+                  <div class="mt-auto d-flex flex-column flex-md-row align-items-md-center gap-3 justify-content-between">
+                  <div class="d-flex align-items-center gap-2">
+                    <%= badge_prix("Vente", cart_item.prixvente) %>
+                  </div>
+
+                    <%= button_to remove_from_cart_go_back_to_cart_path(cart_item),
+                        method: :delete,
+                        class: "btn btn-outline-light btn-sm d-inline-flex align-items-center gap-2" do %>
+                      <i class="bi bi-trash"></i>
+                      <span>supprimer</span>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
             </div>
-
-        <% end %>
-
-        <hr>
-      
-        <% if @cart.present? %>
-
-            <div class="d-inline">
-                Sous-total <%= custom_currency_no_decimals_format(@total_amount) %>
-            </div>
-            
-            <br>
-
-            <%#= @cart %>
-            <%#= @cart.collect { |item| item.to_builder.attributes! } %>
-            
-        <% end %>
-
-        <div class="d-flex gap-2 mt-3">
-            <%= button_to "Passer au paiement", stripe_payments_path, 
-                method: :post, class: "btn btn-primary", data: { turbo: false } %>  
-
-            <%= link_to  "Voir plus de produits", produits_index_url, class: "btn btn-outline-primary" %>
-        
+          <% end %>
         </div>
-    </div>
+
+        <div class="col-lg-4">
+          <div class="concept-card p-4 position-sticky top-0" style="z-index: 2;" data-scroll-reveal>
+            <div class="d-flex flex-column gap-3">
+              <div class="d-flex align-items-center justify-content-between">
+                <h2 class="h5 text-light fw-bold mb-0">Résumé</h2>
+                <span class="badge rounded-pill text-uppercase text-light" style="background: var(--public-brand-gradient);">
+                  <%= pluralize(@cart.size, "produit", "produits") %>
+                </span>
+              </div>
+
+              <p class="text-light opacity-75 mb-0">
+                Revoyez votre sélection et poursuivez vers un règlement sécurisé.
+              </p>
+
+              <div class="border-top border-secondary pt-3">
+                <div class="d-flex align-items-center justify-content-between">
+                  <span class="text-light opacity-75">Sous-total</span>
+                  <span class="fs-4 fw-bold public-brand-color">
+                    <%= custom_currency_no_decimals_format(@total_amount) %>
+                  </span>
+                </div>
+              </div>
+
+              <div class="d-grid gap-2">
+                <%= button_to "Passer au paiement",
+                    stripe_payments_path,
+                    method: :post,
+                    class: "btn shadow public-brand-bg-color w-100",
+                    data: { turbo: false } %>
+
+                <%= link_to "Voir plus de produits",
+                    produits_index_url,
+                    class: "btn btn-outline-warning" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <div class="concept-card p-5 text-center" data-scroll-reveal>
+        <i class="bi bi-bag text-white-50 display-4 mb-3"></i>
+        <h2 class="h4 text-light fw-bold mb-3">Votre panier est vide</h2>
+        <p class="text-light opacity-75 mb-4">
+          Explorez nos collections pour ajouter des tenues à votre panier.
+        </p>
+        <%= link_to "Découvrir nos produits",
+            produits_index_url,
+            class: "btn btn-outline-light px-4" %>
+      </div>
+    <% end %>
+  </div>
 </div>

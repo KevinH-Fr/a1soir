@@ -2,7 +2,7 @@
   <%= link_to cart_url, class: "text-decoration-none public-brand-color position-relative ms-4 d-none d-lg-block", id: "cart_badge" do %>
     <i class="bi bi-bag fs-4"></i>
     <% if @cart.size > 0 %>
-      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-brand-colored small">
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill public-brand-bg-color small">
         <%= @cart.size %>
         <span class="visually-hidden">articles dans le panier</span>
       </span>
