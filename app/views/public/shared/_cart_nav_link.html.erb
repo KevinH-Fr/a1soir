@@ -1,5 +1,5 @@
 <% if ENV["ONLINE_SALES_AVAILABLE"] == "true" %>
-  <%= link_to cart_url, class: "text-decoration-none brand-colored position-relative ms-4 d-none d-lg-block", id: "cart_badge" do %>
+  <%= link_to cart_url, class: "text-decoration-none public-brand-color position-relative ms-4 d-none d-lg-block", id: "cart_badge" do %>
     <i class="bi bi-bag fs-4"></i>
     <% if @cart.size > 0 %>
       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-brand-colored small">

@@ -30,7 +30,7 @@
             <!-- Location info -->
             <% if @produit.prixlocation.present? %>
               <div class="alert mb-3 py-2" style="background: linear-gradient(135deg, rgba(108, 117, 125, 0.2), rgba(108, 117, 125, 0.3)); border: 1px solid rgba(108, 117, 125, 0.5); border-radius: 0.75rem;" data-aos="fade-up" data-aos-delay="800" data-aos-duration="800">
-                <i class="bi bi-info-circle brand-colored me-2"></i>
+                <i class="bi bi-info-circle public-brand-color me-2"></i>
                 <small class="text-light opacity-75">La location se fait uniquement au magasin.</small>
               </div>
             <% end %>
@@ -38,7 +38,7 @@
             <!-- Other sizes -->
             <% if @meme_produit_meme_couleur_autres_tailles.any? %>
                 <h6 class="text-light mb-2 d-flex align-items-center" style="font-size: 0.95rem;" data-aos="fade-left" data-aos-delay="1000" data-aos-duration="800">
-                  <i class="bi bi-rulers brand-colored me-2"></i>
+                  <i class="bi bi-rulers public-brand-color me-2"></i>
                   <span class="fw-bold">Autres tailles disponibles</span>
                 </h6>
                 <div class="d-flex flex-wrap gap-2" data-aos="fade-up" data-aos-delay="1100" data-aos-duration="800">
@@ -51,7 +51,7 @@
             <!-- Other colors -->
             <% if @meme_produit_meme_taille_autres_couleurs.any? %>
                 <h6 class="text-light mb-2 d-flex align-items-center" style="font-size: 0.95rem;" data-aos="fade-left" data-aos-delay="1200" data-aos-duration="800">
-                  <i class="bi bi-palette brand-colored me-2"></i>
+                  <i class="bi bi-palette public-brand-color me-2"></i>
                   <span class="fw-bold">Autres couleurs disponibles</span>
                 </h6>
                 <div class="d-flex flex-wrap gap-2" data-aos="fade-up" data-aos-delay="1300" data-aos-duration="800">

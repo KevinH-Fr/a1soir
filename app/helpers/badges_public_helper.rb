@@ -6,7 +6,7 @@ module BadgesPublicHelper
   def badge_taille(produit)
     content_tag :span, class: badge_public_base_classes,
         style: badge_public_base_style do
-      concat content_tag(:i, nil, class: "bi bi-rulers brand-colored me-2")
+      concat content_tag(:i, nil, class: "bi bi-rulers public-brand-color me-2")
       concat content_tag(:span, "Taille", class: "text-light opacity-75 me-1")
       concat content_tag(:span, produit.taille.nom.upcase, class: "text-light fw-bold")
     end
@@ -16,7 +16,7 @@ module BadgesPublicHelper
     icon_class = type == "Vente" ? "bi-cash-coin" : "bi-calendar-check"
     content_tag :span, class: badge_public_base_classes,
         style: badge_public_base_style do
-      concat content_tag(:i, nil, class: "bi #{icon_class} brand-colored me-2")
+      concat content_tag(:i, nil, class: "bi #{icon_class} public-brand-color me-2")
       concat content_tag(:span, "#{type}", class: "text-light opacity-75 me-1")
       concat content_tag(:span, custom_currency_no_decimals_format(montant), class: "text-light fw-bold")
     end
@@ -37,7 +37,7 @@ module BadgesPublicHelper
       if produit.couleur.couleur_code.present?
         concat content_tag(:i, '', class: "bi bi-circle-fill me-2", style: "color: #{produit.couleur.couleur_code}; font-size: 0.8rem;")
       else
-        concat content_tag(:i, nil, class: "bi bi-palette brand-colored me-2")
+        concat content_tag(:i, nil, class: "bi bi-palette public-brand-color me-2")
       end
       concat content_tag(:span, produit.couleur.nom, class: "fw-bold")
     end
@@ -50,7 +50,7 @@ module BadgesPublicHelper
   end
 
   def badge_public_base_style
-    "background: linear-gradient(135deg, rgba(208, 77, 123, 0.15), rgba(233, 107, 168, 0.15)); border: 1px solid rgba(208, 77, 123, 0.4); border-radius: 0.5rem; color: #ffffff; font-weight: 500; transition: all 0.3s ease;"
+    "background: linear-gradient(135deg, rgba(30, 30, 30, 0.95), rgba(15, 15, 15, 0.98)); border: 1px solid rgba(120, 120, 120, 0.4); border-radius: 0.5rem; color: #f0e4b0; font-weight: 500; transition: all 0.3s ease;"
   end
 
   def badge_public_link_classes
@@ -58,7 +58,7 @@ module BadgesPublicHelper
   end
 
   def badge_public_link_style
-    "background: linear-gradient(135deg, rgba(208, 77, 123, 0.2), rgba(233, 107, 168, 0.2)); border: 1px solid rgba(208, 77, 123, 0.5); border-radius: 0.5rem; color: #ffffff; font-weight: 500; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(208, 77, 123, 0.3);"
+    "background: var(--public-brand-gradient); border: 1px solid rgba(208, 77, 123, 0.5); border-radius: 0.5rem; color: #ffffff; font-weight: 500; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(208, 77, 123, 0.3);"
   end
 end
 

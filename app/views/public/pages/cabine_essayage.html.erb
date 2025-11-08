@@ -9,7 +9,7 @@
         <div class="col-md-3">
           <div class="text-center">
             <div class="concept-card-icon mx-auto mb-3" style="width: 80px; height: 80px;">
-              <i class="bi bi-bag-check brand-colored fs-2"></i>
+              <i class="bi bi-bag-check public-brand-color fs-2"></i>
             </div>
             <h5 class="fw-bold mb-3 text-light">1. Sélection</h5>
             <p class="text-light opacity-75 small mb-0">
@@ -20,7 +20,7 @@
         <div class="col-md-3">
           <div class="text-center">
             <div class="concept-card-icon mx-auto mb-3" style="width: 80px; height: 80px;">
-              <i class="bi bi-calendar-check brand-colored fs-2"></i>
+              <i class="bi bi-calendar-check public-brand-color fs-2"></i>
             </div>
             <h5 class="fw-bold mb-3 text-light">2. Réservation</h5>
             <p class="text-light opacity-75 small mb-0">
@@ -31,7 +31,7 @@
         <div class="col-md-3">
           <div class="text-center">
             <div class="concept-card-icon mx-auto mb-3" style="width: 80px; height: 80px;">
-              <i class="bi bi-bell brand-colored fs-2"></i>
+              <i class="bi bi-bell public-brand-color fs-2"></i>
             </div>
             <h5 class="fw-bold mb-3 text-light">3. Confirmation</h5>
             <p class="text-light opacity-75 small mb-0">
@@ -42,7 +42,7 @@
         <div class="col-md-3">
           <div class="text-center">
             <div class="concept-card-icon mx-auto mb-3" style="width: 80px; height: 80px;">
-              <i class="bi bi-star-fill brand-colored fs-2"></i>
+              <i class="bi bi-star-fill public-brand-color fs-2"></i>
             </div>
             <h5 class="fw-bold mb-3 text-light">4. Essayage</h5>
             <p class="text-light opacity-75 small mb-0">
@@ -64,7 +64,7 @@
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
               <div class="d-flex align-items-center gap-3">
                 <h3 class="mb-0 text-light">
-                  <i class="bi bi-bag-check brand-colored me-2"></i>
+                  <i class="bi bi-bag-check public-brand-color me-2"></i>
                   Ma cabine d'essayage
                 </h3>
                 <span class="badge rounded-pill px-3 py-2" 
@@ -76,12 +76,7 @@
                 </span>
               </div>
               <!-- Bouton Ajouter -->
-              <%= link_to produits_index_path(from_cabine: true), class: "btn btn-lg px-5 shadow-sm btn-cabine-add", 
-                  style: "background: linear-gradient(135deg, rgba(208, 77, 123, 0.3), rgba(233, 107, 168, 0.3)); 
-                         border: 1px solid rgba(208, 77, 123, 0.5); 
-                         color: #ffffff; 
-                         transition: all 0.3s ease;
-                         white-space: nowrap;" do %>
+              <%= link_to produits_index_path(from_cabine: true), class: "btn btn-lg px-5 shadow-sm btn-cabine-add" do %>
                 <i class="bi bi-plus-circle me-2"></i>Ajouter d'autres produits
               <% end %>
             </div>
@@ -151,24 +146,18 @@
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
               <div class="d-flex align-items-center gap-3">
                 <h3 class="mb-0 text-light">
-                  <i class="bi bi-bag-check brand-colored me-2"></i>
+                  <i class="bi bi-bag-check public-brand-color me-2"></i>
                   Ma cabine d'essayage
                 </h3>
                 <span class="badge rounded-pill px-3 py-2" 
-                      style="background: linear-gradient(135deg, rgba(208, 77, 123, 0.8), rgba(233, 107, 168, 0.8)); 
-                             border: 1px solid rgba(208, 77, 123, 0.5); 
+                      style="background: var(--public-brand-gradient); 
                              font-size: 0.9rem; 
                              font-weight: 600;">
                   0 / 10
                 </span>
               </div>
               <!-- Bouton Ajouter -->
-              <%= link_to produits_index_path(from_cabine: true), class: "btn btn-lg px-5 shadow-sm btn-cabine-add", 
-                  style: "background: linear-gradient(135deg, rgba(208, 77, 123, 0.3), rgba(233, 107, 168, 0.3)); 
-                         border: 1px solid rgba(208, 77, 123, 0.5); 
-                         color: #ffffff; 
-                         transition: all 0.3s ease;
-                         white-space: nowrap;" do %>
+              <%= link_to produits_index_path(from_cabine: true), class: "btn btn-lg px-5 shadow-sm btn-cabine-add" do %>
                 <i class="bi bi-plus-circle me-2"></i>Ajouter des produits
               <% end %>
             </div>
@@ -176,7 +165,7 @@
 
           <!-- Body vide -->
           <div class="card-body p-5 text-center">
-            <i class="bi bi-inbox brand-colored" style="font-size: 4rem; opacity: 0.3;"></i>
+            <i class="bi bi-inbox public-brand-color" style="font-size: 4rem; opacity: 0.3;"></i>
             <h4 class="text-light my-4">Votre cabine est vide</h4>
             <p class="text-light opacity-75 mb-4">
               Commencez dès maintenant à sélectionner vos tenues favorites pour votre prochain événement.
@@ -185,7 +174,7 @@
 
           <!-- Footer vide -->
           <div class="card-footer bg-transparent border-top border-secondary text-center py-4">
-            <%= link_to produits_index_path(from_cabine: true), class: "btn btn-lg px-5 shadow btn-smoke-hover" do %>
+            <%= link_to produits_index_path(from_cabine: true), class: "btn btn-lg px-5 shadow-sm btn-cabine-add" do %>
               <i class="bi bi-arrow-right-circle me-2"></i>Voir nos produits
             <% end %>
           </div>

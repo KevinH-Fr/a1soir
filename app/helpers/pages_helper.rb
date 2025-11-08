@@ -35,7 +35,7 @@ module PagesHelper
 
   def reference_item(icon:, name:)
     content_tag :div, class: "reference-item" do
-      icon_tag = content_tag(:i, nil, class: "bi bi-#{icon} brand-colored me-2")
+      icon_tag = content_tag(:i, nil, class: "bi bi-#{icon} public-brand-color me-2")
       name_tag = content_tag(:span, name)
       (icon_tag + name_tag).html_safe
     end
@@ -93,7 +93,7 @@ module PagesHelper
 
           # Card body
           card_body = content_tag :div, class: "collection-card-body" do
-            concat content_tag(:h5, title, class: "brand-colored fw-bold mb-3")
+            concat content_tag(:h5, title, class: "public-brand-color fw-bold mb-3")
             concat content_tag(:p, items.join(" • ").html_safe, class: "text-light small mb-0")
           end
 
@@ -115,8 +115,18 @@ module PagesHelper
   def nav_link_public(path, name)
       classes = ["nav-item text-center m-2 mx-3"]
       
-      # Considérer la page active si c'est la page courante OU si c'est l'accueil et qu'on est sur root_path
       is_active = current_page?(path) || (path == home_path && current_page?(root_path))
+      # Activer le lien cabine quand on revient des produits avec le paramètre from_cabine
+      is_active ||= (
+        path == cabine_essayage_path &&
+        params[:controller] == "public/pages" &&
+        params[:action] == "produits" &&
+        params[:from_cabine].present?
+      )
+      # Sur la page produits sans paramètre from_cabine, on met en avant Collections
+      if params[:controller] == "public/pages" && params[:action] == "produits" && params[:from_cabine].blank? && path == nos_collections_url
+        is_active = true
+      end
       classes << "active" if is_active
   
       content_tag :li, class: classes do
@@ -129,6 +139,10 @@ module PagesHelper
   def cabine_nav_link_item(badge_count: nil)
     classes = ["nav-item text-center m-2 mx-3"]
     is_active = current_page?(cabine_essayage_path)
+    # Garde le lien actif lorsque l'on consulte la liste des produits depuis la cabine
+    if params[:controller] == "public/pages" && params[:action] == "produits" && params[:from_cabine].present?
+      is_active = true
+    end
     classes << "active" if is_active
 
     content_tag :li, class: classes, id: "cabine_badge" do
@@ -137,7 +151,7 @@ module PagesHelper
         if badge_count.present? && badge_count > 0
         concat content_tag(:span, badge_count, 
           class: "position-absolute top-0 start-100 translate-middle badge rounded-circle text-light",
-          style: "background: linear-gradient(135deg, rgba(208, 77, 123, 0.9), rgba(233, 107, 168, 0.9)); color: #ffffff !important; width: 1.5em; height: 1.5em; display: flex; align-items: center; justify-content: center; padding-top: 0.1em;")
+          style: "background: var(--public-brand-gradient); color: #ffffff !important; width: 1.5em; height: 1.5em; display: flex; align-items: center; justify-content: center; padding-top: 0.1em;")
         end
       end
     end
@@ -266,7 +280,7 @@ module PagesHelper
     content_tag :div, class: "col-sm m-2 p-0" do
       content_tag :div, class: "info-card rounded p-4 h-100" do
         card_header = content_tag(:div, class: "text-center mb-3") do
-          icon_tag = content_tag(:i, nil, class: "bi bi-#{icon} fs-3 brand-colored me-2")
+          icon_tag = content_tag(:i, nil, class: "bi bi-#{icon} fs-3 public-brand-color me-2")
           title_tag = content_tag(:span, title, class: "fw-bold fs-4 text-light")
           (icon_tag + title_tag).html_safe
         end
@@ -280,7 +294,7 @@ module PagesHelper
     end
   end
 
-  def concept_card(icon:, title:, description:, features:, icon_color: "brand-colored")
+  def concept_card(icon:, title:, description:, features:, icon_color: "public-brand-color")
     content_tag :div, class: "concept-card h-100" do
       # Icon section
       icon_section = content_tag(:div, class: "text-center mb-4") do
@@ -299,7 +313,7 @@ module PagesHelper
       features_section = content_tag(:ul, class: "list-unstyled") do
         features.map do |feature|
           content_tag(:li, class: "mb-2 text-light") do
-            concat content_tag(:i, nil, class: "bi bi-check-circle-fill brand-colored me-2")
+            concat content_tag(:i, nil, class: "bi bi-check-circle-fill public-brand-color me-2")
             concat feature
           end
         end.join.html_safe
@@ -309,7 +323,7 @@ module PagesHelper
     end
   end
 
-  def activity_card(icon:, title:, description:, icon_color: "brand-colored", &block)
+  def activity_card(icon:, title:, description:, icon_color: "public-brand-color", &block)
     content_tag :div, class: "concept-card h-100" do
       # Icon section
       icon_section = content_tag(:div, class: "mb-4") do
@@ -337,7 +351,7 @@ module PagesHelper
       content_tag :div, class: "concept-card" do
         # Title with icon
         title_html = content_tag(:h2, class: "h3 fw-bold mb-4 text-light") do
-          concat content_tag(:i, nil, class: "bi bi-#{icon} brand-colored me-2")
+          concat content_tag(:i, nil, class: "bi bi-#{icon} public-brand-color me-2")
           concat title
         end
         
@@ -347,7 +361,7 @@ module PagesHelper
           alert_style = alert[:type] == :warning ? 
             "background: rgba(255, 193, 7, 0.15); border: 1px solid rgba(255, 193, 7, 0.3);" :
             "background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
-          icon_class = alert[:type] == :warning ? "text-warning" : "brand-colored"
+          icon_class = alert[:type] == :warning ? "text-warning" : "public-brand-color"
           
           content_tag(:div, class: "alert #{alert_class} mb-4", style: alert_style) do
             concat content_tag(:i, nil, class: "bi bi-#{alert[:icon]} #{icon_class} me-2")
@@ -379,7 +393,7 @@ module PagesHelper
     content_tag :section, id: id, class: "my-5", "data-scroll-reveal": true do
       title_html = content_tag(:div, class: "mb-4") do
         content_tag(:h2, class: "h3 fw-bold text-light") do
-          concat content_tag(:i, nil, class: "bi bi-#{icon} brand-colored me-2")
+          concat content_tag(:i, nil, class: "bi bi-#{icon} public-brand-color me-2")
           concat title
         end
       end
@@ -402,7 +416,7 @@ module PagesHelper
           "data-bs-toggle": "collapse", 
           "data-bs-target": "##{id}"
         ) do
-          concat content_tag(:i, nil, class: "bi bi-question-circle-fill brand-colored me-2")
+          concat content_tag(:i, nil, class: "bi bi-question-circle-fill public-brand-color me-2")
           concat question
         end
       end
@@ -470,7 +484,7 @@ module PagesHelper
   end
 
   def cart_button_style
-    "background: linear-gradient(135deg, rgba(208, 77, 123, 0.8), rgba(233, 107, 168, 0.8)); border: none;"
+    "background: var(--public-brand-gradient); border: none;"
   end
 
 end
