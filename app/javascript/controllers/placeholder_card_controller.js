@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ["placeholder", "content"];
 
   connect() {
-    console.log("Stimulus controller placeholder connected");
+    //console.log("Stimulus controller placeholder connected");
 
     // Simulate a loading delay (e.g., 2 seconds)
     setTimeout(() => {

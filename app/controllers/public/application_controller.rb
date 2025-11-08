@@ -8,6 +8,8 @@ module Public
       before_action :load_cart
       before_action :initialize_cabine_session
       before_action :load_cabine_cart
+      # Protect every action in the public (shop) namespace with HTTP Basic when enabled.
+      before_action :authenticate_shop, if: :shop_basic_enabled?
     
       # before_action :authenticate_user!
 
@@ -46,6 +48,29 @@ module Public
       #       render "admin/home_admin/demande_connexion", alert: "Vous n'avez pas accès à cette page. Veuillez vous connecter."
       #    end
       # end
+
+      # Evaluate the flag to know whether shop protection must run in the current environment.
+      def shop_basic_enabled?
+        value = ENV.fetch("SHOP_PASSWORD_ENABLED", "true")
+        ActiveModel::Type::Boolean.new.cast(value)
+      end
+
+      # Prompt for HTTP Basic credentials and validate the username/password against ENV or credentials.
+      def authenticate_shop
+        username = ENV["SHOP_USERNAME"]
+        password = ENV["SHOP_PASSWORD"]
+        
+        authenticate_or_request_with_http_basic("Shop") do |login, pass|
+          secure_compare(login, username) && secure_compare(pass, password)
+        end
+      end
+
+      # Compare strings in constant time to avoid timing attacks when checking credentials.
+      def secure_compare(a, b)
+        return false if a.blank? || b.blank? || a.bytesize != b.bytesize
+
+        ActiveSupport::SecurityUtils.secure_compare(a, b)
+      end
 
    end 
    

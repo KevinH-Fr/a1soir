@@ -32,10 +32,10 @@
                 from_cabine: params[:from_cabine]
             ),
             class: "btn btn-sm btn-outline-light" %>
-
-        <%= render  "produits_filtres" %>
    
     </div>
+
+    <%= render  "produits_filtres" %>
 
     <!-- Bouton flottant pour accéder au formulaire -->
     <% if @cabine_cart.any? %>
