@@ -9,7 +9,8 @@
             <% end %>
           </div>
           <%= badge_statut_demande_cabine(demande_cabine_essayage.statut) %>
-          <%= custom_badge("", "", "", "", demande_cabine_essayage.evenement) if demande_cabine_essayage.evenement.present? %>
+          <%= custom_badge("fa-calendar", "", "", "", " envoyée le #{demande_cabine_essayage.created_at.strftime('%d/%m/%Y %H:%M')}") %>
+          <%= custom_badge("", "", "", "", (content_tag(:i, "", class: "bi bi-bookmark-heart me-1") + demande_cabine_essayage.evenement).html_safe) if demande_cabine_essayage.evenement.present? %>
           <%= custom_badge("", "", "", "", "#{demande_cabine_essayage.produits.count} produit#{'s' if demande_cabine_essayage.produits.count > 1}") if demande_cabine_essayage.produits.any? %>
 
           <%= link_to "", "#collapseDemande#{dom_id(demande_cabine_essayage)}", 
@@ -32,6 +33,29 @@
         <%= field_with_label("Date événement: ", demande_cabine_essayage.date_evenement&.strftime('%d/%m/%Y')) if demande_cabine_essayage.date_evenement.present? %>
         <%= field_with_label("Statut: ", demande_cabine_essayage.statut) if demande_cabine_essayage.statut.present? %>
         <%= field_with_label("Commentaires: ", demande_cabine_essayage.commentaires) if demande_cabine_essayage.commentaires.present? %>
+
+        <% if demande_cabine_essayage.disponibilites.present? %>
+          <hr>
+          <h6 class="fw-bold small text-muted">Disponibilités du client</h6>
+          <div class="d-flex flex-wrap gap-2">
+            <% demande_cabine_essayage.disponibilites.each do |slot| %>
+              <% jour_slug, creneau_slug = slot.to_s.split("_", 2) %>
+              <% jour_label = {
+                "mardi" => "Mardi",
+                "mercredi" => "Mercredi",
+                "jeudi" => "Jeudi",
+                "vendredi" => "Vendredi",
+                "samedi" => "Samedi"
+              }[jour_slug] || jour_slug.to_s.humanize %>
+              <% creneau_label = {
+                "matin" => "Matin",
+                "apres_midi" => "Après-midi",
+                "fin_de_journee" => "Fin de journée"
+              }[creneau_slug] || creneau_slug.to_s.humanize %>
+              <%= field_with_label("#{jour_label}:", creneau_label) %>
+            <% end %>
+          </div>
+        <% end %>
 
         <hr>
 

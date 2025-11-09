@@ -50,6 +50,7 @@ module Public
     def demande_cabine_essayage_params
       params.require(:demande_cabine_essayage).permit(
         :prenom, :nom, :mail, :telephone, :evenement, :date_evenement, :commentaires,
+        disponibilites: [],
         demande_cabine_essayage_items_attributes: [:produit_id, :_destroy]
       )
     end

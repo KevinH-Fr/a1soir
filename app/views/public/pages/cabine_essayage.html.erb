@@ -56,7 +56,7 @@
     <!-- Panier Cabine d'essayage -->
     <div class="my-5" data-scroll-reveal>
       <div class="card bg-dark text-light border-secondary shadow-lg position-relative overflow-hidden"
-           style="border-color: rgba(208, 77, 123, 0.3) !important; background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(30, 25, 30, 0.95) 100%) !important;">
+           style="border-color: rgba(196, 207, 47, 0.3) !important; background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(30, 25, 30, 0.95) 100%) !important;">
         
         <% if @cabine_cart.any? %>
           <!-- Header -->
@@ -68,8 +68,7 @@
                   Ma cabine d'essayage
                 </h3>
                 <span class="badge rounded-pill px-3 py-2" 
-                      style="background: linear-gradient(135deg, rgba(208, 77, 123, 0.8), rgba(233, 107, 168, 0.8)); 
-                             border: 1px solid rgba(208, 77, 123, 0.5); 
+                      style="background: var(--public-brand-gradient); 
                              font-size: 0.9rem; 
                              font-weight: 600;">
                   <%= @cabine_cart.size %> / 10
@@ -87,10 +86,7 @@
             <div class="row g-3">
               <% @cabine_cart.each do |produit| %>
                 <div class="col-12 col-md-6">
-                  <div class="d-flex align-items-center gap-3 p-3 rounded border border-secondary"
-                       style="background: linear-gradient(135deg, rgba(208, 77, 123, 0.05) 0%, rgba(233, 107, 168, 0.05) 100%);
-                              transition: all 0.3s ease;
-                              border-color: rgba(208, 77, 123, 0.2) !important;">
+                  <div class="cabine-product-card d-flex align-items-center gap-3 p-3 rounded border border-secondary">
                     <!-- Image -->
                     <div style="width: 80px; height: 80px; flex-shrink: 0;">
                       <% if produit.default_image.present? %>
@@ -99,7 +95,7 @@
                             style: "width: 100%; height: 100%; object-fit: cover;" %>
                       <% else %>
                         <div class="d-flex align-items-center justify-content-center h-100 w-100 rounded" 
-                             style="background: linear-gradient(135deg, rgba(208, 77, 123, 0.15), rgba(233, 107, 168, 0.15));">
+                             style="background: linear-gradient(135deg, rgba(40, 40, 40, 0.8), rgba(55, 55, 55, 0.8));">
                           <i class="bi bi-image text-muted fs-4"></i>
                         </div>
                       <% end %>
@@ -134,7 +130,7 @@
 
           <!-- Footer -->
           <div class="card-footer bg-transparent border-top border-secondary text-center py-4">
-            <button type="button" class="btn btn-lg px-5 shadow btn-smoke-hover" data-bs-toggle="collapse" data-bs-target="#reservationFormCollapse" aria-expanded="false" aria-controls="reservationFormCollapse" 
+            <button type="button" class="btn btn-lg px-5 shadow btn-smoke-hover text-light" data-bs-toggle="collapse" data-bs-target="#reservationFormCollapse" aria-expanded="false" aria-controls="reservationFormCollapse" 
               onclick="setTimeout(() => document.getElementById('reservationForm').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)">
               <i class="bi bi-calendar-check me-2"></i>Réserver mon essayage
             </button>

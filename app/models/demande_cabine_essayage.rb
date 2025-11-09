@@ -17,7 +17,9 @@ class DemandeCabineEssayage < ApplicationRecord
     }, suffix: true
   
     accepts_nested_attributes_for :demande_cabine_essayage_items, allow_destroy: true
-  
+
+    serialize :disponibilites, coder: JSON
+      
     # Validations
     validates :nom, presence: true
     validates :mail, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -38,6 +40,14 @@ class DemandeCabineEssayage < ApplicationRecord
     # Helper methods
     def full_name
       [prenom, nom].compact.join(" ")
+    end
+
+    def disponibilites
+      super || []
+    end
+
+    def disponibilites=(values)
+      super(Array(values).reject(&:blank?))
     end
 
     def full_name_with_mail

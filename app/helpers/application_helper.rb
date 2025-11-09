@@ -32,9 +32,9 @@ module ApplicationHelper
       "bi-file-earmark-text"
     when "soumis"
       "bi-hourglass-split"
-    when "confirmé"
+    when "confirme"
       "bi-check-circle"
-    when "annulé"
+    when "annule"
       "bi-x-circle"
     else
       "bi-question-circle"

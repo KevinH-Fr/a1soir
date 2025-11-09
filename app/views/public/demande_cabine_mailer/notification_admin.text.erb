@@ -14,6 +14,26 @@ Date événement : <%= @demande.date_evenement %>
 Commentaires : <%= @demande.commentaires %>
 <% end %>
 
+<% if @demande.respond_to?(:disponibilites) && @demande.disponibilites.present? %>
+Disponibilités proposées :
+<% @demande.disponibilites.each do |slot| %>
+  <% jour_slug, creneau_slug = slot.to_s.split("_", 2) %>
+  <% jour_label = {
+    "mardi" => "Mardi",
+    "mercredi" => "Mercredi",
+    "jeudi" => "Jeudi",
+    "vendredi" => "Vendredi",
+    "samedi" => "Samedi"
+  }[jour_slug] || jour_slug.to_s.humanize %>
+  <% creneau_label = {
+    "matin" => "Matin",
+    "apres_midi" => "Après-midi",
+    "fin_de_journee" => "Fin de journée"
+  }[creneau_slug] || creneau_slug.to_s.humanize %>
+  - <%= jour_label %> — <%= creneau_label %>
+<% end %>
+<% end %>
+
 <%# Produits demandés %>
 <% if @demande.respond_to?(:demande_cabine_essayage_items) && @demande.demande_cabine_essayage_items.any? %>
 Produits demandés :

@@ -84,6 +84,7 @@ class Admin::DemandeCabineEssayagesController < Admin::ApplicationController
     def demande_cabine_essayage_params
       params.require(:demande_cabine_essayage).permit(
         :prenom, :nom, :mail, :telephone, :evenement, :date_evenement, :statut, :commentaires,
+        disponibilites: [],
         demande_cabine_essayage_items_attributes: [:id, :produit_id, :_destroy]
       )
     end

@@ -1,4 +1,4 @@
-<%= form_with model: demande_cabine_essayage, url: demande_cabine_essayages_path, class: "needs-validation", data: { controller: "recaptcha-submit" } do |form| %>
+<%= form_with model: demande_cabine_essayage, url: demande_cabine_essayages_path, class: "needs-validation cabine-reservation-form", data: { controller: "recaptcha-submit" } do |form| %>
   
   <% if demande_cabine_essayage.errors.any? %>
     <div class="alert alert-danger">
@@ -13,7 +13,7 @@
 
   <!-- Coordonnées -->
   <h5 class="text-light mb-3">
-    <i class="bi bi-person brand-colored me-2"></i>Coordonnées
+    <i class="bi bi-person public-brand-color me-2"></i>Coordonnées
   </h5>
   <div class="row mb-2">
     <div class="col-md-6 mb-2">
@@ -35,7 +35,7 @@
 
   <!-- Événement -->
   <h5 class="text-light mb-3 mt-4">
-    <i class="bi bi-calendar-event brand-colored me-2"></i>Votre événement
+    <i class="bi bi-calendar-event public-brand-color me-2"></i>Votre événement
   </h5>
   <div class="row mb-3">
     <div class="col-md-6 mb-2">
@@ -51,6 +51,71 @@
     </div>
     <div class="col-md-6 mb-2">
       <%= form.date_field :date_evenement, class: "form-control bg-dark text-light border-secondary", required: false %>
+    </div>
+  </div>
+
+  <!-- Disponibilités -->
+  <div class="mb-4">
+    <div class="d-flex align-items-center gap-2 mb-2">
+      <i class="bi bi-clock-history public-brand-color"></i>
+      <h5 class="text-light mb-0">Vos disponibilités</h5>
+    </div>
+    <p class="text-light opacity-75 small mb-3">
+      Sélectionnez les créneaux qui vous conviennent pour un rendez-vous.
+    </p>
+
+    <% jours = [
+      ["mardi", "Mardi"],
+      ["mercredi", "Mercredi"],
+      ["jeudi", "Jeudi"],
+      ["vendredi", "Vendredi"],
+      ["samedi", "Samedi"]
+    ] %>
+
+    <% creneaux = [
+      ["matin", "Matin"],
+      ["apres_midi", "Après-midi"],
+      ["fin_de_journee", "Fin de journée"]
+    ] %>
+
+    <% disponibilites_selectionnees = Array(form.object.disponibilites) %>
+
+    <div class="table-responsive rounded-3 overflow-hidden border border-secondary-subtle">
+      <table class="table table-sm table-dark align-middle mb-0">
+        <thead class="bg-black-50">
+          <tr class="small">
+            <th scope="col" class="ps-3 fw-bold text-light text-uppercase">Jour</th>
+            <% creneaux.each do |slug, label| %>
+              <th scope="col" class="fw-bold text-light text-center"><%= label %></th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <% jours.each do |jour_slug, jour_label| %>
+            <tr>
+              <th scope="row" class="ps-3 text-light fw-normal"><%= jour_label %></th>
+              <% creneaux.each do |creneau_slug, label| %>
+                <% valeur = "#{jour_slug}_#{creneau_slug}" %>
+                <% checkbox_id = "demande_cabine_essayage_disponibilites_#{valeur}" %>
+                <td class="text-center align-middle">
+                  <div class="form-check d-inline-flex justify-content-center mb-0">
+                    <%= form.check_box :disponibilites,
+                        {
+                          multiple: true,
+                          class: "form-check-input",
+                          id: checkbox_id,
+                          checked: disponibilites_selectionnees.include?(valeur)
+                        },
+                        valeur,
+                        nil %>
+                    <label class="visually-hidden" for="<%= checkbox_id %>"><%= "#{jour_label} - #{label}" %></label>
+                  </div>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
   </div>
 
