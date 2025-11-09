@@ -1,9 +1,17 @@
 
 <nav class="navbar navbar-expand-xl navbar-dark shadow-sm sticky-top">
-  <div class="container">
-    <%= link_to image_tag('/images/a1soir_logo_white.png', class: 'navbar-brand', width: "180", alt: "Logo"), root_url %>
+  <div class="container align-items-center justify-content-between">
+    <div class="d-flex align-items-center gap-2">
+      <%= link_to image_tag('/images/a1soir_logo_white.png', class: 'navbar-brand mb-0', width: "180", alt: "Logo"), root_url %>
 
-    <div class="d-flex align-items-center gap-3 order-xl-2">
+      <%= link_to rdv_url(subdomain: "shop"),
+          class: "btn btn-sm btn-smoke-hover text-light px-2 shadow d-inline-flex align-items-center public-brand-color hover-lift" do %>
+        <i class="bi bi-calendar-check me-2"></i>
+        <span class="fw-bold text-uppercase small">RDV</span>
+      <% end %>
+    </div>
+
+    <div class="d-flex align-items-center gap-3 order-xl-2 ms-auto">
       <%= render partial: "public/shared/cart_nav_link" %>
 
       <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,6 +29,13 @@
         <%= nav_link_public(nos_autres_activites_url, "Autres activités") %>
         <%= nav_link_public(legal_url, "Légal") %>
         <%= nav_link_public(faq_url, "FAQ") %>
+        <li class="nav-item my-3 d-xl-none">
+          <%= link_to rdv_url(subdomain: "shop"),
+              class: "btn btn-smoke-hover text-light px-4 py-2 shadow d-inline-flex align-items-center gap-2 hover-lift" do %>
+            <i class="bi bi-calendar-check"></i>
+            <span class="fw-bold text-uppercase small">Prendre rendez-vous</span>
+          <% end %>
+        </li>
       </ul>
     </div>
   </div>

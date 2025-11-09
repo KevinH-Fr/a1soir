@@ -42,7 +42,7 @@ module ProduitsFilterable
       produit.statut_disponibilite(datedebut, datefin)[:disponibles] > 0
     end.map(&:id)
   
-    available_produits_scope = Produit.where(id: available_produits_ids).order(nom: :asc)
+    available_produits_scope = Produit.where(id: available_produits_ids).order(updated_at: :desc)
   
     # 🔁 Then paginate the available produits (3 per page)
     @pagy, @produits = pagy(available_produits_scope, items: 3)
