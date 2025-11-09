@@ -24,7 +24,7 @@
         <%= nav_link_public(home_path, "Accueil") %>
         <%= nav_link_public(la_boutique_url, "Boutique") %>
         <%= nav_link_public(nos_collections_url, "Collections") %>
-        <%= cabine_nav_link_item(badge_count: session[:cabine_cart]&.size) %>
+        <%= render "public/shared/cabine_nav_link", badge_count: session[:cabine_cart]&.size %>
         <%= nav_link_public(le_concept_url, "Concept") %>
         <%= nav_link_public(nos_autres_activites_url, "Autres activités") %>
         <%= nav_link_public(legal_url, "Légal") %>

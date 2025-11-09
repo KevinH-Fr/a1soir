@@ -1,0 +1,13 @@
+<% raise ArgumentError, "count is required" unless defined?(count) %>
+<% sr_label ||= "" %>
+<% position_classes = local_assigns.fetch(:position_classes, "position-absolute top-0 start-100 translate-middle") %>
+<% badge_classes = ["badge", "rounded-pill", "public-brand-bg-color", "small"] %>
+<% badge_classes.concat(Array(local_assigns[:extra_classes])) if local_assigns.key?(:extra_classes) %>
+
+<span class="<%= ([position_classes] + badge_classes).join(" ") %>">
+  <%= count %>
+  <% if sr_label.present? %>
+    <span class="visually-hidden"><%= sr_label %></span>
+  <% end %>
+</span>
+

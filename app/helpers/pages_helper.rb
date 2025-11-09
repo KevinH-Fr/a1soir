@@ -136,26 +136,6 @@ module PagesHelper
       end
   end
 
-  def cabine_nav_link_item(badge_count: nil)
-    classes = ["nav-item text-center m-2 mx-3"]
-    is_active = current_page?(cabine_essayage_path)
-    # Garde le lien actif lorsque l'on consulte la liste des produits depuis la cabine
-    if params[:controller] == "public/pages" && params[:action] == "produits" && params[:from_cabine].present?
-      is_active = true
-    end
-    classes << "active" if is_active
-
-    content_tag :li, class: classes, id: "cabine_badge" do
-      link_to cabine_essayage_url, class: "text-decoration-none nav-link-public #{is_active ? 'nav-link-active' : ''} position-relative" do
-        concat content_tag(:span, "Cabine d'essayage", class: "fw-bold")
-        if badge_count.present? && badge_count > 0
-        concat content_tag(:span, badge_count, 
-          class: "position-absolute top-0 start-100 translate-middle badge rounded-circle text-light",
-          style: "background: var(--public-brand-gradient); color: #ffffff !important; width: 1.5em; height: 1.5em; display: flex; align-items: center; justify-content: center; padding-top: 0.1em;")
-        end
-      end
-    end
-  end
 
   #    laboutique_url(subdomain: "shop"),
   def card_categorie(categorie)

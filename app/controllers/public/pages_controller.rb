@@ -1,6 +1,7 @@
 module Public
   class PagesController < Public::ApplicationController
     include ProduitsFilterable
+    include CabineCartResponder
     
     #layout 'public' 
 
@@ -78,108 +79,32 @@ module Public
     def cabine_add_product
       id = params[:id].to_i
       @produit = Produit.find(id)
-      
-      # S'assurer que session[:cabine_cart] existe
-      session[:cabine_cart] ||= []
-      
-      respond_to do |format|
-        if session[:cabine_cart].include?(id)
-          flash.now[:notice] = "Ce produit est déjà dans votre cabine d'essayage"
-        elsif session[:cabine_cart].size >= 10
-          flash.now[:alert] = "Limite de 10 produits atteinte. Retirez un produit pour en ajouter un autre."
-        else
-          session[:cabine_cart] << id  # Ajouter directement l'entier
-          flash.now[:success] = "#{@produit.nom} ajouté à votre cabine d'essayage"
-        end
 
-        # Recharger @cabine_cart après modification
-        @cabine_cart = Produit.where(id: session[:cabine_cart])
+      ensure_cabine_cart_session
 
-        format.turbo_stream do
-          render turbo_stream: [
-            # bouton du produit
-            turbo_stream.replace(
-              "produit_#{@produit.id}_button",
-              partial: "public/pages/cart_buttons/cabine_product_button",
-              locals: { produit: @produit }
-            ),
-            # flash
-            turbo_stream.append(
-              :flash,
-              partial: "public/pages/flash"
-            ),
-            # badge navbar
-            turbo_stream.replace(
-              "cabine_badge",
-              partial: "public/shared/cabine_nav_link"
-            ),
-            # bouton flottant réservation
-            (
-              if session[:cabine_cart].present? && session[:cabine_cart].any?
-                turbo_stream.replace(
-                  "floating_reservation_btn",
-                  partial: "public/pages/floating_reservation_button"
-                )
-              else
-                turbo_stream.replace(
-                  "floating_reservation_btn",
-                  view_context.tag.div(nil, id: "floating_reservation_btn")
-                )
-              end
-            )
-          ]
-        end
+      if session[:cabine_cart].include?(id)
+        flash.now[:notice] = "Ce produit est déjà dans votre cabine d'essayage"
+      elsif session[:cabine_cart].size >= 10
+        flash.now[:alert] = "Limite de 10 produits atteinte. Retirez un produit pour en ajouter un autre."
+      else
+        session[:cabine_cart] << id
+        flash.now[:success] = "#{@produit.nom} ajouté à votre cabine d'essayage"
       end
+
+      refresh_cabine_cart
+      render_cabine_cart_turbo_stream_for(@produit)
     end
 
     def cabine_remove_product
       id = params[:id].to_i
       @produit = Produit.find(id)
       
-      # S'assurer que session[:cabine_cart] existe
-      session[:cabine_cart] ||= []
+      ensure_cabine_cart_session
       session[:cabine_cart].delete(id)
       flash.now[:info] = "#{@produit.nom} retiré de votre cabine d'essayage"
       
-      # Recharger @cabine_cart après modification
-      @cabine_cart = Produit.where(id: session[:cabine_cart])
-      
-      respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: [
-            # bouton du produit
-            turbo_stream.replace(
-              "produit_#{@produit.id}_button",
-              partial: "public/pages/cart_buttons/cabine_product_button",
-              locals: { produit: @produit }
-            ),
-            # flash
-            turbo_stream.append(
-              :flash,
-              partial: "public/pages/flash"
-            ),
-            # badge navbar
-            turbo_stream.replace(
-              "cabine_badge",
-              partial: "public/shared/cabine_nav_link"
-            ),
-            # bouton flottant réservation
-            (
-              if session[:cabine_cart].present? && session[:cabine_cart].any?
-                turbo_stream.replace(
-                  "floating_reservation_btn",
-                  partial: "public/pages/floating_reservation_button"
-                )
-              else
-                turbo_stream.replace(
-                  "floating_reservation_btn",
-                  view_context.tag.div(nil, id: "floating_reservation_btn")
-                )
-              end
-            )
-          ]
-        end
-      end
+      refresh_cabine_cart
+      render_cabine_cart_turbo_stream_for(@produit)
     end
 
     def cabine_remove_from_cabine
