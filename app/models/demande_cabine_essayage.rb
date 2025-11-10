@@ -54,12 +54,23 @@ class DemandeCabineEssayage < ApplicationRecord
       "#{full_name} (#{mail})"
     end
 
-    private
+  def to_client_attributes
+    # Construit les attributs nécessaires pour initialiser un client à partir de la demande.
+    # On ne conserve que les valeurs présentes afin d'éviter d'écraser des valeurs existantes dans le modèle Client.
+    {
+      prenom: prenom,
+      nom: nom,
+      tel: telephone,
+      mail: mail
+    }.select { |_key, value| value.present? }
+  end
 
-    def has_at_least_one_item
-      if demande_cabine_essayage_items.size == 0
-        errors.add(:demande_cabine_essayage_items, "doit contenir au moins un produit")
-      end
+  private
+
+  def has_at_least_one_item
+    if demande_cabine_essayage_items.size == 0
+      errors.add(:demande_cabine_essayage_items, "doit contenir au moins un produit")
     end
   end
+end
   

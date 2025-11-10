@@ -8,7 +8,7 @@
               <%= custom_badge("", "", "", "fw-bold", client.full_name) %>
             <% end %>
           </div>
-          <%= custom_badge("", "", "", "", client.propart) %>
+          <%= custom_badge("", "", "", "", client.propart) if client.propart.present? %>
 
           <%= link_to "", "#collapseClient#{dom_id(client)}", 
                 class: "btn btn-sm btn-outline-primary bi bi-eye m-1", "data-bs-toggle": "collapse", 
@@ -26,7 +26,7 @@
 
         <%= field_with_label("type: ", client.propart)  %>
         <%= field_with_label("commentaires: ", client.commentaires)  %>
-        <%= field_with_label("intitule: ", client.intitule)  %>
+        <%= field_with_label("intitule: ", client.intitule) %>
         <%= field_with_label("tel: ", client.tel)  %>
         <%= field_with_label("tel2: ", client.tel2)  %>
         <%= field_with_label("mail: ", client.mail)  %>

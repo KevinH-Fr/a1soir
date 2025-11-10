@@ -42,6 +42,30 @@ class Client < ApplicationRecord
       else language
       end
     end
+
+  def self.create_from_demande(demande)
+    # Retourne un client correspondant à la demande.
+    # Si un client existe déjà (mail ou téléphone), on le renvoie et on indique que rien n'a été créé.
+    # Sinon, on instancie un nouveau client à partir des attributs fournis par la demande.
+    existing = find_existing_from_demande(demande)
+    if existing
+      return [existing, false]
+    end
+
+    client = new(demande.to_client_attributes)
+    [client, client.save]
+  end
+
+  def self.find_existing_from_demande(demande)
+    # Tente de retrouver un client existant à partir du mail ou du téléphone fournis dans la demande.
+    if demande.mail.present?
+      found = find_by(mail: demande.mail)
+      found
+    elsif demande.telephone.present?
+      found = find_by(tel: demande.telephone)
+      found
+    end
+  end
     
     private
   

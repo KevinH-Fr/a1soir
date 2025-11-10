@@ -210,6 +210,7 @@ Rails.application.routes.draw do
       resources :demande_cabine_essayages do 
         member do
           post :edit
+          post :create_client
         end
       end
         
