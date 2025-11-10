@@ -10,7 +10,7 @@
           </div>
           <%= badge_statut_demande_cabine(demande_cabine_essayage.statut) %>
           <%= custom_badge("fa-calendar", "", "", "", " envoyée le #{demande_cabine_essayage.created_at.strftime('%d/%m/%Y %H:%M')}") %>
-          <%= custom_badge("", "", "", "", (content_tag(:i, "", class: "bi bi-bookmark-heart me-1") + demande_cabine_essayage.evenement).html_safe) if demande_cabine_essayage.evenement.present? %>
+          <%= custom_badge("fa-calendar-xmark", "", "", "", demande_cabine_essayage.evenement) if demande_cabine_essayage.evenement.present?%>
           <%= custom_badge("", "", "", "", "#{demande_cabine_essayage.produits.count} produit#{'s' if demande_cabine_essayage.produits.count > 1}") if demande_cabine_essayage.produits.any? %>
 
           <%= link_to "", "#collapseDemande#{dom_id(demande_cabine_essayage)}", 
@@ -59,7 +59,7 @@
 
         <hr>
 
-        <h6>Produits demandés:</h6>
+        <h6 class="fw-bold small text-muted">Produits demandés:</h6>
         <% if demande_cabine_essayage.produits.any? %>
           <div class="row g-2">
             <% demande_cabine_essayage.produits.each do |produit| %>

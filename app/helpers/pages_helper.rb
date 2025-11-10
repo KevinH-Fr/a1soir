@@ -79,36 +79,46 @@ module PagesHelper
 
   def collection_card(title:, items:, url:, delay: 0, image: nil)
     link_to url, class: "text-decoration-none" do
-        content_tag :div, class: "collection-card h-100" do
-          # Image section
-          image_section = if image.present?
-            content_tag :div, class: "collection-card-image" do
-              image_tag(image, class: "w-100 h-100", style: "object-fit: cover;")
-            end
-          else
-            content_tag :div, class: "collection-card-image collection-card-placeholder" do
-              content_tag :i, nil, class: "bi bi-image"
-            end
+      content_tag :div, class: "collection-card h-100 card" do
+        # Image section
+        image_section = if image.present?
+          content_tag :div, class: "col-12 col-md-5 p-0 h-100" do
+            image_tag("/images/#{image}",
+              class: "img-fluid w-100 h-100 rounded-top rounded-md-start",
+              loading: "lazy",
+              style: "object-fit: cover;"
+            )
           end
-
-          # Card body
-          card_body = content_tag :div, class: "collection-card-body" do
-            concat content_tag(:h5, title, class: "public-brand-color fw-bold mb-3")
-            concat content_tag(:p, items.join(" • ").html_safe, class: "text-light small mb-0")
+        else
+          content_tag :div, class: "collection-card-image collection-card-placeholder d-flex align-items-center justify-content-center" do
+            content_tag :i, nil, class: "bi bi-image"
           end
+        end
 
-          # Card footer
-          card_footer = content_tag :div, class: "collection-card-footer" do
-            content_tag :span, class: "text-light" do
-              concat "Découvrir "
-              concat content_tag(:i, nil, class: "bi bi-arrow-right ms-1")
-            end
+        # Card body
+        card_body = content_tag :div, class: "card-body text-center text-md-start" do
+          concat content_tag(:h5, title, class: "public-brand-color fw-bold mb-3")
+          concat content_tag(:p, items.join(" • ").html_safe, class: "text-light small mb-0")
+        end
+
+        # Card footer
+        card_footer = content_tag :div, class: "card-footer border-top border-secondary text-center text-md-start mt-3 mt-md-auto" do
+          content_tag :span, class: "btn btn-lg w-100 small shadow btn-smoke-hover" do
+            concat "Découvrir"
+            concat content_tag(:i, nil, class: "bi bi-arrow-right ms-1")
           end
+        end
 
-          concat image_section
+        content_section = content_tag :div, class: "col-12 col-md-7 d-flex flex-column justify-content-between" do
           concat card_body
           concat card_footer
         end
+
+        content_tag :div, class: "row g-0 flex-column flex-md-row h-100" do
+          concat image_section
+          concat content_section
+        end
+      end
     end
   end
 

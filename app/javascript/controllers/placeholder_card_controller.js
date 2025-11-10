@@ -22,6 +22,6 @@ export default class extends Controller {
       this.placeholderTargets.forEach((placeholder) => {
         placeholder.closest('.card').style.display = "none"; // Hide the card containing placeholder
       });
-    }, 1000); // Simulated 2-second delay
+    }, 100); // Simulated delay
   }
 }

@@ -51,6 +51,32 @@ module ProduitsFilterable
   # Méthode pour mettre à jour les filtres via Turbo Stream
   def update_filters_turbo
     load_data
+    
+    # Load products with filters and pagination for the produits_filtres partial
+    categorie_param = params[:id].is_a?(Array) ? params[:id] : params[:id]
+  
+    produits_scope = FiltersProduitsService.new(
+      categorie_param, params[:taille], params[:couleur],
+      params[:prixmax], params[:type]
+    ).call
+  
+    search_params = params.permit(:format, :page,
+      q: [:nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont],
+      id: []
+    )
+  
+    @q = produits_scope.ransack(search_params[:q])
+    searched_produits = @q.result(distinct: true).order(nom: :asc)
+  
+    datedebut = Time.current
+    datefin   = Time.current
+  
+    available_produits_ids = searched_produits.select do |produit|
+      produit.statut_disponibilite(datedebut, datefin)[:disponibles] > 0
+    end.map(&:id)
+  
+    available_produits_scope = Produit.where(id: available_produits_ids).order(updated_at: :desc)
+    @pagy, @produits = pagy(available_produits_scope, items: 3)
 
     respond_to do |format|
       format.turbo_stream do

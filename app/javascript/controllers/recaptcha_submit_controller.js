@@ -8,17 +8,12 @@ export default class extends Controller {
     // Expose global callbacks expected by reCAPTCHA widget
     this.installGlobals()
     this.reset()
-    // Debug: confirm controller connection and targets presence
-    // eslint-disable-next-line no-console
-    console.log('[recaptcha-submit] connected', {
-      hasSubmitBtn: this.hasSubmitBtnTarget,
-      hasWarning: this.hasWarningTarget,
-      hasRecaptcha: this.hasRecaptchaTarget
-    })
   }
 
   disconnect() {
-    // Keep globals intact in case other instances exist; no-op
+    if (window.recaptchaSubmitController === this) {
+      window.recaptchaSubmitController = null
+    }
   }
 
   // Called when reCAPTCHA is solved
@@ -102,24 +97,18 @@ export default class extends Controller {
   }
 
   installGlobals() {
-    // Install globals only once per page
-    if (!window.onRecaptchaSuccess) {
-      window.onRecaptchaSuccess = () => {
-        const instance = this
-        instance && instance.onRecaptchaSuccess()
-      }
+    window.recaptchaSubmitController = this
+    window.onRecaptchaSuccess = () => {
+      const instance = window.recaptchaSubmitController
+      instance && instance.onRecaptchaSuccess()
     }
-    if (!window.onRecaptchaExpired) {
-      window.onRecaptchaExpired = () => {
-        const instance = this
-        instance && instance.onRecaptchaExpired()
-      }
+    window.onRecaptchaExpired = () => {
+      const instance = window.recaptchaSubmitController
+      instance && instance.onRecaptchaExpired()
     }
-    if (!window.onRecaptchaError) {
-      window.onRecaptchaError = () => {
-        const instance = this
-        instance && instance.onRecaptchaError()
-      }
+    window.onRecaptchaError = () => {
+      const instance = window.recaptchaSubmitController
+      instance && instance.onRecaptchaError()
     }
   }
 }

@@ -56,6 +56,7 @@
     <!-- Panier Cabine d'essayage -->
     <div class="my-5" data-scroll-reveal>
       <div class="card bg-dark text-light border-secondary shadow-lg position-relative overflow-hidden"
+           data-controller="reservation-form"
            style="border-color: rgba(196, 207, 47, 0.3) !important; background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(30, 25, 30, 0.95) 100%) !important;">
         
         <% if @cabine_cart.any? %>
@@ -129,7 +130,8 @@
 
 
           <!-- Footer -->
-          <div class="card-footer bg-transparent border-top border-secondary text-center py-4">
+          <div class="card-footer bg-transparent border-top border-secondary text-center py-4"
+               data-reservation-form-target="cta">
             <button type="button" class="btn btn-lg px-5 shadow btn-smoke-hover text-light" data-bs-toggle="collapse" data-bs-target="#reservationFormCollapse" aria-expanded="false" aria-controls="reservationFormCollapse" 
               onclick="setTimeout(() => document.getElementById('reservationForm').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)">
               <i class="bi bi-calendar-check me-2"></i>Réserver mon essayage

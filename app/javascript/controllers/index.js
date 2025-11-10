@@ -42,3 +42,6 @@ application.register("scroll", ScrollController)
 
 import RecaptchaSubmitController from "./recaptcha_submit_controller"
 application.register("recaptcha-submit", RecaptchaSubmitController)
+
+import ReservationFormController from "./reservation_form_controller"
+application.register("reservation-form", ReservationFormController)

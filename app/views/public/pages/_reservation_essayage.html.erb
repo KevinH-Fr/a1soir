@@ -10,7 +10,7 @@
             <% end %>
         <% end %>
         
-        <div class="collapse <%= 'show' if params[:open_form].present? %>" id="reservationFormCollapse">
+        <div class="collapse <%= 'show' if params[:open_form].present? %>" id="reservationFormCollapse" data-reservation-form-target="collapse">
             <hr class="border-secondary my-2">
             <%= render partial: "public/demande_cabine_essayages/form", locals: { demande_cabine_essayage: @demande_cabine_essayage } %>
         </div>

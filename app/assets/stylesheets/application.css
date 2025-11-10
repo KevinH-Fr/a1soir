@@ -1588,36 +1588,9 @@ section {
 }
 
 /* Collection Card Specific Styles */
-.collection-card {
-  display: flex;
-  flex-direction: column;
-}
-
-.collection-card-image {
-  height: 200px;
-  overflow: hidden;
-  background: #1a1a1a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .collection-card-placeholder {
   font-size: 3rem;
   color: rgba(255, 255, 255, 0.2);
-}
-
-.collection-card-body {
-  padding: 1.5rem;
-  text-align: center;
-  flex: 1;
-}
-
-.collection-card-footer {
-  padding: 1rem 1.5rem;
-  text-align: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
 }
 
 .collection-card:hover .collection-card-footer {
