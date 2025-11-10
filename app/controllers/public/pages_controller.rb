@@ -87,7 +87,7 @@ module Public
       elsif session[:cabine_cart].size >= 10
         flash.now[:alert] = "Limite de 10 produits atteinte. Retirez un produit pour en ajouter un autre."
       else
-        session[:cabine_cart] << id
+        session[:cabine_cart] = (session[:cabine_cart] + [id]).uniq
         flash.now[:success] = "#{@produit.nom} ajouté à votre cabine d'essayage"
       end
 
@@ -100,7 +100,7 @@ module Public
       @produit = Produit.find(id)
       
       ensure_cabine_cart_session
-      session[:cabine_cart].delete(id)
+      session[:cabine_cart] = session[:cabine_cart] - [id]
       flash.now[:info] = "#{@produit.nom} retiré de votre cabine d'essayage"
       
       refresh_cabine_cart
@@ -112,7 +112,7 @@ module Public
       @produit = Produit.find(id)
       # S'assurer que session[:cabine_cart] existe
       session[:cabine_cart] ||= []
-      session[:cabine_cart].delete(id)
+      session[:cabine_cart] = session[:cabine_cart] - [id]
       #flash[:info] = "#{@produit.nom} retiré de votre cabine d'essayage"
       
       redirect_to cabine_essayage_path

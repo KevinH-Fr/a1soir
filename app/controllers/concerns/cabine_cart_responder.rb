@@ -26,7 +26,7 @@ module CabineCartResponder
         partial: "public/pages/cart_buttons/cabine_product_button",
         locals: { produit: produit }
       ),
-      turbo_stream.replace(
+      turbo_stream.update(
         :flash,
         partial: "public/pages/flash"
       ),

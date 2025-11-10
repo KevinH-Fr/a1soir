@@ -68,7 +68,7 @@
     <%= render "public/shared/navbar" %>
 
     <div class="m-0 p-0 public-content">
-      <div id="flash">
+      <div id="flash" data-turbo-temporary>
         <%= render partial: "public/pages/flash" %>
       </div>
       <%= yield %>
