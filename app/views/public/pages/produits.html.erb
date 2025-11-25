@@ -16,6 +16,7 @@
     <div class="container-fluid d-flex flex-wrap gap-1 justify-content-center">
 
         <%= render partial: "public/pages/filtres/filtres_categorie" %>
+        <%= render partial: "public/pages/filtres/filtres_type_produit" %>
         <%= render partial: "public/pages/filtres/filtres_taille" %>
         <%= render partial: "public/pages/filtres/filtres_couleur" %>
         <%= render partial: "public/pages/filtres/filtres_prix" %>
@@ -29,7 +30,8 @@
                 prixmax: nil,
                 taille: nil,
                 type: nil,
-                from_cabine: params[:from_cabine]
+                from_cabine: params[:from_cabine],
+                type_produit: nil
             ),
             class: "btn btn-sm btn-outline-light" %>
    

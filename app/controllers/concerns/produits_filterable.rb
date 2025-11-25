@@ -12,6 +12,7 @@ module ProduitsFilterable
     @toutes_couleurs = Couleur.all.sort_by(&:nom)
     @tranches_prix = [50, 100, 200, 500, 1000]
     @types = ["Vente", "Location"]
+    @types_produits = TypeProduit.all.order(nom: :asc)
   end
 
   # Logique principale pour afficher les produits filtrés
@@ -23,7 +24,8 @@ module ProduitsFilterable
   
     produits_scope = FiltersProduitsService.new(
       categorie_param, params[:taille], params[:couleur],
-      params[:prixmax], params[:type]
+      params[:prixmax], params[:type], 
+      params[:type_produit]
     ).call
   
     search_params = params.permit(:format, :page,
@@ -45,7 +47,7 @@ module ProduitsFilterable
     available_produits_scope = Produit.where(id: available_produits_ids).order(updated_at: :desc)
   
     # 🔁 Then paginate the available produits (3 per page)
-    @pagy, @produits = pagy(available_produits_scope, items: 3)
+    @pagy, @produits = pagy(available_produits_scope, items: 6)
   end
 
   # Méthode pour mettre à jour les filtres via Turbo Stream
@@ -57,7 +59,7 @@ module ProduitsFilterable
   
     produits_scope = FiltersProduitsService.new(
       categorie_param, params[:taille], params[:couleur],
-      params[:prixmax], params[:type]
+      params[:prixmax], params[:type], params[:type_produit]
     ).call
   
     search_params = params.permit(:format, :page,
@@ -76,13 +78,16 @@ module ProduitsFilterable
     end.map(&:id)
   
     available_produits_scope = Produit.where(id: available_produits_ids).order(updated_at: :desc)
-    @pagy, @produits = pagy(available_produits_scope, items: 3)
+    @pagy, @produits = pagy(available_produits_scope, items: 6)
 
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
           turbo_stream.update("filtres-categorie",
             partial: "public/pages/filtres/filtres_categorie"),
+
+          turbo_stream.update("filtres-type-produit",
+            partial: "public/pages/filtres/filtres_type_produit"),
               
           turbo_stream.update("filtres-taille", 
             partial: "public/pages/filtres/filtres_taille"),

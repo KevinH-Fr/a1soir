@@ -1,0 +1,51 @@
+<div id="filtres-type-produit">
+
+    <div class="dropdown" style="position: relative;">
+        <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="typeProduitDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-bookmarks"></i>
+            <span class="ms-1 d-none d-md-inline">
+            <%= if params[:type_produit].present?
+                    @types_produits.find { |tp| tp.id == params[:type_produit].to_i }&.nom || "Type"
+                else
+                    "Type"
+                end %>
+            </span>
+        </button>
+
+        <ul class="dropdown-menu" aria-labelledby="typeProduitDropdown" style="position: absolute;">
+            <li>
+            <%= button_to "Tous",
+                update_filters_path(
+                    slug: params[:slug],
+                    id: params[:id],
+                    taille: params[:taille],
+                    couleur: params[:couleur],
+                    prixmax: params[:prixmax],
+                    type: params[:type],
+                    type_produit: nil,
+                    from_cabine: params[:from_cabine]
+                ),
+                class: "dropdown-item #{'fw-bold' if params[:type_produit].blank?}" %>
+            </li>
+
+            <% @types_produits.each do |type_produit| %>
+            <li>
+                <%= button_to type_produit.nom,
+                    update_filters_path(
+                    slug: params[:slug],
+                    id: params[:id],
+                    taille: params[:taille],
+                    couleur: params[:couleur],
+                    prixmax: params[:prixmax],
+                    type: params[:type],
+                    type_produit: type_produit.id,
+                    from_cabine: params[:from_cabine]
+                    ),
+                    class: "dropdown-item #{'fw-bold' if params[:type_produit].to_s == type_produit.id.to_s}" %>
+            </li>
+            <% end %>
+        </ul>
+    </div>
+
+
+</div>

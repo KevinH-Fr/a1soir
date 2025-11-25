@@ -78,29 +78,31 @@ module PagesHelper
   end
 
   def collection_card(title:, items:, url:, delay: 0, image: nil)
-    content_tag :div, class: "collection-card position-relative overflow-hidden", style: "height: 400px;" do
-      # Image de fond
-      image_section = if image.present?
-        image_tag("/images/#{image}",
-          class: "img-fluid w-100 h-100",
-          loading: "lazy",
-          style: "object-fit: cover; height: 100%; transition: transform 0.3s ease;"
-        )
-      else
-        content_tag :div, class: "d-flex align-items-center justify-content-center bg-secondary w-100 h-100" do
-          content_tag(:i, nil, class: "bi bi-image fs-1 text-light")
+    link_to url, class: "text-decoration-none" do
+      content_tag :div, class: "collection-card position-relative overflow-hidden", style: "height: 400px;" do
+        # Image de fond
+        image_section = if image.present?
+          image_tag("/images/#{image}",
+            class: "img-fluid w-100 h-100",
+            loading: "lazy",
+            style: "object-fit: cover; height: 100%; transition: transform 0.3s ease;"
+          )
+        else
+          content_tag :div, class: "d-flex align-items-center justify-content-center bg-secondary w-100 h-100" do
+            content_tag(:i, nil, class: "bi bi-image fs-1 text-light")
+          end
         end
-      end
 
-      # Overlay avec bouton en bas uniquement
-      overlay = content_tag :div, class: "position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end justify-content-center", style: "background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6)); padding: 1.5rem;" do
-        # Bouton en bas avec le nom de la collection
-        link_to url, class: "btn btn-outline-light btn-lg text-decoration-none", style: "border-radius: 4px; border-width: 2px;" do
-          title
+        # Overlay avec bouton en bas uniquement
+        overlay = content_tag :div, class: "position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end justify-content-center", style: "background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6)); padding: 1.5rem;" do
+          # Bouton en bas avec le nom de la collection
+          content_tag :span, class: "btn btn-outline-light btn-lg", style: "border-radius: 4px; border-width: 2px; pointer-events: auto;" do
+            title
+          end
         end
-      end
 
-      image_section + overlay
+        image_section + overlay
+      end
     end
   end
 

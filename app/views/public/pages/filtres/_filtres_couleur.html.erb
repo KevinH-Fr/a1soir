@@ -22,7 +22,8 @@
                     couleur: nil,
                     prixmax: params[:prixmax],
                     type: params[:type],
-                    from_cabine: params[:from_cabine]
+                    from_cabine: params[:from_cabine],
+                    type_produit: params[:type_produit]
                 ),
                 class: "dropdown-item #{'fw-bold' if params[:couleur].blank?}" %>
             </li>
@@ -37,7 +38,8 @@
                     couleur: couleur.id,
                     prixmax: params[:prixmax],
                     type: params[:type],
-                    from_cabine: params[:from_cabine]
+                    from_cabine: params[:from_cabine],
+                    type_produit: params[:type_produit]
                     ),
                     class: "dropdown-item #{'fw-bold' if params[:couleur].to_s == couleur.id.to_s}" %>
             </li>

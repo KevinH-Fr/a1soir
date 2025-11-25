@@ -1568,21 +1568,21 @@ section {
 /* Collection Card - Nouveau style avec image et overlay */
 .collection-card {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  transition: all 0.5s ease;
+  transition: all 0.8s ease;
   cursor: pointer;
 }
 
 .collection-card:hover {
-  transform: translateY(-5px);
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
 }
 
 .collection-card img {
   transition: transform 0.6s ease;
+  transform-origin: center center;
 }
 
 .collection-card:hover img {
-  transform: scale(1.01);
+  transform: scale(1.05);
 }
 
 .collection-card .btn {

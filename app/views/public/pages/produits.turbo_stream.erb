@@ -19,7 +19,8 @@
                     prixmax: params[:prixmax],
                     type: params[:type],
                     page: @pagy.next, q: params[:q]&.to_unsafe_h,
-                    from_cabine: params[:from_cabine])
+                    from_cabine: params[:from_cabine],
+                    type_produit: params[:type_produit])
             else
                 produits_index_path(format: :turbo_stream, 
                     id: params[:id],
@@ -27,7 +28,8 @@
                     prixmax: params[:prixmax],
                     type: params[:type],
                     page: @pagy.next, q: params[:q]&.to_unsafe_h,
-                    from_cabine: params[:from_cabine])
+                    from_cabine: params[:from_cabine],
+                    type_produit: params[:type_produit])
             end %>
     <% end %>
 
