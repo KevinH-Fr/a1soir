@@ -40,9 +40,9 @@
   --public-brand-bg-color: rgb(184, 134, 11);
   --public-brand-gradient: linear-gradient(
     135deg,
-    rgba(255, 215, 0, 1) 0%,
-    rgba(245, 196, 0, 0.9) 50%,
-    rgba(230, 180, 0, 0.85) 100%
+    rgba(184, 134, 11, 1) 0%,
+    rgba(200, 150, 20, 0.95) 50%,
+    rgba(184, 134, 11, 0.9) 100%
   );
   --public-brand-gradient-dotted: repeating-linear-gradient(
     to right,
@@ -184,7 +184,6 @@
 }
 
 .public-main-content{
-  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -292,19 +291,22 @@
   bottom: 0;
   left: 0;
   width: 0;
-  height: 2px;
+  height: 1px;
   background-image: var(--public-brand-gradient-dotted);
-  transition: width 0.4s ease-in-out;
+  transition: width 0.6s ease-out;
+  opacity: 0.7;
 }
 
 .nav-link-public:hover::after {
   width: 100%;
+  opacity: 1;
 }
 
 /* Active link with permanent stitching line */
 .nav-link-active::after {
   width: 100% !important;
   background-image: var(--public-brand-gradient-dotted);
+  opacity: 0.9;
 }
 
 .nav-link-active span {
@@ -1554,7 +1556,6 @@ section {
    ================================ */
 
 .info-card,
-.collection-card,
 .concept-card {
   background: linear-gradient(135deg, rgba(255, 255, 240, 0.15) 0%, rgba(255, 248, 220, 0.2) 50%, rgba(255, 255, 240, 0.15) 100%);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -1562,14 +1563,116 @@ section {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
   overflow: hidden;
+}
 
+/* Collection Card - Nouveau style avec image et overlay */
+.collection-card {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.5s ease;
+  cursor: pointer;
+}
+
+.collection-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+}
+
+.collection-card img {
+  transition: transform 0.6s ease;
+}
+
+.collection-card:hover img {
+  transform: scale(1.01);
+}
+
+.collection-card .btn {
+  transition: transform 0.5s ease;
+}
+
+.collection-card:hover .btn {
+  transform: translateY(-8px);
 }
 
 .info-card:hover,
-.collection-card:hover,
 .concept-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* ================================
+   FLOATING CONTACT ICONS
+   ================================ */
+
+.floating-contact-icons {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.floating-icon-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(44, 44, 44, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s ease;
+  font-size: 1.2rem;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: floatingIconEnter 1s ease-out forwards;
+}
+
+.floating-icon-btn:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.floating-icon-btn:nth-child(2) {
+  animation-delay: 0.35s;
+}
+
+.floating-icon-btn:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+.floating-icon-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  background: rgba(44, 44, 44, 1);
+  color: #ffffff;
+}
+
+@keyframes floatingIconEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-contact-icons {
+    right: 15px;
+    bottom: 15px;
+    gap: 10px;
+  }
+  
+  .floating-icon-btn {
+    width: 45px;
+    height: 45px;
+    font-size: 1.1rem;
+  }
 }
 
 /* Concept Card Specific Styles */

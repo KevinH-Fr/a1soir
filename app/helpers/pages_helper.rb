@@ -78,47 +78,29 @@ module PagesHelper
   end
 
   def collection_card(title:, items:, url:, delay: 0, image: nil)
-    link_to url, class: "text-decoration-none" do
-      content_tag :div, class: "collection-card h-100 card" do
-        # Image section
-        image_section = if image.present?
-          content_tag :div, class: "col-12 col-md-5 p-0 h-100" do
-            image_tag("/images/#{image}",
-              class: "img-fluid w-100 h-100 rounded-top rounded-md-start",
-              loading: "lazy",
-              style: "object-fit: cover;"
-            )
-          end
-        else
-          content_tag :div, class: "collection-card-image collection-card-placeholder d-flex align-items-center justify-content-center" do
-            content_tag :i, nil, class: "bi bi-image"
-          end
-        end
-
-        # Card body
-        card_body = content_tag :div, class: "card-body text-center text-md-start" do
-          concat content_tag(:h5, title, class: "public-brand-color fw-bold mb-3")
-          concat content_tag(:p, items.join(" • ").html_safe, class: "text-light small mb-0")
-        end
-
-        # Card footer
-        card_footer = content_tag :div, class: "card-footer border-top border-secondary text-center text-md-start mt-3 mt-md-auto" do
-          content_tag :span, class: "btn btn-md w-100 small shadow btn-smoke-hover" do
-            concat "Découvrir"
-            concat content_tag(:i, nil, class: "bi bi-arrow-right ms-1")
-          end
-        end
-
-        content_section = content_tag :div, class: "col-12 col-md-7 d-flex flex-column justify-content-between" do
-          concat card_body
-          concat card_footer
-        end
-
-        content_tag :div, class: "row g-0 flex-column flex-md-row h-100" do
-          concat image_section
-          concat content_section
+    content_tag :div, class: "collection-card position-relative overflow-hidden", style: "height: 400px;" do
+      # Image de fond
+      image_section = if image.present?
+        image_tag("/images/#{image}",
+          class: "img-fluid w-100 h-100",
+          loading: "lazy",
+          style: "object-fit: cover; height: 100%; transition: transform 0.3s ease;"
+        )
+      else
+        content_tag :div, class: "d-flex align-items-center justify-content-center bg-secondary w-100 h-100" do
+          content_tag(:i, nil, class: "bi bi-image fs-1 text-light")
         end
       end
+
+      # Overlay avec bouton en bas uniquement
+      overlay = content_tag :div, class: "position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end justify-content-center", style: "background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6)); padding: 1.5rem;" do
+        # Bouton en bas avec le nom de la collection
+        link_to url, class: "btn btn-outline-light btn-lg text-decoration-none", style: "border-radius: 4px; border-width: 2px;" do
+          title
+        end
+      end
+
+      image_section + overlay
     end
   end
 
@@ -134,7 +116,8 @@ module PagesHelper
         params[:from_cabine].present?
       )
       # Sur la page produits sans paramètre from_cabine, on met en avant Collections
-      if params[:controller] == "public/pages" && params[:action] == "produits" && params[:from_cabine].blank? && path == nos_collections_url
+      # MAIS seulement si aucun autre lien n'est déjà actif
+      if !is_active && params[:controller] == "public/pages" && params[:action] == "produits" && params[:from_cabine].blank? && path == nos_collections_url
         is_active = true
       end
       classes << "active" if is_active

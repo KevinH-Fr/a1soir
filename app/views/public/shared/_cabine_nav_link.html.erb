@@ -1,25 +1,35 @@
-<% badge_count = local_assigns.fetch(:badge_count, @cabine_cart&.size || session[:cabine_cart]&.size) %>
-<% classes = ["nav-item text-center m-2 mx-3"] %>
-<% is_active = session[:from_cabine].present? %>
-<% is_active ||= params[:controller] == "public/pages" && params[:action] == "cabine_essayage" %>
-<% if params[:controller] == "public/pages" && params[:action] == "produits" && params[:from_cabine].present? %>
-  <% is_active = true %>
-<% end %>
-<% is_active ||= current_page?(cabine_essayage_path) %>
-<% classes << "active" if is_active %>
+<div id="cabine_badge"> 
 
-<li class="<%= classes.join(' ') %>" id="cabine_badge">
-  <%= link_to cabine_essayage_url, class: "text-decoration-none nav-link-public #{is_active ? 'nav-link-active' : ''} position-relative" do %>
-    <span class="fw-bold">Cabine d'essayage</span>
-    <% if badge_count.present? && badge_count.to_i.positive? %>
-      <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle public-brand-bg-color d-inline-flex align-items-center justify-content-center"
-            style="width: 1.2rem;">
-        <span class="fw-semibold text-uppercase" style="font-size: 12px; color: #ffffff !important; font-family: Helvetica, Arial, sans-serif !important;">
-            <%= badge_count %>
-        </span>
-        <span class="visually-hidden">articles dans la cabine</span>
-      </span>
-    <% end %>
+  <% badge_count = local_assigns.fetch(:badge_count, @cabine_cart&.size || session[:cabine_cart]&.size) %>
+  <% classes = ["nav-item text-center m-2 mx-3"] %>
+  <% is_active = false %>
+  <% # Activer si on est sur la page cabine_essayage %>
+  <% is_active = true if params[:controller] == "public/pages" && params[:action] == "cabine_essayage" %>
+  <% is_active = true if current_page?(cabine_essayage_path) %>
+  <% # Activer si on est sur la page produits avec from_cabine (paramètre OU session pour les requêtes Turbo Stream) %>
+  <% if params[:controller] == "public/pages" && params[:action] == "produits" && (params[:from_cabine].present? || session[:from_cabine] == true) %>
+    <% is_active = true %>
   <% end %>
-</li>
+  <% # Activer aussi lors des actions cabine_add_product/cabine_remove_product si session from_cabine est active %>
+  <% # (ces actions sont appelées depuis la page produits en mode cabine) %>
+  <% if params[:controller] == "public/pages" && ["cabine_add_product", "cabine_remove_product"].include?(params[:action]) && session[:from_cabine] == true %>
+    <% is_active = true %>
+  <% end %>
 
+  <% classes << "active" if is_active %>
+  <li class="<%= classes.join(' ') %>">
+    <%= link_to cabine_essayage_url, class: "text-decoration-none nav-link-public #{is_active ? 'nav-link-active' : ''} position-relative" do %>
+      <span class="fw-bold">Cabine d'essayage</span>
+      <% if badge_count.present? && badge_count.to_i.positive? %>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle public-brand-bg-color d-inline-flex align-items-center justify-content-center"
+              style="width: 1.2rem;">
+          <span class="fw-semibold text-uppercase" style="font-size: 12px; color: #ffffff !important; font-family: Helvetica, Arial, sans-serif !important;">
+              <%= badge_count %>
+          </span>
+          <span class="visually-hidden">articles dans la cabine</span>
+        </span>
+      <% end %>
+    <% end %>
+  </li>
+
+</div>
