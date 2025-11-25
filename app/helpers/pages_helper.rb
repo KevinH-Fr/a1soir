@@ -103,7 +103,7 @@ module PagesHelper
 
         # Card footer
         card_footer = content_tag :div, class: "card-footer border-top border-secondary text-center text-md-start mt-3 mt-md-auto" do
-          content_tag :span, class: "btn btn-lg w-100 small shadow btn-smoke-hover" do
+          content_tag :span, class: "btn btn-md w-100 small shadow btn-smoke-hover" do
             concat "Découvrir"
             concat content_tag(:i, nil, class: "bi bi-arrow-right ms-1")
           end

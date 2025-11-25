@@ -17,7 +17,6 @@
                       <span class="placeholder col-4 bg-secondary"></span>
                       <span class="placeholder col-4 bg-secondary"></span>
                       <span class="placeholder col-6 bg-secondary"></span>
-                      <span class="placeholder col-8 bg-secondary"></span>
                   </p>
                   <p class="card-text placeholder-glow d-flex justify-content-between">
                       <span class="placeholder col-5 bg-secondary"></span>
@@ -44,13 +43,8 @@
                           <%= produit.nom %>
                       </h5>
                   <% end %>
-                  <p class="card-text text-truncate-multiline text-light opacity-75">
-                      <span>
-                          <%= produit.description %>
-                      </span>
-                  </p>
 
-                  <p class="card-text d-flex justify-content-between">
+                  <p class="card-text d-flex justify-content-between m-0">
                       <%= badge_prix("Vente", produit.prixvente) %>
                       <%= badge_prix("Location", produit.prixlocation) if produit.prixlocation.present? %>
                   </p>

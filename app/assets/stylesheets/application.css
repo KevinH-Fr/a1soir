@@ -36,8 +36,8 @@
  }
 
 :root {
-  --public-brand-color: rgb(255, 215, 0);
-  --public-brand-bg-color: rgb(236, 218, 18);
+  --public-brand-color: rgb(184, 134, 11);
+  --public-brand-bg-color: rgb(184, 134, 11);
   --public-brand-gradient: linear-gradient(
     135deg,
     rgba(255, 215, 0, 1) 0%,
@@ -46,8 +46,8 @@
   );
   --public-brand-gradient-dotted: repeating-linear-gradient(
     to right,
-    rgb(255, 215, 0) 0,
-    rgb(255, 215, 0) 5px,
+    rgb(184, 134, 11) 0,
+    rgb(184, 134, 11) 5px,
     transparent 5px,
     transparent 10px
   );
@@ -343,14 +343,14 @@ footer .bi-facebook:hover {
 }
 
 /* Bouton rendez-vous avec couleur de marque */
-.btn-lg.shadow {
+.shadow {
   background-color: var(--public-brand-bg-color);
   color: black;
   border: none;
   transition: all 0.3s ease;
 }
 
-.btn-lg.shadow:hover {
+.shadow:hover {
   background-color: var(--public-brand-bg-color);
   color: black;
   transform: translateY(-2px);
@@ -1556,12 +1556,13 @@ section {
 .info-card,
 .collection-card,
 .concept-card {
-  background: linear-gradient(135deg, #2c2c2c 0%, #393939 50%, #2c2c2c 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 240, 0.15) 0%, rgba(255, 248, 220, 0.2) 50%, rgba(255, 255, 240, 0.15) 100%);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
   overflow: hidden;
+
 }
 
 .info-card:hover,
