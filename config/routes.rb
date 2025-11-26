@@ -10,7 +10,7 @@ Rails.application.routes.draw do
         registrations: 'public/registrations'  # Add custom registrations controller
       }
       
-      get 'home', to: 'pages#home'  
+      get 'home', to: 'pages#home'        
       get 'about', to: 'pages#about'
       get 'cgv', to: 'pages#cgv'
       get 'la_boutique', to: 'pages#la_boutique'

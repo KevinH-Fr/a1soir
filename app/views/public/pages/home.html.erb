@@ -1,4 +1,8 @@
-<%= render 'home_hero' %>
+<!-- Section d'animation au scroll (textes + zoom image + robe 3D) -->
+<%= render 'public/pages/home/scroll_animation' %>
+
+<!-- Hero section avec modèle 3D -->
+<%#= render 'home_hero' %>
 
 <!-- Flèche animée pour inviter au scroll -->
 <div class="scroll-indicator">
@@ -8,46 +12,10 @@
 <!-- Section d'accueil -->
 <div class="public-main-content">
   <div class="container-fluid">
-    <!-- Section découverte avec effet de scroll -->
-    <section class="discover-section text-center py-5" data-discover>
-      <div class="container">
-        <div class="discover-title" data-discover-item>
-          <h2 class="discover-main-title">
-            Découvrez notre univers
-          </h2>
-          <div class="title-decoration">
-            <span class="decoration-line"></span>
-          </div>
-        </div>
-        
-        <div class="discover-description" data-discover-item>
-          <p class="description-text">
-            Spécialistes de la location et vente de 
-            tenues d'exception
-          </p>
-          <p class="description-subtext">
-            Un mariage, une soirée ou un événement professionnel :
-            nous vous accompagnons pour sublimer vos plus beaux moments.
-          </p>
-        </div>
-        
-        <div class="discover-icons">
-          <div class="icon-item">
-            <i class="bi bi-gem"></i>
-            <span>Excellence</span>
-          </div>
-          <div class="icon-item">
-            <i class="bi bi-heart"></i>
-            <span>Passion</span>
-          </div>
-          <div class="icon-item">
-            <i class="bi bi-stars"></i>
-            <span>Élégance</span>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- Section découverte -->
+    <%= render 'public/pages/home/discover_section' %>
 
+    <!-- Cartes de navigation -->
     <%= render 'home_nav_cards' %>
   </div>
 </div>

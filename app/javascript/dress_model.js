@@ -19,6 +19,9 @@ class DressModel {
     this.scrollProgress = 0; // Progression du scroll (0 = début, 1 = centre atteint)
     this.modelCenterOffset = { x: 0, y: 0, z: 0 }; // Offset pour centrer le modèle
     this.modelSize = null; // Taille réelle du modèle (pour maintenir le ratio)
+    this.positionMode = this.container.dataset.position || "center"; // Position souhaitée (center, bottom-right, etc.)
+    this.entranceAnimationDuration = 1.5; // Durée de l'animation d'entrée en secondes
+    this.entranceAnimationComplete = false; // Indique si l'animation d'entrée est terminée
 
     this.init();
     this.loadModel();
@@ -76,7 +79,7 @@ class DressModel {
     
     // Utiliser le chemin des images dans app/assets/images
     loader.load(
-      '/images/dress.glb',
+      '/images/dress_mannequin.glb',
       (gltf) => {
         this.model = gltf.scene;
         
@@ -162,7 +165,7 @@ class DressModel {
           this.model.scale.setScalar(this.targetScale);
           // Rotation douce continue avec accélération au scroll
           const rotationTime = elapsedTime - rotationStartTime;
-          this.model.rotation.y = rotationTime * 0.25 * this.rotationSpeedMultiplier;
+          this.model.rotation.y = rotationTime * 0.5 * this.rotationSpeedMultiplier;
           
           // Debug: afficher une seule fois quand la rotation commence
           if (!this.rotationStarted) {
@@ -175,7 +178,7 @@ class DressModel {
         const pauseDuration = 0.5; // Pause avant rotation
         if (elapsedTime > pauseDuration) {
           const rotationTime = elapsedTime - pauseDuration;
-          this.model.rotation.y = rotationTime * 0.25 * this.rotationSpeedMultiplier;
+          this.model.rotation.y = rotationTime * 0.5 * this.rotationSpeedMultiplier;
           
           // Debug: afficher une seule fois quand la rotation commence
           if (!this.rotationStarted) {
@@ -229,8 +232,8 @@ class DressModel {
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
       
-      // La robe se déplace pendant les 800 premiers pixels de scroll
-      const scrollDistance = 800;
+      // La robe se déplace pendant les 3000 premiers pixels de scroll
+      const scrollDistance = 3000;
       this.scrollProgress = Math.min(scrollY / scrollDistance, 1);
       
       // Calculer l'accélération de rotation basée sur le scroll
@@ -251,7 +254,8 @@ class DressModel {
     }
 
     // Taille désirée de la robe à l'écran (en pourcentage de la hauteur du viewport)
-    const desiredHeightRatio = 0.6;
+    // Valeur réduite pour une robe plus petite à l'écran
+    const desiredHeightRatio = 0.10;
     
     // Utiliser la taille réelle du modèle
     const modelHeight = this.modelSize.height;
@@ -297,14 +301,31 @@ class DressModel {
     const distance = this.camera.position.z;
     const aspect = window.innerWidth / window.innerHeight;
     
-    // Largeur visible à la distance du modèle
+    // Largeur et hauteur visibles à la distance du modèle
     const visibleWidth = 2 * Math.tan(fov / 2) * distance * aspect;
+    const visibleHeight = 2 * Math.tan(fov / 2) * distance;
     
-    // Position initiale : à gauche mais centrée verticalement
-    const startX = -visibleWidth * 0.25; // 25% vers la gauche (moins à gauche qu'avant)
-    
-    // Position finale : au centre horizontal et vertical
-    const endX = 0;
+    let startX;
+    let endX;
+    let extraY = 0;
+
+    if (this.positionMode === "bottom-right") {
+      // Positionner la robe vers le bas à droite de l'écran
+      startX = visibleWidth * 0.45; // plus à droite
+      endX = visibleWidth * 0.45;   // pas de déplacement horizontal
+      extraY = -visibleHeight * 0.35; // plus bas sur l'écran
+    } else if (this.positionMode === "top-right") {
+      // Positionner la robe vers le haut à droite de l'écran
+      startX = visibleWidth * 0.35; // plus à droite
+      endX = visibleWidth * 0.35;   // pas de déplacement horizontal
+      extraY = -visibleHeight * 0.25; // descendue (valeur négative pour descendre)
+    } else {
+      // Position initiale : à gauche mais centrée verticalement
+      startX = -visibleWidth * 0.25; // 25% vers la gauche (moins à gauche qu'avant)
+      // Position finale : au centre horizontal
+      endX = 0;
+      extraY = 0;
+    }
     
     // Interpolation avec easing (seulement horizontal maintenant)
     const eased = 1 - Math.pow(1 - this.scrollProgress, 3); // ease-out
@@ -313,45 +334,81 @@ class DressModel {
     // Appliquer la position
     // On utilise l'offset X, Y et Z pour centrer le modèle
     // L'offset Y compense le décalage du centre géométrique pour centrer verticalement
+    // L'animation d'entrée ajoute un offset temporaire
+    const entranceOffset = this.getEntrancePositionOffset();
     this.model.position.set(
-      currentX + this.modelCenterOffset.x,
-      this.modelCenterOffset.y, // Centre vertical de l'écran
-      this.modelCenterOffset.z
+      currentX + this.modelCenterOffset.x + entranceOffset.x,
+      this.modelCenterOffset.y + extraY + entranceOffset.y,
+      this.modelCenterOffset.z + entranceOffset.z
     );
+  }
+
+  getEntrancePositionOffset() {
+    if (!this.model) return { x: 0, y: 0, z: 0 };
+    
+    const elapsedTime = this.clock.getElapsedTime();
+    
+    // Animation d'entrée initiale (avant le scroll)
+    if (!this.entranceAnimationComplete && elapsedTime < this.entranceAnimationDuration) {
+      const entranceProgress = elapsedTime / this.entranceAnimationDuration;
+      const eased = 1 - Math.pow(1 - entranceProgress, 3); // ease-out
+      
+      // Slide depuis le haut à droite ou bas à droite selon le mode
+      const slideDistance = 2; // distance en unités Three.js
+      const slideFromBottom = this.positionMode === "bottom-right";
+      return {
+        x: (1 - eased) * slideDistance * 0.5, // slide depuis la droite
+        y: slideFromBottom ? (1 - eased) * slideDistance : -(1 - eased) * slideDistance, // slide depuis le bas ou le haut
+        z: 0
+      };
+    }
+    
+    return { x: 0, y: 0, z: 0 };
   }
 
   applySmokeEffect() {
     if (!this.model) return;
     
-    // L'effet de fumée commence quand scrollProgress atteint 0.8
-    const smokeStartThreshold = 0.8;
+    const elapsedTime = this.clock.getElapsedTime();
+    let opacity;
+    let scaleFactor = 1;
     
-    if (this.scrollProgress < smokeStartThreshold) {
-      // Pas encore de fumée, s'assurer que le modèle est visible et au scale normal
-      this.model.traverse((child) => {
-        if (child.isMesh && child.material) {
-          const material = Array.isArray(child.material) ? child.material[0] : child.material;
-          if (material) {
-            material.opacity = 1.0;
-            material.transparent = false;
-          }
-        }
-      });
-      // Remettre le scale à la normale
-      const baseScale = this.targetScale || 1;
-      this.model.scale.setScalar(baseScale);
-      this.model.visible = true;
-      return;
+    // Animation d'entrée initiale (avant le scroll)
+    if (!this.entranceAnimationComplete && elapsedTime < this.entranceAnimationDuration) {
+      const entranceProgress = elapsedTime / this.entranceAnimationDuration;
+      const eased = 1 - Math.pow(1 - entranceProgress, 3); // ease-out
+      
+      // Fade in + scale
+      opacity = eased;
+      scaleFactor = 0.7 + eased * 0.3; // de 0.7 à 1.0
+      
+      if (entranceProgress >= 1) {
+        this.entranceAnimationComplete = true;
+      }
+    } else {
+      // Après l'animation d'entrée, gestion basée sur le scroll
+      this.entranceAnimationComplete = true;
+      
+      // Apparition progressive entre 0 et 0.2 de scroll, puis fumée de disparition après 0.95
+      // La robe reste visible beaucoup plus longtemps
+      const appearEndThreshold = 0.2;
+      const smokeStartThreshold = 0.95; // Disparaît seulement à 95% du scroll
+      
+      if (this.scrollProgress <= appearEndThreshold) {
+        // Phase d'apparition : la robe émerge progressivement (déjà visible après l'entrée)
+        opacity = 1;
+        scaleFactor = 1;
+      } else if (this.scrollProgress < smokeStartThreshold) {
+        // Zone centrale : robe pleinement visible (reste visible de 20% à 95% du scroll)
+        opacity = 1;
+        scaleFactor = 1;
+      } else {
+        // Phase de disparition en fumée (seulement les 5% finaux)
+        const smokeProgress = (this.scrollProgress - smokeStartThreshold) / (1 - smokeStartThreshold);
+        opacity = 1 - smokeProgress;
+        scaleFactor = 1 + (smokeProgress * 0.3); // Jusqu'à 1.3x
+      }
     }
-    
-    // Calculer la progression de la fumée (0 = début fumée, 1 = complètement disparu)
-    const smokeProgress = (this.scrollProgress - smokeStartThreshold) / (1 - smokeStartThreshold);
-    
-    // Opacité qui diminue progressivement
-    const opacity = 1 - smokeProgress;
-    
-    // Scale qui augmente légèrement pour simuler la dispersion
-    const scaleFactor = 1 + (smokeProgress * 0.3); // Jusqu'à 1.3x
     
     // Appliquer l'effet à tous les matériaux du modèle
     this.model.traverse((child) => {
@@ -360,8 +417,7 @@ class DressModel {
         materials.forEach((material) => {
           if (material) {
             material.opacity = opacity;
-            material.transparent = true;
-            // Activer la transparence si nécessaire
+            material.transparent = opacity < 1;
             if (opacity < 1) {
               material.needsUpdate = true;
             }
@@ -370,8 +426,8 @@ class DressModel {
       }
     });
     
-    // Appliquer le scale au modèle entier pour l'effet de dispersion
-    // Le scale initial du modèle est 1 (pas de scale appliqué), donc on applique juste le facteur de fumée
+    // Appliquer le scale au modèle entier pour l'effet d'apparition / dispersion
+    // Le scale initial du modèle est 1 (pas de scale appliqué)
     const baseScale = this.targetScale || 1;
     this.model.scale.setScalar(baseScale * scaleFactor);
     

@@ -3,12 +3,12 @@
   <div class="scroll-cards-container">
     <% 
     nav_cards = [
-      { icon: 'shop', title: 'La boutique de Cannes', description: 'Venez nous rencontrer', url: la_boutique_path },
-      { icon: 'star-fill', title: 'Nos collections', description: 'Découvrez notre sélection', url: '#collections' },
-      { icon: 'lightbulb-fill', title: 'Le concept', description: 'Notre philosophie', url: '#concept' },
-      { icon: 'stars', title: 'Nos autres activités', description: 'Costumes d\'époque & prestations', url: nos_autres_activites_path },
-      { icon: 'shield-check', title: 'Légal', description: 'Mentions & CGV', url: '#legal' },
-      { icon: 'question-circle-fill', title: 'FAQ', description: 'Questions fréquentes', url: faq_path }
+      { icon: 'shop', title: 'La boutique de Cannes', description: 'Venez nous rencontrer', url: la_boutique_path, image: 'cat_tenues_soiree.jpg' },
+      { icon: 'star-fill', title: 'Nos collections', description: 'Découvrez notre sélection', url: nos_collections_path, image: 'cat_robes_mariees.jpg' },
+      { icon: 'lightbulb-fill', title: 'Le concept', description: 'Notre philosophie', url: le_concept_path, image: 'cat_costume.jpg' },
+      { icon: 'stars', title: 'Nos autres activités', description: 'Costumes d\'époque & prestations', url: nos_autres_activites_path, image: 'cat_accessoires.jpg' },
+      { icon: 'shield-check', title: 'Légal', description: 'Mentions & CGV', url: legal_path, image: 'party.jpg' },
+      { icon: 'question-circle-fill', title: 'FAQ', description: 'Questions fréquentes', url: faq_path, image: 'frais_expedition.jpg' }
     ]
     %>
     
@@ -18,7 +18,8 @@
         icon: card[:icon],
         title: card[:title],
         description: card[:description],
-        url: card[:url]
+        url: card[:url],
+        image: card[:image]
       ) %>
     <% end %>
   </div>

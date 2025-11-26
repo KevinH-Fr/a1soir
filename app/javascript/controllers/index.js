@@ -48,3 +48,6 @@ application.register("reservation-form", ReservationFormController)
 
 import StickyTextController from "./sticky_text_controller"
 application.register("sticky-text", StickyTextController)
+
+import HomeScrollController from "./home_scroll_controller"
+application.register("home-scroll", HomeScrollController)

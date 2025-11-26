@@ -1,0 +1,39 @@
+<!-- Section d'animation au scroll : textes qui s'écrivent + zoom image + robe 3D -->
+<div class="public-main-content" data-controller="home-scroll">
+  <!-- Conteneur du modèle 3D de la robe (positionnée en bas à droite) -->
+  <div id="dress-model-container" data-position="bottom-right"></div>
+  
+  <!-- Badge indicateur de scroll -->
+  <div class="position-fixed top-0 end-0 p-3" style="z-index: 2000;">
+    <span data-home-scroll-target="scrollBadge" class="badge rounded-pill bg-dark border border-secondary text-light">
+      0px · 0%
+    </span>
+  </div>
+
+  <div class="container-fluid p-0">
+    <!-- Image pleine page, totalement fixe avec zoom au scroll -->
+    <div class="position-fixed top-0 start-0 w-100" style="height: 100vh; overflow: hidden; z-index: 0; pointer-events: none;">
+      <%= image_tag("/images/dessin1b.png",
+            alt: "Illustration Autour d'un Soir",
+            class: "w-100 h-100",
+            data: { home_scroll_target: "image" },
+            style: "object-fit: cover; transform-origin: center center; transition: opacity 0.3s ease;") %>
+    </div>
+
+    <!-- Espace pour scroller par-dessus l'image fixe -->
+    <!-- Hauteur calculée pour permettre toutes les animations :
+         - Textes : 4vh
+         - Zoom : 6vh (commence après les textes, animation plus rapide)
+         - Fade out : 15% du zoom
+         Total : ~11.9vh pour que tout se déroule correctement -->
+    <div style="height: 1100vh;"></div>
+
+    <!-- Textes successifs qui s'écrivent au scroll, positionnés en bas à droite de l'écran -->
+    <div class="position-fixed bottom-0" style="right: 15%; z-index: 10; pointer-events: none; max-width: 40%; padding-bottom: 2rem;">
+      <h2 class="h1 scroll-animation-text" 
+          data-home-scroll-target="text">
+      </h2>
+    </div>
+  </div>
+</div>
+

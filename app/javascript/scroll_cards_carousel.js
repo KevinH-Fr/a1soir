@@ -1,6 +1,6 @@
 /**
  * Carousel de cards contrôlé par le scroll
- * Défilement simple de droite à gauche
+ * Animation simple : apparition/disparition des cartes
  */
 class ScrollCardsCarousel {
   constructor() {
@@ -11,7 +11,6 @@ class ScrollCardsCarousel {
     if (!this.carousel || !this.container || this.cards.length === 0) return;
     
     this.isInView = false;
-    this.cardSpacing = 600; // Distance entre les cartes
     this.handleScrollBound = this.handleScroll.bind(this);
     
     this.init();
@@ -24,9 +23,15 @@ class ScrollCardsCarousel {
     
     // Initialiser toutes les cards
     this.cards.forEach((card) => {
-      card.style.transition = 'all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1)';
-      card.style.left = '0';
-      card.style.top = '0';
+      card.style.transition = 'opacity 0.8s ease-in-out';
+      card.style.position = 'absolute';
+      card.style.top = '50%';
+      card.style.left = '50%';
+      card.style.transform = 'translate(-50%, -50%)';
+      card.style.opacity = '0';
+      card.style.width = '100vw';
+      card.style.height = '100vh';
+      card.style.zIndex = '1';
     });
 
     // Écouter le scroll
@@ -74,87 +79,57 @@ class ScrollCardsCarousel {
     }
     
     // Calculer la progression du scroll dans la zone du carousel
-    // Ajouter un offset pour retarder le début de l'animation
     const scrolled = Math.max(0, windowHeight - carouselRect.top);
     const scrollableHeight = carouselRect.height;
-    const rawProgress = scrolled / scrollableHeight;
+    const progress = Math.min(1, scrolled / scrollableHeight);
     
-    // Retarder l'apparition : ne commence qu'après 15% de scroll dans le carousel
-    const animationStartOffset = 0.15;
-    const progress = rawProgress < animationStartOffset 
-      ? 0 
-      : Math.min(1, (rawProgress - animationStartOffset) / (1 - animationStartOffset));
-    
-    // Fade out en fin de carousel (derniers 10%)
-    if (progress > 0.9) {
-      const fadeProgress = (progress - 0.9) / 0.1;
+    // Fade out en fin de carousel (derniers 5%)
+    if (progress > 0.95) {
+      const fadeProgress = (progress - 0.95) / 0.05;
       this.container.style.opacity = (1 - fadeProgress).toString();
     } else {
       this.container.style.opacity = '1';
     }
     
-    // Calculer la position de chaque carte avec animation individuelle
+    // Calculer quelle carte doit être visible
     const numCards = this.cards.length;
-    const segmentSize = 1 / numCards; // Chaque carte a sa propre fenêtre de scroll
+    const segmentSize = 1 / numCards; // Chaque carte occupe une portion égale du scroll
     
     this.cards.forEach((card, index) => {
       // Calculer la progression pour cette carte spécifique
       const cardStart = index * segmentSize;
       const cardEnd = (index + 1) * segmentSize;
-      const cardProgress = Math.max(0, Math.min(1, (progress - cardStart) / (cardEnd - cardStart)));
       
-      // Phases pour chaque carte :
-      // - 0% à 20% : Entrée (droite → centre)
-      // - 20% à 80% : Pause au centre
-      // - 80% à 100% : Sortie (centre → gauche)
-      const entryEnd = 0.2;
-      const exitStart = 0.8;
+      // Zone de transition entre les cartes (20% de la zone de chaque carte)
+      const transitionZone = segmentSize * 0.2;
       
-      // Calculer la position relative au conteneur
-      const containerRect = this.container.getBoundingClientRect();
-      const cardWidth = card.offsetWidth || 450;
-      const cardHeight = card.offsetHeight || 600;
-      const containerWidth = containerRect.width;
+      let opacity = 0;
       
-      // Position centrée : le centre de la carte doit être au centre du conteneur
-      // Pour centrer : (largeur conteneur - largeur carte) / 2
-      const centerCardX = (containerWidth - cardWidth) / 2;
-      const centerCardY = -(cardHeight / 2);
-      
-      // Positions de départ et de fin par rapport au conteneur
-      const startX = containerWidth + cardWidth; // Commence hors écran à droite
-      const endX = -cardWidth; // Sort hors écran à gauche
-      
-      let desiredX, opacity, scale, zIndex;
-      
-      if (cardProgress < entryEnd) {
-        // Phase d'entrée : droite → centre
-        const entryProgress = cardProgress / entryEnd;
-        desiredX = startX + (centerCardX - startX) * entryProgress;
-        opacity = entryProgress;
-        scale = 0.85 + (entryProgress * 0.15); // De 0.85 à 1.0
-        zIndex = Math.round(entryProgress * 10);
-      } else if (cardProgress < exitStart) {
-        // Phase de pause : reste au centre
-        desiredX = centerCardX;
-        opacity = 1;
-        scale = 1;
-        zIndex = 10;
-      } else {
-        // Phase de sortie : centre → gauche
-        const exitProgress = (cardProgress - exitStart) / (1 - exitStart);
-        desiredX = centerCardX + (endX - centerCardX) * exitProgress;
-        opacity = 1 - exitProgress;
-        scale = 1 - (exitProgress * 0.15); // De 1.0 à 0.85
-        zIndex = Math.round((1 - exitProgress) * 10);
+      if (progress >= cardStart && progress < cardEnd) {
+        // Cette carte est dans sa zone de scroll
+        const cardProgress = (progress - cardStart) / segmentSize;
+        
+        if (cardProgress < transitionZone) {
+          // Apparition (fade in)
+          opacity = cardProgress / transitionZone;
+        } else if (cardProgress > (1 - transitionZone)) {
+          // Disparition (fade out)
+          opacity = (1 - cardProgress) / transitionZone;
+        } else {
+          // Visible complètement
+          opacity = 1;
+        }
       }
       
-      // Appliquer les transformations
-      const compensatedTranslateX = desiredX / scale;
-      const compensatedTranslateY = centerCardY / scale;
-      card.style.transform = `translate(${compensatedTranslateX}px, ${compensatedTranslateY}px) scale(${scale})`;
+      // Appliquer l'opacité
       card.style.opacity = opacity.toString();
-      card.style.zIndex = zIndex;
+      
+      // Mettre la carte active au-dessus
+      if (opacity > 0) {
+        card.style.zIndex = Math.round(opacity * 10) + 1;
+      } else {
+        card.style.zIndex = '1';
+      }
     });
   }
   

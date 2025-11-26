@@ -1,0 +1,61 @@
+<!-- Section découverte avec effet de scroll -->
+<section class="discover-section text-center py-5" data-discover>
+  <div class="container">
+    <div class="discover-title" data-discover-item>
+      <h2 class="discover-main-title">
+        Découvrez notre univers
+      </h2>
+      <div class="title-decoration">
+        <span class="decoration-line"></span>
+      </div>
+    </div>
+    
+    <div class="discover-content-wrapper">
+      <!-- Image gauche qui change au scroll -->
+      <div class="discover-image-container" data-discover-item>
+        <%= image_tag("/images/cat_robes_mariees.jpg", 
+              alt: "Robes de mariée",
+              class: "discover-img discover-img-active",
+              data: { discover_image: "cat_robes_mariees.jpg"}) %>
+        <%= image_tag("/images/cat_tenues_soiree.jpg", 
+              alt: "Tenues de soirée",
+              class: "discover-img",
+              data: { discover_image: "cat_tenues_soiree.jpg"}) %>
+        <%= image_tag("/images/cat_costume.jpg", 
+              alt: "Costumes",
+              class: "discover-img",
+              data: { discover_image: "cat_costume.jpg"}) %>
+      </div>
+      
+      <!-- Contenu texte à droite -->
+      <div class="discover-content-right">
+        <div class="discover-description" data-discover-item>
+          <p class="description-text">
+            Spécialistes de la location et vente de 
+            tenues d'exception
+          </p>
+          <p class="description-subtext">
+            Un mariage, une soirée ou un événement professionnel :
+            nous vous accompagnons pour sublimer vos plus beaux moments.
+          </p>
+        </div>
+        
+        <div class="discover-icons">
+          <div class="icon-item">
+            <i class="bi bi-gem"></i>
+            <span>Excellence</span>
+          </div>
+          <div class="icon-item">
+            <i class="bi bi-heart"></i>
+            <span>Passion</span>
+          </div>
+          <div class="icon-item">
+            <i class="bi bi-stars"></i>
+            <span>Élégance</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

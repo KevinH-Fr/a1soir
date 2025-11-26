@@ -56,10 +56,16 @@ module PagesHelper
     end
   end
 
-  def nav_card_scroll(index:, icon:, title:, description:, url:)
+  def nav_card_scroll(index:, icon:, title:, description:, url:, image: nil)
     content_tag :div, class: "scroll-card", data: { card_index: index } do
-      link_to url, class: "text-decoration-none" do
-        content_tag :div, class: "card shadow nav-card rounded-4 bg-darker-gradient text-light overflow-hidden" do
+      content_tag :div, class: "card shadow nav-card rounded-4 bg-darker-gradient text-light overflow-hidden" do
+        # Image de fond (non cliquable)
+        card_image = image.present? ? content_tag(:div, class: "nav-card-image-wrapper") do
+          image_tag("/images/#{image}", alt: title, class: "nav-card-image")
+        end : ""
+        
+        # Contenu cliquable (icône, titre, description, flèche)
+        clickable_content = link_to url, class: "text-decoration-none nav-card-link" do
           content_tag(:div, class: "card-body p-5 text-center position-relative", style: "z-index: 1;") do
             icon_wrapper = content_tag(:div, class: "nav-card-icon-wrapper rounded-circle d-inline-flex align-items-center justify-content-center mb-4") do
               content_tag :i, nil, class: "bi bi-#{icon} nav-card-icon d-block"
@@ -76,6 +82,8 @@ module PagesHelper
             (icon_wrapper + card_title + card_description + card_arrow).html_safe
           end
         end
+        
+        (card_image + clickable_content).html_safe
       end
     end
   end

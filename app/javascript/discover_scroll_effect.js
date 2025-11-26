@@ -8,11 +8,34 @@ class DiscoverScrollEffect {
     if (!this.section) return;
     
     this.items = Array.from(this.section.querySelectorAll('[data-discover-item]'));
+    this.imageContainer = this.section.querySelector('.discover-image-container');
+    this.images = this.imageContainer 
+      ? Array.from(this.imageContainer.querySelectorAll('.discover-img'))
+      : [];
+    this.currentImageIndex = 0;
     this.handleScrollBound = this.handleScroll.bind(this);
     this.init();
   }
 
   init() {
+    // Initialiser la première image comme active
+    if (this.images.length > 0) {
+      this.images.forEach((img, index) => {
+        if (index === 0) {
+          img.classList.add('discover-img-active');
+          img.style.opacity = '1';
+          img.style.transform = 'scale(1)';
+          img.style.zIndex = '1';
+        } else {
+          img.classList.remove('discover-img-active');
+          img.style.opacity = '0';
+          img.style.transform = 'scale(1.1)';
+          img.style.zIndex = '0';
+        }
+      });
+      this.currentImageIndex = 0;
+    }
+    
     // Écouter le scroll
     window.addEventListener('scroll', this.handleScrollBound, { passive: true });
     // Appliquer l'effet initial
@@ -48,6 +71,11 @@ class DiscoverScrollEffect {
     const exitPhaseEnd = 0.8;
     const exitProgress = this.clamp((scrollProgress - exitPhaseStart) / (exitPhaseEnd - exitPhaseStart), 0, 1);
 
+    // Changer l'image pendant le scroll dans la phase visible
+    if (scrollProgress > 0 && scrollProgress <= exitPhaseStart && this.imageContainer) {
+      this.updateImageByScroll(scrollProgress);
+    }
+
     // Cacher le conteneur si tous les éléments sont complètement disparus
     const container = this.section.querySelector('.container');
     if (scrollProgress > exitPhaseEnd) {
@@ -71,9 +99,14 @@ class DiscoverScrollEffect {
 
       if (scrollProgress > exitPhaseEnd) {
         // Complètement disparu - cacher les éléments
+        const isImageContainer = item.classList.contains('discover-image-container');
         item.style.opacity = '0';
         item.style.visibility = 'hidden';
-        item.style.transform = 'translateY(-60px) scale(1.3)';
+        if (isImageContainer) {
+          item.style.transform = 'translate(-80px, -40px) scale(1.2)';
+        } else {
+          item.style.transform = 'translateY(-60px) scale(1.3)';
+        }
         item.style.filter = 'blur(20px)';
       } else if (scrollProgress > exitPhaseStart) {
         // Phase de sortie (fumée)
@@ -85,8 +118,9 @@ class DiscoverScrollEffect {
         item.style.visibility = 'visible';
         if (adjustedEntryProgress >= 1) {
           // Phase stable - complètement visible
+          const isImageContainer = item.classList.contains('discover-image-container');
           item.style.opacity = '1';
-          item.style.transform = 'translateY(0) scale(1)';
+          item.style.transform = isImageContainer ? 'translate(0, 0) scale(1)' : 'translateY(0) scale(1)';
           item.style.filter = 'blur(0px)';
         } else {
           // Phase d'entrée en cours
@@ -100,32 +134,116 @@ class DiscoverScrollEffect {
   }
 
   applyEntryEffect(item, progress) {
-    // Interpolation pour l'entrée
-    const opacity = progress;
-    const translateY = (1 - progress) * 40; // De 40px à 0
+    // Détecter si c'est le container d'image
+    const isImageContainer = item.classList.contains('discover-image-container');
     
-    item.style.opacity = opacity;
-    item.style.transform = `translateY(${translateY}px)`;
-    item.style.filter = 'blur(0px)';
+    const opacity = progress;
+    
+    if (isImageContainer) {
+      // Animation horizontale pour le container d'image (depuis la gauche)
+      const translateX = (1 - progress) * -60; // De -60px à 0
+      const translateY = (1 - progress) * 20; // Légère descente
+      
+      item.style.opacity = opacity;
+      item.style.transform = `translate(${translateX}px, ${translateY}px)`;
+      item.style.filter = 'blur(0px)';
+    } else {
+      // Animation verticale pour les autres éléments
+      const translateY = (1 - progress) * 40; // De 40px à 0
+      
+      item.style.opacity = opacity;
+      item.style.transform = `translateY(${translateY}px)`;
+      item.style.filter = 'blur(0px)';
+    }
   }
 
   applyExitEffect(item, progress) {
-    // Interpolation pour la sortie (fumée)
-    const opacity = 1 - progress;
-    const translateY = -progress * 60; // Monte jusqu'à -60px
-    const scale = 1 + (progress * 0.3); // Agrandit jusqu'à 1.3x
-    const blur = progress * 20; // Flou jusqu'à 20px
+    // Détecter si c'est le container d'image
+    const isImageContainer = item.classList.contains('discover-image-container');
     
-    item.style.opacity = opacity;
-    item.style.transform = `translateY(${translateY}px) scale(${scale})`;
-    item.style.filter = `blur(${blur}px)`;
+    const opacity = 1 - progress;
+    const scale = 1 + (progress * 0.2); // Légère augmentation
+    const blur = progress * 15; // Flou
+    
+    if (isImageContainer) {
+      // Animation horizontale pour le container d'image (retour vers la gauche)
+      const translateX = -progress * 80; // Vers la gauche
+      const translateY = -progress * 40; // Légère montée
+      
+      item.style.opacity = opacity;
+      item.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+      item.style.filter = `blur(${blur}px)`;
+    } else {
+      // Animation verticale pour les autres éléments
+      const translateY = -progress * 60; // Monte jusqu'à -60px
+      
+      item.style.opacity = opacity;
+      item.style.transform = `translateY(${translateY}px) scale(${scale})`;
+      item.style.filter = `blur(${blur}px)`;
+    }
   }
 
   resetItem(item) {
+    const isImageContainer = item.classList.contains('discover-image-container');
+    
     item.style.opacity = '0';
     item.style.visibility = 'hidden';
-    item.style.transform = 'translateY(40px)';
+    
+    if (isImageContainer) {
+      item.style.transform = 'translate(-60px, 20px)';
+      // Réinitialiser la première image comme active
+      if (this.images.length > 0) {
+        this.images.forEach((img, index) => {
+          if (index === 0) {
+            img.classList.add('discover-img-active');
+            img.style.opacity = '1';
+            img.style.transform = 'scale(1)';
+          } else {
+            img.classList.remove('discover-img-active');
+            img.style.opacity = '0';
+            img.style.transform = 'scale(1.1)';
+          }
+        });
+        this.currentImageIndex = 0;
+      }
+    } else {
+      item.style.transform = 'translateY(40px)';
+    }
     item.style.filter = 'blur(0px)';
+  }
+
+  updateImageByScroll(scrollProgress) {
+    if (!this.imageContainer || this.images.length === 0) return;
+    
+    // Calculer l'index de l'image basé sur la progression du scroll
+    // Diviser la phase visible (0 à exitPhaseStart) en segments égaux
+    const exitPhaseStart = 0.55;
+    const visiblePhaseProgress = Math.min(scrollProgress / exitPhaseStart, 1);
+    const imageSegmentLength = 1 / this.images.length;
+    
+    let targetImageIndex = Math.floor(visiblePhaseProgress / imageSegmentLength);
+    if (targetImageIndex >= this.images.length) {
+      targetImageIndex = this.images.length - 1;
+    }
+    
+    // Si l'index a changé, faire la transition
+    if (targetImageIndex !== this.currentImageIndex) {
+      this.currentImageIndex = targetImageIndex;
+      
+      this.images.forEach((img, index) => {
+        if (index === targetImageIndex) {
+          img.classList.add('discover-img-active');
+          img.style.opacity = '1';
+          img.style.transform = 'scale(1)';
+          img.style.zIndex = '1';
+        } else {
+          img.classList.remove('discover-img-active');
+          img.style.opacity = '0';
+          img.style.transform = 'scale(1.1)';
+          img.style.zIndex = '0';
+        }
+      });
+    }
   }
 
   clamp(value, min, max) {
