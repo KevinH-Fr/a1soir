@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["text", "image", "indicator", "indicators"]
+  static targets = ["text", "image"]
 
   connect() {
     this.handleScroll = this.handleScroll.bind(this)
@@ -59,20 +59,23 @@ export default class extends Controller {
       const imageCenter = imageTop + (imageHeight / 2)
       const viewportCenter = windowHeight / 2
       const distanceFromCenter = Math.abs(imageCenter - viewportCenter)
-      const maxDistance = windowHeight * 0.6 // Zone de visibilité plus large pour chevauchement
+      // Zone de visibilité plus large pour que le texte reste affiché plus longtemps
+      const maxDistance = windowHeight * 0.7
       
       if (distanceFromCenter < maxDistance && imageTop < windowHeight && imageBottom > 0) {
         // Image visible près du centre - calculer l'opacité
         const visibility = 1 - (distanceFromCenter / maxDistance)
-        let opacity = Math.max(0, Math.min(1, visibility))
-        
-        // Fade in/out plus rapide pour transition plus rapide
-        if (opacity < 0.3) {
-          opacity = opacity / 0.3 // Fade in plus rapide
-        }
-        
+        // Courbe conservée pour garder un vrai pic d'opacité au centre,
+        // mais avec une zone active plus large le texte reste affiché plus longtemps
+        let opacity = Math.max(0, Math.min(1, visibility ** 2))
+
         textWrapper.style.opacity = opacity
-        textWrapper.style.display = 'block'
+        // On ne masque plus brutalement le texte tant qu'il est dans la zone
+        if (opacity > 0.05) {
+          textWrapper.style.display = 'block'
+        } else {
+          textWrapper.style.display = 'none'
+        }
         
         // Déterminer quelle slide est la plus visible
         if (visibility > maxVisibility) {
@@ -80,38 +83,11 @@ export default class extends Controller {
           activeIndex = index
         }
       } else {
-        // Image pas visible - cacher le texte
+        // Image complètement en dehors de la zone : cacher le texte
         textWrapper.style.opacity = '0'
         textWrapper.style.display = 'none'
       }
     })
-    
-    // Afficher/masquer les indicateurs - apparaissent plus tard et disparaissent plus tôt
-    // Apparaissent quand la section est bien entrée dans le viewport (rect.top <= -100px)
-    // Disparaissent avant la fin (quand il reste moins de 30% de la hauteur de la fenêtre)
-    const showThreshold = -100 // Apparaissent après avoir scrollé 100px dans la section
-    const hideThreshold = windowHeight * 0.3 // Disparaissent quand il reste moins de 30% de la fenêtre
-    
-    if (rect.top <= showThreshold && rect.bottom > hideThreshold) {
-      this.indicatorsTarget.style.opacity = '1'
-    } else {
-      this.indicatorsTarget.style.opacity = '0'
-    }
-    
-    // Mettre à jour les indicateurs - remplissage binaire (vide ou plein)
-    this.indicatorTargets.forEach((indicator, index) => {
-      const fillBar = indicator.querySelector('.indicator-fill')
-      if (!fillBar) return
-      
-      // Si cette slide est active ou si on a déjà passé cette slide, la remplir complètement
-      if (index <= activeIndex && activeIndex >= 0) {
-        // Slide active ou passée - complètement remplie
-        fillBar.style.width = '100%'
-      } else {
-        // Slides futures - vides
-        fillBar.style.width = '0%'
-      }
-    })
+    // Les indicateurs de pagination ont été retirés : plus de logique associée ici
   }
 }
-
