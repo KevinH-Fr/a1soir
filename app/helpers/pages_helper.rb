@@ -1,5 +1,17 @@
 module PagesHelper
 
+  # Méthode privée pour déterminer le chemin de l'image (URL complète ou fichier local)
+  def image_path_helper(image)
+    return nil unless image.present?
+    # Si l'image commence par http:// ou https://, c'est une URL complète
+    if image.start_with?('http://', 'https://')
+      image
+    else
+      # Sinon, c'est un fichier local dans /images/
+      "/images/#{image}"
+    end
+  end
+
   def page_header(title, subtitle = nil, image1: nil, image2: nil, with_images: true, height: nil)
     if with_images
       # Hauteur par défaut ou personnalisée
@@ -9,8 +21,9 @@ module PagesHelper
         # Container des deux images côte à côte
         images_container = content_tag :div, class: "d-flex h-100" do
           img1 = if image1.present?
+            image_path = image_path_helper(image1)
             content_tag :div, class: "page-header-image-wrapper", style: "width: 50%; height: 100%; overflow: hidden;" do
-              image_tag("/images/#{image1}", class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;")
+              image_tag(image_path, class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;")
             end
           else
             content_tag(:div, class: "d-flex align-items-center justify-content-center", style: "width: 50%; height: 100%; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); border-right: 1px solid #444;") do
@@ -19,8 +32,9 @@ module PagesHelper
           end
           
           img2 = if image2.present?
+            image_path = image_path_helper(image2)
             content_tag :div, class: "page-header-image-wrapper", style: "width: 50%; height: 100%; overflow: hidden;" do
-              image_tag("/images/#{image2}", class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;")
+              image_tag(image_path, class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;")
             end
           else
             content_tag(:div, class: "d-flex align-items-center justify-content-center", style: "width: 50%; height: 100%; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);") do

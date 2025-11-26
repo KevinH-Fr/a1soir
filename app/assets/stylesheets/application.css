@@ -11,24 +11,51 @@
 }
 
 
- /* scroll bar */
+ /* scroll bar - Design élégant avec couleur de marque */
 
  ::-webkit-scrollbar {
-  width: 8px;   /* Vertical scrollbar width */
-  height: 4px;  /* Horizontal scrollbar height */
+  width: 10px;   /* Vertical scrollbar width */
+  height: 6px;  /* Horizontal scrollbar height */
  }
  
  ::-webkit-scrollbar-thumb {
-   background-color: #717171; /* Color of the scrollbar thumb */
-   border-radius: 8px; /* Rounded corners for the thumb */
+   background: linear-gradient(135deg, 
+     rgba(184, 134, 11, 0.8) 0%, 
+     rgba(200, 150, 20, 0.9) 50%,
+     rgba(184, 134, 11, 0.8) 100%);
+   border-radius: 10px;
+   border: 2px solid rgba(0, 0, 0, 0.1);
+   transition: all 0.3s ease;
+   box-shadow: 0 2px 8px rgba(184, 134, 11, 0.3);
  }
  
  ::-webkit-scrollbar-thumb:hover {
-   background-color: #b7b7b7; /* Color of the thumb on hover */
+   background: linear-gradient(135deg, 
+     rgba(184, 134, 11, 1) 0%, 
+     rgba(200, 150, 20, 1) 50%,
+     rgba(184, 134, 11, 1) 100%);
+   box-shadow: 0 4px 12px rgba(184, 134, 11, 0.5);
+   transform: scaleY(1.1);
+ }
+ 
+ ::-webkit-scrollbar-thumb:active {
+   background: linear-gradient(135deg, 
+     rgba(200, 150, 20, 1) 0%, 
+     rgba(184, 134, 11, 1) 50%,
+     rgba(200, 150, 20, 1) 100%);
+   box-shadow: 0 2px 6px rgba(184, 134, 11, 0.6);
  }
  
  ::-webkit-scrollbar-track {
-   background-color: #b7b7b7; /* Color of the scrollbar track */
+   background: rgba(20, 20, 20, 0.3);
+   border-radius: 10px;
+   border: 1px solid rgba(255, 255, 255, 0.05);
+ }
+ 
+ /* Support Firefox */
+ * {
+   scrollbar-width: thin;
+   scrollbar-color: rgba(184, 134, 11, 0.8) rgba(20, 20, 20, 0.3);
  }
 
 
