@@ -45,3 +45,6 @@ application.register("recaptcha-submit", RecaptchaSubmitController)
 
 import ReservationFormController from "./reservation_form_controller"
 application.register("reservation-form", ReservationFormController)
+
+import StickyTextController from "./sticky_text_controller"
+application.register("sticky-text", StickyTextController)

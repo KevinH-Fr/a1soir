@@ -1,0 +1,62 @@
+<!-- Section Boutique - Présentation -->
+<section class="py-5 my-4" data-aos="fade-up" data-aos-duration="800">
+  <!-- Section 1: Texte + Image -->
+  <%= image_text_section(
+    image1: "cat_tenues_soiree.jpg",
+    image2: "cat_costume.jpg",
+    title: "Notre univers",
+    paragraphs: [
+      "Plongez dans l'univers d'Autour d'un Soir, où l'élégance rencontre l'exception. Notre boutique de Cannes vous accueille dans un cadre raffiné pour vous accompagner dans le choix de vos tenues de soirée.",
+      "Depuis notre création, nous avons à cœur de vous offrir une expérience unique, alliant conseils personnalisés et sélection rigoureuse de nos pièces. Chaque visite est l'occasion de découvrir des créations qui sauront sublimer vos moments les plus précieux.",
+      "Notre équipe passionnée est là pour vous guider, que vous recherchiez une robe de mariée romantique, une tenue de soirée élégante ou un costume d'exception. Nous mettons notre savoir-faire à votre service pour que vous resplendissiez lors de vos événements."
+    ],
+    reverse: false
+  ) %>
+
+  <!-- Section 2: Image + Texte (inversé) -->
+  <%= image_text_section(
+    image1: "cat_robes_mariees.jpg",
+    image2: "cat_accessoires.jpg",
+    title: "Une sélection d'exception",
+    paragraphs: [
+      "Découvrez notre collection soigneusement sélectionnée de robes de mariée, tenues de soirée et costumes. Chaque pièce est choisie pour sa qualité, son élégance et son caractère unique.",
+      "Nous travaillons avec des créateurs reconnus et sélectionnons uniquement des pièces qui répondent à nos critères d'excellence. Des matières nobles aux finitions soignées, chaque détail compte pour vous offrir le meilleur.",
+      "Que vous optiez pour la location ou l'achat, nous vous garantissons des tenues impeccables, entretenues avec le plus grand soin. Notre objectif : vous permettre de briller lors de vos événements les plus importants."
+    ],
+    reverse: true
+  ) %>
+
+  <!-- Section 3: Texte centré plein largeur -->
+  <div class="container-fluid px-0 mt-4">
+    <div class="row g-0">
+      <div class="col-12">
+        <div class="bg-black p-5 text-center">
+          <h3 class="text-light mb-4" style="font-family: 'Playfair Display', serif; font-size: 2.5rem;">Votre événement mérite le meilleur</h3>
+          <p class="text-light mx-auto mb-3" style="font-size: 1.15rem; line-height: 1.9; max-width: 800px;">
+            Que ce soit pour un mariage, une soirée de gala ou un événement professionnel, 
+            nous mettons tout en œuvre pour que vous soyez resplendissant. 
+            Notre équipe experte vous conseille et vous guide dans votre choix.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: Image plein largeur avec overlay texte -->
+  <div class="container-fluid px-0 mt-4">
+    <div class="position-relative" style="height: 500px; overflow: hidden;">
+      <%= image_tag("/images/cat_costume.jpg", class: "img-fluid w-100 h-100", style: "object-fit: cover;") %>
+      <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" 
+           style="background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6));">
+        <div class="text-center text-light px-4" style="max-width: 700px;">
+          <h3 class="mb-4" style="font-family: 'Playfair Display', serif; font-size: 2.5rem;">Un service sur mesure</h3>
+          <p class="fs-5" style="line-height: 1.8;">
+            Location ou vente, nous adaptons nos services à vos besoins. 
+            Essayage en boutique, conseils personnalisés et suivi jusqu'à votre événement.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

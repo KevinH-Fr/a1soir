@@ -1,0 +1,30 @@
+<!-- Section Équipe -->
+<% if @texteEquipe.present? %>
+  <section class="py-5 my-4" data-aos="fade-up" data-aos-duration="800">
+    <div class="container">
+      <div class="row mb-5">
+        <div class="col-12 text-center">
+          <h2 class="public-brand-color mb-3" style="font-family: 'Playfair Display', serif; font-size: 2.5rem;">Notre équipe</h2>
+          <p class="text-light opacity-75" style="font-size: 1.1rem;">Des professionnels passionnés à votre service</p>
+        </div>
+      </div>
+      
+      <div class="row align-items-center g-4 g-lg-5">
+        <div class="col-12 col-md-6" data-aos="fade-right" data-aos-duration="800">
+          <div class="position-relative overflow-hidden rounded-4 shadow-lg" style="height: 450px; transition: transform 0.3s ease;">
+            <%= image_tag("equipe1.jpg", class: "img-fluid w-100 h-100", style: "object-fit: cover; transition: transform 0.5s ease;") %>
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3)); pointer-events: none;"></div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6" data-aos="fade-left" data-aos-duration="800" data-aos-delay="200">
+          <div class="concept-card p-4 p-md-5 h-100 shadow-lg">
+            <div class="trix-content text-light" style="font-size: 1.05rem; line-height: 1.8;">
+              <%= @texteEquipe %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>
+

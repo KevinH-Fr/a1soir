@@ -1,47 +1,23 @@
-<%= page_header("La boutique de Cannes", "Découvrez notre équipe et notre boutique") %>
+<%= page_header("La boutique de Cannes", "Découvrez notre équipe et notre boutique", image1: "cat_costume.jpg", image2: "cat_robes_mariees.jpg") %>
+
+<!-- Paragraphe sous le header -->
+<div class="container" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10 text-center">
+      <p class="text-light opacity-75" style="font-size: 1.15rem; line-height: 1.8; margin: 0;">
+        Plongez dans l'univers d'Autour d'un Soir, où l'élégance rencontre l'exception. 
+        Notre boutique de Cannes vous accueille dans un cadre raffiné pour vous accompagner 
+        dans le choix de vos tenues de soirée et vous offrir une expérience unique.
+      </p>
+    </div>
+  </div>
+</div>
 
 <div class="public-main-content">
-    <div class="container-fluid">
-
-        <!-- Section Boutique -->
-        <div class="text-center m-4 p-4" data-scroll-reveal>
-            <div class="trix-content text-light"><%= @texteBoutique %></div>
-        </div>
-
-        <!-- Section Équipe -->
-        <% if @texteEquipe.present? %>
-          <div class="m-4 p-4" data-scroll-reveal>
-              <h3 class="text-center public-brand-color mb-4">Notre équipe</h3>
-              <div class="row align-items-center g-4">
-                  <div class="col-12 col-md-6">
-                      <%= image_tag("equipe1.jpg", class: "img-fluid rounded shadow") %>
-                  </div>
-                  <div class="col-12 col-md-6">
-                      <div class="trix-content text-light"><%= @texteEquipe %></div>
-                  </div>
-              </div>
-          </div>
-        <% end %>
-        
-        <!-- Section Références -->
-        <div data-scroll-reveal>
-            <%= render "references" %>
-        </div>
-        
-        <!-- Informations pratiques -->
-        <div data-scroll-reveal>
-            <%= render "infos" %>
-        </div>
-     
-        <!-- Bouton Rendez-vous -->
-        <div class="text-center my-5" data-scroll-reveal>
-        <%= link_to rdv_url(subdomain: "shop"), class: "btn btn-lg px-5 py-3 shadow btn-smoke-hover" do %>
-          <i class="bi bi-calendar-check me-2"></i>
-          <span class="fw-bold">Prendre Rendez-vous</span>
-        <% end %>
-      </div>
-
-      <%= render "map" %>
-
-    </div>
+  <%= render partial: "public/pages/la_boutique/section_boutique" %>
+  <%= render partial: "public/pages/la_boutique/section_equipe" %>
+  <%= render partial: "public/pages/la_boutique/section_references" %>
+  <%= render partial: "public/pages/la_boutique/section_infos" %>
+  <%= render partial: "public/pages/la_boutique/section_rdv" %>
+  <%= render partial: "public/pages/la_boutique/section_map" %>
 </div>

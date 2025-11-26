@@ -7,6 +7,7 @@
  body {
   font-family: "Playfair Display", Arial, Helvetica, sans-serif;
   font-size: medium;
+  overflow-x: hidden;
 }
 
 
@@ -454,6 +455,7 @@ footer .bi-facebook:hover {
   /* Smooth scroll */
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
   
 
@@ -1437,6 +1439,74 @@ section {
     font-size: 1rem !important;
     padding: 0 1rem;
   }
+}
+
+
+/* ============================================
+   IMAGE HOVER EFFECT - Changement d'image au survol
+   ============================================ */
+.image-hover-container {
+  cursor: pointer;
+  position: relative;
+}
+
+.image-hover-base {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.image-hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.image-hover-container:hover .image-hover-base {
+  opacity: 0;
+}
+
+.image-hover-container:hover .image-hover-overlay {
+  opacity: 1;
+}
+
+/* ============================================
+   PAGE HEADER - Zoom effect on hover
+   ============================================ */
+.page-header-image:hover {
+  transform: scale(1.05);
+}
+
+/* ============================================
+   SECTION TITLE - Underline animation on scroll
+   ============================================ */
+.section-title-wrapper {
+  position: relative;
+}
+
+.section-title-underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: var(--public-brand-color, #b8860b);
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-aos="title-underline"] .section-title-underline {
+  width: 0;
+}
+
+[data-aos="title-underline"].aos-animate .section-title-underline {
+  width: 25%;
 }
 
 /* ============================================

@@ -1,10 +1,57 @@
 module PagesHelper
 
-  def page_header(title, subtitle = nil)
-    content_tag :div, class: "container-fluid text-center w-100 py-5", data: { aos: "fade" } do
-      concat content_tag(:h1, title, class: "text-white fw-bold fs-1 mb-3 text-uppercase page-title", data: { aos: "fade-up", aos_delay: "100" })
-      if subtitle.present?
-        concat content_tag(:h2, subtitle, class: "text-white-50 fs-5 fw-light page-subtitle", data: { aos: "fade-up", aos_delay: "200" })
+  def page_header(title, subtitle = nil, image1: nil, image2: nil, with_images: true, height: nil)
+    if with_images
+      # Hauteur par défaut ou personnalisée
+      height_style = height.present? ? "height: #{height};" : "height: 500px;"
+      # Structure avec deux images côte à côte et overlay
+      content_tag :div, class: "position-relative w-100 mb-5 page-header-container", style: height_style, data: { aos: "fade" } do
+        # Container des deux images côte à côte
+        images_container = content_tag :div, class: "d-flex h-100" do
+          img1 = if image1.present?
+            content_tag :div, class: "page-header-image-wrapper", style: "width: 50%; height: 100%; overflow: hidden;" do
+              image_tag("/images/#{image1}", class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;")
+            end
+          else
+            content_tag(:div, class: "d-flex align-items-center justify-content-center", style: "width: 50%; height: 100%; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); border-right: 1px solid #444;") do
+              content_tag(:i, nil, class: "bi bi-image text-white-50", style: "font-size: 4rem; opacity: 0.3;")
+            end
+          end
+          
+          img2 = if image2.present?
+            content_tag :div, class: "page-header-image-wrapper", style: "width: 50%; height: 100%; overflow: hidden;" do
+              image_tag("/images/#{image2}", class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;")
+            end
+          else
+            content_tag(:div, class: "d-flex align-items-center justify-content-center", style: "width: 50%; height: 100%; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);") do
+              content_tag(:i, nil, class: "bi bi-image text-white-50", style: "font-size: 4rem; opacity: 0.3;")
+            end
+          end
+          
+          img1 + img2
+        end
+        
+        # Overlay avec titre et sous-titre
+        overlay = content_tag :div, class: "position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-start", 
+          style: "background: linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.3)); padding: 3rem; pointer-events: none;" do
+          title_tag = content_tag(:h1, title, class: "text-white fw-bold fs-1 mb-3 text-uppercase", data: { aos: "fade-up", aos_delay: "100" })
+          subtitle_tag = if subtitle.present?
+            content_tag(:h2, subtitle, class: "text-white-50 fs-5 fw-light", data: { aos: "fade-up", aos_delay: "200" })
+          else
+            "".html_safe
+          end
+          title_tag + subtitle_tag
+        end
+        
+        images_container + overlay
+      end
+    else
+      # Comportement par défaut sans images
+      content_tag :div, class: "container-fluid text-start w-100 py-5", data: { aos: "fade" } do
+        concat content_tag(:h1, title, class: "text-white fw-bold fs-1 mb-3 text-uppercase", data: { aos: "fade-up", aos_delay: "100" })
+        if subtitle.present?
+          concat content_tag(:h2, subtitle, class: "text-white-50 fs-5 fw-light page-subtitle", data: { aos: "fade-up", aos_delay: "200" })
+        end
       end
     end
   end
@@ -102,6 +149,48 @@ module PagesHelper
         end
 
         image_section + overlay
+      end
+    end
+  end
+
+  def image_text_section(image1:, image2: nil, title:, paragraphs: [], reverse: false)
+    # Déterminer l'ordre des colonnes
+    image_order = reverse ? "" : "order-1 order-md-2"
+    text_order = reverse ? "" : "order-2 order-md-1"
+    
+    content_tag :div, class: "container-fluid px-0" do
+      content_tag :div, class: "row g-0 align-items-stretch" do
+        # Colonne Texte
+        text_col = content_tag :div, class: "col-12 col-md-6 #{text_order} d-flex" do
+          content_tag :div, class: "p-4 p-md-5 d-flex flex-column justify-content-center bg-white w-100" do
+            title_wrapper = content_tag :div, class: "section-title-wrapper mb-4", data: { aos: "title-underline" } do
+              title_tag = content_tag(:h3, title, class: "public-brand-color section-title", style: "font-family: 'Playfair Display', serif; font-size: 2rem; position: relative; display: inline-block;")
+              underline = content_tag(:span, "", class: "section-title-underline")
+              title_tag + underline
+            end
+            paragraphs_tags = paragraphs.map do |paragraph|
+              content_tag(:p, paragraph, class: "text-dark", style: "font-size: 1.1rem; line-height: 1.8;")
+            end.join.html_safe
+            (title_wrapper + paragraphs_tags).html_safe
+          end
+        end
+        
+        # Colonne Image
+        image_col = content_tag :div, class: "col-12 col-md-6 #{image_order} d-flex" do
+          image_container = content_tag :div, class: "image-hover-container w-100 h-100", style: "overflow: hidden;" do
+            base_image = image_tag("/images/#{image1}", class: "image-hover-base", style: "object-fit: cover; transition: opacity 0.5s ease;")
+            if image2.present?
+              overlay_image = image_tag("/images/#{image2}", class: "image-hover-overlay", style: "object-fit: cover; transition: opacity 0.5s ease;")
+              base_image + overlay_image
+            else
+              base_image
+            end
+          end
+          image_container
+        end
+        
+        # Inverser l'ordre si reverse est true
+        reverse ? (image_col + text_col) : (text_col + image_col)
       end
     end
   end
