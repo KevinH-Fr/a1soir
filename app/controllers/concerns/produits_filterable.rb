@@ -1,10 +1,6 @@
 module ProduitsFilterable
   extend ActiveSupport::Concern
 
-  included do
-    # Code qui sera exécuté lors de l'inclusion du module
-  end
-
   # Méthode pour charger toutes les données nécessaires aux filtres
   def load_data
     @toutes_categories = CategorieProduit.all.order(nom: :asc)
@@ -83,17 +79,6 @@ module ProduitsFilterable
     # - Par des callbacks en temps réel sur Article, Sousarticle, StripePaymentItem, Commande, Produit
     # Cela évite de recalculer la disponibilité à chaque requête (optimisation performance)
     
-    # Ancien code avec calcul en temps réel (DÉSACTIVÉ - trop lent)
-    # datedebut = Time.current
-    # datefin   = Time.current
-    # 
-    # available_produits_ids = searched_produits.select do |produit|
-    #   produit.statut_disponibilite(datedebut, datefin)[:disponibles] > 0
-    # end.map(&:id)
-    # available_produits_scope = Produit.where(id: available_produits_ids).order(updated_at: :desc)
-    
-    # Nouveau code utilisant le champ today_availability (optimisé)
-    # Filtre directement sur la colonne today_availability qui est indexée
     available_produits_scope = searched_produits.where(today_availability: true).order(updated_at: :desc)
 
     # 🔁 Then paginate the available produits (3 per page)

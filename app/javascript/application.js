@@ -6,12 +6,12 @@ import "./controllers"
 import "trix"
 import "@rails/actiontext"
 import "./three_scene"
-import "./dress_model"
 import "./home_text_animation"
 import "./scroll_cards_carousel"
 import "./discover_scroll_effect"
 import "./discover_icons_animation"
 import "./scroll_reveal"
+import "./page_header_zoom"
 
 // require jquery
 // require jquery_ujs

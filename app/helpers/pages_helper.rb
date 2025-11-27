@@ -23,7 +23,7 @@ module PagesHelper
           img1 = if image1.present?
             image_path = image_path_helper(image1)
             content_tag :div, class: "page-header-image-wrapper", style: "width: 50%; height: 100%; overflow: hidden;" do
-              image_tag(image_path, class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;")
+              image_tag(image_path, class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;", data: { page_header_image: "1" })
             end
           else
             content_tag(:div, class: "d-flex align-items-center justify-content-center", style: "width: 50%; height: 100%; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); border-right: 1px solid #444;") do
@@ -34,7 +34,7 @@ module PagesHelper
           img2 = if image2.present?
             image_path = image_path_helper(image2)
             content_tag :div, class: "page-header-image-wrapper", style: "width: 50%; height: 100%; overflow: hidden;" do
-              image_tag(image_path, class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;")
+              image_tag(image_path, class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;", data: { page_header_image: "2" })
             end
           else
             content_tag(:div, class: "d-flex align-items-center justify-content-center", style: "width: 50%; height: 100%; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);") do
@@ -48,9 +48,9 @@ module PagesHelper
         # Overlay avec titre et sous-titre
         overlay = content_tag :div, class: "position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-start", 
           style: "background: linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.3)); padding: 3rem; pointer-events: none;" do
-          title_tag = content_tag(:h1, title, class: "text-white fw-bold fs-1 mb-3 text-uppercase", data: { aos: "fade-up", aos_delay: "100" })
+          title_tag = content_tag(:h1, title, class: "text-white fw-bold fs-1 mb-3 text-uppercase page-header-title", data: { aos: "fade-up", aos_delay: "100" })
           subtitle_tag = if subtitle.present?
-            content_tag(:h2, subtitle, class: "text-white-50 fs-5 fw-light", data: { aos: "fade-up", aos_delay: "200" })
+            content_tag(:h2, subtitle, class: "text-white-50 fs-5 fw-light page-header-subtitle", data: { aos: "fade-up", aos_delay: "200" })
           else
             "".html_safe
           end
@@ -62,9 +62,9 @@ module PagesHelper
     else
       # Comportement par défaut sans images
       content_tag :div, class: "container-fluid text-start w-100 py-5", data: { aos: "fade" } do
-        concat content_tag(:h1, title, class: "text-white fw-bold fs-1 mb-3 text-uppercase", data: { aos: "fade-up", aos_delay: "100" })
+        concat content_tag(:h1, title, class: "text-white fw-bold fs-1 mb-3 text-uppercase page-header-title", data: { aos: "fade-up", aos_delay: "100" })
         if subtitle.present?
-          concat content_tag(:h2, subtitle, class: "text-white-50 fs-5 fw-light page-subtitle", data: { aos: "fade-up", aos_delay: "200" })
+          concat content_tag(:h2, subtitle, class: "text-white-50 fs-5 fw-light page-subtitle page-header-subtitle", data: { aos: "fade-up", aos_delay: "200" })
         end
       end
     end

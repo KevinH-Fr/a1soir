@@ -1,17 +1,7 @@
 <%= page_header("La boutique de Cannes", "Découvrez notre équipe et notre boutique", image1: "cat_costume.jpg", image2: "cat_robes_mariees.jpg") %>
 
-<!-- Paragraphe sous le header -->
-<div class="container" style="padding-top: 0.5rem; padding-bottom: 0.5rem;">
-  <div class="row justify-content-center">
-    <div class="col-12 col-lg-10 text-center">
-      <p class="text-light opacity-75" style="font-size: 1.15rem; line-height: 1.8; margin: 0;">
-        Plongez dans l'univers d'Autour d'un Soir, où l'élégance rencontre l'exception. 
-        Notre boutique de Cannes vous accueille dans un cadre raffiné pour vous accompagner 
-        dans le choix de vos tenues de soirée et vous offrir une expérience unique.
-      </p>
-    </div>
-  </div>
-</div>
+<!-- Section vidéo avec titre, texte et liens -->
+<%= render 'public/pages/la_boutique/video_section'%>
 
 <div class="public-main-content">
   <%= render partial: "public/pages/la_boutique/section_boutique" %>

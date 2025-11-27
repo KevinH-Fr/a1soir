@@ -83,7 +83,7 @@ class Commande < ApplicationRecord
       "id", "nom", "montant", "description", "client_id",
       "debutloc", "finloc", "dateevent", "statutarticles", "typeevent",
       "profile_id", "commentaires", "commentaires_doc", "type_locvente",
-      "devis", "ref_commande" # <-- Ajouté ici
+      "devis", "ref_commande" 
     ]
   end
   

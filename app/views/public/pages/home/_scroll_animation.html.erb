@@ -1,8 +1,5 @@
-<!-- Section d'animation au scroll : textes qui s'écrivent + zoom image + robe 3D -->
+<!-- Section d'animation au scroll : textes qui s'écrivent + zoom image -->
 <div class="public-main-content" data-controller="home-scroll">
-  <!-- Conteneur du modèle 3D de la robe (positionnée en bas à droite) -->
-  <div id="dress-model-container" data-position="bottom-right"></div>
-
   <div class="container-fluid p-0">
     <!-- Image pleine page, totalement fixe avec zoom au scroll -->
     <div class="position-fixed top-0 start-0 w-100" style="height: 100vh; overflow: hidden; z-index: 0; pointer-events: none;">
@@ -14,11 +11,7 @@
     </div>
 
     <!-- Espace pour scroller par-dessus l'image fixe -->
-    <!-- Hauteur calculée pour permettre toutes les animations :
-         - Textes : 4vh
-         - Zoom : 6vh (commence après les textes, animation plus rapide)
-         - Fade out : 15% du zoom
-         Total : ~11.9vh pour que tout se déroule correctement -->
+
     <div style="height: 1100vh;"></div>
 
     <!-- Textes successifs qui s'écrivent au scroll, positionnés en bas à droite de l'écran -->

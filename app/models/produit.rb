@@ -352,8 +352,6 @@ class Produit < ApplicationRecord
       return
     end
     
-    # Si les catégories ont changé (via la table de jointure)
-    # On ne peut pas facilement détecter ça avec saved_change_to, donc on se fie au job quotidien
   end
 
 end

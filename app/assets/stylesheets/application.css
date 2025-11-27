@@ -292,13 +292,6 @@
    NAVBAR - Effet blur transparent
    ============================================ */
 
-.navbar {
-  background: rgba(45, 45, 45, 0.7) !important;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  transition: backdrop-filter 0.3s ease;
-}
-
 /* Navbar links with stitching effect */
 .nav-link-public {
   position: relative;
@@ -312,7 +305,7 @@
   color: rgba(255, 255, 255, 1) !important;
 }
 
-/* Stitching line effect that draws from left to right on hover */
+/* Fine ligne qui s'anime de gauche à droite au survol */
 .nav-link-public::after {
   content: '';
   position: absolute;
@@ -320,7 +313,7 @@
   left: 0;
   width: 0;
   height: 1px;
-  background-image: var(--public-brand-gradient-dotted);
+  background-color: var(--public-brand-color);
   transition: width 0.6s ease-out;
   opacity: 0.7;
 }
@@ -330,10 +323,10 @@
   opacity: 1;
 }
 
-/* Active link with permanent stitching line */
+/* Lien actif avec fine ligne permanente */
 .nav-link-active::after {
   width: 100% !important;
-  background-image: var(--public-brand-gradient-dotted);
+  background-color: var(--public-brand-color);
   opacity: 0.9;
 }
 
@@ -471,6 +464,22 @@ footer .bi-facebook:hover {
     }
   }
 
+  /* Effet de grossissement élégant pour le bouton RDV */
+  .btn-rdv-hover {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+    transform-origin: center;
+  }
+  
+  .btn-rdv-hover:hover {
+    transform: scale(1.04);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Classe pour le border-radius des boutons publics */
+  .public-btn-border-radius {
+    border-radius: 0.1rem !important;
+  }
+  
   .hover-lift {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
@@ -711,24 +720,6 @@ section {
   }
 }
 
-#dress-model-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none; /* Le canvas ne bloque pas les clics sur le texte */
-  z-index: 1;
-}
-
-#dress-model-container canvas {
-  display: block;
-  width: 100% !important;
-  height: 100% !important;
-}
 
 @keyframes fadeInUp {
   0% {
@@ -1652,6 +1643,28 @@ section {
 /* ============================================
    PAGE HEADER - Zoom effect on hover
    ============================================ */
+/* Animations subtiles pour le titre et sous-titre du header */
+.page-header-title {
+  animation: fadeInUpSubtle 1s ease-out;
+  animation-fill-mode: both;
+}
+
+.page-header-subtitle {
+  animation: fadeInUpSubtle 1s ease-out 0.2s;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeInUpSubtle {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .page-header-image:hover {
   transform: scale(1.05);
 }
@@ -2122,4 +2135,54 @@ section {
   -webkit-box-shadow: 0 0 0px 1000px #1b1b1b inset !important;
   -webkit-text-fill-color: #f8f9fa !important;
   transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ============================================
+   BOUTIQUE VIDEO SECTION - Liens de collection
+   ============================================ */
+/* Style pour les liens de collection avec surlignage fin */
+.boutique-collection-link {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: none;
+  position: relative;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.boutique-collection-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0.3rem;
+  left: 0;
+  width: 40%;
+  height: 1px;
+  background-color: #fff;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: width 0.3s ease, transform 0.3s ease;
+}
+
+.boutique-collection-link.is-revealed::after {
+  animation: drawLine 0.6s ease-out forwards;
+}
+
+@keyframes drawLine {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.boutique-collection-link:hover {
+  color: #fff;
+}
+
+.boutique-collection-link:hover::after {
+  width: 100%;
+  transform: scaleX(1);
 }
