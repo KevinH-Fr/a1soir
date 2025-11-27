@@ -1114,7 +1114,7 @@ section {
 
 .scroll-cards-carousel {
   position: relative;
-  height: 400vh; /* Hauteur pour permettre le scroll */
+  height: 600vh; /* Hauteur augmentée pour que chaque carte reste affichée plus longtemps */
   overflow: visible;
 }
 

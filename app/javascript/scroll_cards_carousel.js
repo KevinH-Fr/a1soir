@@ -100,8 +100,8 @@ class ScrollCardsCarousel {
       const cardStart = index * segmentSize;
       const cardEnd = (index + 1) * segmentSize;
       
-      // Zone de transition entre les cartes (20% de la zone de chaque carte)
-      const transitionZone = segmentSize * 0.2;
+      // Zone de transition entre les cartes (10% de la zone de chaque carte pour que les cartes restent visibles plus longtemps)
+      const transitionZone = segmentSize * 0.1;
       
       let opacity = 0;
       
@@ -116,7 +116,7 @@ class ScrollCardsCarousel {
           // Disparition (fade out)
           opacity = (1 - cardProgress) / transitionZone;
         } else {
-          // Visible complètement
+          // Visible complètement (80% de la zone au lieu de 60%)
           opacity = 1;
         }
       }
