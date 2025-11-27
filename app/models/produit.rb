@@ -38,6 +38,14 @@ class Produit < ApplicationRecord
   after_create :generate_qr
 
   after_create :set_default_caution, if: -> { caution.blank? }
+  
+  # Callback pour initialiser la disponibilité lors de la création d'un produit
+  # Calcule la disponibilité à la date du jour et stocke le résultat dans today_availability
+  after_create :initialize_today_availability
+
+  # Callback pour recalculer la disponibilité si des champs critiques changent
+  # (quantite, ou si le produit devient/passe service/ensemble)
+  after_update :recalculate_today_availability_if_needed
 
   #after_create :set_initial_vente_price
 
@@ -219,6 +227,19 @@ class Produit < ApplicationRecord
       }
   end
 
+  # Méthode publique pour calculer et mettre à jour today_availability
+  # Utilisée par le job quotidien et les callbacks
+  # Calcule la disponibilité à la date du jour et met à jour le champ today_availability
+  def update_today_availability(datedebut = Time.current, datefin = Time.current)
+    statut = statut_disponibilite(datedebut, datefin)
+    disponible = statut[:disponibles] > 0
+    
+    # Mise à jour directe de la colonne pour éviter les callbacks infinis
+    update_column(:today_availability, disponible)
+    
+    disponible
+  end
+
   
 
   private
@@ -304,6 +325,35 @@ class Produit < ApplicationRecord
   def set_default_caution
     return unless prixlocation.present?
     update_column(:caution, (prixlocation.to_f * 3.5).round)
+  end
+
+  # Callback : Initialise la disponibilité lors de la création d'un produit
+  # Calcule la disponibilité à la date du jour et stocke le résultat
+  def initialize_today_availability
+    update_today_availability
+  end
+
+  # Callback : Recalcule la disponibilité si des champs critiques ont changé
+  # Se déclenche si :
+  # - quantite a changé (affecte le stock initial)
+  # - Le produit est devenu/passé service ou ensemble (logique différente)
+  def recalculate_today_availability_if_needed
+    # Vérifier si quantite a changé
+    if saved_change_to_quantite?
+      update_today_availability
+      return
+    end
+    
+    # Vérifier si le produit est devenu/passé service ou ensemble
+    # On vérifie en comparant avec les catégories et type_produit
+    # Note: Cette vérification est approximative, le job quotidien servira de filet de sécurité
+    if saved_change_to_type_produit_id?
+      update_today_availability
+      return
+    end
+    
+    # Si les catégories ont changé (via la table de jointure)
+    # On ne peut pas facilement détecter ça avec saved_change_to, donc on se fie au job quotidien
   end
 
 end

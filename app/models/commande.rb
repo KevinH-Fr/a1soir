@@ -12,6 +12,11 @@ class Commande < ApplicationRecord
 
   after_create :after_commande_create
   after_create :generate_qr
+  
+  # Callback pour mettre à jour la disponibilité des produits quand les dates de location changent
+  # Se déclenche après la mise à jour de debutloc ou finloc
+  # Ces dates affectent directement la disponibilité des produits en location
+  after_update :update_produits_availability_if_dates_changed
 
   scope :hors_devis, ->  { where("devis = ?", false)}
   scope :est_devis, ->  { where("devis = ?", true)}
@@ -96,6 +101,23 @@ class Commande < ApplicationRecord
 
   def after_commande_create
     self.update(statutarticles: "non-retiré")
+  end
+
+  # Met à jour la disponibilité de tous les produits de la commande si les dates changent
+  # Appelé après la mise à jour de debutloc ou finloc
+  # Ces dates affectent directement la disponibilité des produits en location
+  def update_produits_availability_if_dates_changed
+    # Si les dates de location ont changé, mettre à jour la disponibilité de tous les produits
+    if saved_change_to_debutloc? || saved_change_to_finloc?
+      # Mettre à jour la disponibilité de tous les produits concernés par cette commande
+      # (articles et sousarticles)
+      produits_ids = articles.pluck(:produit_id).uniq
+      produits_ids += articles.joins(:sousarticles).pluck('sousarticles.produit_id').uniq
+      
+      Produit.where(id: produits_ids.uniq).find_each do |produit|
+        produit.update_today_availability
+      end
+    end
   end
 
 end

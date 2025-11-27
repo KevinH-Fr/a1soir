@@ -10,6 +10,11 @@ class Article < ApplicationRecord
   scope :vente_only, -> { where(locvente: 'vente') }
 
   after_commit :after_article_save, on: [:create, :update, :destroy]
+  
+  # Callback pour mettre à jour la disponibilité du produit concerné
+  # Se déclenche après chaque création, modification ou suppression d'un article
+  # car cela affecte directement la disponibilité du produit (location ou vente)
+  after_commit :update_produit_availability, on: [:create, :update, :destroy]
 
   # filtres analyses
   scope :filtredatedebut, -> (debut) { where("articles.created_at >= ?", debut.beginning_of_day) }
@@ -44,6 +49,14 @@ class Article < ApplicationRecord
         commande.update(type_locvente: 'vente')
       end
     end
+  end
+
+  # Met à jour la disponibilité du produit concerné
+  # Appelé après chaque création, modification ou suppression d'un article
+  # car cela affecte directement la disponibilité (location ou vente)
+  def update_produit_availability
+    # Mettre à jour la disponibilité du produit à la date du jour
+    produit&.update_today_availability
   end
 
 end
