@@ -520,7 +520,7 @@ module PagesHelper
   # Helper pour générer les boutons de panier (cabine ou shop) avec style commun
   def cart_button_for(produit, type: :shop)
     turbo_frame_tag "produit_#{produit.id}_button" do
-      card_footer_class = "card-footer bg-transparent border-top border-secondary mt-3 pt-3 p-0"
+      card_footer_class = "card-footer mt-3 pt-3 p-0"
       
       content_tag :div, class: card_footer_class do
         case type
@@ -547,8 +547,7 @@ module PagesHelper
       end
     else
       button_to cabine_add_product_path(produit),
-          class: "btn btn-sm w-100 btn-smoke-hover text-light",
-          style: cart_button_style do
+          class: "btn btn-sm w-100 btn-light hover-lift public-btn-border-radius" do
         (content_tag(:i, nil, class: "bi bi-bag-plus me-2") + "Ajouter à la cabine").html_safe
       end
     end
@@ -562,15 +561,10 @@ module PagesHelper
       end
     else
       button_to add_to_cart_path(produit),
-          class: "btn btn-sm w-100 btn-smoke-hover text-light",
-          style: cart_button_style do
+          class: "btn btn-sm w-100 btn-light hover-lift public-btn-border-radius" do
         (content_tag(:i, nil, class: "bi bi-bag-plus me-2") + "Ajouter au panier").html_safe
       end
     end
-  end
-
-  def cart_button_style
-    "background: var(--public-brand-gradient); border: none;"
   end
 
 end

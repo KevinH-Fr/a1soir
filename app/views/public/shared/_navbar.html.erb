@@ -21,20 +21,14 @@
     <div class="collapse navbar-collapse order-xl-1" id="navbar">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <%= nav_link_public(home_path, "Accueil") %>
+        <%= nav_link_public(accueil_bis_path, "Accueil bis") %>
         <%= nav_link_public(la_boutique_url, "Boutique") %>
         <%= nav_link_public(nos_collections_url, "Collections") %>
         <%= render "public/shared/cabine_nav_link", badge_count: session[:cabine_cart]&.size %>
         <%= nav_link_public(le_concept_url, "Concept") %>
         <%= nav_link_public(nos_autres_activites_url, "Autres activités") %>
-        <%= nav_link_public(legal_url, "Légal") %>
-        <%= nav_link_public(faq_url, "FAQ") %>
-        <li class="nav-item my-3 d-xl-none">
-          <%= link_to rdv_url(subdomain: "shop"),
-              class: "btn btn-smoke-hover text-light px-4 py-2 shadow d-inline-flex align-items-center gap-2 hover-lift" do %>
-            <i class="bi bi-calendar-check"></i>
-            <span class="fw-bold text-uppercase small">Prendre rendez-vous</span>
-          <% end %>
-        </li>
+        <%#= nav_link_public(legal_url, "Légal") %>
+        <%#= nav_link_public(faq_url, "FAQ") %>
       </ul>
     </div>
   </div>

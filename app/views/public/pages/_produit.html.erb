@@ -39,7 +39,7 @@
 
               <div class="card-body">
                   <%= link_to produit_path(slug: produit.nom.parameterize, id: produit.id), class: "text-decoration-none", data: { turbo: false } do %>
-                      <h5 class="card-title text-light">
+                      <h5 class="card-title text-light text-truncate">
                           <%= produit.nom %>
                       </h5>
                   <% end %>

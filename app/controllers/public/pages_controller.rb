@@ -10,6 +10,9 @@ module Public
       #@carousel_images = Texte&.first&.carousel_images
     end
 
+    def accueil_bis
+    end
+
     def la_boutique
       if Texte.last.present?
         @texteContact = Texte.last.contact

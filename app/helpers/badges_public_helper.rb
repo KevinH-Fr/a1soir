@@ -4,42 +4,35 @@ module BadgesPublicHelper
   # ============================================
   
   def badge_taille(produit)
-    content_tag :span, class: badge_public_base_classes,
-        style: badge_public_base_style do
-      concat content_tag(:i, nil, class: "bi bi-rulers public-brand-color me-2")
-      concat content_tag(:span, "Taille", class: "text-light opacity-75 me-1")
-      concat content_tag(:span, produit.taille.nom.upcase, class: "text-light fw-bold")
+    content_tag :span, class: "text-light small opacity-75" do
+      concat content_tag(:span, "Taille: ", class: "me-1")
+      concat content_tag(:span, produit.taille.nom.upcase, class: "")
     end
   end
 
   def badge_prix(type, montant)
-    icon_class = type == "Vente" ? "bi-cash-coin" : "bi-calendar-check"
-    content_tag :span, class: badge_public_base_classes,
-        style: badge_public_base_style do
-      concat content_tag(:i, nil, class: "bi #{icon_class} public-brand-color me-2")
-      concat content_tag(:span, "#{type}", class: "text-light opacity-75 me-1")
-      concat content_tag(:span, custom_currency_no_decimals_format(montant), class: "text-light fw-bold")
+    content_tag :span, class: "text-light small opacity-75" do
+      concat content_tag(:span, "#{type}: ", class: "me-1")
+      concat content_tag(:span, custom_currency_no_decimals_format(montant), class: "")
     end
   end
 
   def badge_taille_link(produit)
     link_to produit_path(slug: produit.nom.parameterize, id: produit.id),
-        class: badge_public_link_classes,
-        style: badge_public_link_style do
-      concat content_tag(:span, produit.taille.nom, class: "fw-bold")
+        class: "text-light small opacity-75 text-decoration-none" do
+      concat content_tag(:span, "Taille: ", class: "me-1")
+      concat content_tag(:span, produit.taille.nom.upcase, class: "")
     end
   end
 
   def badge_couleur_link(produit)
     link_to produit_path(slug: produit.nom.parameterize, id: produit.id),
-        class: badge_public_link_classes,
-        style: badge_public_link_style do
+        class: "text-light small opacity-75 text-decoration-none" do
       if produit.couleur.couleur_code.present?
-        concat content_tag(:i, '', class: "bi bi-circle-fill me-2", style: "color: #{produit.couleur.couleur_code}; font-size: 0.8rem;")
-      else
-        concat content_tag(:i, nil, class: "bi bi-palette public-brand-color me-2")
+        concat content_tag(:i, '', class: "bi bi-circle-fill me-1", style: "color: #{produit.couleur.couleur_code}; font-size: 0.6rem;")
       end
-      concat content_tag(:span, produit.couleur.nom, class: "fw-bold")
+      concat content_tag(:span, "Couleur: ", class: "me-1")
+      concat content_tag(:span, produit.couleur.nom, class: "")
     end
   end
 

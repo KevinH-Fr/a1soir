@@ -1,3 +1,26 @@
+<!-- Section d'animation au scroll (textes + zoom image + robe 3D) -->
+<%= render 'public/pages/home/scroll_animation' %>
+
+<!-- Hero section avec modèle 3D -->
+<%#= render 'home_hero' %>
+
+<!-- Flèche animée pour inviter au scroll -->
+<div class="scroll-indicator">
+  <i class="bi bi-chevron-down"></i>
+</div>
+
+<!-- Section d'accueil -->
+<div class="public-main-content">
+  <div class="container-fluid">
+    <!-- Section découverte -->
+    <%= render 'public/pages/home/discover_section' %>
+
+    <!-- Cartes de navigation -->
+    <%= render 'home_nav_cards' %>
+  </div>
+</div>
+
+
 <style>
   /* Container Three.js avec gradient CSS (fond étoilé global) - Uniquement sur la page d'accueil */
   #three-container {
@@ -28,25 +51,3 @@
     backdrop-filter: blur(0px);
   }
 </style>
-
-<!-- Section d'animation au scroll (textes + zoom image + robe 3D) -->
-<%= render 'public/pages/home/scroll_animation' %>
-
-<!-- Hero section avec modèle 3D -->
-<%#= render 'home_hero' %>
-
-<!-- Flèche animée pour inviter au scroll -->
-<div class="scroll-indicator">
-  <i class="bi bi-chevron-down"></i>
-</div>
-
-<!-- Section d'accueil -->
-<div class="public-main-content">
-  <div class="container-fluid">
-    <!-- Section découverte -->
-    <%= render 'public/pages/home/discover_section' %>
-
-    <!-- Cartes de navigation -->
-    <%= render 'home_nav_cards' %>
-  </div>
-</div>
