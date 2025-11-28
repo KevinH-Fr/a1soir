@@ -1,0 +1,71 @@
+<% 
+  background_image_path = image_path_helper(background_image)
+%>
+
+<div class="position-relative w-100" style="min-height: 100vh; overflow: hidden;">
+  <!-- Image de fond en pleine page -->
+  <div class="position-absolute top-0 start-0 w-100 h-100" style="z-index: 0;">
+    <%= image_tag(background_image_path, class: "w-100 h-100", style: "object-fit: cover;", alt: title) %>
+  </div>
+  
+  <!-- Overlay sombre pour la lisibilité -->
+  <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0, 0, 0, 0.4); z-index: 1;"></div>
+  
+  <!-- Contenu principal -->
+  <div class="position-relative w-100 h-100 d-flex align-items-center" style="z-index: 2; min-height: 100vh;">
+    <div class="container-fluid px-0">
+      <div class="row g-0 h-100">
+        <!-- Colonne gauche : Titre, paragraphe et bouton (1/4 de l'espace) -->
+        <div class="col-12 col-lg-3 d-flex align-items-center">
+          <div class="p-4 p-md-5 text-white">
+            <h2 class="h3 fw-bold mb-3" style="text-shadow: 0 2px 10px rgba(0,0,0,0.5);">
+              <%= title %>
+            </h2>
+            <p class="mb-3" style="text-shadow: 0 1px 5px rgba(0,0,0,0.5); line-height: 1.6; font-size: 1rem;">
+              <%= paragraph %>
+            </p>
+            <% if button_text.present? && button_url.present? %>
+              <%= link_to button_text, button_url, class: "btn btn-light btn-sm", style: "text-shadow: none;" %>
+            <% end %>
+          </div>
+        </div>
+        
+        <!-- Colonne droite : Images avec scroll horizontal (3/4 de l'espace) -->
+        <div class="col-12 col-lg-9 d-flex align-items-center p-4">
+          <% if carousel_images.present? %>
+            <div class="w-100" style="overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;">
+              <div class="d-flex gap-3" style="min-width: max-content;">
+                <% carousel_images.each_with_index do |image, index| %>
+                  <% 
+                    image_path = image_path_helper(image)
+                    image_text = local_assigns[:image_texts].present? && local_assigns[:image_texts][index].present? ? local_assigns[:image_texts][index] : "Image #{index + 1}"
+                    image_subtext = local_assigns[:image_subtexts].present? && local_assigns[:image_subtexts][index].present? ? local_assigns[:image_subtexts][index] : nil
+                  %>
+                  <div class="flex-shrink-0 position-relative rounded shadow-lg carousel-image-hover" style="width: 350px; height: 85vh; max-height: 800px; overflow: hidden; cursor: pointer;">
+                    <%= image_tag(image_path, class: "w-100 h-100", style: "object-fit: cover;", alt: "#{title} - Image #{index + 1}") %>
+                    <!-- Texte en bas et centré -->
+                    <div class="position-absolute bottom-0 start-0 w-100 text-center text-white p-3 carousel-image-text">
+                      <p class="mb-0 fw-bold carousel-image-main-text">
+                        <%= image_text %>
+                      </p>
+                      <% if image_subtext.present? %>
+                        <p class="mb-0 carousel-image-sub-text">
+                          <%= image_subtext %>
+                        </p>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% else %>
+            <div class="text-white text-center w-100">
+              <p class="mb-0">Aucune image disponible</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

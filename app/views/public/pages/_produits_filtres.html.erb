@@ -10,7 +10,7 @@
     <%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
       <div id="produits" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2 m-0 justify-content-center">
         <%# Render first page directly server-side %>
-        <%= render partial: "public/pages/produit", collection: @produits %>
+        <%= render partial: "public/pages/produit/produit", collection: @produits %>
       </div>
 
       <%# Only load next pages lazily if there are more %>

@@ -1,8 +1,36 @@
-
-
 <%= render partial: "public/pages/accueil_bis/section_hero" %>
 
 <div class="container my-5 py-5">
     <h2 class="text-light fs-3 text-uppercase py-4 mb-3">Nos collections</h2>
     <%= render partial: "public/shared/section_categories" %>
 </div>
+
+<div class="my-5">
+    <%= render partial: "public/pages/accueil_bis/section_boutique" %>
+</div>
+
+<%= render partial: "public/pages/fullpage_section_with_carousel", locals: {
+  background_image: "https://images.pexels.com/photos/14339112/pexels-photo-14339112.jpeg",
+  title: "La boutique",
+  paragraph: "Plongez dans l'univers d'Autour d'un Soir, où l'élégance rencontre l'exception. Notre boutique de Cannes vous accueille dans un cadre raffiné pour vous accompagner dans le choix de vos tenues de soirée. Depuis notre création, nous avons à cœur de vous offrir une expérience unique, alliant conseils personnalisés et sélection rigoureuse de nos pièces.",
+  button_text: "Découvrir la boutique",
+  button_url: la_boutique_url,
+  carousel_images: [
+    "cat_tenues_soiree.jpg",
+    "cat_robes_mariees.jpg",
+    "cat_costume.jpg",
+    "cat_accessoires.jpg"
+  ],
+  image_texts: [
+    "Tenues de soirée",
+    "Robes de mariée",
+    "Costumes",
+    "Accessoires"
+  ],
+  image_subtexts: [
+    "Découvrez notre collection de tenues de soirée",
+    "Découvrez notre collection de robes de mariée",
+    "Découvrez notre collection de costumes",
+    "Découvrez notre collection d'accessoires"
+  ]
+} %>

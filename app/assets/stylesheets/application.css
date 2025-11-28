@@ -2137,3 +2137,31 @@ section {
   width: 100%;
   transform: scaleX(1);
 }
+
+/* Effet hover sur les images du carousel */
+.carousel-image-main-text {
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.carousel-image-sub-text {
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  font-size: 0.85rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: block;
+}
+
+.carousel-image-hover:hover .carousel-image-main-text {
+  transform: translateY(-15px);
+}
+
+.carousel-image-hover:hover .carousel-image-sub-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+

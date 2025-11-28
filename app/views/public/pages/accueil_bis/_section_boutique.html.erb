@@ -1,0 +1,24 @@
+<!-- Section Boutique - Image pleine page avec texte à droite -->
+<div class="position-relative section-boutique-container" style="min-height: 100vh; overflow: hidden;" data-section-boutique>
+  <!-- Image en arrière-plan -->
+  <%= image_tag("/images/dessin1.png", class: "position-absolute top-0 start-0 w-100 h-100 section-boutique-image", style: "object-fit: cover; z-index: 0; transition: filter 0.3s ease, opacity 0.3s ease;", alt: "La boutique", data: { section_boutique_image: "" }) %>
+  
+  <!-- Overlay sombre pour la lisibilité -->
+  <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0, 0, 0, 0.3); z-index: 1;"></div>
+  
+  <!-- Contenu aligné à droite -->
+  <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-end text-dark" style="z-index: 2; padding: 4rem;">
+    <div class="text-end section-boutique-text" style="max-width: 600px;">
+      <h2 class="display-4 fw-bold mb-4 section-boutique-title" style="text-shadow: 0 2px 10px rgba(255,255,255,0.8);">
+        La boutique
+      </h2>
+      <p class="lead mb-3 section-boutique-paragraph" style="text-shadow: 0 1px 5px rgba(255,255,255,0.8); line-height: 1.8;">
+        Plongez dans l'univers d'Autour d'un Soir, où l'élégance rencontre l'exception. Notre boutique de Cannes vous accueille dans un cadre raffiné pour vous accompagner dans le choix de vos tenues de soirée.
+      </p>
+      <p class="lead mb-3 section-boutique-paragraph" style="text-shadow: 0 1px 5px rgba(255,255,255,0.8); line-height: 1.8;">
+        Depuis notre création, nous avons à cœur de vous offrir une expérience unique, alliant conseils personnalisés et sélection rigoureuse de nos pièces.
+      </p>
+    </div>
+  </div>
+</div>
+

@@ -12,6 +12,7 @@ import "./discover_scroll_effect"
 import "./discover_icons_animation"
 import "./scroll_reveal"
 import "./page_header_zoom"
+import "./section_boutique_blur"
 
 // require jquery
 // require jquery_ujs

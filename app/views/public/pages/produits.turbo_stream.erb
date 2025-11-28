@@ -1,7 +1,7 @@
 <%# produits infinite scroll pagination %>
 
 <%= turbo_stream.append :produits do %>
-    <%= render partial: "public/pages/produit", 
+    <%= render partial: "public/pages/produit/produit", 
             collection: @produits %>
 <% end %>
 

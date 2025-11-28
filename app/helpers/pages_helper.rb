@@ -217,6 +217,7 @@ module PagesHelper
     end
   end
 
+
   def nav_link_public(path, name)
       classes = ["nav-item text-center m-2 mx-3"]
       
