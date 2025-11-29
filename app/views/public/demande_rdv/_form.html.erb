@@ -37,33 +37,30 @@
           </li>
         </ul>
         
-        <div class="tab-content" id="rdv-tab-content">
+        <div class="tab-content px-2" id="rdv-tab-content">
           <!-- ÉTAPE 1 : Calendrier -->
           <div class="tab-pane fade show active" id="step1-pane" role="tabpanel" aria-labelledby="step1-tab" tabindex="0">
-            <div class="bg-white rounded-3 p-4 p-md-5">
-              <h4 class="text-dark mb-4 text-center fw-bold" style="letter-spacing: 0.5px;">
+              <h4 class="text-dark text-center fw-bold" style="letter-spacing: 0.5px;">
                 Sélectionnez une date
               </h4>
               <div class="mb-4 text-center">
                 <div data-calendar-picker-target="dateInput" class="calendar-container-large mx-auto" style="max-width: 100%; font-size: 1.2rem;"></div>
                 <%= form.hidden_field :date_rdv_date, data: { calendar_picker_target: "dateHidden" } %>
               </div>
-            </div>
           </div>
           
           <!-- ÉTAPE 2 : Choix du créneau -->
           <div class="tab-pane fade" id="step2-pane" role="tabpanel" aria-labelledby="step2-tab" tabindex="0">
-            <div class="bg-white rounded-3 p-4 p-md-5">
               <div class="d-flex justify-content-between align-items-center mb-4">
-                <button type="button" class="btn btn-outline-dark" data-action="click->calendar-picker#goBack">
+                <a href="#" class="text-secondary text-decoration-none text-decoration-underline" data-action="click->calendar-picker#goBack">
                   <i class="bi bi-arrow-left me-2"></i>Retour
-                </button>
-                <h4 class="text-dark text-center mb-0 fw-bold flex-grow-1" style="letter-spacing: 0.5px;">
-                  Choisissez un horaire *
+                </a>
+                <h4 class="text-dark text-center fw-bold" style="letter-spacing: 0.5px;">
+                  Choisissez un horaire
                 </h4>
                 <div style="width: 100px;"></div> <!-- Spacer pour centrer le titre -->
               </div>
-              <div class="d-flex justify-content-center flex-wrap gap-3" data-calendar-picker-target="timeButtons">
+              <div class="d-flex justify-content-center flex-wrap gap-3 py-4" data-calendar-picker-target="timeButtons">
                 <% DemandeRdv.creneaux_horaires.each do |creneau| %>
                   <button type="button" 
                           class="btn btn-outline-dark btn-lg" 
@@ -78,20 +75,17 @@
                   data: { 
                     calendar_picker_target: "timeInput"
                   } %>
-            </div>
           </div>
           
           <!-- ÉTAPE 3 : Formulaire coordonnées -->
           <div class="tab-pane fade" id="step3-pane" role="tabpanel" aria-labelledby="step3-tab" tabindex="0">
-            <div class="bg-white rounded-3 p-4 p-md-5">
               <div class="d-flex justify-content-between align-items-center mb-4">
-                <button type="button" class="btn btn-outline-dark" data-action="click->calendar-picker#goBack">
+                <a href="#" class="text-dark text-decoration-none" style="text-decoration: underline !important; text-decoration-color: #000 !important; text-underline-offset: 4px;" data-action="click->calendar-picker#goBack">
                   <i class="bi bi-arrow-left me-2"></i>Retour
-                </button>
-                <h5 class="text-dark mb-0 fw-bold flex-grow-1 text-center">
-                  <i class="bi bi-person me-2" style="color: #000;"></i>
+                </a>
+                <h4 class="text-dark text-center fw-bold" style="letter-spacing: 0.5px;">
                   Vos coordonnées
-                </h5>
+                </h4>
                 <div style="width: 100px;"></div> <!-- Spacer pour centrer le titre -->
               </div>
               <div class="row mb-3">
@@ -111,10 +105,6 @@
 
               <!-- Commentaires -->
               <div class="mb-4">
-                <h5 class="text-dark mb-1 fw-bold">
-                  <i class="bi bi-chat-left-text me-2" style="color: #000;"></i>
-                  Commentaire
-                </h5>
                 <%= form.text_area :commentaire, rows: 3, class: "form-control form-control-lg border-dark border-2", 
                     placeholder: "Message (optionnel)", style: "background-color: #fff; color: #000;" %>
               </div>
@@ -135,7 +125,6 @@
                 </button>
               </div>
             </div>
-          </div>
         </div>
         
       </div>

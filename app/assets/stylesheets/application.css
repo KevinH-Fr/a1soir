@@ -2222,7 +2222,6 @@ section {
 .flatpickr-months {
   margin-bottom: 8px !important;
   background: transparent !important;
-  padding: 16px 0 10px 0 !important;
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
@@ -2282,7 +2281,7 @@ section {
 }
 
 .flatpickr-day {
-  border-radius: 8px !important;
+  border-radius: 4px !important;
   margin: 2px !important;
   flex: 1 0 auto !important;
   max-width: calc((100% / 7) - 4px) !important;

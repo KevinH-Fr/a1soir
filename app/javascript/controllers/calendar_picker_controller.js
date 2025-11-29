@@ -112,6 +112,8 @@ export default class extends Controller {
   }
 
   goBack(event) {
+    // Empêcher le comportement par défaut du lien
+    event.preventDefault();
     // Revenir à l'étape précédente en trouvant le tab actif dans le tab-content
     const activePane = document.querySelector('#rdv-tab-content .tab-pane.active');
     if (activePane) {
