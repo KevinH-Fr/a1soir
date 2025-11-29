@@ -101,4 +101,14 @@ module ApplicationHelper
       'https://res.cloudinary.com/dukne3lhz/image/upload/v1738665309/no_photo_black_p8wyfh.png'
     end
 
+    def google_calendar_embed_url
+      if Rails.env.development? || Rails.env.test?
+        # URL pour l'environnement local (développement/test)
+        "https://calendar.google.com/calendar/embed?src=kevin.hoffman.france%40gmail.com&ctz=Europe%2FParis"
+      else
+        # URL pour la production
+        "https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=Europe%2FParis&showPrint=0&showCalendars=0&mode=WEEK&src=Y29udGFjdEBhMXNvaXIuY29t&src=ZnIuZnJlbmNoI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%23039BE5&color=%230B8043"
+      end
+    end
+
 end

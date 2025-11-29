@@ -35,7 +35,7 @@ class DemandeRdv < ApplicationRecord
   # Format: array de hashes avec :debut et :fin (dates au format string "YYYY-MM-DD")
   def self.periodes_non_disponibles
     [
-      # Exemple: { debut: "2024-12-24", fin: "2024-12-31" }
+      { debut: "2025-12-24", fin: "2025-12-31" }
     ]
   end
 
