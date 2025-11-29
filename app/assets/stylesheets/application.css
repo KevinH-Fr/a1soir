@@ -2164,4 +2164,158 @@ section {
   transform: translateY(0);
 }
 
+/* Flatpickr Calendar Styles - Noir et Blanc - Style élégant inspiré */
+.flatpickr-calendar {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+  border-radius: 18px !important;
+  border: none !important;
+  padding: 12px 8px 16px !important;
+  width: 100% !important;
+  max-width: 700px !important;
+  background: transparent !important;
+}
+
+.calendar-container-large {
+  min-height: 500px;
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Styles pour les boutons de créneaux horaires - Plus élégants */
+.btn-outline-light[data-time] {
+  border-width: 2px !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-outline-light[data-time]:hover {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  transform: translateY(-3px) scale(1.05) !important;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2) !important;
+}
+
+.btn-outline-light[data-time].active,
+.btn-light[data-time] {
+  background-color: #fff !important;
+  color: #000 !important;
+  border-color: #fff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.4) !important;
+  transform: scale(1.05) !important;
+}
+
+/* En-tête mois + flèches */
+.flatpickr-months {
+  margin-bottom: 8px !important;
+  background: transparent !important;
+}
+
+.flatpickr-months .flatpickr-month {
+  height: auto !important;
+  padding: 4px 8px !important;
+  color: #fff !important;
+}
+
+.flatpickr-current-month {
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  text-transform: lowercase !important;
+  color: #fff !important;
+}
+
+.flatpickr-current-month .cur-month {
+  margin-right: 4px !important;
+}
+
+/* Ligne des jours de semaine */
+.flatpickr-weekdays {
+  margin-bottom: 4px !important;
+  background: transparent !important;
+}
+
+.flatpickr-weekday {
+  font-size: 12px !important;
+  text-transform: lowercase !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-weight: 500 !important;
+}
+
+/* Jours */
+.flatpickr-days {
+  padding: 4px !important;
+}
+
+.flatpickr-day {
+  border-radius: 10px !important;
+  margin: 3px !important;
+  width: 60px !important;
+  height: 60px !important;
+  line-height: 60px !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  border: none !important;
+  color: #fff !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Jour sélectionné (case blanche avec texte noir) */
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day.selected:hover {
+  background: #fff !important;
+  color: #000 !important;
+  box-shadow: none !important;
+  font-weight: 600 !important;
+}
+
+/* Jour hover */
+.flatpickr-day:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #fff !important;
+}
+
+/* Jours hors mois / désactivés */
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay,
+.flatpickr-day.flatpickr-disabled {
+  color: rgba(255, 255, 255, 0.3) !important;
+  cursor: not-allowed !important;
+}
+
+/* Enlever la bordure bleue d'origine */
+.flatpickr-day:focus {
+  outline: none !important;
+}
+
+.flatpickr-day.today {
+  border: 2px solid rgba(255, 255, 255, 0.5) !important;
+  font-weight: 600 !important;
+}
+
+/* Boutons précédent / suivant */
+.flatpickr-prev-month,
+.flatpickr-next-month {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 999px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: none !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #fff !important;
+  transition: all 0.2s ease !important;
+}
+
+.flatpickr-prev-month:hover,
+.flatpickr-next-month:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  color: #fff !important;
+}
+
 

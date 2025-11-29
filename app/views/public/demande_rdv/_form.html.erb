@@ -1,0 +1,101 @@
+<%= form_with model: demande_rdv, url: demande_rdv_index_path(subdomain: "shop"), class: "needs-validation", data: { controller: "recaptcha-submit" } do |form| %>
+  
+  <% if demande_rdv.errors.any? %>
+    <div class="alert alert-danger">
+      <h6><%= pluralize(demande_rdv.errors.count, "erreur") %> ont empêché l'enregistrement :</h6>
+      <ul class="mb-0">
+        <% demande_rdv.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- Date et heure du rendez-vous - Pleine largeur -->
+  <div data-controller="calendar-picker" 
+       data-calendar-picker-periodes-non-disponibles-value="<%= DemandeRdv.periodes_non_disponibles.to_json %>"
+       class="mb-4" 
+       style="margin: 0 -1.5rem; padding: 4rem 2rem; background: rgba(0, 0, 0, 0.5); border-top: 2px solid rgba(255, 255, 255, 0.1); border-bottom: 2px solid rgba(255, 255, 255, 0.1);">
+    <h4 class="text-light mb-5 text-center" style="font-weight: 300; letter-spacing: 1px;">
+      <i class="bi bi-calendar-event public-brand-color me-2"></i>Date et heure du rendez-vous
+    </h4>
+    
+    <!-- Calendrier -->
+    <div class="mb-4 text-center">
+      <div data-calendar-picker-target="dateInput" class="calendar-container-large mx-auto"></div>
+      <%= form.hidden_field :date_rdv_date, data: { calendar_picker_target: "dateHidden" } %>
+    </div>
+    
+    <!-- Boutons de sélection d'heure -->
+    <div class="mb-4">
+      <p class="text-light text-center mb-4" style="font-size: 1.1rem; font-weight: 300;">
+        <i class="bi bi-clock public-brand-color me-2"></i>Sélectionnez un créneau horaire *
+      </p>
+      <div class="d-flex justify-content-center flex-wrap gap-3" data-calendar-picker-target="timeButtons">
+        <% DemandeRdv.creneaux_horaires.each do |creneau| %>
+          <button type="button" 
+                  class="btn btn-outline-light" 
+                  style="min-width: 100px; padding: 14px 24px; font-size: 1.1rem; font-weight: 500; letter-spacing: 0.5px; transition: all 0.3s ease;"
+                  data-time="<%= creneau %>"
+                  data-action="click->calendar-picker#selectTime">
+            <%= creneau %>
+          </button>
+        <% end %>
+      </div>
+      <%= form.hidden_field :date_rdv_time, 
+          data: { 
+            calendar_picker_target: "timeInput"
+          } %>
+    </div>
+    
+    <%= form.hidden_field :date_rdv, data: { calendar_picker_target: "hiddenInput" } %>
+    
+    <!-- Coordonnées - Masqué jusqu'à sélection date/heure -->
+    <div data-calendar-picker-target="formFields" style="display: none; opacity: 0; transition: opacity 0.5s ease-in-out;" class="px-4 mt-4">
+    <h5 class="text-light mb-3 mt-4">
+      <i class="bi bi-person public-brand-color me-2"></i>Coordonnées
+    </h5>
+    <div class="row mb-3">
+      <div class="col-md-12 mb-2">
+        <%= form.text_field :nom, class: "form-control bg-dark text-light border-secondary placeholder-light", placeholder: "Nom *", required: true %>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6 mb-2">
+        <%= form.email_field :email, class: "form-control bg-dark text-light border-secondary placeholder-light", placeholder: "Email *", required: true %>
+      </div>
+      <div class="col-md-6 mb-2">
+        <%= form.text_field :telephone, class: "form-control bg-dark text-light border-secondary placeholder-light", placeholder: "Téléphone *", required: true %>
+      </div>
+    </div>
+
+    <!-- Commentaires -->
+    <div class="mb-3">
+      <h5 class="text-light mb-3">
+        <i class="bi bi-chat-left-text public-brand-color me-2"></i>Commentaire
+      </h5>
+      <%= form.text_area :commentaire, rows: 3, class: "form-control bg-dark text-light border-secondary placeholder-light", 
+          placeholder: "Message (optionnel)" %>
+    </div>
+
+    <!-- reCAPTCHA -->
+    <div class="mb-3" data-recaptcha-submit-target="recaptcha">
+      <%= recaptcha_tags theme: 'dark', callback: 'onRecaptchaSuccess', expired_callback: 'onRecaptchaExpired', error_callback: 'onRecaptchaError' %>
+    </div>
+
+    <!-- Boutons -->
+    <div class="d-flex gap-3 mb-3 justify-content-end">
+      <div id="recaptcha-warning" data-recaptcha-submit-target="warning" class="alert alert-warning py-2 text-light mb-0 me-3" style="display: none;">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        <small>Veuillez compléter le reCAPTCHA</small>
+      </div>
+      <button type="submit" id="submit-btn" data-recaptcha-submit-target="submitBtn" data-action="click->recaptcha-submit#trySubmit" class="btn btn-lg shadow btn-secondary disabled" disabled style="opacity: 0.6; cursor: not-allowed;">
+        <i class="bi bi-lock me-2"></i>Validez d'abord le reCAPTCHA
+      </button>
+    </div>
+    </div>
+  </div>
+
+<% end %>
+

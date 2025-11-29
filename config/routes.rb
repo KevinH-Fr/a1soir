@@ -27,6 +27,9 @@ Rails.application.routes.draw do
 
       get 'rdv', to: 'pages#rdv'
 
+      # Demande de rendez-vous
+      resources :demande_rdv, only: [:new, :create], path: "rdv/reservation"
+
       get 'produits/:slug-:id', to: 'pages#produits', as: :produits
       get 'produits', to: 'pages#produits', as: :produits_index
   

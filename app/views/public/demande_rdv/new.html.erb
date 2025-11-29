@@ -1,0 +1,27 @@
+<%= page_header("Prendre rendez-vous", "Réservez votre créneau en boutique") %>
+
+<div class="public-main-content">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card bg-dark text-light border-secondary shadow-lg my-5"
+             style="border-color: rgba(196, 207, 47, 0.3) !important; background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(30, 25, 30, 0.95) 100%) !important;">
+          
+          <div class="card-header bg-transparent border-bottom border-secondary py-3">
+            <h3 class="mb-0 text-light">
+              <i class="bi bi-calendar-check public-brand-color me-2"></i>
+              Formulaire de réservation
+            </h3>
+          </div>
+
+          <div class="card-body p-4">
+            <div id="demande_rdv_form">
+              <%= render "form", demande_rdv: @demande_rdv %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

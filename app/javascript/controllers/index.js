@@ -51,3 +51,6 @@ application.register("sticky-text", StickyTextController)
 
 import HomeScrollController from "./home_scroll_controller"
 application.register("home-scroll", HomeScrollController)
+
+import CalendarPickerController from "./calendar_picker_controller"
+application.register("calendar-picker", CalendarPickerController)
