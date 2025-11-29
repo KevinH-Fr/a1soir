@@ -1,15 +1,7 @@
 <%= page_header("Prendre rendez-vous", "Réservez votre créneau en boutique") %>
 
-<div class="public-main-content">
-  <div class="container">
-
-    <h3 class="mb-0 text-light text-center">
-        <i class="bi bi-calendar-check public-brand-color me-2"></i>
-        Formulaire de réservation
-    </h3>
-
-    <div class="card-body p-0">
+<div class="p-4 bg-white d-flex flex-column" style="background-image: url('<%= image_path('/images/dessin2.png') %>'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative; height: 100vh;">
+    <div style="position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column;">
         <%= render "public/demande_rdv/form", demande_rdv: DemandeRdv.new %>
     </div>
-  </div>
 </div>

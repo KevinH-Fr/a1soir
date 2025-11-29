@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["dateInput", "dateHidden", "timeInput", "hiddenInput", "timeButtons", "formFields"];
+  static targets = ["dateInput", "dateHidden", "timeInput", "hiddenInput", "timeButtons"];
   static values = { periodesNonDisponibles: Array };
 
   connect() {
@@ -10,6 +10,7 @@ export default class extends Controller {
       this.initCalendar();
     });
   }
+
 
   disconnect() {
     if (this.flatpickrInstance) {
@@ -63,8 +64,8 @@ export default class extends Controller {
         console.log("Date sélectionnée:", dateStr);
         if (selectedDates.length > 0) {
           if (this.hasDateHiddenTarget) this.dateHiddenTarget.value = dateStr;
+          this.showStep2();
           this.updateDateTime();
-          this.checkAndShowFormFields();
         }
       }
     };
@@ -92,38 +93,35 @@ export default class extends Controller {
     const m = String(dateTime.getMinutes()).padStart(2, '0');
 
     this.hiddenInputTarget.value = `${year}-${month}-${day}T${h}:${m}`;
-    this.checkAndShowFormFields();
   }
   
-  checkAndShowFormFields() {
-    console.log("=== checkAndShowFormFields appelé ===");
-    
-    const hasDate = this.flatpickrInstance?.selectedDates.length > 0;
-    const hasTime = this.timeInputTarget.value?.trim();
-    
-    console.log("hasDate:", hasDate);
-    console.log("hasTime:", hasTime);
-    console.log("timeInputTarget.value:", this.timeInputTarget.value);
-    console.log("hasFormFieldsTarget:", this.hasFormFieldsTarget);
-    
-    if (this.hasFormFieldsTarget) {
-      console.log("formFieldsTarget existe:", this.formFieldsTarget);
-      console.log("formFieldsTarget.style.display:", this.formFieldsTarget.style.display);
-    } else {
-      console.error("formFieldsTarget n'existe pas !");
+  showStep2() {
+    // Déclencher un clic sur le bouton de tab Bootstrap - Bootstrap gère tout automatiquement
+    const step2Tab = document.querySelector('#step2-tab');
+    if (step2Tab) {
+      step2Tab.click();
     }
-    
-    if (hasDate && hasTime && this.hasFormFieldsTarget) {
-      console.log("Conditions remplies, affichage des champs");
-      this.formFieldsTarget.style.display = "block";
-      // Animation d'apparition
-      setTimeout(() => {
-        this.formFieldsTarget.style.opacity = "1";
-        console.log("Opacité mise à 1");
-        this.formFieldsTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 50);
-    } else {
-      console.log("Conditions non remplies - hasDate:", hasDate, "hasTime:", hasTime, "hasFormFieldsTarget:", this.hasFormFieldsTarget);
+  }
+
+  showStep3() {
+    // Déclencher un clic sur le bouton de tab Bootstrap - Bootstrap gère tout automatiquement
+    const step3Tab = document.querySelector('#step3-tab');
+    if (step3Tab) {
+      step3Tab.click();
+    }
+  }
+
+  goBack(event) {
+    // Revenir à l'étape précédente en trouvant le tab actif dans le tab-content
+    const activePane = document.querySelector('#rdv-tab-content .tab-pane.active');
+    if (activePane) {
+      const currentStep = parseInt(activePane.id.replace('step', '').replace('-pane', ''));
+      if (currentStep > 1) {
+        const previousTab = document.querySelector(`#step${currentStep - 1}-tab`);
+        if (previousTab) {
+          previousTab.click();
+        }
+      }
     }
   }
 
@@ -154,11 +152,11 @@ export default class extends Controller {
     
     this.timeButtonsTarget.querySelectorAll('button').forEach(btn => {
       btn.classList.toggle('active', btn === event.currentTarget);
-      btn.classList.toggle('btn-light', btn === event.currentTarget);
-      btn.classList.toggle('btn-outline-light', btn !== event.currentTarget);
+      btn.classList.toggle('btn-dark', btn === event.currentTarget);
+      btn.classList.toggle('btn-outline-dark', btn !== event.currentTarget);
     });
     
     this.updateDateTime();
-    this.checkAndShowFormFields();
+    this.showStep3();
   }
 }

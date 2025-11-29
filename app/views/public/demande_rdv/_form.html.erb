@@ -11,90 +11,137 @@
     </div>
   <% end %>
 
-  <!-- Date et heure du rendez-vous - Pleine largeur -->
+  <!-- Formulaire en 3 étapes -->
   <div data-controller="calendar-picker" 
        data-calendar-picker-periodes-non-disponibles-value="<%= DemandeRdv.periodes_non_disponibles.to_json %>"
-       class="mb-4" 
-       style="margin: 0 -1.5rem; padding: 4rem 2rem; background: rgba(0, 0, 0, 0.5); border-top: 2px solid rgba(255, 255, 255, 0.1); border-bottom: 2px solid rgba(255, 255, 255, 0.1);">
-    <h4 class="text-light mb-5 text-center" style="font-weight: 300; letter-spacing: 1px;">
-      <i class="bi bi-calendar-event public-brand-color me-2"></i>Date et heure du rendez-vous
-    </h4>
+       class="mb-5">
     
-    <!-- Calendrier -->
-    <div class="mb-4 text-center">
-      <div data-calendar-picker-target="dateInput" class="calendar-container-large mx-auto"></div>
-      <%= form.hidden_field :date_rdv_date, data: { calendar_picker_target: "dateHidden" } %>
-    </div>
-    
-    <!-- Boutons de sélection d'heure -->
-    <div class="mb-4">
-      <p class="text-light text-center mb-4" style="font-size: 1.1rem; font-weight: 300;">
-        <i class="bi bi-clock public-brand-color me-2"></i>Sélectionnez un créneau horaire *
-      </p>
-      <div class="d-flex justify-content-center flex-wrap gap-3" data-calendar-picker-target="timeButtons">
-        <% DemandeRdv.creneaux_horaires.each do |creneau| %>
-          <button type="button" 
-                  class="btn btn-outline-light" 
-                  style="min-width: 100px; padding: 14px 24px; font-size: 1.1rem; font-weight: 500; letter-spacing: 0.5px; transition: all 0.3s ease;"
-                  data-time="<%= creneau %>"
-                  data-action="click->calendar-picker#selectTime">
-            <%= creneau %>
-          </button>
-        <% end %>
+    <!-- Grille Bootstrap : contenu à droite sur grand écran, pleine largeur sur petit -->
+    <div class="row">
+      <!-- Colonne vide à gauche sur grand écran -->
+      <div class="col-lg-6 d-none d-lg-block"></div>
+      
+      <!-- Contenu des étapes : pleine largeur sur petit, moitié à droite sur grand -->
+      <div class="col-12 col-lg-6">
+        
+        <!-- Tabs Bootstrap cachés (nécessaires pour le fonctionnement) -->
+        <ul class="nav nav-tabs d-none" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="step1-tab" data-bs-toggle="tab" data-bs-target="#step1-pane" type="button" role="tab" aria-controls="step1-pane" aria-selected="true"></button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="step2-tab" data-bs-toggle="tab" data-bs-target="#step2-pane" type="button" role="tab" aria-controls="step2-pane" aria-selected="false"></button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="step3-tab" data-bs-toggle="tab" data-bs-target="#step3-pane" type="button" role="tab" aria-controls="step3-pane" aria-selected="false"></button>
+          </li>
+        </ul>
+        
+        <div class="tab-content" id="rdv-tab-content">
+          <!-- ÉTAPE 1 : Calendrier -->
+          <div class="tab-pane fade show active" id="step1-pane" role="tabpanel" aria-labelledby="step1-tab" tabindex="0">
+            <div class="bg-white rounded-3 p-4 p-md-5">
+              <h4 class="text-dark mb-4 text-center fw-bold" style="letter-spacing: 0.5px;">
+                Sélectionnez une date
+              </h4>
+              <div class="mb-4 text-center">
+                <div data-calendar-picker-target="dateInput" class="calendar-container-large mx-auto" style="max-width: 100%; font-size: 1.2rem;"></div>
+                <%= form.hidden_field :date_rdv_date, data: { calendar_picker_target: "dateHidden" } %>
+              </div>
+            </div>
+          </div>
+          
+          <!-- ÉTAPE 2 : Choix du créneau -->
+          <div class="tab-pane fade" id="step2-pane" role="tabpanel" aria-labelledby="step2-tab" tabindex="0">
+            <div class="bg-white rounded-3 p-4 p-md-5">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <button type="button" class="btn btn-outline-dark" data-action="click->calendar-picker#goBack">
+                  <i class="bi bi-arrow-left me-2"></i>Retour
+                </button>
+                <h4 class="text-dark text-center mb-0 fw-bold flex-grow-1" style="letter-spacing: 0.5px;">
+                  Choisissez un horaire *
+                </h4>
+                <div style="width: 100px;"></div> <!-- Spacer pour centrer le titre -->
+              </div>
+              <div class="d-flex justify-content-center flex-wrap gap-3" data-calendar-picker-target="timeButtons">
+                <% DemandeRdv.creneaux_horaires.each do |creneau| %>
+                  <button type="button" 
+                          class="btn btn-outline-dark btn-lg" 
+                          style="min-width: 120px; padding: 16px 28px; font-size: 1.1rem; font-weight: 600; letter-spacing: 0.5px; border-width: 2px; transition: all 0.3s ease;"
+                          data-time="<%= creneau %>"
+                          data-action="click->calendar-picker#selectTime">
+                    <%= creneau %>
+                  </button>
+                <% end %>
+              </div>
+              <%= form.hidden_field :date_rdv_time, 
+                  data: { 
+                    calendar_picker_target: "timeInput"
+                  } %>
+            </div>
+          </div>
+          
+          <!-- ÉTAPE 3 : Formulaire coordonnées -->
+          <div class="tab-pane fade" id="step3-pane" role="tabpanel" aria-labelledby="step3-tab" tabindex="0">
+            <div class="bg-white rounded-3 p-4 p-md-5">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <button type="button" class="btn btn-outline-dark" data-action="click->calendar-picker#goBack">
+                  <i class="bi bi-arrow-left me-2"></i>Retour
+                </button>
+                <h5 class="text-dark mb-0 fw-bold flex-grow-1 text-center">
+                  <i class="bi bi-person me-2" style="color: #000;"></i>
+                  Vos coordonnées
+                </h5>
+                <div style="width: 100px;"></div> <!-- Spacer pour centrer le titre -->
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-12 mb-1">
+                  <%= form.text_field :nom, class: "form-control form-control-lg border-dark border-2", placeholder: "Nom *", required: true, style: "background-color: #fff; color: #000;" %>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6 mb-1">
+                  <%= form.email_field :email, class: "form-control form-control-lg border-dark border-2", placeholder: "Email *", required: true, style: "background-color: #fff; color: #000;" %>
+                </div>
+                <div class="col-md-6 mb-1">
+                  <%= form.text_field :telephone, class: "form-control form-control-lg border-dark border-2", placeholder: "Téléphone *", required: true, style: "background-color: #fff; color: #000;" %>
+                </div>
+              </div>
+
+              <!-- Commentaires -->
+              <div class="mb-4">
+                <h5 class="text-dark mb-1 fw-bold">
+                  <i class="bi bi-chat-left-text me-2" style="color: #000;"></i>
+                  Commentaire
+                </h5>
+                <%= form.text_area :commentaire, rows: 3, class: "form-control form-control-lg border-dark border-2", 
+                    placeholder: "Message (optionnel)", style: "background-color: #fff; color: #000;" %>
+              </div>
+
+              <!-- reCAPTCHA -->
+              <div class="mb-4 d-flex justify-content-center" data-recaptcha-submit-target="recaptcha">
+                <%= recaptcha_tags theme: 'light', callback: 'onRecaptchaSuccess', expired_callback: 'onRecaptchaExpired', error_callback: 'onRecaptchaError' %>
+              </div>
+
+              <!-- Boutons -->
+              <div class="d-flex flex-column flex-md-row gap-3 justify-content-center align-items-center">
+                <div id="recaptcha-warning" data-recaptcha-submit-target="warning" class="alert alert-warning py-2 mb-0" style="display: none;">
+                  <i class="bi bi-exclamation-triangle me-2"></i>
+                  <small>Veuillez compléter le reCAPTCHA</small>
+                </div>
+                <button type="submit" id="submit-btn" data-recaptcha-submit-target="submitBtn" data-action="click->recaptcha-submit#trySubmit" class="btn btn-dark p-2 shadow disabled" disabled style="opacity: 0.6; cursor: not-allowed; font-weight: 600; letter-spacing: 0.5px; border-width: 2px;">
+                  <i class="bi bi-lock me-2"></i>Validez d'abord le reCAPTCHA
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
       </div>
-      <%= form.hidden_field :date_rdv_time, 
-          data: { 
-            calendar_picker_target: "timeInput"
-          } %>
     </div>
     
     <%= form.hidden_field :date_rdv, data: { calendar_picker_target: "hiddenInput" } %>
-    
-    <!-- Coordonnées - Masqué jusqu'à sélection date/heure -->
-    <div data-calendar-picker-target="formFields" style="display: none; opacity: 0; transition: opacity 0.5s ease-in-out;" class="px-4 mt-4">
-    <h5 class="text-light mb-3 mt-4">
-      <i class="bi bi-person public-brand-color me-2"></i>Coordonnées
-    </h5>
-    <div class="row mb-3">
-      <div class="col-md-12 mb-2">
-        <%= form.text_field :nom, class: "form-control bg-dark text-light border-secondary placeholder-light", placeholder: "Nom *", required: true %>
-      </div>
-    </div>
-
-    <div class="row mb-3">
-      <div class="col-md-6 mb-2">
-        <%= form.email_field :email, class: "form-control bg-dark text-light border-secondary placeholder-light", placeholder: "Email *", required: true %>
-      </div>
-      <div class="col-md-6 mb-2">
-        <%= form.text_field :telephone, class: "form-control bg-dark text-light border-secondary placeholder-light", placeholder: "Téléphone *", required: true %>
-      </div>
-    </div>
-
-    <!-- Commentaires -->
-    <div class="mb-3">
-      <h5 class="text-light mb-3">
-        <i class="bi bi-chat-left-text public-brand-color me-2"></i>Commentaire
-      </h5>
-      <%= form.text_area :commentaire, rows: 3, class: "form-control bg-dark text-light border-secondary placeholder-light", 
-          placeholder: "Message (optionnel)" %>
-    </div>
-
-    <!-- reCAPTCHA -->
-    <div class="mb-3" data-recaptcha-submit-target="recaptcha">
-      <%= recaptcha_tags theme: 'dark', callback: 'onRecaptchaSuccess', expired_callback: 'onRecaptchaExpired', error_callback: 'onRecaptchaError' %>
-    </div>
-
-    <!-- Boutons -->
-    <div class="d-flex gap-3 mb-3 justify-content-end">
-      <div id="recaptcha-warning" data-recaptcha-submit-target="warning" class="alert alert-warning py-2 text-light mb-0 me-3" style="display: none;">
-        <i class="bi bi-exclamation-triangle me-2"></i>
-        <small>Veuillez compléter le reCAPTCHA</small>
-      </div>
-      <button type="submit" id="submit-btn" data-recaptcha-submit-target="submitBtn" data-action="click->recaptcha-submit#trySubmit" class="btn btn-lg shadow btn-secondary disabled" disabled style="opacity: 0.6; cursor: not-allowed;">
-        <i class="bi bi-lock me-2"></i>Validez d'abord le reCAPTCHA
-      </button>
-    </div>
-    </div>
   </div>
 
 <% end %>
