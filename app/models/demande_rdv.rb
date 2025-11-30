@@ -57,24 +57,28 @@ class DemandeRdv < ApplicationRecord
   end
 
   # Récupère tous les créneaux occupés pour les prochaines dates (format: { "YYYY-MM-DD" => ["HH:MM", ...] })
+  # Un créneau est considéré comme occupé uniquement s'il y a 2 rendez-vous ou plus
   def self.creneaux_occupes_par_date(days_ahead: 90)
     start_date = Date.today
     end_date = start_date + days_ahead.days
     
     Meeting.where(datedebut: start_date.beginning_of_day..end_date.end_of_day)
-           .group_by { |m| m.datedebut.to_date }
-           .transform_values { |meetings| meetings.map { |m| m.datedebut.strftime("%H:%M") }.uniq }
+           .group_by { |m| [m.datedebut.to_date, m.datedebut.strftime("%H:%M")] }
+           .select { |_key, meetings| meetings.count >= 2 }
+           .group_by { |(date, _time), _meetings| date }
+           .transform_values { |items| items.map { |(_, time), _| time }.uniq }
            .transform_keys { |date| date.strftime("%Y-%m-%d") }
   end
 
   # Récupère les créneaux occupés pour une date donnée depuis les Meetings
+  # Un créneau est considéré comme occupé uniquement s'il y a 2 rendez-vous ou plus
   def self.creneaux_occupes_pour_date(date)
     date_obj = date.is_a?(String) ? Date.parse(date) : date
     
     Meeting.where(datedebut: date_obj.beginning_of_day..date_obj.end_of_day)
-           .pluck(:datedebut)
-           .map { |dt| dt.strftime("%H:%M") }
-           .uniq
+           .group_by { |m| m.datedebut.strftime("%H:%M") }
+           .select { |_time, meetings| meetings.count >= 2 }
+           .keys
   end
 
   # Récupère les créneaux disponibles pour une date donnée

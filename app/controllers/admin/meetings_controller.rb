@@ -76,9 +76,6 @@ class Admin::MeetingsController < Admin::ApplicationController
     respond_to do |format|
       if @meeting.save
 
-        # Send reminder email after the meeting is successfully created
-        MeetingMailer.reminder_email(@meeting).deliver_now
-
           flash.now[:success] =  "Meeting was created"
           
           format.turbo_stream do

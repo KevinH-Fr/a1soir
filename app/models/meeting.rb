@@ -6,6 +6,7 @@ class Meeting < ApplicationRecord
   validates :datedebut, presence: true #, uniqueness: true
   
   after_create :add_calendar_event
+  after_create :send_reminder_email
   after_update :update_calendar_event
   after_destroy :delete_calendar_event
 
@@ -80,6 +81,10 @@ class Meeting < ApplicationRecord
   def delete_calendar_event
     google_calendar_service = GoogleCalendarService.new
     google_calendar_service.delete_event(self.google_calendar_event_id)
+  end
+
+  def send_reminder_email
+    MeetingMailer.reminder_email(self).deliver_now
   end
   
 end
