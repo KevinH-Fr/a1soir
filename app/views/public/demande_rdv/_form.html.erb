@@ -14,6 +14,7 @@
   <!-- Formulaire en 3 étapes -->
   <div data-controller="calendar-picker" 
        data-calendar-picker-periodes-non-disponibles-value="<%= DemandeRdv.periodes_non_disponibles.to_json %>"
+       data-calendar-picker-creneaux-occupes-value="<%= DemandeRdv.creneaux_occupes_par_date.to_json %>"
        class="mb-5">
     
     <!-- Grille Bootstrap : contenu à droite sur grand écran, pleine largeur sur petit -->
@@ -89,11 +90,13 @@
                 <div style="width: 100px;"></div> <!-- Spacer pour centrer le titre -->
               </div>
               <div class="row mb-3">
-                <div class="col-md-12 mb-1">
+                <div class="col-md-6 mb-1">
+                  <%= form.text_field :prenom, class: "form-control form-control-lg border-dark border-2", placeholder: "Prénom *", required: true, style: "background-color: #fff; color: #000;" %>
+                </div>
+                <div class="col-md-6 mb-1">
                   <%= form.text_field :nom, class: "form-control form-control-lg border-dark border-2", placeholder: "Nom *", required: true, style: "background-color: #fff; color: #000;" %>
                 </div>
               </div>
-
               <div class="row mb-3">
                 <div class="col-md-6 mb-1">
                   <%= form.email_field :email, class: "form-control form-control-lg border-dark border-2", placeholder: "Email *", required: true, style: "background-color: #fff; color: #000;" %>

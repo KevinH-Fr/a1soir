@@ -1,0 +1,15 @@
+<%# demande_rdvs infinite scroll pagination %>
+
+<%= turbo_stream.append :demande_rdvs do %>
+    <%= render @demande_rdvs %>
+<% end %>
+
+<% if @pagy.next.present? %>
+    <%= turbo_stream.replace :pagination do %>
+        <%= turbo_frame_tag :pagination, loading: :lazy,
+                            src: admin_demande_rdvs_path(format: :turbo_stream,
+                            page: @pagy.next, q: params[:q]&.to_unsafe_h ) %>
+    <% end %>
+
+<% end %>
+

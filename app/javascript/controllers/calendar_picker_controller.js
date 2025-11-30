@@ -2,7 +2,10 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = ["dateInput", "dateHidden", "timeInput", "hiddenInput", "timeButtons"];
-  static values = { periodesNonDisponibles: Array };
+  static values = { 
+    periodesNonDisponibles: Array,
+    creneauxOccupes: Object
+  };
 
   connect() {
     // Charger Flatpickr de manière dynamique
@@ -64,6 +67,7 @@ export default class extends Controller {
         console.log("Date sélectionnée:", dateStr);
         if (selectedDates.length > 0) {
           if (this.hasDateHiddenTarget) this.dateHiddenTarget.value = dateStr;
+          this.loadCreneauxDisponibles(dateStr);
           this.showStep2();
           this.updateDateTime();
         }
@@ -145,10 +149,30 @@ export default class extends Controller {
     return dates;
   }
 
+  loadCreneauxDisponibles(date) {
+    const creneauxOccupes = this.creneauxOccupesValue[date] || [];
+    this.updateCreneauxButtons(creneauxOccupes);
+  }
+
+  updateCreneauxButtons(creneauxOccupes) {
+    if (!this.hasTimeButtonsTarget) return;
+    
+    this.timeButtonsTarget.querySelectorAll('button[data-time]').forEach(button => {
+      const isOccupe = creneauxOccupes.includes(button.dataset.time);
+      
+      button.disabled = isOccupe;
+      button.classList.toggle('btn-secondary', isOccupe);
+      button.classList.toggle('btn-outline-dark', !isOccupe);
+      button.style.opacity = isOccupe ? '0.5' : '1';
+      button.title = isOccupe ? 'Créneau déjà réservé' : '';
+    });
+  }
+
   selectTime(event) {
-    console.log("=== selectTime appelé ===");
+    if (event.currentTarget.disabled) return;
+    
     const time = event.currentTarget.dataset.time;
-    console.log("Time sélectionné:", time);
+    
     this.timeInputTarget.value = time;
     console.log("timeInputTarget.value mis à:", this.timeInputTarget.value);
     

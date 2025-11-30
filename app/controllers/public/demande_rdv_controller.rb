@@ -11,11 +11,14 @@ module Public
       @demande_rdv = DemandeRdv.new(demande_rdv_params)
       @demande_rdv.statut = "soumis"
       
-      # Combiner date et heure si fournis séparément
-      if params[:demande_rdv][:date_rdv_date].present? && params[:demande_rdv][:date_rdv_time].present?
-        date_str = params[:demande_rdv][:date_rdv_date]
-        time_str = params[:demande_rdv][:date_rdv_time]
-        @demande_rdv.date_rdv = DateTime.parse("#{date_str} #{time_str}")
+      # Combiner date et heure si date_rdv n'est pas déjà rempli
+      if @demande_rdv.date_rdv.blank?
+        date_str = params[:demande_rdv][:date_rdv_date] if params[:demande_rdv]
+        time_str = params[:demande_rdv][:date_rdv_time] if params[:demande_rdv]
+        
+        if date_str.present? && time_str.present?
+          @demande_rdv.date_rdv = DateTime.parse("#{date_str} #{time_str}")
+        end
       end
       
       # Vérifier reCAPTCHA
@@ -58,7 +61,7 @@ module Public
 
     def demande_rdv_params
       params.require(:demande_rdv).permit(
-        :nom, :email, :telephone, :commentaire, :date_rdv, :date_rdv_date, :date_rdv_time
+        :prenom, :nom, :email, :telephone, :commentaire, :date_rdv
       )
     end
 

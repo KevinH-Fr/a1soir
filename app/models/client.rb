@@ -57,14 +57,30 @@ class Client < ApplicationRecord
   end
 
   def self.find_existing_from_demande(demande)
-    # Tente de retrouver un client existant à partir du mail ou du téléphone fournis dans la demande.
-    if demande.mail.present?
-      found = find_by(mail: demande.mail)
-      found
-    elsif demande.telephone.present?
-      found = find_by(tel: demande.telephone)
-      found
+    # Tente de retrouver un client existant à partir du mail, téléphone, ou prénom/nom
+    # Priorité : email > téléphone > prénom + nom
+    
+    # Chercher par email (si disponible dans demande)
+    email = demande.respond_to?(:email) ? demande.email : demande.mail
+    if email.present?
+      found = find_by(mail: email)
+      return found if found
     end
+    
+    # Chercher par téléphone (si disponible dans demande)
+    tel = demande.respond_to?(:telephone) ? demande.telephone : demande.tel
+    if tel.present?
+      found = find_by(tel: tel)
+      return found if found
+    end
+    
+    # Chercher par prénom + nom
+    if demande.prenom.present? && demande.nom.present?
+      found = where(prenom: demande.prenom, nom: demande.nom).first
+      return found if found
+    end
+    
+    nil
   end
     
     private

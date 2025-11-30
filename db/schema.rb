@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_29_010423) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_30_004632) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -194,6 +194,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_29_010423) do
     t.string "statut"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "prenom"
   end
 
   create_table "doc_editions", force: :cascade do |t|
@@ -258,8 +259,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_29_010423) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "google_calendar_event_id"
+    t.integer "demande_rdv_id"
     t.index ["client_id"], name: "index_meetings_on_client_id"
     t.index ["commande_id"], name: "index_meetings_on_commande_id"
+    t.index ["demande_rdv_id"], name: "index_meetings_on_demande_rdv_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -423,6 +426,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_29_010423) do
   add_foreign_key "ensembles", "type_produits", column: "type_produit6_id"
   add_foreign_key "meetings", "clients"
   add_foreign_key "meetings", "commandes"
+  add_foreign_key "meetings", "demande_rdvs"
   add_foreign_key "paiement_recus", "commandes"
   add_foreign_key "paiements", "commandes"
   add_foreign_key "produits", "categorie_produits"

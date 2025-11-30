@@ -1,6 +1,7 @@
 class Meeting < ApplicationRecord
   belongs_to :commande, optional: true
   belongs_to :client, optional: true
+  belongs_to :demande_rdv, optional: true
 
   validates :datedebut, presence: true #, uniqueness: true
   
@@ -60,7 +61,7 @@ class Meeting < ApplicationRecord
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["client", "commande"]
+    ["client", "commande", "demande_rdv"]
   end
 
   private

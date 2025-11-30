@@ -1,0 +1,13 @@
+<%= bandeau_entete_simple("Détails de la demande de rendez-vous", "calendar-check") %>
+
+<div class="card m-2 shadow-sm">
+  <div class="card-body">
+    <%= render "demande_rdv", demande_rdv: @demande_rdv %>
+    
+    <div class="mt-3">
+      <%= return_model_index_button("Retour", admin_demande_rdvs_path) %>
+      <%= link_to "Éditer", edit_admin_demande_rdv_path(@demande_rdv), class: "btn btn-primary" %>
+    </div>
+  </div>
+</div>
+

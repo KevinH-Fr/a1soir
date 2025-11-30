@@ -217,6 +217,12 @@ Rails.application.routes.draw do
           post :create_client
         end
       end
+      
+      resources :demande_rdvs, only: [:index, :show, :edit, :update, :destroy] do
+        member do
+          post :edit
+        end
+      end
         
       resources :textes do 
         member do

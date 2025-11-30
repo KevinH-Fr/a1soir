@@ -2167,6 +2167,13 @@ section {
   transition: opacity 0.15s linear;
 }
 
+/* Créneaux horaires occupés */
+button[data-time]:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  text-decoration: line-through;
+}
+
 
 /* Flatpickr Calendar Styles - Fond Blanc - Style moderne élégant */
 .flatpickr-calendar {
