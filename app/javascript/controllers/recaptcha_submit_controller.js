@@ -1,114 +1,69 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Connects to data-controller="recaptcha-submit"
 export default class extends Controller {
-  static targets = ["submitBtn", "warning", "recaptcha"]
+  static targets = ["submitBtn"]
 
   connect() {
-    // Expose global callbacks expected by reCAPTCHA widget
     this.installGlobals()
-    this.reset()
+    this.disableButton()
   }
 
   disconnect() {
     if (window.recaptchaSubmitController === this) {
       window.recaptchaSubmitController = null
+      window.onRecaptchaSuccess = null
+      window.onRecaptchaExpired = null
+      window.onRecaptchaError = null
     }
   }
 
-  // Called when reCAPTCHA is solved
+  // Callbacks reCAPTCHA (appelés par la gem recaptcha)
   onRecaptchaSuccess = () => {
-    if (this.hasSubmitBtnTarget) {
-      const b = this.submitBtnTarget
-      b.disabled = false
-      b.classList.remove("disabled", "btn-secondary")
-      b.classList.add("btn-smoke-hover")
-      b.innerHTML = '<i class="bi bi-send me-2"></i>Envoyer ma demande'
-      b.style.opacity = "1"
-      b.style.cursor = "pointer"
-      b.removeAttribute("title")
-    }
-    if (this.hasWarningTarget) {
-      this.warningTarget.style.display = "none"
-    }
+    this.enableButton()
   }
 
-  // Called when reCAPTCHA expires
   onRecaptchaExpired = () => {
-    this.lock()
+    this.disableButton()
   }
 
-  // Called on reCAPTCHA error
   onRecaptchaError = () => {
-    this.lock()
+    this.disableButton()
   }
 
-  // Click handler (bind in markup)
-  trySubmit(event) {
-    if (!this.hasSubmitBtnTarget) return
-    if (this.submitBtnTarget.disabled) {
-      event.preventDefault()
-      event.stopPropagation()
-      this.showWarning()
-      this.scrollToRecaptcha()
+  // Activer le bouton
+  enableButton() {
+    if (this.hasSubmitBtnTarget) {
+      const btn = this.submitBtnTarget
+      btn.disabled = false
+      btn.classList.remove("disabled")
+      btn.innerHTML = '<i class="bi bi-send me-2"></i>Envoyer ma demande'
+      btn.style.opacity = "1"
+      btn.style.cursor = "pointer"
     }
   }
 
-  // Reset state on page loads
-  reset() {
-    if (!this.hasSubmitBtnTarget) return
-    const b = this.submitBtnTarget
-    b.disabled = true
-    b.classList.remove("btn-smoke-hover")
-    b.classList.add("disabled", "btn-secondary")
-    b.innerHTML = '<i class="bi bi-lock me-2"></i>Validez d\'abord le reCAPTCHA'
-    b.style.opacity = "0.6"
-    b.style.cursor = "not-allowed"
-    b.setAttribute("title", "Veuillez valider le reCAPTCHA")
-    if (this.hasWarningTarget) this.warningTarget.style.display = "none"
-  }
-
-  // Helpers
-  lock() {
-    if (!this.hasSubmitBtnTarget) return
-    const b = this.submitBtnTarget
-    b.disabled = true
-    b.classList.remove("btn-smoke-hover")
-    b.classList.add("disabled", "btn-secondary")
-    b.innerHTML = '<i class="bi bi-lock me-2"></i>Validez d\'abord le reCAPTCHA'
-    b.style.opacity = "0.6"
-    b.style.cursor = "not-allowed"
-    b.setAttribute("title", "Veuillez valider le reCAPTCHA")
-  }
-
-  showWarning() {
-    if (this.hasWarningTarget) {
-      const w = this.warningTarget
-      w.style.display = "flex"
-      w.style.alignItems = "center"
-      setTimeout(() => { w.style.display = "none" }, 3000)
+  // Désactiver le bouton
+  disableButton() {
+    if (this.hasSubmitBtnTarget) {
+      const btn = this.submitBtnTarget
+      btn.disabled = true
+      btn.classList.add("disabled")
+      btn.style.opacity = "0.6"
+      btn.style.cursor = "not-allowed"
     }
   }
 
-  scrollToRecaptcha() {
-    // Try target first, fallback to default widget class
-    const el = this.hasRecaptchaTarget ? this.recaptchaTarget : document.querySelector('.g-recaptcha')
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-  }
-
+  // Installer les callbacks globaux pour reCAPTCHA
   installGlobals() {
     window.recaptchaSubmitController = this
     window.onRecaptchaSuccess = () => {
-      const instance = window.recaptchaSubmitController
-      instance && instance.onRecaptchaSuccess()
+      window.recaptchaSubmitController?.onRecaptchaSuccess()
     }
     window.onRecaptchaExpired = () => {
-      const instance = window.recaptchaSubmitController
-      instance && instance.onRecaptchaExpired()
+      window.recaptchaSubmitController?.onRecaptchaExpired()
     }
     window.onRecaptchaError = () => {
-      const instance = window.recaptchaSubmitController
-      instance && instance.onRecaptchaError()
+      window.recaptchaSubmitController?.onRecaptchaError()
     }
   }
 }

@@ -7,19 +7,43 @@ class DemandeRdv < ApplicationRecord
     ["confirmé", "confirmé"],
     ["annulé", "annulé"]
   ].freeze
+
+  # Types de rendez-vous disponibles avec leur durée de base (en minutes)
+  TYPE_RDV = [
+    ["découverte", "Découverte"],
+    ["essayage", "Essayage"],
+    ["retouche", "Retouche"],
+    ["autre", "Autre"]
+  ].freeze
+
+  # Valeurs valides pour type_rdv (extrait une seule fois)
+  TYPE_RDV_VALUES = TYPE_RDV.map { |t| t[0] }.freeze
+
+  # Durées de base par type de RDV (en minutes)
+  DUREE_BASE_PAR_TYPE = {
+    "découverte" => 30,
+    "essayage" => 60,
+    "retouche" => 45,
+    "autre" => 60
+  }.freeze
+
+  # Minutes supplémentaires par personne supplémentaire (au-delà de 1)
+  MINUTES_PAR_PERSONNE_SUPP = 15
       
   # Validations
   validates :nom, presence: true
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :telephone, presence: true
   validates :date_rdv, presence: true
+  validates :type_rdv, presence: true, inclusion: { in: TYPE_RDV_VALUES }
+  validates :nombre_personnes, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
 
   # Callbacks
   after_update :sync_meeting_with_statut
 
   # Ransackable attributes for admin search
   def self.ransackable_attributes(auth_object = nil)
-    ["commentaire", "created_at", "date_rdv", "email", "id", "id_value", "nom", "prenom", "statut", "telephone", "updated_at"]
+    ["commentaire", "created_at", "date_rdv", "email", "id", "id_value", "nom", "nombre_personnes", "prenom", "statut", "telephone", "type_rdv", "updated_at"]
   end
 
   def self.ransackable_associations(auth_object = nil)
@@ -96,6 +120,37 @@ class DemandeRdv < ApplicationRecord
     }.select { |_key, value| value.present? }
   end
 
+  # Calcule la durée du rendez-vous en fonction du type et du nombre de personnes
+  # Retourne la durée en minutes
+  def duree_rdv_minutes
+    return 60 unless type_rdv.present? # Durée par défaut si type non défini
+    
+    duree_base = DUREE_BASE_PAR_TYPE[type_rdv] || 60
+    personnes_supp = [(nombre_personnes || 1) - 1, 0].max # Nombre de personnes supplémentaires
+    
+    duree_base + (personnes_supp * MINUTES_PAR_PERSONNE_SUPP)
+  end
+
+  # Retourne la durée du rendez-vous en heures (format décimal)
+  def duree_rdv_heures
+    duree_rdv_minutes / 60.0
+  end
+
+  # Retourne la durée formatée (ex: "1h30", "45min")
+  def duree_rdv_formatee
+    minutes = duree_rdv_minutes
+    heures = minutes / 60
+    mins_restantes = minutes % 60
+    
+    if heures > 0 && mins_restantes > 0
+      "#{heures}h#{mins_restantes.to_s.rjust(2, '0')}"
+    elsif heures > 0
+      "#{heures}h"
+    else
+      "#{minutes}min"
+    end
+  end
+
   private
 
   # Synchronise le meeting avec le statut de la demande
@@ -117,10 +172,9 @@ class DemandeRdv < ApplicationRecord
     client, _created = Client.create_from_demande(self)
     return unless client&.persisted?
     
-    # Calculer la date de fin (1 heure après le début)
-    # TODO: adapter pour dynamique en fonction du type de rdv
+    # Calculer la date de fin en fonction du type de RDV et du nombre de personnes
     datedebut = date_rdv
-    datefin = datedebut + 1.hour
+    datefin = datedebut + duree_rdv_minutes.minutes
     
     # Créer ou mettre à jour le meeting avec le client associé
     if meeting.present?

@@ -65,7 +65,7 @@ class Admin::DemandeRdvsController < Admin::ApplicationController
 
     def demande_rdv_params
       params.require(:demande_rdv).permit(
-        :prenom, :nom, :email, :telephone, :commentaire, :date_rdv, :statut
+        :prenom, :nom, :email, :telephone, :commentaire, :date_rdv, :statut, :type_rdv, :nombre_personnes
       )
     end
 

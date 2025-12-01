@@ -21,27 +21,27 @@ module Public
         end
       end
       
+      # Normaliser type_rdv en minuscule
+      if @demande_rdv.type_rdv.present?
+        @demande_rdv.type_rdv = @demande_rdv.type_rdv.downcase
+      end
+      
       # Vérifier reCAPTCHA
       unless verify_recaptcha(model: @demande_rdv)
         flash.now[:alert] = "Veuillez compléter le reCAPTCHA pour prouver que vous n'êtes pas un robot"
-        
         respond_to do |format|
           format.html { render :new, status: :unprocessable_entity }
           format.turbo_stream do
-            render turbo_stream: turbo_stream.append(
-              :flash,
-              partial: "public/shared/flash"
-            )
+            render turbo_stream: [
+              turbo_stream.append(:flash, partial: "public/shared/flash"),
+              turbo_stream.update("demande_rdv_form", partial: "public/demande_rdv/form", locals: { demande_rdv: @demande_rdv })
+            ]
           end
         end
         return
       end
-            
+ 
       if @demande_rdv.save
-        # TODO: Envoi de l'email de confirmation au visiteur
-        # DemandeRdvMailer.confirmation_client(@demande_rdv).deliver_later
-        # TODO: Notification admin
-        # DemandeRdvMailer.notification_admin(@demande_rdv).deliver_later
         redirect_to rdv_path, notice: "Votre demande de rendez-vous a bien été envoyée. Nous vous contacterons bientôt."
       else
         respond_to do |format|
@@ -61,7 +61,7 @@ module Public
 
     def demande_rdv_params
       params.require(:demande_rdv).permit(
-        :prenom, :nom, :email, :telephone, :commentaire, :date_rdv
+        :prenom, :nom, :email, :telephone, :commentaire, :date_rdv, :type_rdv, :nombre_personnes
       )
     end
 
