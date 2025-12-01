@@ -174,9 +174,28 @@ export default class extends Controller {
       const isOccupe = creneauxOccupes.includes(button.dataset.time);
       
       button.disabled = isOccupe;
-      button.classList.toggle('btn-secondary', isOccupe);
-      button.classList.toggle('btn-outline-dark', !isOccupe);
-      button.style.opacity = isOccupe ? '0.5' : '1';
+      
+      if (isOccupe) {
+        // Créneau occupé : texte gris, bordure grise, fond blanc
+        button.classList.remove('btn-outline-dark', 'btn-dark', 'btn-secondary');
+        button.style.color = '#6c757d';
+        button.style.borderColor = '#6c757d';
+        button.style.backgroundColor = '#ffffff';
+        button.style.opacity = '1';
+        button.style.cursor = 'not-allowed';
+        button.style.borderRadius = '2px';
+      } else {
+        // Créneau disponible : style par défaut
+        button.classList.add('btn-outline-dark');
+        button.classList.remove('btn-secondary', 'btn-dark');
+        button.style.color = '';
+        button.style.borderColor = '';
+        button.style.backgroundColor = '';
+        button.style.opacity = '1';
+        button.style.cursor = '';
+        button.style.borderRadius = '2px';
+      }
+      
       button.title = isOccupe ? 'Créneau déjà réservé' : '';
     });
   }
