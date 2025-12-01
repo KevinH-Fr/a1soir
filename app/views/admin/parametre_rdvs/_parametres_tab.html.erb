@@ -1,0 +1,24 @@
+<% if @parametre_rdv.nil? || !@parametre_rdv.persisted? %>
+  <div class="d-flex justify-content-end mb-2">
+    <%= link_to "#collapseNew", 
+          class: "btn btn-sm btn-warning", 
+          data: { bs_toggle: "collapse" }, 
+          role: "button", 
+          aria: { expanded: "false", controls: "collapseNew" } do %>
+        <i class="bi bi-plus-lg me-1"></i>Créer une configuration
+      <% end %>
+  </div>
+<% end %>
+
+<div class="collapse" id="collapseNew">
+  <div id="new">
+    <%= render "admin/parametre_rdvs/form", parametre_rdv: (@parametre_rdv || ParametreRdv.new) %>
+  </div>
+</div>
+
+<div id="parametres_content">
+  <% if @parametre_rdv&.persisted? %>
+    <%= render "admin/parametre_rdvs/parametre_rdv", parametre_rdv: @parametre_rdv %>
+  <% end %>
+</div>
+

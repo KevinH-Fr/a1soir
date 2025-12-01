@@ -7,36 +7,15 @@ class DemandeRdv < ApplicationRecord
     ["confirmé", "confirmé"],
     ["annulé", "annulé"]
   ].freeze
-
-  # Types de rendez-vous disponibles avec leur durée de base (en minutes)
-  TYPE_RDV = [
-    ["découverte", "Découverte"],
-    ["essayage", "Essayage"],
-    ["retouche", "Retouche"],
-    ["autre", "Autre"]
-  ].freeze
-
-  # Valeurs valides pour type_rdv (extrait une seule fois)
-  TYPE_RDV_VALUES = TYPE_RDV.map { |t| t[0] }.freeze
-
-  # Durées de base par type de RDV (en minutes)
-  DUREE_BASE_PAR_TYPE = {
-    "découverte" => 30,
-    "essayage" => 60,
-    "retouche" => 45,
-    "autre" => 60
-  }.freeze
-
-  # Minutes supplémentaires par personne supplémentaire (au-delà de 1)
-  MINUTES_PAR_PERSONNE_SUPP = 15
       
   # Validations
   validates :nom, presence: true
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :telephone, presence: true
   validates :date_rdv, presence: true
-  validates :type_rdv, presence: true, inclusion: { in: TYPE_RDV_VALUES }
+  validates :type_rdv, presence: true
   validates :nombre_personnes, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
+  validate :type_rdv_must_be_valid
 
   # Callbacks
   after_update :sync_meeting_with_statut
@@ -61,47 +40,74 @@ class DemandeRdv < ApplicationRecord
   end
   
 
-  # Créneaux horaires disponibles
+  # Créneaux horaires disponibles (configurés via ParametreRdv)
   def self.creneaux_horaires
-    ["10:00", "11:00", "15:00", "16:00", "17:00"]
+    ParametreRdv.current&.creneaux_horaires_list.presence || ["10:00", "11:00", "15:00", "16:00", "17:00"]
   end
 
-  # Périodes non disponibles (dates exclues) - se répètent chaque année
-  # Période du 24 décembre au 2 janvier (se répète chaque année)
+  # Périodes non disponibles (dates exclues)
   # Format: array de hashes avec :debut et :fin (dates au format string "YYYY-MM-DD")
   def self.periodes_non_disponibles
-    current_year = Date.today.year
-    # Retourner les périodes pour les 2 prochaines années
-    (current_year..current_year + 1).map do |year|
-      { 
-        debut: "#{year}-12-24", 
-        fin: "#{year + 1}-01-02" 
-      }
+    config = ParametreRdv.current
+    return [] unless config
+
+    today = Date.today
+    current_year = today.year
+    next_year = current_year + 1
+
+    PeriodeNonDisponible.where(parametre_rdv_id: config.id).flat_map do |periode|
+      if periode.recurrence
+        # Période récurrente : on la projette sur l'année courante et la suivante
+        [current_year, next_year].map do |year|
+          debut = Date.new(year, periode.date_debut.month, periode.date_debut.day)
+          fin   = Date.new(year, periode.date_fin.month,   periode.date_fin.day)
+          { debut: debut.strftime("%Y-%m-%d"), fin: fin.strftime("%Y-%m-%d") }
+        end
+      else
+        # Période exceptionnelle : on utilise les dates telles quelles
+        { debut: periode.date_debut.strftime("%Y-%m-%d"), fin: periode.date_fin.strftime("%Y-%m-%d") }
+      end
     end
   end
 
   # Récupère tous les créneaux occupés pour les prochaines dates (format: { "YYYY-MM-DD" => ["HH:MM", ...] })
-  # Un créneau est considéré comme occupé uniquement s'il y a 2 rendez-vous ou plus
+  # Un créneau est considéré comme occupé uniquement s'il atteint la capacité max définie dans ParametreRdv
   def self.creneaux_occupes_par_date(days_ahead: 90)
     start_date = Date.today
     end_date = start_date + days_ahead.days
-    
-    Meeting.where(datedebut: start_date.beginning_of_day..end_date.end_of_day)
-           .group_by { |m| [m.datedebut.to_date, m.datedebut.strftime("%H:%M")] }
-           .select { |_key, meetings| meetings.count >= 2 }
-           .group_by { |(date, _time), _meetings| date }
-           .transform_values { |items| items.map { |(_, time), _| time }.uniq }
-           .transform_keys { |date| date.strftime("%Y-%m-%d") }
+
+    config = ParametreRdv.current
+    return {} unless config
+
+    meetings_grouped = Meeting.where(datedebut: start_date.beginning_of_day..end_date.end_of_day)
+                              .group_by { |m| [m.datedebut.to_date, m.datedebut.strftime("%H:%M")] }
+
+    # On garde uniquement les créneaux qui atteignent la capacité max pour ce jour
+    saturated_slots = meetings_grouped.select do |(date, _time), meetings|
+      capacity = config.nb_rdv_simultanes_for(date)
+      capacity.positive? && meetings.count >= capacity
+    end
+
+    saturated_slots
+      .group_by { |(date, _time), _meetings| date }
+      .transform_values { |items| items.map { |(_, time), _| time }.uniq }
+      .transform_keys { |date| date.strftime("%Y-%m-%d") }
   end
 
   # Récupère les créneaux occupés pour une date donnée depuis les Meetings
-  # Un créneau est considéré comme occupé uniquement s'il y a 2 rendez-vous ou plus
+  # Un créneau est considéré comme occupé uniquement s'il atteint la capacité max définie dans ParametreRdv
   def self.creneaux_occupes_pour_date(date)
     date_obj = date.is_a?(String) ? Date.parse(date) : date
-    
+
+    config = ParametreRdv.current
+    return [] unless config
+
+    capacity = config.nb_rdv_simultanes_for(date_obj)
+    return [] unless capacity.positive?
+
     Meeting.where(datedebut: date_obj.beginning_of_day..date_obj.end_of_day)
            .group_by { |m| m.datedebut.strftime("%H:%M") }
-           .select { |_time, meetings| meetings.count >= 2 }
+           .select { |_time, meetings| meetings.count >= capacity }
            .keys
   end
 
@@ -125,10 +131,15 @@ class DemandeRdv < ApplicationRecord
   def duree_rdv_minutes
     return 60 unless type_rdv.present? # Durée par défaut si type non défini
     
-    duree_base = DUREE_BASE_PAR_TYPE[type_rdv] || 60
+    type_record = TypeRdv.find_by(code: type_rdv)
+    duree_base = type_record&.duree_base_minutes || 60
+
     personnes_supp = [(nombre_personnes || 1) - 1, 0].max # Nombre de personnes supplémentaires
-    
-    duree_base + (personnes_supp * MINUTES_PAR_PERSONNE_SUPP)
+
+    config = ParametreRdv.current
+    minutes_supp = config&.minutes_par_personne_supp || 15
+
+    duree_base + (personnes_supp * minutes_supp)
   end
 
   # Retourne la durée du rendez-vous en heures (format décimal)
@@ -152,6 +163,14 @@ class DemandeRdv < ApplicationRecord
   end
 
   private
+
+  # Vérifie que type_rdv correspond bien à un TypeRdv existant
+  def type_rdv_must_be_valid
+    return if type_rdv.blank?
+    return if TypeRdv.exists?(code: type_rdv)
+
+    errors.add(:type_rdv, "n'est pas un type de rendez-vous valide")
+  end
 
   # Synchronise le meeting avec le statut de la demande
   # - Si statut = "confirmé" : crée ou met à jour le meeting

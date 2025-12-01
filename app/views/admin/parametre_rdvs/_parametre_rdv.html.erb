@@ -1,0 +1,40 @@
+<div id="<%= dom_id parametre_rdv %>" class="p-2">
+  <% if parametre_rdv.persisted? %>
+    <div class="mb-3">
+      <h6 class="fw-bold mb-2">Configuration actuelle</h6>
+      <div class="row">
+        <div class="col-md-6 mb-2">
+          <strong>Nom:</strong> <%= parametre_rdv.nom || "-" %>
+        </div>
+        <div class="col-md-6 mb-2">
+          <strong>Minutes par personne supplémentaire:</strong> <%= parametre_rdv.minutes_par_personne_supp || 0 %>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-12 mb-2">
+          <strong>Créneaux horaires:</strong> <%= parametre_rdv.creneaux_horaires || "-" %>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-12">
+          <strong>Capacité par jour:</strong>
+          <ul class="list-inline mb-0">
+            <li class="list-inline-item">Lundi: <%= parametre_rdv.nb_rdv_simultanes_lundi || 0 %></li>
+            <li class="list-inline-item">Mardi: <%= parametre_rdv.nb_rdv_simultanes_mardi || 0 %></li>
+            <li class="list-inline-item">Mercredi: <%= parametre_rdv.nb_rdv_simultanes_mercredi || 0 %></li>
+            <li class="list-inline-item">Jeudi: <%= parametre_rdv.nb_rdv_simultanes_jeudi || 0 %></li>
+            <li class="list-inline-item">Vendredi: <%= parametre_rdv.nb_rdv_simultanes_vendredi || 0 %></li>
+            <li class="list-inline-item">Samedi: <%= parametre_rdv.nb_rdv_simultanes_samedi || 0 %></li>
+            <li class="list-inline-item">Dimanche: <%= parametre_rdv.nb_rdv_simultanes_dimanche || 0 %></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-3">
+        <%= links_record(parametre_rdv) %>
+      </div>
+    </div>
+  <% else %>
+    <p class="text-muted text-center">Aucune configuration paramétrée. Utilisez le bouton ci-dessus pour créer une configuration.</p>
+  <% end %>
+</div>
+

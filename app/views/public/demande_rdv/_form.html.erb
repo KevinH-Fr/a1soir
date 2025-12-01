@@ -123,7 +123,7 @@
                 <div class="col-md-6 mb-1">
                   <div class="form-floating">
                     <%= form.select :type_rdv, 
-                        options_for_select(DemandeRdv::TYPE_RDV, demande_rdv.type_rdv),
+                        options_for_select(TypeRdv.options_for_select, demande_rdv.type_rdv),
                         { include_blank: "Sélectionnez un type" },
                         { class: "form-select border-dark border-2 bg-white text-dark", required: true } %>
                     <%= form.label :type_rdv, "Type de rendez-vous *", class: "text-dark" %>

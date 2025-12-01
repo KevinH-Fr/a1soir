@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_01_004248) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_01_203323) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -296,6 +296,29 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_004248) do
     t.index ["commande_id"], name: "index_paiements_on_commande_id"
   end
 
+  create_table "parametre_rdvs", force: :cascade do |t|
+    t.string "nom"
+    t.integer "minutes_par_personne_supp", default: 15, null: false
+    t.integer "nb_rdv_simultanes_lundi", default: 2, null: false
+    t.integer "nb_rdv_simultanes_mardi", default: 2, null: false
+    t.integer "nb_rdv_simultanes_mercredi", default: 2, null: false
+    t.integer "nb_rdv_simultanes_jeudi", default: 2, null: false
+    t.integer "nb_rdv_simultanes_vendredi", default: 2, null: false
+    t.integer "nb_rdv_simultanes_samedi", default: 2, null: false
+    t.integer "nb_rdv_simultanes_dimanche", default: 2, null: false
+    t.string "creneaux_horaires"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "periodes_non_disponibles", force: :cascade do |t|
+    t.date "date_debut", null: false
+    t.date "date_fin", null: false
+    t.boolean "recurrence", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "produits", force: :cascade do |t|
     t.string "nom"
     t.decimal "prixvente"
@@ -394,6 +417,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_004248) do
     t.string "nom"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "type_rdvs", force: :cascade do |t|
+    t.string "code", null: false
+    t.integer "duree_base_minutes", default: 60, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_type_rdvs_on_code", unique: true
   end
 
   create_table "users", force: :cascade do |t|

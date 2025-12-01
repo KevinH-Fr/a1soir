@@ -21,10 +21,6 @@ module Public
         end
       end
       
-      # Normaliser type_rdv en minuscule
-      if @demande_rdv.type_rdv.present?
-        @demande_rdv.type_rdv = @demande_rdv.type_rdv.downcase
-      end
       
       # Vérifier reCAPTCHA
       unless verify_recaptcha(model: @demande_rdv)
@@ -32,10 +28,10 @@ module Public
         respond_to do |format|
           format.html { render :new, status: :unprocessable_entity }
           format.turbo_stream do
-            render turbo_stream: [
-              turbo_stream.append(:flash, partial: "public/shared/flash"),
-              turbo_stream.update("demande_rdv_form", partial: "public/demande_rdv/form", locals: { demande_rdv: @demande_rdv })
-            ]
+            render turbo_stream: turbo_stream.append(
+              :flash,
+              partial: "public/pages/flash"
+            )
           end
         end
         return

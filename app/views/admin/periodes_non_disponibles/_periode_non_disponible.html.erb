@@ -1,0 +1,24 @@
+<div id="<%= dom_id(periode_non_disponible) %>" class="card m-2">
+  <div class="card-body">
+    <div class="row align-items-center">
+      <div class="col-md-3">
+        <strong>Date de début:</strong> <%= periode_non_disponible.date_debut.strftime('%d/%m/%Y') if periode_non_disponible.date_debut %>
+      </div>
+      <div class="col-md-3">
+        <strong>Date de fin:</strong> <%= periode_non_disponible.date_fin.strftime('%d/%m/%Y') if periode_non_disponible.date_fin %>
+      </div>
+      <div class="col-md-3">
+        <strong>Récurrente:</strong>
+        <% if periode_non_disponible.recurrence? %>
+          <span class="badge bg-success">Oui</span>
+        <% else %>
+          <span class="badge bg-secondary">Non</span>
+        <% end %>
+      </div>
+      <div class="col-md-3 text-end">
+        <%= links_record(periode_non_disponible) %>
+      </div>
+    </div>
+  </div>
+</div>
+

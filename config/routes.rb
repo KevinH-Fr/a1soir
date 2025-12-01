@@ -223,6 +223,25 @@ Rails.application.routes.draw do
           post :edit
         end
       end
+
+      resources :type_rdvs do
+        member do
+          post :edit
+        end
+      end
+      resources :parametre_rdvs, only: [:create, :edit, :update, :destroy] do
+        member do
+          post :edit
+        end
+        collection do
+          get :dashboard
+        end
+      end
+      resources :periodes_non_disponibles do
+        member do
+          post :edit
+        end
+      end
         
       resources :textes do 
         member do

@@ -33,6 +33,12 @@
         <%= options_supplementaires_link(admin_admin_parameters_path, "bi-gear", "Parametres", "btn-outline-warning") if current_admin_user.admin? %>
         <%= options_supplementaires_link(admin_demande_cabine_essayages_path, "bi-cart-check", "Demandes cabine", "btn-outline-danger", badge_count: DemandeCabineEssayage.where(statut: "soumis").count) if current_admin_user.admin? %>
         <%= options_supplementaires_link(admin_demande_rdvs_path, "bi-calendar-check", "Demandes RDV", "btn-outline-info", badge_count: DemandeRdv.where(statut: "soumis").count) if current_admin_user.admin? %>
+        <%= options_supplementaires_link(
+              dashboard_admin_parametre_rdvs_path,
+              "bi-sliders",
+              "Paramètres RDV",
+              "btn-outline-info"
+            ) if current_admin_user.admin? %>
 
         <%= options_supplementaires_link(root_url(subdomain: "shop"), "bi-house", "Site public", "btn-outline-primary") %>
         <%= options_supplementaires_link(admin_home_admin_scan_qr_path, "bi-qr-code-scan", "Scan", "btn-primary") %>

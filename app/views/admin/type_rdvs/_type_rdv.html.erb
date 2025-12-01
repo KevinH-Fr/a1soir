@@ -1,0 +1,15 @@
+<div id="<%= dom_id(type_rdv) %>" class="card m-2">
+  <div class="card-body">
+    <div class="row align-items-center">
+      <div class="col-md-4">
+        <strong>Code:</strong> <%= type_rdv.code %>
+      </div>
+      <div class="col-md-4">
+        <strong>Durée de base:</strong> <%= type_rdv.duree_base_minutes %> minutes
+      </div>
+      <div class="col-md-4 text-end">
+        <%= links_record(type_rdv) %>
+      </div>
+    </div>
+  </div>
+</div>

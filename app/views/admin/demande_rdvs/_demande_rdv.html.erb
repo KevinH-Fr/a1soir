@@ -34,7 +34,7 @@
         <%= field_with_label("Téléphone: ", demande_rdv.telephone) if demande_rdv.telephone.present? %>
         <%= field_with_label("Date RDV: ", demande_rdv.date_rdv.strftime('%d/%m/%Y à %H:%M')) if demande_rdv.date_rdv.present? && demande_rdv.date_rdv.respond_to?(:strftime) %>
         <% if demande_rdv.type_rdv.present? %>
-          <% type_rdv_label = DemandeRdv::TYPE_RDV.find { |t| t[0] == demande_rdv.type_rdv }&.last || demande_rdv.type_rdv.capitalize %>
+          <% type_rdv_label = demande_rdv.type_rdv.to_s.titleize %>
           <%= field_with_label("Type de RDV: ", type_rdv_label) %>
         <% end %>
         <%= field_with_label("Nombre de personnes: ", demande_rdv.nombre_personnes) if demande_rdv.nombre_personnes.present? %>

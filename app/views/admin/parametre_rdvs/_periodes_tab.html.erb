@@ -1,0 +1,28 @@
+<div class="d-flex justify-content-end mb-2">
+  <%= link_to "#collapseNewPeriodes", 
+        class: "btn btn-sm btn-warning", 
+        data: { bs_toggle: "collapse" }, 
+        role: "button", 
+        aria: { expanded: "false", controls: "collapseNewPeriodes" } do %>
+      <i class="bi bi-plus-lg me-1"></i>Nouvelle période
+    <% end %>
+</div>
+
+<div class="collapse w-100" id="collapseNewPeriodes">
+  <div id="new_periode_non_disponible" class="mb-3 w-100">
+    <%= render partial: 'admin/periodes_non_disponibles/form', locals: { periode_non_disponible: PeriodeNonDisponible.new } %>
+  </div>
+</div>
+
+<div class="p-2">
+  <div id="periodes_table_body">
+    <% if @periodes_non_disponibles.any? %>
+      <% @periodes_non_disponibles.each do |periode| %>
+        <%= render "admin/periodes_non_disponibles/periode_non_disponible", periode_non_disponible: periode %>
+      <% end %>
+    <% else %>
+      <div class="text-center text-muted p-3">Aucune période non disponible configurée</div>
+    <% end %>
+  </div>
+</div>
+
