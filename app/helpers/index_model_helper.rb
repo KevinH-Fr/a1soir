@@ -69,7 +69,7 @@ module IndexModelHelper
       end
   end
 
-  def links_record(model, turbo_delete: true)
+  def links_record(model, turbo_delete: true, show: true)
     # Gérer le cas spécial de PeriodeNonDisponible où la route est periodes_non_disponibles (pluriel)
     edit_path = if model.class.name == "PeriodeNonDisponible"
       edit_admin_periodes_non_disponible_path(model)
@@ -89,8 +89,11 @@ module IndexModelHelper
       polymorphic_path([:admin, model])
     end
     
+    # Masquer le bouton show pour ParametreRdv, TypeRdv et PeriodeNonDisponible
+    hide_show = !show || ["ParametreRdv", "TypeRdv", "PeriodeNonDisponible"].include?(model.class.name)
+    
     content_tag(:div, class: "d-flex justify-content-end gap-1") do
-      concat(link_to("", show_path, class: "btn btn-sm btn-primary bi bi-arrow-up-right-square", data: { turbo: false }))
+      concat(link_to("", show_path, class: "btn btn-sm btn-primary bi bi-arrow-up-right-square", data: { turbo: false })) unless hide_show
       concat(button_to("", edit_path, method: :post, class: "btn btn-sm btn-secondary bi bi-pencil-square"))
       concat(button_to("", destroy_path, method: :delete, data: { turbo: turbo_delete }, 
         onclick: "return confirm('Êtes-vous certain de vouloir supprimer cet élément et tous les éléments liés ?')",

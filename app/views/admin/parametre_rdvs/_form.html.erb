@@ -1,6 +1,6 @@
 <% parametre_rdv = local_assigns[:parametre_rdv] || @parametre_rdv %>
-<%= form_with model: [:admin, parametre_rdv], url: parametre_rdv.persisted? ? admin_parametre_rdv_path(parametre_rdv) : admin_parametre_rdvs_path, method: parametre_rdv.persisted? ? :patch : :post, class: "card shadow-sm" do |f| %>
-  <div class="card-body p-2">
+<%= form_with model: [:admin, parametre_rdv], url: parametre_rdv.persisted? ? admin_parametre_rdv_path(parametre_rdv) : admin_parametre_rdvs_path, method: parametre_rdv.persisted? ? :patch : :post, class: "" do |f| %>
+  <div class="p-2">
     <% if parametre_rdv.errors.any? %>
       <div class="alert alert-danger">
         <ul class="mb-0">
@@ -11,58 +11,67 @@
       </div>
     <% end %>
 
-    <div class="mb-3">
-      <%= f.label :nom, "Nom de la configuration", class: "form-label fw-bold" %>
-      <%= f.text_field :nom, class: "form-control" %>
-    </div>
-
-    <div class="mb-3">
-      <%= f.label :minutes_par_personne_supp, "Minutes supplémentaires par personne", class: "form-label fw-bold" %>
-      <%= f.number_field :minutes_par_personne_supp, class: "form-control", min: 0 %>
+    <div class="form-floating mb-3">
+      <%= f.number_field :minutes_par_personne_supp, class: "form-control", min: 0, placeholder: "Minutes supplémentaires par personne" %>
+      <%= f.label :minutes_par_personne_supp, "Minutes supplémentaires par personne" %>
     </div>
 
     <div class="mb-3">
       <h6 class="fw-bold mb-2">Nombre maximum de RDV simultanés par jour</h6>
       <div class="row">
         <div class="col-md-3 mb-2">
-          <%= f.label :nb_rdv_simultanes_lundi, "Lundi", class: "form-label" %>
-          <%= f.number_field :nb_rdv_simultanes_lundi, class: "form-control", min: 0 %>
+          <div class="form-floating">
+            <%= f.number_field :nb_rdv_simultanes_lundi, class: "form-control", min: 0, placeholder: "Lundi" %>
+            <%= f.label :nb_rdv_simultanes_lundi, "Lundi" %>
+          </div>
         </div>
         <div class="col-md-3 mb-2">
-          <%= f.label :nb_rdv_simultanes_mardi, "Mardi", class: "form-label" %>
-          <%= f.number_field :nb_rdv_simultanes_mardi, class: "form-control", min: 0 %>
+          <div class="form-floating">
+            <%= f.number_field :nb_rdv_simultanes_mardi, class: "form-control", min: 0, placeholder: "Mardi" %>
+            <%= f.label :nb_rdv_simultanes_mardi, "Mardi" %>
+          </div>
         </div>
         <div class="col-md-3 mb-2">
-          <%= f.label :nb_rdv_simultanes_mercredi, "Mercredi", class: "form-label" %>
-          <%= f.number_field :nb_rdv_simultanes_mercredi, class: "form-control", min: 0 %>
+          <div class="form-floating">
+            <%= f.number_field :nb_rdv_simultanes_mercredi, class: "form-control", min: 0, placeholder: "Mercredi" %>
+            <%= f.label :nb_rdv_simultanes_mercredi, "Mercredi" %>
+          </div>
         </div>
         <div class="col-md-3 mb-2">
-          <%= f.label :nb_rdv_simultanes_jeudi, "Jeudi", class: "form-label" %>
-          <%= f.number_field :nb_rdv_simultanes_jeudi, class: "form-control", min: 0 %>
+          <div class="form-floating">
+            <%= f.number_field :nb_rdv_simultanes_jeudi, class: "form-control", min: 0, placeholder: "Jeudi" %>
+            <%= f.label :nb_rdv_simultanes_jeudi, "Jeudi" %>
+          </div>
         </div>
         <div class="col-md-3 mb-2">
-          <%= f.label :nb_rdv_simultanes_vendredi, "Vendredi", class: "form-label" %>
-          <%= f.number_field :nb_rdv_simultanes_vendredi, class: "form-control", min: 0 %>
+          <div class="form-floating">
+            <%= f.number_field :nb_rdv_simultanes_vendredi, class: "form-control", min: 0, placeholder: "Vendredi" %>
+            <%= f.label :nb_rdv_simultanes_vendredi, "Vendredi" %>
+          </div>
         </div>
         <div class="col-md-3 mb-2">
-          <%= f.label :nb_rdv_simultanes_samedi, "Samedi", class: "form-label" %>
-          <%= f.number_field :nb_rdv_simultanes_samedi, class: "form-control", min: 0 %>
+          <div class="form-floating">
+            <%= f.number_field :nb_rdv_simultanes_samedi, class: "form-control", min: 0, placeholder: "Samedi" %>
+            <%= f.label :nb_rdv_simultanes_samedi, "Samedi" %>
+          </div>
         </div>
         <div class="col-md-3 mb-2">
-          <%= f.label :nb_rdv_simultanes_dimanche, "Dimanche", class: "form-label" %>
-          <%= f.number_field :nb_rdv_simultanes_dimanche, class: "form-control", min: 0 %>
+          <div class="form-floating">
+            <%= f.number_field :nb_rdv_simultanes_dimanche, class: "form-control", min: 0, placeholder: "Dimanche" %>
+            <%= f.label :nb_rdv_simultanes_dimanche, "Dimanche" %>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="mb-3">
-      <%= f.label :creneaux_horaires, "Créneaux horaires (séparés par des virgules)", class: "form-label fw-bold" %>
+    <div class="form-floating mb-3">
       <%= f.text_field :creneaux_horaires, class: "form-control", placeholder: "10:00,11:00,15:00,16:00,17:00" %>
+      <%= f.label :creneaux_horaires, "Créneaux horaires (séparés par des virgules)" %>
       <small class="form-text text-muted">Exemple: 10:00,11:00,15:00,16:00,17:00</small>
     </div>
   </div>
 
-  <div class="card-footer d-flex justify-content-end">
+  <div class="d-flex justify-content-end">
     <%= f.submit "Enregistrer", class: "btn btn-primary" %>
   </div>
 <% end %>

@@ -4,7 +4,8 @@ export default class extends Controller {
   static targets = ["dateInput", "dateHidden", "timeInput", "hiddenInput", "timeButtons"];
   static values = { 
     periodesNonDisponibles: Array,
-    creneauxOccupes: Object
+    creneauxOccupes: Object,
+    joursDesactives: Array
   };
 
   connect() {
@@ -132,19 +133,31 @@ export default class extends Controller {
   }
 
   getDatesDesactivees() {
-    if (!this.periodesNonDisponiblesValue?.length) return [];
-    
     const dates = [];
-    this.periodesNonDisponiblesValue.forEach(periode => {
-      const debut = new Date(periode.debut + "T00:00:00");
-      const fin = new Date(periode.fin + "T00:00:00");
-      const current = new Date(debut);
-      
-      while (current <= fin) {
-        dates.push(new Date(current));
-        current.setDate(current.getDate() + 1);
-      }
-    });
+    
+    // Ajouter les périodes non disponibles
+    if (this.periodesNonDisponiblesValue?.length) {
+      this.periodesNonDisponiblesValue.forEach(periode => {
+        const debut = new Date(periode.debut + "T00:00:00");
+        const fin = new Date(periode.fin + "T00:00:00");
+        const current = new Date(debut);
+        
+        while (current <= fin) {
+          dates.push(new Date(current));
+          current.setDate(current.getDate() + 1);
+        }
+      });
+    }
+    
+    // Ajouter une fonction pour désactiver les jours de la semaine avec 0 capacité
+    if (this.joursDesactivesValue?.length) {
+      const joursDesactives = this.joursDesactivesValue;
+      dates.push((date) => {
+        // En JavaScript : 0 = dimanche, 1 = lundi, ..., 6 = samedi
+        // joursDesactives contient les numéros de jours à désactiver (0-6)
+        return joursDesactives.includes(date.getDay());
+      });
+    }
     
     return dates;
   }

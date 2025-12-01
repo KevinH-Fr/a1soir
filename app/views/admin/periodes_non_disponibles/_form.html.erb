@@ -1,7 +1,7 @@
-<div class="card m-2 w-100" id="<%= dom_id(periode_non_disponible) %>">
+<div class="card p-2" id="<%= dom_id(periode_non_disponible) %>">
   <% periode_non_disponible_local = local_assigns[:periode_non_disponible] || @periode_non_disponible %>
-  <%= form_with model: [:admin, periode_non_disponible_local], url: periode_non_disponible_local.persisted? ? admin_periodes_non_disponible_path(periode_non_disponible_local) : admin_periodes_non_disponibles_path, class: "card shadow-sm" do |f| %>
-    <div class="card-body p-2 light-beige-colored">
+  <%= form_with model: [:admin, periode_non_disponible_local], url: periode_non_disponible_local.persisted? ? admin_periodes_non_disponible_path(periode_non_disponible_local) : admin_periodes_non_disponibles_path, class: "" do |f| %>
+    <div class="">
       <% if periode_non_disponible_local.errors.any? %>
         <div class="alert alert-danger">
           <ul class="mb-0">
@@ -14,12 +14,16 @@
 
       <div class="row">
         <div class="col-md-4 mb-3">
-          <%= f.label :date_debut, "Date de début", class: "form-label fw-bold" %>
-          <%= f.date_field :date_debut, class: "form-control" %>
+          <div class="form-floating">
+            <%= f.date_field :date_debut, class: "form-control", placeholder: "Date de début" %>
+            <%= f.label :date_debut, "Date de début" %>
+          </div>
         </div>
         <div class="col-md-4 mb-3">
-          <%= f.label :date_fin, "Date de fin", class: "form-label fw-bold" %>
-          <%= f.date_field :date_fin, class: "form-control" %>
+          <div class="form-floating">
+            <%= f.date_field :date_fin, class: "form-control", placeholder: "Date de fin" %>
+            <%= f.label :date_fin, "Date de fin" %>
+          </div>
         </div>
         <div class="col-md-4 mb-3 d-flex align-items-center">
           <div class="form-check mt-4">
@@ -30,10 +34,7 @@
       </div>
     </div>
 
-    <div class="card-footer d-flex justify-content-between">
-      <%= link_to dashboard_admin_parametre_rdvs_path(anchor: "periodes"), class: "btn btn-outline-secondary" do %>
-        <i class="bi bi-arrow-left me-1"></i>Retour
-      <% end %>
+    <div class="d-flex justify-content-end p-2">
       <%= f.submit class: "btn btn-primary" %>
     </div>
   <% end %>

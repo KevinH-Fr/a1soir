@@ -1,4 +1,4 @@
-<div class="card m-2 w-100" id="<%= dom_id(type_rdv) %>">
+<div class="p-2" id="<%= dom_id(type_rdv) %>">
   <% type_rdv_local = local_assigns[:type_rdv] || @type_rdv %>
   <%= form_with model: [:admin, type_rdv_local], url: type_rdv_local.persisted? ? admin_type_rdv_path(type_rdv_local) : admin_type_rdvs_path, class: "card" do |f| %>
     <div class="card-body">
@@ -12,21 +12,23 @@
         </div>
       <% end %>
 
-      <div class="mb-3">
-        <%= f.label :code, "Code", class: "form-label" %>
-        <%= f.text_field :code, class: "form-control" %>
-      </div>
-
-      <div class="mb-3">
-        <%= f.label :duree_base_minutes, "Durée de base (minutes)", class: "form-label" %>
-        <%= f.number_field :duree_base_minutes, class: "form-control", min: 1 %>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <div class="form-floating">
+            <%= f.text_field :code, class: "form-control", placeholder: "Nom" %>
+            <%= f.label :code, "Nom" %>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="form-floating">
+            <%= f.number_field :duree_base_minutes, class: "form-control", min: 1, placeholder: "Durée de base (minutes)" %>
+            <%= f.label :duree_base_minutes, "Durée de base (minutes)" %>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="card-footer d-flex justify-content-between">
-      <%= link_to dashboard_admin_parametre_rdvs_path(anchor: "types"), class: "btn btn-outline-secondary" do %>
-        <i class="bi bi-arrow-left me-1"></i>Retour
-      <% end %>
+    <div class="d-flex justify-content-end p-2">
       <%= f.submit class: "btn btn-primary" %>
     </div>
   <% end %>

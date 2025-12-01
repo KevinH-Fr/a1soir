@@ -45,17 +45,32 @@ class DemandeRdv < ApplicationRecord
     ParametreRdv.current&.creneaux_horaires_list.presence || ["10:00", "11:00", "15:00", "16:00", "17:00"]
   end
 
-  # Périodes non disponibles (dates exclues)
-  # Format: array de hashes avec :debut et :fin (dates au format string "YYYY-MM-DD")
-  def self.periodes_non_disponibles
+  # Retourne les jours de la semaine avec 0 capacité (à désactiver dans le calendrier)
+  # Format: array de numéros de jours (0 = dimanche, 1 = lundi, ..., 6 = samedi)
+  def self.jours_desactives
     config = ParametreRdv.current
     return [] unless config
 
+    jours = []
+    # En Ruby : 0 = dimanche, 1 = lundi, ..., 6 = samedi
+    jours << 0 if (config.nb_rdv_simultanes_dimanche || 0) == 0
+    jours << 1 if (config.nb_rdv_simultanes_lundi || 0) == 0
+    jours << 2 if (config.nb_rdv_simultanes_mardi || 0) == 0
+    jours << 3 if (config.nb_rdv_simultanes_mercredi || 0) == 0
+    jours << 4 if (config.nb_rdv_simultanes_jeudi || 0) == 0
+    jours << 5 if (config.nb_rdv_simultanes_vendredi || 0) == 0
+    jours << 6 if (config.nb_rdv_simultanes_samedi || 0) == 0
+    jours
+  end
+
+  # Périodes non disponibles (dates exclues)
+  # Format: array de hashes avec :debut et :fin (dates au format string "YYYY-MM-DD")
+  def self.periodes_non_disponibles
     today = Date.today
     current_year = today.year
     next_year = current_year + 1
 
-    PeriodeNonDisponible.where(parametre_rdv_id: config.id).flat_map do |periode|
+    PeriodeNonDisponible.all.flat_map do |periode|
       if periode.recurrence
         # Période récurrente : on la projette sur l'année courante et la suivante
         [current_year, next_year].map do |year|
