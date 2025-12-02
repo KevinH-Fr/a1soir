@@ -12,15 +12,15 @@
     <div class="row g-4 my-5">
       <!-- Téléphone -->
       <div class="col-lg-4" data-scroll-reveal>
-        <div class="concept-card h-100 text-center">
+        <div class="concept-card h-100 text-center text-light">
           <div class="concept-card-icon mx-auto mb-3">
-            <i class="bi bi-telephone-fill brand-colored"></i>
+            <i class="bi bi-telephone-fill fs-4"></i>
           </div>
-          <h4 class="fw-bold mb-3 text-light">Téléphone</h4>
-          <p class="text-light opacity-75 mb-3">
+          <h4 class="fw-bold mb-3">Téléphone</h4>
+          <p class="opacity-75 mb-3">
             Appelez-nous directement pour une réponse immédiate
           </p>
-          <%= link_to "tel:+33493451717", class: "btn brand-bg text-white px-4" do %>
+          <%= link_to "tel:+33493451717", class: "btn btn-light btn-lg px-4 public-btn-border-radius" do %>
             <i class="bi bi-telephone me-2"></i><%= @texteContact.present? ? @texteContact.to_plain_text : '+33 4 93 45 17 17' %>
           <% end %>
         </div>
@@ -28,15 +28,15 @@
 
       <!-- Email -->
       <div class="col-lg-4" data-scroll-reveal>
-        <div class="concept-card h-100 text-center">
+        <div class="concept-card h-100 text-center text-light">
           <div class="concept-card-icon mx-auto mb-3">
-            <i class="bi bi-envelope-fill brand-colored"></i>
+            <i class="bi fs-4 bi-envelope-fill"></i>
           </div>
-          <h4 class="fw-bold mb-3 text-light">Email</h4>
+          <h4 class="fw-bold mb-3">Email</h4>
           <p class="text-light opacity-75 mb-3">
             Écrivez-nous, nous vous répondons rapidement
           </p>
-          <%= link_to "#{contact_path}#message-form", class: "btn brand-bg text-white px-4" do %>
+          <%= link_to "#{contact_path}#message-form", class: "btn btn-light btn-lg px-4 public-btn-border-radius" do %>
             <i class="bi bi-envelope me-2"></i>
             Nous écrire
           <% end %>
@@ -45,17 +45,17 @@
 
       <!-- Adresse -->
       <div class="col-lg-4" data-scroll-reveal>
-        <div class="concept-card h-100 text-center">
+        <div class="concept-card h-100 text-center text-light">
           <div class="concept-card-icon mx-auto mb-3">
-            <i class="bi bi-geo-alt-fill brand-colored"></i>
+            <i class="bi bi-geo-alt-fill fs-4"></i>
           </div>
           <h4 class="fw-bold mb-3 text-light">Boutique</h4>
-          <p class="text-light opacity-75 mb-3">
+          <p class="opacity-75 mb-3">
             <%= @texteAdresse.present? ? @texteAdresse.to_plain_text : "Venez nous rendre visite en boutique" %>
             Parking conseillé : Mozart (rue Mozart)
           </p>
           <% adresse = "autour d'un soir 06400 cannes" %>
-          <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape(adresse)}", target: "_blank", class: "btn brand-bg text-white px-4" do %>
+          <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape(adresse)}", target: "_blank", class: "btn btn-light btn-lg px-4 public-btn-border-radius" do %>
             <i class="bi bi-geo-alt me-2"></i>Ouvrir dans Maps
           <% end %>
         </div>
@@ -63,22 +63,22 @@
     </div>
 
     <!-- Formulaire de contact -->
-    <div id="contact-form-section" class="my-5 py-5" data-scroll-reveal>
+    <div id="message-form" class="bg-white text-dark my-5 py-3" data-scroll-reveal>
       <%= render partial: "public/pages/contact_form", locals: { contact_message: @contact_message } %>
     </div>
 
     <!-- Rendez-vous -->
-    <div class="my-5 py-5 rounded-4" style="background: linear-gradient(135deg, #2c2c2c 0%, #393939 50%, #2c2c2c 100%);" data-scroll-reveal>
+    <div class="bg-white text-dark py-5" data-scroll-reveal>
       <div class="container text-center">
         <div class="mb-4">
-          <i class="bi bi-calendar-check brand-colored" style="font-size: 4rem;"></i>
+          <i class="bi bi-calendar-check fs-2"></i>
         </div>
-        <h3 class="mb-4 fw-bold text-light">Prendre rendez-vous</h3>
-        <p class="lead text-light opacity-75 mb-4 mx-auto" style="max-width: 700px;">
+        <h3 class="mb-4 fw-bold">Prendre rendez-vous</h3>
+        <p class="lead opacity-75 mb-4 mx-auto" style="max-width: 700px;">
           Réservez un créneau pour découvrir nos collections en boutique, bénéficier de conseils personnalisés 
           ou pour vos essayages. Notre équipe vous accueille dans les meilleures conditions.
         </p>
-        <%= link_to rdv_url(subdomain: "shop"), class: "btn btn-lg px-5 shadow btn-smoke-hover" do %>
+        <%= link_to "#{rdv_url(subdomain: "shop")}#rdv-form", class: "btn btn-dark btn-lg px-5 public-btn-border-radius" do %>
           <i class="bi bi-calendar-plus me-2"></i>Réserver un rendez-vous
         <% end %>
       </div>
@@ -98,12 +98,6 @@
             <% end %>
           <% end %>
         </div>
-        <div class="alert mt-4 mb-0" style="background: rgba(208, 77, 123, 0.1); border: 1px solid rgb(208, 77, 123);">
-          <i class="bi bi-info-circle brand-colored me-2"></i>
-          <small class="text-light">
-            <strong>Note :</strong> Les horaires peuvent varier selon les périodes. N'hésitez pas à nous contacter pour confirmer.
-          </small>
-        </div>
       </div>
     </div>
 
@@ -116,10 +110,10 @@
         Notre équipe est impatiente de vous rencontrer et de vous accompagner
       </p>
       <div class="d-flex gap-3 justify-content-center flex-wrap">
-        <%= link_to nos_collections_url, class: "btn btn-lg px-4 shadow btn-smoke-hover" do %>
+        <%= link_to nos_collections_url, class: "btn btn-light btn-lg px-4 public-btn-border-radius" do %>
           <i class="bi bi-grid-3x3-gap me-2"></i>Découvrir nos collections
         <% end %>
-        <%= link_to la_boutique_url, class: "btn btn-outline-light btn-lg px-4" do %>
+        <%= link_to la_boutique_url, class: "btn btn-outline-light btn-lg px-4 public-btn-border-radius" do %>
           <i class="bi bi-shop me-2"></i>La boutique
         <% end %>
       </div>

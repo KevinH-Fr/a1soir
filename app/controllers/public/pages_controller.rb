@@ -121,6 +121,10 @@ module Public
       redirect_to cabine_essayage_path
     end
 
+    def rdv
+      @demande_rdv = DemandeRdv.new
+    end
+
     def contact
       if Texte.last.present?
         @texteContact = Texte.last.contact

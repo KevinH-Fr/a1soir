@@ -480,7 +480,7 @@ module PagesHelper
     content_tag :section, id: id, class: "my-5", "data-scroll-reveal": true do
       title_html = content_tag(:div, class: "mb-4") do
         content_tag(:h2, class: "h3 fw-bold text-light") do
-          concat content_tag(:i, nil, class: "bi bi-#{icon} public-brand-color me-2")
+          concat content_tag(:i, nil, class: "bi bi-#{icon} text-light me-2")
           concat title
         end
       end
@@ -503,7 +503,7 @@ module PagesHelper
           "data-bs-toggle": "collapse", 
           "data-bs-target": "##{id}"
         ) do
-          concat content_tag(:i, nil, class: "bi bi-question-circle-fill public-brand-color me-2")
+          concat content_tag(:i, nil, class: "bi bi-question-circle-fill text-light me-2")
           concat question
         end
       end

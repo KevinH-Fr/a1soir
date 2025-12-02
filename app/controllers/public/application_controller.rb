@@ -8,6 +8,7 @@ module Public
       before_action :load_cart
       before_action :initialize_cabine_session
       before_action :load_cabine_cart
+      before_action :load_footer_textes
       # Protect every action in the public (shop) namespace with HTTP Basic when enabled.
       before_action :authenticate_shop, if: :shop_basic_enabled?
     
@@ -41,6 +42,13 @@ module Public
         
         ids = session[:cabine_cart] || []
         @cabine_cart = ids.any? ? Produit.where(id: ids) : Produit.none
+      end
+
+      def load_footer_textes
+        if Texte.last.present?
+          @footer_texte_adresse = Texte.last.adresse
+          @footer_texte_horaire = Texte.last.horaire
+        end
       end
       
       # def authenticate_vendeur_or_admin!

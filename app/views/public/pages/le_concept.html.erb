@@ -112,7 +112,7 @@ image2: "https://images.pexels.com/photos/2122361/pexels-photo-2122361.jpeg") %>
       <div class="d-flex gap-3 justify-content-center flex-wrap">
         <%= link_to "Explorer les collections", nos_collections_path, class: "btn btn-light btn-lg px-5 public-btn-border-radius" %>
 
-        <%= link_to rdv_url(subdomain: "shop"),
+        <%= link_to "#{rdv_url(subdomain: "shop")}#rdv-form",
             class: "btn btn-outline-light btn-lg px-5 public-btn-border-radius" do %>
           <i class="bi bi-calendar-check me-2"></i>
           <span class="fw-bold text-uppercase small">Prendre rendez-vous</span>

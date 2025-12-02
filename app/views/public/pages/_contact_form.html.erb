@@ -4,9 +4,9 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-12 col-lg-8">
-            <div class="concept-card p-4">
-              <h3 class="text-center mb-4 fw-bold text-light">Envoyez-nous un message</h3>
-              <p class="text-center text-light opacity-75 mb-4">
+            <div class="p-4">
+              <h3 class="text-center mb-4 fw-bold">Envoyez-nous un message</h3>
+              <p class="text-center opacity-75 mb-4">
                 Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais
               </p>
               
@@ -22,57 +22,57 @@
                 <% end %>
 
                 <div class="row mb-3">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-1">
                     <div class="form-floating">
-                        <%= form.text_field :prenom, class: "form-control bg-dark text-light border-secondary", placeholder: "Prénom" %>
-                        <%= form.label :prenom, "Prénom", class: "text-light" %>
+                        <%= form.text_field :prenom, class: "form-control border-secondary", placeholder: "Prénom" %>
+                        <%= form.label :prenom, "Prénom" %>
                     </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-1">
                     <div class="form-floating">
-                        <%= form.text_field :nom, class: "form-control bg-dark text-light border-secondary", placeholder: "Nom *", required: true %>
-                        <%= form.label :nom, "Nom *", class: "text-light" %>
+                        <%= form.text_field :nom, class: "form-control border-secondary", placeholder: "Nom *", required: true %>
+                        <%= form.label :nom, "Nom *" %>
                     </div>
                     </div>
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-1">
                     <div class="form-floating">
-                        <%= form.email_field :email, class: "form-control bg-dark text-light border-secondary", placeholder: "Email *", required: true %>
-                        <%= form.label :email, "Email *", class: "text-light" %>
+                        <%= form.email_field :email, class: "form-control border-secondary", placeholder: "Email *", required: true %>
+                        <%= form.label :email, "Email *" %>
                     </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-1">
                     <div class="form-floating">
-                        <%= form.text_field :telephone, class: "form-control bg-dark text-light border-secondary", placeholder: "Téléphone" %>
-                        <%= form.label :telephone, "Téléphone", class: "text-light" %>
+                        <%= form.text_field :telephone, class: "form-control border-secondary", placeholder: "Téléphone" %>
+                        <%= form.label :telephone, "Téléphone" %>
                     </div>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <div class="form-floating">
-                    <%= form.text_field :sujet, class: "form-control bg-dark text-light border-secondary", placeholder: "Sujet" %>
-                    <%= form.label :sujet, "Sujet", class: "text-light" %>
+                    <%= form.text_field :sujet, class: "form-control border-secondary", placeholder: "Sujet" %>
+                    <%= form.label :sujet, "Sujet" %>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <div class="form-floating">
-                    <%= form.text_area :message, rows: 5, class: "form-control bg-dark text-light border-secondary", placeholder: "Votre message *", required: true, style: "height: 150px;" %>
-                    <%= form.label :message, "Message *", class: "text-light" %>
+                    <%= form.text_area :message, rows: 5, class: "form-control border-secondary", placeholder: "Votre message *", required: true, style: "height: 150px;" %>
+                    <%= form.label :message, "Message *" %>
                     </div>
                 </div>
 
                 <!-- reCAPTCHA -->
                 <div class="mb-4 d-flex justify-content-center">
-                    <%= recaptcha_tags theme: 'dark', callback: 'onRecaptchaSuccess', expired_callback: 'onRecaptchaExpired', error_callback: 'onRecaptchaError' %>
+                    <%= recaptcha_tags theme: 'light', callback: 'onRecaptchaSuccess', expired_callback: 'onRecaptchaExpired', error_callback: 'onRecaptchaError' %>
                 </div>
 
                 <!-- Bouton -->
                 <div class="d-flex justify-content-center">
-                    <button type="submit" data-recaptcha-submit-target="submitBtn" class="btn btn-lg px-5 shadow btn-smoke-hover disabled" disabled style="opacity: 0.6; cursor: not-allowed;">
+                    <button type="submit" data-recaptcha-submit-target="submitBtn" class="btn btn-dark btn-lg px-5 public-btn-border-radius disabled" disabled style="opacity: 0.6; cursor: not-allowed;">
                     <i class="bi bi-lock me-2"></i>Validez d'abord le reCAPTCHA
                     </button>
                 </div>

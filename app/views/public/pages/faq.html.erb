@@ -233,7 +233,7 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             
             <p class="mb-0"><strong>Contact :</strong><br>
             Tél : [Numéro à compléter]<br>
-            Email : contact@a1soir.fr</p>
+            Email : (<%= link_to "formulaire de contact", "#{contact_path}#message-form" %>)</p>
           <% end %>
 
           <%= faq_item(id: "general2", parent_id: "accordionGeneral", question: "Dois-je prendre rendez-vous ?") do %>
@@ -284,18 +284,18 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
 
         <!-- CTA Contact -->
         <div class="my-5 py-5" data-scroll-reveal>
-          <div class="concept-card text-center">
-            <i class="bi bi-chat-dots fs-1 mb-3 d-block public-brand-color"></i>
-            <h3 class="mb-3 text-light">Vous ne trouvez pas la réponse à votre question ?</h3>
-            <p class="lead mb-4 text-light opacity-75">
+          <div class="concept-card text-center text-light">
+            <i class="bi bi-chat-dots fs-1 mb-3 d-block"></i>
+            <h3 class="mb-3">Vous ne trouvez pas la réponse à votre question ?</h3>
+            <p class="lead mb-4 opacity-75">
               Notre équipe est là pour vous aider ! N'hésitez pas à nous contacter, 
               nous serons ravis de répondre à toutes vos questions.
             </p>
             <div class="d-flex gap-3 justify-content-center flex-wrap">
-            <%= link_to "#{contact_path}#message-form", class: "btn btn-lg px-4 shadow-sm btn-smoke-hover" do %>
+            <%= link_to "#{contact_path}#message-form", class: "btn btn-light btn-lg px-4 public-btn-border-radius" do %>
                 <i class="bi bi-envelope me-2"></i>Nous contacter
               <% end %>
-              <a href="tel:+33000000000" class="btn btn-outline-light btn-lg px-5">
+              <a href="tel:+493451717" class="btn btn-outline-light btn-lg px-5 public-btn-border-radius" title="Appelez-nous">
                 <i class="bi bi-telephone me-2"></i>Appelez-nous
               </a>
             </div>

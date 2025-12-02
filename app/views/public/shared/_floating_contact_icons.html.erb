@@ -1,9 +1,9 @@
 <div class="floating-contact-icons">
-  <%= link_to rdv_url(subdomain: "shop"), class: "floating-icon-btn", title: "Prendre rendez-vous" do %>
+  <%= link_to "#{rdv_url(subdomain: "shop")}#rdv-form", class: "floating-icon-btn", title: "Prendre rendez-vous" do %>
     <i class="bi bi-calendar-check"></i>
   <% end %>
   
-  <%= link_to "#{contact_path}#contact-form-section", class: "floating-icon-btn", title: "Nous écrire" do %>
+  <%= link_to "#{contact_path}#message-form", class: "floating-icon-btn", title: "Nous écrire" do %>
     <i class="bi bi-envelope"></i>
   <% end %>
   

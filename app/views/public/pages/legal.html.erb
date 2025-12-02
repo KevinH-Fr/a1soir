@@ -54,7 +54,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
             RCS : [Numéro à compléter]<br>
             SIRET : [Numéro à compléter]<br>
             TVA intracommunautaire : [Numéro à compléter]<br>
-            Email : contact@a1soir.fr<br>
+            Email : (<%= link_to "formulaire de contact", "#{contact_path}#message-form" %>)<br>
             Téléphone : [Numéro à compléter]
           </p>
 
@@ -278,7 +278,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
             • Droit à la limitation du traitement<br>
             • Droit à la portabilité<br>
             • Droit d'opposition<br>
-            Pour exercer vos droits, contactez-nous à : contact@a1soir.fr
+            Pour exercer vos droits, contactez-nous à (<%= link_to "formulaire de contact", "#{contact_path}#message-form" %>)
           </p>
 
           <h4 class="h5 fw-bold mt-4 mb-3 text-light">Conservation des données</h4>
