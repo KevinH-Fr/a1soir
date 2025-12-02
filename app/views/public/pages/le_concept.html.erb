@@ -76,28 +76,28 @@ image2: "https://images.pexels.com/photos/2122361/pexels-photo-2122361.jpeg") %>
         <div class="row g-4">
           <div class="col-md-3 text-center">
             <div class="mb-3 d-flex justify-content-center">
-              <span class="badge rounded-circle public-brand-bg-color fs-4 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">1</span>
+              <div class="rounded-circle bg-light text-dark position-relative d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; font-family: 'Times New Roman', sans-serif;">1</div>
             </div>
             <h5 class="fw-bold mb-2 text-light">Parcourez</h5>
             <p class="text-light opacity-75 small">Explorez nos collections et trouvez la tenue parfaite pour votre événement</p>
           </div>
           <div class="col-md-3 text-center">
             <div class="mb-3 d-flex justify-content-center">
-              <span class="badge rounded-circle public-brand-bg-color fs-4 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">2</span>
+              <div class="rounded-circle bg-light text-dark position-relative d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; font-family: 'Times New Roman', sans-serif;">2</div>
             </div>
             <h5 class="fw-bold mb-2 text-light">Réservez</h5>
             <p class="text-light opacity-75 small">Choisissez vos dates de location ou passez commande pour un achat</p>
           </div>
           <div class="col-md-3 text-center">
             <div class="mb-3 d-flex justify-content-center">
-              <span class="badge rounded-circle public-brand-bg-color fs-4 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">3</span>
+              <div class="rounded-circle bg-light text-dark position-relative d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; font-family: 'Times New Roman', sans-serif;">3</div>
             </div>
             <h5 class="fw-bold mb-2 text-light">Personnalisez</h5>
             <p class="text-light opacity-75 small">Profitez de nos services de retouches pour un ajustement parfait</p>
           </div>
           <div class="col-md-3 text-center">
             <div class="mb-3 d-flex justify-content-center">
-              <span class="badge rounded-circle public-brand-bg-color fs-4 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">4</span>
+              <div class="rounded-circle bg-light text-dark position-relative d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; font-family: 'Times New Roman', sans-serif;">4</div>
             </div>
             <h5 class="fw-bold mb-2 text-light">Brillez</h5>
             <p class="text-light opacity-75 small">Portez votre tenue en toute confiance lors de votre événement</p>
@@ -110,8 +110,14 @@ image2: "https://images.pexels.com/photos/2122361/pexels-photo-2122361.jpeg") %>
     <div class="text-center my-5 py-4" data-scroll-reveal>
       <h3 class="mb-4 text-light">Prêt à découvrir nos collections ?</h3>
       <div class="d-flex gap-3 justify-content-center flex-wrap">
-        <%= link_to "Explorer les collections", nos_collections_path, class: "btn btn-lg px-4 shadow btn-smoke-hover" %>
-        <%= link_to "Nous contacter", contact_path, class: "btn btn-outline-light btn-lg px-4" %>
+        <%= link_to "Explorer les collections", nos_collections_path, class: "btn btn-light btn-lg px-5 public-btn-border-radius" %>
+
+        <%= link_to rdv_url(subdomain: "shop"),
+            class: "btn btn-outline-light btn-lg px-5 public-btn-border-radius" do %>
+          <i class="bi bi-calendar-check me-2"></i>
+          <span class="fw-bold text-uppercase small">Prendre rendez-vous</span>
+        <% end %>
+        
       </div>
     </div>
   </div>

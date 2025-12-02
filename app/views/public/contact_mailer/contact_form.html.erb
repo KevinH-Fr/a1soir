@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <p><strong>Nouveau message de contact</strong></p>
+
+    <p>
+      <% if @contact_message.prenom.present? || @contact_message.nom.present? %>
+        Nom : <%= [@contact_message.prenom, @contact_message.nom].compact.join(" ") %><br>
+      <% end %>
+      Email : <%= @contact_message.email %><br>
+      <% if @contact_message.telephone.present? %>
+        Téléphone : <%= @contact_message.telephone %><br>
+      <% end %>
+      <% if @contact_message.sujet.present? %>
+        Sujet : <%= @contact_message.sujet %><br>
+      <% end %>
+    </p>
+
+    <% if @contact_message.message.present? %>
+      <h4 style="margin-top: 16px;">Message :</h4>
+      <p style="white-space: pre-wrap;"><%= @contact_message.message %></p>
+    <% end %>
+
+    <hr>
+    <p style="margin: 0; opacity: 0.8; font-size: 12px;">Message automatique depuis le formulaire de contact du site web.</p>
+  </body>
+</html>
+

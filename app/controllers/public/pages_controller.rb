@@ -127,6 +127,7 @@ module Public
         @texteAdresse = Texte.last.adresse
         @texteHoraire = Texte.last.horaire
       end
+      @contact_message = ContactMessage.new
     end
 
   end

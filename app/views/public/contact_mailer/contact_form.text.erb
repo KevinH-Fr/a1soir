@@ -1,0 +1,21 @@
+Nouveau message de contact
+
+<% if @contact_message.prenom.present? || @contact_message.nom.present? %>
+Nom : <%= [@contact_message.prenom, @contact_message.nom].compact.join(" ") %>
+<% end %>
+Email : <%= @contact_message.email %>
+<% if @contact_message.telephone.present? %>
+Téléphone : <%= @contact_message.telephone %>
+<% end %>
+<% if @contact_message.sujet.present? %>
+Sujet : <%= @contact_message.sujet %>
+<% end %>
+
+<% if @contact_message.message.present? %>
+Message :
+<%= @contact_message.message %>
+<% end %>
+
+---
+Message automatique depuis le formulaire de contact du site web.
+

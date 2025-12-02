@@ -36,8 +36,9 @@
           <p class="text-light opacity-75 mb-3">
             Écrivez-nous, nous vous répondons rapidement
           </p>
-          <%= link_to "mailto:contact@a1soir.fr", class: "btn brand-bg text-white px-4" do %>
-            contact@a1soir.fr
+          <%= link_to "#{contact_path}#message-form", class: "btn brand-bg text-white px-4" do %>
+            <i class="bi bi-envelope me-2"></i>
+            Nous écrire
           <% end %>
         </div>
       </div>
@@ -59,6 +60,11 @@
           <% end %>
         </div>
       </div>
+    </div>
+
+    <!-- Formulaire de contact -->
+    <div id="contact-form-section" class="my-5 py-5" data-scroll-reveal>
+      <%= render partial: "public/pages/contact_form", locals: { contact_message: @contact_message } %>
     </div>
 
     <!-- Rendez-vous -->

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_01_231211) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_02_205043) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -142,6 +142,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_231211) do
     t.datetime "updated_at", null: false
     t.index ["client_id"], name: "index_commandes_on_client_id"
     t.index ["profile_id"], name: "index_commandes_on_profile_id"
+  end
+
+  create_table "contact_messages", force: :cascade do |t|
+    t.string "prenom"
+    t.string "nom"
+    t.string "email"
+    t.string "telephone"
+    t.string "sujet"
+    t.text "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "couleurs", force: :cascade do |t|

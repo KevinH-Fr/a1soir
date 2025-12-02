@@ -381,7 +381,7 @@ module PagesHelper
     end
   end
 
-  def concept_card(icon:, title:, description:, features:, icon_color: "public-brand-color")
+  def concept_card(icon:, title:, description:, features:, icon_color: "text-light")
     content_tag :div, class: "concept-card h-100" do
       # Icon section
       icon_section = content_tag(:div, class: "text-center mb-4") do
@@ -400,7 +400,7 @@ module PagesHelper
       features_section = content_tag(:ul, class: "list-unstyled") do
         features.map do |feature|
           content_tag(:li, class: "mb-2 text-light") do
-            concat content_tag(:i, nil, class: "bi bi-check-circle-fill public-brand-color me-2")
+            concat content_tag(:i, nil, class: "bi bi-check-circle-fill me-2")
             concat feature
           end
         end.join.html_safe
@@ -410,7 +410,7 @@ module PagesHelper
     end
   end
 
-  def activity_card(icon:, title:, description:, icon_color: "public-brand-color", &block)
+  def activity_card(icon:, title:, description:, icon_color: "text-light", &block)
     content_tag :div, class: "concept-card h-100" do
       # Icon section
       icon_section = content_tag(:div, class: "mb-4") do

@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       get 'cabine_essayage', to: 'pages#cabine_essayage', as: 'cabine_essayage'
 
       get 'contact', to: 'pages#contact'
+      post 'send_contact_message', to: 'contact_messages#create'
       get 'categories', to: 'pages#categories'
 
       get 'rdv', to: 'pages#rdv'
