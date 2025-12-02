@@ -3,15 +3,15 @@ image1: "https://images.pexels.com/photos/6494099/pexels-photo-6494099.jpeg",
 image2: "https://images.pexels.com/photos/7304211/pexels-photo-7304211.jpeg") %>
 
 <div class="public-main-content">
-  <div class="container-fluid">
+  <div class="container-fluid p-0">
 
     <!-- Process -->
-    <div class="my-5" data-scroll-reveal>
+    <div class="my-5 px-2" data-scroll-reveal>
       <div class="row g-4">
         <div class="col-md-3">
           <div class="text-center">
-            <div class="concept-card-icon mx-auto mb-3" style="width: 80px; height: 80px;">
-              <i class="bi bi-bag-check public-brand-color fs-2"></i>
+            <div class="concept-card-icon text-light mx-auto mb-3">
+              <i class="bi bi-bag-check fs-2"></i>
             </div>
             <h5 class="fw-bold mb-3 text-light">1. Sélection</h5>
             <p class="text-light opacity-75 small mb-0">
@@ -21,8 +21,8 @@ image2: "https://images.pexels.com/photos/7304211/pexels-photo-7304211.jpeg") %>
           </div>
         <div class="col-md-3">
           <div class="text-center">
-            <div class="concept-card-icon mx-auto mb-3" style="width: 80px; height: 80px;">
-              <i class="bi bi-calendar-check public-brand-color fs-2"></i>
+            <div class="concept-card-icon text-light mx-auto mb-3">
+              <i class="bi bi-calendar-check fs-2"></i>
             </div>
             <h5 class="fw-bold mb-3 text-light">2. Réservation</h5>
             <p class="text-light opacity-75 small mb-0">
@@ -32,8 +32,8 @@ image2: "https://images.pexels.com/photos/7304211/pexels-photo-7304211.jpeg") %>
         </div>
         <div class="col-md-3">
           <div class="text-center">
-            <div class="concept-card-icon mx-auto mb-3" style="width: 80px; height: 80px;">
-              <i class="bi bi-bell public-brand-color fs-2"></i>
+            <div class="concept-card-icon text-light mx-auto mb-3">
+              <i class="bi bi-bell fs-2"></i>
             </div>
             <h5 class="fw-bold mb-3 text-light">3. Confirmation</h5>
             <p class="text-light opacity-75 small mb-0">
@@ -43,8 +43,8 @@ image2: "https://images.pexels.com/photos/7304211/pexels-photo-7304211.jpeg") %>
         </div>
         <div class="col-md-3">
           <div class="text-center">
-            <div class="concept-card-icon mx-auto mb-3" style="width: 80px; height: 80px;">
-              <i class="bi bi-star-fill public-brand-color fs-2"></i>
+            <div class="concept-card-icon text-light mx-auto mb-3">
+              <i class="bi bi-star-fill fs-2"></i>
             </div>
             <h5 class="fw-bold mb-3 text-light">4. Essayage</h5>
             <p class="text-light opacity-75 small mb-0">
@@ -56,40 +56,36 @@ image2: "https://images.pexels.com/photos/7304211/pexels-photo-7304211.jpeg") %>
     </div>
 
     <!-- Panier Cabine d'essayage -->
-    <div class="my-5" data-scroll-reveal>
-      <div class="card bg-dark text-light border-secondary shadow-lg position-relative overflow-hidden"
-           data-controller="reservation-form"
-           style="border-color: rgba(196, 207, 47, 0.3) !important; background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(30, 25, 30, 0.95) 100%) !important;">
+    <div class="my-4 px-2 px-md-0" data-scroll-reveal>
+      <div class="bg-white text-dark"
+           data-controller="reservation-form">
         
-        <% if @cabine_cart.any? %>
-          <!-- Header -->
-          <div class="card-header bg-transparent border-bottom border-secondary py-3">
-            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-              <div class="d-flex align-items-center gap-3">
-                <h3 class="mb-0 text-light">
-                  <i class="bi bi-bag-check public-brand-color me-2"></i>
-                  Ma cabine d'essayage
-                </h3>
-                <span class="badge rounded-pill px-3 py-2" 
-                      style="background: var(--public-brand-gradient); 
-                             font-size: 0.9rem; 
-                             font-weight: 600;">
-                  <%= @cabine_cart.size %> / 10
-                </span>
-              </div>
-              <!-- Bouton Ajouter -->
-              <%= link_to produits_index_path(from_cabine: true), class: "btn btn-lg px-5 shadow-sm btn-cabine-add" do %>
-                <i class="bi bi-plus-circle me-2"></i>Ajouter d'autres produits
-              <% end %>
+        <!-- Header commun -->
+        <div class="p-3">
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <div class="d-flex align-items-center gap-3">
+              <h3 class="mb-0">
+                <i class="bi bi-bag-check me-2"></i>
+                Ma cabine d'essayage
+              </h3>
+              <span class="px-3 py-2 border border-dark-subtle rounded-pill small fw-semibold">
+                <%= @cabine_cart.size %> / 10
+              </span>
             </div>
+            <!-- Bouton Ajouter -->
+            <%= link_to produits_index_path(from_cabine: true), class: "btn btn-dark btn-lg px-4 rounded-0" do %>
+              <i class="bi bi-plus-circle me-2"></i>Ajouter des produits
+            <% end %>
           </div>
+        </div>
 
-          <!-- Body -->
-          <div class="card-body p-4">
+        <% if @cabine_cart.any? %>
+          <!-- Body rempli -->
+          <div class="p-3">
             <div class="row g-3">
               <% @cabine_cart.each do |produit| %>
                 <div class="col-12 col-md-6">
-                  <div class="cabine-product-card d-flex align-items-center gap-3 p-3 rounded border border-secondary">
+                  <div class="d-flex align-items-center gap-3 p-3">
                     <!-- Image -->
                     <div style="width: 80px; height: 80px; flex-shrink: 0;">
                       <% if produit.default_image.present? %>
@@ -97,8 +93,7 @@ image2: "https://images.pexels.com/photos/7304211/pexels-photo-7304211.jpeg") %>
                             class: "img-fluid rounded",
                             style: "width: 100%; height: 100%; object-fit: cover;" %>
                       <% else %>
-                        <div class="d-flex align-items-center justify-content-center h-100 w-100 rounded" 
-                             style="background: linear-gradient(135deg, rgba(40, 40, 40, 0.8), rgba(55, 55, 55, 0.8));">
+                        <div class="d-flex align-items-center justify-content-center h-100 w-100 rounded border border-dark-subtle">
                           <i class="bi bi-image text-muted fs-4"></i>
                         </div>
                       <% end %>
@@ -106,11 +101,11 @@ image2: "https://images.pexels.com/photos/7304211/pexels-photo-7304211.jpeg") %>
                     
                     <!-- Détails -->
                     <div class="flex-grow-1" style="min-width: 0;">
-                      <h6 class="text-light mb-1" style="font-size: 0.95rem; font-weight: 600;">
+                      <h6 class="mb-1" style="font-size: 0.95rem; font-weight: 600;">
                         <%= produit.nom %>
                       </h6>
                       <% if produit.description.present? %>
-                        <p class="text-light opacity-75 mb-0" style="font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                        <p class="text-muted mb-0" style="font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                           <%= produit.description %>
                         </p>
                       <% end %>
@@ -119,7 +114,7 @@ image2: "https://images.pexels.com/photos/7304211/pexels-photo-7304211.jpeg") %>
                     <!-- Bouton retirer -->
                     <%= button_to cabine_remove_from_cabine_path(produit), 
                         method: :delete,
-                        class: "btn btn-sm btn-outline-danger",
+                        class: "btn btn-sm btn-outline-dark",
                         title: "Retirer",
                         style: "flex-shrink: 0; transition: all 0.3s ease;" do %>
                       <i class="bi bi-trash"></i>
@@ -130,51 +125,34 @@ image2: "https://images.pexels.com/photos/7304211/pexels-photo-7304211.jpeg") %>
             </div>
           </div>
 
-
-          <!-- Footer -->
-          <div class="card-footer bg-transparent border-top border-secondary text-center py-4"
+          <!-- Footer rempli -->
+          <div class="p-3 text-center"
                data-reservation-form-target="cta">
-            <button type="button" class="btn btn-lg px-5 shadow btn-smoke-hover text-light" data-bs-toggle="collapse" data-bs-target="#reservationFormCollapse" aria-expanded="false" aria-controls="reservationFormCollapse" 
-              onclick="setTimeout(() => document.getElementById('reservationForm').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)">
+            <button type="button"
+                    class="btn btn-black btn-lg px-5 rounded-0"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#reservationFormCollapse"
+                    aria-expanded="false"
+                    aria-controls="reservationFormCollapse"
+                    onclick="setTimeout(() => document.getElementById('reservationForm').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)">
               <i class="bi bi-calendar-check me-2"></i>Réserver mon essayage
             </button>
           </div>
-          <%= render partial: "public/pages/reservation_essayage" %>
-        <% else %>
-          <!-- Header vide -->
-          <div class="card-header bg-transparent border-bottom border-secondary py-3">
-            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-              <div class="d-flex align-items-center gap-3">
-                <h3 class="mb-0 text-light">
-                  <i class="bi bi-bag-check public-brand-color me-2"></i>
-                  Ma cabine d'essayage
-                </h3>
-                <span class="badge rounded-pill px-3 py-2" 
-                      style="background: var(--public-brand-gradient); 
-                             font-size: 0.9rem; 
-                             font-weight: 600;">
-                  0 / 10
-                </span>
-              </div>
-              <!-- Bouton Ajouter -->
-              <%= link_to produits_index_path(from_cabine: true), class: "btn btn-lg px-5 shadow-sm btn-cabine-add" do %>
-                <i class="bi bi-plus-circle me-2"></i>Ajouter des produits
-              <% end %>
-            </div>
+          <div class="p-0 m-0">
+            <%= render partial: "public/pages/reservation_essayage" %>
           </div>
-
-          <!-- Body vide -->
-          <div class="card-body p-5 text-center">
-            <i class="bi bi-inbox public-brand-color" style="font-size: 4rem; opacity: 0.3;"></i>
-            <h4 class="text-light my-4">Votre cabine est vide</h4>
-            <p class="text-light opacity-75 mb-4">
+        <% else %>
+          <!-- État vide -->
+          <div class="py-5 text-center">
+            <i class="bi bi-inbox text-muted" style="font-size: 4rem;"></i>
+            <h4 class="my-4">Votre cabine est vide</h4>
+            <p class="text-muted mb-4">
               Commencez dès maintenant à sélectionner vos tenues favorites pour votre prochain événement.
             </p>
           </div>
 
-          <!-- Footer vide -->
-          <div class="card-footer bg-transparent border-top border-secondary text-center py-4">
-            <%= link_to produits_index_path(from_cabine: true), class: "btn btn-lg px-5 shadow-sm btn-cabine-add" do %>
+          <div class="p-3 text-center">
+            <%= link_to produits_index_path(from_cabine: true), class: "btn btn-dark btn-lg px-5 rounded-1" do %>
               <i class="bi bi-arrow-right-circle me-2"></i>Voir nos produits
             <% end %>
           </div>

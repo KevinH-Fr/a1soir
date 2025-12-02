@@ -1,13 +1,14 @@
-<div id="floating_reservation_btn">
-  <%= link_to "#{cabine_essayage_path(open_form: true, from_cabine: true)}#reservationForm", 
-      class: "btn btn-lg shadow-lg position-fixed start-50 translate-middle-x",
-      data: { turbo_frame: "_top" },
-      style: "bottom: 20px; z-index: 1050; 
-              background: var(--public-brand-gradient); 
-              border: none; 
-              color: #ffffff; 
-              border-radius: 50px;" do %>
-    <i class="bi bi-calendar-check me-2"></i>Réserver mon essayage
-  <% end %>
+<div class="position-fixed bottom-0 start-0 end-0 bg-black p-2 shadow-lg" 
+     id="floating_reservation_btn"
+     style="z-index: 1050;">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-center">
+      <%= link_to "#{cabine_essayage_path(open_form: true, from_cabine: true)}#reservationForm", 
+          class: "btn btn-light btn-lg px-5 rounded-0",
+          data: { turbo_frame: "_top" } do %>
+        <i class="bi bi-calendar-check me-2"></i>Réserver mon essayage
+      <% end %>
+    </div>
+  </div>
 </div>
 

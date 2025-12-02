@@ -1,18 +1,8 @@
 <% flash.each do |key, value| %>
   <% 
-    alert_class = case key.to_s
-    when "success"
-      "alert-success-cabine"
-    when "error", "alert"
-      "alert-danger-cabine"
-    when "notice", "info"
-      "alert-info-cabine"
-    else
-      "alert-info-cabine"
-    end
     unique_id = "flash_#{key}_#{Time.current.to_i}"
   %>
-  <div class="alert <%= alert_class %> alert-dismissible fade show position-fixed" 
+  <div class="alert alert-cabine alert-dismissible fade show position-fixed" 
        role="alert" 
        id="<%= unique_id %>"
        style="bottom: 20px; right: 20px; z-index: 2000; min-width: 300px; max-width: 500px;"
@@ -20,7 +10,7 @@
        data-autohide-delay-value="5000">
     <i class="bi bi-<%= key == 'success' ? 'check-circle' : key == 'error' || key == 'alert' ? 'exclamation-triangle' : 'info-circle' %> me-2"></i>
     <%= value %>
-    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <% end %>
 
