@@ -13,40 +13,8 @@
       </div>
     <% end %>
 
-    <%= custom_form_elements(form, 
-      [:prenom, :text_field], [:nom, :text_field],
-      [:mail, :text_field], [:telephone, :text_field]
-    ) %>
-
     <div class="input-group px-1 mb-1">
-      <%= form.label :evenement, "Événement", class: "input-group-text" %>
-      <%= form.select :evenement, 
-        options_for_select([
-          ["Mariage", "mariage"],
-          ["Soirée", "soiree"],
-          ["Shooting", "shooting"],
-          ["Autre", "autre"]
-        ], demande_cabine_essayage.evenement),
-        { include_blank: '' }, 
-        class: "form-select" %>
-    </div>
 
-    <%= custom_form_elements(form, 
-      [:date_evenement, :date_field],
-      [:commentaires, :text_area]
-    ) %>
-
-    <div class="input-group px-1 mb-1">
-      <%= form.label :statut, class: "input-group-text" %>
-      <%= form.select :statut, 
-        options_for_select([
-          ["Brouillon", "brouillon"],
-          ["Soumis", "soumis"],
-          ["Confirmé", "confirme"],
-          ["Annulé", "annule"]
-        ], demande_cabine_essayage.statut),
-        { include_blank: '' }, 
-        class: "form-select" %>
     </div>
 
     <%= custom_submit_button(form) %>

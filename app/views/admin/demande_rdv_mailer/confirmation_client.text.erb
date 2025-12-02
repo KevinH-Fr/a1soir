@@ -1,0 +1,12 @@
+<% if @demande_rdv&.prenom.present? %>
+<%= I18n.t('demande_rdv.confirmation_client.body.greeting', prenom: @demande_rdv.prenom) %>
+<% else %>
+<%= I18n.t('demande_rdv.confirmation_client.body.greeting_no_prenom') %>
+<% end %>
+
+<% if @demande_rdv.demande_cabine_essayage.present? %>
+<%= I18n.t('demande_rdv.confirmation_client.body.message_with_cabine') %>
+<% else %>
+<%= I18n.t('demande_rdv.confirmation_client.body.message_without_cabine') %>
+<% end %>
+

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_01_203323) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_01_231211) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -161,17 +161,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_203323) do
   end
 
   create_table "demande_cabine_essayages", force: :cascade do |t|
-    t.string "prenom"
-    t.string "nom"
-    t.string "mail"
-    t.string "telephone"
-    t.string "evenement"
-    t.date "date_evenement"
-    t.string "statut"
-    t.text "commentaires"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "disponibilites"
+    t.integer "demande_rdv_id"
+    t.index ["demande_rdv_id"], name: "index_demande_cabine_essayages_on_demande_rdv_id"
   end
 
   create_table "demande_rdv", force: :cascade do |t|
@@ -197,6 +190,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_203323) do
     t.string "prenom"
     t.string "type_rdv"
     t.integer "nombre_personnes"
+    t.string "evenement"
+    t.date "date_evenement"
   end
 
   create_table "doc_editions", force: :cascade do |t|
@@ -449,6 +444,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_203323) do
   add_foreign_key "commandes", "profiles"
   add_foreign_key "demande_cabine_essayage_items", "demande_cabine_essayages"
   add_foreign_key "demande_cabine_essayage_items", "produits"
+  add_foreign_key "demande_cabine_essayages", "demande_rdvs"
   add_foreign_key "doc_editions", "commandes"
   add_foreign_key "ensembles", "produits"
   add_foreign_key "ensembles", "type_produits", column: "type_produit1_id"

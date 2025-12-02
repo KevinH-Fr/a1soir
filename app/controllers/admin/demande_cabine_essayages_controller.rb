@@ -76,39 +76,6 @@ class Admin::DemandeCabineEssayagesController < Admin::ApplicationController
     end
   end
 
-  def create_client
-    @demande_cabine_essayage = DemandeCabineEssayage.find(params[:id])
-
-    # Délègue la création ou la récupération du client au modèle Client.
-    # created == true signifie qu'un nouveau client vient d'être enregistré.
-    client, created = Client.create_from_demande(@demande_cabine_essayage)
-
-    respond_to do |format|
-      if created && client.persisted?
-        flash[:notice] = "Client créé à partir de la demande."
-        format.html { redirect_to admin_client_path(client) }
-        format.turbo_stream { redirect_to admin_client_path(client), status: :see_other }
-      elsif client.persisted?
-        flash.now[:error] = "Création impossible : un client avec ces informations existe déjà."
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
-        end
-        format.html do
-          redirect_to admin_demande_cabine_essayage_path(@demande_cabine_essayage),
-            alert: "Création impossible : un client avec ces informations existe déjà."
-        end
-      else
-        message = "Création impossible : #{client.errors.full_messages.to_sentence}"
-        flash.now[:error] = message
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
-        end
-        format.html do
-          redirect_to admin_demande_cabine_essayage_path(@demande_cabine_essayage), alert: message
-        end
-      end
-    end
-  end
 
   private
     def set_demande_cabine_essayage
@@ -117,8 +84,7 @@ class Admin::DemandeCabineEssayagesController < Admin::ApplicationController
 
     def demande_cabine_essayage_params
       params.require(:demande_cabine_essayage).permit(
-        :prenom, :nom, :mail, :telephone, :evenement, :date_evenement, :statut, :commentaires,
-        disponibilites: [],
+        :demande_rdv_id,
         demande_cabine_essayage_items_attributes: [:id, :produit_id, :_destroy]
       )
     end

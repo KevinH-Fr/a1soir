@@ -1,0 +1,28 @@
+<%= I18n.t('demande_rdv.notification_admin.body.title') %>
+
+<%= I18n.t('demande_rdv.notification_admin.body.demandeur') %> : <%= @demande_rdv.full_name %>
+<%= I18n.t('demande_rdv.notification_admin.body.email') %> : <%= @demande_rdv.email %>
+<%= I18n.t('demande_rdv.notification_admin.body.telephone') %> : <%= @demande_rdv.telephone %>
+
+<% if @demande_rdv.evenement.present? %>
+<%= I18n.t('demande_rdv.notification_admin.body.evenement') %> : <%= @demande_rdv.evenement %>
+<% end %>
+<% if @demande_rdv.date_evenement.present? %>
+<%= I18n.t('demande_rdv.notification_admin.body.date_evenement') %> : <%= @demande_rdv.date_evenement %>
+<% end %>
+<% if @demande_rdv.commentaire.present? %>
+<%= I18n.t('demande_rdv.notification_admin.body.commentaires') %> : <%= @demande_rdv.commentaire %>
+<% end %>
+
+<% if @demande_cabine_essayage && @demande_cabine_essayage.demande_cabine_essayage_items.any? %>
+<%= I18n.t('demande_rdv.notification_admin.body.produits_demandes') %>
+<% @demande_cabine_essayage.demande_cabine_essayage_items.each do |item| %>
+  <% produit = item.respond_to?(:produit) ? item.produit : nil %>
+  <% if produit.present? %>
+- <%= produit.nom %><% if produit.try(:taille)&.respond_to?(:nom) %> — Taille: <%= produit.taille.nom %><% end %><% if produit.try(:couleur)&.respond_to?(:nom) %> — Couleur: <%= produit.couleur.nom %><% end %><% if produit.respond_to?(:reference) && produit.reference.present? %> — Réf: <%= produit.reference %><% end %>
+  <% end %>
+<% end %>
+<% end %>
+
+<%= I18n.t('demande_rdv.notification_admin.body.message_automatique') %>
+

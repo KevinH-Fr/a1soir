@@ -1,6 +1,6 @@
 class Admin::DemandeRdvsController < Admin::ApplicationController
 
-  before_action :set_demande_rdv, only: %i[ show edit update destroy ]
+  before_action :set_demande_rdv, only: %i[ edit update destroy ]
 
   def index
     @count_demandes = DemandeRdv.count
@@ -12,8 +12,6 @@ class Admin::DemandeRdvsController < Admin::ApplicationController
     @pagy, @demande_rdvs = pagy_countless(demandes, items: 2)
   end
 
-  def show
-  end
 
   def edit
     respond_to do |format|
@@ -65,7 +63,7 @@ class Admin::DemandeRdvsController < Admin::ApplicationController
 
     def demande_rdv_params
       params.require(:demande_rdv).permit(
-        :prenom, :nom, :email, :telephone, :commentaire, :date_rdv, :statut, :type_rdv, :nombre_personnes
+        :prenom, :nom, :email, :telephone, :commentaire, :date_rdv, :statut, :type_rdv, :nombre_personnes, :evenement, :date_evenement
       )
     end
 

@@ -2,28 +2,31 @@
   <div class="card mx-2 mb-3 light-beige-colored shadow-sm">
     <div class="card-body p-1">
 
-        <div class="card-title d-flex">
-          <div data-turbo="false">
-            <%= link_to admin_demande_rdv_path(demande_rdv), class: "text-decoration-none text-dark" do %>
-              <%= custom_badge("", "", "", "fw-bold", demande_rdv.full_name) if demande_rdv.nom.present? %>
-            <% end %>
+      <div class="card-title d-flex align-items-center">
+        <div data-turbo="false">
+          <%= link_to admin_demande_rdv_path(demande_rdv), class: "text-decoration-none text-dark" do %>
+            <%= custom_badge("", "", "", "fw-bold", demande_rdv.full_name) if demande_rdv.nom.present? %>
+          <% end %>
+        </div>
+        <%= badge_statut_demande_cabine(demande_rdv.statut) %>
+        <%= custom_badge("fa-calendar", "", "", "", " envoyée le #{demande_rdv.created_at.strftime('%d/%m/%Y %H:%M')}") %>
+        <%= custom_badge("fa-calendar-check", "", "", "", demande_rdv.date_rdv.strftime('%d/%m/%Y à %H:%M')) if demande_rdv.date_rdv.present? && demande_rdv.date_rdv.respond_to?(:strftime) %>
+        <% if demande_rdv.demande_cabine_essayage&.produits&.any? %>
+          <div class="badge lighter-beige-colored fw-normal m-1 fs-6 shadow-sm text-warning text-break" style="white-space: normal;">
+            <i class="bi bi-cart-check me-1"></i>
+            <%= demande_rdv.demande_cabine_essayage.produits.count %> produit<%= 's' if demande_rdv.demande_cabine_essayage.produits.count > 1 %>
           </div>
-          <%= badge_statut_demande_cabine(demande_rdv.statut) %>
-          <%= custom_badge("fa-calendar", "", "", "", " envoyée le #{demande_rdv.created_at.strftime('%d/%m/%Y %H:%M')}") %>
-          <%= custom_badge("fa-calendar-check", "", "", "", demande_rdv.date_rdv.strftime('%d/%m/%Y à %H:%M')) if demande_rdv.date_rdv.present? && demande_rdv.date_rdv.respond_to?(:strftime) %>
+        <% end %>
 
-          <%= link_to "", "#collapseDemande#{dom_id(demande_rdv)}", 
-                class: "btn btn-sm btn-outline-primary bi bi-eye m-1", "data-bs-toggle": "collapse", 
-                role: "button", "aria-expanded": "false", "aria-controls": "collapseDemande#{dom_id(demande_rdv)}" %>
+        <%= link_to "", "#collapseDemande#{dom_id(demande_rdv)}", 
+              class: "btn btn-sm btn-outline-primary bi bi-eye m-1", "data-bs-toggle": "collapse", 
+              role: "button", "aria-expanded": "false", "aria-controls": "collapseDemande#{dom_id(demande_rdv)}" %>
 
+        <div class="ms-auto">
+          <%= links_record(demande_rdv, show: false) %>  
         </div>
+      </div>
 
-        <div class="text-end">
-          <%= links_record(demande_rdv) %>  
-        </div>
-
-
-  
       <div class="collapse px-2" id="collapseDemande<%= dom_id(demande_rdv) %>">
 
         <hr>
@@ -43,6 +46,36 @@
         <% end %>
         <%= field_with_label("Statut: ", demande_rdv.statut) if demande_rdv.statut.present? %>
         <%= field_with_label("Commentaire: ", demande_rdv.commentaire) if demande_rdv.commentaire.present? %>
+        <%= field_with_label("Événement: ", demande_rdv.evenement) if demande_rdv.evenement.present? %>
+        <%= field_with_label("Date événement: ", demande_rdv.date_evenement&.strftime('%d/%m/%Y')) if demande_rdv.date_evenement.present? %>
+
+        <%# Afficher les produits si une cabine d'essayage est associée %>
+        <% if demande_rdv.demande_cabine_essayage&.produits&.any? %>
+          <hr>
+          <h6 class="fw-bold small text-muted">Produits demandés (cabine d'essayage):</h6>
+          <div class="row g-2">
+            <% demande_rdv.demande_cabine_essayage.produits.each do |produit| %>
+              <div class="col-12 col-md-6 col-lg-4">
+                <%= link_to admin_produit_path(produit), class: "text-decoration-none", data: { turbo: false } do %>
+                  <div class="card p-1 light-beige-colored shadow-sm">
+                    <div class="d-flex align-items-center">
+                      <div class="me-1">
+                        <%= image_tag(produit.default_image, width: 40, class: "rounded") %>
+                      </div>
+                      <div class="flex-grow-1" style="min-width: 0;">
+                        <h6 class="mb-0 fw-bold small text-dark" style="font-size: 0.85rem;"><%= produit.nom %></h6>
+                        <div class="d-flex flex-wrap gap-1 mt-1">
+                          <%= badge_taille_produit(produit) if produit.taille.present? %>
+                          <%= badge_couleur_produit(produit) if produit.couleur.present? %>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
 
       </div>
 

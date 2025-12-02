@@ -1,6 +1,7 @@
 class DemandeRdv < ApplicationRecord
 
   has_one :meeting, dependent: :destroy
+  has_one :demande_cabine_essayage, dependent: :destroy
   
   STATUT = [
     ["soumis", "soumis"],
@@ -8,6 +9,12 @@ class DemandeRdv < ApplicationRecord
     ["annulé", "annulé"]
   ].freeze
       
+  enum :evenement, {
+    mariage: "mariage",
+    soiree: "soirée",
+    autre: "autre"
+  }, prefix: true
+  
   # Validations
   validates :nom, presence: true
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -22,11 +29,11 @@ class DemandeRdv < ApplicationRecord
 
   # Ransackable attributes for admin search
   def self.ransackable_attributes(auth_object = nil)
-    ["commentaire", "created_at", "date_rdv", "email", "id", "id_value", "nom", "nombre_personnes", "prenom", "statut", "telephone", "type_rdv", "updated_at"]
+    ["commentaire", "created_at", "date_evenement", "date_rdv", "email", "evenement", "id", "id_value", "nom", "nombre_personnes", "prenom", "statut", "telephone", "type_rdv", "updated_at"]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["meeting"]
+    ["demande_cabine_essayage", "meeting"]
   end
 
   # Helper methods

@@ -55,3 +55,24 @@ en:
     soirée: "Evening Party"
     divers: "Miscellaneous"
     festival de Cannes: "Cannes Festival"
+
+  demande_rdv:
+    confirmation_client:
+      subject: "Your appointment request"
+      body:
+        greeting: "Hello %{prenom},"
+        greeting_no_prenom: "Hello,"
+        message_with_cabine: "We have received your fitting room request. Our team will contact you shortly to schedule an appointment."
+        message_without_cabine: "We have received your appointment request. Our team will contact you shortly to confirm your time slot."
+    notification_admin:
+      subject: "New appointment request"
+      body:
+        title: "New appointment request received."
+        demandeur: "Requester"
+        email: "Email"
+        telephone: "Phone"
+        evenement: "Event"
+        date_evenement: "Event date"
+        commentaires: "Comments"
+        produits_demandes: "Requested products (fitting room)"
+        message_automatique: "Automatic message."

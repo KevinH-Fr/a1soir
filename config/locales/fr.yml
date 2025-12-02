@@ -278,3 +278,24 @@ fr:
     soirée: "Soirée"
     divers: "Divers"
     festival de Cannes: "Festival de Cannes"
+
+  demande_rdv:
+    confirmation_client:
+      subject: "Votre demande de rendez-vous"
+      body:
+        greeting: "Bonjour %{prenom},"
+        greeting_no_prenom: "Bonjour,"
+        message_with_cabine: "Nous avons bien reçu votre demande d'essayage. Notre équipe vous recontactera rapidement pour fixer un rendez-vous."
+        message_without_cabine: "Nous avons bien reçu votre demande de rendez-vous. Notre équipe vous recontactera rapidement pour confirmer votre créneau."
+    notification_admin:
+      subject: "Nouvelle demande de rendez-vous"
+      body:
+        title: "Nouvelle demande de rendez-vous reçue."
+        demandeur: "Demandeur"
+        email: "Email"
+        telephone: "Téléphone"
+        evenement: "Événement"
+        date_evenement: "Date événement"
+        commentaires: "Commentaires"
+        produits_demandes: "Produits demandés (cabine d'essayage)"
+        message_automatique: "Message automatique."

@@ -28,7 +28,7 @@ module CabineCartResponder
       ),
       turbo_stream.update(
         :flash,
-        partial: "public/pages/flash"
+        partial: "public/shared/flash"
       ),
       turbo_stream.replace(
         "cabine_badge",

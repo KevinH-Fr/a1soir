@@ -30,7 +30,7 @@ module Public
           format.turbo_stream do
             render turbo_stream: turbo_stream.append(
               :flash,
-              partial: "public/pages/flash"
+              partial: "public/shared/flash"
             )
           end
         end
@@ -38,7 +38,38 @@ module Public
       end
  
       if @demande_rdv.save
-        redirect_to rdv_path, notice: "Votre demande de rendez-vous a bien été envoyée. Nous vous contacterons bientôt."
+        # Si le formulaire vient de la cabine d'essayage, créer et associer la demande cabine
+        if params[:from_cabine] == "1" && session[:cabine_cart].present?
+          @demande_cabine_essayage = @demande_rdv.build_demande_cabine_essayage
+          
+          # Créer les items avec les produits du panier
+          session[:cabine_cart].each do |produit_id|
+            @demande_cabine_essayage.demande_cabine_essayage_items.build(produit_id: produit_id)
+          end
+          
+          if @demande_cabine_essayage.save
+            # Vider le panier cabine après création réussie
+            session[:cabine_cart] = []
+            redirect_to cabine_essayage_path, notice: "Votre demande de rendez-vous avec cabine d'essayage a bien été envoyée. Nous vous contacterons bientôt."
+          else
+            # Si l'association échoue, supprimer la demande RDV créée
+            @demande_rdv.destroy
+            flash.now[:alert] = "Erreur lors de la création de la demande cabine d'essayage"
+            respond_to do |format|
+              format.html { render :new, status: :unprocessable_entity }
+              format.turbo_stream do
+                render turbo_stream: turbo_stream.update(
+                  "demande_rdv_form",
+                  partial: "public/demande_rdv/form",
+                  locals: { demande_rdv: @demande_rdv }
+                )
+              end
+            end
+            return
+          end
+        else
+          redirect_to rdv_path, notice: "Votre demande de rendez-vous a bien été envoyée. Nous vous contacterons bientôt."
+        end
       else
         respond_to do |format|
           format.html { render :new, status: :unprocessable_entity }
@@ -57,7 +88,7 @@ module Public
 
     def demande_rdv_params
       params.require(:demande_rdv).permit(
-        :prenom, :nom, :email, :telephone, :commentaire, :date_rdv, :type_rdv, :nombre_personnes
+        :prenom, :nom, :email, :telephone, :commentaire, :date_rdv, :type_rdv, :nombre_personnes, :evenement, :date_evenement
       )
     end
 

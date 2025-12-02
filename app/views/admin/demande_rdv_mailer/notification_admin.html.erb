@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <p><strong><%= I18n.t('demande_rdv.notification_admin.body.title') %></strong></p>
+
+    <p>
+      <%= I18n.t('demande_rdv.notification_admin.body.demandeur') %> : <%= @demande_rdv.full_name %><br>
+      <%= I18n.t('demande_rdv.notification_admin.body.email') %> : <%= @demande_rdv.email %><br>
+      <%= I18n.t('demande_rdv.notification_admin.body.telephone') %> : <%= @demande_rdv.telephone %>
+    </p>
+
+    <% if @demande_rdv.evenement.present? %>
+      <p><%= I18n.t('demande_rdv.notification_admin.body.evenement') %> : <%= @demande_rdv.evenement %></p>
+    <% end %>
+    <% if @demande_rdv.date_evenement.present? %>
+      <p><%= I18n.t('demande_rdv.notification_admin.body.date_evenement') %> : <%= @demande_rdv.date_evenement %></p>
+    <% end %>
+    <% if @demande_rdv.commentaire.present? %>
+      <p><%= I18n.t('demande_rdv.notification_admin.body.commentaires') %> : <%= @demande_rdv.commentaire %></p>
+    <% end %>
+
+    <% if @demande_cabine_essayage && @demande_cabine_essayage.demande_cabine_essayage_items.any? %>
+      <h4 style="margin-top: 16px;"><%= I18n.t('demande_rdv.notification_admin.body.produits_demandes') %></h4>
+      <ul style="margin: 8px 0; padding-left: 18px;">
+        <% @demande_cabine_essayage.demande_cabine_essayage_items.each do |item| %>
+          <% produit = item.respond_to?(:produit) ? item.produit : nil %>
+          <% if produit.present? %>
+            <li>
+              <strong><%= produit.nom %></strong>
+              <% if produit.try(:taille)&.respond_to?(:nom) %>
+                — Taille: <%= produit.taille.nom %>
+              <% end %>
+              <% if produit.try(:couleur)&.respond_to?(:nom) %>
+                — Couleur: <%= produit.couleur.nom %>
+              <% end %>
+              <% if produit.respond_to?(:reference) && produit.reference.present? %>
+                — Réf: <%= produit.reference %>
+              <% end %>
+            </li>
+          <% else %>
+            <li>Produit introuvable (ID: <%= item.produit_id %>)</li>
+          <% end %>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <hr>
+    <p style="margin: 0; opacity: 0.8; font-size: 12px;"><%= I18n.t('demande_rdv.notification_admin.body.message_automatique') %></p>
+  </body>
+</html>
+

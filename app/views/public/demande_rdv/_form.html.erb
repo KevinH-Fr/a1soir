@@ -1,4 +1,6 @@
+<% from_cabine = local_assigns[:from_cabine] || false %>
 <%= form_with model: demande_rdv, url: demande_rdv_index_path(subdomain: "shop"), class: "needs-validation", data: { controller: "recaptcha-submit" } do |form| %>
+  <%= hidden_field_tag :from_cabine, "1" if from_cabine %>
 
   <% if demande_rdv.errors.any? %>
     <div class="alert alert-danger">
@@ -42,7 +44,7 @@
         <div class="tab-content px-2" id="rdv-tab-content">
           <!-- ÉTAPE 1 : Calendrier -->
           <div class="tab-pane fade show active" id="step1-pane" role="tabpanel" aria-labelledby="step1-tab" tabindex="0">
-              <h4 class="text-dark text-center fw-bold" style="letter-spacing: 0.5px;">
+              <h4 class="<%= from_cabine ? 'text-light' : 'text-dark' %> text-center fw-bold" style="letter-spacing: 0.5px;">
                 Sélectionnez une date
               </h4>
               <div class="mb-4 text-center">
@@ -119,6 +121,29 @@
                 </div>
               </div>
 
+              <!-- Événement -->
+              <div class="row mb-3">
+                <div class="col-md-6 mb-1">
+                  <div class="form-floating">
+                    <%= form.select :evenement, 
+                        options_for_select([
+                          ["Mariage", "mariage"],
+                          ["Soirée", "soiree"],
+                          ["Autre", "autre"]
+                        ], demande_rdv.evenement),
+                        { include_blank: "Type d'événement" },
+                        { class: "form-select border-dark border-2 bg-white text-dark" } %>
+                    <%= form.label :evenement, "Type d'événement", class: "text-dark" %>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-1">
+                  <div class="form-floating">
+                    <%= form.date_field :date_evenement, class: "form-control border-dark border-2 bg-white text-dark" %>
+                    <%= form.label :date_evenement, "Date de l'événement", class: "text-dark" %>
+                  </div>
+                </div>
+              </div>
+
               <!-- Type de RDV et Nombre de personnes -->
               <div class="row mb-3">
                 <div class="col-md-6 mb-1">
@@ -126,7 +151,7 @@
                     <%= form.select :type_rdv, 
                         options_for_select(TypeRdv.options_for_select, demande_rdv.type_rdv),
                         { include_blank: "Sélectionnez un type" },
-                        { class: "form-select border-dark border-2 bg-white text-dark", required: true } %>
+                        { class: "form-select border-dark border-2 bg-white text-dark", required: !demande_rdv.demande_cabine_essayage.present? } %>
                     <%= form.label :type_rdv, "Type de rendez-vous *", class: "text-dark" %>
                   </div>
                 </div>
@@ -134,7 +159,7 @@
                   <div class="form-floating">
                     <%= form.number_field :nombre_personnes, 
                         class: "form-control border-dark border-2 bg-white text-dark", 
-                        required: true, 
+                        required: !demande_rdv.demande_cabine_essayage.present?, 
                         min: 1, 
                         max: 10, 
                         value: demande_rdv.nombre_personnes || 1 %>
@@ -168,6 +193,7 @@
     </div>
     
     <%= form.hidden_field :date_rdv, data: { calendar_picker_target: "hiddenInput" } %>
+    <%= form.hidden_field :id if demande_rdv.persisted? %>
   </div>
 
 <% end %>
