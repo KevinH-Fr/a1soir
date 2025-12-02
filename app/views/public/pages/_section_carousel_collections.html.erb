@@ -1,0 +1,92 @@
+<%
+  slides = [
+    {
+      image_url: "https://images.pexels.com/photos/265720/pexels-photo-265720.jpeg",
+      title: "Robes de mariée",
+      subtitle: "Découvrez notre collection de robes de mariée courtes et longues, élégantes et raffinées pour votre jour le plus spécial",
+      button_text: "Découvrir",
+      button_url: produits_filter_url(category_names: ["robes de mariée courtes", "robes de mariée longues"])
+    },
+    {
+      image_url: "https://images.pexels.com/photos/356170/pexels-photo-356170.jpeg",
+      title: "Tenues de Soirée",
+      subtitle: "Explorez notre sélection de tenues de soirée : robes longues, robes courtes, ensembles pantalon et combinaisons pour toutes vos occasions",
+      button_text: "Découvrir",
+      button_url: produits_filter_url(category_names: ["robes courtes", "robes longues", "ensembles pantalons"])
+    },
+    {
+      image_url: "https://images.pexels.com/photos/3875668/pexels-photo-3875668.jpeg",
+      title: "Costumes",
+      subtitle: "Parcourez notre gamme de costumes : smokings élégants, tenues de cérémonie et costumes pour enfants, pour un style impeccable",
+      button_text: "Découvrir",
+      button_url: produits_filter_url(category_names: "costume")
+    },
+    {
+      image_url: "https://images.pexels.com/photos/1445696/pexels-photo-1445696.jpeg",
+      title: "Accessoires",
+      subtitle: "Complétez votre tenue avec nos accessoires : chaussures et accessoires pour hommes et femmes, pour une tenue parfaitement coordonnée",
+      button_text: "Découvrir",
+      button_url: produits_filter_url(category_names: ["chaussures", "accessoires"])
+    }
+  ]
+%>
+
+<div id="collectionsCarousel" class="carousel slide vh-100 my-5" data-bs-ride="carousel" style="height: 100vh;">
+  <!-- Indicateurs de position -->
+  <div class="carousel-indicators" style="z-index: 10;">
+    <% slides.each_with_index do |slide, index| %>
+      <button type="button" 
+              data-bs-target="#collectionsCarousel" 
+              data-bs-slide-to="<%= index %>" 
+              class="<%= 'active' if index == 0 %>" 
+              aria-current="<%= 'true' if index == 0 %>" 
+              aria-label="Slide <%= index + 1 %>"
+              style="width: 12px; height: 12px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.5); border: 2px solid rgba(255, 255, 255, 0.8); margin: 0 4px;">
+      </button>
+    <% end %>
+  </div>
+  
+  <div class="carousel-inner h-100" style="height: 100vh;">
+    <% slides.each_with_index do |slide, index| %>
+      <div class="carousel-item <%= 'active' if index == 0 %> h-100 position-relative" style="min-height: 100vh; overflow: hidden;">
+        <% if slide[:image_url].present? %>
+          <!-- Image -->
+          <%= image_tag slide[:image_url], class: "d-block w-100 h-100 carousel-media", style: "object-fit: cover; z-index: 0; transition: transform 0.6s ease;", alt: slide[:title], data: { carousel_media: "" } %>
+          <!-- Overlay sombre pour la lisibilité -->
+          <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0, 0, 0, 0.3); z-index: 1; pointer-events: none;"></div>
+        <% end %>
+        
+        <!-- Contenu en bas à gauche -->
+        <div class="position-absolute bottom-0 start-0 w-100 d-flex align-items-end text-white" style="z-index: 2; padding: 4rem; pointer-events: none;">
+          <div class="text-start">
+            <% if slide[:title].present? %>
+              <h2 class="h2 fw-bold mb-3" style="text-shadow: 0 2px 10px rgba(0,0,0,0.5); font-size: 2rem;">
+                <%= slide[:title] %>
+              </h2>
+            <% end %>
+            
+            <% if slide[:subtitle].present? %>
+              <p class="mb-4" style="text-shadow: 0 1px 5px rgba(0,0,0,0.5); font-size: 1rem; max-width: 600px;">
+                <%= slide[:subtitle] %>
+              </p>
+            <% end %>
+            
+            <% if slide[:button_text].present? %>
+              <%= link_to slide[:button_text], slide[:button_url], class: "btn btn-light px-4 rounded-0", style: "pointer-events: auto;" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  
+  <!-- Contrôles précédent/suivant -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#collectionsCarousel" data-bs-slide="prev" style="position: absolute; width: 60px; height: 60px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); border: none; top: 50%; transform: translateY(-50%); left: 20px; z-index: 10; display: flex; align-items: center; justify-content: center; padding: 0;">
+    <span class="carousel-control-prev-icon" aria-hidden="true" style="width: 20px; height: 20px;"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#collectionsCarousel" data-bs-slide="next" style="position: absolute; width: 60px; height: 60px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); border: none; top: 50%; transform: translateY(-50%); right: 20px; z-index: 10; display: flex; align-items: center; justify-content: center; padding: 0;">
+    <span class="carousel-control-next-icon" aria-hidden="true" style="width: 20px; height: 20px;"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>

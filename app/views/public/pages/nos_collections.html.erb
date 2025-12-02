@@ -10,3 +10,9 @@
     <%= render partial: "public/shared/section_categories" %>
   </div>
 </div>
+
+<%= render partial: "public/pages/section_carousel_collections" %>
+
+<div class="container my-5 py-5 text-center">
+  <%= link_to "Voir tous les produits", produits_index_url(subdomain: "shop"), class: "btn btn-light btn-lg px-5 public-btn-border-radius" %>
+</div>

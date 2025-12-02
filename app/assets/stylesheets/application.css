@@ -406,6 +406,7 @@ footer .bi-facebook:hover {
     .reference-item {
       font-size: 0.95rem;
       padding: 0.75rem 1.5rem;
+      border-radius: 4px;
     }
     
     .reference-item i {
@@ -413,7 +414,7 @@ footer .bi-facebook:hover {
     }
     
     .references-slider {
-      gap: 2rem;
+      gap: 10px;
       animation: scroll 40s linear infinite;
     }
   }
@@ -1636,7 +1637,7 @@ section {
   left: 0;
   width: 0;
   height: 3px;
-  background: var(--public-brand-color, #b8860b);
+  background: black;
   transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -1770,6 +1771,7 @@ section {
   transition: all 0.3s ease;
   border-radius: 0.5rem;
   overflow: hidden;
+  border-radius: 4px;
 }
 
 /* Info cards conservent un fond clair élégant */

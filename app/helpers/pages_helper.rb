@@ -103,8 +103,8 @@ module PagesHelper
   end
 
   def reference_item(icon:, name:)
-    content_tag :div, class: "reference-item" do
-      icon_tag = content_tag(:i, nil, class: "bi bi-#{icon} public-brand-color me-2")
+    content_tag :div, class: "reference-item", style: "border-radius: 4px;" do
+      icon_tag = content_tag(:i, nil, class: "bi bi-#{icon} me-2")
       name_tag = content_tag(:span, name)
       (icon_tag + name_tag).html_safe
     end
@@ -186,7 +186,7 @@ module PagesHelper
         text_col = content_tag :div, class: "col-12 col-md-6 #{text_order} d-flex" do
           content_tag :div, class: "p-4 p-md-5 d-flex flex-column justify-content-center bg-white w-100" do
             title_wrapper = content_tag :div, class: "section-title-wrapper mb-4", data: { aos: "title-underline" } do
-              title_tag = content_tag(:h3, title, class: "public-brand-color section-title", style: "font-family: 'Playfair Display', serif; font-size: 2rem; position: relative; display: inline-block;")
+              title_tag = content_tag(:h3, title, class: "section-title", style: "font-family: 'Playfair Display', serif; font-size: 2rem; position: relative; display: inline-block;")
               underline = content_tag(:span, "", class: "section-title-underline")
               title_tag + underline
             end
@@ -364,15 +364,15 @@ module PagesHelper
   end
 
   def info_card(icon:, title:, content:)
-    content_tag :div, class: "col-sm m-2 p-0" do
-      content_tag :div, class: "info-card rounded p-4 h-100" do
+    content_tag :div, class: "col-sm m-2 p-0 w-100" do
+      content_tag :div, class: "info-card rounded p-4 h-100 d-flex flex-column" do
         card_header = content_tag(:div, class: "text-center mb-3") do
-          icon_tag = content_tag(:i, nil, class: "bi bi-#{icon} fs-3 public-brand-color me-2")
-          title_tag = content_tag(:span, title, class: "fw-bold fs-4 text-light")
+          icon_tag = content_tag(:i, nil, class: "bi bi-#{icon} fs-3 me-2")
+          title_tag = content_tag(:span, title, class: "fw-bold fs-4")
           (icon_tag + title_tag).html_safe
         end
         
-        card_content = content_tag(:div, class: "text-light") do
+        card_content = content_tag(:div, class: "") do
           content.to_s.html_safe
         end
         

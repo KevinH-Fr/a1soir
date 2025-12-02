@@ -1,20 +1,22 @@
-<!-- Section Bouton Rendez-vous -->
-<section class="py-5 my-4" data-aos="fade-up" data-aos-duration="800">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-12 col-lg-8 text-center">
-        <div class="concept-card p-5">
-          <h3 class="text-light mb-3" style="font-family: 'Playfair Display', serif; font-size: 2rem;">Prêt à nous rencontrer ?</h3>
-          <p class="text-light opacity-75 mb-4" style="font-size: 1.1rem;">
-            Réservez votre créneau et venez découvrir notre univers
-          </p>
-          <%= link_to rdv_url(subdomain: "shop"), class: "btn btn-lg px-5 py-3 shadow btn-smoke-hover" do %>
-            <i class="bi bi-calendar-check me-2"></i>
-            <span class="fw-bold">Prendre Rendez-vous</span>
-          <% end %>
+<div class="bg-white text-dark m-0">
+  <!-- Section Bouton Rendez-vous -->
+  <section class="py-5 mt-0" data-aos="fade-up" data-aos-duration="800">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 text-center">
+          <div class="concept-card p-5">
+            <h3 class="text-light mb-3" style="font-family: 'Playfair Display', serif; font-size: 2rem;">Prêt à nous rencontrer ?</h3>
+            <p class="text-light opacity-75 mb-4" style="font-size: 1.1rem;">
+              Réservez votre créneau et venez découvrir notre univers
+            </p>
+            <%= link_to rdv_url(subdomain: "shop"),
+                class: "btn btn-sm btn-light px-3 ms-4 me-2 d-inline-flex align-items-center btn-rdv-hover public-btn-border-radius" do %>
+              <i class="bi bi-calendar-check me-2"></i>
+              <span class="fw-bold text-uppercase small">Prendre rendez-vous</span>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-
+  </section>
+</div>
