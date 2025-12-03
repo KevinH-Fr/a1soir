@@ -1,5 +1,5 @@
 <% from_cabine = local_assigns[:from_cabine] || false %>
-<%= form_with model: demande_rdv, url: demande_rdv_index_path(subdomain: "shop"), class: "needs-validation", data: { controller: "recaptcha-submit" } do |form| %>
+<%= form_with model: demande_rdv, url: demande_rdv_index_path(subdomain: "shop"), class: "needs-validation", data: { turbo: false } do |form| %>
   <%= hidden_field_tag :from_cabine, "1" if from_cabine %>
 
   <% if demande_rdv.errors.any? %>
@@ -135,14 +135,15 @@
                           ["Autre", "autre"]
                         ], demande_rdv.evenement),
                         { include_blank: "Type d'événement" },
-                        { class: "form-select border-dark border-2 bg-white text-dark" } %>
-                    <%= form.label :evenement, "Type d'événement", class: "text-dark" %>
+                        { class: "form-select border-dark border-2 bg-white text-dark",
+                          required: true } %>
+                    <%= form.label :evenement, "Type d'événement *", class: "text-dark" %>
                   </div>
                 </div>
                 <div class="col-md-6 mb-1">
                   <div class="form-floating">
-                    <%= form.date_field :date_evenement, class: "form-control border-dark border-2 bg-white text-dark" %>
-                    <%= form.label :date_evenement, "Date de l'événement", class: "text-dark" %>
+                    <%= form.date_field :date_evenement, required: true, class: "form-control border-dark border-2 bg-white text-dark" %>
+                    <%= form.label :date_evenement, "Date de l'événement *", class: "text-dark" %>
                   </div>
                 </div>
               </div>
@@ -151,11 +152,23 @@
               <div class="row mb-3">
                 <div class="col-md-6 mb-1">
                   <div class="form-floating">
+                    <% 
+                      # Bloquer le select seulement si from_cabine ET que le type Essayage a été trouvé et assigné
+                      should_disable = from_cabine && demande_rdv.type_rdv.present?
+                    %>
                     <%= form.select :type_rdv, 
                         options_for_select(TypeRdv.options_for_select, demande_rdv.type_rdv),
                         { include_blank: "Sélectionnez un type" },
-                        { class: "form-select border-dark border-2 bg-white text-dark", required: !demande_rdv.demande_cabine_essayage.present? } %>
-                    <%= form.label :type_rdv, "Type de rendez-vous *", class: "text-dark" %>
+                        { 
+                          class: "form-select border-dark border-2 bg-white text-dark", 
+                          required: true,
+                          disabled: should_disable,
+                          style: should_disable ? "cursor: not-allowed;" : ""
+                        } %>
+                    <%= form.label :type_rdv, "Type de rendez-vous", class: "text-dark" %>
+                    <% if should_disable %>
+                      <%= form.hidden_field :type_rdv, value: demande_rdv.type_rdv %>
+                    <% end %>
                   </div>
                 </div>
                 <div class="col-md-6 mb-1">
@@ -181,12 +194,12 @@
 
               <!-- reCAPTCHA -->
               <div class="mb-4 d-flex justify-content-center">
-                <%= recaptcha_tags theme: 'light', callback: 'onRecaptchaSuccess', expired_callback: 'onRecaptchaExpired', error_callback: 'onRecaptchaError' %>
+                <div class="g-recaptcha" data-sitekey="<%= ENV['RECAPTCHA_SITE_KEY'] %>"></div>
               </div>
               <!-- Boutons -->
               <div class="d-flex flex-column flex-md-row gap-3 justify-content-center align-items-center">
-                <button type="submit" data-recaptcha-submit-target="submitBtn" class="btn p-2 shadow disabled" disabled style="background-color: #000; color: #fff; font-weight: 600; letter-spacing: 0.5px; border: 2px solid #000; opacity: 0.6; cursor: not-allowed;">
-                  <i class="bi bi-lock me-2"></i>Validez d'abord le reCAPTCHA
+                <button type="submit" class="btn p-2 shadow" style="background-color: #000; color: #fff; font-weight: 600; letter-spacing: 0.5px; border: 2px solid #000;">
+                  <i class="bi bi-send me-2"></i>Envoyer ma demande
                 </button>
               </div>
             </div>

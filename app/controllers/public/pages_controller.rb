@@ -38,6 +38,9 @@ module Public
 
     def cabine_essayage
       session[:from_cabine] = true
+      # Initialiser une demande de RDV avec le type "Essayage" pré-sélectionné
+      @demande_rdv = DemandeRdv.new
+      @demande_rdv.set_type_essayage
     end
 
     def produits

@@ -130,11 +130,7 @@ image2: "https://images.pexels.com/photos/7304211/pexels-photo-7304211.jpeg") %>
                data-reservation-form-target="cta">
             <button type="button"
                     class="btn btn-dark text-light btn-lg px-5 rounded-0"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#reservationFormCollapse"
-                    aria-expanded="false"
-                    aria-controls="reservationFormCollapse"
-                    onclick="setTimeout(() => document.getElementById('reservationForm').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100)">
+                    onclick="document.getElementById('reservationForm').scrollIntoView({ behavior: 'smooth', block: 'start' })">
               <i class="bi bi-calendar-check me-2"></i>Réserver mon essayage
             </button>
           </div>

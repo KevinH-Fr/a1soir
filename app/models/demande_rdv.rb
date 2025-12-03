@@ -21,6 +21,8 @@ class DemandeRdv < ApplicationRecord
   validates :telephone, presence: true
   validates :date_rdv, presence: true
   validates :type_rdv, presence: true
+  validates :evenement, presence: true
+  validates :date_evenement, presence: true
   validates :nombre_personnes, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
   validate :type_rdv_must_be_valid
 
@@ -44,6 +46,14 @@ class DemandeRdv < ApplicationRecord
   # Retourne le nom complet (prénom + nom) si prénom présent, sinon juste le nom
   def full_name
     [prenom, nom].compact.join(" ")
+  end
+  
+  # Pré-sélectionne le type "Essayage" si aucun type n'est défini
+  def set_type_essayage
+    return if type_rdv.present? # Ne pas écraser si déjà rempli
+    
+    essayage_type = TypeRdv.find_by("LOWER(code) = ?", "essayage")
+    self.type_rdv = essayage_type.code if essayage_type.present?
   end
   
 

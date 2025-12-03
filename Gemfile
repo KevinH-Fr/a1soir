@@ -79,5 +79,5 @@ gem "jsbundling-rails"
 
 gem 'ruby-openai'
 
-gem 'recaptcha'
+# gem 'recaptcha' # Remplacé par RecaptchaVerifier custom
 
