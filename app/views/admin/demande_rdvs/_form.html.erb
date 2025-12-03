@@ -21,6 +21,7 @@
     <div class="input-group px-1 mb-1">
       <%= form.label :date_rdv, "Date et heure du RDV", class: "input-group-text" %>
       <%= form.datetime_field :date_rdv, class: "form-control" %>
+      <small class="input-group-text text-muted" style="font-size: 0.85em;">(Heure de Paris)</small>
     </div>
 
     <%= custom_form_elements(form, 

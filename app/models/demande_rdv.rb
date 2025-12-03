@@ -93,33 +93,28 @@ class DemandeRdv < ApplicationRecord
   end
 
   # Récupère tous les créneaux occupés pour les prochaines dates (format: { "YYYY-MM-DD" => ["HH:MM", ...] })
-  # Un créneau est considéré comme occupé uniquement s'il atteint la capacité max définie dans ParametreRdv
+  # Un créneau est considéré comme occupé s'il atteint la capacité max OU s'il y a des chevauchements temporels
   def self.creneaux_occupes_par_date(days_ahead: 90)
     start_date = Date.today
     end_date = start_date + days_ahead.days
 
-    config = ParametreRdv.current
-    return {} unless config
-
-    meetings_grouped = Meeting.where(datedebut: start_date.beginning_of_day..end_date.end_of_day)
-                              .group_by { |m| [m.datedebut.to_date, m.datedebut.strftime("%H:%M")] }
-
-    # On garde uniquement les créneaux qui atteignent la capacité max pour ce jour
-    saturated_slots = meetings_grouped.select do |(date, _time), meetings|
-      capacity = config.nb_rdv_simultanes_for(date)
-      capacity.positive? && meetings.count >= capacity
+    result = {}
+    current_date = start_date
+    
+    # Pour chaque date dans la plage, utiliser la méthode creneaux_occupes_pour_date
+    while current_date <= end_date
+      creneaux_occupes = creneaux_occupes_pour_date(current_date)
+      result[current_date.strftime("%Y-%m-%d")] = creneaux_occupes unless creneaux_occupes.empty?
+      current_date += 1.day
     end
-
-    saturated_slots
-      .group_by { |(date, _time), _meetings| date }
-      .transform_values { |items| items.map { |(_, time), _| time }.uniq }
-      .transform_keys { |date| date.strftime("%Y-%m-%d") }
+    
+    result
   end
 
   # Récupère les créneaux occupés pour une date donnée depuis les Meetings
-  # Un créneau est considéré comme occupé uniquement s'il atteint la capacité max définie dans ParametreRdv
+  # Un créneau est considéré comme occupé s'il atteint la capacité max OU s'il y a des chevauchements temporels
   def self.creneaux_occupes_pour_date(date)
-    date_obj = date.is_a?(String) ? Date.parse(date) : date
+    date_obj = date.is_a?(String) ? Time.zone.parse(date) : date
 
     config = ParametreRdv.current
     return [] unless config
@@ -127,10 +122,35 @@ class DemandeRdv < ApplicationRecord
     capacity = config.nb_rdv_simultanes_for(date_obj)
     return [] unless capacity.positive?
 
-    Meeting.where(datedebut: date_obj.beginning_of_day..date_obj.end_of_day)
-           .group_by { |m| m.datedebut.strftime("%H:%M") }
-           .select { |_time, meetings| meetings.count >= capacity }
-           .keys
+    # Récupérer tous les meetings qui chevauchent avec cette journée
+    # Un meeting chevauche si : (datedebut <= fin_jour) ET (datefin >= debut_jour)
+    meetings_du_jour = Meeting.where.not(datefin: nil)
+                              .where("datedebut <= ? AND datefin >= ?", 
+                                     date_obj.end_of_day, 
+                                     date_obj.beginning_of_day)
+    
+    return [] if meetings_du_jour.empty?
+    
+    # Calculer la durée maximale possible pour un RDV (base 60min)
+    duree_max_minutes = 60
+    
+    # Pour chaque créneau horaire, vérifier s'il est occupé
+    creneaux_occupes = creneaux_horaires.select do |creneau_heure|
+      creneau_debut = Time.zone.parse("#{date_obj} #{creneau_heure}")
+      creneau_fin = creneau_debut + duree_max_minutes.minutes
+      
+      # Compter tous les meetings qui chevauchent avec ce créneau
+      # (en tenant compte de leur durée réelle)
+      meetings_chevauchent = meetings_du_jour.select do |meeting|
+        # Chevauchement si : (debut_creneau < fin_meeting) ET (fin_creneau > debut_meeting)
+        (creneau_debut < meeting.datefin) && (creneau_fin > meeting.datedebut)
+      end
+      
+      # Un créneau est occupé si le nombre de meetings qui chevauchent >= capacité
+      meetings_chevauchent.count >= capacity
+    end
+    
+    creneaux_occupes
   end
 
   # Récupère les créneaux disponibles pour une date donnée

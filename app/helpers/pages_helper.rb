@@ -438,7 +438,7 @@ module PagesHelper
       content_tag :div, class: "concept-card" do
         # Title with icon
         title_html = content_tag(:h2, class: "h3 fw-bold mb-4 text-light") do
-          concat content_tag(:i, nil, class: "bi bi-#{icon} public-brand-color me-2")
+          concat content_tag(:i, nil, class: "bi bi-#{icon} text-light me-2")
           concat title
         end
         
@@ -448,7 +448,7 @@ module PagesHelper
           alert_style = alert[:type] == :warning ? 
             "background: rgba(255, 193, 7, 0.15); border: 1px solid rgba(255, 193, 7, 0.3);" :
             "background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
-          icon_class = alert[:type] == :warning ? "text-warning" : "public-brand-color"
+          icon_class = alert[:type] == :warning ? "text-warning" : "text-light"
           
           content_tag(:div, class: "alert #{alert_class} mb-4", style: alert_style) do
             concat content_tag(:i, nil, class: "bi bi-#{alert[:icon]} #{icon_class} me-2")
@@ -492,32 +492,7 @@ module PagesHelper
       (title_html + accordion_html).html_safe
     end
   end
-
-  # Helper for FAQ accordion items
-  def faq_item(id:, parent_id:, question:, &block)
-    content_tag :div, class: "accordion-item concept-card mb-3" do
-      header_html = content_tag(:h3, class: "accordion-header text-light") do
-        content_tag(:button, 
-          class: "accordion-button collapsed text-light faq-accordion-button", 
-          type: "button", 
-          "data-bs-toggle": "collapse", 
-          "data-bs-target": "##{id}"
-        ) do
-          concat content_tag(:i, nil, class: "bi bi-question-circle-fill text-light me-2")
-          concat question
-        end
-      end
-      
-      body_html = content_tag(:div, id: id, class: "accordion-collapse collapse", "data-bs-parent": "##{parent_id}") do
-        content_tag(:div, class: "accordion-body text-light opacity-75 faq-accordion-body") do
-          capture(&block) if block_given?
-        end
-      end
-      
-      (header_html + body_html).html_safe
-    end
-  end
-
+p
   # Helper pour générer les boutons de panier (cabine ou shop) avec style commun
   def cart_button_for(produit, type: :shop)
     turbo_frame_tag "produit_#{produit.id}_button" do

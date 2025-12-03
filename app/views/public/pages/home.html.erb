@@ -1,53 +1,36 @@
-<!-- Section d'animation au scroll (textes + zoom image + robe 3D) -->
-<%= render 'public/pages/home/scroll_animation' %>
+<%= render partial: "public/pages/home/section_hero" %>
 
-<!-- Hero section avec modèle 3D -->
-<%#= render 'home_hero' %>
-
-<!-- Flèche animée pour inviter au scroll -->
-<div class="scroll-indicator">
-  <i class="bi bi-chevron-down"></i>
+<div class="container my-5 py-5">
+    <h2 class="text-light fs-3 text-uppercase py-4 mb-3">Nos collections</h2>
+    <%= render partial: "public/shared/section_categories" %>
 </div>
 
-<!-- Section d'accueil -->
-<div class="public-main-content">
-  <div class="container-fluid">
-    <!-- Section découverte -->
-    <%= render 'public/pages/home/discover_section' %>
-
-    <!-- Cartes de navigation -->
-    <%= render 'public/pages/home/home_nav_cards' %>
-  </div>
+<div class="my-5">
+    <%= render partial: "public/pages/home/section_boutique" %>
 </div>
 
-
-<style>
-  /* Container Three.js avec gradient CSS (fond étoilé global) - Uniquement sur la page d'accueil */
-  #three-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    z-index: 0;
-    background: linear-gradient(180deg, 
-      #0a0c14 0%,    /* Bleu nuit sombre en haut */
-      #060810 40%,   /* Transition douce */
-      #030508 70%,   /* Encore plus sombre */
-      #000000 100%   /* Noir pur en bas */
-    );
-  }
-
-  /* Contenu par-dessus le fond étoilé */
-  .public-content {
-    position: relative;
-    /* z-index removed to avoid creating a stacking context that hides flash behind chatbot */
-  }
-
-  /* Footer */
-  footer {
-    position: relative;
-    z-index: 0;
-    backdrop-filter: blur(0px);
-  }
-</style>
+<%= render partial: "public/pages/fullpage_section_with_carousel", locals: {
+  background_image: "https://images.pexels.com/photos/14339112/pexels-photo-14339112.jpeg",
+  title: "La boutique",
+  paragraph: "Plongez dans l'univers d'Autour d'un Soir, où l'élégance rencontre l'exception. Notre boutique de Cannes vous accueille dans un cadre raffiné pour vous accompagner dans le choix de vos tenues de soirée. Depuis notre création, nous avons à cœur de vous offrir une expérience unique, alliant conseils personnalisés et sélection rigoureuse de nos pièces.",
+  button_text: "Découvrir la boutique",
+  button_url: la_boutique_url,
+  carousel_images: [
+    "cat_tenues_soiree.jpg",
+    "cat_robes_mariees.jpg",
+    "cat_costume.jpg",
+    "cat_accessoires.jpg"
+  ],
+  image_texts: [
+    "Tenues de soirée",
+    "Robes de mariée",
+    "Costumes",
+    "Accessoires"
+  ],
+  image_subtexts: [
+    "Découvrez notre collection de tenues de soirée",
+    "Découvrez notre collection de robes de mariée",
+    "Découvrez notre collection de costumes",
+    "Découvrez notre collection d'accessoires"
+  ]
+} %>

@@ -21,7 +21,6 @@
     <div class="collapse navbar-collapse order-xl-1" id="navbar">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <%= nav_link_public(home_path, "Accueil") %>
-        <%= nav_link_public(accueil_bis_path, "Accueil bis") %>
         <%= nav_link_public(la_boutique_url, "Boutique") %>
         <%= nav_link_public(nos_collections_url, "Collections") %>
         <%= render "public/shared/cabine_nav_link", badge_count: session[:cabine_cart]&.size %>

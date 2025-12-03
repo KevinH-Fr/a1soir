@@ -12,12 +12,14 @@ module Public
       @demande_rdv.statut = "soumis"
       
       # Combiner date et heure si date_rdv n'est pas déjà rempli
+      # Les heures sont toujours interprétées en timezone Europe/Paris (timezone de la boutique)
       if @demande_rdv.date_rdv.blank?
         date_str = params[:demande_rdv][:date_rdv_date] if params[:demande_rdv]
         time_str = params[:demande_rdv][:date_rdv_time] if params[:demande_rdv]
         
         if date_str.present? && time_str.present?
-          @demande_rdv.date_rdv = DateTime.parse("#{date_str} #{time_str}")
+          # Utiliser Time.zone.parse pour garantir l'utilisation de la timezone configurée (Europe/Paris)
+          @demande_rdv.date_rdv = Time.zone.parse("#{date_str} #{time_str}")
         end
       end
       
