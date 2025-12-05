@@ -48,6 +48,7 @@ module Public
         if Texte.last.present?
           @footer_texte_adresse = Texte.last.adresse
           @footer_texte_horaire = Texte.last.horaire
+          @footer_texte_contact = Texte.last.contact
         end
       end
       

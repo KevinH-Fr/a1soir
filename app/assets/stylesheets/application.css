@@ -470,7 +470,36 @@ footer .bi-facebook:hover {
   box-shadow: none;
 }
 
-/* FAQ Accordion custom styles */
+/* FAQ Accordion custom styles - Black cards with white chevrons */
+.accordion-item.bg-black .accordion-button {
+  background-color: #000 !important;
+  color: #fff !important;
+  border-color: #6c757d !important;
+  --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='rgb(255, 255, 255)'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  --bs-accordion-btn-active-icon: var(--bs-accordion-btn-icon);
+}
+
+.accordion-item.bg-black .accordion-button::after {
+  background-image: var(--bs-accordion-btn-icon) !important;
+  filter: brightness(0) invert(1);
+}
+
+.accordion-item.bg-black .accordion-button:not(.collapsed) {
+  background-color: #000 !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+.accordion-item.bg-black .accordion-button:focus {
+  border-color: #6c757d !important;
+  box-shadow: none !important;
+}
+
+.accordion-item.bg-black .accordion-body {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
 .faq-accordion-button {
   background: transparent !important;
   border: none !important;

@@ -25,6 +25,15 @@
             </p>
           </div>
         <% end %>
+
+        <% if @footer_texte_contact.present? %>
+          <div class="mb-3 d-flex align-items-start text-light">
+            <i class="bi bi-telephone-fill me-2 small" style="flex-shrink: 0; margin-top: 2px;"></i>
+            <p class="small mb-0 fw-bold" style="line-height: 1.6;">
+              <%= @footer_texte_contact %>
+            </p>
+          </div>
+        <% end %>
       </div>
       
       <!-- Navigation -->
@@ -62,6 +71,10 @@
           <%= link_to "https://www.facebook.com/autourdunsoir/", class: "text-light text-decoration-none hover-link d-flex align-items-center gap-2", target: "_blank", rel: "noopener noreferrer" do %>
             <i class="bi bi-facebook fs-5"></i>
             <span>Facebook</span>
+          <% end %>
+          <%= link_to "https://www.tiktok.com/@autourd1soir", class: "text-light text-decoration-none hover-link d-flex align-items-center gap-2", target: "_blank", rel: "noopener noreferrer" do %>
+            <i class="bi bi-tiktok fs-5"></i>
+            <span>TikTok</span>
           <% end %>
         </div>
       </div>

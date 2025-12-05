@@ -492,7 +492,48 @@ module PagesHelper
       (title_html + accordion_html).html_safe
     end
   end
-p
+
+  # Helper for FAQ items (accordion items)
+  def faq_item(id:, parent_id:, question:, &block)
+    item_id = "#{parent_id}_#{id}"
+    heading_id = "heading_#{item_id}"
+    collapse_id = "collapse_#{item_id}"
+    
+    # Determine if this is the first item (to set it as active)
+    is_first = id.ends_with?("1")
+    
+    content_tag :div, class: "accordion-item bg-black border-secondary" do
+      # Accordion header
+      header = content_tag(:h2, class: "accordion-header", id: heading_id) do
+        button_class = "accordion-button #{is_first ? '' : 'collapsed'} bg-black text-light"
+        button_style = "color: #fff !important;"
+        content_tag(:button, 
+          class: button_class,
+          type: "button",
+          style: button_style,
+          "data-bs-toggle": "collapse",
+          "data-bs-target": "##{collapse_id}",
+          "aria-expanded": is_first ? "true" : "false",
+          "aria-controls": collapse_id) do
+          question
+        end
+      end
+      
+      # Accordion collapse
+      collapse = content_tag(:div,
+        id: collapse_id,
+        class: "accordion-collapse collapse #{is_first ? 'show' : ''}",
+        "aria-labelledby": heading_id,
+        "data-bs-parent": "##{parent_id}") do
+        content_tag(:div, class: "accordion-body bg-black text-light opacity-75") do
+          capture(&block) if block_given?
+        end
+      end
+      
+      (header + collapse).html_safe
+    end
+  end
+
   # Helper pour générer les boutons de panier (cabine ou shop) avec style commun
   def cart_button_for(produit, type: :shop)
     turbo_frame_tag "produit_#{produit.id}_button" do

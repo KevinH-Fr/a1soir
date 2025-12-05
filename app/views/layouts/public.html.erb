@@ -46,13 +46,11 @@
       <%= yield %>
     </div>
     
-      <%# chatbot %>
-      <%#= render "public/chat/conversation" %>
-    <% unless params[:controller] == "public/pages" && params[:action] == "home" %>
-      <div class="floating-contact-icons">
-        <%= render "public/shared/floating_contact_icons" %>
-      </div>
-    <% end %>
+    <%# chatbot %>
+    <%#= render "public/chat/conversation" %>
+    <div class="floating-contact-icons">
+      <%= render "public/shared/floating_contact_icons" %>
+    </div>
 
     <footer>
       <%= render "public/shared/footer" %>
