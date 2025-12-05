@@ -81,8 +81,8 @@ module ProduitsFilterable
     
     available_produits_scope = searched_produits.where(today_availability: true).order(updated_at: :desc)
 
-    # 🔁 Then paginate the available produits (3 per page)
-    @pagy, @produits = pagy(available_produits_scope, items: 6)
+    # 🔁 Then paginate the available produits (5 per page)
+    @pagy, @produits = pagy(available_produits_scope, items: 5)
   end
 end
 

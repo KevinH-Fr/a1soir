@@ -34,3 +34,19 @@
     "Découvrez notre collection d'accessoires"
   ]
 } %>
+
+
+<!-- Call to action -->
+<div class="text-center my-5 py-4" data-scroll-reveal>
+  <h3 class="mb-4 text-light">Prêt à découvrir nos collections ?</h3>
+  <div class="d-flex gap-3 justify-content-center flex-wrap">
+    <%= link_to "Explorer les collections", nos_collections_path, class: "btn btn-light btn-lg px-5 public-btn-border-radius" %>
+
+    <%= link_to "#{rdv_url(subdomain: "shop")}#rdv-form",
+        class: "btn btn-outline-light btn-lg px-5 public-btn-border-radius" do %>
+      <i class="bi bi-calendar-check me-2"></i>
+      <span class="fw-bold text-uppercase small">Prendre rendez-vous</span>
+    <% end %>
+    
+  </div>
+</div>
