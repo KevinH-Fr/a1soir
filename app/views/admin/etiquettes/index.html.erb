@@ -7,8 +7,8 @@
     <div class="d-flex flex-wrap align-items-center m-2">
       <strong> Sélection active :  </strong>
 
-      <% session[:selection_etiquettes].each do |produit| %>
-        <%= custom_badge("", "", "", "", Produit.find(produit).full_name ) %>
+        <% session[:selection_etiquettes].each do |produit| %>
+          <%= custom_badge("", "", "", "", Produit.find(produit).full_name_and_taille) %>
 
       <% end %>
 

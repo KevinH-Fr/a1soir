@@ -91,6 +91,10 @@ class Produit < ApplicationRecord
     nom
   end
 
+  def full_name_and_taille
+    taille.present? ? "#{full_name} - #{taille.nom}" : full_name
+  end
+
   def default_image
     if image1.attached?
       image1

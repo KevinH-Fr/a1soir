@@ -18,13 +18,13 @@ module HomeAdminHelper
       end)
 
       concat(content_tag(:div, class: "card-body p-0 light-beige-colored") do
-        concat(content_tag(:table, class: "table table-primary table-striped table-hover m-0 p-0") do
+        concat(content_tag(:table, class: "table table-primary table-striped table-hover m-0 p-0", style: "table-layout: fixed;") do
           concat(content_tag(:tbody, class: "table-light") do
             items.each do |item|
               concat(content_tag(:tr) do
-                concat(content_tag(:td) do
+                concat(content_tag(:td, class: "text-truncate") do
                   concat(content_tag(:i, nil, class: "bi bi-#{item[:icon]} me-1")) # Include icon for each item
-                  concat(link_to item[:text], item[:path], class: "text-dark crop text-decoration-none")
+                  concat(link_to item[:text], item[:path], class: "text-dark text-decoration-none")
                 end)
               end)
             end

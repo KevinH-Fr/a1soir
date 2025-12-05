@@ -34,6 +34,9 @@ module Public
     end
 
     def faq
+      @texteContact = Texte.last.contact
+      @texteHoraire = Texte.last.horaire
+      @texteAdresse = Texte.last.adresse
     end
 
     def cabine_essayage

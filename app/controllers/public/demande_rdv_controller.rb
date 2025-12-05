@@ -9,11 +9,7 @@ module Public
     end
 
     def create
-      Rails.logger.info "="*80
-      Rails.logger.info "CREATE DEMANDE RDV - START"
-      Rails.logger.info "Params from_cabine: #{params[:from_cabine]}"
-      Rails.logger.info "Session cabine_cart: #{session[:cabine_cart].inspect}"
-      
+
       @demande_rdv = DemandeRdv.new(demande_rdv_params)
       @demande_rdv.statut = "soumis"
       
@@ -30,18 +26,11 @@ module Public
         end
       end
       
-      Rails.logger.info "DemandeRdv attributes: #{@demande_rdv.attributes.inspect}"
-      Rails.logger.info "DemandeRdv valid before recaptcha? #{@demande_rdv.valid?}"
-      Rails.logger.info "DemandeRdv errors before recaptcha: #{@demande_rdv.errors.full_messages.inspect}"
-      
+
       # Vérifier reCAPTCHA
       recaptcha_token = params['g-recaptcha-response']
-      Rails.logger.info "reCAPTCHA token present: #{recaptcha_token.present?}"
-      Rails.logger.info "reCAPTCHA token length: #{recaptcha_token&.length || 0}"
-      Rails.logger.info "reCAPTCHA token (first 50 chars): #{recaptcha_token&.first(50).inspect}"
-      
+ 
       unless RecaptchaVerifier.verify(recaptcha_token, request.remote_ip)
-        Rails.logger.error "❌ reCAPTCHA verification FAILED"
         
         @from_cabine = params[:from_cabine] == "1"
         flash[:alert] = "Veuillez compléter le reCAPTCHA pour prouver que vous n'êtes pas un robot"
@@ -63,17 +52,14 @@ module Public
         return
       end
       
-      Rails.logger.info "✅ reCAPTCHA verification SUCCEEDED"
- 
-      Rails.logger.info "Attempting to save DemandeRdv..."
       
       if @demande_rdv.save
-        Rails.logger.info "✅ DemandeRdv saved successfully (ID: #{@demande_rdv.id})"
+        
+        # Envoi des emails de confirmation et notification
+        DemandeRdvMailer.notification_admin(@demande_rdv).deliver_later
         
         # Si le formulaire vient de la cabine d'essayage, créer et associer la demande cabine
         if params[:from_cabine] == "1" && session[:cabine_cart].present?
-          Rails.logger.info "Creating DemandeCabineEssayage for DemandeRdv ##{@demande_rdv.id}"
-          Rails.logger.info "Cart items: #{session[:cabine_cart].inspect}"
           
           @demande_cabine_essayage = @demande_rdv.build_demande_cabine_essayage
           
@@ -82,23 +68,16 @@ module Public
             @demande_cabine_essayage.demande_cabine_essayage_items.build(produit_id: produit_id)
           end
           
-          Rails.logger.info "DemandeCabineEssayage valid? #{@demande_cabine_essayage.valid?}"
-          Rails.logger.info "DemandeCabineEssayage errors: #{@demande_cabine_essayage.errors.full_messages.inspect}"
           
           if @demande_cabine_essayage.save
-            Rails.logger.info "✅ DemandeCabineEssayage saved successfully (ID: #{@demande_cabine_essayage.id})"
             # Vider le panier cabine après création réussie
             session[:cabine_cart] = []
-            Rails.logger.info "="*80
             redirect_to cabine_essayage_path, notice: "Votre demande de rendez-vous avec cabine d'essayage a bien été envoyée. Nous vous contacterons bientôt."
           else
-            Rails.logger.error "❌ DemandeCabineEssayage save FAILED"
-            Rails.logger.error "Errors: #{@demande_cabine_essayage.errors.full_messages.inspect}"
             # Si l'association échoue, supprimer la demande RDV créée
             @demande_rdv.destroy
             @from_cabine = true
             flash[:alert] = "Erreur lors de la création de la demande cabine d'essayage: #{@demande_cabine_essayage.errors.full_messages.join(', ')}"
-            Rails.logger.info "="*80
             respond_to do |format|
               format.html { redirect_to cabine_essayage_path }
               format.turbo_stream do
@@ -112,20 +91,12 @@ module Public
             return
           end
         else
-          Rails.logger.info "✅ Standard RDV (no cabine)"
-          Rails.logger.info "="*80
           redirect_to rdv_path, notice: "Votre demande de rendez-vous a bien été envoyée. Nous vous contacterons bientôt."
         end
       else
-        Rails.logger.error "❌ DemandeRdv save FAILED"
-        Rails.logger.error "Validation errors: #{@demande_rdv.errors.full_messages.inspect}"
-        @demande_rdv.errors.details.each do |field, errors|
-          Rails.logger.error "  - #{field}: #{errors.inspect}"
-        end
         
         @from_cabine = params[:from_cabine] == "1"
         flash[:alert] = "Erreur lors de l'enregistrement : #{@demande_rdv.errors.full_messages.join(', ')}"
-        Rails.logger.info "="*80
         respond_to do |format|
           format.html do
             if @from_cabine

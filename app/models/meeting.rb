@@ -23,13 +23,36 @@ class Meeting < ApplicationRecord
   end
   
   def full_details
-    if client.present?
+    base_info = if client.present?
        "#{client.full_name} - #{client.tel}"
     elsif commande_id.present?
        "#{commande.client.full_name} - #{commande.client.tel}"     
     else
       nom     
-    end 
+    end
+    
+    # Ajouter les infos depuis demande_rdv si présent
+    if demande_rdv.present?
+      details = [base_info]
+      
+      if demande_rdv.evenement.present?
+        evenement_label = demande_rdv.evenement.humanize.capitalize
+        details << "Événement: #{evenement_label}"
+      end
+      
+      if demande_rdv.date_evenement.present?
+        details << "Date événement: #{demande_rdv.date_evenement.strftime('%d/%m/%Y')}"
+      end
+      
+      if demande_rdv.type_rdv.present?
+        type_rdv_label = demande_rdv.type_rdv.to_s.titleize
+        details << "Type RDV: #{type_rdv_label}"
+      end
+      
+      details.join(" | ")
+    else
+      base_info
+    end
   end
 
   def adresse_rdv

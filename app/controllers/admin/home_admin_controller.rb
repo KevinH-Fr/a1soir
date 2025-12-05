@@ -10,7 +10,7 @@ class Admin::HomeAdminController < Admin::ApplicationController
     @clients = Client.limit(6)
     @commandes = Commande.limit(6).includes([:client])
     @produits = Produit.limit(6).includes([:couleur], [:taille])
-    @meetings = Meeting.limit(6).includes([:client], [:commande])
+    @meetings = Meeting.where('datedebut >= ?', Time.current).order(datedebut: :asc).limit(6).includes([:client], [:commande])
 
   end
 

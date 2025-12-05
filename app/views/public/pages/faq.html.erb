@@ -223,16 +223,14 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
         <!-- Questions Générales -->
         <%= faq_section(id: "general", icon: "question-circle", title: "Questions générales", accordion_id: "accordionGeneral") do %>
           <%= faq_item(id: "general1", parent_id: "accordionGeneral", question: "Où se trouve votre boutique ?") do %>
-            <p><strong>A1soir</strong><br>
-            [Adresse complète à compléter]<br>
-            [Code postal et Ville]</p>
+            <p><strong>Autour d'un Soir</strong><br>
+            <%= @texteAdresse %><br>
             
             <p><strong>Horaires d'ouverture :</strong><br>
-            Du mardi au samedi : 10h - 19h<br>
-            Dimanche et lundi : Sur rendez-vous uniquement</p>
+            <%= @texteHoraire %><br>
             
             <p class="mb-0"><strong>Contact :</strong><br>
-            Tél : [Numéro à compléter]<br>
+            <%= @texteContact %><br>
             Email : (<%= link_to "formulaire de contact", "#{contact_path}#message-form" %>)</p>
           <% end %>
 

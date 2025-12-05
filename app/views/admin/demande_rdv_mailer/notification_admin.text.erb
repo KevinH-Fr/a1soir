@@ -8,7 +8,10 @@
 <%= I18n.t('demande_rdv.notification_admin.body.evenement') %> : <%= @demande_rdv.evenement %>
 <% end %>
 <% if @demande_rdv.date_evenement.present? %>
-<%= I18n.t('demande_rdv.notification_admin.body.date_evenement') %> : <%= @demande_rdv.date_evenement %>
+<%= I18n.t('demande_rdv.notification_admin.body.date_evenement') %> : <%= @demande_rdv.date_evenement.strftime('%d/%m/%Y') if @demande_rdv.date_evenement.respond_to?(:strftime) %>
+<% end %>
+<% if @demande_rdv.type_rdv.present? %>
+Type de RDV : <%= @demande_rdv.type_rdv.to_s.titleize %>
 <% end %>
 <% if @demande_rdv.commentaire.present? %>
 <%= I18n.t('demande_rdv.notification_admin.body.commentaires') %> : <%= @demande_rdv.commentaire %>
