@@ -7,7 +7,8 @@ module Public
       @contact_message = ContactMessage.new(contact_message_params)
       
       # Vérifier reCAPTCHA
-      unless verify_recaptcha(model: @contact_message)
+      recaptcha_token = params['g-recaptcha-response']
+      unless RecaptchaVerifier.verify(recaptcha_token, request.remote_ip)
         flash.now[:alert] = "Veuillez compléter le reCAPTCHA pour prouver que vous n'êtes pas un robot"
         respond_to do |format|
           format.html { render template: 'public/pages/contact', status: :unprocessable_entity }
