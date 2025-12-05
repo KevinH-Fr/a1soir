@@ -71,7 +71,7 @@ module ProduitsFilterable
     )
   
     @q = produits_scope.ransack(search_params[:q])
-    searched_produits = @q.result(distinct: true).order(nom: :asc)
+    searched_produits = @q.result(distinct: true)
   
     # ✅ Filtre de disponibilité utilisant le champ today_availability
     # Ce champ est calculé et mis à jour :
