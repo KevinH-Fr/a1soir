@@ -4,14 +4,22 @@ module BadgesPublicHelper
   # ============================================
   
   def badge_taille(produit)
-    content_tag :span, class: "text-light small opacity-75" do
+    content_tag :span, class: "small opacity-75" do
       concat content_tag(:span, "Taille: ", class: "me-1")
       concat content_tag(:span, produit.taille.nom.upcase, class: "")
     end
   end
 
+  def badge_couleur(produit)
+    content_tag :span, class: "small opacity-75" do
+      concat content_tag(:span, "Couleur: ", class: "me-1")
+      concat content_tag(:span, produit.couleur.nom, class: "")
+    end
+  end
+
+
   def badge_prix(type, montant)
-    content_tag :span, class: "text-light small opacity-75" do
+    content_tag :span, class: "small opacity-75" do
       concat content_tag(:span, "#{type}: ", class: "me-1")
       concat content_tag(:span, custom_currency_no_decimals_format(montant), class: "")
     end

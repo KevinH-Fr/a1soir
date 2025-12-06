@@ -1,9 +1,9 @@
-<div class="public-main-content bg-black">
-  <div class="container-fluid py-5 px-4">
+<div class="public-main-content bg-white text-dark">
+  <div class="container-fluid py-2 px-4">
     <!-- Lien de retour -->
     <% if request.referer.present? %>
-      <div class="mb-3">
-        <%= link_to request.referer, class: "text-light text-decoration-none d-inline-flex align-items-center btn btn-link p-0" do %>
+      <div class="mb-1">
+        <%= link_to request.referer, class: "text-secondary text-decoration-none d-inline-flex align-items-center btn btn-link p-0" do %>
           <i class="bi bi-arrow-left me-2 fs-5"></i>
           <span>Retour</span>
         <% end %>
@@ -24,47 +24,46 @@
         <div class="d-flex flex-column h-100 px-3 px-md-4">
           
           <!-- Title -->
-          <h1 class="text-light mb-4 fw-bold" style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; line-height: 1.2;">
+          <h1 class="mb-3 fw-bold" style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; line-height: 1.2;">
             <%= @produit.nom %>
           </h1>
 
           <!-- Description -->
           <% if @produit.description.present? %>
-            <div class="mb-5">
-              <p class="text-light opacity-75 mb-0" style="line-height: 1.8; font-size: 1.1rem;">
+            <div class="mb-2">
+              <p class="opacity-75 mb-0" style="line-height: 1.8; font-size: 1.1rem;">
                 <%= @produit.description %>
               </p>
             </div>
           <% end %>
 
-          <hr class="my-4 text-light">
+          <hr class="my-4">
 
           <!-- Badges: Taille, Couleur -->
-          <div class="d-flex flex-wrap gap-3 mb-5 fs-5">
+          <div class="d-flex justify-content-start gap-3 mb-3 fs-5">
             <%= badge_taille(@produit) if @produit.taille.present? %>
             <%= badge_couleur(@produit) if @produit.couleur.present? %>
           </div>
 
           <!-- Badges: prix vente, prix location -->
-          <div class="d-flex flex-wrap gap-3 mb-5 fs-3">
+          <div class="d-flex justify-content-start gap-5 mb-2 fs-3 text-black">
             <%= badge_prix("Vente", @produit.prixvente) %>
             <%= badge_prix("Location", @produit.prixlocation) if @produit.prixlocation.present? %>
           </div>
 
-
           <!-- Location info -->
           <% if @produit.prixlocation.present? %>
-            <div class="mb-5 d-flex align-items-center">
-              <i class="bi bi-info-circle text-light me-3 fs-5"></i>
-              <small class="text-light opacity-75" style="font-size: 0.95rem;">La location se fait uniquement au magasin.</small>
+            <div class="mb-2 d-flex align-items-center">
+              <i class="bi bi-info-circle me-3 fs-5"></i>
+              <small class="opacity-75" style="font-size: 0.95rem;">La location se fait uniquement au magasin.</small>
             </div>
           <% end %>
 
           <!-- Other sizes -->
           <% if @meme_produit_meme_couleur_autres_tailles.any? %>
-            <div class="mb-5 fs-3">
-              <h6 class="text-dark mb-3 d-flex align-items-center">
-                <i class="bi bi-rulers text-light me-2"></i>
+            <div class="mb-2 fs-3">
+              <h6 class="mb-2 d-flex align-items-center">
+                <i class="bi bi-rulers me-2"></i>
                 <span class="fw-bold">Autres tailles disponibles</span>
               </h6>
               <div class="d-flex flex-wrap gap-2">
@@ -77,9 +76,9 @@
 
           <!-- Other colors -->
           <% if @meme_produit_meme_taille_autres_couleurs.any? %>
-            <div class="mb-5 fs-3">
-              <h6 class="text-dark mb-3 d-flex align-items-center">
-                <i class="bi bi-palette text-light me-2"></i>
+            <div class="mb-2 fs-3">
+              <h6 class="mb-3 d-flex align-items-center">
+                <i class="bi bi-palette me-2"></i>
                 <span class="fw-bold">Autres couleurs disponibles</span>
               </h6>
               <div class="d-flex flex-wrap gap-2">
@@ -91,11 +90,11 @@
           <% end %>
 
           <!-- Cart button -->
-          <div class="py-3">
+          <div class="py-4">
             <% if session[:from_cabine] %>
-              <%= cart_button_for(@produit, type: :cabine, button_class: "py-2 fs-5") %>
+              <%= cart_button_for(@produit, type: :cabine, button_class: "py-2 fs-5 bg-black text-white border-0") %>
             <% elsif ENV["ONLINE_SALES_AVAILABLE"] == "true" %>
-              <%= cart_button_for(@produit, type: :shop, button_class: "py-2 fs-5") %>
+              <%= cart_button_for(@produit, type: :shop, button_class: "py-2 fs-5 bg-black text-white border-0") %>
             <% end %>
           </div>
         </div>
