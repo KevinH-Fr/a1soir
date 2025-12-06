@@ -11,7 +11,13 @@
     
     <div class="row g-4 justify-content-center">
       <div class="col-12 col-md-6 col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="100">
-        <%= info_card(icon: "person-lines-fill", title: "Contacts", content: @texteContact) %>
+        <% contact_button = link_to('Nous écrire', "#{contact_path}#message-form", class: 'btn btn-outline-dark btn-sm public-btn-border-radius px-4') %>
+        <% contact_content = "#{@texteContact}<div class='text-start mt-2'>#{contact_button}</div>" %>
+        <%= info_card(
+          icon: "person-lines-fill", 
+          title: "Contacts", 
+          content: contact_content.html_safe
+        ) %>
       </div>
       <div class="col-12 col-md-6 col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="200">
         <%= info_card(icon: "clock", title: "Horaires", content: @texteHoraire) %>

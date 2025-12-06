@@ -3,7 +3,7 @@
     <div data-controller="placeholder-card">
 
           <!-- Card with Placeholder -->
-          <div class="card card-placeholder bg-dark text-light border-secondary" aria-hidden="true" data-placeholder-card-target="placeholder">
+          <div class="card rounded-1 card-placeholder bg-dark text-light border-secondary" aria-hidden="true" data-placeholder-card-target="placeholder">
               <!-- Placeholder image/carousel -->
               <div class="placeholder card-img-top carousel-multiple" style="height: 300px; background-color: #3a3a3a;"></div>
                       
@@ -33,7 +33,7 @@
           </div>
 
           <!-- Real Content -->
-          <div class="card card-content bg-dark text-light border-secondary" data-placeholder-card-target="content" style="display:none;">
+          <div class="card rounded-1 card-content bg-dark text-light border-secondary" data-placeholder-card-target="content" style="display:none;">
               
               <%= link_to produit_path(slug: produit.nom.parameterize, id: produit.id), class: "text-decoration-none", data: { turbo: false } do %>
                   <%= render partial: "public/pages/carousel", locals: { produit: produit, carousel_class: "card-img-top carousel-multiple" } %>

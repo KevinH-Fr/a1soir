@@ -22,6 +22,7 @@ module Public
     end
 
     def nos_collections
+      @coups_de_coeur = Produit.where(today_availability: true).coups_de_coeur.eshop_diffusion.actif.limit(10)
       session[:from_cabine] = false
     end
 

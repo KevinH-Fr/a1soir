@@ -3,7 +3,7 @@
 
 <div id="<%= container_id %>">
   <div id="<%= carousel_id %>" class="carousel slide" data-bs-ride="carousel" data-controller="carousel">
-    <div class="carousel-inner <%= carousel_class %>">
+    <div class="carousel-inner <%= carousel_class %> rounded-top-1 overflow-hidden">
       <% slide_index = 0 %>
       
       <% if produit.video1.attached? %>
@@ -16,12 +16,12 @@
         </div>
         <% slide_index += 1 %>
         <div class="carousel-item">
-          <%= image_tag(produit.default_image_white, class: "img-fluid rounded-1 w-100", alt: produit.nom, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
+          <%= image_tag(produit.default_image_white, class: "img-fluid w-100", alt: produit.nom, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
         </div>
         <% slide_index += 1 %>
       <% else %>
         <div class="carousel-item active">
-          <%= image_tag(produit.default_image_white, class: "img-fluid rounded-1 w-100", alt: produit.nom, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
+          <%= image_tag(produit.default_image_white, class: "img-fluid w-100", alt: produit.nom, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
         </div>
         <% slide_index += 1 %>
       <% end %>
@@ -29,7 +29,7 @@
       <% if produit.images %>
         <% produit.images.each_with_index do |image, img_index| %>
           <div class="carousel-item">
-            <%= image_tag(image, class: "img-fluid rounded-1 w-100", alt: produit.nom, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}", gallery_index: img_index }) %>
+            <%= image_tag(image, class: "img-fluid w-100", alt: produit.nom, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}", gallery_index: img_index }) %>
           </div>
           <% slide_index += 1 %>
         <% end %>

@@ -26,36 +26,57 @@
     reverse: true
   ) %>
 
-  <!-- Section 3: Texte centré plein largeur -->
+  <!-- Carousel des métiers de la boutique -->
   <div class="container-fluid px-0 mt-4">
-    <div class="row g-0">
-      <div class="col-12">
-        <div class="bg-black p-5 text-center">
-          <h3 class="text-light mb-4" style="font-family: 'Playfair Display', serif; font-size: 2.5rem;">Votre événement mérite le meilleur</h3>
-          <p class="text-light mx-auto mb-3" style="font-size: 1.15rem; line-height: 1.9; max-width: 800px;">
-            Que ce soit pour un mariage, une soirée de gala ou un événement professionnel, 
-            nous mettons tout en œuvre pour que vous soyez resplendissant. 
-            Notre équipe experte vous conseille et vous guide dans votre choix.
-          </p>
-        </div>
+    <div id="metiersCarousel" class="carousel slide" data-bs-ride="carousel">
+      <!-- Indicateurs -->
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#metiersCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#metiersCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#metiersCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#metiersCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
       </div>
-    </div>
-  </div>
-
-  <!-- Section 4: Image plein largeur avec overlay texte -->
-  <div class="container-fluid px-0 mt-4">
-    <div class="position-relative" style="height: 500px; overflow: hidden;">
-      <%= image_tag("/images/cat_costume.jpg", class: "img-fluid w-100 h-100", style: "object-fit: cover;") %>
-      <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" 
-           style="background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6));">
-        <div class="text-center text-light px-4" style="max-width: 700px;">
-          <h3 class="mb-4" style="font-family: 'Playfair Display', serif; font-size: 2.5rem;">Un service sur mesure</h3>
-          <p class="fs-5" style="line-height: 1.8;">
-            Location ou vente, nous adaptons nos services à vos besoins. 
-            Essayage en boutique, conseils personnalisés et suivi jusqu'à votre événement.
-          </p>
-        </div>
+      
+      <!-- Slides -->
+      <div class="carousel-inner">
+        <%= simple_image_text_section(
+          image_path: "/images/cat_tenues_soiree.jpg",
+          title: "Location de tenues de soirée",
+          text: "Découvrez notre vaste collection de robes et tenues de soirée pour tous vos événements. Location ou achat, nous vous accompagnons dans votre choix pour que vous soyez parfaite le jour J.",
+          active: true
+        ) %>
+        
+        <%= simple_image_text_section(
+          image_path: "/images/cat_robes_mariees.jpg",
+          title: "Robes de mariée",
+          text: "Trouvez la robe de mariée de vos rêves parmi notre sélection exclusive. De la dentelle classique aux créations modernes, chaque modèle est choisi pour sublimer votre jour le plus important.",
+          active: false
+        ) %>
+        
+        <%= simple_image_text_section(
+          image_path: "/images/cat_costume.jpg",
+          title: "Costumes et smokings",
+          text: "Messieurs, découvrez notre collection de costumes, smokings et tenues de cérémonie. Élégance et raffinement assurés pour tous vos événements prestigieux.",
+          active: false
+        ) %>
+        
+        <%= simple_image_text_section(
+          image_path: "/images/cat_accessoires.jpg",
+          title: "Accessoires et sur-mesure",
+          text: "Complétez votre tenue avec nos accessoires soigneusement sélectionnés. Nous proposons également un service de retouches et d'ajustements pour une tenue parfaitement adaptée à votre morphologie.",
+          active: false
+        ) %>
       </div>
+      
+      <!-- Contrôles -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#metiersCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Précédent</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#metiersCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Suivant</span>
+      </button>
     </div>
   </div>
 </section>
