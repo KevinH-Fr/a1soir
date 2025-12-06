@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_02_205043) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_06_143224) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -349,8 +349,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_02_205043) do
     t.string "stripe_product_id"
     t.string "stripe_price_id"
     t.boolean "today_availability", default: false, null: false
+    t.boolean "coup_de_coeur", default: false, null: false
+    t.integer "coup_de_coeur_position"
     t.index ["categorie_produit_id"], name: "index_produits_on_categorie_produit_id"
     t.index ["couleur_id"], name: "index_produits_on_couleur_id"
+    t.index ["coup_de_coeur", "coup_de_coeur_position"], name: "index_produits_on_coup_de_coeur_and_coup_de_coeur_position"
     t.index ["fournisseur_id"], name: "index_produits_on_fournisseur_id"
     t.index ["taille_id"], name: "index_produits_on_taille_id"
     t.index ["today_availability"], name: "index_produits_on_today_availability"
@@ -406,6 +409,18 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_02_205043) do
     t.string "nom"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "texte_produits", force: :cascade do |t|
+    t.integer "texte_id", null: false
+    t.integer "produit_id", null: false
+    t.integer "position", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["produit_id"], name: "index_texte_produits_on_produit_id"
+    t.index ["texte_id", "position"], name: "index_texte_produits_on_texte_id_and_position"
+    t.index ["texte_id", "produit_id"], name: "index_texte_produits_on_texte_id_and_produit_id", unique: true
+    t.index ["texte_id"], name: "index_texte_produits_on_texte_id"
   end
 
   create_table "textes", force: :cascade do |t|
@@ -479,4 +494,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_02_205043) do
   add_foreign_key "stripe_payment_items", "produits"
   add_foreign_key "stripe_payment_items", "stripe_payments"
   add_foreign_key "stripe_payments", "produits"
+  add_foreign_key "texte_produits", "produits"
+  add_foreign_key "texte_produits", "textes"
 end

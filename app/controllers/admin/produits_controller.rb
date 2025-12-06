@@ -2,7 +2,7 @@ class Admin::ProduitsController < Admin::ApplicationController
 
   before_action :authenticate_admin!, only: %i[ edit update ]
 
-  before_action :set_produit, only: %i[ show edit update destroy delete_image_attachment ]
+  before_action :set_produit, only: %i[ show edit update destroy delete_image_attachment toggle_coup_de_coeur move_up_coup_de_coeur move_down_coup_de_coeur ]
 
   def index
     @count_produits = Produit.count
@@ -281,6 +281,120 @@ class Admin::ProduitsController < Admin::ApplicationController
       redirect_to admin_produit_path(copy), notice: "Duplication du produit effectuée !"
     else
       redirect_to admin_produit_path(@produit), notice: "Aucun produit de base spécifié."
+    end
+  end
+
+  def toggle_coup_de_coeur
+    @produit.coup_de_coeur = !@produit.coup_de_coeur
+    
+    if @produit.coup_de_coeur
+      # Attribuer une position si le produit devient un coup de cœur
+      max_position = Produit.where(coup_de_coeur: true).maximum(:coup_de_coeur_position) || -1
+      @produit.coup_de_coeur_position = max_position + 1
+      flash.now[:notice] = "Produit ajouté aux coups de cœur"
+    else
+      # Retirer la position si le produit n'est plus un coup de cœur
+      @produit.coup_de_coeur_position = nil
+      flash.now[:notice] = "Produit retiré des coups de cœur"
+    end
+    
+    if @produit.save
+      # Recharger la liste des coups de cœur
+      @coups_de_coeur = Produit.coups_de_coeur.includes(:image1_attachment, :categorie_produits)
+      
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace(
+              "coups_de_coeur_section",
+              partial: "admin/textes/coups_de_coeur"
+            ),
+            turbo_stream.replace(
+              "produit_#{@produit.id}_coup_de_coeur",
+              partial: "admin/produits/coup_de_coeur_toggle",
+              locals: { produit: @produit }
+            ),
+            turbo_stream.replace("flash", partial: "layouts/flash")
+          ]
+        end
+        format.html { redirect_to admin_produits_path, notice: flash.now[:notice] }
+      end
+    else
+      flash.now[:alert] = "Erreur lors de la mise à jour"
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash")
+        end
+        format.html { redirect_to admin_produits_path, alert: "Erreur lors de la mise à jour" }
+      end
+    end
+  end
+
+  def move_up_coup_de_coeur
+    if @produit.coup_de_coeur
+      # Trouver le produit avec la position juste au-dessus
+      produit_au_dessus = Produit.where(coup_de_coeur: true)
+                                  .where("coup_de_coeur_position < ?", @produit.coup_de_coeur_position)
+                                  .order(coup_de_coeur_position: :desc)
+                                  .first
+      
+      if produit_au_dessus
+        # Échanger les positions
+        position_temp = @produit.coup_de_coeur_position
+        @produit.update_column(:coup_de_coeur_position, produit_au_dessus.coup_de_coeur_position)
+        produit_au_dessus.update_column(:coup_de_coeur_position, position_temp)
+        
+        flash.now[:notice] = "Position mise à jour"
+      end
+      
+      # Recharger la liste des coups de cœur
+      @coups_de_coeur = Produit.coups_de_coeur.includes(:image1_attachment, :categorie_produits)
+      
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace("coups_de_coeur_section", partial: "admin/textes/coups_de_coeur"),
+            turbo_stream.replace("flash", partial: "layouts/flash")
+          ]
+        end
+        format.html { redirect_to admin_textes_path }
+      end
+    else
+      redirect_to admin_textes_path, alert: "Produit non trouvé"
+    end
+  end
+
+  def move_down_coup_de_coeur
+    if @produit.coup_de_coeur
+      # Trouver le produit avec la position juste en dessous
+      produit_en_dessous = Produit.where(coup_de_coeur: true)
+                                   .where("coup_de_coeur_position > ?", @produit.coup_de_coeur_position)
+                                   .order(coup_de_coeur_position: :asc)
+                                   .first
+      
+      if produit_en_dessous
+        # Échanger les positions
+        position_temp = @produit.coup_de_coeur_position
+        @produit.update_column(:coup_de_coeur_position, produit_en_dessous.coup_de_coeur_position)
+        produit_en_dessous.update_column(:coup_de_coeur_position, position_temp)
+        
+        flash.now[:notice] = "Position mise à jour"
+      end
+      
+      # Recharger la liste des coups de cœur
+      @coups_de_coeur = Produit.coups_de_coeur.includes(:image1_attachment, :categorie_produits)
+      
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace("coups_de_coeur_section", partial: "admin/textes/coups_de_coeur"),
+            turbo_stream.replace("flash", partial: "layouts/flash")
+          ]
+        end
+        format.html { redirect_to admin_textes_path }
+      end
+    else
+      redirect_to admin_textes_path, alert: "Produit non trouvé"
     end
   end
   

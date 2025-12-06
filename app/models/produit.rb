@@ -57,6 +57,7 @@ class Produit < ApplicationRecord
   scope :actif, -> { where(actif: true) } 
   scope :inactif, -> { where(actif: [false, nil]) }
   scope :eshop_diffusion, -> { where(eshop: true) }
+  scope :coups_de_coeur, -> { where(coup_de_coeur: true).order(coup_de_coeur_position: :asc, id: :asc) }
 
   scope :by_categorie, ->(categorie) { joins(:categorie_produits).where(categorie_produits: { id: categorie.id }) }
   scope :by_categories, ->(categories_ids) { joins(:categorie_produits).where(categorie_produits: { id: categories_ids }).distinct }

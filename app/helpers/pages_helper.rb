@@ -146,15 +146,15 @@ module PagesHelper
     end
   end
 
-  def collection_card(title:, items:, url:, delay: 0, image: nil)
-    link_to url, class: "text-decoration-none" do
-      content_tag :div, class: "collection-card position-relative overflow-hidden", style: "height: 400px;" do
+  def collection_card(title:, items:, url:, delay: 0, image: nil, subtitle: nil)
+    link_to url, class: "text-decoration-none collection-card-link" do
+      content_tag :div, class: "collection-card position-relative overflow-hidden", style: "height: 600px;" do
         # Image de fond
         image_section = if image.present?
           image_tag("/images/#{image}",
-            class: "img-fluid w-100 h-100",
+            class: "img-fluid w-100 h-100 collection-card-image",
             loading: "lazy",
-            style: "object-fit: cover; height: 100%; transition: transform 0.3s ease;"
+            style: "object-fit: cover;"
           )
         else
           content_tag :div, class: "d-flex align-items-center justify-content-center bg-secondary w-100 h-100" do
@@ -162,11 +162,20 @@ module PagesHelper
           end
         end
 
-        # Overlay avec bouton en bas uniquement
-        overlay = content_tag :div, class: "position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end justify-content-center", style: "background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6)); padding: 1.5rem;" do
-          # Bouton en bas avec le nom de la collection
-          content_tag :span, class: "btn btn-outline-light btn-lg", style: "border-radius: 4px; border-width: 2px; pointer-events: auto;" do
-            title
+        # Overlay avec contenu en bas à gauche
+        subtitle_text = subtitle || (items.is_a?(Array) && items.any? ? items.first : nil)
+        overlay = content_tag :div, class: "position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end justify-content-start p-5 collection-card-overlay", style: "background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.7));" do
+          content_tag :div, class: "text-white" do
+            title_tag = content_tag :h3, title, class: "display-6 mb-2 fs-3", style: "text-shadow: 0 2px 10px rgba(0,0,0,0.8);", data: { aos: "fade-up", aos_delay: "0" }
+            subtitle_tag = if subtitle_text.present?
+              content_tag :p, subtitle_text, class: "my-5 fs-6", style: "text-shadow: 0 1px 5px rgba(0,0,0,0.8); opacity: 0.9; max-width: 250px;", data: { aos: "fade-up", aos_delay: "100" }
+            else
+              "".html_safe
+            end
+            link_tag = content_tag :span, class: "collection-card-cta text-uppercase fs-6", style: "text-shadow: 0 1px 3px rgba(0,0,0,0.8);", data: { aos: "fade-up", aos_delay: "200" } do
+              "Découvrir"
+            end
+            title_tag + subtitle_tag + link_tag
           end
         end
 

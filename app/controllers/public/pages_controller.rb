@@ -8,6 +8,7 @@ module Public
     def home
       #@categories = CategorieProduit.not_service
       #@carousel_images = Texte&.first&.carousel_images
+      @coups_de_coeur = Produit.where(today_availability: true).coups_de_coeur.eshop_diffusion.actif.limit(10)
     end
 
     def la_boutique

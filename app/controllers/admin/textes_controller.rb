@@ -5,6 +5,7 @@ class Admin::TextesController < Admin::ApplicationController
 
   def index
     @textes = Texte.all
+    @coups_de_coeur = Produit.coups_de_coeur.includes(:image1_attachment, :categorie_produits)
   end
 
   def show

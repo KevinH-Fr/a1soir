@@ -1,38 +1,42 @@
 <div class="row g-0">
   
-  <div class="col-12 col-md-6 col-lg-3" data-scroll-reveal>
+  <div class="col-12 col-md-6 col-lg-6" data-scroll-reveal>
     <%= collection_card(
       title: "Robes de mariée",
       items: ["Courtes", "Longues"],
       url: produits_filter_url(category_names: ["robes de mariée courtes", "robes de mariée longues"]),
-      image: "cat_robes_mariees.jpg"
+      image: "cat_robes_mariees.jpg",
+      subtitle: "Découvrez notre sélection de robes de mariée courtes et longues pour votre jour spécial"
     ) %>
   </div>
 
-  <div class="col-12 col-md-6 col-lg-3" data-scroll-reveal>
+  <div class="col-12 col-md-6 col-lg-6" data-scroll-reveal>
     <%= collection_card(
       title: "Tenues de Soirée",
       items: ["Longues", "Courtes", "Ensembles pantalon", "Combinaisons"],
       url: produits_filter_url(category_names: ["robes courtes", "robes longues", "ensembles pantalons"]),
-      image: "cat_tenues_soiree.jpg"
+      image: "cat_tenues_soiree.jpg",
+      subtitle: "Explorez notre collection de tenues de soirée élégantes pour toutes vos occasions"
     ) %>
   </div>
 
-  <div class="col-12 col-md-6 col-lg-3" data-scroll-reveal>
+  <div class="col-12 col-md-6 col-lg-6" data-scroll-reveal>
     <%= collection_card(
       title: "Costumes",
       items: ["Smokings", "Cérémonies", "Enfant"],
       url: produits_filter_url(category_names: "costume"),
-      image: "cat_costume.jpg"
+      image: "cat_costume.jpg",
+      subtitle: "Parcourez notre gamme de costumes et smokings pour hommes de toutes tailles"
     ) %>
   </div>
 
-  <div class="col-12 col-md-6 col-lg-3" data-scroll-reveal>
+  <div class="col-12 col-md-6 col-lg-6" data-scroll-reveal>
     <%= collection_card(
       title: "Accessoires",
       items: ["Chaussures Homme", "Chaussures Femmes", "Accessoires Hommes", "Accessoires Femmes"],
       url: produits_filter_url(category_names: ["chaussures", "accessoires"]),
-      image: "cat_accessoires.jpg"
+      image: "cat_accessoires.jpg",
+      subtitle: "Complétez votre tenue avec nos chaussures et accessoires soigneusement sélectionnés"
     ) %>
   </div>
 

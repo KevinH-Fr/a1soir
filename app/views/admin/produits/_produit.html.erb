@@ -134,6 +134,10 @@
                 <%= custom_badge("", "date achat:", "", "", produit.dateachat ) if produit.dateachat %>
               <% end %>
             </div>
+
+            <div id="produit_<%= produit.id %>_coup_de_coeur" class="px-2">
+              <%= render "admin/produits/coup_de_coeur_toggle", produit: produit %>
+            </div>
             
           </div>
         </div>

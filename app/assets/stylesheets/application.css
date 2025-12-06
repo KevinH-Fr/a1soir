@@ -1713,10 +1713,10 @@ section {
 
 .section-title-underline {
   position: absolute;
-  bottom: 0;
+  bottom: -8px;
   left: 0;
   width: 0;
-  height: 3px;
+  height: 1px;
   background: black;
   transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -1915,6 +1915,38 @@ section {
 .collection-card:hover .btn {
   transform: translateY(-8px);
 }
+
+/* Collection card CTA avec underline animé */
+.collection-card-link {
+  display: block;
+  text-decoration: none;
+}
+
+.collection-card-cta {
+  position: relative;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.collection-card-cta::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: #fff;
+  transition: width 0.3s ease;
+}
+
+.collection-card:hover .collection-card-cta::after {
+  width: 100%;
+}
+
+.collection-card:hover .collection-card-image {
+  transform: scale(1.1);
+}
+
 
 .info-card:hover,
 .concept-card:hover {

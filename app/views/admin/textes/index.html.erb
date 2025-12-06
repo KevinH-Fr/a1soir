@@ -1,8 +1,8 @@
 <div class="container-fluid py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-      <h1 class="mb-2">Textes</h1>
-      <p class="text-muted">Définissez les textes de la boutique</p>
+      <h1 class="mb-2">Marketing</h1>
+      <p class="text-muted">Définissez les éléments marketing de la boutique</p>
     </div>
     <% unless @textes.any? %>
       <%= link_to "Nouveau texte", new_admin_texte_path, class: "btn btn-primary" %>
@@ -24,4 +24,6 @@
       </div>
     <% end %>
   </div>
+
+  <%= render "admin/textes/coups_de_coeur" %>
 </div>

@@ -135,7 +135,9 @@ Rails.application.routes.draw do
           post :edit
           get :dupliquer
           get 'delete_image_attachment', to: 'produits#delete_image_attachment', as: :delete_image_attachment
-
+          post :toggle_coup_de_coeur
+          post :move_up_coup_de_coeur
+          post :move_down_coup_de_coeur
         end
       end
       

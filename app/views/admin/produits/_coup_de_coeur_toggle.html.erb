@@ -1,0 +1,6 @@
+<%= button_to toggle_coup_de_coeur_admin_produit_path(produit), 
+    method: :post,
+    class: "btn btn-sm #{produit.coup_de_coeur ? 'btn-danger' : 'btn-outline-secondary'} my-1" do %>
+  <i class="bi bi-heart<%= '-fill' if produit.coup_de_coeur %>"></i>
+  <%= produit.coup_de_coeur ? "Coup de cœur" : "Ajouter aux coups de cœur" %>
+<% end %>

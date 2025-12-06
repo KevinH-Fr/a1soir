@@ -1,0 +1,92 @@
+<div id="coups_de_coeur_section" class="card mt-4 shadow-sm">
+  <div class="card-header bg-danger text-white">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4 class="mb-0">
+        <i class="bi bi-heart-fill me-2"></i>
+        Produits Coups de cœur
+      </h4>
+      <span class="badge bg-white text-danger">
+        <%=  @coups_de_coeur.count %> produit(s)
+      </span>
+    </div>
+  </div>
+  <div class="card-body">
+    <p class="text-muted mb-3">
+      <i class="bi bi-info-circle me-1"></i>
+      Ces produits s'affichent sur le site public. Gérez-les depuis la liste des produits ou ici.
+    </p>
+    
+    <% if @coups_de_coeur&.any? %>
+      <div>
+        <% @coups_de_coeur.each_with_index do |produit, index| %>
+          <div class="mb-3">
+            <div class="card border">
+              <div class="card-body p-3">
+                <div class="row align-items-center">
+                  <div class="col-auto">
+                    <div class="btn-group-vertical" role="group">
+                      <%= button_to move_up_coup_de_coeur_admin_produit_path(produit), 
+                          method: :post,
+                          class: "btn btn-sm btn-outline-secondary #{'disabled' if index == 0}",
+                          disabled: index == 0,
+                          title: "Monter" do %>
+                        <i class="bi bi-arrow-up"></i>
+                      <% end %>
+                      <%= button_to move_down_coup_de_coeur_admin_produit_path(produit), 
+                          method: :post,
+                          class: "btn btn-sm btn-outline-secondary #{'disabled' if index == @coups_de_coeur.size - 1}",
+                          disabled: index == @coups_de_coeur.size - 1,
+                          title: "Descendre" do %>
+                        <i class="bi bi-arrow-down"></i>
+                      <% end %>
+                    </div>
+                  </div>
+                  
+                  <div class="col-auto">
+                    <% if produit.image1.attached? %>
+                      <%= image_tag produit.default_image, class: "rounded", style: "width: 80px; height: 80px; object-fit: cover;" %>
+                    <% else %>
+                      <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="bi bi-image text-muted"></i>
+                      </div>
+                    <% end %>
+                  </div>
+                  
+                  <div class="col">
+                    <h6 class="mb-1"><%= produit.nom %></h6>
+                    <small class="text-muted">Position: <%= produit.coup_de_coeur_position || 0 %></small>
+                  </div>
+                  
+                  <div class="col-auto">
+                    <div class="d-flex gap-2 align-items-center">
+                      <%= button_to toggle_coup_de_coeur_admin_produit_path(produit), 
+                          method: :post,
+                          class: "btn btn-sm btn-outline-danger",
+                          data: { 
+                            turbo_confirm: "Retirer ce produit des coups de cœur ?",
+                            turbo_frame: "_top"
+                          },
+                          title: "Retirer des coups de cœur" do %>
+                        <i class="bi bi-heart"></i>
+                      <% end %>
+                      <%= link_to admin_produit_path(produit), class: "btn btn-sm btn-outline-primary", target: "_blank", title: "Voir le produit" do %>
+                        <i class="bi bi-box-arrow-up-right"></i>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="alert alert-info mb-0">
+        <i class="bi bi-info-circle me-2"></i>
+        Aucun produit coup de cœur pour le moment. 
+        <%= link_to "Ajoutez-en depuis la liste des produits", admin_produits_path, class: "alert-link" %>.
+      </div>
+    <% end %>
+  </div>
+</div>
+
