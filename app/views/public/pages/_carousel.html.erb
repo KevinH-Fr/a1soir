@@ -1,42 +1,49 @@
-<div id="carouselProduit_<%= produit.id %>" class="carousel slide" data-bs-ride="carousel" data-controller="carousel">
+<% carousel_id = "carouselProduit_#{produit.id}" %>
+<% container_id = "carouselContainer_#{produit.id}" %>
+
+<div id="<%= container_id %>">
+  <div id="<%= carousel_id %>" class="carousel slide" data-bs-ride="carousel" data-controller="carousel">
     <div class="carousel-inner <%= carousel_class %>">
+      <% slide_index = 0 %>
+      
+      <% if produit.video1.attached? %>
+        <div class="carousel-item active" style="cursor: pointer;" role="button" data-bs-toggle="modal" data-bs-target="#modalProduit_<%= produit.id %>">
+          <video autoplay loop muted playsinline class="d-block w-100 <%= carousel_class %>"
+          src="<%= url_for(produit.video1) %>"
+          type="<%= produit.video1.content_type %>">
+          Votre navigateur ne prend pas en charge la lecture de vidéos.
+          </video>
+        </div>
+        <% slide_index += 1 %>
+        <div class="carousel-item">
+          <%= image_tag(produit.default_image_white, class: "img-fluid rounded-1 w-100", alt: produit.nom, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
+        </div>
+        <% slide_index += 1 %>
+      <% else %>
+        <div class="carousel-item active">
+          <%= image_tag(produit.default_image_white, class: "img-fluid rounded-1 w-100", alt: produit.nom, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
+        </div>
+        <% slide_index += 1 %>
+      <% end %>
 
-        <% if produit.video1.attached? %>
-            <div class="carousel-item active">
-                <video autoplay loop muted playsinline class="d-block w-100 <%= carousel_class %>"
-                src="<%= url_for(produit.video1) %>"
-                type="<%= produit.video1.content_type %>">
-                Votre navigateur ne prend pas en charge la lecture de vidéos.
-                </video>
-            </div>
-            <div class="carousel-item">
-                <%= image_tag(produit.default_image_white, class: "img-fluid rounded-start", alt: produit.nom) %>
-            </div>
-        <% else %>
-            <div class="carousel-item active">
-                <%= image_tag(produit.default_image_white, class: "img-fluid rounded-start", alt: produit.nom) %>
-            </div>
+      <% if produit.images %>
+        <% produit.images.each_with_index do |image, img_index| %>
+          <div class="carousel-item">
+            <%= image_tag(image, class: "img-fluid rounded-1 w-100", alt: produit.nom, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}", gallery_index: img_index }) %>
+          </div>
+          <% slide_index += 1 %>
         <% end %>
-
-
-        <% if produit.images %>
-
-            <% produit.images.each do |image| %>
-                <div class="carousel-item">
-                    <%= image_tag(image, class: "img-fluid rounded-start", alt: produit.nom) %>
-                </div>
-            <% end %> 
-        
-        <% end %>
-
+      <% end %>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselProduit_<%= produit.id %>" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
+    <button class="carousel-control-prev" type="button" data-bs-target="#<%= carousel_id %>" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselProduit_<%= produit.id %>" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
+    <button class="carousel-control-next" type="button" data-bs-target="#<%= carousel_id %>" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
     </button>
-</div>
+  </div>
 
+  <%= render partial: "carousel_thumbnails", locals: { produit: produit, carousel_id: carousel_id, total_slides: slide_index, show_thumbnails: local_assigns[:show_thumbnails] || false } %>
+</div>

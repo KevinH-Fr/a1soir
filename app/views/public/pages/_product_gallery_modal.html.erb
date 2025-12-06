@@ -1,0 +1,74 @@
+<!-- Modal -->
+<% modal_id = "modalProduit_#{produit.id}" %>
+<% carousel_id = "galleryCarousel_#{produit.id}" %>
+
+<div class="modal fade" id="<%= modal_id %>" tabindex="-1" aria-labelledby="modalProduitLabel_<%= produit.id %>" aria-hidden="true" data-controller="product-gallery-modal">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content d-flex flex-column h-100 p-2">
+      <div class="modal-header border-0">
+        <h1 class="modal-title fs-5" id="modalProduitLabel_<%= produit.id %>"><%= produit.nom %></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0 flex-grow-1">
+        <div id="<%= carousel_id %>" class="carousel slide h-100" data-bs-ride="false">
+          <% 
+            # Calculer le nombre total de slides
+            total_slides = 0
+            total_slides += 1 if produit.video1.attached?
+            total_slides += 1 if produit.default_image_white.present?
+            total_slides += produit.images.count if produit.images
+          %>
+          
+          <% if total_slides > 1 %>
+            <div class="carousel-indicators">
+              <% (0...total_slides).each do |i| %>
+                <button type="button" data-bs-target="#<%= carousel_id %>" data-bs-slide-to="<%= i %>" class="<%= 'active' if i == 0 %>" <%= 'aria-current="true"' if i == 0 %> aria-label="Slide <%= i + 1 %>"></button>
+              <% end %>
+            </div>
+          <% end %>
+          
+          <div class="carousel-inner h-100">
+            <% slide_idx = 0 %>
+            
+            <% if produit.video1.attached? %>
+              <div class="carousel-item <%= 'active' if slide_idx == 0 %> h-100 position-relative">
+                <video autoplay loop muted playsinline class="position-absolute top-50 start-50 translate-middle rounded-1" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;" src="<%= url_for(produit.video1) %>" type="<%= produit.video1.content_type %>">
+                  Votre navigateur ne prend pas en charge la lecture de vidéos.
+                </video>
+              </div>
+              <% slide_idx += 1 %>
+            <% end %>
+            
+            <% if produit.default_image_white.present? %>
+              <div class="carousel-item <%= 'active' if slide_idx == 0 %> h-100 position-relative">
+                <%= image_tag(produit.default_image_white, class: "position-absolute top-50 start-50 translate-middle rounded-1", style: "max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;", alt: produit.nom) %>
+              </div>
+              <% slide_idx += 1 %>
+            <% end %>
+            
+            <% if produit.images %>
+              <% produit.images.each do |image| %>
+                <div class="carousel-item <%= 'active' if slide_idx == 0 %> h-100 position-relative">
+                  <%= image_tag(image, class: "position-absolute top-50 start-50 translate-middle rounded-1", style: "max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;", alt: produit.nom) %>
+                </div>
+                <% slide_idx += 1 %>
+              <% end %>
+            <% end %>
+          </div>
+          
+          <% if total_slides > 1 %>
+            <button class="carousel-control-prev" type="button" data-bs-target="#<%= carousel_id %>" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Précédent</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#<%= carousel_id %>" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Suivant</span>
+            </button>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

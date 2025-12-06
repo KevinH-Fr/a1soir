@@ -535,16 +535,16 @@ module PagesHelper
   end
 
   # Helper pour générer les boutons de panier (cabine ou shop) avec style commun
-  def cart_button_for(produit, type: :shop)
+  def cart_button_for(produit, type: :shop, button_class: "")
     turbo_frame_tag "produit_#{produit.id}_button" do
-      card_footer_class = "card-footer mt-3 pt-3 p-0"
+      card_footer_class = "card-footer p-0 w-100"
       
       content_tag :div, class: card_footer_class do
         case type
         when :cabine
-          render_cabine_button(produit)
+          render_cabine_button(produit, button_class)
         when :shop
-          render_shop_button(produit)
+          render_shop_button(produit, button_class)
         end
       end
     end
@@ -552,33 +552,33 @@ module PagesHelper
 
   private
 
-  def render_cabine_button(produit)
+  def render_cabine_button(produit, extra_class = "")
     if session[:cabine_cart].include?(produit.id)
       button_to cabine_remove_product_path(produit), method: :delete,
-          class: "btn btn-sm w-100 btn-outline-danger" do
+          class: "btn btn-sm w-100 btn-outline-danger #{extra_class}" do
         (content_tag(:i, nil, class: "bi bi-bag-x me-2") + "Retirer de la cabine").html_safe
       end
     elsif session[:cabine_cart].size >= 10
-      content_tag :button, type: "button", class: "btn btn-sm w-100 btn-secondary", disabled: true do
+      content_tag :button, type: "button", class: "btn btn-sm w-100 btn-secondary #{extra_class}", disabled: true do
         (content_tag(:i, nil, class: "bi bi-exclamation-triangle me-2") + "Limite atteinte (10 produits max)").html_safe
       end
     else
       button_to cabine_add_product_path(produit),
-          class: "btn btn-sm w-100 btn-light hover-lift public-btn-border-radius" do
+          class: "btn btn-sm w-100 btn-light hover-lift public-btn-border-radius #{extra_class}" do
         (content_tag(:i, nil, class: "bi bi-bag-plus me-2") + "Ajouter à la cabine").html_safe
       end
     end
   end
 
-  def render_shop_button(produit)
+  def render_shop_button(produit, extra_class = "")
     if session[:cart].include?(produit.id)
       button_to remove_from_cart_path(produit), method: :delete,
-          class: "btn btn-sm w-100 btn-secondary" do
+          class: "btn btn-sm w-100 btn-secondary #{extra_class}" do
         (content_tag(:i, nil, class: "bi bi-bag-x me-2") + "Retirer du panier").html_safe
       end
     else
       button_to add_to_cart_path(produit),
-          class: "btn btn-sm w-100 btn-light hover-lift public-btn-border-radius" do
+          class: "btn btn-sm w-100 btn-light hover-lift public-btn-border-radius #{extra_class}" do
         (content_tag(:i, nil, class: "bi bi-bag-plus me-2") + "Ajouter au panier").html_safe
       end
     end

@@ -5,7 +5,6 @@ import "./controllers"
 
 import "trix"
 import "@rails/actiontext"
-import "./three_scene"
 import "./home_text_animation"
 import "./scroll_cards_carousel"
 import "./discover_scroll_effect"

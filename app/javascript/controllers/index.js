@@ -52,5 +52,6 @@ application.register("home-scroll", HomeScrollController)
 import CalendarPickerController from "./calendar_picker_controller"
 application.register("calendar-picker", CalendarPickerController)
 
-import CarouselController from "./carousel_controller"
-application.register("carousel", CarouselController)
+import ProductGalleryModalController from "./product_gallery_modal_controller"
+application.register("product-gallery-modal", ProductGalleryModalController)
+
