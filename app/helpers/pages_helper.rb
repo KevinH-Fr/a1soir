@@ -372,73 +372,128 @@ module PagesHelper
     end
   end
 
-  def info_card(icon:, title:, content:)
-    content_tag :div, class: "col-sm m-2 p-0 w-100" do
-      content_tag :div, class: "info-card rounded p-4 h-100 d-flex flex-column" do
-        card_header = content_tag(:div, class: "text-center mb-3") do
-          icon_tag = content_tag(:i, nil, class: "bi bi-#{icon} fs-3 me-2")
-          title_tag = content_tag(:span, title, class: "fw-bold fs-4")
-          (icon_tag + title_tag).html_safe
-        end
-        
-        card_content = content_tag(:div, class: "") do
-          content.to_s.html_safe
-        end
-        
-        (card_header + card_content).html_safe
-      end
+  def public_card(
+    icon:, 
+    title:, 
+    content: nil, 
+    description: nil, 
+    features: nil,
+    theme: "dark", # "dark" ou "light"
+    card_style: "info", # "info", "concept", ou "activity"
+    icon_size: "fs-3",
+    title_size: "fs-4",
+    wrapper_class: nil,
+    &block
+  )
+    # Définir les couleurs selon le thème
+    if theme == "dark"
+      bg_class = "bg-dark"
+      text_class = "text-light"
+    else
+      bg_class = "bg-light"
+      text_class = "text-dark"
     end
-  end
-
-  def concept_card(icon:, title:, description:, features:, icon_color: "text-light")
-    content_tag :div, class: "concept-card h-100" do
-      # Icon section
-      icon_section = content_tag(:div, class: "text-center mb-4") do
-        content_tag(:div, class: "concept-card-icon") do
-          content_tag(:i, nil, class: "bi bi-#{icon} fs-1 #{icon_color}")
-        end
-      end
-      
-      # Title
-      title_section = content_tag(:h3, title, class: "h4 fw-bold mb-3 text-center text-light")
-      
-      # Description
-      desc_section = content_tag(:p, description, class: "text-light mb-4 opacity-75")
-      
-      # Features list
-      features_section = content_tag(:ul, class: "list-unstyled") do
-        features.map do |feature|
-          content_tag(:li, class: "mb-2 text-light") do
-            concat content_tag(:i, nil, class: "bi bi-check-circle-fill me-2")
-            concat feature
+    
+    # Wrapper optionnel pour info cards
+    wrapper = wrapper_class || (card_style == "info" ? "col-sm m-2 p-0 w-100" : "")
+    
+    content_tag :div, class: wrapper do
+      content_tag :div, class: "#{bg_class} #{text_class} rounded-1 p-4 h-100 d-flex flex-column shadow-sm" do
+        sections = []
+        
+        # Icon section
+        if icon.present?
+          icon_section = content_tag(:div, class: "#{card_style == 'info' ? 'text-center' : ''} mb-#{card_style == 'activity' ? '4' : '3'}") do
+            if card_style == "info"
+              icon_tag = content_tag(:i, nil, class: "bi bi-#{icon} #{icon_size} me-2")
+              title_tag = content_tag(:span, title, class: "fw-bold #{title_size}")
+              (icon_tag + title_tag).html_safe
+            else
+              content_tag(:div, class: "#{'text-center' if card_style == 'concept'}") do
+                content_tag(:i, nil, class: "bi bi-#{icon} fs-1")
+              end
+            end
           end
-        end.join.html_safe
+          sections << icon_section
+        end
+        
+        # Title section (sauf pour info card où il est avec l'icône)
+        if card_style != "info" && title.present?
+          title_class = card_style == "activity" ? "h3" : "h4"
+          title_section = content_tag(:h3, title, class: "#{title_class} fw-bold mb-3 #{card_style == 'concept' ? 'text-center' : ''}")
+          sections << title_section
+        end
+        
+        # Description
+        if description.present?
+          desc_section = content_tag(:p, description, class: "mb-4 opacity-75")
+          sections << desc_section
+        end
+        
+        # Content (pour info cards)
+        if content.present?
+          content_section = content_tag(:div) do
+            content.to_s.html_safe
+          end
+          sections << content_section
+        end
+        
+        # Features list
+        if features.present? && features.any?
+          features_section = content_tag(:ul, class: "list-unstyled") do
+            features.map do |feature|
+              content_tag(:li, class: "mb-2") do
+                concat content_tag(:i, nil, class: "bi bi-check-circle-fill me-2")
+                concat feature
+              end
+            end.join.html_safe
+          end
+          sections << features_section
+        end
+        
+        # Custom content from block
+        if block_given?
+          custom_content = capture(&block)
+          sections << custom_content
+        end
+        
+        sections.join.html_safe
       end
-      
-      (icon_section + title_section + desc_section + features_section).html_safe
     end
   end
 
-  def activity_card(icon:, title:, description:, icon_color: "text-light", &block)
-    content_tag :div, class: "concept-card h-100" do
-      # Icon section
-      icon_section = content_tag(:div, class: "mb-4") do
-        content_tag(:div, class: "concept-card-icon") do
-          content_tag(:i, nil, class: "bi bi-#{icon} fs-1 #{icon_color}")
-        end
-      end
-      
-      # Title
-      title_section = content_tag(:h3, title, class: "h3 fw-bold mb-3 text-light")
-      
-      # Description
-      desc_section = content_tag(:p, description, class: "text-light mb-4 opacity-75")
-      
-      # Custom content from block
-      custom_content = capture(&block) if block_given?
-      
-      (icon_section + title_section + desc_section + custom_content.to_s).html_safe
-    end
+  # Aliases pour compatibilité avec le code existant
+  def info_card(icon:, title:, content:, theme: "light")
+    public_card(
+      icon: icon, 
+      title: title, 
+      content: content, 
+      theme: theme, 
+      card_style: "info",
+      wrapper_class: "col-sm m-2 p-0 w-100"
+    )
+  end
+
+  def concept_card(icon:, title:, description:, features:, icon_color: "text-light", theme: "dark")
+    public_card(
+      icon: icon, 
+      title: title, 
+      description: description, 
+      features: features, 
+      theme: theme,
+      card_style: "concept"
+    )
+  end
+
+  def activity_card(icon:, title:, description:, icon_color: "text-light", theme: "dark", &block)
+    public_card(
+      icon: icon, 
+      title: title, 
+      description: description, 
+      theme: theme,
+      card_style: "activity",
+      &block
+    )
   end
 
   # Helper for legal sections

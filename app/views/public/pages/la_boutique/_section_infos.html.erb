@@ -13,17 +13,34 @@
       <div class="col-12 col-md-6 col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="100">
         <% contact_button = link_to('Nous écrire', "#{contact_path}#message-form", class: 'btn btn-outline-dark btn-sm public-btn-border-radius px-4') %>
         <% contact_content = "#{@texteContact}<div class='text-start mt-2'>#{contact_button}</div>" %>
-        <%= info_card(
+        <%= public_card(
           icon: "person-lines-fill", 
           title: "Contacts", 
-          content: contact_content.html_safe
+          content: contact_content.html_safe,
+          theme: "light",
+          card_style: "info",
+          wrapper_class: "col-sm m-2 p-0 w-100"
         ) %>
       </div>
       <div class="col-12 col-md-6 col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="200">
-        <%= info_card(icon: "clock", title: "Horaires", content: @texteHoraire) %>
+        <%= public_card(
+          icon: "clock", 
+          title: "Horaires", 
+          content: @texteHoraire,
+          theme: "light",
+          card_style: "info",
+          wrapper_class: "col-sm m-2 p-0 w-100"
+        ) %>
       </div>
       <div class="col-12 col-md-6 col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="300">
-        <%= info_card(icon: "geo-alt-fill", title: "Adresse", content: @texteAdresse) %>
+        <%= public_card(
+          icon: "geo-alt-fill", 
+          title: "Adresse", 
+          content: @texteAdresse,
+          theme: "light",
+          card_style: "info",
+          wrapper_class: "col-sm m-2 p-0 w-100"
+        ) %>
       </div>
     </div>
   </div>

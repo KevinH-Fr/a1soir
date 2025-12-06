@@ -22,10 +22,12 @@
     <div class="row g-4 my-5">
       <!-- Costumes d'époque -->
       <div class="col-lg-6" data-scroll-reveal>
-        <%= activity_card(
+        <%= public_card(
           icon: "clock-history",
           title: "Costumes d'Époque",
-          description: "Plongez dans l'histoire avec notre collection exceptionnelle de costumes d'époque. Du XVIIIe siècle aux années folles, nous disposons d'une large gamme de tenues authentiques pour vos événements à thème, productions théâtrales ou reconstitutions historiques."
+          description: "Plongez dans l'histoire avec notre collection exceptionnelle de costumes d'époque. Du XVIIIe siècle aux années folles, nous disposons d'une large gamme de tenues authentiques pour vos événements à thème, productions théâtrales ou reconstitutions historiques.",
+          theme: "dark",
+          card_style: "activity"
         ) do %>
           <h5 class="fw-bold mb-3 mt-4 text-light">Nos périodes disponibles :</h5>
           <div class="row g-3">
@@ -56,10 +58,12 @@
 
       <!-- Prestations entreprises -->
       <div class="col-lg-6" data-scroll-reveal>
-        <%= activity_card(
+        <%= public_card(
           icon: "buildings",
           title: "Prestations Entreprises & Groupes",
-          description: "Professionnels et organisateurs d'événements, nous vous proposons des solutions sur mesure pour habiller vos équipes et participants. Bénéficiez de tarifs préférentiels et d'un accompagnement personnalisé pour vos projets de groupe."
+          description: "Professionnels et organisateurs d'événements, nous vous proposons des solutions sur mesure pour habiller vos équipes et participants. Bénéficiez de tarifs préférentiels et d'un accompagnement personnalisé pour vos projets de groupe.",
+          theme: "dark",
+          card_style: "activity"
         ) do %>
           <h5 class="fw-bold mb-3 mt-4 text-light">Nos services professionnels :</h5>
           <ul class="list-unstyled mb-4">

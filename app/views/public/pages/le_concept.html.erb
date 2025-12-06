@@ -4,21 +4,13 @@ image2: "https://images.pexels.com/photos/2122361/pexels-photo-2122361.jpeg") %>
 
 <div class="public-main-content">
   <div class="container-fluid">
-    <!-- Introduction -->
-    <div class="text-center my-5 px-3" data-scroll-reveal>
-      <h2 class="mb-4 fw-bold text-light">Une nouvelle façon de vivre la mode</h2>
-      <p class="lead text-light opacity-75 mx-auto" style="max-width: 800px;">
-        Autour d'un soir révolutionne votre expérience vestimentaire avec un concept innovant qui allie élégance, 
-        accessibilité et personnalisation. Que ce soit pour un mariage, une soirée ou un événement spécial, 
-        nous vous offrons la liberté de choisir comment porter la mode.
-      </p>
-    </div>
+    <%= render partial: "public/pages/le_concept/section_introduction" %>
 
     <!-- Les trois piliers -->
-    <div class="row g-4 my-5">
+    <div class="row g-4 my-5 py-4 bg-white">
       <!-- Location -->
       <div class="col-lg-4" data-scroll-reveal>
-        <%= concept_card(
+        <%= public_card(
           icon: "calendar-check",
           title: "Location",
           description: "Portez des tenues d'exception sans engagement. Notre service de location vous permet d'accéder à une garde-robe haute couture pour vos événements spéciaux, à une fraction du prix d'achat.",
@@ -27,13 +19,15 @@ image2: "https://images.pexels.com/photos/2122361/pexels-photo-2122361.jpeg") %>
             "Réservation flexible",
             "Entretien inclus",
             "Prix avantageux"
-          ]
+          ],
+          theme: "light",
+          card_style: "concept"
         ) %>
       </div>
 
       <!-- Vente -->
       <div class="col-lg-4" data-scroll-reveal>
-        <%= concept_card(
+        <%= public_card(
           icon: "bag-check",
           title: "Vente",
           description: "Tombez amoureux d'une pièce ? Faites-en l'acquisition ! Notre boutique propose une sélection exclusive de tenues et accessoires que vous pouvez acheter pour enrichir votre garde-robe personnelle.",
@@ -42,13 +36,15 @@ image2: "https://images.pexels.com/photos/2122361/pexels-photo-2122361.jpeg") %>
             "Pièces uniques",
             "Conseils personnalisés",
             "Option d'achat après location"
-          ]
+          ],
+          theme: "light",
+          card_style: "concept"
         ) %>
       </div>
 
       <!-- Personnalisation -->
       <div class="col-lg-4" data-scroll-reveal>
-        <%= concept_card(
+        <%= public_card(
           icon: "scissors",
           title: "Personnalisation",
           description: "Chaque personne est unique, votre tenue aussi ! Notre atelier de retouches et de personnalisation s'assure que chaque pièce s'adapte parfaitement à votre morphologie et à votre style.",
@@ -57,7 +53,9 @@ image2: "https://images.pexels.com/photos/2122361/pexels-photo-2122361.jpeg") %>
             "Ajustements express",
             "Création personnalisée",
             "Service d'atelier expert"
-          ]
+          ],
+          theme: "light",
+          card_style: "concept"
         ) %>
       </div>
     </div>
@@ -67,40 +65,45 @@ image2: "https://images.pexels.com/photos/2122361/pexels-photo-2122361.jpeg") %>
 <!-- Section texte sticky -->
 <%= render partial: "public/pages/le_concept/section_sticky_text" %>
 
-<div class="public-main-content">
+<div class="public-main-content bg-white">
   <div class="container-fluid">
     <!-- Comment ça marche -->
-    <div class="my-5 py-5 dark-gradient-section" data-scroll-reveal>
+    <div class="my-5 py-5" data-scroll-reveal>
       <div class="container">
-        <h2 class="text-center mb-5 fw-bold text-light">Comment ça marche ?</h2>
+        <div class="section-title-wrapper mb-5 text-center" data-aos="title-underline">
+          <h2 class="section-title text-dark d-inline-block" style="font-family: 'Playfair Display', serif; font-size: 2.5rem; position: relative;">
+            Comment ça marche ?
+            <span class="section-title-underline"></span>
+          </h2>
+        </div>
         <div class="row g-4">
-          <div class="col-md-3 text-center">
+          <div class="col-md-3 text-center" data-aos="fade-up" data-aos-delay="100">
             <div class="mb-3 d-flex justify-content-center">
-              <div class="rounded-circle bg-light text-dark position-relative d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; font-family: 'Times New Roman', sans-serif;">1</div>
+              <div class="rounded-circle bg-dark text-light position-relative d-flex align-items-center justify-content-center shadow" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; font-family: 'Times New Roman', sans-serif;">1</div>
             </div>
-            <h5 class="fw-bold mb-2 text-light">Parcourez</h5>
-            <p class="text-light opacity-75 small">Explorez nos collections et trouvez la tenue parfaite pour votre événement</p>
+            <h5 class="fw-bold mb-2 text-dark">Parcourez</h5>
+            <p class="text-dark opacity-75 small">Explorez nos collections et trouvez la tenue parfaite pour votre événement</p>
           </div>
-          <div class="col-md-3 text-center">
+          <div class="col-md-3 text-center" data-aos="fade-up" data-aos-delay="200">
             <div class="mb-3 d-flex justify-content-center">
-              <div class="rounded-circle bg-light text-dark position-relative d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; font-family: 'Times New Roman', sans-serif;">2</div>
+              <div class="rounded-circle bg-dark text-light position-relative d-flex align-items-center justify-content-center shadow" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; font-family: 'Times New Roman', sans-serif;">2</div>
             </div>
-            <h5 class="fw-bold mb-2 text-light">Réservez</h5>
-            <p class="text-light opacity-75 small">Choisissez vos dates de location ou passez commande pour un achat</p>
+            <h5 class="fw-bold mb-2 text-dark">Réservez</h5>
+            <p class="text-dark opacity-75 small">Choisissez vos dates de location ou passez commande pour un achat</p>
           </div>
-          <div class="col-md-3 text-center">
+          <div class="col-md-3 text-center" data-aos="fade-up" data-aos-delay="300">
             <div class="mb-3 d-flex justify-content-center">
-              <div class="rounded-circle bg-light text-dark position-relative d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; font-family: 'Times New Roman', sans-serif;">3</div>
+              <div class="rounded-circle bg-dark text-light position-relative d-flex align-items-center justify-content-center shadow" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; font-family: 'Times New Roman', sans-serif;">3</div>
             </div>
-            <h5 class="fw-bold mb-2 text-light">Personnalisez</h5>
-            <p class="text-light opacity-75 small">Profitez de nos services de retouches pour un ajustement parfait</p>
+            <h5 class="fw-bold mb-2 text-dark">Personnalisez</h5>
+            <p class="text-dark opacity-75 small">Profitez de nos services de retouches pour un ajustement parfait</p>
           </div>
-          <div class="col-md-3 text-center">
+          <div class="col-md-3 text-center" data-aos="fade-up" data-aos-delay="400">
             <div class="mb-3 d-flex justify-content-center">
-              <div class="rounded-circle bg-light text-dark position-relative d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; font-family: 'Times New Roman', sans-serif;">4</div>
+              <div class="rounded-circle bg-dark text-light position-relative d-flex align-items-center justify-content-center shadow" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; font-family: 'Times New Roman', sans-serif;">4</div>
             </div>
-            <h5 class="fw-bold mb-2 text-light">Brillez</h5>
-            <p class="text-light opacity-75 small">Portez votre tenue en toute confiance lors de votre événement</p>
+            <h5 class="fw-bold mb-2 text-dark">Brillez</h5>
+            <p class="text-dark opacity-75 small">Portez votre tenue en toute confiance lors de votre événement</p>
           </div>
         </div>
       </div>
@@ -108,12 +111,12 @@ image2: "https://images.pexels.com/photos/2122361/pexels-photo-2122361.jpeg") %>
 
     <!-- Call to action -->
     <div class="text-center my-5 py-4" data-scroll-reveal>
-      <h3 class="mb-4 text-light">Prêt à découvrir nos collections ?</h3>
-      <div class="d-flex gap-3 justify-content-center flex-wrap">
-        <%= link_to "Explorer les collections", nos_collections_path, class: "btn btn-light btn-lg px-5 public-btn-border-radius" %>
+      <h3 class="mb-4">Prêt à en découvrir plus ?</h3>
+      <div class="d-flex gap-3 justify-content-center flex-wrap mb-4">
+        <%= link_to "Explorer les collections", nos_collections_path, class: "btn btn-outline-dark btn-lg px-5 public-btn-border-radius" %>
 
         <%= link_to "#{rdv_url(subdomain: "shop")}#rdv-form",
-            class: "btn btn-outline-light btn-lg px-5 public-btn-border-radius" do %>
+            class: "btn btn-dark btn-lg px-5 public-btn-border-radius" do %>
           <i class="bi bi-calendar-check me-2"></i>
           <span class="fw-bold text-uppercase small">Prendre rendez-vous</span>
         <% end %>

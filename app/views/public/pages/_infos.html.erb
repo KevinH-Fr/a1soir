@@ -1,5 +1,5 @@
 <div class="row justify-content-evenly">
-  <%= info_card(icon: "person-lines-fill", title: "Contacts", content: @texteContact) %>
-  <%= info_card(icon: "clock", title: "Horaires", content: @texteHoraire) %>
-  <%= info_card(icon: "geo-alt-fill", title: "Adresse", content: @texteAdresse) %>
+  <%= public_card(icon: "person-lines-fill", title: "Contacts", content: @texteContact, theme: "light", card_style: "info", wrapper_class: "col-sm m-2 p-0 w-100") %>
+  <%= public_card(icon: "clock", title: "Horaires", content: @texteHoraire, theme: "light", card_style: "info", wrapper_class: "col-sm m-2 p-0 w-100") %>
+  <%= public_card(icon: "geo-alt-fill", title: "Adresse", content: @texteAdresse, theme: "light", card_style: "info", wrapper_class: "col-sm m-2 p-0 w-100") %>
 </div>

@@ -1,37 +1,62 @@
 <!-- Section avec images et textes sticky -->
-<section data-controller="sticky-text" style="position: relative; height: 400vh; background-color: #ffffff;">
-  <!-- Images à gauche qui défilent normalement -->
-  <div style="position: relative; width: 40%; margin-left: 10%; padding-top: 50vh;">
-    <div data-sticky-text-target="image" style="margin-bottom: 18vh; opacity: 1;">
-      <%= image_tag("/images/cat_tenues_soiree.jpg", alt: "Tenues de soirée", style: "width: 100%; max-height: 95vh; object-fit: cover; border-radius: 8px;") %>
-    </div>
-    <div data-sticky-text-target="image" style="margin-bottom: 18vh; opacity: 1;">
-      <%= image_tag("/images/cat_robes_mariees.jpg", alt: "Robes de mariée", style: "width: 100%; max-height: 95vh; object-fit: cover; border-radius: 8px;") %>
-    </div>
-    <div data-sticky-text-target="image" style="margin-bottom: 0; opacity: 1;">
-      <%= image_tag("/images/cat_costume.jpg", alt: "Costumes", style: "width: 100%; max-height: 95vh; object-fit: cover; border-radius: 8px;") %>
-    </div>
-  </div>
+<section data-controller="sticky-text" class="position-relative bg-black" style="height: 300vh;">
+  <div class="container-fluid h-100">
+    <div class="row h-100">
+      <!-- Images à gauche qui défilent -->
+      <div class="col-12 col-lg-6 position-relative" style="padding-top: 30vh;">
+        <div data-sticky-text-target="image" class="mb-5 px-3 px-lg-5" style="opacity: 1; transition: opacity 0.5s ease;">
+          <%= image_tag("/images/cat_tenues_soiree.jpg", 
+              alt: "Tenues de soirée", 
+              class: "w-100 shadow-lg", 
+              style: "max-height: 70vh; object-fit: cover;") %>
+        </div>
+        
+        <div data-sticky-text-target="image" class="mb-5 px-3 px-lg-5" style="opacity: 1; transition: opacity 0.5s ease;">
+          <%= image_tag("/images/cat_robes_mariees.jpg", 
+              alt: "Robes de mariée", 
+              class: "w-100 shadow-lg", 
+              style: "max-height: 70vh; object-fit: cover;") %>
+        </div>
+        
+        <div data-sticky-text-target="image" class="mb-5 px-3 px-lg-5" style="opacity: 1; transition: opacity 0.5s ease;">
+          <%= image_tag("/images/cat_costume.jpg", 
+              alt: "Costumes", 
+              class: "w-100 shadow-lg", 
+              style: "max-height: 70vh; object-fit: cover;") %>
+        </div>
+      </div>
 
-  <!-- Textes à droite qui restent fixes -->
-  <div data-sticky-text-target="text" style="position: fixed; top: 50%; right: 10%; transform: translateY(-50%); width: 40%; max-width: 500px; padding: 2rem; background-color: #ffffff; z-index: 100; display: none; opacity: 0; transition: opacity 0.6s ease;">
-    <p style="font-size: 1.25rem; line-height: 1.9; color: #2c2c2c; margin: 0;">
-      Autour d'un Soir vous accompagne dans chaque étape de votre recherche de la tenue parfaite. 
-      Notre équipe experte est à votre écoute pour vous conseiller et vous guider vers des choix 
-      qui reflètent votre personnalité et sublimeront vos moments les plus précieux.
-    </p>
-  </div>
-  <div data-sticky-text-target="text" style="position: fixed; top: 50%; right: 10%; transform: translateY(-50%); width: 40%; max-width: 500px; padding: 2rem; background-color: #ffffff; z-index: 100; display: none; opacity: 0; transition: opacity 0.6s ease;">
-    <p style="font-size: 1.25rem; line-height: 1.9; color: #2c2c2c; margin: 0;">
-      Découvrez notre sélection de tenues de soirée qui allient sophistication et modernité. 
-      Chaque pièce est soigneusement choisie pour vous offrir une expérience unique et mémorable.
-    </p>
-  </div>
-  <div data-sticky-text-target="text" style="position: fixed; top: 50%; right: 10%; transform: translateY(-50%); width: 40%; max-width: 500px; padding: 2rem; background-color: #ffffff; z-index: 100; display: none; opacity: 0; transition: opacity 0.6s ease;">
-    <p style="font-size: 1.25rem; line-height: 1.9; color: #2c2c2c; margin: 0;">
-      Notre engagement est de vous offrir un service personnalisé et des tenues d'exception 
-      qui sauront sublimer vos moments les plus importants. Faites confiance à notre expertise.
-    </p>
+      <!-- Textes à droite qui restent fixes -->
+      <div class="col-12 col-lg-6">
+        <div data-sticky-text-target="text" 
+             class="position-fixed top-50 text-light px-4 px-lg-5"
+             style="right: 5%; width: 40%; max-width: 600px; display: none; opacity: 0; transition: opacity 0.6s ease, transform 0.6s ease;">
+          <p class="lead mb-0" style="font-size: 1.3rem; line-height: 1.9; font-weight: 300; letter-spacing: 0.3px;">
+            Autour d'un Soir vous accompagne dans chaque étape de votre recherche de la tenue parfaite. 
+            Notre équipe experte est à votre écoute pour vous conseiller et vous guider vers des choix 
+            qui reflètent votre personnalité et sublimeront vos moments les plus précieux.
+          </p>
+        </div>
+        
+        <div data-sticky-text-target="text" 
+             class="position-fixed top-50 text-light px-4 px-lg-5"
+             style="right: 5%; width: 40%; max-width: 600px; display: none; opacity: 0; transition: opacity 0.6s ease, transform 0.6s ease;">
+          <p class="lead mb-0" style="font-size: 1.3rem; line-height: 1.9; font-weight: 300; letter-spacing: 0.3px;">
+            Découvrez notre sélection de tenues de soirée qui allient sophistication et modernité. 
+            Chaque pièce est soigneusement choisie pour vous offrir une expérience unique et mémorable.
+          </p>
+        </div>
+        
+        <div data-sticky-text-target="text" 
+             class="position-fixed top-50 text-light px-4 px-lg-5"
+             style="right: 5%; width: 40%; max-width: 600px; display: none; opacity: 0; transition: opacity 0.6s ease, transform 0.6s ease;">
+          <p class="lead mb-0" style="font-size: 1.3rem; line-height: 1.9; font-weight: 300; letter-spacing: 0.3px;">
+            Notre engagement est de vous offrir un service personnalisé et des tenues d'exception 
+            qui sauront sublimer vos moments les plus importants. Faites confiance à notre expertise.
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
