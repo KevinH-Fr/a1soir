@@ -119,6 +119,11 @@ class Produit < ApplicationRecord
     [nom, couleur&.nom, taille&.nom].compact.join(' | ')
   end
   
+  # Trouve des produits similaires basés sur les catégories communes ou la même couleur
+  # Utilise SimilarProductsService pour la logique métier
+  def similar_products(limit: 10)
+    SimilarProductsService.new(self, limit: limit).call
+  end
 
   def generate_qr
       GenerateQr.call(self)
