@@ -623,6 +623,17 @@ section {
   font-size: 1.3rem;
 }
 
+/* Styles pour les items de témoignages dans le slider */
+.testimonial-slider-item {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.testimonial-slider-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
 @keyframes scroll {
   0% {
     transform: translateX(0);

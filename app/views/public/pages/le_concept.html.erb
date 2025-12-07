@@ -77,33 +77,48 @@ image2: "https://images.pexels.com/photos/2122361/pexels-photo-2122361.jpeg") %>
           </h2>
         </div>
         <div class="row g-4">
-          <div class="col-md-3 text-center" data-aos="fade-up" data-aos-delay="100">
-            <div class="mb-3 d-flex justify-content-center">
-              <div class="rounded-circle bg-dark text-light position-relative d-flex align-items-center justify-content-center shadow" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; font-family: 'Times New Roman', sans-serif;">1</div>
-            </div>
-            <h5 class="fw-bold mb-2 text-dark">Parcourez</h5>
-            <p class="text-dark opacity-75 small">Explorez nos collections et trouvez la tenue parfaite pour votre événement</p>
+          <div class="col-lg-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
+            <%= public_card(
+              icon: "1-circle-fill",
+              title: "Parcourez",
+              description: "Explorez nos collections et trouvez la tenue parfaite pour votre événement",
+              theme: "light",
+              card_style: "concept",
+              wrapper_class: ""
+            ) %>
           </div>
-          <div class="col-md-3 text-center" data-aos="fade-up" data-aos-delay="200">
-            <div class="mb-3 d-flex justify-content-center">
-              <div class="rounded-circle bg-dark text-light position-relative d-flex align-items-center justify-content-center shadow" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; font-family: 'Times New Roman', sans-serif;">2</div>
-            </div>
-            <h5 class="fw-bold mb-2 text-dark">Réservez</h5>
-            <p class="text-dark opacity-75 small">Choisissez vos dates de location ou passez commande pour un achat</p>
+          
+          <div class="col-lg-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
+            <%= public_card(
+              icon: "2-circle-fill",
+              title: "Réservez",
+              description: "Choisissez vos dates de location ou passez commande pour un achat",
+              theme: "light",
+              card_style: "concept",
+              wrapper_class: ""
+            ) %>
           </div>
-          <div class="col-md-3 text-center" data-aos="fade-up" data-aos-delay="300">
-            <div class="mb-3 d-flex justify-content-center">
-              <div class="rounded-circle bg-dark text-light position-relative d-flex align-items-center justify-content-center shadow" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; font-family: 'Times New Roman', sans-serif;">3</div>
-            </div>
-            <h5 class="fw-bold mb-2 text-dark">Personnalisez</h5>
-            <p class="text-dark opacity-75 small">Profitez de nos services de retouches pour un ajustement parfait</p>
+          
+          <div class="col-lg-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="300">
+            <%= public_card(
+              icon: "3-circle-fill",
+              title: "Personnalisez",
+              description: "Profitez de nos services de retouches pour un ajustement parfait",
+              theme: "light",
+              card_style: "concept",
+              wrapper_class: ""
+            ) %>
           </div>
-          <div class="col-md-3 text-center" data-aos="fade-up" data-aos-delay="400">
-            <div class="mb-3 d-flex justify-content-center">
-              <div class="rounded-circle bg-dark text-light position-relative d-flex align-items-center justify-content-center shadow" style="width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; font-family: 'Times New Roman', sans-serif;">4</div>
-            </div>
-            <h5 class="fw-bold mb-2 text-dark">Brillez</h5>
-            <p class="text-dark opacity-75 small">Portez votre tenue en toute confiance lors de votre événement</p>
+          
+          <div class="col-lg-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="400">
+            <%= public_card(
+              icon: "4-circle-fill",
+              title: "Brillez",
+              description: "Portez votre tenue en toute confiance lors de votre événement",
+              theme: "light",
+              card_style: "concept",
+              wrapper_class: ""
+            ) %>
           </div>
         </div>
       </div>

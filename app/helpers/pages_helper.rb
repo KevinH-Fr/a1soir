@@ -102,6 +102,7 @@ module PagesHelper
     end
   end
 
+  # Helper générique pour créer un item de slider (référence)
   def reference_item(icon:, name:)
     content_tag :div, class: "reference-item", style: "border-radius: 4px;" do
       icon_tag = content_tag(:i, nil, class: "bi bi-#{icon} me-2")
@@ -110,6 +111,60 @@ module PagesHelper
     end
   end
 
+  # Helper pour créer un item de témoignage dans le slider
+  def testimonial_item(text:, name:, subtitle:, icon:)
+    content_tag :div, class: "testimonial-slider-item bg-dark text-light rounded-1 p-4 shadow", style: "min-width: 350px; max-width: 350px;" do
+      quote = content_tag(:div, class: "mb-3") do
+        content_tag(:i, nil, class: "bi bi-quote", style: "font-size: 2rem;")
+      end
+      
+      text_content = content_tag(:p, text, class: "mb-3 opacity-75", style: "font-size: 0.95rem; line-height: 1.6;")
+      
+      footer = content_tag(:div, class: "d-flex align-items-center mt-auto pt-3 border-top border-secondary") do
+        icon_wrapper = content_tag(:div, class: "me-3") do
+          content_tag(:i, nil, class: "bi bi-#{icon}", style: "font-size: 1.5rem;")
+        end
+        text_wrapper = content_tag(:div) do
+          name_tag = content_tag(:strong, name, class: "d-block")
+          subtitle_tag = content_tag(:small, subtitle, class: "opacity-75")
+          name_tag + subtitle_tag
+        end
+        icon_wrapper + text_wrapper
+      end
+      
+      (quote + text_content + footer).html_safe
+    end
+  end
+
+  # Helper générique pour créer un slider horizontal
+  def items_slider(items:, type: :reference)
+    content_tag :div, class: "references-slider-wrapper" do
+      content_tag :div, class: "references-slider" do
+        slider_items = []
+        # Premier ensemble
+        items.each do |item|
+          slider_items << case type
+          when :reference
+            reference_item(icon: item[:icon], name: item[:name])
+          when :testimonial
+            testimonial_item(text: item[:text], name: item[:name], subtitle: item[:subtitle], icon: item[:icon])
+          end
+        end
+        # Duplication pour effet de défilement continu
+        items.each do |item|
+          slider_items << case type
+          when :reference
+            reference_item(icon: item[:icon], name: item[:name])
+          when :testimonial
+            testimonial_item(text: item[:text], name: item[:name], subtitle: item[:subtitle], icon: item[:icon])
+          end
+        end
+        slider_items.join.html_safe
+      end
+    end
+  end
+
+  # Alias pour compatibilité
   def references_slider
     references = [
       { icon: 'building-fill', name: 'Le Moulin Rouge à Paris' },
@@ -129,22 +184,10 @@ module PagesHelper
       { icon: 'film', name: 'Canal +' },
       { icon: 'award-fill', name: 'Lenôtre' }
     ]
-
-    content_tag :div, class: "references-slider-wrapper" do
-      content_tag :div, class: "references-slider" do
-        items = []
-        # Premier ensemble
-        references.each do |ref|
-          items << reference_item(icon: ref[:icon], name: ref[:name])
-        end
-        # Duplication pour effet de défilement continu
-        references.each do |ref|
-          items << reference_item(icon: ref[:icon], name: ref[:name])
-        end
-        items.join.html_safe
-      end
-    end
+    
+    items_slider(items: references, type: :reference)
   end
+
 
   def collection_card(title:, items:, url:, delay: 0, image: nil, subtitle: nil)
     link_to url, class: "text-decoration-none collection-card-link" do
@@ -397,8 +440,15 @@ module PagesHelper
     # Wrapper optionnel pour info cards
     wrapper = wrapper_class || (card_style == "info" ? "col-sm m-2 p-0 w-100" : "")
     
+    # Styles pour effet hover
+    hover_style = "transition: all 0.3s ease; cursor: pointer;"
+    
     content_tag :div, class: wrapper do
-      content_tag :div, class: "#{bg_class} #{text_class} rounded-1 p-4 h-100 d-flex flex-column shadow-sm" do
+      content_tag :div, 
+        class: "#{bg_class} #{text_class} rounded-1 p-4 h-100 d-flex flex-column shadow-sm", 
+        style: hover_style,
+        onmouseover: "this.style.transform='translateY(-8px)'; this.classList.replace('shadow-sm', 'shadow-lg')",
+        onmouseout: "this.style.transform='translateY(0)'; this.classList.replace('shadow-lg', 'shadow-sm')" do
         sections = []
         
         # Icon section
@@ -462,39 +512,6 @@ module PagesHelper
     end
   end
 
-  # Aliases pour compatibilité avec le code existant
-  def info_card(icon:, title:, content:, theme: "light")
-    public_card(
-      icon: icon, 
-      title: title, 
-      content: content, 
-      theme: theme, 
-      card_style: "info",
-      wrapper_class: "col-sm m-2 p-0 w-100"
-    )
-  end
-
-  def concept_card(icon:, title:, description:, features:, icon_color: "text-light", theme: "dark")
-    public_card(
-      icon: icon, 
-      title: title, 
-      description: description, 
-      features: features, 
-      theme: theme,
-      card_style: "concept"
-    )
-  end
-
-  def activity_card(icon:, title:, description:, icon_color: "text-light", theme: "dark", &block)
-    public_card(
-      icon: icon, 
-      title: title, 
-      description: description, 
-      theme: theme,
-      card_style: "activity",
-      &block
-    )
-  end
 
   # Helper for legal sections
   def legal_section(id:, icon:, title:, alert: nil, &block)

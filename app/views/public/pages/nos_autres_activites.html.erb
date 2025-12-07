@@ -9,49 +9,51 @@
 <div class="public-main-content">
   <div class="container-fluid">
     <!-- Introduction -->
-    <div class="text-center my-5 px-3" data-scroll-reveal>
-      <h2 class="mb-4 fw-bold text-light">Bien plus qu'une simple boutique</h2>
-      <p class="lead text-light opacity-75 mx-auto" style="max-width: 800px;">
-        Au-delà de nos collections de tenues de soirée, A1soir vous accompagne dans tous vos projets 
-        nécessitant des tenues d'exception. Que ce soit pour un événement d'entreprise, une production 
-        audiovisuelle ou une reconstitution historique, nous sommes là pour vous.
-      </p>
-    </div>
+    <%= render partial: "public/shared/section_image_text", locals: {
+      title: "Bien plus qu'une simple boutique",
+      image_path: "/images/cat_costume.jpg",
+      description: "Au-delà de nos collections de tenues de soirée, Autour d'un Soir vous accompagne dans tous vos projets nécessitant des tenues d'exception. Que ce soit pour un événement d'entreprise, une production audiovisuelle ou une reconstitution historique, nous sommes là pour vous.",
+      features: [
+        "Costumes d'époque",
+        "Événements d'entreprise",
+        "Productions audiovisuelles"
+      ]
+    } %>
 
     <!-- Activités principales -->
-    <div class="row g-4 my-5">
+    <div class="row g-4 my-5 p-2 bg-white">
       <!-- Costumes d'époque -->
       <div class="col-lg-6" data-scroll-reveal>
         <%= public_card(
           icon: "clock-history",
           title: "Costumes d'Époque",
           description: "Plongez dans l'histoire avec notre collection exceptionnelle de costumes d'époque. Du XVIIIe siècle aux années folles, nous disposons d'une large gamme de tenues authentiques pour vos événements à thème, productions théâtrales ou reconstitutions historiques.",
-          theme: "dark",
+          theme: "light",
           card_style: "activity"
         ) do %>
           <h5 class="fw-bold mb-3 mt-4 text-light">Nos périodes disponibles :</h5>
           <div class="row g-3">
             <div class="col-md-6">
               <ul class="list-unstyled">
-                <li class="mb-2 text-light"><i class="bi bi-star-fill text-light me-2"></i>Renaissance</li>
-                <li class="mb-2 text-light"><i class="bi bi-star-fill text-light me-2"></i>XVIIIe siècle</li>
-                <li class="mb-2 text-light"><i class="bi bi-star-fill text-light me-2"></i>Époque Napoléonienne</li>
-                <li class="mb-2 text-light"><i class="bi bi-star-fill text-light me-2"></i>Belle Époque</li>
+                <li class="mb-2"><i class="bi bi-star-fill me-2"></i>Renaissance</li>
+                <li class="mb-2"><i class="bi bi-star-fill me-2"></i>XVIIIe siècle</li>
+                <li class="mb-2"><i class="bi bi-star-fill me-2"></i>Époque Napoléonienne</li>
+                <li class="mb-2"><i class="bi bi-star-fill me-2"></i>Belle Époque</li>
               </ul>
             </div>
             <div class="col-md-6">
               <ul class="list-unstyled">
-                <li class="mb-2 text-light"><i class="bi bi-star-fill text-light me-2"></i>Années 1920-1930</li>
-                <li class="mb-2 text-light"><i class="bi bi-star-fill text-light me-2"></i>Années 1950-1960</li>
-                <li class="mb-2 text-light"><i class="bi bi-star-fill text-light me-2"></i>Années 1970-1980</li>
-                <li class="mb-2 text-light"><i class="bi bi-star-fill text-light me-2"></i>Costumes sur mesure</li>
+                <li class="mb-2"><i class="bi bi-star-fill me-2"></i>Années 1920-1930</li>
+                <li class="mb-2"><i class="bi bi-star-fill me-2"></i>Années 1950-1960</li>
+                <li class="mb-2"><i class="bi bi-star-fill me-2"></i>Années 1970-1980</li>
+                <li class="mb-2"><i class="bi bi-star-fill me-2"></i>Costumes sur mesure</li>
               </ul>
             </div>
           </div>
 
-          <div class="alert alert-info mt-4 mb-0" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);">
-            <i class="bi bi-info-circle text-light me-2"></i>
-            <small class="text-light">Idéal pour : Mariages thématiques, fêtes costumées, théâtre, cinéma, reconstitutions historiques</small>
+          <div class="mt-4 mb-0">
+            <i class="bi bi-info-circle me-2"></i>
+            <small class="">Idéal pour : Mariages thématiques, fêtes costumées, théâtre, cinéma, reconstitutions historiques</small>
           </div>
         <% end %>
       </div>
@@ -62,59 +64,59 @@
           icon: "buildings",
           title: "Prestations Entreprises & Groupes",
           description: "Professionnels et organisateurs d'événements, nous vous proposons des solutions sur mesure pour habiller vos équipes et participants. Bénéficiez de tarifs préférentiels et d'un accompagnement personnalisé pour vos projets de groupe.",
-          theme: "dark",
+          theme: "light",
           card_style: "activity"
         ) do %>
-          <h5 class="fw-bold mb-3 mt-4 text-light">Nos services professionnels :</h5>
+          <h5 class="fw-bold mb-3 mt-4">Nos services professionnels :</h5>
           <ul class="list-unstyled mb-4">
             <li class="mb-3">
               <div class="d-flex">
-                <i class="bi bi-briefcase-fill text-light me-3 mt-1"></i>
+                <i class="bi bi-briefcase-fill me-3 mt-1"></i>
                 <div>
-                  <strong class="text-light">Événements d'entreprise</strong>
+                  <strong>Événements d'entreprise</strong>
                   <p class="text-light opacity-75 mb-0 small">Galas, soirées de gala, cocktails, cérémonies de remise de prix</p>
                 </div>
               </div>
             </li>
             <li class="mb-3">
               <div class="d-flex">
-                <i class="bi bi-people-fill text-light me-3 mt-1"></i>
+                <i class="bi bi-people-fill me-3 mt-1"></i>
                 <div>
-                  <strong class="text-light">Groupes & associations</strong>
-                  <p class="text-light opacity-75 mb-0 small">Mariages de groupe, cortèges, événements associatifs</p>
+                  <strong>Groupes & associations</strong>
+                  <p class="opacity-75 mb-0 small">Mariages de groupe, cortèges, événements associatifs</p>
                 </div>
               </div>
             </li>
             <li class="mb-3">
               <div class="d-flex">
-                <i class="bi bi-camera-reels-fill text-light me-3 mt-1"></i>
+                <i class="bi bi-camera-reels-fill me-3 mt-1"></i>
                 <div>
-                  <strong class="text-light">Productions audiovisuelles</strong>
-                  <p class="text-light opacity-75 mb-0 small">Cinéma, télévision, clips, publicités, photos</p>
+                  <strong>Productions audiovisuelles</strong>
+                  <p class="opacity-75 mb-0 small">Cinéma, télévision, clips, publicités, photos</p>
                 </div>
               </div>
             </li>
             <li class="mb-3">
               <div class="d-flex">
-                <i class="bi bi-calendar-event-fill text-light me-3 mt-1"></i>
+                <i class="bi bi-calendar-event-fill me-3 mt-1"></i>
                 <div>
-                  <strong class="text-light">Événementiel</strong>
-                  <p class="text-light opacity-75 mb-0 small">Salons, défilés de mode, présentations, lancements de produits</p>
+                  <strong>Événementiel</strong>
+                  <p class="opacity-75 mb-0 small">Salons, défilés de mode, présentations, lancements de produits</p>
                 </div>
               </div>
             </li>
           </ul>
 
-          <div class="alert alert-success mt-4 mb-0" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);">
-            <i class="bi bi-gift text-light me-2"></i>
-            <small class="text-light">Avantages : Tarifs groupés, logistique simplifiée, conseil personnalisé, devis sur mesure</small>
+          <div class="mt-4 mb-0">
+            <i class="bi bi-gift me-2"></i>
+            <small class="">Avantages : Tarifs groupés, logistique simplifiée, conseil personnalisé, devis sur mesure</small>
           </div>
         <% end %>
       </div>
     </div>
 
     <!-- Nos avantages -->
-    <div class="bg-white text-dark my-5 py-5" data-scroll-reveal>
+    <div class="bg-black text-light my-5 py-5" data-scroll-reveal>
       <div class="container">
         <h2 class="text-center mb-5 fw-bold">Pourquoi nous choisir pour vos projets ?</h2>
         <div class="row g-4">
@@ -151,71 +153,43 @@
     </div>
 
     <!-- Témoignages -->
-    <div class="my-5" data-scroll-reveal>
-      <h2 class="text-center mb-5 fw-bold text-light">Ils nous font confiance</h2>
-      <div class="row g-4">
-        <div class="col-md-4">
-          <div class="concept-card h-100">
-            <div class="mb-3">
-              <i class="bi bi-quote text-light" style="font-size: 2rem;"></i>
-            </div>
-            <p class="mb-3 text-light opacity-75">
-              "Service impeccable pour notre gala d'entreprise. L'équipe a habillé nos 50 collaborateurs 
-              avec professionnalisme et dans les délais. Résultat magnifique !"
-            </p>
-            <div class="d-flex align-items-center">
-              <div class="concept-card-icon me-3" style="width: 50px; height: 50px;">
-                <i class="bi bi-building text-light"></i>
-              </div>
-              <div>
-                <strong class="d-block text-light">Société TechCorp</strong>
-                <small class="text-light opacity-75">Direction des Ressources Humaines</small>
-              </div>
-            </div>
-          </div>
+    <section class="my-5 py-5" data-scroll-reveal>
+      <div class="container-fluid">
+        <!-- Titre de section -->
+        <div class="section-title-wrapper mb-5 text-center" data-aos="title-underline">
+          <h2 class="section-title text-light d-inline-block" style="font-family: 'Playfair Display', serif; font-size: 2.5rem; position: relative;">
+            Ils nous font confiance
+            <span class="section-title-underline" style="background: white;"></span>
+          </h2>
         </div>
-        <div class="col-md-4">
-          <div class="concept-card h-100">
-            <div class="mb-3">
-              <i class="bi bi-quote text-light" style="font-size: 2rem;"></i>
-            </div>
-            <p class="mb-3 text-light opacity-75">
-              "Les costumes du XVIIIe siècle étaient parfaits pour notre reconstitution historique. 
-              Authenticité et qualité au rendez-vous. Nous recommandons vivement !"
-            </p>
-            <div class="d-flex align-items-center">
-              <div class="concept-card-icon me-3" style="width: 50px; height: 50px;">
-                <i class="bi bi-people text-light"></i>
-              </div>
-              <div>
-                <strong class="d-block text-light">Association Histoire Vivante</strong>
-                <small class="text-light opacity-75">Événements historiques</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="concept-card h-100">
-            <div class="mb-3">
-              <i class="bi bi-quote text-light" style="font-size: 2rem;"></i>
-            </div>
-            <p class="mb-3 text-light opacity-75">
-              "Pour notre mariage sur le thème des années 20, A1soir a su habiller tout notre cortège. 
-              Un travail remarquable et une équipe à l'écoute !"
-            </p>
-            <div class="d-flex align-items-center">
-              <div class="concept-card-icon me-3" style="width: 50px; height: 50px;">
-                <i class="bi bi-heart text-light"></i>
-              </div>
-              <div>
-                <strong class="d-block text-light">Sophie & Marc</strong>
-                <small class="text-light opacity-75">Mariage thématique</small>
-              </div>
-            </div>
-          </div>
-        </div>
+        
+        <!-- Slider de témoignages -->
+        <%= items_slider(
+          items: [
+            {
+              text: "Service impeccable pour notre gala d'entreprise. L'équipe a habillé nos 50 collaborateurs avec professionnalisme et dans les délais. Résultat magnifique !",
+              name: "Société TechCorp",
+              subtitle: "Direction des Ressources Humaines",
+              icon: "building"
+            },
+            {
+              text: "Les costumes du XVIIIe siècle étaient parfaits pour notre reconstitution historique. Authenticité et qualité au rendez-vous. Nous recommandons vivement !",
+              name: "Association Histoire Vivante",
+              subtitle: "Événements historiques",
+              icon: "people"
+            },
+            {
+              text: "Pour notre mariage sur le thème des années 20, A1soir a su habiller tout notre cortège. Un travail remarquable et une équipe à l'écoute !",
+              name: "Sophie & Marc",
+              subtitle: "Mariage thématique",
+              icon: "heart"
+            }
+          ],
+          type: :testimonial
+        ) %>
       </div>
-    </div>
+    </section>
+
 
     <!-- Call to action -->
     <div class="bg-white text-dark text-center my-5 py-5" data-scroll-reveal>

@@ -1,56 +1,11 @@
-<!-- Introduction avec images et texte -->
-<div class="container my-5 py-5">
-
-    <div class="section-title-wrapper mb-5" data-aos="title-underline">
-        <h2 class="section-title text-light fw-bold" style="font-family: 'Playfair Display', serif; font-size: 2.5rem; position: relative; display: inline-block;">
-        Une nouvelle façon de vivre la mode
-        <span class="section-title-underline" style="background: white;"></span>
-        </h2>
-    </div>
-    
-    
-  <div class="row align-items-center g-4 g-lg-5">
-    <!-- Image à gauche -->
-    <div class="col-12 col-lg-5" data-scroll-reveal>
-      <div class="position-relative overflow-hidden rounded-0 shadow-lg" 
-           style="height: 450px;"
-           data-aos="fade-right" 
-           data-aos-duration="800">
-        <%= image_tag("/images/cat_robes_mariees.jpg", 
-            class: "w-100 h-100", 
-            style: "object-fit: cover; object-position: center;") %>
-        <div class="position-absolute top-0 start-0 w-100 h-100" 
-             style="background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3));"></div>
-      </div>
-    </div>
-    
-    <!-- Texte à droite -->
-    <div class="col-12 col-lg-7" data-scroll-reveal>
-      <div data-aos="fade-left" data-aos-duration="800" data-aos-delay="300">
-        
-        <p class="lead text-light opacity-75" style="font-size: 1.15rem; line-height: 1.8;">
-          Autour d'un soir révolutionne votre expérience vestimentaire avec un concept innovant qui allie élégance, 
-          accessibilité et personnalisation. Que ce soit pour un mariage, une soirée ou un événement spécial, 
-          nous vous offrons la liberté de choisir comment porter la mode.
-        </p>
-        
-        <!-- Éléments décoratifs -->
-        <div class="mt-4 d-flex align-items-center gap-4">
-          <div class="d-flex align-items-center">
-            <i class="bi bi-check-circle-fill text-light me-2" style="font-size: 1.5rem; color: #d4af37;"></i>
-            <span class="text-light">Location flexible</span>
-          </div>
-          <div class="d-flex align-items-center">
-            <i class="bi bi-check-circle-fill text-light me-2" style="font-size: 1.5rem; color: #d4af37;"></i>
-            <span class="text-light">Vente exclusive</span>
-          </div>
-          <div class="d-flex align-items-center">
-            <i class="bi bi-check-circle-fill text-light me-2" style="font-size: 1.5rem; color: #d4af37;"></i>
-            <span class="text-light">Sur mesure</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<%= render partial: "public/shared/section_image_text", locals: {
+  title: "Une nouvelle façon de vivre la mode",
+  image_path: "/images/cat_robes_mariees.jpg",
+  description: "Autour d'un soir révolutionne votre expérience vestimentaire avec un concept innovant qui allie élégance, accessibilité et personnalisation. Que ce soit pour un mariage, une soirée ou un événement spécial, nous vous offrons la liberté de choisir comment porter la mode.",
+  features: [
+    "Location flexible",
+    "Vente exclusive",
+    "Sur mesure"
+  ]
+} %>
 
