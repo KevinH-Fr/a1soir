@@ -513,105 +513,161 @@ module PagesHelper
   end
 
 
-  # Helper for legal sections
-  def legal_section(id:, icon:, title:, alert: nil, &block)
+  # ============================================================================
+  # NOUVEAUX HELPERS GÉNÉRIQUES POUR CONTENU STRUCTURÉ
+  # ============================================================================
+
+  # Helper générique pour créer une section de contenu (FAQ, legal, etc.)
+  # Remplace et unifie faq_section et legal_section
+  def content_section(id:, icon:, title:, accordion_id: nil, alert: nil, theme: "dark", &block)
     content_tag :section, id: id, class: "my-5", "data-scroll-reveal": true do
-      content_tag :div, class: "concept-card" do
+      content_tag :div, class: "" do
+        sections = []
+        
         # Title with icon
         title_html = content_tag(:h2, class: "h3 fw-bold mb-4 text-light") do
           concat content_tag(:i, nil, class: "bi bi-#{icon} text-light me-2")
           concat title
         end
+        sections << title_html
         
         # Optional alert
-        alert_html = if alert
+        if alert
           alert_class = alert[:type] == :warning ? "alert-warning" : "alert-info"
           alert_style = alert[:type] == :warning ? 
             "background: rgba(255, 193, 7, 0.15); border: 1px solid rgba(255, 193, 7, 0.3);" :
             "background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);"
           icon_class = alert[:type] == :warning ? "text-warning" : "text-light"
           
-          content_tag(:div, class: "alert #{alert_class} mb-4", style: alert_style) do
+          alert_html = content_tag(:div, class: "alert #{alert_class} mb-4", style: alert_style) do
             concat content_tag(:i, nil, class: "bi bi-#{alert[:icon]} #{icon_class} me-2")
             concat content_tag(:small, alert[:text], class: "text-light")
           end
+          sections << alert_html
+        end
+        
+        # Content wrapper (accordion or simple content)
+        if accordion_id.present?
+          # Accordion mode (for FAQ-style content)
+          content_html = content_tag(:div, class: "accordion", id: accordion_id) do
+            capture(&block) if block_given?
+          end
         else
-          "".html_safe
+          # Simple content mode (for legal/article-style content)
+          content_html = capture(&block) if block_given?
         end
+        sections << content_html
         
-        # Content from block
-        content_html = capture(&block) if block_given?
-        
-        (title_html + alert_html + content_html.to_s).html_safe
+        sections.join.html_safe
       end
     end
   end
 
-  # Helper for legal articles
-  def legal_article(number:, title:, content:)
-    content_tag :div do
-      title_html = content_tag(:h4, "Article #{number} - #{title}", class: "h5 fw-bold mt-4 mb-3 text-light")
-      content_html = content_tag(:p, content.html_safe, class: "text-light opacity-75")
-      (title_html + content_html).html_safe
-    end
-  end
-
-  # Helper for FAQ sections
-  def faq_section(id:, icon:, title:, accordion_id:, &block)
-    content_tag :section, id: id, class: "my-5", "data-scroll-reveal": true do
-      title_html = content_tag(:div, class: "mb-4") do
-        content_tag(:h2, class: "h3 fw-bold text-light") do
-          concat content_tag(:i, nil, class: "bi bi-#{icon} text-light me-2")
-          concat title
-        end
-      end
-      
-      accordion_html = content_tag(:div, class: "accordion", id: accordion_id) do
-        capture(&block) if block_given?
-      end
-      
-      (title_html + accordion_html).html_safe
-    end
-  end
-
-  # Helper for FAQ items (accordion items)
-  def faq_item(id:, parent_id:, question:, &block)
+  # Helper générique pour créer un item d'accordéon
+  # Version améliorée et plus flexible de faq_item
+  def collapsible_item(id:, parent_id:, title:, expanded: false, theme: "dark", &block)
     item_id = "#{parent_id}_#{id}"
     heading_id = "heading_#{item_id}"
     collapse_id = "collapse_#{item_id}"
     
-    # Determine if this is the first item (to set it as active)
-    is_first = id.ends_with?("1")
+    # Theme colors
+    bg_class = theme == "dark" ? "bg-black" : "bg-light"
+    text_class = theme == "dark" ? "text-light" : "text-dark"
+    border_class = theme == "dark" ? "border-dark" : "border-dark"
     
-    content_tag :div, class: "accordion-item bg-black border-secondary" do
+    content_tag :div, class: "accordion-item #{bg_class} #{border_class}" do
       # Accordion header
       header = content_tag(:h2, class: "accordion-header", id: heading_id) do
-        button_class = "accordion-button #{is_first ? '' : 'collapsed'} bg-black text-light"
-        button_style = "color: #fff !important;"
+        button_class = "accordion-button #{expanded ? '' : 'collapsed'} #{bg_class} #{text_class}"
+        button_style = theme == "dark" ? "color: #fff !important;" : ""
         content_tag(:button, 
           class: button_class,
           type: "button",
           style: button_style,
           "data-bs-toggle": "collapse",
           "data-bs-target": "##{collapse_id}",
-          "aria-expanded": is_first ? "true" : "false",
+          "aria-expanded": expanded ? "true" : "false",
           "aria-controls": collapse_id) do
-          question
+          title
         end
       end
       
       # Accordion collapse
       collapse = content_tag(:div,
         id: collapse_id,
-        class: "accordion-collapse collapse #{is_first ? 'show' : ''}",
+        class: "accordion-collapse collapse #{expanded ? 'show' : ''}",
         "aria-labelledby": heading_id,
         "data-bs-parent": "##{parent_id}") do
-        content_tag(:div, class: "accordion-body bg-black text-light opacity-75") do
+        content_tag(:div, class: "accordion-body #{bg_class} #{text_class} opacity-75") do
           capture(&block) if block_given?
         end
       end
       
       (header + collapse).html_safe
+    end
+  end
+
+  # Helper générique pour créer un article/bloc de contenu numéroté
+  # Version améliorée de legal_article avec plus d'options
+  def content_article(number: nil, title:, content: nil, theme: "light", &block)
+    content_tag :div, class: "my-4" do
+      sections = []
+      
+      # Title with optional number
+      title_text = number.present? ? "Article #{number} - #{title}" : title
+      title_html = content_tag(:h4, title_text, class: "h5 fw-bold mt-4 mb-3 text-light")
+      sections << title_html
+      
+      # Content (either from parameter or block)
+      if content.present?
+        content_html = content_tag(:p, content.html_safe, class: "text-light opacity-75")
+        sections << content_html
+      elsif block_given?
+        custom_content = content_tag(:div, class: "text-light opacity-75") do
+          capture(&block)
+        end
+        sections << custom_content
+      end
+      
+      sections.join.html_safe
+    end
+  end
+
+  # Helper pour créer une liste de liens de navigation rapide
+  def quick_nav_links(links:, columns: 3)
+    content_tag :div, class: "concept-card my-4", "data-scroll-reveal": true do
+      title = content_tag(:h5, "Navigation rapide", class: "fw-bold mb-3 text-light")
+      
+      nav_content = content_tag(:div, class: "row g-3") do
+        links.map do |link|
+          content_tag(:div, class: "col-md-#{12/columns}") do
+            link_to link[:url], class: "text-decoration-none text-light" do
+              concat content_tag(:i, nil, class: "bi bi-chevron-right me-2")
+              concat link[:text]
+            end
+          end
+        end.join.html_safe
+      end
+      
+      (title + nav_content).html_safe
+    end
+  end
+
+  # Helper pour créer une grille de boutons de navigation par catégorie
+  def category_nav_buttons(categories:)
+    content_tag :div, class: "my-4", "data-scroll-reveal": true do
+      title = content_tag(:h5, "Navigation par catégorie", class: "fw-bold mb-3 text-center text-light")
+      
+      buttons = content_tag(:div, class: "d-flex flex-wrap justify-content-center gap-2") do
+        categories.map do |cat|
+          link_to cat[:url], class: "btn btn-outline-light btn-sm" do
+            concat content_tag(:i, nil, class: "bi bi-#{cat[:icon]} me-1")
+            concat cat[:text]
+          end
+        end.join.html_safe
+      end
+      
+      (title + buttons).html_safe
     end
   end
 

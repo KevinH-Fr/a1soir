@@ -6,45 +6,27 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
   <div class="container-fluid">
     <div class="row justify-content-center">
       <div class="col-lg-10">
-        <!-- Navigation rapide -->
-        <div class="concept-card my-4" data-scroll-reveal>
-          <h5 class="fw-bold mb-3 text-light">Navigation rapide</h5>
-          <div class="row g-3">
-            <div class="col-md-4">
-              <a href="#mentions-legales" class="text-decoration-none text-light">
-                <i class="bi bi-chevron-right me-2"></i>Mentions légales
-              </a>
-            </div>
-            <div class="col-md-4">
-              <a href="#cgv" class="text-decoration-none text-light">
-                <i class="bi bi-chevron-right me-2"></i>Conditions générales de vente
-              </a>
-            </div>
-            <div class="col-md-4">
-              <a href="#cgl" class="text-decoration-none text-light">
-                <i class="bi bi-chevron-right me-2"></i>Conditions de location
-              </a>
-            </div>
-            <div class="col-md-4">
-              <a href="#confidentialite" class="text-decoration-none text-light">
-                <i class="bi bi-chevron-right me-2"></i>Politique de confidentialité
-              </a>
-            </div>
-            <div class="col-md-4">
-              <a href="#cookies" class="text-decoration-none text-light">
-                <i class="bi bi-chevron-right me-2"></i>Politique des cookies
-              </a>
-            </div>
-            <div class="col-md-4">
-              <a href="#propriete" class="text-decoration-none text-light">
-                <i class="bi bi-chevron-right me-2"></i>Propriété intellectuelle
-              </a>
-            </div>
-          </div>
+        
+        <!-- Introduction -->
+        <div class="text-center my-5 px-3" data-scroll-reveal>
+          <p class="lead text-light opacity-75">
+            Retrouvez ici toutes les informations légales, nos conditions générales et notre politique 
+            de confidentialité. Transparence et conformité sont nos priorités.
+          </p>
         </div>
 
+        <!-- Navigation rapide -->
+        <%= quick_nav_links(links: [
+          { url: "#mentions-legales", text: "Mentions légales" },
+          { url: "#cgv", text: "Conditions générales de vente" },
+          { url: "#cgl", text: "Conditions de location" },
+          { url: "#confidentialite", text: "Politique de confidentialité" },
+          { url: "#cookies", text: "Politique des cookies" },
+          { url: "#propriete", text: "Propriété intellectuelle" }
+        ]) %>
+
         <!-- Mentions légales -->
-        <%= legal_section(id: "mentions-legales", icon: "info-circle", title: "Mentions légales") do %>
+        <%= content_section(id: "mentions-legales", icon: "info-circle", title: "Mentions légales") do %>
           <h4 class="h5 fw-bold mt-4 mb-3 text-light">Éditeur du site</h4>
           <p class="text-light opacity-75">
             <strong>A1soir</strong><br>
@@ -77,13 +59,13 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
         <% end %>
 
         <!-- CGV -->
-        <%= legal_section(
+        <%= content_section(
           id: "cgv", 
           icon: "cart-check", 
           title: "Conditions Générales de Vente",
           alert: { type: :info, icon: "calendar-event", text: "Dernière mise à jour : [Date à compléter]" }
         ) do %>
-          <%= legal_article(
+          <%= content_article(
             number: 1,
             title: "Objet",
             content: "Les présentes conditions générales de vente (CGV) régissent les relations contractuelles 
@@ -91,7 +73,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
               proposés sur le site internet et en boutique."
           ) %>
 
-          <%= legal_article(
+          <%= content_article(
             number: 2,
             title: "Prix",
             content: "Les prix de nos produits sont indiqués en euros toutes taxes comprises (TTC). 
@@ -100,7 +82,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
               de la commande."
           ) %>
 
-          <%= legal_article(
+          <%= content_article(
             number: 3,
             title: "Commandes",
             content: "Les commandes peuvent être passées en ligne via notre site internet ou directement 
@@ -108,7 +90,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
               de commande sera envoyée par email au client."
           ) %>
 
-          <%= legal_article(
+          <%= content_article(
             number: 4,
             title: "Paiement",
             content: "Le paiement peut s'effectuer par :<br>
@@ -119,7 +101,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
               Le paiement est exigible immédiatement à la commande."
           ) %>
 
-          <%= legal_article(
+          <%= content_article(
             number: 5,
             title: "Livraison",
             content: "Les modalités de livraison sont définies lors de la commande. 
@@ -127,7 +109,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
               ne peut donner lieu à l'annulation de la commande ou au versement de dommages et intérêts."
           ) %>
 
-          <%= legal_article(
+          <%= content_article(
             number: 6,
             title: "Droit de rétractation",
             content: "Conformément à la législation en vigueur, le client dispose d'un délai de 14 jours 
@@ -136,7 +118,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
               être retournés dans leur état d'origine, non portés et dans leur emballage d'origine."
           ) %>
 
-          <%= legal_article(
+          <%= content_article(
             number: 7,
             title: "Garanties",
             content: "Tous nos produits bénéficient de la garantie légale de conformité et de la garantie 
@@ -144,7 +126,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
               un défaut de fabrication pourront être échangés ou remboursés."
           ) %>
 
-          <%= legal_article(
+          <%= content_article(
             number: 8,
             title: "Responsabilité",
             content: "A1soir ne saurait être tenu responsable de l'inexécution du contrat en cas de force majeure, 
@@ -153,20 +135,20 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
         <% end %>
 
         <!-- Conditions de location -->
-        <%= legal_section(
+        <%= content_section(
           id: "cgl", 
           icon: "calendar-check", 
           title: "Conditions Générales de Location",
           alert: { type: :warning, icon: "exclamation-triangle", text: "Veuillez lire attentivement ces conditions avant toute réservation" }
         ) do %>
-          <%= legal_article(
+          <%= content_article(
             number: 1,
             title: "Objet de la location",
             content: "Les présentes conditions générales régissent la location de tenues et accessoires 
               proposés par A1soir. Chaque location est nominative et personnelle."
           ) %>
 
-          <%= legal_article(
+          <%= content_article(
             number: 2,
             title: "Réservation",
             content: "La réservation peut s'effectuer en ligne ou en boutique. Elle devient définitive 
@@ -174,7 +156,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
               à régler au plus tard lors du retrait de la tenue."
           ) %>
 
-          <%= legal_article(
+          <%= content_article(
             number: 3,
             title: "Durée de location",
             content: "La durée standard de location est de [X] jours. Les dates de retrait et de retour 
@@ -182,7 +164,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
               préalable par A1soir et fera l'objet d'une facturation complémentaire."
           ) %>
 
-          <%= legal_article(
+          <%= content_article(
             number: 4,
             title: "Caution",
             content: "Une caution de [montant] € est demandée lors du retrait. Cette caution pourra être 
@@ -193,7 +175,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
               • Non-respect des conditions de location"
           ) %>
 
-          <%= legal_article(
+          <%= content_article(
             number: 5,
             title: "Essayage et retouches",
             content: "Un essayage préalable est vivement recommandé. Des retouches mineures peuvent être 
@@ -201,7 +183,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
               feront l'objet d'un devis et d'une facturation supplémentaire."
           ) %>
 
-          <%= legal_article(
+          <%= content_article(
             number: 6,
             title: "Responsabilité du locataire",
             content: "Le locataire s'engage à :<br>
@@ -212,7 +194,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
               • Signaler immédiatement tout dommage accidentel"
           ) %>
 
-          <%= legal_article(
+          <%= content_article(
             number: 7,
             title: "Annulation",
             content: "En cas d'annulation par le client :<br>
@@ -222,7 +204,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
               L'acompte reste acquis à A1soir sauf cas de force majeure justifié."
           ) %>
 
-          <%= legal_article(
+          <%= content_article(
             number: 8,
             title: "Entretien",
             content: "L'entretien et le nettoyage des tenues sont inclus dans le prix de location. 
@@ -231,7 +213,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
               être facturés."
           ) %>
 
-          <%= legal_article(
+          <%= content_article(
             number: 9,
             title: "Assurance",
             content: "Nous recommandons au locataire de souscrire une assurance couvrant les dommages 
@@ -240,7 +222,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
         <% end %>
 
         <!-- Politique de confidentialité -->
-        <%= legal_section(id: "confidentialite", icon: "shield-check", title: "Politique de Confidentialité") do %>
+        <%= content_section(id: "confidentialite", icon: "shield-check", title: "Politique de Confidentialité") do %>
           <h4 class="h5 fw-bold mt-4 mb-3 text-light">Collecte des données</h4>
           <p class="text-light opacity-75">
             A1soir collecte les données personnelles suivantes dans le cadre de son activité :<br>
@@ -296,7 +278,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
         <% end %>
 
         <!-- Politique des cookies -->
-        <%= legal_section(id: "cookies", icon: "gear", title: "Politique des Cookies") do %>
+        <%= content_section(id: "cookies", icon: "gear", title: "Politique des Cookies") do %>
           <h4 class="h5 fw-bold mt-4 mb-3 text-light">Qu'est-ce qu'un cookie ?</h4>
           <p class="text-light opacity-75">
             Un cookie est un petit fichier texte stocké sur votre ordinateur ou appareil mobile 
@@ -334,7 +316,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
         <% end %>
 
         <!-- Propriété intellectuelle -->
-        <%= legal_section(id: "propriete", icon: "file-earmark-lock", title: "Propriété Intellectuelle") do %>
+        <%= content_section(id: "propriete", icon: "file-earmark-lock", title: "Propriété Intellectuelle") do %>
           <p class="text-light opacity-75">
             L'ensemble du contenu de ce site (textes, images, vidéos, logos, graphismes, etc.) 
             est la propriété exclusive de A1soir ou de ses partenaires. Toute reproduction, 

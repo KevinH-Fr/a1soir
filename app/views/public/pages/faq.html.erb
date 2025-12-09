@@ -14,34 +14,19 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
           </p>
         </div>
 
-        <!-- Recherche rapide par catégorie -->
-        <div class="concept-card my-4" data-scroll-reveal>
-          <h5 class="fw-bold mb-3 text-center text-light">Navigation par catégorie</h5>
-          <div class="d-flex flex-wrap justify-content-center gap-2">
-            <a href="#location" class="btn btn-outline-light btn-sm">
-              <i class="bi bi-calendar-check me-1"></i>Location
-            </a>
-            <a href="#vente" class="btn btn-outline-light btn-sm">
-              <i class="bi bi-bag-check me-1"></i>Vente
-            </a>
-            <a href="#retouches" class="btn btn-outline-light btn-sm">
-              <i class="bi bi-scissors me-1"></i>Retouches
-            </a>
-            <a href="#livraison" class="btn btn-outline-light btn-sm">
-              <i class="bi bi-truck me-1"></i>Livraison
-            </a>
-            <a href="#paiement" class="btn btn-outline-light btn-sm">
-              <i class="bi bi-credit-card me-1"></i>Paiement
-            </a>
-            <a href="#general" class="btn btn-outline-light btn-sm">
-              <i class="bi bi-question-circle me-1"></i>Général
-            </a>
-          </div>
-        </div>
+        <!-- Navigation rapide -->
+        <%= quick_nav_links(links: [
+          { url: "#location", text: "Location de tenues" },
+          { url: "#vente", text: "Vente de tenues" },
+          { url: "#retouches", text: "Retouches et personnalisation" },
+          { url: "#livraison", text: "Livraison et retrait" },
+          { url: "#paiement", text: "Paiement et tarifs" },
+          { url: "#general", text: "Questions générales" }
+        ]) %>
 
         <!-- Questions sur la Location -->
-        <%= faq_section(id: "location", icon: "calendar-check", title: "Location de tenues", accordion_id: "accordionLocation") do %>
-          <%= faq_item(id: "location1", parent_id: "accordionLocation", question: "Comment fonctionne la location de tenues ?") do %>
+        <%= content_section(id: "location", icon: "calendar-check", title: "Location de tenues", accordion_id: "accordionLocation") do %>
+          <%= collapsible_item(id: "location1", parent_id: "accordionLocation", title: "Comment fonctionne la location de tenues ?", expanded: true) do %>
             <p>La location chez A1soir est simple et flexible :</p>
             <ol>
               <li><strong>Parcourez</strong> notre catalogue en ligne ou venez en boutique</li>
@@ -53,7 +38,7 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             <p class="mb-0">L'entretien et le nettoyage sont inclus dans le prix de location !</p>
           <% end %>
 
-          <%= faq_item(id: "location2", parent_id: "accordionLocation", question: "Quelle est la durée standard de location ?") do %>
+          <%= collapsible_item(id: "location2", parent_id: "accordionLocation", title: "Quelle est la durée standard de location ?") do %>
             <p>La durée standard de location est de <strong>4 jours</strong> :</p>
             <ul>
               <li>Retrait : 2 jours avant votre événement</li>
@@ -62,7 +47,7 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             <p class="mb-0">Des locations plus longues sont possibles sur demande avec une tarification adaptée.</p>
           <% end %>
 
-          <%= faq_item(id: "location3", parent_id: "accordionLocation", question: "Combien de temps à l'avance dois-je réserver ?") do %>
+          <%= collapsible_item(id: "location3", parent_id: "accordionLocation", title: "Combien de temps à l'avance dois-je réserver ?") do %>
             <p>Nous recommandons de réserver :</p>
             <ul>
               <li><strong>2 à 3 mois à l'avance</strong> pour les mariages et grandes occasions</li>
@@ -72,7 +57,7 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             <p class="mb-0">Plus vous réservez tôt, plus vous aurez de choix disponibles !</p>
           <% end %>
 
-          <%= faq_item(id: "location4", parent_id: "accordionLocation", question: "Que se passe-t-il si la tenue ne me va pas ?") do %>
+          <%= collapsible_item(id: "location4", parent_id: "accordionLocation", title: "Que se passe-t-il si la tenue ne me va pas ?") do %>
             <p>Pas de panique ! Nous proposons plusieurs solutions :</p>
             <ul>
               <li><strong>Retouches gratuites</strong> : ajustements mineurs inclus dans le prix</li>
@@ -82,7 +67,7 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             <p class="mb-0">Notre atelier de retouches s'assure que chaque tenue soit parfaitement ajustée à votre morphologie.</p>
           <% end %>
 
-          <%= faq_item(id: "location5", parent_id: "accordionLocation", question: "Quel montant de caution est demandé ?") do %>
+          <%= collapsible_item(id: "location5", parent_id: "accordionLocation", title: "Quel montant de caution est demandé ?") do %>
             <p>La caution varie selon la valeur de la tenue :</p>
             <ul>
               <li>Tenues standard : 100 à 200€</li>
@@ -94,8 +79,8 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
         <% end %>
 
         <!-- Questions sur la Vente -->
-        <%= faq_section(id: "vente", icon: "bag-check", title: "Vente de tenues", accordion_id: "accordionVente") do %>
-          <%= faq_item(id: "vente1", parent_id: "accordionVente", question: "Puis-je acheter une tenue que j'ai louée ?") do %>
+        <%= content_section(id: "vente", icon: "bag-check", title: "Vente de tenues", accordion_id: "accordionVente") do %>
+          <%= collapsible_item(id: "vente1", parent_id: "accordionVente", title: "Puis-je acheter une tenue que j'ai louée ?", expanded: true) do %>
             <p>Oui, absolument ! Si vous tombez amoureux d'une tenue pendant votre location, nous vous proposons :</p>
             <ul>
               <li><strong>Option d'achat après location</strong> avec déduction du prix de location</li>
@@ -105,7 +90,7 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             <p class="mb-0">Contactez-nous pour connaître les modalités spécifiques à votre tenue.</p>
           <% end %>
 
-          <%= faq_item(id: "vente2", parent_id: "accordionVente", question: "Proposez-vous des tenues neuves à la vente ?") do %>
+          <%= collapsible_item(id: "vente2", parent_id: "accordionVente", title: "Proposez-vous des tenues neuves à la vente ?") do %>
             <p>Oui, nous proposons une sélection de tenues neuves :</p>
             <ul>
               <li>Collections exclusives de créateurs</li>
@@ -115,7 +100,7 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             <p class="mb-0">Venez en boutique ou contactez-nous pour découvrir nos collections à la vente.</p>
           <% end %>
 
-          <%= faq_item(id: "vente3", parent_id: "accordionVente", question: "Quel est le délai de rétractation ?") do %>
+          <%= collapsible_item(id: "vente3", parent_id: "accordionVente", title: "Quel est le délai de rétractation ?") do %>
             <p>Conformément à la loi, vous disposez de <strong>14 jours</strong> pour exercer votre droit de rétractation.</p>
             <p>Conditions :</p>
             <ul>
@@ -128,8 +113,8 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
         <% end %>
 
         <!-- Questions sur les Retouches -->
-        <%= faq_section(id: "retouches", icon: "scissors", title: "Retouches et personnalisation", accordion_id: "accordionRetouches") do %>
-          <%= faq_item(id: "retouches1", parent_id: "accordionRetouches", question: "Les retouches sont-elles incluses dans le prix de location ?") do %>
+        <%= content_section(id: "retouches", icon: "scissors", title: "Retouches et personnalisation", accordion_id: "accordionRetouches") do %>
+          <%= collapsible_item(id: "retouches1", parent_id: "accordionRetouches", title: "Les retouches sont-elles incluses dans le prix de location ?", expanded: true) do %>
             <p>Oui ! Les retouches mineures sont <strong>incluses gratuitement</strong> dans le prix de location :</p>
             <ul>
               <li>Ajustement de la longueur (ourlets)</li>
@@ -139,7 +124,7 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             <p>Les retouches importantes ou complexes peuvent faire l'objet d'un devis supplémentaire.</p>
           <% end %>
 
-          <%= faq_item(id: "retouches2", parent_id: "accordionRetouches", question: "Quel est le délai pour les retouches ?") do %>
+          <%= collapsible_item(id: "retouches2", parent_id: "accordionRetouches", title: "Quel est le délai pour les retouches ?") do %>
             <p>Les délais varient selon la complexité :</p>
             <ul>
               <li><strong>Retouches simples</strong> : 2 à 3 jours ouvrés</li>
@@ -150,7 +135,7 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             <p class="mb-0">Nous vous recommandons de prévoir l'essayage 2 semaines avant votre événement.</p>
           <% end %>
 
-          <%= faq_item(id: "retouches3", parent_id: "accordionRetouches", question: "Proposez-vous des créations sur mesure ?") do %>
+          <%= collapsible_item(id: "retouches3", parent_id: "accordionRetouches", title: "Proposez-vous des créations sur mesure ?") do %>
             <p>Oui ! Notre atelier peut créer des tenues entièrement personnalisées :</p>
             <ul>
               <li>Création de robes de mariée sur mesure</li>
@@ -163,8 +148,8 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
         <% end %>
 
         <!-- Questions sur la Livraison -->
-        <%= faq_section(id: "livraison", icon: "truck", title: "Livraison et retrait", accordion_id: "accordionLivraison") do %>
-          <%= faq_item(id: "livraison1", parent_id: "accordionLivraison", question: "Proposez-vous la livraison à domicile ?") do %>
+        <%= content_section(id: "livraison", icon: "truck", title: "Livraison et retrait", accordion_id: "accordionLivraison") do %>
+          <%= collapsible_item(id: "livraison1", parent_id: "accordionLivraison", title: "Proposez-vous la livraison à domicile ?", expanded: true) do %>
             <p>Oui, plusieurs options de livraison sont disponibles :</p>
             <ul>
               <li><strong>Retrait en boutique</strong> : gratuit</li>
@@ -175,7 +160,7 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             <p class="mb-0">Les frais de livraison vous seront communiqués lors de la réservation.</p>
           <% end %>
 
-          <%= faq_item(id: "livraison2", parent_id: "accordionLivraison", question: "Comment retourner ma location ?") do %>
+          <%= collapsible_item(id: "livraison2", parent_id: "accordionLivraison", title: "Comment retourner ma location ?") do %>
             <p>Vous pouvez retourner votre location de plusieurs façons :</p>
             <ul>
               <li><strong>En boutique</strong> : pendant nos horaires d'ouverture</li>
@@ -187,8 +172,8 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
         <% end %>
 
         <!-- Questions sur le Paiement -->
-        <%= faq_section(id: "paiement", icon: "credit-card", title: "Paiement et tarifs", accordion_id: "accordionPaiement") do %>
-          <%= faq_item(id: "paiement1", parent_id: "accordionPaiement", question: "Quels moyens de paiement acceptez-vous ?") do %>
+        <%= content_section(id: "paiement", icon: "credit-card", title: "Paiement et tarifs", accordion_id: "accordionPaiement") do %>
+          <%= collapsible_item(id: "paiement1", parent_id: "accordionPaiement", title: "Quels moyens de paiement acceptez-vous ?", expanded: true) do %>
             <p>Nous acceptons tous les moyens de paiement courants :</p>
             <ul>
               <li><strong>Cartes bancaires</strong> : Visa, Mastercard, American Express</li>
@@ -199,7 +184,7 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             </ul>
           <% end %>
 
-          <%= faq_item(id: "paiement2", parent_id: "accordionPaiement", question: "Faut-il payer un acompte à la réservation ?") do %>
+          <%= collapsible_item(id: "paiement2", parent_id: "accordionPaiement", title: "Faut-il payer un acompte à la réservation ?") do %>
             <p>Oui, un acompte de <strong>30%</strong> est requis pour confirmer votre réservation.</p>
             <ul>
               <li>L'acompte sécurise votre tenue aux dates choisies</li>
@@ -209,7 +194,7 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             <p class="mb-0">Pour les achats, le paiement intégral est demandé à la commande.</p>
           <% end %>
 
-          <%= faq_item(id: "paiement3", parent_id: "accordionPaiement", question: "Proposez-vous des tarifs de groupe ?") do %>
+          <%= collapsible_item(id: "paiement3", parent_id: "accordionPaiement", title: "Proposez-vous des tarifs de groupe ?") do %>
             <p>Oui ! Nous proposons des <strong>tarifs préférentiels pour les groupes</strong> :</p>
             <ul>
               <li>À partir de 5 personnes : -10%</li>
@@ -221,8 +206,8 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
         <% end %>
 
         <!-- Questions Générales -->
-        <%= faq_section(id: "general", icon: "question-circle", title: "Questions générales", accordion_id: "accordionGeneral") do %>
-          <%= faq_item(id: "general1", parent_id: "accordionGeneral", question: "Où se trouve votre boutique ?") do %>
+        <%= content_section(id: "general", icon: "question-circle", title: "Questions générales", accordion_id: "accordionGeneral") do %>
+          <%= collapsible_item(id: "general1", parent_id: "accordionGeneral", title: "Où se trouve votre boutique ?", expanded: true) do %>
             <p><strong>Autour d'un Soir</strong><br>
             <%= @texteAdresse %><br>
             
@@ -234,7 +219,7 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             Email : (<%= link_to "formulaire de contact", "#{contact_path}#message-form" %>)</p>
           <% end %>
 
-          <%= faq_item(id: "general2", parent_id: "accordionGeneral", question: "Dois-je prendre rendez-vous ?") do %>
+          <%= collapsible_item(id: "general2", parent_id: "accordionGeneral", title: "Dois-je prendre rendez-vous ?") do %>
             <p>Le rendez-vous n'est pas obligatoire mais <strong>fortement recommandé</strong> :</p>
             <ul>
               <li>Garantit la disponibilité d'un conseiller dédié</li>
@@ -245,7 +230,7 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             <p class="mb-0">Réservez votre créneau en ligne ou par téléphone !</p>
           <% end %>
 
-          <%= faq_item(id: "general3", parent_id: "accordionGeneral", question: "Puis-je venir avec mes proches lors de l'essayage ?") do %>
+          <%= collapsible_item(id: "general3", parent_id: "accordionGeneral", title: "Puis-je venir avec mes proches lors de l'essayage ?") do %>
             <p>Bien sûr ! Nous vous encourageons à venir accompagné(e) :</p>
             <ul>
               <li>Cabines d'essayage spacieuses</li>
@@ -256,7 +241,7 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             <p class="mb-0">Merci de nous indiquer le nombre de personnes lors de la prise de rendez-vous.</p>
           <% end %>
 
-          <%= faq_item(id: "general4", parent_id: "accordionGeneral", question: "Que faire en cas d'accident ou de tache sur la tenue ?") do %>
+          <%= collapsible_item(id: "general4", parent_id: "accordionGeneral", title: "Que faire en cas d'accident ou de tache sur la tenue ?") do %>
             <p><strong>Pas de panique !</strong> Voici la marche à suivre :</p>
             <ol>
               <li><strong>Contactez-nous immédiatement</strong> pour nous informer</li>
@@ -268,7 +253,7 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             <p class="mb-0">Une assurance optionnelle est disponible pour couvrir les accidents.</p>
           <% end %>
 
-          <%= faq_item(id: "general5", parent_id: "accordionGeneral", question: "Avez-vous des tenues pour enfants ?") do %>
+          <%= collapsible_item(id: "general5", parent_id: "accordionGeneral", title: "Avez-vous des tenues pour enfants ?") do %>
             <p>Oui ! Nous proposons une belle sélection de tenues pour enfants :</p>
             <ul>
               <li>Costumes pour garçons (2 à 16 ans)</li>
