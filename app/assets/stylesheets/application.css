@@ -122,6 +122,31 @@
   letter-spacing: 1px;
 }
 
+/* Logo navbar responsive */
+.navbar-logo {
+  width: 11rem; /* ~176px sur mobile */
+  max-width: 100%;
+  height: auto;
+}
+
+@media (min-width: 768px) {
+  .navbar-logo {
+    width: 13rem; /* ~208px sur tablette */
+  }
+}
+
+@media (min-width: 1200px) {
+  .navbar-logo {
+    width: 15rem; /* ~240px sur desktop */
+  }
+}
+
+@media (min-width: 1400px) {
+  .navbar-logo {
+    width: 16.25rem; /* ~260px sur grand écran */
+  }
+}
+
 .page-max-widthed{
    width: 100%;
    max-width: 1000px;
@@ -162,6 +187,12 @@
   background: rgba(255, 255, 255, 0.7); /* White background with 70% opacity */
   border-radius: 4px;                  /* Rounded corners */
   padding: 4px;                  /* Padding for better spacing */
+}
+
+
+/* Compensation pour la navbar fixed-top - appliquée au niveau du layout */
+.public-content {
+  padding-top: 60px; /* Compensation pour la navbar fixed-top */
 }
 
 .public-main-content{
@@ -2107,9 +2138,6 @@ section {
   transition-delay: 0.05s;
 }
 
-/* ================================
-   FLASH MESSAGES CABINE D'ESSAYAGE
-   ================================ */
 
 .alert-cabine {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 249, 250, 0.98) 100%) !important;

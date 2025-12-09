@@ -11,9 +11,12 @@
         <% if @footer_texte_adresse.present? %>
           <div class="mb-3 d-flex align-items-start text-light">
             <i class="bi bi-geo-alt-fill me-2 small" style="flex-shrink: 0; margin-top: 2px;"></i>
-            <p class="small mb-0 fw-bold" style="line-height: 1.6;">
-              <%= @footer_texte_adresse %>
-            </p>
+            <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape('autour d\'un soir 06400 cannes')}", target: "_blank", rel: "noopener noreferrer", class: "text-light text-decoration-none hover-link d-flex align-items-start" do %>
+              <p class="small mb-0 fw-bold" style="line-height: 1.6;">
+                <%= @footer_texte_adresse %>
+              </p>
+              <i class="bi bi-box-arrow-up-right ms-2 opacity-75" style="font-size: 0.75rem; margin-top: 2px; flex-shrink: 0;"></i>
+            <% end %>
           </div>
         <% end %>
         
@@ -42,7 +45,7 @@
         <ul class="list-unstyled">
           <li class="mb-2"><%= link_to "Accueil", home_path, class: "text-light text-decoration-none hover-link" %></li>
           <li class="mb-2"><%= link_to "La boutique", la_boutique_url, class: "text-light text-decoration-none hover-link" %></li>
-          <li class="mb-2"><%= link_to "Nos collections", nos_collections_url, class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to "Collections", nos_collections_url, class: "text-light text-decoration-none hover-link" %></li>
           <li class="mb-2"><%= link_to "Le concept", le_concept_url, class: "text-light text-decoration-none hover-link" %></li>
           <li class="mb-2"><%= link_to "Nos autres activités", nos_autres_activites_url, class: "text-light text-decoration-none hover-link" %></li>
         </ul>
@@ -52,7 +55,6 @@
       <div class="col-6 col-md-2">
         <h6 class="fw-bold text-uppercase mb-4 text-light">Services</h6>
         <ul class="list-unstyled">
-          <li class="mb-2"><%= link_to "Catégories", categories_url(subdomain: "shop"), class: "text-light text-decoration-none hover-link" %></li>
           <li class="mb-2"><%= link_to "Produits", produits_index_url(subdomain: "shop"), class: "text-light text-decoration-none hover-link" %></li>
           <li class="mb-2"><%= link_to "Rendez-vous", rdv_url(subdomain: "shop"), class: "text-light text-decoration-none hover-link" %></li>
           <li class="mb-2"><%= link_to "Contact", contact_url, class: "text-light text-decoration-none hover-link" %></li>

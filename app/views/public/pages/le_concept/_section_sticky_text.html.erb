@@ -1,9 +1,64 @@
 <!-- Section avec images et textes sticky -->
-<section data-controller="sticky-text" class="position-relative bg-black" style="height: 300vh;">
+<!-- Mobile: layout simple avec images et textes alternés avec animations -->
+<section class="d-lg-none bg-black py-5">
+  <div class="container-fluid">
+    <!-- Bloc 1 -->
+    <div class="mb-5">
+      <div class="px-3 mb-4" data-aos="fade-up" data-aos-duration="600" data-aos-delay="0">
+        <%= image_tag("/images/cat_tenues_soiree.jpg", 
+            alt: "Tenues de soirée", 
+            class: "w-100 shadow-lg", 
+            style: "object-fit: cover; border-radius: 8px;") %>
+      </div>
+      <div class="px-4 text-light" data-aos="fade-up" data-aos-duration="600" data-aos-delay="300">
+        <p class="lead mb-0" style="font-size: 1.1rem; line-height: 1.7; font-weight: 300;">
+          Autour d'un Soir vous accompagne dans chaque étape de votre recherche de la tenue parfaite. 
+          Notre équipe experte est à votre écoute pour vous conseiller et vous guider vers des choix 
+          qui reflètent votre personnalité et sublimeront vos moments les plus précieux.
+        </p>
+      </div>
+    </div>
+
+    <!-- Bloc 2 -->
+    <div class="mb-5">
+      <div class="px-3 mb-4" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
+        <%= image_tag("/images/cat_robes_mariees.jpg", 
+            alt: "Robes de mariée", 
+            class: "w-100 shadow-lg", 
+            style: "object-fit: cover; border-radius: 8px;") %>
+      </div>
+      <div class="px-4 text-light" data-aos="fade-up" data-aos-duration="600" data-aos-delay="400">
+        <p class="lead mb-0" style="font-size: 1.1rem; line-height: 1.7; font-weight: 300;">
+          Découvrez notre sélection de tenues de soirée qui allient sophistication et modernité. 
+          Chaque pièce est soigneusement choisie pour vous offrir une expérience unique et mémorable.
+        </p>
+      </div>
+    </div>
+
+    <!-- Bloc 3 -->
+    <div class="mb-5">
+      <div class="px-3 mb-4" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
+        <%= image_tag("/images/cat_costume.jpg", 
+            alt: "Costumes", 
+            class: "w-100 shadow-lg", 
+            style: "object-fit: cover; border-radius: 8px;") %>
+      </div>
+      <div class="px-4 text-light" data-aos="fade-up" data-aos-duration="600" data-aos-delay="500">
+        <p class="lead mb-0" style="font-size: 1.1rem; line-height: 1.7; font-weight: 300;">
+          Notre engagement est de vous offrir un service personnalisé et des tenues d'exception 
+          qui sauront sublimer vos moments les plus importants. Faites confiance à notre expertise.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Desktop: effet sticky avec textes fixes -->
+<section data-controller="sticky-text" class="d-none d-lg-block position-relative bg-black" style="height: 300vh;">
   <div class="container-fluid h-100">
     <div class="row h-100">
       <!-- Images à gauche qui défilent -->
-      <div class="col-12 col-lg-6 position-relative" style="padding-top: 30vh;">
+      <div class="col-lg-6 position-relative" style="padding-top: 30vh;">
         <div data-sticky-text-target="image" class="mb-5 px-3 px-lg-5" style="opacity: 1; transition: opacity 0.5s ease;">
           <%= image_tag("/images/cat_tenues_soiree.jpg", 
               alt: "Tenues de soirée", 
@@ -27,7 +82,7 @@
       </div>
 
       <!-- Textes à droite qui restent fixes -->
-      <div class="col-12 col-lg-6">
+      <div class="col-lg-6">
         <div data-sticky-text-target="text" 
              class="position-fixed top-50 text-light px-4 px-lg-5"
              style="right: 5%; width: 40%; max-width: 600px; display: none; opacity: 0; transition: opacity 0.6s ease, transform 0.6s ease;">
