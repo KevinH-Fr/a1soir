@@ -69,7 +69,7 @@ module Public
       .where.not(id: @produit.id)
       .joins(:couleur) 
 
-      @produits_similaires = @produit.similar_products(limit: 10)
+      @produits_similaires = @produit.similar_products(limit: 4)
     end
 
     

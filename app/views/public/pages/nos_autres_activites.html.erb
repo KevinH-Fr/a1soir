@@ -21,9 +21,9 @@
     } %>
 
     <!-- Activités principales -->
-    <div class="row g-4 my-5 p-2 bg-white">
+    <div class="row g-4 my-5 p-3 bg-white align-items-stretch">
       <!-- Costumes d'époque -->
-      <div class="col-lg-6" data-scroll-reveal>
+      <div class="col-lg-6 d-flex" data-scroll-reveal>
         <%= public_card(
           icon: "clock-history",
           title: "Costumes d'Époque",
@@ -59,7 +59,7 @@
       </div>
 
       <!-- Prestations entreprises -->
-      <div class="col-lg-6" data-scroll-reveal>
+      <div class="col-lg-6 d-flex" data-scroll-reveal>
         <%= public_card(
           icon: "buildings",
           title: "Prestations Entreprises & Groupes",
@@ -158,35 +158,33 @@
         <!-- Titre de section -->
         <div class="section-title-wrapper mb-5 text-center" data-aos="title-underline">
           <h2 class="section-title text-light d-inline-block" style="font-family: 'Playfair Display', serif; font-size: 2.5rem; position: relative;">
-            Ils nous font confiance
+            Témoignages
             <span class="section-title-underline" style="background: white;"></span>
           </h2>
         </div>
         
         <!-- Slider de témoignages -->
-        <%= items_slider(
-          items: [
-            {
-              text: "Service impeccable pour notre gala d'entreprise. L'équipe a habillé nos 50 collaborateurs avec professionnalisme et dans les délais. Résultat magnifique !",
-              name: "Société TechCorp",
-              subtitle: "Direction des Ressources Humaines",
-              icon: "building"
-            },
-            {
-              text: "Les costumes du XVIIIe siècle étaient parfaits pour notre reconstitution historique. Authenticité et qualité au rendez-vous. Nous recommandons vivement !",
-              name: "Association Histoire Vivante",
-              subtitle: "Événements historiques",
-              icon: "people"
-            },
-            {
-              text: "Pour notre mariage sur le thème des années 20, A1soir a su habiller tout notre cortège. Un travail remarquable et une équipe à l'écoute !",
-              name: "Sophie & Marc",
-              subtitle: "Mariage thématique",
-              icon: "heart"
-            }
-          ],
-          type: :testimonial
-        ) %>
+        <% testimonials = [
+          {
+            text: "Service impeccable pour notre gala d'entreprise. L'équipe a habillé nos 50 collaborateurs avec professionnalisme et dans les délais. Résultat magnifique !",
+            name: "Société TechCorp",
+            subtitle: "Direction des Ressources Humaines",
+            icon: "building"
+          },
+          {
+            text: "Les costumes du XVIIIe siècle étaient parfaits pour notre reconstitution historique. Authenticité et qualité au rendez-vous. Nous recommandons vivement !",
+            name: "Association Histoire Vivante",
+            subtitle: "Événements historiques",
+            icon: "people"
+          },
+          {
+            text: "Pour notre mariage sur le thème des années 20, A1soir a su habiller tout notre cortège. Un travail remarquable et une équipe à l'écoute !",
+            name: "Sophie & Marc",
+            subtitle: "Mariage thématique",
+            icon: "heart"
+          }
+        ] %>
+        <%= items_slider(items: testimonials, type: :testimonial) %>
       </div>
     </section>
 

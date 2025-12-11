@@ -9,7 +9,27 @@
     </div>
     
     <!-- Carrousel de défilement automatique -->
-    <%= references_slider %>
+    <%= items_slider(
+      items: [
+        { icon: 'building-fill', name: 'Le Moulin Rouge à Paris' },
+        { icon: 'gem', name: 'Le Trianon Palace à Paris' },
+        { icon: 'cup-hot-fill', name: 'Le Procope à Paris' },
+        { icon: 'tropical-storm', name: 'Le Baoli à Cannes' },
+        { icon: 'house-fill', name: 'Le Château de Vaux Le Vicomte' },
+        { icon: 'dice-5-fill', name: 'Le Casino La Siesta à Antibes' },
+        { icon: 'cup-straw', name: 'Le Café de Paris à Monaco' },
+        { icon: 'brightness-high-fill', name: 'L\'Hôtel Belles Rives à Juan les Pins' },
+        { icon: 'building', name: 'L\'Hôtel Radisson à Cannes' },
+        { icon: 'star-fill', name: 'L\'Hôtel Fairmont à Monaco' },
+        { icon: 'circle-fill', name: 'Le Cirque Alexis Gruss' },
+        { icon: 'tv-fill', name: 'France 2' },
+        { icon: 'tv', name: 'France 3' },
+        { icon: 'broadcast', name: 'M6' },
+        { icon: 'film', name: 'Canal +' },
+        { icon: 'award-fill', name: 'Lenôtre' }
+      ],
+      type: :reference
+    ) %>
   </div>
 </section>
 

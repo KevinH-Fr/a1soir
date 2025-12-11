@@ -1,5 +1,5 @@
 <% if ENV["ONLINE_SALES_AVAILABLE"] == "true" %>
-  <%= link_to cart_url, class: "nav-item text-center m-2 mx-3 text-decoration-none public-brand-color position-relative", id: "cart_badge" do %>
+  <%= link_to cart_url, class: "nav-item m-2 mx-3 text-decoration-none public-brand-color position-relative d-inline-flex align-items-center gap-2", id: "cart_badge" do %>
     <i class="bi bi-bag fs-4"></i>
     <span class="fw-bold">Panier</span>
     <% if @cart.size > 0 %>

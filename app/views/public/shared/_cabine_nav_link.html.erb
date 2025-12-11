@@ -1,7 +1,6 @@
 <div id="cabine_badge"> 
-
   <% badge_count = local_assigns.fetch(:badge_count, @cabine_cart&.size || session[:cabine_cart]&.size) %>
-  <% classes = ["nav-item text-center m-2 mx-3"] %>
+  <% classes = ["nav-item text-center m-0 mx-3"] %>
   <% is_active = false %>
   <% # Activer si on est sur la page cabine_essayage %>
   <% is_active = true if params[:controller] == "public/pages" && params[:action] == "cabine_essayage" %>

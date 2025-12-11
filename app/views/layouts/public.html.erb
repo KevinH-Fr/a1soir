@@ -36,12 +36,12 @@
     
     <%= render "public/shared/navbar" %>
 
-    <div class="m-0 public-content">
+    <main class="public-content">
       <div id="flash" data-turbo-temporary>
         <%= render partial: "public/shared/flash" %>
       </div>
       <%= yield %>
-    </div>
+    </main>
     
     <%# chatbot %>
     <%#= render "public/chat/conversation" %>

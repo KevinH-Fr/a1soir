@@ -104,7 +104,7 @@ module PagesHelper
 
   # Helper générique pour créer un item de slider (référence)
   def reference_item(icon:, name:)
-    content_tag :div, class: "reference-item", style: "border-radius: 4px;" do
+    content_tag :div, class: "slider-item", style: "border-radius: 2px;" do
       icon_tag = content_tag(:i, nil, class: "bi bi-#{icon} me-2")
       name_tag = content_tag(:span, name)
       (icon_tag + name_tag).html_safe
@@ -138,8 +138,8 @@ module PagesHelper
 
   # Helper générique pour créer un slider horizontal
   def items_slider(items:, type: :reference)
-    content_tag :div, class: "references-slider-wrapper" do
-      content_tag :div, class: "references-slider" do
+    content_tag :div, class: "items-slider-wrapper" do
+      content_tag :div, class: "items-slider" do
         slider_items = []
         # Premier ensemble
         items.each do |item|
@@ -164,29 +164,6 @@ module PagesHelper
     end
   end
 
-  # Alias pour compatibilité
-  def references_slider
-    references = [
-      { icon: 'building-fill', name: 'Le Moulin Rouge à Paris' },
-      { icon: 'gem', name: 'Le Trianon Palace à Paris' },
-      { icon: 'cup-hot-fill', name: 'Le Procope à Paris' },
-      { icon: 'tropical-storm', name: 'Le Baoli à Cannes' },
-      { icon: 'house-fill', name: 'Le Château de Vaux Le Vicomte' },
-      { icon: 'dice-5-fill', name: 'Le Casino La Siesta à Antibes' },
-      { icon: 'cup-straw', name: 'Le Café de Paris à Monaco' },
-      { icon: 'brightness-high-fill', name: 'L\'Hôtel Belles Rives à Juan les Pins' },
-      { icon: 'building', name: 'L\'Hôtel Radisson à Cannes' },
-      { icon: 'star-fill', name: 'L\'Hôtel Fairmont à Monaco' },
-      { icon: 'circle-fill', name: 'Le Cirque Alexis Gruss' },
-      { icon: 'tv-fill', name: 'France 2' },
-      { icon: 'tv', name: 'France 3' },
-      { icon: 'broadcast', name: 'M6' },
-      { icon: 'film', name: 'Canal +' },
-      { icon: 'award-fill', name: 'Lenôtre' }
-    ]
-    
-    items_slider(items: references, type: :reference)
-  end
 
 
   def collection_card(title:, items:, url:, delay: 0, image: nil, subtitle: nil)
@@ -271,7 +248,7 @@ module PagesHelper
 
 
   def nav_link_public(path, name)
-      classes = ["nav-item text-center m-2 mx-3"]
+      classes = ["nav-item text-center mx-3 my-1"]
       
       is_active = current_page?(path) || (path == home_path && current_page?(root_path))
       # Activer le lien cabine quand on revient des produits avec le paramètre from_cabine

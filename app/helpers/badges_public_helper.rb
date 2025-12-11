@@ -26,22 +26,19 @@ module BadgesPublicHelper
   end
 
   def badge_taille_link(produit)
-    link_to produit_path(slug: produit.nom.parameterize, id: produit.id),
-        class: "text-light small opacity-75 text-decoration-none" do
-      concat content_tag(:span, "Taille: ", class: "me-1")
-      concat content_tag(:span, produit.taille.nom.upcase, class: "")
-    end
+    link_to produit.taille.nom.upcase,
+            produit_path(slug: produit.nom.parameterize, id: produit.id),
+            class: "btn btn-sm btn-outline-secondary"
   end
 
   def badge_couleur_link(produit)
-    link_to produit_path(slug: produit.nom.parameterize, id: produit.id),
-        class: "text-light small opacity-75 text-decoration-none" do
-      if produit.couleur.couleur_code.present?
-        concat content_tag(:i, '', class: "bi bi-circle-fill me-1", style: "color: #{produit.couleur.couleur_code}; font-size: 0.6rem;")
-      end
-      concat content_tag(:span, "Couleur: ", class: "me-1")
-      concat content_tag(:span, produit.couleur.nom, class: "")
-    end
+    content = []
+    content << content_tag(:i, '', class: "bi bi-circle-fill me-1", style: "color: #{produit.couleur.couleur_code}; font-size: 0.6rem;") if produit.couleur.couleur_code.present?
+    content << produit.couleur.nom
+    
+    link_to safe_join(content),
+            produit_path(slug: produit.nom.parameterize, id: produit.id),
+            class: "btn btn-sm btn-outline-secondary"
   end
 
   private
