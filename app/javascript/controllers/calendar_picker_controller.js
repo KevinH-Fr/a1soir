@@ -164,19 +164,36 @@ export default class extends Controller {
 
   loadCreneauxDisponibles(date) {
     const creneauxOccupes = this.creneauxOccupesValue[date] || [];
-    this.updateCreneauxButtons(creneauxOccupes);
+    this.updateCreneauxButtons(creneauxOccupes, date);
   }
 
-  updateCreneauxButtons(creneauxOccupes) {
+  updateCreneauxButtons(creneauxOccupes, selectedDate) {
     if (!this.hasTimeButtonsTarget) return;
     
+    // Vérifier si la date sélectionnée est aujourd'hui
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selected = selectedDate ? new Date(selectedDate + 'T00:00:00') : null;
+    const isToday = selected && selected.getTime() === today.getTime();
+    const now = new Date();
+    
     this.timeButtonsTarget.querySelectorAll('button[data-time]').forEach(button => {
-      const isOccupe = creneauxOccupes.includes(button.dataset.time);
+      const creneauTime = button.dataset.time;
+      const isOccupe = creneauxOccupes.includes(creneauTime);
       
-      button.disabled = isOccupe;
+      // Vérifier si le créneau est dans le passé pour la date d'aujourd'hui
+      let isPast = false;
+      if (isToday && creneauTime) {
+        const [hours, minutes] = creneauTime.split(':');
+        const creneauDateTime = new Date(today);
+        creneauDateTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        isPast = creneauDateTime < now;
+      }
       
-      if (isOccupe) {
-        // Créneau occupé : texte gris, bordure grise, fond blanc
+      button.disabled = isOccupe || isPast;
+      
+      if (isOccupe || isPast) {
+        // Créneau occupé ou passé : texte gris, bordure grise, fond blanc
         button.classList.remove('btn-outline-dark', 'btn-dark', 'btn-secondary');
         button.style.color = '#6c757d';
         button.style.borderColor = '#6c757d';
@@ -196,7 +213,13 @@ export default class extends Controller {
         button.style.borderRadius = '2px';
       }
       
-      button.title = isOccupe ? 'Créneau déjà réservé' : '';
+      let title = '';
+      if (isOccupe) {
+        title = 'Créneau déjà réservé';
+      } else if (isPast) {
+        title = 'Créneau dans le passé';
+      }
+      button.title = title;
     });
   }
 

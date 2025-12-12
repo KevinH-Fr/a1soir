@@ -1,6 +1,8 @@
 class Admin::StockController < Admin::ApplicationController
  # before_action :authenticate_vendeur_or_admin!
 
+ before_action :authenticate_admin!, only: %i[ index export_csv ]
+
   def index
     @produits = Produit.all
     @commandes = Commande.all.includes([:articles])

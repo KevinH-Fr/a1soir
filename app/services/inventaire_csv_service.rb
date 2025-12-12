@@ -11,14 +11,18 @@ class InventaireCsvService
 
     CSV.generate(headers: true) do |csv|
       csv << [
-        'Nom', 'Prix de vente', 'Catégories', 'Date achat',
+        'Nom', 'Prix de vente', 'Prix achat', 'Date achat', 'Taille', 'Couleur',
+        'Catégories',
         'Quantité initiale', 'Vendus magasin', 'Vendus e-shop',
         'Stock final', 'Est un ensemble', 'Est un service'
       ]
 
-      Produit.includes(:categorie_produits, :type_produit).order(:nom).each do |produit|
+      Produit.includes(:categorie_produits, :type_produit, :taille, :couleur).order(:nom).each do |produit|
         nom = produit.nom
         prix = produit.prixvente
+        prixachat = produit.prixachat
+        taille_nom = produit.taille&.nom
+        couleur_nom = produit.couleur&.nom
         categories = produit.categorie_produits.map(&:nom).join(', ')
         dateachat = produit.dateachat
         quantite_initiale = produit.quantite.to_i
@@ -61,7 +65,8 @@ class InventaireCsvService
                       end
 
         csv << [
-          nom, prix, categories, dateachat,
+          nom, prix, prixachat, dateachat, taille_nom, couleur_nom,
+          categories,
           quantite_initiale, vendus_magasin, vendus_eshop,
           stock_final, est_ensemble, est_service
         ]

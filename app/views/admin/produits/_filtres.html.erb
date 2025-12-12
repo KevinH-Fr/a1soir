@@ -7,7 +7,7 @@
             param_key: :filter_categorie,
             collection: @categorie_produits,
             model: CategorieProduit,
-            current_params: params.permit(:filter_taille, :filter_couleur, :filter_statut, :filter_mode),
+            current_params: params.permit(:filter_taille, :filter_couleur, :filter_statut, :filter_fournisseur, :filter_mode),
             all_label: "Toutes les catégories"
         ) %>
     </div>
@@ -18,7 +18,7 @@
             param_key: :filter_taille,
             collection: @tailles,
             model: Taille,
-            current_params: params.permit(:filter_couleur, :filter_categorie, :filter_statut, :filter_mode),
+            current_params: params.permit(:filter_couleur, :filter_categorie, :filter_statut, :filter_fournisseur, :filter_mode),
             all_label: "Toutes les tailles"
         ) %>
     </div>
@@ -29,7 +29,7 @@
             param_key: :filter_couleur,
             collection: @couleurs,
             model: Couleur,
-            current_params: params.permit(:filter_taille, :filter_categorie, :filter_statut, :filter_mode),
+            current_params: params.permit(:filter_taille, :filter_categorie, :filter_statut, :filter_fournisseur, :filter_mode),
             all_label: "Toutes les couleurs"
         ) %>
     </div>
@@ -38,21 +38,30 @@
             label: "Statut",
             icon: "bi bi-bookmark-check",
             param_key: :filter_statut,
-            current_params: params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_mode)
+            current_params: params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_fournisseur, :filter_mode)
         ) %>
     </div>
-
+    <div>
+        <%= filter_dropdown(
+            label: "Fournisseur",
+            icon: "bi bi-buildings",
+            param_key: :filter_fournisseur,
+            collection: @fournisseurs,
+            model: Fournisseur,
+            current_params: params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_mode)
+        ) %>
+    </div>
     <div>
         <%= filter_dropdown(
         label: "Mode",
         icon: "bi bi-zoom-in",
         param_key: :filter_mode,
-        current_params: params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_statut)
+        current_params: params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_fournisseur)
         ) %>
     </div>
 
     <div class="ms-auto">
-        <%= sort_dropdown(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_mode)) %>
+        <%= sort_dropdown(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_fournisseur, :filter_mode)) %>
     </div>
     <div>
         <%= link_to admin_produits_path, class: 'btn btn-sm btn-outline-danger rounded' do %>

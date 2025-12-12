@@ -1,12 +1,12 @@
 
-<nav class="navbar navbar-admin sticky-top navbar-expand-lg shadow-sm">
-  <div class="container-fluid">
-    <%= link_to image_tag('/images/logo_courant_public.png', class: 'navbar-brand me-4', width: "200"), admin_root_path %>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-admin navbar-light bg-light fixed-top navbar-expand-xxl navbar-fixed-height py-0">
+  <div class="container-fluid ps-3 pe-3 py-0 d-flex align-items-center justify-content-between">
+    <%= link_to image_tag('/images/logo_courant_public.png', class: 'navbar-brand mb-0', width: "180"), admin_root_path %>
+    <button class="navbar-toggler ms-3" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar" aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbar">
-      <ul class="navbar-nav me-auto my-2 my-lg-0">
+    <div class="collapse navbar-collapse justify-content-end" id="adminNavbar">
+      <ul class="navbar-nav me-auto mb-0 d-flex align-items-center gap-3 flex-wrap">
         <%= nav_link(admin_home_admin_path, "Accueil", "bi-house") %>
         <%= nav_link(admin_clients_path, "Clients", "bi-person") %>
         <%= nav_link(admin_produits_path, "Produits", "bi-person-standing-dress") %>
@@ -15,12 +15,6 @@
         <%= nav_link(admin_analyses_index_path, "Analyses", "bi-graph-up-arrow") %>
         <%= nav_link(admin_textes_path, "Marketing", "bi-flag") if current_admin_user&.admin? %>
       </ul>
-      <!--form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Recherche..." aria-label="Search">
-        <button class="btn btn-outline-primary" type="submit">
-          <i class="fa-solid fa-xl fa-magnifying-glass"></i>
-        </button-->
-      </form>
     </div>
   </div>
 </nav>

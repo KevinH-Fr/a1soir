@@ -63,6 +63,7 @@ class Produit < ApplicationRecord
   scope :by_categories, ->(categories_ids) { joins(:categorie_produits).where(categorie_produits: { id: categories_ids }).distinct }
   scope :by_taille, ->(taille) { where(taille: taille) }
   scope :by_couleur, ->(couleur) { where(couleur: couleur) }
+  scope :by_fournisseur, ->(fournisseur) { where(fournisseur: fournisseur) }
 
 
   # Scope to filter by prixvente or prixlocation being less than or equal to prixmax
@@ -122,7 +123,7 @@ class Produit < ApplicationRecord
   
   # Trouve des produits similaires basés sur les catégories communes ou la même couleur
   # Utilise SimilarProductsService pour la logique métier
-  def similar_products(limit: 10)
+  def similar_products(limit: 4)
     SimilarProductsService.new(self, limit: limit).call
   end
 

@@ -1,6 +1,6 @@
 class Admin::ProduitsController < Admin::ApplicationController
 
-  before_action :authenticate_admin!, only: %i[ edit update ]
+  before_action :authenticate_admin!, only: %i[ edit update toggle_coup_de_coeur move_up_coup_de_coeur move_down_coup_de_coeur ]
 
   before_action :set_produit, only: %i[ show edit update destroy delete_image_attachment toggle_coup_de_coeur move_up_coup_de_coeur move_down_coup_de_coeur ]
 
@@ -8,7 +8,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     @count_produits = Produit.count
   
     search_params = params.permit(
-      :format, :page, :filter_taille, :filter_couleur, :filter_categorie, :filter_statut,
+      :format, :page, :filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_fournisseur,
       q: [:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont]
     )
   
@@ -18,6 +18,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     produits = apply_couleur_filter(produits, search_params[:filter_couleur])
     produits = apply_categorie_filter(produits, search_params[:filter_categorie])
     produits = apply_statut_filter(produits, search_params[:filter_statut])
+    produits = apply_fournisseur_filter(produits, search_params[:filter_fournisseur])
     produits = apply_sort(produits, params[:sort])
   
     @analysis_mode = params[:filter_mode] == "analyse"
@@ -25,11 +26,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     if @analysis_mode
       @produits_analyse_count = produits.count
 
-      today = Date.today
-      @stock_disponible_total = produits.map do |produit|
-        statut = produit.statut_disponibilite(today, today)
-        statut[:disponibles].to_i
-      end.sum
+      @stock_disponible_total = produits.where(today_availability: true).sum(:quantite)
       
       # Chargement des tailles et couleurs distinctes utilisées
       taille_ids = produits.where.not(taille_id: nil).distinct.pluck(:taille_id)
@@ -69,7 +66,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     @type_produits = TypeProduit.order(:nom)
     @couleurs = Couleur.order(:nom)
     @tailles = Taille.order(:nom)
-    @fournisseurs = Fournisseur.all
+    @fournisseurs = Fournisseur.order(:nom)
   end
   
   
@@ -454,6 +451,16 @@ class Admin::ProduitsController < Admin::ApplicationController
       scope.inactif
     else
       scope
+    end
+  end
+
+  def apply_fournisseur_filter(scope, value)
+    return scope unless value.present?
+
+    if value == "na"
+      scope.where(fournisseur_id: nil)
+    else
+      scope.by_fournisseur(Fournisseur.find(value))
     end
   end
 

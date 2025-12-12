@@ -135,9 +135,11 @@
               <% end %>
             </div>
 
-            <div id="produit_<%= produit.id %>_coup_de_coeur" class="px-2">
-              <%= render "admin/produits/coup_de_coeur_toggle", produit: produit %>
-            </div>
+            <% if current_admin_user.admin? %>
+              <div id="produit_<%= produit.id %>_coup_de_coeur" class="px-2">
+                <%= render "admin/produits/coup_de_coeur_toggle", produit: produit %>
+              </div>
+            <% end %>
             
           </div>
         </div>

@@ -44,8 +44,13 @@ class SimilarProductsService
 
     return Produit.none if results.empty?
 
+    # Dédupliquer par reffrs : ne garder qu'un seul produit par référence
+    unique_results = deduplicate_by_reffrs(results)
+
+    return Produit.none if unique_results.empty?
+
     # Préserver l'ordre de priorité avec CASE WHEN
-    ordered_ids = results.map(&:id)
+    ordered_ids = unique_results.map(&:id)
     order_sql = ordered_ids.map.with_index { |id, idx| "WHEN id = #{id} THEN #{idx}" }.join(' ')
     
     Produit
@@ -62,5 +67,23 @@ class SimilarProductsService
       .eshop_diffusion
       .where.not(id: @produit.id)
       .order(updated_at: :desc)
+  end
+
+  # Déduplique les produits par reffrs : ne garde qu'un seul produit par référence
+  # Si plusieurs produits ont la même reffrs, garde le premier (qui a la priorité la plus élevée)
+  def deduplicate_by_reffrs(produits)
+    seen_reffrs = {}
+    unique_produits = []
+
+    produits.each do |produit|
+      reffrs = produit.reffrs.presence || "no_ref_#{produit.id}"
+      
+      unless seen_reffrs[reffrs]
+        seen_reffrs[reffrs] = true
+        unique_produits << produit
+      end
+    end
+
+    unique_produits
   end
 end

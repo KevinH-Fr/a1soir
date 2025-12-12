@@ -22,7 +22,6 @@ class FiltersProduitsService
 
 
   def call
-    # ap riori adapter ici pour avoir que les produits dispo selon calcul fait par le job ?
     produits = Produit.all.includes([:couleur]).eshop_diffusion
 
     produits = produits.by_categories(@categories_ids) if @categories_ids.present?

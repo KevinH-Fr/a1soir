@@ -23,7 +23,7 @@
         <%= options_supplementaires_link(admin_analyses_index_path(debut: Date.today, fin: Date.today), "bi-graph-up-arrow", "Analyses", "btn-outline-success") %>
 
         <%= options_supplementaires_link(admin_etiquettes_index_path, "bi-tags", "Etiquettes", "btn-outline-secondary") %>
-        <%= options_supplementaires_link(admin_stock_index_path, "bi-boxes", "Stocks", "btn-outline-danger") %>
+        <%= options_supplementaires_link(admin_stock_index_path, "bi-boxes", "Stocks", "btn-outline-danger") if current_admin_user.admin? %>
         <%= options_supplementaires_link(admin_fournisseurs_path, "bi-buildings", "Fournisseurs", "btn-outline-dark") if current_admin_user.admin? %>
         <%= options_supplementaires_link(admin_ensembles_path, "bi-collection", "Ensembles", "btn-outline-primary") if current_admin_user.admin? %>
         <%= options_supplementaires_link(admin_categorie_produits_path, "bi-layers", "Cat. produits", "btn-outline-dark") if current_admin_user.admin? %>
