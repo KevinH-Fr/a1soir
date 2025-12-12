@@ -3,7 +3,7 @@
 
 <div id="<%= container_id %>">
   <div id="<%= carousel_id %>" class="carousel slide" data-bs-ride="carousel" data-controller="carousel">
-    <div class="carousel-inner <%= carousel_class %> rounded-top-1 overflow-hidden">
+    <div class="carousel-inner <%= carousel_class %> rounded-0 overflow-hidden">
       <% slide_index = 0 %>
       
       <% if produit.video1.attached? %>
@@ -16,7 +16,7 @@
         </div>
         <% slide_index += 1 %>
         <div class="carousel-item">
-          <%= image_tag(produit.default_image_white, class: "img-fluid w-100", alt: produit.nom, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
+          <%= image_tag(produit.default_image_white, class: "img-fluid rounded-0 w-100", alt: produit.nom, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
         </div>
         <% slide_index += 1 %>
       <% else %>

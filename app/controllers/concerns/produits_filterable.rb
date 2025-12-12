@@ -79,7 +79,8 @@ module ProduitsFilterable
     # - Par des callbacks en temps réel sur Article, Sousarticle, StripePaymentItem, Commande, Produit
     # Cela évite de recalculer la disponibilité à chaque requête (optimisation performance)
     
-    available_produits_scope = searched_produits.where(today_availability: true).order(updated_at: :desc)
+    available_produits_scope = searched_produits.where(today_availability: true)
+                                             .order(coup_de_coeur: :desc, updated_at: :desc)
 
     # 🔁 Then paginate the available produits (5 per page)
     @pagy, @produits = pagy(available_produits_scope, items: 5)
