@@ -583,6 +583,7 @@ footer .bi-facebook:hover {
   html {
     scroll-behavior: smooth;
     overflow-x: hidden;
+    scrollbar-gutter: stable;
   }
   
 
@@ -2673,5 +2674,25 @@ button[data-time]:disabled {
 
 .modal[id^="modalProduit_"] .carousel-indicators button {
   background-color: #ffffff;
+}
+
+.dropdown-menu.multi-column {
+  column-gap: 0.75rem;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  min-width: 18rem;
+  max-width: 90vw;
+  white-space: normal;
+  overflow-x: hidden;
+}
+
+.dropdown-menu.columns-2 {
+  column-count: 2;
+}
+
+.dropdown-menu.columns-3 {
+  column-count: 3;
 }
 

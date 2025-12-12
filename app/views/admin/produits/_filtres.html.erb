@@ -7,8 +7,9 @@
             param_key: :filter_categorie,
             collection: @categorie_produits,
             model: CategorieProduit,
-            current_params: params.permit(:filter_taille, :filter_couleur, :filter_statut, :filter_fournisseur, :filter_mode),
-            all_label: "Toutes les catégories"
+            current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_statut, :filter_fournisseur, :filter_mode)),
+            all_label: "Toutes les catégories",
+            columns: 2
         ) %>
     </div>
     <div>
@@ -18,8 +19,9 @@
             param_key: :filter_taille,
             collection: @tailles,
             model: Taille,
-            current_params: params.permit(:filter_couleur, :filter_categorie, :filter_statut, :filter_fournisseur, :filter_mode),
-            all_label: "Toutes les tailles"
+            current_params: listing_params_with_search(params.permit(:filter_couleur, :filter_categorie, :filter_statut, :filter_fournisseur, :filter_mode)),
+            all_label: "Toutes les tailles",
+            columns: 2
         ) %>
     </div>
     <div>
@@ -29,8 +31,9 @@
             param_key: :filter_couleur,
             collection: @couleurs,
             model: Couleur,
-            current_params: params.permit(:filter_taille, :filter_categorie, :filter_statut, :filter_fournisseur, :filter_mode),
-            all_label: "Toutes les couleurs"
+            current_params: listing_params_with_search(params.permit(:filter_taille, :filter_categorie, :filter_statut, :filter_fournisseur, :filter_mode)),
+            all_label: "Toutes les couleurs",
+            columns: 2
         ) %>
     </div>
     <div>
@@ -38,7 +41,7 @@
             label: "Statut",
             icon: "bi bi-bookmark-check",
             param_key: :filter_statut,
-            current_params: params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_fournisseur, :filter_mode)
+            current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_fournisseur, :filter_mode))
         ) %>
     </div>
     <div>
@@ -48,7 +51,7 @@
             param_key: :filter_fournisseur,
             collection: @fournisseurs,
             model: Fournisseur,
-            current_params: params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_mode)
+            current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_mode))
         ) %>
     </div>
     <div>
@@ -56,12 +59,12 @@
         label: "Mode",
         icon: "bi bi-zoom-in",
         param_key: :filter_mode,
-        current_params: params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_fournisseur)
+        current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_fournisseur))
         ) %>
     </div>
 
     <div class="ms-auto">
-        <%= sort_dropdown(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_fournisseur, :filter_mode)) %>
+        <%= sort_dropdown(listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_fournisseur, :filter_mode))) %>
     </div>
     <div>
         <%= link_to admin_produits_path, class: 'btn btn-sm btn-outline-danger rounded' do %>

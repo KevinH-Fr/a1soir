@@ -55,3 +55,6 @@ application.register("calendar-picker", CalendarPickerController)
 import ProductGalleryModalController from "./product_gallery_modal_controller"
 application.register("product-gallery-modal", ProductGalleryModalController)
 
+import CarouselController from "./carousel_controller"
+application.register("carousel", CarouselController)
+

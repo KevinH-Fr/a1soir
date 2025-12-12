@@ -1,5 +1,9 @@
 module ProduitsFiltersHelper
-  def filter_dropdown(label:, icon:, param_key:, collection: nil, model: nil, current_params: {}, all_label: nil)
+  SEARCH_QUERY_FIELDS = %i[
+    nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont
+  ].freeze
+
+  def filter_dropdown(label:, icon:, param_key:, collection: nil, model: nil, current_params: {}, all_label: nil, columns: nil)
     selected_value = params[param_key]
     selected_label =
     if selected_value.present? && model
@@ -42,8 +46,13 @@ module ProduitsFiltersHelper
       )
   
       # Dropdown menu
+      menu_classes = ["dropdown-menu"]
+      if columns.present? && columns.to_i > 1
+        menu_classes << "multi-column" << "columns-#{columns.to_i}"
+      end
+
       concat(
-        content_tag(:ul, class: "dropdown-menu", aria: { labelledby: "#{param_key}Dropdown" }) do
+        content_tag(:ul, class: menu_classes.join(" "), aria: { labelledby: "#{param_key}Dropdown" }) do
   
           if param_key == :filter_mode
             [
@@ -118,6 +127,28 @@ module ProduitsFiltersHelper
         end
       )
     end
+  end
+
+  def listing_params_with_search(base_params)
+    merged_params = base_params.to_h
+
+    permitted_q = params.permit(q: SEARCH_QUERY_FIELDS)[:q]
+    request_q = request.query_parameters["q"]
+
+    search_payload =
+      if permitted_q.present?
+        permitted_q.to_h
+      elsif request_q.present?
+        request_q
+      end
+
+    merged_params[:q] = search_payload if search_payload.present?
+
+    merged_params.delete_if do |_, value|
+      value.nil? || (value.respond_to?(:empty?) && value.empty?)
+    end
+
+    merged_params
   end
 
   def sort_dropdown(current_params)

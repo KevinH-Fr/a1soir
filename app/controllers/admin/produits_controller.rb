@@ -5,6 +5,10 @@ class Admin::ProduitsController < Admin::ApplicationController
   before_action :set_produit, only: %i[ show edit update destroy delete_image_attachment toggle_coup_de_coeur move_up_coup_de_coeur move_down_coup_de_coeur ]
 
   def index
+    Rails.logger.debug do
+      "Admin::ProduitsController#index params q=#{params[:q].inspect} filters=#{params.slice(:filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_fournisseur, :filter_mode, :sort)}"
+    end
+
     @count_produits = Produit.count
   
     search_params = params.permit(

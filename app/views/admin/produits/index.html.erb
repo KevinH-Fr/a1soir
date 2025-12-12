@@ -1,6 +1,22 @@
-<%= bandeau_entete("Produits", "person-standing-dress", @count_produits, 
+<% listing_shared_params = listing_params_with_search(
+      params.permit(
+        :filter_taille,
+        :filter_couleur,
+        :filter_categorie,
+        :filter_statut,
+        :filter_fournisseur,
+        :filter_mode,
+        :sort
+      )
+    ) %>
+
+<%= bandeau_entete(
+      "Produits",
+      "person-standing-dress",
+      @count_produits,
       :nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont,
-      admin_produits_path) %>
+      admin_produits_path(listing_shared_params)
+    ) %>
 
 <%= bloc_nouveau(Produit) %>
 
