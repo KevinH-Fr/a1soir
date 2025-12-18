@@ -7,7 +7,7 @@
 <% if @pagy.next.present? %>
     <%= turbo_stream.replace :pagination do %>
         <%= turbo_frame_tag :pagination, loading: :lazy, 
-            src: admin_produits_path(format: :turbo_stream, 
+              src: admin_produits_path(format: :turbo_stream, 
               filter_taille: params[:filter_taille], 
               filter_couleur: params[:filter_couleur], 
               filter_categorie: params[:filter_categorie],

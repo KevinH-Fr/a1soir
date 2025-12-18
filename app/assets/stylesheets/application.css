@@ -144,6 +144,12 @@
   background-color: var(--light-beige-color) !important;
 }
 
+.navbar-admin > .container-fluid {
+  align-items: center;
+}
+
+/* Navbar background is standard Bootstrap (`bg-light`) */
+
 .navbar-admin .navbar-nav {
   flex-wrap: nowrap;
 }
@@ -163,7 +169,7 @@
 }
 
 .navbar-admin .navbar-toggler {
-  margin-left: 1rem;
+  margin-left: 0;
 }
 
 .navbar-admin .navbar-collapse {
@@ -176,7 +182,7 @@
     top: 100%;
     left: 0;
     right: 0;
-    padding: 1rem 1.5rem;
+   /* padding: 0.75rem 1rem;*/
     background-color: var(--light-beige-color);
     box-shadow: 0 6px 10px rgba(0,0,0,.08);
     border-top: 1px solid rgba(0,0,0,.05);
@@ -194,11 +200,15 @@
 }
 
 .public-content {
-  padding-top: 60px;
+  padding-top: 0;
+  /*height: 100vh;
+  overflow-y: auto;*/
 }
 
 .admin-content {
-  padding-top: 60px;
+  padding-top: 0;
+  /*height: 100vh;
+  overflow-y: auto;*/
 }
 
 :root {
@@ -247,7 +257,7 @@
 
 /* Compensation pour la navbar fixed-top - appliquée au niveau du layout */
 .public-content {
-  padding-top: 60px; /* Compensation pour la navbar fixed-top */
+  padding-top: 0px; /* Compensation pour la navbar fixed-top */
 }
 
 .public-main-content{
@@ -583,7 +593,20 @@ footer .bi-facebook:hover {
   html {
     scroll-behavior: smooth;
     overflow-x: hidden;
+  }
+
+  .public-scroll {
+    /* Reserve stable space for the scrollbar WITHOUT affecting the fixed navbar width */
     scrollbar-gutter: stable;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .admin-scroll {
+    /* Same behavior for admin layout */
+    scrollbar-gutter: stable;
+    flex: 1 1 auto;
+    min-height: 0;
   }
   
 

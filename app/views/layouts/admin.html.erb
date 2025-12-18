@@ -24,19 +24,21 @@
 
   </head>
 
-  <body>
+  <body class="d-flex flex-column vh-100 overflow-hidden">
     <%= render "admin/shared/navbar_admin" %>
 
-    <div class="admin-content d-flex justify-content-center align-items-center mb-3">
-      <div class="page-max-widthed">
-        <main class="p-2">
-          <div id="flash" class="mt-4" style="z-index: 10;">
-            <%= render partial: "layouts/flash" %>
-          </div>        
-          <div style="z-index: 0;">
-            <%= yield %>
-          </div>
-        </main>
+    <div class="admin-scroll flex-grow-1 overflow-auto">
+      <div class="admin-content d-flex justify-content-center align-items-center mb-3">
+        <div class="page-max-widthed">
+          <main class="p-2">
+            <div id="flash" class="mt-4" style="z-index: 10;">
+              <%= render partial: "layouts/flash" %>
+            </div>
+            <div style="z-index: 0;">
+              <%= yield %>
+            </div>
+          </main>
+        </div>
       </div>
     </div>
 

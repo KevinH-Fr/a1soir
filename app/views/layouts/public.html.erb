@@ -30,28 +30,30 @@
 
   </head>
 
-  <body class="pb-4 bg-black">
+  <body class="bg-black d-flex flex-column vh-100 overflow-hidden">
     <!-- Google reCAPTCHA v2 -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     
     <%= render "public/shared/navbar" %>
 
-    <main class="public-content">
-      <div id="flash" data-turbo-temporary>
-        <%= render partial: "public/shared/flash" %>
+    <div class="public-scroll flex-grow-1 overflow-auto">
+      <main class="public-content">
+        <div id="flash" data-turbo-temporary>
+          <%= render partial: "public/shared/flash" %>
+        </div>
+        <%= yield %>
+      </main>
+      
+      <%# chatbot %>
+      <%#= render "public/chat/conversation" %>
+      <div class="floating-contact-icons">
+        <%= render "public/shared/floating_contact_icons" %>
       </div>
-      <%= yield %>
-    </main>
-    
-    <%# chatbot %>
-    <%#= render "public/chat/conversation" %>
-    <div class="floating-contact-icons">
-      <%= render "public/shared/floating_contact_icons" %>
-    </div>
 
-    <footer>
-      <%= render "public/shared/footer" %>
-    </footer>
+      <footer>
+        <%= render "public/shared/footer" %>
+      </footer>
+    </div>
 
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
