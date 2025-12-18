@@ -125,7 +125,6 @@ Rails.application.routes.draw do
       
       resources :fournisseurs do 
         member do
-          #post :toggle_status, defaults: { format: :turbo_stream }
           post :edit
         end
       end
