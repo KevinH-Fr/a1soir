@@ -306,8 +306,8 @@ class Produit < ApplicationRecord
       end
 
       # Check file type (allow only images)
-      unless video1.content_type.in?(%w[video/mp4 video/webm])
-        errors.add(:video1, 'must be a MP4 or WebM video.')
+      unless video1.content_type.in?(%w[video/mp4 video/webm video/quicktime])
+        errors.add(:video1, 'must be a MP4, WebM or MOV video.')
       end
     end
   end

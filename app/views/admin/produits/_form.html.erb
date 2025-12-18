@@ -52,11 +52,11 @@
             label_method: :nom,
             select_options: { include_blank: '' }
           }],
-          [:image1, :file_field, "Image principale", { class: "form-control m-1 p-1" }],
-          [:images, :file_field, "Images (multiples)", { multiple: true, class: "form-control m-1 p-1" }],
-          [:video1, :file_field, "Vidéo", { class: "form-control m-1 p-1" }]
+          # file fields rendered below (better UX than input-group labels)
 
         ) %>
+
+        <%# Media section is rendered below Categories (same style, no visible card) %>
 
       
       <div class="mx-1">
@@ -69,22 +69,7 @@
         <% end %>
 
 
-        <% if produit.persisted? && produit.save %>
-          <% if produit.images.any? %>
-            <div> Images actuelles:</div>
-            <div class="mb-1">
-              <% produit.images.each do |image| %>
-                <% if image.present? %>
-                    <%= image_tag image, width: 100 %>
 
-                    <%= link_to '', delete_image_attachment_admin_produit_path(produit, image_id: image.id),
-                      class: 'btn btn-outline-danger bi bi-trash', method: :delete %>
-
-                <% end %>
-              <% end %>
-            </div>
-          <% end %>
-        <% end %>
 
         <div class="input-group mb-1">
           <%= form.label :couleur_id, class: "input-group-text" %>
@@ -113,6 +98,85 @@
                 <%= b.label class: "form-check-label" %>
               </div>
             <% end %>
+          </div>
+        </div>
+
+
+        <% if produit.persisted? && produit.save %>
+          <% if produit.images.any? || produit.video1.attached? %>
+            <div class="fw-bold"> Médias actuels</div>
+          <% end %>
+
+          <% if produit.images.any? || produit.video1.attached? %>
+            <div class="mb-2 d-flex flex-wrap gap-2 align-items-start">
+              <% if produit.images.any? %>
+                <% produit.images.each do |image| %>
+                  <% next unless image.present? %>
+                  <div class="d-flex flex-column align-items-center">
+                    <%= image_tag image, width: 100, height: 100, style: "object-fit: cover;" %>
+                    <%= button_to '', delete_image_attachment_admin_produit_path(produit, image_id: image.id),
+                          method: :delete,
+                          onclick: "return confirm('Supprimer cette image ?');",
+                          class: 'btn btn-outline-danger bi bi-trash mt-1' %>
+                  </div>
+                <% end %>
+              <% end %>
+
+              <% if produit.video1.attached? %>
+                <div class="d-flex flex-column align-items-center">
+                  <div class="d-flex align-items-center justify-content-center"
+                       style="width: 100px; height: 100px;">
+                    <i class="bi bi-file-earmark-play" style="font-size: 2.75rem;"></i>
+                  </div>
+                  <div class="d-flex gap-1 mt-1">
+
+                    <%= link_to '', rails_blob_path(produit.video1, disposition: "inline"),
+                          target: "_blank",
+                          rel: "noopener",
+                          class: "btn btn-outline-secondary bi bi-box-arrow-up-right" %>
+                    <%= button_to '', delete_video_attachment_admin_produit_path(produit),
+                          method: :delete,
+                          onclick: "return confirm('Supprimer la vidéo actuelle ?');",
+                          class: "btn btn-outline-danger bi bi-trash" %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+        
+        <div class="mt-2">
+          <div class="row g-2">
+            <div class="col-12">
+              <%= form.label :image1, "Image principale", class: "form-label fw-semibold mb-1" %>
+              <%= form.file_field :image1,
+                    class: "form-control form-control-sm",
+                    accept: "image/jpeg,image/png,image/gif,image/jpg,image/webp,.jpg,.jpeg,.png,.webp,.gif" %>
+              <div class="form-text">
+                Formats : JPG/JPEG, PNG, WEBP, GIF — Taille max : 5&nbsp;MB
+              </div>
+            </div>
+
+            <div class="col-12">
+              <%= form.label :images, "Images (multiples)", class: "form-label fw-semibold mb-1" %>
+              <%= form.file_field :images,
+                    multiple: true,
+                    class: "form-control form-control-sm",
+                    accept: "image/jpeg,image/png,image/gif,image/jpg,image/webp,.jpg,.jpeg,.png,.webp,.gif" %>
+              <div class="form-text">
+                Formats : JPG/JPEG, PNG, WEBP, GIF — Taille max : 5&nbsp;MB / image
+              </div>
+            </div>
+
+            <div class="col-12">
+              <%= form.label :video1, "Vidéo", class: "form-label fw-semibold mb-1" %>
+              <%= form.file_field :video1,
+                    class: "form-control form-control-sm",
+                    accept: "video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov" %>
+              <div class="form-text">
+                Formats : MP4, WebM, MOV — Taille max : 50&nbsp;MB
+              </div>
+            </div>
           </div>
         </div>
 

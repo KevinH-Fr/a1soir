@@ -2,7 +2,7 @@ class Admin::ProduitsController < Admin::ApplicationController
 
   before_action :authenticate_admin!, only: %i[ edit update toggle_coup_de_coeur move_up_coup_de_coeur move_down_coup_de_coeur ]
 
-  before_action :set_produit, only: %i[ show edit update destroy delete_image_attachment toggle_coup_de_coeur move_up_coup_de_coeur move_down_coup_de_coeur ]
+  before_action :set_produit, only: %i[ show edit update destroy delete_image_attachment delete_video_attachment toggle_coup_de_coeur move_up_coup_de_coeur move_down_coup_de_coeur ]
 
   def index
     Rails.logger.debug do
@@ -222,6 +222,11 @@ class Admin::ProduitsController < Admin::ApplicationController
     @media.purge
   
     redirect_to admin_produit_path(@produit), notice: "Media has been deleted successfully."
+  end
+
+  def delete_video_attachment
+    @produit.video1.purge if @produit.video1.attached?
+    redirect_to admin_produit_path(@produit), notice: "Vidéo supprimée avec succès."
   end
 
   def destroy

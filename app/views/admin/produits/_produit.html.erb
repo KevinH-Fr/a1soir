@@ -144,21 +144,21 @@
           </div>
         </div>
 
-        <% if produit.images %>
-
-            <div class="container-fluid my-2">
-                <% produit.images.each do |image| %>
-                    <%= image_tag(image, class: "w-25", style: "object-fit: cover; height: 150px;") %>
-                <% end %> 
-            </div>
-          
+        <% if produit.images || produit.video1.attached? %>
+          <div class="container-fluid my-2">
+            <% produit.images.each do |image| %>
+                <%= image_tag(image, class: "w-25", style: "object-fit: cover; height: 150px;") %>
+            <% end %> 
+            <% if produit.video1.attached? %>
+              <div class="d-inline-flex align-items-center justify-content-center w-25 text-dark"
+                    style="height: 150px;">
+                <i class="bi bi-file-earmark-play" style="font-size: 2.5rem;"></i>
+              </div>
+            <% end %>
+          </div>
         <% end %>
-
 
       </div>
     </div>
-
-
   <% end %>
-
 </div>
