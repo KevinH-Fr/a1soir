@@ -113,7 +113,7 @@
                 <% produit.images.each do |image| %>
                   <% next unless image.present? %>
                   <div class="d-flex flex-column align-items-center">
-                    <%= image_tag image, width: 100, height: 100, style: "object-fit: cover;" %>
+                    <%= image_tag image, class: "rounded border", style: "object-fit: cover; width: 150px; height: 150px;" %>
                     <%= button_to '', delete_image_attachment_admin_produit_path(produit, image_id: image.id),
                           method: :delete,
                           onclick: "return confirm('Supprimer cette image ?');",
@@ -124,12 +124,11 @@
 
               <% if produit.video1.attached? %>
                 <div class="d-flex flex-column align-items-center">
-                  <div class="d-flex align-items-center justify-content-center"
-                       style="width: 100px; height: 100px;">
-                    <i class="bi bi-file-earmark-play" style="font-size: 2.75rem;"></i>
+                  <div class="d-flex align-items-center justify-content-center rounded border bg-light"
+                       style="width: 150px; height: 150px;">
+                    <i class="bi bi-file-earmark-play text-secondary" style="font-size: 3rem;"></i>
                   </div>
                   <div class="d-flex gap-1 mt-1">
-
                     <%= link_to '', rails_blob_path(produit.video1, disposition: "inline"),
                           target: "_blank",
                           rel: "noopener",

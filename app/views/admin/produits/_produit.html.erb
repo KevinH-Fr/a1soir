@@ -145,14 +145,14 @@
         </div>
 
         <% if produit.images || produit.video1.attached? %>
-          <div class="container-fluid my-2">
+          <div class="container-fluid my-2 d-flex flex-wrap gap-2">
             <% produit.images.each do |image| %>
-                <%= image_tag(image, class: "w-25", style: "object-fit: cover; height: 150px;") %>
+                <%= image_tag(image, class: "rounded border", style: "object-fit: cover; width: 150px; height: 150px;") %>
             <% end %> 
             <% if produit.video1.attached? %>
-              <div class="d-inline-flex align-items-center justify-content-center w-25 text-dark"
-                    style="height: 150px;">
-                <i class="bi bi-file-earmark-play" style="font-size: 2.5rem;"></i>
+              <div class="d-flex align-items-center justify-content-center rounded border bg-light"
+                    style="width: 150px; height: 150px;">
+                <i class="bi bi-file-earmark-play text-secondary" style="font-size: 3rem;"></i>
               </div>
             <% end %>
           </div>
