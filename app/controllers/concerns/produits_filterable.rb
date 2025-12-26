@@ -2,13 +2,20 @@ module ProduitsFilterable
   extend ActiveSupport::Concern
 
   # Méthode pour charger toutes les données nécessaires aux filtres
-  def load_data
-    @toutes_categories = CategorieProduit.all.order(nom: :asc)
-    @toutes_tailles = Taille.all.sort_by(&:nom)
-    @toutes_couleurs = Couleur.all.sort_by(&:nom)
-    @tranches_prix = [50, 100, 200, 500, 1000]
-    @types = ["Vente", "Location"]
-    @types_produits = TypeProduit.all.order(nom: :asc)
+  # Si produits_scope est fourni, calcule les options dynamiquement
+  def load_data(produits_scope: nil)
+    if produits_scope.present?
+      # Calculer les options disponibles à partir des produits filtrés
+      load_dynamic_filter_options(produits_scope)
+    else
+      # Charger toutes les options (comportement par défaut)
+      @toutes_categories = CategorieProduit.all.order(nom: :asc)
+      @toutes_tailles = Taille.all.sort_by(&:nom)
+      @toutes_couleurs = Couleur.all.sort_by(&:nom)
+      @tranches_prix = [50, 100, 200, 500, 1000]
+      @types = ["Vente", "Location"]
+      @types_produits = TypeProduit.all.order(nom: :asc)
+    end
   end
 
   # Logique principale pour afficher les produits filtrés
@@ -54,8 +61,6 @@ module ProduitsFilterable
   # Méthode privée pour charger les produits filtrés et paginés
   # Utilisée par produits_with_filters et update_filters_turbo
   def load_filtered_and_paginated_produits
-    load_data
-  
     # Support both single ID and array of IDs for categories
     categorie_param = params[:id].is_a?(Array) ? params[:id] : params[:id]
   
@@ -82,8 +87,60 @@ module ProduitsFilterable
     available_produits_scope = searched_produits.where(today_availability: true)
                                              .order(coup_de_coeur: :desc, updated_at: :desc)
 
+    # 🔁 Charger les options de filtres dynamiquement à partir des produits disponibles
+    load_data(produits_scope: available_produits_scope)
+
     # 🔁 Then paginate the available produits (5 per page)
     @pagy, @produits = pagy(available_produits_scope, items: 5)
+  end
+
+  # Calcule les options de filtres disponibles à partir d'un scope de produits
+  def load_dynamic_filter_options(produits_scope)
+    # Catégories disponibles
+    categorie_ids = produits_scope
+                      .joins(:categorie_produits)
+                      .distinct
+                      .pluck('categorie_produits.id')
+    @toutes_categories = CategorieProduit
+                           .where(id: categorie_ids)
+                           .order(nom: :asc)
+
+    # Tailles disponibles
+    taille_ids = produits_scope
+                   .where.not(taille_id: nil)
+                   .distinct
+                   .pluck(:taille_id)
+    @toutes_tailles = Taille
+                        .where(id: taille_ids)
+                        .order(:nom)
+
+    # Couleurs disponibles
+    couleur_ids = produits_scope
+                    .where.not(couleur_id: nil)
+                    .distinct
+                    .pluck(:couleur_id)
+    @toutes_couleurs = Couleur
+                         .where(id: couleur_ids)
+                         .order(:nom)
+
+    # Types produits disponibles
+    type_produit_ids = produits_scope
+                         .where.not(type_produit_id: nil)
+                         .distinct
+                         .pluck(:type_produit_id)
+    @types_produits = TypeProduit
+                        .where(id: type_produit_ids)
+                        .order(nom: :asc)
+
+    # Tranches de prix (on garde les tranches fixes pour l'instant)
+    @tranches_prix = [50, 100, 200, 500, 1000]
+
+    # Types (Vente/Location) - vérifier lesquels existent
+    has_vente = produits_scope.where("prixvente > 0").exists?
+    has_location = produits_scope.where("prixlocation > 0").exists?
+    @types = []
+    @types << "Vente" if has_vente
+    @types << "Location" if has_location
   end
 end
 

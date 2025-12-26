@@ -1,7 +1,7 @@
 <div class="bg-white text-dark">
 <!-- Section Équipe -->
 <% if @texteEquipe.present? %>
-  <section class="py-5 my-4" data-aos="fade-up" data-aos-duration="800">
+  <section class="py-5 my-4">
     <div class="container">
       <!-- En-tête de section -->
       <div class="row mb-5">
@@ -18,13 +18,13 @@
       
       <!-- Image et texte d'introduction -->
       <div class="row align-items-center g-4 g-lg-5 mb-5">
-        <div class="col-12 col-md-8" data-aos="fade-right" data-aos-duration="800">
+        <div class="col-12 col-md-8">
           <div class="position-relative overflow-hidden rounded-1 shadow-lg" style="height: 450px; transition: transform 0.3s ease;">
             <%= image_tag("equipe1.jpg", class: "img-fluid w-100 h-100", style: "object-fit: cover; transition: transform 0.5s ease;") %>
             <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3)); pointer-events: none;"></div>
           </div>
         </div>
-        <div class="col-12 col-md-4" data-aos="fade-left" data-aos-duration="800" data-aos-delay="200">
+        <div class="col-12 col-md-4">
           <div class="card bg-light p-4 p-md-5 h-100 shadow-lg rounded-1 position-relative overflow-hidden">
             <!-- Icône de quote décorative -->
             <div class="position-absolute top-0 start-0 p-3" style="opacity: 0.15;">
@@ -48,69 +48,69 @@
       
       <!-- Cards avec les différents aspects de l'équipe -->
       <div class="row g-4 justify-content-center">
-        <div class="col-12 col-md-4 col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="100">
+        <div class="col-12 col-md-4 col-lg-4 d-flex team-card-hover">
           <%= public_card(
             icon: "people-fill", 
             title: "Expérience", 
             content: "<p class='text-center mb-0'>Plus de 20 ans d'expérience dans le domaine de la mode et de l'événementiel. Notre équipe connaît parfaitement les tendances et les exigences de chaque type d'événement.</p>",
             theme: "light",
             card_style: "info",
-            wrapper_class: "col-sm m-2 p-0 w-100"
+            wrapper_class: "p-0 w-100"
           ) %>
         </div>
         
-        <div class="col-12 col-md-6 col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="200">
+        <div class="col-12 col-md-6 col-lg-4 d-flex team-card-hover">
           <%= public_card(
             icon: "award-fill", 
             title: "Expertise", 
             content: "<p class='text-center mb-0'>Conseillères spécialisées en styling, retouches professionnelles sur place, et accompagnement personnalisé pour chaque client. Votre satisfaction est notre priorité.</p>",
             theme: "light",
             card_style: "info",
-            wrapper_class: "col-sm m-2 p-0 w-100"
+            wrapper_class: "p-0 w-100"
           ) %>
         </div>
         
-        <div class="col-12 col-md-6 col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="300">
+        <div class="col-12 col-md-6 col-lg-4 d-flex team-card-hover">
           <%= public_card(
             icon: "heart-fill", 
             title: "Passion", 
             content: "<p class='text-center mb-0'>Une équipe passionnée par la mode et le service client. Nous prenons le temps de vous écouter pour vous proposer la tenue parfaite qui correspondra à vos attentes.</p>",
             theme: "light",
             card_style: "info",
-            wrapper_class: "col-sm m-2 p-0 w-100"
+            wrapper_class: "p-0 w-100"
           ) %>
         </div>
         
-        <div class="col-12 col-md-6 col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="100">
+        <div class="col-12 col-md-6 col-lg-4 d-flex team-card-hover">
           <%= public_card(
             icon: "stars", 
             title: "Qualité", 
             content: "<p class='text-center mb-0'>Sélection rigoureuse de nos créateurs et fournisseurs. Nous ne proposons que des pièces de qualité exceptionnelle pour garantir votre élégance.</p>",
             theme: "light",
             card_style: "info",
-            wrapper_class: "col-sm m-2 p-0 w-100"
+            wrapper_class: "p-0 w-100"
           ) %>
         </div>
         
-        <div class="col-12 col-md-6 col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="200">
+        <div class="col-12 col-md-6 col-lg-4 d-flex team-card-hover">
           <%= public_card(
             icon: "chat-dots-fill", 
             title: "Conseil", 
             content: "<p class='text-center mb-0'>Écoute attentive de vos besoins, conseils sur mesure et accompagnement tout au long de votre projet. Nous sommes là pour vous guider à chaque étape.</p>",
             theme: "light",
             card_style: "info",
-            wrapper_class: "col-sm m-2 p-0 w-100"
+            wrapper_class: "p-0 w-100"
           ) %>
         </div>
         
-        <div class="col-12 col-md-6 col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="300">
+        <div class="col-12 col-md-6 col-lg-4 d-flex team-card-hover">
           <%= public_card(
             icon: "shield-check", 
             title: "Confiance", 
             content: "<p class='text-center mb-0'>Des centaines de clients satisfaits nous font confiance chaque année. Découvrez nos avis et témoignages pour en savoir plus sur notre service.</p>",
             theme: "light",
             card_style: "info",
-            wrapper_class: "col-sm m-2 p-0 w-100"
+            wrapper_class: "p-0 w-100"
           ) %>
         </div>
       </div>

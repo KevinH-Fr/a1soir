@@ -64,6 +64,12 @@
   opacity: 0.7;
 }
 
+/* Override Bootstrap blue focus for dark inputs */
+.form-control.bg-dark:focus {
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.15) !important;
+}
+
 /* Select prompt light */
 .placeholder-light option:first-child {
   color: #f8f9fa !important;
@@ -595,6 +601,16 @@ footer .bi-facebook:hover {
     overflow-x: hidden;
   }
 
+  /* Animation légère pour les cards équipe */
+  .team-card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .team-card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+  }
+
   .public-scroll {
     /* Reserve stable space for the scrollbar WITHOUT affecting the fixed navbar width */
     scrollbar-gutter: stable;
@@ -700,8 +716,8 @@ section {
 
 .references-slider {
   display: flex;
-  gap: 3rem;
-  animation: scroll 60s linear infinite;
+  gap: 4rem;
+  animation: scroll 80s linear infinite;
   width: fit-content;
 }
 
@@ -716,11 +732,13 @@ section {
   font-size: 1.1rem;
   font-weight: 500;
   color: white;
-  padding: 1rem 2rem;
+  padding: 1.2rem 2.5rem;
   background: linear-gradient(135deg, #2c2c2c 0%, #393939 50%, #2c2c2c 100%);
   border-radius: 50px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
+  min-width: fit-content;
+  flex-shrink: 0;
 }
 
 .reference-item:hover {
@@ -730,6 +748,13 @@ section {
 
 .reference-item i {
   font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.reference-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Styles pour les items de témoignages dans le slider */
@@ -755,8 +780,8 @@ section {
 /* Responsive pour références */
 @media (max-width: 768px) {
   .reference-item {
-    font-size: 0.95rem;
-    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    padding: 1rem 2rem;
   }
   
   .reference-item i {
@@ -764,8 +789,8 @@ section {
   }
   
   .references-slider {
-    gap: 2rem;
-    animation: scroll 40s linear infinite;
+    gap: 3rem;
+    animation: scroll 60s linear infinite;
   }
 }
 

@@ -104,9 +104,9 @@ module PagesHelper
 
   # Helper générique pour créer un item de slider (référence)
   def reference_item(icon:, name:)
-    content_tag :div, class: "slider-item", style: "border-radius: 2px;" do
-      icon_tag = content_tag(:i, nil, class: "bi bi-#{icon} me-2")
-      name_tag = content_tag(:span, name)
+    content_tag :div, class: "reference-item" do
+      icon_tag = content_tag(:i, nil, class: "bi bi-#{icon} me-3")
+      name_tag = content_tag(:span, name, class: "reference-text")
       (icon_tag + name_tag).html_safe
     end
   end
@@ -138,8 +138,8 @@ module PagesHelper
 
   # Helper générique pour créer un slider horizontal
   def items_slider(items:, type: :reference)
-    content_tag :div, class: "items-slider-wrapper" do
-      content_tag :div, class: "items-slider" do
+    content_tag :div, class: "references-slider-wrapper" do
+      content_tag :div, class: "references-slider" do
         slider_items = []
         # Premier ensemble
         items.each do |item|

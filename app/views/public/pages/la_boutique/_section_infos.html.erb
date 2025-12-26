@@ -1,6 +1,6 @@
 <div class="bg-white text-dark m-0">
 <!-- Section Informations pratiques -->
-<section class="py-5 mb-0" data-aos="fade-up" data-aos-duration="800">
+<section class="py-5 mb-0">
   <div class="container">
     <div class="row mb-5">
       <div class="col-12 text-center">
@@ -10,36 +10,36 @@
     </div>
     
     <div class="row g-4 justify-content-center">
-      <div class="col-12 col-md-6 col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="100">
+      <div class="col-12 col-md-6 col-lg-4 d-flex team-card-hover">
         <% contact_button = link_to('Nous écrire', "#{contact_path}#message-form", class: 'btn btn-outline-dark btn-sm public-btn-border-radius px-4') %>
         <% contact_content = "#{@texteContact}<div class='text-start mt-2'>#{contact_button}</div>" %>
         <%= public_card(
-          icon: "person-lines-fill", 
-          title: "Contacts", 
+          icon: "person-lines-fill",
+          title: "Contacts",
           content: contact_content.html_safe,
           theme: "light",
           card_style: "info",
-          wrapper_class: "col-sm m-2 p-0 w-100"
+          wrapper_class: "p-0 w-100"
         ) %>
       </div>
-      <div class="col-12 col-md-6 col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="200">
+      <div class="col-12 col-md-6 col-lg-4 d-flex team-card-hover">
         <%= public_card(
-          icon: "clock", 
-          title: "Horaires", 
+          icon: "clock",
+          title: "Horaires",
           content: @texteHoraire,
           theme: "light",
           card_style: "info",
-          wrapper_class: "col-sm m-2 p-0 w-100"
+          wrapper_class: "p-0 w-100"
         ) %>
       </div>
-      <div class="col-12 col-md-6 col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="300">
+      <div class="col-12 col-md-6 col-lg-4 d-flex team-card-hover">
         <%= public_card(
-          icon: "geo-alt-fill", 
-          title: "Adresse", 
+          icon: "geo-alt-fill",
+          title: "Adresse",
           content: @texteAdresse,
           theme: "light",
           card_style: "info",
-          wrapper_class: "col-sm m-2 p-0 w-100"
+          wrapper_class: "p-0 w-100"
         ) %>
       </div>
     </div>
