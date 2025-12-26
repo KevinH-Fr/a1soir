@@ -84,9 +84,10 @@ module ProduitsFilterable
     # - Par des callbacks en temps réel sur Article, Sousarticle, StripePaymentItem, Commande, Produit
     # Cela évite de recalculer la disponibilité à chaque requête (optimisation performance)
     
-    available_produits_scope = searched_produits.where(today_availability: true)
-                                             .select("produits.*, produits.coup_de_coeur, produits.updated_at")
-                                             .order("produits.coup_de_coeur DESC, produits.updated_at DESC")
+    # Utiliser une sous-requête pour éviter le problème de DISTINCT avec ORDER BY
+    available_produits_ids = searched_produits.where(today_availability: true).pluck(:id)
+    available_produits_scope = Produit.where(id: available_produits_ids)
+                                      .order("produits.coup_de_coeur DESC, produits.updated_at DESC")
 
     # 🔁 Charger les options de filtres dynamiquement à partir des produits disponibles
     load_data(produits_scope: available_produits_scope)
