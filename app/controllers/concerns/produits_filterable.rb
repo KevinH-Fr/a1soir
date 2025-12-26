@@ -85,7 +85,7 @@ module ProduitsFilterable
     # Cela évite de recalculer la disponibilité à chaque requête (optimisation performance)
     
     available_produits_scope = searched_produits.where(today_availability: true)
-                                             .order(coup_de_coeur: :desc, updated_at: :desc)
+                                             .order("produits.coup_de_coeur DESC, produits.updated_at DESC")
 
     # 🔁 Charger les options de filtres dynamiquement à partir des produits disponibles
     load_data(produits_scope: available_produits_scope)
