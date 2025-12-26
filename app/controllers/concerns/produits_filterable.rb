@@ -85,12 +85,21 @@ module ProduitsFilterable
     # Cela évite de recalculer la disponibilité à chaque requête (optimisation performance)
     
     # Utiliser une sous-requête pour éviter le problème de DISTINCT avec ORDER BY
-    available_produits_ids = searched_produits.where(today_availability: true).pluck(:id)
-    available_produits_scope = Produit.where(id: available_produits_ids)
-                                      .order("produits.coup_de_coeur DESC, produits.updated_at DESC")
-
+    # Récupérer les IDs sans ORDER BY pour éviter les conflits
+    available_produits_ids = searched_produits.where(today_availability: true)
+                                              .reorder(nil)
+                                              .pluck(:id)
+                                              .uniq
+    
+    # Scope pour charger les données de filtres (sans ORDER BY pour éviter les conflits avec DISTINCT)
+    available_produits_for_filters = Produit.where(id: available_produits_ids)
+    
     # 🔁 Charger les options de filtres dynamiquement à partir des produits disponibles
-    load_data(produits_scope: available_produits_scope)
+    load_data(produits_scope: available_produits_for_filters)
+
+    # Scope pour la pagination avec ORDER BY (requête simple sans DISTINCT)
+    available_produits_scope = Produit.where(id: available_produits_ids)
+                                      .reorder("produits.coup_de_coeur DESC, produits.updated_at DESC")
 
     # 🔁 Then paginate the available produits (5 per page)
     @pagy, @produits = pagy(available_produits_scope, items: 5)
