@@ -166,7 +166,7 @@ module PagesHelper
 
 
 
-  def collection_card(title:, items:, url:, delay: 0, image: nil, subtitle: nil)
+  def collection_card(title:, items:, url:, delay: 0, image: nil, subtitle: nil, image_position: "center")
     link_to url, class: "text-decoration-none collection-card-link" do
       content_tag :div, class: "collection-card position-relative overflow-hidden", style: "height: 600px;" do
         # Image de fond
@@ -174,7 +174,7 @@ module PagesHelper
           image_tag("/images/#{image}",
             class: "img-fluid w-100 h-100 collection-card-image",
             loading: "lazy",
-            style: "object-fit: cover; object-position: top;"
+            style: "object-fit: cover; object-position: #{image_position};"
           )
         else
           content_tag :div, class: "d-flex align-items-center justify-content-center bg-secondary w-100 h-100" do
