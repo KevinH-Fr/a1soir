@@ -37,9 +37,6 @@ application.register("form-element", FormElementController)
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
-import HomeScrollController from "./home_scroll_controller"
-application.register("home-scroll", HomeScrollController)
-
 import PlaceholderCardController from "./placeholder_card_controller"
 application.register("placeholder-card", PlaceholderCardController)
 
@@ -54,9 +51,6 @@ application.register("qr-code", QrCodeController)
 
 import ReservationFormController from "./reservation_form_controller"
 application.register("reservation-form", ReservationFormController)
-
-import ScrollController from "./scroll_controller"
-application.register("scroll", ScrollController)
 
 import ScrollRevealController from "./scroll_reveal_controller"
 application.register("scroll-reveal", ScrollRevealController)

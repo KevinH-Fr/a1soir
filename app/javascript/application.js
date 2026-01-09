@@ -5,7 +5,6 @@ import "./controllers"
 
 import "trix"
 import "@rails/actiontext"
-import "./scroll_reveal"
 
 // require jquery
 // require jquery_ujs
