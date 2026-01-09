@@ -613,6 +613,31 @@ footer .bi-facebook:hover {
     overflow-x: hidden;
   }
 
+  /* Scrollbar personnalisée en thème sombre */
+  /* Pour Chrome, Safari, Edge */
+  ::-webkit-scrollbar {
+    width: 16px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #1a1a1a;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #4a4a4a;
+    border-radius: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #5a5a5a;
+  }
+
+  /* Pour Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #4a4a4a #1a1a1a;
+  }
+
   /* Animation légère pour les cards équipe */
   .team-card-hover {
     transition: transform 0.3s ease, box-shadow 0.3s ease;

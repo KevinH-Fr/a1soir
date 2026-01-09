@@ -174,7 +174,7 @@ module PagesHelper
           image_tag("/images/#{image}",
             class: "img-fluid w-100 h-100 collection-card-image",
             loading: "lazy",
-            style: "object-fit: cover;"
+            style: "object-fit: cover; object-position: top;"
           )
         else
           content_tag :div, class: "d-flex align-items-center justify-content-center bg-secondary w-100 h-100" do

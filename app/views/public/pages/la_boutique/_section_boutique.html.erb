@@ -1,27 +1,60 @@
 <!-- Section Boutique - Présentation -->
 <section class="py-5 my-4">
-  <!-- Section 1: Texte + Image -->
-  <%= image_text_section(
-    image1: "cat_tenues_soiree.jpg",
-    image2: "cat_costume.jpg",
-    title: "Notre univers",
-    paragraphs: [
-      "Plongez dans l'univers d'Autour d'un Soir, où l'élégance rencontre l'exception. Notre boutique de Cannes vous accueille dans un cadre raffiné pour vous accompagner dans le choix de vos tenues de soirée.",
-      "Depuis notre création, nous avons à cœur de vous offrir une expérience unique, alliant conseils personnalisés et sélection rigoureuse de nos pièces. Chaque visite est l'occasion de découvrir des créations qui sauront sublimer vos moments les plus précieux.",
-      "Notre équipe passionnée est là pour vous guider, que vous recherchiez une robe de mariée romantique, une tenue de soirée élégante ou un costume d'exception. Nous mettons notre savoir-faire à votre service pour que vous resplendissiez lors de vos événements."
-    ],
-    reverse: false
-  ) %>
+  <!-- Section 1: Texte + Vidéo -->
+  <div class="container-fluid px-0">
+    <div class="row g-0 align-items-stretch">
+      <!-- Colonne Texte -->
+      <div class="col-12 col-md-6 order-2 order-md-1 d-flex">
+        <div class="p-4 p-md-5 d-flex flex-column justify-content-center bg-white w-100">
+          <div class="section-title-wrapper mb-4" data-aos="title-underline">
+            <h3 class="section-title" style="font-family: 'Playfair Display', serif; font-size: 2rem; position: relative; display: inline-block;">Notre univers</h3>
+            <span class="section-title-underline"></span>
+          </div>
+          <p>
+            Plongez dans l'univers d'Autour d'un Soir, où l'élégance rencontre l'exception. Notre boutique de Cannes vous accueille dans un cadre raffiné pour vous accompagner dans le choix de vos tenues de soirée.
+          </p>
+          <p>
+            Depuis notre création en 1980, nous avons à cœur de vous offrir une expérience unique, alliant conseils personnalisés et sélection rigoureuse de nos pièces. Chaque visite est l'occasion de découvrir des créations qui sauront sublimer vos moments les plus précieux.
+          </p>
+          <p>
+            Découvrez notre collection soigneusement sélectionnée de robes de mariée, tenues de soirée et costumes. Chaque pièce est choisie pour sa qualité, son élégance et son caractère unique.
+          </p>
+          <p>
+            Nous travaillons avec des créateurs reconnus et sélectionnons uniquement des pièces qui répondent à nos critères d'excellence. Des matières nobles aux finitions soignées, chaque détail compte pour vous offrir le meilleur.
+          </p>
+          <p>
+            Que vous optiez pour la location ou l'achat, nous vous garantissons des tenues impeccables, entretenues avec le plus grand soin. Notre objectif : vous permettre de briller lors de vos événements les plus importants.
+          </p>
+      
+        </div>
+      </div>
+      
+      <!-- Colonne Vidéo -->
+      <div class="col-12 col-md-6 order-1 order-md-2 d-flex">
+        <div class="w-100" style="overflow: hidden; height: 100vh;">
+          <video autoplay muted loop playsinline class="w-100 h-100" style="object-fit: cover;">
+            <source src="https://res.cloudinary.com/dukne3lhz/video/upload/v1767993750/video2_rgzof7.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Section 2: Image + Texte (inversé) -->
   <%= image_text_section(
-    image1: "cat_robes_mariees.jpg",
-    image2: "cat_accessoires.jpg",
-    title: "Une sélection d'exception",
+    image1: "equipe1.png",
+    image2: "equipe2.png",
+    title: "Une équipe à votre service",
     paragraphs: [
-      "Découvrez notre collection soigneusement sélectionnée de robes de mariée, tenues de soirée et costumes. Chaque pièce est choisie pour sa qualité, son élégance et son caractère unique.",
-      "Nous travaillons avec des créateurs reconnus et sélectionnons uniquement des pièces qui répondent à nos critères d'excellence. Des matières nobles aux finitions soignées, chaque détail compte pour vous offrir le meilleur.",
-      "Que vous optiez pour la location ou l'achat, nous vous garantissons des tenues impeccables, entretenues avec le plus grand soin. Notre objectif : vous permettre de briller lors de vos événements les plus importants."
+
+      "Notre équipe passionnée est là pour vous guider :",
+      "Sophie : costumière passionnée depuis plus de 40 ans – Créative dans l’âme !",
+      "Charlotte : qui rejoint sa mère en 2016 après 7 ans d'expérience dans le marketing et la mode à Paris – Passionnée de robes de mariées !",
+      "Sandra : qui rejoint l’équipe en 2018, elle sublime toutes les tenues grâce à ses talents de couture et retouches – Experte Couture",
+      "Célia : qui découvre l’équipe en plein Festival de Cannes 2022 après 20 ans d’expérience à l’Opéra de Monaco comme habilleuse et couturière. - Couturière créative et minutieuse !",
+      "Que vous recherchiez une robe de mariée romantique, une tenue de soirée élégante ou un costume d'exception.",
+      "Nous mettons notre savoir-faire à votre service pour que vous resplendissiez lors de vos événements."
+
     ],
     reverse: true
   ) %>

@@ -10,7 +10,7 @@
     </div>
     
     <div class="row g-4 justify-content-center">
-      <div class="col-12 col-md-6 col-lg-4 d-flex team-card-hover">
+      <div class="col-12 col-md-6 col-lg-4 d-flex">
         <% contact_button = link_to('Nous écrire', "#{contact_path}#message-form", class: 'btn btn-outline-dark btn-sm public-btn-border-radius px-4') %>
         <% contact_content = "#{@texteContact}<div class='text-start mt-2'>#{contact_button}</div>" %>
         <%= public_card(
@@ -22,7 +22,7 @@
           wrapper_class: "p-0 w-100"
         ) %>
       </div>
-      <div class="col-12 col-md-6 col-lg-4 d-flex team-card-hover">
+      <div class="col-12 col-md-6 col-lg-4 d-flex">
         <%= public_card(
           icon: "clock",
           title: "Horaires",
@@ -32,7 +32,7 @@
           wrapper_class: "p-0 w-100"
         ) %>
       </div>
-      <div class="col-12 col-md-6 col-lg-4 d-flex team-card-hover">
+      <div class="col-12 col-md-6 col-lg-4 d-flex">
         <%= public_card(
           icon: "geo-alt-fill",
           title: "Adresse",
