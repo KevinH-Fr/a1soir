@@ -6,4 +6,7 @@ const application = Application.start()
 application.debug = false
 window.Stimulus   = application
 
+// Log pour vérifier que Stimulus est chargé
+console.log("🚀 Stimulus Application démarrée")
+
 export { application }

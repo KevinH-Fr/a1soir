@@ -182,21 +182,9 @@ module PagesHelper
           end
         end
 
-        # Overlay avec contenu en bas à gauche
-        subtitle_text = subtitle || (items.is_a?(Array) && items.any? ? items.first : nil)
-        overlay = content_tag :div, class: "position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end justify-content-start p-5 collection-card-overlay", style: "background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.7));" do
-          content_tag :div, class: "text-white" do
-            title_tag = content_tag :h3, title, class: "display-6 mb-2 fs-3", style: "text-shadow: 0 2px 10px rgba(0,0,0,0.8);", data: { aos: "fade-up", aos_delay: "0" }
-            subtitle_tag = if subtitle_text.present?
-              content_tag :p, subtitle_text, class: "my-5 fs-6", style: "text-shadow: 0 1px 5px rgba(0,0,0,0.8); opacity: 0.9; max-width: 250px;", data: { aos: "fade-up", aos_delay: "100" }
-            else
-              "".html_safe
-            end
-            link_tag = content_tag :span, class: "collection-card-cta text-uppercase fs-6", style: "text-shadow: 0 1px 3px rgba(0,0,0,0.8);", data: { aos: "fade-up", aos_delay: "200" } do
-              "Découvrir"
-            end
-            title_tag + subtitle_tag + link_tag
-          end
+        # Overlay avec titre en bas à gauche
+        overlay = content_tag :div, class: "position-absolute bottom-0 start-0 p-5" do
+          content_tag :h3, title, class: "text-white mb-0 collection-card-title", style: "text-shadow: 0 2px 10px rgba(0,0,0,0.8);"
         end
 
         image_section + overlay

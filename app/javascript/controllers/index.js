@@ -7,8 +7,17 @@ import { application } from "./application"
 import AutohideController from "./autohide_controller"
 application.register("autohide", AutohideController)
 
+import BoutiqueTextScrollController from "./boutique_text_scroll_controller"
+application.register("boutique-text-scroll", BoutiqueTextScrollController)
+
 import ButtonColorController from "./button_color_controller"
 application.register("button-color", ButtonColorController)
+
+import CalendarPickerController from "./calendar_picker_controller"
+application.register("calendar-picker", CalendarPickerController)
+
+import CarouselController from "./carousel_controller"
+application.register("carousel", CarouselController)
 
 import ChatController from "./chat_controller"
 application.register("chat", ChatController)
@@ -28,8 +37,14 @@ application.register("form-element", FormElementController)
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
+import HomeScrollController from "./home_scroll_controller"
+application.register("home-scroll", HomeScrollController)
+
 import PlaceholderCardController from "./placeholder_card_controller"
 application.register("placeholder-card", PlaceholderCardController)
+
+import ProductGalleryModalController from "./product_gallery_modal_controller"
+application.register("product-gallery-modal", ProductGalleryModalController)
 
 import QrCodeAjoutArticleController from "./qr_code_ajout_article_controller"
 application.register("qr-code-ajout-article", QrCodeAjoutArticleController)
@@ -37,24 +52,14 @@ application.register("qr-code-ajout-article", QrCodeAjoutArticleController)
 import QrCodeController from "./qr_code_controller"
 application.register("qr-code", QrCodeController)
 
-import ScrollController from "./scroll_controller"
-application.register("scroll", ScrollController)
-
 import ReservationFormController from "./reservation_form_controller"
 application.register("reservation-form", ReservationFormController)
 
+import ScrollController from "./scroll_controller"
+application.register("scroll", ScrollController)
+
+import ScrollRevealController from "./scroll_reveal_controller"
+application.register("scroll-reveal", ScrollRevealController)
+
 import StickyTextController from "./sticky_text_controller"
 application.register("sticky-text", StickyTextController)
-
-import HomeScrollController from "./home_scroll_controller"
-application.register("home-scroll", HomeScrollController)
-
-import CalendarPickerController from "./calendar_picker_controller"
-application.register("calendar-picker", CalendarPickerController)
-
-import ProductGalleryModalController from "./product_gallery_modal_controller"
-application.register("product-gallery-modal", ProductGalleryModalController)
-
-import CarouselController from "./carousel_controller"
-application.register("carousel", CarouselController)
-

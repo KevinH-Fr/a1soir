@@ -285,6 +285,18 @@
   object-fit: cover;
 }
 
+.carousel-multiple .carousel-item {
+  height: 300px;
+  overflow: hidden;
+}
+
+.carousel-multiple .carousel-item img,
+.carousel-multiple .carousel-item video {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
 .carousel-single {
   max-height: 70vh;
 }
@@ -2033,63 +2045,51 @@ section {
   border-radius: 1rem;
 }
 
-/* Collection Card - Nouveau style avec image et overlay */
-.collection-card {
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  transition: all 0.8s ease;
-  cursor: pointer;
-}
-
-.collection-card:hover {
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
-}
-
-.collection-card img {
-  transition: transform 0.6s ease;
-  transform-origin: center center;
-}
-
-.collection-card:hover img {
-  transform: scale(1.05);
-}
-
-.collection-card .btn {
-  transition: transform 0.5s ease;
-}
-
-.collection-card:hover .btn {
-  transform: translateY(-8px);
-}
-
-/* Collection card CTA avec underline animé */
+/* Collection Card - Style simplifié */
 .collection-card-link {
   display: block;
   text-decoration: none;
 }
 
-.collection-card-cta {
+/* Effet de zoom sur l'image au survol */
+.collection-card-image {
+  transition: transform 0.6s ease;
+  transform-origin: center center;
+}
+
+.collection-card-link:hover .collection-card-image {
+  transform: scale(1.1);
+}
+
+/* Effet hover sur le titre de la collection card - exactement comme la navbar */
+.collection-card-title {
   position: relative;
   display: inline-block;
-  transition: all 0.3s ease;
+  color: rgba(255, 255, 255, 0.85);
+  transition: color 0.3s ease;
+  padding-bottom: 4px;
 }
 
-.collection-card-cta::after {
+.collection-card-link:hover .collection-card-title {
+  color: rgba(255, 255, 255, 1);
+}
+
+/* Fine ligne qui s'anime de gauche à droite au survol - légèrement plus épaisse et espacée */
+.collection-card-title::after {
   content: '';
   position: absolute;
-  bottom: -4px;
+  bottom: 0;
   left: 0;
   width: 0;
-  height: 1px;
-  background-color: #fff;
-  transition: width 0.3s ease;
+  height: 1.5px;
+  background-color: white;
+  transition: width 0.6s ease-out;
+  opacity: 0.7;
 }
 
-.collection-card:hover .collection-card-cta::after {
+.collection-card-link:hover .collection-card-title::after {
   width: 100%;
-}
-
-.collection-card:hover .collection-card-image {
-  transform: scale(1.1);
+  opacity: 1;
 }
 
 
@@ -2267,6 +2267,7 @@ section {
 [data-scroll-reveal]:nth-child(odd) {
   transition-delay: 0.05s;
 }
+
 
 
 .alert-cabine {
