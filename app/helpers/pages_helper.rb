@@ -200,7 +200,7 @@ module PagesHelper
     content_tag :div, class: "container-fluid px-0" do
       content_tag :div, class: "row g-0 align-items-stretch" do
         # Colonne Texte
-        text_col = content_tag :div, class: "col-12 col-md-6 #{text_order} d-flex" do
+        text_col = content_tag :div, class: "col-12 col-md-6 #{text_order} d-flex", data: { scroll_reveal: true } do
           content_tag :div, class: "p-4 p-md-5 d-flex flex-column justify-content-center bg-white w-100" do
             title_wrapper = content_tag :div, class: "section-title-wrapper mb-4", data: { aos: "title-underline" } do
               title_tag = content_tag(:h3, title, class: "section-title", style: "font-family: 'Playfair Display', serif; font-size: 2rem; position: relative; display: inline-block;")
@@ -215,7 +215,7 @@ module PagesHelper
         end
         
         # Colonne Image
-        image_col = content_tag :div, class: "col-12 col-md-6 #{image_order} d-flex" do
+        image_col = content_tag :div, class: "col-12 col-md-6 #{image_order} d-flex", data: { scroll_reveal: true } do
           image_container = content_tag :div, class: "image-hover-container w-100 h-100", style: "overflow: hidden;" do
             base_image = image_tag("/images/#{image1}", class: "image-hover-base", style: "object-fit: cover; transition: opacity 0.5s ease;")
             if image2.present?
