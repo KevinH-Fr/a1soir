@@ -613,27 +613,27 @@ footer .bi-facebook:hover {
     overflow-x: hidden;
   }
 
-  /* Scrollbar personnalisée en thème sombre */
+  /* Scrollbar personnalisée en thème sombre - uniquement pour le shop */
   /* Pour Chrome, Safari, Edge */
-  ::-webkit-scrollbar {
+  .public-scroll::-webkit-scrollbar {
     width: 16px;
   }
 
-  ::-webkit-scrollbar-track {
+  .public-scroll::-webkit-scrollbar-track {
     background: #1a1a1a;
   }
 
-  ::-webkit-scrollbar-thumb {
+  .public-scroll::-webkit-scrollbar-thumb {
     background: #4a4a4a;
     border-radius: 8px;
   }
 
-  ::-webkit-scrollbar-thumb:hover {
+  .public-scroll::-webkit-scrollbar-thumb:hover {
     background: #5a5a5a;
   }
 
   /* Pour Firefox */
-  * {
+  .public-scroll {
     scrollbar-width: auto;
     scrollbar-color: #4a4a4a #1a1a1a;
   }
