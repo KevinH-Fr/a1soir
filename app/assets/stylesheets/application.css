@@ -272,12 +272,12 @@
 
 .text-truncate-multiline {
   max-height: 4.5rem; /* Adjust based on how much text you want */
+}
+
+.promotion-badge {
+  z-index: 10;
+  font-weight: 200;
   overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 3; /* Show only 3 lines */
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
 }
 
 .carousel-multiple{

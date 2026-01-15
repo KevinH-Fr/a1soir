@@ -35,7 +35,12 @@
           <!-- Real Content -->
           <div class="card rounded-0 card-content bg-dark text-light border-dark" data-placeholder-card-target="content" style="display:none;">
               
-              <%= link_to produit_path(slug: produit.nom.parameterize, id: produit.id), class: "text-decoration-none", data: { turbo: false } do %>
+              <%= link_to produit_path(slug: produit.nom.parameterize, id: produit.id), class: "text-decoration-none position-relative", data: { turbo: false } do %>
+                  <% if produit.en_promotion? %>
+                    <span class="position-absolute top-0 start-0 m-2 rounded-0 badge bg-dark bg-opacity-75 text-light p-2 promotion-badge">
+                      PROMOTION
+                    </span>
+                  <% end %>
                   <%= render partial: "public/pages/carousel", locals: { produit: produit, carousel_class: "card-img-top carousel-multiple" } %>
               <% end %>
 

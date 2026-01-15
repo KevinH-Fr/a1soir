@@ -1,0 +1,18 @@
+<% if @produits_en_promotion&.any? %>
+  <div class="container-fluid px-0 my-5 py-5">
+    <div class="container">
+      <div class="section-title-wrapper py-4 mb-3" data-aos="title-underline" data-scroll-reveal>
+        <h2 class="text-light fs-3 text-uppercase section-title" style="position: relative; display: inline-block;">
+          Promotions
+          <span class="section-title-underline" style="background: white;"></span>
+        </h2>
+      </div>
+      
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 m-0 justify-content-center" data-scroll-reveal>
+        <% @produits_en_promotion.each do |produit| %>
+          <%= render partial: "public/pages/produit/produit", locals: { produit: produit } %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
