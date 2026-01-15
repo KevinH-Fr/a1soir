@@ -18,10 +18,27 @@ module BadgesPublicHelper
   end
 
 
-  def badge_prix(type, montant)
-    content_tag :span, class: "small opacity-75" do
-      concat content_tag(:span, "#{type}: ", class: "me-1")
-      concat content_tag(:span, custom_currency_no_decimals_format(montant), class: "")
+  def badge_prix(type, montant, produit = nil)
+    if type == "Vente" && produit&.en_promotion?
+      content_tag :div, class: "d-flex flex-column" do
+        concat content_tag(:span, class: "badge bg-danger mb-1") do
+          "PROMO -#{produit.pourcentage_reduction}%"
+        end
+        concat content_tag(:div, class: "d-flex align-items-center gap-2") do
+          concat content_tag(:span, class: "small opacity-75") do
+            concat content_tag(:span, "#{type}: ", class: "me-1")
+            concat content_tag(:span, custom_currency_no_decimals_format(montant), class: "fw-bold text-danger")
+          end
+          concat content_tag(:span, class: "small text-decoration-line-through opacity-50") do
+            custom_currency_no_decimals_format(produit.ancien_prixvente)
+          end
+        end
+      end
+    else
+      content_tag :span, class: "small opacity-75" do
+        concat content_tag(:span, "#{type}: ", class: "me-1")
+        concat content_tag(:span, custom_currency_no_decimals_format(montant), class: "")
+      end
     end
   end
 

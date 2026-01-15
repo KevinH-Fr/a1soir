@@ -138,6 +138,8 @@ Rails.application.routes.draw do
           post :toggle_coup_de_coeur
           post :move_up_coup_de_coeur
           post :move_down_coup_de_coeur
+          post :apply_promotion
+          post :remove_promotion
         end
       end
       

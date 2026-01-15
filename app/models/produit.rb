@@ -121,6 +121,11 @@ class Produit < ApplicationRecord
     [nom, couleur&.nom, taille&.nom].compact.join(' | ')
   end
   
+  # Méthodes pour gérer les promotions
+  def en_promotion?
+    ancien_prixvente.present? && ancien_prixvente > 0 && prixvente.present? && prixvente < ancien_prixvente
+  end
+
   # Trouve des produits similaires basés sur les catégories communes ou la même couleur
   # Utilise SimilarProductsService pour la logique métier
   def similar_products(limit: 4)

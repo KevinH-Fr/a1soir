@@ -1,8 +1,8 @@
 class Admin::ProduitsController < Admin::ApplicationController
 
-  before_action :authenticate_admin!, only: %i[ edit update toggle_coup_de_coeur move_up_coup_de_coeur move_down_coup_de_coeur ]
+  before_action :authenticate_admin!, only: %i[ edit update toggle_coup_de_coeur move_up_coup_de_coeur move_down_coup_de_coeur apply_promotion remove_promotion ]
 
-  before_action :set_produit, only: %i[ show edit update destroy delete_image_attachment delete_video_attachment toggle_coup_de_coeur move_up_coup_de_coeur move_down_coup_de_coeur ]
+  before_action :set_produit, only: %i[ show edit update destroy delete_image_attachment delete_video_attachment toggle_coup_de_coeur move_up_coup_de_coeur move_down_coup_de_coeur apply_promotion remove_promotion ]
 
   def index
     Rails.logger.debug do
@@ -403,6 +403,103 @@ class Admin::ProduitsController < Admin::ApplicationController
       redirect_to admin_textes_path, alert: "Produit non trouvé"
     end
   end
+
+  def apply_promotion
+    nouveau_prix = params[:nouveau_prix].to_f
+    
+    if nouveau_prix <= 0
+      flash.now[:alert] = "Le nouveau prix doit être supérieur à 0"
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash })
+        end
+        format.html { redirect_to admin_produit_path(@produit), alert: "Le nouveau prix doit être supérieur à 0" }
+      end
+      return
+    end
+
+    if @produit.prixvente.nil? || @produit.prixvente <= 0
+      flash.now[:alert] = "Le produit doit avoir un prix de vente pour appliquer une promotion"
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash })
+        end
+        format.html { redirect_to admin_produit_path(@produit), alert: "Le produit doit avoir un prix de vente pour appliquer une promotion" }
+      end
+      return
+    end
+
+    @produit.ancien_prixvente = @produit.prixvente
+    @produit.prixvente = nouveau_prix
+
+    if @produit.save
+      if ENV["ONLINE_SALES_AVAILABLE"] == "true"
+        StripeProductService.new(@produit).update_product_and_price
+      end
+      
+      flash.now[:success] = "Promotion appliquée avec succès"
+      
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update(@produit, partial: "admin/produits/produit", locals: {produit: @produit}),
+            turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash })
+          ]
+        end
+        format.html { redirect_to admin_produit_path(@produit), notice: "Promotion appliquée avec succès" }
+      end
+    else
+      flash.now[:alert] = "Erreur lors de l'application de la promotion"
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash })
+        end
+        format.html { redirect_to admin_produit_path(@produit), alert: "Erreur lors de l'application de la promotion" }
+      end
+    end
+  end
+
+  def remove_promotion
+    unless @produit.en_promotion?
+      flash.now[:alert] = "Ce produit n'est pas en promotion"
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash })
+        end
+        format.html { redirect_to admin_produit_path(@produit), alert: "Ce produit n'est pas en promotion" }
+      end
+      return
+    end
+
+    @produit.prixvente = @produit.ancien_prixvente
+    @produit.ancien_prixvente = nil
+
+    if @produit.save
+      if ENV["ONLINE_SALES_AVAILABLE"] == "true"
+        StripeProductService.new(@produit).update_product_and_price
+      end
+      
+      flash.now[:success] = "Promotion retirée avec succès"
+      
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update(@produit, partial: "admin/produits/produit", locals: {produit: @produit}),
+            turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash })
+          ]
+        end
+        format.html { redirect_to admin_produit_path(@produit), notice: "Promotion retirée avec succès" }
+      end
+    else
+      flash.now[:alert] = "Erreur lors du retrait de la promotion"
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash })
+        end
+        format.html { redirect_to admin_produit_path(@produit), alert: "Erreur lors du retrait de la promotion" }
+      end
+    end
+  end
   
   private
     def set_produit
@@ -413,7 +510,7 @@ class Admin::ProduitsController < Admin::ApplicationController
       params.require(:produit).permit(:nom, :prixvente, :prixlocation, :description, :type_produit_id,
         :caution, :handle, :reffrs, :quantite, :fournisseur_id, :dateachat, :prixachat, :actif,
         :image1, :video1, :couleur_id, :taille_id, :eshop, :poids, :stripe_product_id, :stripe_price_id,
-        :coup_de_coeur, :coup_de_coeur_position,
+        :coup_de_coeur, :coup_de_coeur_position, :ancien_prixvente,
         categorie_produit_ids: [])
     end
 

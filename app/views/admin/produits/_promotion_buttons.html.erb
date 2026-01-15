@@ -1,0 +1,47 @@
+<% if produit.prixvente.present? && produit.prixvente > 0 %>
+  <% if produit.en_promotion? %>
+    <div class="d-flex align-items-center gap-2 flex-wrap">
+      <span class="badge bg-warning">EN PROMOTION</span>
+      <span class="small text-muted text-decoration-line-through">
+        Ancien prix: <%= custom_currency_no_decimals_format(produit.ancien_prixvente) %>
+      </span>
+      <%= form_with url: remove_promotion_admin_produit_path(produit), method: :post, data: { turbo: true }, class: "d-inline" do |form| %>
+        <%= form.submit "Retirer la promotion", class: "btn btn-sm btn-outline-secondary", 
+            onclick: "return confirm('Êtes-vous sûr de vouloir retirer la promotion ? Le prix sera restauré à #{custom_currency_no_decimals_format(produit.ancien_prixvente)}')" %>
+      <% end %>
+    </div>
+  <% else %>
+    <button type="button" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#promotionModal<%= produit.id %>">
+      <i class="bi bi-tag me-1"></i>Appliquer une promotion
+    </button>
+  <% end %>
+
+  <!-- Modal pour appliquer une promotion -->
+  <div class="modal fade" id="promotionModal<%= produit.id %>" tabindex="-1" aria-labelledby="promotionModalLabel<%= produit.id %>" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="promotionModalLabel<%= produit.id %>">Appliquer une promotion</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <%= form_with url: apply_promotion_admin_produit_path(produit), method: :post, data: { turbo: true } do |form| %>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Prix actuel</label>
+              <input type="text" class="form-control" value="<%= custom_currency_no_decimals_format(produit.prixvente) %>" disabled>
+            </div>
+            <div class="mb-3">
+              <label for="nouveau_prix<%= produit.id %>" class="form-label">Nouveau prix de vente</label>
+              <%= form.number_field :nouveau_prix, id: "nouveau_prix#{produit.id}", class: "form-control", step: "any", min: "0.01", required: true, value: produit.prixvente %>
+              <small class="form-text text-muted">Le prix actuel sera sauvegardé comme ancien prix.</small>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+            <%= form.submit "Appliquer la promotion", class: "btn btn-success", data: { bs_dismiss: "modal" } %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

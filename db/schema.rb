@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_06_143224) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_15_145847) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -351,6 +351,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_06_143224) do
     t.boolean "today_availability", default: false, null: false
     t.boolean "coup_de_coeur", default: false, null: false
     t.integer "coup_de_coeur_position"
+    t.decimal "ancien_prixvente"
     t.index ["categorie_produit_id"], name: "index_produits_on_categorie_produit_id"
     t.index ["couleur_id"], name: "index_produits_on_couleur_id"
     t.index ["coup_de_coeur", "coup_de_coeur_position"], name: "index_produits_on_coup_de_coeur_and_coup_de_coeur_position"

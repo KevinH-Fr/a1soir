@@ -47,7 +47,7 @@
 
           <!-- Badges: prix vente, prix location -->
           <div class="d-flex justify-content-start gap-5 mb-2 fs-3 text-black">
-            <%= badge_prix("Vente", @produit.prixvente) %>
+            <%= badge_prix("Vente", @produit.prixvente, @produit) %>
             <%= badge_prix("Location", @produit.prixlocation) if @produit.prixlocation.present? %>
           </div>
 
