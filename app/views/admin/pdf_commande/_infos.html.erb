@@ -17,11 +17,11 @@
       <% if @doc_edition.commande.typeevent.present? %>
           <br>
           <span>Evénement</span>
-          <span class="doc-important"> <%= @doc_edition.commande.full_event %> </span> <br>
+          <span> <%= @doc_edition.commande.full_event %> </span> <br>
       <% end %>
 
       <% if @doc_edition.commande.debutloc %>
-          <span> <%= @doc_edition.commande.label_dates_location %> </span> <br>
+          <span class="doc-important"> <%= @doc_edition.commande.label_dates_location %> </span> <br>
       <% end %>
 
       <br>
