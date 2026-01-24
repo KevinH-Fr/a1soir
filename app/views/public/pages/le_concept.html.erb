@@ -1,6 +1,6 @@
 <%= page_header("Le concept", "Découvrez notre concept unique de location de tenues", 
-image1: "https://images.pexels.com/photos/1300550/pexels-photo-1300550.jpeg", 
-image2: "https://images.pexels.com/photos/2122361/pexels-photo-2122361.jpeg") %>
+image1: "le_concept1.webp", 
+image2: "le_concept2.webp") %>
 
 <div class="public-main-content">
     <%= render partial: "public/pages/le_concept/section_introduction" %>
@@ -13,13 +13,16 @@ image2: "https://images.pexels.com/photos/2122361/pexels-photo-2122361.jpeg") %>
         <%= public_card(
           icon: "calendar-check",
           title: "Location",
-          description: "Portez des tenues d'exception sans engagement. Notre service de location vous permet d'accéder à une garde-robe haute couture pour vos événements spéciaux, à une fraction du prix d'achat.",
+          description: 
+            "Portez des tenues d'exception sans engagement. 
+            Notre service de location vous permet d'accéder à une garde-robe haute couture pour vos événements spéciaux, à une fraction du prix d'achat. 
+            Service disponible uniquement à la boutique de Cannes. Robes de mariées exclues.",
           features: [
-            "Large choix de tenues",
-            "Réservation flexible",
-            "Entretien inclus",
-            "Prix avantageux"
-          ],
+            "Large choix de tenues et de tailles",
+            "Durée de location : 4 jours ou forfait 1 semaine",
+            "Retouches incluses",
+            "Entretien inclus"
+            ],
           theme: "light",
           card_style: "concept"
         ) %>
@@ -92,7 +95,7 @@ image2: "https://images.pexels.com/photos/2122361/pexels-photo-2122361.jpeg") %>
             <%= public_card(
               icon: "2-circle-fill",
               title: "Réservez",
-              description: "Choisissez vos dates de location ou passez commande pour un achat",
+              description: "Choisissez une date pour un rdv en boutique ou passez commande pour un achat",
               theme: "light",
               card_style: "concept",
               wrapper_class: ""

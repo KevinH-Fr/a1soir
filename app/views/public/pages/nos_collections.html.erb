@@ -1,7 +1,7 @@
 <%= page_header(
   "Nos collections", 
   "Découvrez notre sélection de tenues d'exception",
-  image1: "https://images.pexels.com/photos/3775262/pexels-photo-3775262.jpeg",
+  image1: "nos_collections1.webp",
   image2: "https://images.pexels.com/photos/14339119/pexels-photo-14339119.jpeg"
 ) %>
 
@@ -11,10 +11,23 @@
   </div>
 </div>
 
-<%= render partial: "public/pages/section_carousel_collections" %>
+<%#= render partial: "public/pages/section_carousel_collections" %>
 
 <div class="container my-5 py-5 text-center" data-scroll-reveal>
   <%= link_to "Voir tous les produits", produits_index_url(subdomain: "shop"), class: "btn btn-light btn-lg px-5 public-btn-border-radius" %>
 </div>
 
 <%= render partial: "public/pages/home/coups_de_coeur" %>
+
+<!-- Call to action -->
+<div class="text-center my-5 py-4" data-scroll-reveal>
+  <div class="d-flex gap-3 justify-content-center flex-wrap">
+
+    <%= link_to "#{rdv_url(subdomain: "shop")}#rdv-form",
+        class: "btn btn-outline-light btn-lg px-5 public-btn-border-radius" do %>
+      <i class="bi bi-calendar-check me-2"></i>
+      <span class="fw-bold text-uppercase small">Prendre rendez-vous</span>
+    <% end %>
+    
+  </div>
+</div>

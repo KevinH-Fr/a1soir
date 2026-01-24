@@ -1,4 +1,8 @@
-<%= page_header("Contact", "Nous sommes à votre écoute") %>
+<%= page_header(
+  "Contact", 
+  "Nous sommes à votre écoute",
+  image1: "contact1.webp",
+  image2: "contact2.webp") %>
 
 <div class="public-main-content">
     <div class="container-fluid">
@@ -52,7 +56,6 @@
           <h4 class="fw-bold mb-3 text-light">Boutique</h4>
           <p class="opacity-75 mb-3">
             <%= @texteAdresse.present? ? @texteAdresse.to_plain_text : "Venez nous rendre visite en boutique" %>
-            Parking conseillé : Mozart (rue Mozart)
           </p>
           <% adresse = "autour d'un soir 06400 cannes" %>
           <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape(adresse)}", target: "_blank", class: "btn btn-light btn-lg px-4 public-btn-border-radius" do %>

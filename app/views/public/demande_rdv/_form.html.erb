@@ -20,13 +20,8 @@
        data-calendar-picker-jours-desactives-value="<%= DemandeRdv.jours_desactives.to_json %>"
        class="mb-5">
     
-    <!-- Grille Bootstrap : contenu à droite sur grand écran, pleine largeur sur petit -->
-    <div class="row">
-      <!-- Colonne vide à gauche sur grand écran -->
-      <div class="col-lg-6 d-none d-lg-block"></div>
-      
-      <!-- Contenu des étapes : pleine largeur sur petit, moitié à droite sur grand -->
-      <div class="col-12 col-lg-6">
+    <!-- Contenu des étapes : pleine largeur -->
+    <div>
         
         <!-- Tabs Bootstrap cachés (nécessaires pour le fonctionnement) -->
         <ul class="nav nav-tabs d-none" role="tablist">
@@ -204,9 +199,6 @@
               </div>
             </div>
         </div>
-        
-      </div>
-    </div>
     
     <%= form.hidden_field :date_rdv, data: { calendar_picker_target: "hiddenInput" } %>
     <%= form.hidden_field :id if demande_rdv.persisted? %>

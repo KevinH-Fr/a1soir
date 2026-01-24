@@ -1,7 +1,61 @@
-<%= page_header("Prendre rendez-vous", "Réservez votre créneau en boutique") %>
+<%= page_header(
+    "Prendre rendez-vous", 
+    "Réservez votre créneau en boutique",
+    image1: "rdv1.webp",
+    image2: "rdv2.webp") %>
 
-<div id="rdv-form" class="p-4 bg-white d-flex flex-column" style="background-image: url('<%= image_path('/images/dessin2.png') %>'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative; height: 100vh;">
-    <div style="position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column;">
-        <%= render "public/demande_rdv/form", demande_rdv: @demande_rdv || DemandeRdv.new, from_cabine: false %>
+
+
+<div class="public-main-content">
+  <div class="row g-4 my-5 bg-white">
+    <!-- Process à gauche -->
+    <div class="col-12 col-lg-6 d-flex align-items-center p-4" data-scroll-reveal>
+      <div class="w-100">
+        <div class="d-flex flex-column gap-4">
+          <div class="d-flex align-items-start gap-3">
+            <div class="concept-card-icon text-dark flex-shrink-0 bg-light">
+              <i class="bi bi-calendar-check fs-2"></i>
+            </div>
+            <div>
+              <h5 class="fw-bold mb-2 text-dark">1. Réservation</h5>
+              <p class="text-dark opacity-75 small mb-0">
+                Indiquez vos coordonnées et choisissez la date qui vous convient pour venir en boutique.
+              </p>
+            </div>
+          </div>
+          <div class="d-flex align-items-start gap-3">
+            <div class="concept-card-icon text-dark flex-shrink-0 bg-light">
+              <i class="bi bi-bell fs-2"></i>
+            </div>
+            <div>
+              <h5 class="fw-bold mb-2 text-dark">2. Confirmation</h5>
+              <p class="text-dark opacity-75 small mb-0">
+                Recevez un email de confirmation pour votre rendez-vous ou un appel de notre équipe.
+              </p>
+            </div>
+          </div>
+          <div class="d-flex align-items-start gap-3">
+            <div class="concept-card-icon text-dark flex-shrink-0 bg-light">
+              <i class="bi bi-star-fill fs-2"></i>
+            </div>
+            <div>
+              <h5 class="fw-bold mb-2 text-dark">3. Essayage</h5>
+              <p class="text-dark opacity-75 small mb-0">
+                Profitez d'un moment personnalisé avec nos conseillères en image.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Formulaire à droite -->
+    <div class="col-12 col-lg-6">
+      <div id="rdv-form" class="p-4 bg-white d-flex flex-column" style="background-image: url('<%= image_path('/images/dessin2.png') %>'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative; min-height: 500px;">
+        <div style="position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column;">
+          <%= render "public/demande_rdv/form", demande_rdv: @demande_rdv || DemandeRdv.new, from_cabine: false %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
