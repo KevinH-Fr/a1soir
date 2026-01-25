@@ -133,14 +133,8 @@ image2_position: "center top") %>
     <div class="text-center my-5 py-4" data-scroll-reveal>
       <h3 class="mb-4">Prêt à en découvrir plus ?</h3>
       <div class="d-flex gap-3 justify-content-center flex-wrap mb-4">
-        <%= link_to "Explorer les collections", nos_collections_path, class: "btn btn-outline-dark btn-lg px-5 public-btn-border-radius" %>
-
-        <%= link_to "#{rdv_url(subdomain: "shop")}#rdv-form",
-            class: "btn btn-dark btn-lg px-5 public-btn-border-radius" do %>
-          <i class="bi bi-calendar-check me-2"></i>
-          <span class="fw-bold text-uppercase small">Prendre rendez-vous</span>
-        <% end %>
-        
+        <%= cta_button(type: "collections", url: nos_collections_path, variant: "dark", outline: true) %>
+        <%= cta_button(type: "rdv", url: "#{rdv_url(subdomain: "shop")}#rdv-form", variant: "dark") %>
       </div>
     </div>
   </div>

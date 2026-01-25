@@ -114,12 +114,8 @@
         Notre équipe est impatiente de vous rencontrer et de vous accompagner
       </p>
       <div class="d-flex gap-3 justify-content-center flex-wrap">
-        <%= link_to nos_collections_url, class: "btn btn-light btn-lg px-4 public-btn-border-radius" do %>
-          <i class="bi bi-grid-3x3-gap me-2"></i>Découvrir nos collections
-        <% end %>
-        <%= link_to la_boutique_url, class: "btn btn-outline-light btn-lg px-4 public-btn-border-radius" do %>
-          <i class="bi bi-shop me-2"></i>La boutique
-        <% end %>
+        <%= cta_button(type: "collections", url: nos_collections_url, variant: "light") %>
+        <%= cta_button(type: "boutique", url: la_boutique_url, variant: "light", outline: "light") %>
       </div>
     </div>
     </div>

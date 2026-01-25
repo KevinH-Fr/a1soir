@@ -1,4 +1,8 @@
-<%= page_header("La boutique de Cannes", "Découvrez notre équipe et notre boutique", image1: "dessin1b.png", image2: "manchette.webp") %>
+<%= page_header(
+  "La boutique de Cannes", 
+  "Découvrez notre équipe et notre boutique", 
+  image1: "dessin1b.png", 
+  image2: "manchette.webp") %>
 
 <div class="public-main-content">
   <%= render partial: "public/pages/la_boutique/section_boutique" %>
@@ -7,4 +11,13 @@
   <%= render partial: "public/pages/la_boutique/section_infos" %>
   <%= render partial: "public/pages/la_boutique/section_rdv" %>
   <%= render partial: "public/pages/la_boutique/section_map" %>
+</div>
+
+<!-- Call to action -->
+<div class="text-center my-5 py-4" data-scroll-reveal>
+  <h3 class="mb-4 text-light">Prêt à découvrir nos collections ?</h3>
+  <div class="d-flex gap-3 justify-content-center flex-wrap">
+    <%= cta_button(type: "collections", url: nos_collections_path, variant: "light") %>
+    <%= cta_button(type: "rdv", url: "#{rdv_url(subdomain: "shop")}#rdv-form", variant: "dark", outline: "light") %>
+  </div>
 </div>

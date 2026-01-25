@@ -188,7 +188,6 @@
       </div>
     </section>
 
-
     <!-- Call to action -->
     <div class="bg-white text-dark text-center my-5 py-5" data-scroll-reveal>
         <h3 class="mb-4">Un projet en tête ? Parlons-en !</h3>
@@ -197,12 +196,8 @@
           Notre équipe est à votre disposition pour vous conseiller.
         </p>
         <div class="d-flex gap-3 justify-content-center flex-wrap">
-          <%= link_to "#{contact_path}#message-form", class: "btn btn-dark btn-lg px-5 public-btn-border-radius" do %>
-            <i class="bi bi-envelope me-2"></i>Nous écrire
-          <% end %>
-          <%= link_to "tel:+33 4 93 45 17 17", class: "btn btn-outline-dark btn-lg px-5 public-btn-border-radius" do %>
-            <i class="bi bi-telephone me-2"></i>Nous appeler
-          <% end %>
+          <%= cta_button(type: "ecrire", url: "#{contact_path}#message-form", variant: "dark") %>
+          <%= cta_button(type: "appeler", url: "tel:+33 4 93 45 17 17", variant: "dark", outline: "dark") %>
         </div>
     </div>
   </div>

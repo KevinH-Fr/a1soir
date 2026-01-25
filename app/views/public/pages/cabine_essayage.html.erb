@@ -148,9 +148,7 @@ image2: "essayage2.webp") %>
           </div>
 
           <div class="p-3 text-center">
-            <%= link_to produits_index_path(from_cabine: true), class: "btn btn-dark btn-lg px-5 rounded-1" do %>
-              <i class="bi bi-arrow-right-circle me-2"></i>Voir nos produits
-            <% end %>
+            <%= cta_button(type: "produits", url: produits_index_path(from_cabine: true), variant: "dark") %>
           </div>
         <% end %>
       </div>
