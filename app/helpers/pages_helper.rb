@@ -12,7 +12,7 @@ module PagesHelper
     end
   end
 
-  def page_header(title, subtitle = nil, image1: nil, image2: nil, with_images: true, height: nil)
+  def page_header(title, subtitle = nil, image1: nil, image2: nil, with_images: true, height: nil, image1_position: "center", image2_position: "center")
     if with_images
       # Hauteur par défaut ou personnalisée
       height_style = height.present? ? "height: #{height};" : "height: 500px;"
@@ -23,7 +23,7 @@ module PagesHelper
           img1 = if image1.present?
             image_path = image_path_helper(image1)
             content_tag :div, class: "page-header-image-wrapper", style: "width: 50%; height: 100%; overflow: hidden;" do
-              image_tag(image_path, class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;", data: { page_header_image: "1" })
+              image_tag(image_path, class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; object-position: #{image1_position}; transition: transform 0.6s ease;", data: { page_header_image: "1" })
             end
           else
             content_tag(:div, class: "d-flex align-items-center justify-content-center", style: "width: 50%; height: 100%; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); border-right: 1px solid #444;") do
@@ -34,7 +34,7 @@ module PagesHelper
           img2 = if image2.present?
             image_path = image_path_helper(image2)
             content_tag :div, class: "page-header-image-wrapper", style: "width: 50%; height: 100%; overflow: hidden;" do
-              image_tag(image_path, class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;", data: { page_header_image: "2" })
+              image_tag(image_path, class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; object-position: #{image2_position}; transition: transform 0.6s ease;", data: { page_header_image: "2" })
             end
           else
             content_tag(:div, class: "d-flex align-items-center justify-content-center", style: "width: 50%; height: 100%; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);") do

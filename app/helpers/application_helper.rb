@@ -111,27 +111,29 @@ module ApplicationHelper
       end
     end
 
-    def simple_image_text_section(image_path:, title:, text:, active: false)
+    def simple_image_text_section(image_path:, title:, text:, active: false, image_position: "center", button_text: nil, button_url: nil)
       content_tag(:div, class: "carousel-item #{active ? 'active' : ''}") do
         content_tag(:div, class: "container-fluid px-0") do
-          content_tag(:div, class: "position-relative", style: "height: 500px; overflow: hidden;") do
-            concat image_tag(image_path, class: "img-fluid w-100 h-100", style: "object-fit: cover;")
+          content_tag(:div, class: "position-relative", style: "height: 90vh; overflow: hidden;") do
+            concat image_tag(image_path, class: "img-fluid w-100 h-100", style: "object-fit: cover; object-position: #{image_position};")
             concat(
               content_tag(:div, 
                 class: "position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center",
                 style: "background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6));") do
                 content_tag(:div, class: "text-center text-light px-4", style: "max-width: 700px;") do
                   concat(
-                    content_tag(:div, class: "section-title-wrapper mb-4", data: { aos: "title-underline" }) do
+                    content_tag(:div, class: "section-title-wrapper mb-4") do
                       content_tag(:h3, 
                         class: "text-light section-title", 
-                        style: "font-family: 'Playfair Display', serif; font-size: 2.5rem; position: relative; display: inline-block;") do
+                        style: "font-family: 'Playfair Display', serif; font-size: 2.2rem; position: relative; display: inline-block;") do
                         concat title
-                        concat content_tag(:span, "", class: "section-title-underline", style: "background: white;")
                       end
                     end
                   )
-                  concat content_tag(:p, text, class: "fs-5", style: "line-height: 1.8;")
+                  concat content_tag(:p, text, class: "fs-6 mb-4", style: "line-height: 1.8;")
+                  if button_text.present? && button_url.present?
+                    concat link_to(button_text, button_url, class: "btn btn-light px-4 rounded-0")
+                  end
                 end
               end
             )

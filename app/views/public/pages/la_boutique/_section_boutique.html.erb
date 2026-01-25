@@ -60,8 +60,8 @@
   ) %>
 
   <!-- Carousel des métiers de la boutique -->
-  <div class="container-fluid px-0 mt-4" data-scroll-reveal>
-    <div id="metiersCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div class="container-fluid px-0 mt-5" data-scroll-reveal>
+    <div id="metiersCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
       <!-- Indicateurs -->
       <div class="carousel-indicators">
         <button type="button" data-bs-target="#metiersCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -76,28 +76,40 @@
           image_path: "/images/cat_tenues_soiree.jpg",
           title: "Tenues de soirée",
           text: "Découvrez notre vaste collection de robes et tenues de soirée pour tous vos événements. Location ou achat, nous vous accompagnons dans votre choix pour que vous soyez parfaite le jour J.",
-          active: true
+          active: true,
+          image_position: "center 35%",
+          button_text: "Découvrir",
+          button_url: produits_filter_url(category_names: ["robes courtes", "robes longues", "ensembles pantalons"])
         ) %>
         
         <%= simple_image_text_section(
           image_path: "/images/cat_robes_mariees.jpg",
           title: "Robes de mariée",
           text: "Trouvez la robe de mariée de vos rêves parmi notre sélection exclusive. De la dentelle classique aux créations modernes, chaque modèle est choisi pour sublimer votre jour le plus important.",
-          active: false
+          active: false,
+          image_position: "center 25%",
+          button_text: "Découvrir",
+          button_url: produits_filter_url(category_names: ["robes de mariée courtes", "robes de mariée longues"])
         ) %>
         
         <%= simple_image_text_section(
           image_path: "/images/cat_costume.jpg",
           title: "Costumes et smokings",
           text: "Messieurs, découvrez notre collection de costumes, smokings et tenues de cérémonie. Élégance et raffinement assurés pour tous vos événements prestigieux.",
-          active: false
+          active: false,
+          image_position: "center 0%",
+          button_text: "Découvrir",
+          button_url: produits_filter_url(category_names: "costume")
         ) %>
         
         <%= simple_image_text_section(
           image_path: "/images/cat_accessoires.jpg",
           title: "Accessoires et sur-mesure",
           text: "Complétez votre tenue avec nos accessoires soigneusement sélectionnés. Nous proposons également un service de retouches et d'ajustements pour une tenue parfaitement adaptée à votre morphologie.",
-          active: false
+          active: false,
+          image_position: "center 40%",
+          button_text: "Découvrir",
+          button_url: produits_filter_url(category_names: ["chaussures", "accessoires"])
         ) %>
       </div>
       
