@@ -22,22 +22,22 @@ module PagesHelper
         images_container = content_tag :div, class: "d-flex h-100" do
           img1 = if image1.present?
             image_path = image_path_helper(image1)
-            content_tag :div, class: "page-header-image-wrapper", style: "width: 50%; height: 100%; overflow: hidden;" do
+            content_tag :div, class: "page-header-image-wrapper page-header-image-wrapper-first", style: "height: 100%; overflow: hidden;" do
               image_tag(image_path, class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; object-position: #{image1_position}; transition: transform 0.6s ease;", data: { page_header_image: "1" })
             end
           else
-            content_tag(:div, class: "d-flex align-items-center justify-content-center", style: "width: 50%; height: 100%; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); border-right: 1px solid #444;") do
+            content_tag(:div, class: "d-flex align-items-center justify-content-center page-header-image-wrapper-first", style: "height: 100%; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);") do
               content_tag(:i, nil, class: "bi bi-image text-white-50", style: "font-size: 4rem; opacity: 0.3;")
             end
           end
           
           img2 = if image2.present?
             image_path = image_path_helper(image2)
-            content_tag :div, class: "page-header-image-wrapper", style: "width: 50%; height: 100%; overflow: hidden;" do
+            content_tag :div, class: "page-header-image-wrapper d-none d-md-block", style: "width: 50%; height: 100%; overflow: hidden;" do
               image_tag(image_path, class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; object-position: #{image2_position}; transition: transform 0.6s ease;", data: { page_header_image: "2" })
             end
           else
-            content_tag(:div, class: "d-flex align-items-center justify-content-center", style: "width: 50%; height: 100%; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);") do
+            content_tag(:div, class: "d-none d-md-flex align-items-center justify-content-center", style: "width: 50%; height: 100%; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);") do
               content_tag(:i, nil, class: "bi bi-image text-white-50", style: "font-size: 4rem; opacity: 0.3;")
             end
           end
