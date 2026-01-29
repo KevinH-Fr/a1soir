@@ -101,7 +101,8 @@
     </div>
   </div>
   
-  <% if session[:from_cabine] && @cabine_cart.any? %>
+  
+  <% if session[:from_cabine] %> <%# && @cabine_cart.any? %>
     <%= render partial: "public/pages/floating_reservation_button" %>
   <% end %>
 

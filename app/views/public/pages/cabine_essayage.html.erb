@@ -60,97 +60,99 @@ image2: "essayage2.webp") %>
       <div class="bg-white text-dark"
            data-controller="reservation-form">
         
-        <!-- Header commun -->
-        <div class="p-3">
-          <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-            <div class="d-flex align-items-center gap-3">
-              <h3 class="mb-0">
-                <i class="bi bi-bag-check me-2"></i>
-                Ma cabine d'essayage
-              </h3>
-              <span class="px-3 py-2 border border-dark-subtle rounded-pill small fw-semibold">
-                <%= @cabine_cart.size %> / 10
-              </span>
-            </div>
-            <!-- Bouton Ajouter -->
-            <%= link_to produits_index_path(from_cabine: true), class: "btn btn-dark btn-lg px-4 rounded-0" do %>
-              <i class="bi bi-plus-circle me-2"></i>Ajouter des produits
-            <% end %>
-          </div>
-        </div>
-
-        <% if @cabine_cart.any? %>
-          <!-- Body rempli -->
+        <div class="container-fluid justify-content-center pt-4" style="max-width: 1200px;">
+          <!-- Header commun -->
           <div class="p-3">
-            <div class="row g-3">
-              <% @cabine_cart.each do |produit| %>
-                <div class="col-12 col-md-6">
-                  <div class="d-flex align-items-center gap-3 p-3 border border-dark-subtle rounded bg-light">
-                    <!-- Image -->
-                    <div style="width: 80px; height: 80px; flex-shrink: 0;">
-                      <% if produit.default_image.present? %>
-                        <%= image_tag produit.default_image, 
-                            class: "img-fluid rounded",
-                            style: "width: 100%; height: 100%; object-fit: cover;" %>
-                      <% else %>
-                        <div class="d-flex align-items-center justify-content-center h-100 w-100 rounded border border-dark-subtle">
-                          <i class="bi bi-image text-muted fs-4"></i>
-                        </div>
-                      <% end %>
-                    </div>
-                    
-                    <!-- Détails -->
-                    <div class="flex-grow-1" style="min-width: 0;">
-                      <h6 class="mb-1" style="font-size: 0.95rem; font-weight: 600;">
-                        <%= produit.nom %>
-                      </h6>
-                      <% if produit.description.present? %>
-                        <p class="text-muted mb-0" style="font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                          <%= produit.description %>
-                        </p>
-                      <% end %>
-                    </div>
-                    
-                    <!-- Bouton retirer -->
-                    <%= button_to cabine_remove_from_cabine_path(produit), 
-                        method: :delete,
-                        class: "btn btn-sm btn-outline-dark",
-                        title: "Retirer",
-                        style: "flex-shrink: 0; transition: all 0.3s ease;" do %>
-                      <i class="bi bi-trash"></i>
-                    <% end %>
-                  </div>
-                </div>
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+              <div class="d-flex align-items-center gap-3">
+                <h3 class="mb-0">
+                  <i class="bi bi-bag-check me-2"></i>
+                  Ma cabine d'essayage
+                </h3>
+                <span class="px-3 py-2 border border-dark-subtle rounded-pill small fw-semibold">
+                  <%= @cabine_cart.size %> / 10
+                </span>
+              </div>
+              <!-- Bouton Ajouter -->
+              <%= link_to produits_index_path(from_cabine: true), class: "btn btn-dark btn-lg px-4 rounded-0" do %>
+                <i class="bi bi-plus-circle me-2"></i>Ajouter des produits
               <% end %>
             </div>
           </div>
 
-          <!-- Footer rempli -->
-          <div class="p-3 text-center"
-               data-reservation-form-target="cta">
-            <button type="button"
-                    class="btn btn-dark text-light btn-lg px-5 rounded-0"
-                    onclick="document.getElementById('reservationForm').scrollIntoView({ behavior: 'smooth', block: 'start' })">
-              <i class="bi bi-calendar-check me-2"></i>Réserver mon essayage
-            </button>
-          </div>
-          <div class="p-0 m-0">
-            <%= render partial: "public/pages/reservation_essayage" %>
-          </div>
-        <% else %>
-          <!-- État vide -->
-          <div class="py-5 text-center">
-            <i class="bi bi-inbox text-muted" style="font-size: 4rem;"></i>
-            <h4 class="my-4">Votre cabine est vide</h4>
-            <p class="text-muted mb-4">
-              Commencez dès maintenant à sélectionner vos tenues favorites pour votre prochain événement.
-            </p>
-          </div>
+          <% if @cabine_cart.any? %>
+            <!-- Body rempli -->
+            <div class="p-3">
+              <div class="row g-3">
+                <% @cabine_cart.each do |produit| %>
+                  <div class="col-12 col-md-6">
+                    <div class="d-flex align-items-center gap-3 p-3 border border-dark-subtle rounded bg-light">
+                      <!-- Image -->
+                      <div style="width: 80px; height: 80px; flex-shrink: 0;">
+                        <% if produit.default_image.present? %>
+                          <%= image_tag produit.default_image, 
+                              class: "img-fluid rounded",
+                              style: "width: 100%; height: 100%; object-fit: cover;" %>
+                        <% else %>
+                          <div class="d-flex align-items-center justify-content-center h-100 w-100 rounded border border-dark-subtle">
+                            <i class="bi bi-image text-muted fs-4"></i>
+                          </div>
+                        <% end %>
+                      </div>
+                      
+                      <!-- Détails -->
+                      <div class="flex-grow-1" style="min-width: 0;">
+                        <h6 class="mb-1" style="font-size: 0.95rem; font-weight: 600;">
+                          <%= produit.nom %>
+                        </h6>
+                        <% if produit.description.present? %>
+                          <p class="text-muted mb-0" style="font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            <%= produit.description %>
+                          </p>
+                        <% end %>
+                      </div>
+                      
+                      <!-- Bouton retirer -->
+                      <%= button_to cabine_remove_from_cabine_path(produit), 
+                          method: :delete,
+                          class: "btn btn-sm btn-outline-dark",
+                          title: "Retirer",
+                          style: "flex-shrink: 0; transition: all 0.3s ease;" do %>
+                        <i class="bi bi-trash"></i>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
 
-          <div class="p-3 text-center">
-            <%= cta_button(type: "produits", url: produits_index_path(from_cabine: true), variant: "dark") %>
-          </div>
-        <% end %>
+            <!-- Footer rempli -->
+            <div class="p-3 text-center"
+                data-reservation-form-target="cta">
+              <button type="button"
+                      class="btn btn-dark text-light btn-lg px-5 rounded-0"
+                      onclick="document.getElementById('reservationForm').scrollIntoView({ behavior: 'smooth', block: 'start' })">
+                <i class="bi bi-calendar-check me-2"></i>Réserver mon essayage
+              </button>
+            </div>
+            <div class="p-0 m-0">
+              <%= render partial: "public/pages/reservation_essayage" %>
+            </div>
+          <% else %>
+            <!-- État vide -->
+            <div class="py-5 text-center">
+              <i class="bi bi-inbox text-muted" style="font-size: 4rem;"></i>
+              <h4 class="my-4">Votre cabine est vide</h4>
+              <p class="text-muted mb-4">
+                Commencez dès maintenant à sélectionner vos tenues favorites pour votre prochain événement.
+              </p>
+            </div>
+
+            <div class="p-3 text-center">
+              <%= cta_button(type: "produits", url: produits_index_path(from_cabine: true), variant: "dark") %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
