@@ -2504,6 +2504,13 @@ button[data-time]:disabled {
 
 .calendar-container-large .flatpickr-calendar {
   width: 100% !important;
+  max-width: 1000px !important;
+}
+
+.calendar-container-large .flatpickr-innerContainer {
+  display: flex !important;
+  justify-content: center !important;
+  margin: 0 auto !important;
 }
 
 /* Styles pour les boutons de créneaux horaires - Noir et Blanc */
@@ -2682,6 +2689,17 @@ button[data-time]:disabled {
   background: #fff !important;
   color: #000 !important;
   transition: all 0.3s ease !important;
+  position: absolute !important;
+}
+
+.flatpickr-prev-month {
+  left: 10px !important;
+  right: auto !important;
+}
+
+.flatpickr-next-month {
+  right: 10px !important;
+  left: auto !important;
 }
 
 .flatpickr-prev-month:hover,

@@ -3,12 +3,6 @@
     <% if @cabine_cart.any? %>
         <% @demande_rdv ||= DemandeRdv.new %>
         
-        <div class="container mb-5">
-          <h3 class="text-light text-center mb-4">
-            <i class="bi bi-calendar-check me-2"></i>Réserver mon essayage
-          </h3>
-        </div>
-        
         <div id="reservationFormCollapse" data-reservation-form-target="collapse">
             <div class="p-0 m-0 bg-white d-flex flex-column" style="background-image: url('<%= image_path('/images/dessin2.png') %>'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative; min-height: 100vh;">
                 <div style="position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column;">
