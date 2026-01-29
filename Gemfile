@@ -79,5 +79,7 @@ gem "jsbundling-rails"
 
 gem 'ruby-openai'
 
+gem 'sitemap_generator'
+
 # gem 'recaptcha' # Remplacé par RecaptchaVerifier custom
 

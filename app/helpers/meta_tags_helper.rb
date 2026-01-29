@@ -50,6 +50,16 @@ module MetaTagsHelper
         title: "Nos autres activités - Autour d'un Soir",
         description: "Découvrez toutes les activités d'Autour d'un Soir au-delà des robes de mariée.",
         keywords: "activités Autour d'un Soir, services, location, vente"
+      },
+      cgv: {
+        title: "Conditions générales de vente - Autour d'un Soir",
+        description: "Consultez les conditions générales de vente d'Autour d'un Soir pour la location et la vente de robes de mariée.",
+        keywords: "CGV, conditions générales de vente, Autour d'un Soir, location, vente"
+      },
+      faq: {
+        title: "FAQ - Questions fréquemment posées - Autour d'un Soir",
+        description: "Trouvez les réponses aux questions fréquemment posées sur nos services de location et vente de robes de mariée.",
+        keywords: "FAQ, questions fréquentes, Autour d'un Soir, location robes de mariée, vente"
       }
     }
   }.freeze
@@ -77,7 +87,7 @@ module MetaTagsHelper
     page_key ||= determine_page_key
 
     # Récupérer les meta tags pour la page spécifique ou les valeurs par défaut
-    page_meta = META_TAGS[:pages][page_key.to_sym] || META_TAGS[:default]
+    page_meta = (page_key && META_TAGS[:pages][page_key.to_sym]) || META_TAGS[:default]
 
     page_meta[key] || META_TAGS[:default][key]
   end
@@ -105,6 +115,10 @@ module MetaTagsHelper
       :produits
     when 'pages#nos_autres_activites'
       :nos_autres_activites
+    when 'pages#cgv'
+      :cgv
+    when 'pages#faq'
+      :faq
     when 'pages#produit'
       nil
     else

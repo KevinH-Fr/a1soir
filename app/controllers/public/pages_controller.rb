@@ -36,6 +36,9 @@ module Public
     def legal
     end
 
+    def cgv
+    end
+
     def faq
       @texteContact = Texte.last.contact
       @texteHoraire = Texte.last.horaire
