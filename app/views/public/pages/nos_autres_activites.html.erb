@@ -152,41 +152,8 @@
       </div>
     </div>
 
-    <!-- Témoignages -->
-    <section class="my-5 py-5" data-scroll-reveal>
-      <div class="container-fluid">
-        <!-- Titre de section -->
-        <div class="section-title-wrapper mb-5 text-center" data-aos="title-underline">
-          <h2 class="section-title text-light d-inline-block" style="font-family: 'Playfair Display', serif; font-size: 2.5rem; position: relative;">
-            Témoignages
-            <span class="section-title-underline" style="background: white;"></span>
-          </h2>
-        </div>
-        
-        <!-- Slider de témoignages -->
-        <% testimonials = [
-          {
-            text: "Service impeccable pour notre gala d'entreprise. L'équipe a habillé nos 50 collaborateurs avec professionnalisme et dans les délais. Résultat magnifique !",
-            name: "Société TechCorp",
-            subtitle: "Direction des Ressources Humaines",
-            icon: "building"
-          },
-          {
-            text: "Les costumes du XVIIIe siècle étaient parfaits pour notre reconstitution historique. Authenticité et qualité au rendez-vous. Nous recommandons vivement !",
-            name: "Association Histoire Vivante",
-            subtitle: "Événements historiques",
-            icon: "people"
-          },
-          {
-            text: "Pour notre mariage sur le thème des années 20, l'équipe Autour d'un Soir a su habiller tout notre cortège. Un travail remarquable et une équipe à l'écoute !",
-            name: "Sophie & Marc",
-            subtitle: "Mariage thématique",
-            icon: "heart"
-          }
-        ] %>
-        <%= items_slider(items: testimonials, type: :testimonial) %>
-      </div>
-    </section>
+  <%= render partial: "public/pages/nos_autres_activites/section_references" %>
+
 
     <!-- Call to action -->
     <div class="bg-white text-dark text-center my-5 py-5" data-scroll-reveal>
