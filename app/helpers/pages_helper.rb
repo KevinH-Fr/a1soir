@@ -15,7 +15,7 @@ module PagesHelper
   def page_header(title, subtitle = nil, image1: nil, image2: nil, with_images: true, height: nil, image1_position: "center", image2_position: "center")
     if with_images
       # Hauteur par défaut ou personnalisée
-      height_style = height.present? ? "height: #{height};" : "height: 500px;"
+      height_style = height.present? ? "height: #{height};" : "height: 80vh;"
       # Structure avec deux images côte à côte et overlay
       content_tag :div, class: "position-relative w-100 mb-5 page-header-container", style: height_style, data: { aos: "fade" } do
         # Container des deux images côte à côte

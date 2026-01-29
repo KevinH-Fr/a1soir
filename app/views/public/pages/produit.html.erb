@@ -1,17 +1,17 @@
 <div class="public-main-content bg-white text-dark">
   <div class="container-fluid produit-container py-2 px-4">
-    <!-- Lien de retour -->
-    <% if request.referer.present? %>
-      <div class="mb-1">
-        <%= link_to request.referer, class: "text-secondary text-decoration-none d-inline-flex align-items-center btn btn-link p-0" do %>
-          <i class="bi bi-arrow-left me-2 fs-5"></i>
-          <span>Retour</span>
-        <% end %>
-      </div>
-    <% end %>
     
     <div class="row g-4 g-lg-5" data-scroll-reveal>
       
+      <!-- Lien de retour -->
+      <% if request.referer.present? %>
+        <div class="mb-1">
+          <%= link_to request.referer, class: "text-secondary text-decoration-none d-inline-flex align-items-center btn btn-link p-0" do %>
+            <i class="bi bi-arrow-left me-2 fs-5"></i>
+            <span>Retour</span>
+          <% end %>
+        </div>
+      <% end %>
       <!-- Image/Carousel Column - En haut sur mobile, 50% sur grand écran -->
       <div class="col-12 col-lg-7">
         <div class="sticky-top" style="top: 2rem;">
