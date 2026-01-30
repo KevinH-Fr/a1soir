@@ -61,9 +61,6 @@ module Public
         # Si le formulaire vient de la cabine d'essayage, créer et associer la demande cabine
         if params[:from_cabine] == "1" && session[:cabine_cart].present?
           
-          # Email de confirmation client uniquement pour les demandes de cabine d'essayage
-          DemandeRdvMailer.confirmation_client(@demande_rdv).deliver_later
-          
           @demande_cabine_essayage = @demande_rdv.build_demande_cabine_essayage
           
           # Créer les items avec les produits du panier
@@ -73,6 +70,12 @@ module Public
           
           
           if @demande_cabine_essayage.save
+            # Recharger la relation pour s'assurer qu'elle est disponible
+            
+            # Email de confirmation client uniquement pour les demandes de cabine d'essayage
+            # Envoyé APRÈS la création de demande_cabine_essayage pour que la relation soit disponible
+            DemandeRdvMailer.confirmation_client(@demande_rdv).deliver_later
+            
             # Vider le panier cabine après création réussie
             session[:cabine_cart] = []
             redirect_to cabine_essayage_path, notice: "Votre demande de rendez-vous avec cabine d'essayage a bien été envoyée. Nous vous contacterons bientôt."
