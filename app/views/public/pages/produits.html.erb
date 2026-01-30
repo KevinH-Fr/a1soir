@@ -20,7 +20,7 @@
         <%= render partial: "public/pages/filtres/filtres_prix" %>
         <%= render partial: "public/pages/filtres/filtres_type" %>
 
-        <%= button_to "Tous les produits", 
+        <%= button_to "Effacer les filtres", 
             update_filters_path(
                 slug: nil, 
                 id: nil, 
@@ -31,7 +31,7 @@
                 from_cabine: params[:from_cabine],
                 type_produit: nil
             ),
-            class: "btn btn-sm btn-outline-light" %>
+            class: "btn btn-sm btn-outline-light text-secondary" %>
    
     </div>
 

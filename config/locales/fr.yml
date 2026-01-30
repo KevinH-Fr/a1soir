@@ -285,8 +285,11 @@ fr:
       body:
         greeting: "Bonjour %{prenom},"
         greeting_no_prenom: "Bonjour,"
-        message_with_cabine: "Nous avons bien reçu votre demande d'essayage. Notre équipe vous recontactera rapidement pour fixer un rendez-vous."
+        message_with_cabine: "Nous avons bien reçu votre demande d'essayage. Notre équipe vous recontactera rapidement."
         message_without_cabine: "Nous avons bien reçu votre demande de rendez-vous. Notre équipe vous recontactera rapidement pour confirmer votre créneau."
+        produits_title: "Produits sélectionnés pour votre essayage :"
+        nom_label: "Nom :"
+        voir_produit: "Voir le produit →"
     notification_admin:
       subject: "Nouvelle demande de rendez-vous"
       body:

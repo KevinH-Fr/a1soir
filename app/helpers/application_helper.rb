@@ -31,11 +31,11 @@ module ApplicationHelper
     when "brouillon"
       "bi-file-earmark-text"
     when "soumis"
-      "bi-hourglass-split"
+      "bi-hourglass-split text-warning"
     when "confirme", "confirmé"
-      "bi-check-circle"
+      "bi-check-circle text-success"
     when "annule", "annulé"
-      "bi-x-circle"
+      "bi-x-circle text-danger"
     else
       "bi-question-circle"
     end

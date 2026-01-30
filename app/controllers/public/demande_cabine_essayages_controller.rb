@@ -27,7 +27,7 @@ module Public
           format.turbo_stream do
             render turbo_stream: turbo_stream.append(
               :flash,
-              partial: "public/pages/flash"
+              partial: "public/shared/flash"
             )
           end
         end
@@ -37,10 +37,11 @@ module Public
       if @demande_cabine_essayage.save
         # Vider le panier cabine après création réussie
         session[:cabine_cart] = []
+        # Les emails sont gérés via DemandeRdvMailer dans demande_rdv_controller.rb
         # Envoi de l'email de confirmation au visiteur
-        DemandeCabineMailer.confirmation_client(@demande_cabine_essayage).deliver_later
+        # DemandeCabineMailer.confirmation_client(@demande_cabine_essayage).deliver_later
         # Notification admin
-        DemandeCabineMailer.notification_admin(@demande_cabine_essayage).deliver_later
+        # DemandeCabineMailer.notification_admin(@demande_cabine_essayage).deliver_later
         redirect_to cabine_essayage_path, notice: "Votre demande de réservation a bien été envoyée. Nous vous contacterons bientôt."
       end
     end

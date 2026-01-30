@@ -3,10 +3,12 @@ module ProduitsFilterable
 
   # Méthode pour charger toutes les données nécessaires aux filtres
   # Si produits_scope est fourni, calcule les options dynamiquement
-  def load_data(produits_scope: nil)
+  # categories_scope permet de calculer les catégories disponibles sans le filtre de catégorie
+  # (pour afficher toutes les catégories possibles même quand une est déjà sélectionnée)
+  def load_data(produits_scope: nil, categories_scope: nil)
     if produits_scope.present?
       # Calculer les options disponibles à partir des produits filtrés
-      load_dynamic_filter_options(produits_scope)
+      load_dynamic_filter_options(produits_scope, categories_scope: categories_scope)
     else
       # Charger toutes les options (comportement par défaut)
       @toutes_categories = CategorieProduit.all.order(nom: :asc)
@@ -94,8 +96,30 @@ module ProduitsFilterable
     # Scope pour charger les données de filtres (sans ORDER BY pour éviter les conflits avec DISTINCT)
     available_produits_for_filters = Produit.where(id: available_produits_ids)
     
+    # 🔍 Créer un scope spécifique pour calculer les catégories disponibles
+    # Ce scope applique TOUS les filtres SAUF le filtre de catégorie
+    # Cela permet d'afficher toutes les catégories possibles même quand une catégorie est sélectionnée
+    produits_scope_sans_categorie = FiltersProduitsService.new(
+      nil, # Pas de filtre de catégorie
+      params[:taille], params[:couleur],
+      params[:prixmax], params[:type], 
+      params[:type_produit]
+    ).call
+    
+    # Appliquer la recherche et le filtre de disponibilité au scope sans catégorie
+    @q_sans_categorie = produits_scope_sans_categorie.ransack(search_params[:q])
+    searched_produits_sans_categorie = @q_sans_categorie.result
+    available_produits_ids_sans_categorie = searched_produits_sans_categorie
+                                            .where(today_availability: true)
+                                            .reorder(nil)
+                                            .pluck(:id)
+                                            .uniq
+    available_produits_for_categories = Produit.where(id: available_produits_ids_sans_categorie)
+    
     # 🔁 Charger les options de filtres dynamiquement à partir des produits disponibles
-    load_data(produits_scope: available_produits_for_filters)
+    # On passe deux scopes : un pour les autres filtres, un spécifique pour les catégories
+    load_data(produits_scope: available_produits_for_filters, 
+              categories_scope: available_produits_for_categories)
 
     # Scope pour la pagination avec ORDER BY (requête simple sans DISTINCT)
     available_produits_scope = Produit.where(id: available_produits_ids)
@@ -106,9 +130,14 @@ module ProduitsFilterable
   end
 
   # Calcule les options de filtres disponibles à partir d'un scope de produits
-  def load_dynamic_filter_options(produits_scope)
+  # categories_scope : scope optionnel utilisé uniquement pour calculer les catégories disponibles
+  # (sans le filtre de catégorie, pour afficher toutes les catégories possibles)
+  def load_dynamic_filter_options(produits_scope, categories_scope: nil)
     # Catégories disponibles
-    categorie_ids = produits_scope
+    # Si categories_scope est fourni, l'utiliser pour afficher toutes les catégories possibles
+    # Sinon, utiliser le scope complet (comportement par défaut)
+    scope_pour_categories = categories_scope || produits_scope
+    categorie_ids = scope_pour_categories
                       .joins(:categorie_produits)
                       .distinct
                       .pluck('categorie_produits.id')

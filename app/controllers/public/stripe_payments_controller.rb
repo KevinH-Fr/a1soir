@@ -44,7 +44,7 @@ module Public
             # flash
             turbo_stream.append(
               :flash,
-              partial: "public/pages/flash"
+              partial: "public/shared/flash"
             ),
             # badge navbar
             turbo_stream.replace(
@@ -78,7 +78,7 @@ module Public
             # flash
             turbo_stream.append(
               :flash,
-              partial: "public/pages/flash"
+              partial: "public/shared/flash"
             ),
             # badge navbar
             turbo_stream.replace(

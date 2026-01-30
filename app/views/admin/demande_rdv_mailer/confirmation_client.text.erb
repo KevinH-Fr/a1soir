@@ -10,3 +10,12 @@
 <%= I18n.t('demande_rdv.confirmation_client.body.message_without_cabine') %>
 <% end %>
 
+<% if @demande_rdv.demande_cabine_essayage.present? && @demande_rdv.demande_cabine_essayage.produits.any? %>
+
+<%= I18n.t('demande_rdv.confirmation_client.body.produits_title') %>
+
+<% @demande_rdv.demande_cabine_essayage.produits.each do |produit| %>
+<% if produit.nom.present? %><%= I18n.t('demande_rdv.confirmation_client.body.nom_label') %> <%= produit.nom %><% end %>
+
+<% end %>
+<% end %>

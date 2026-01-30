@@ -17,6 +17,40 @@
       <% end %>
     </p>
 
+    <% if @demande_rdv.demande_cabine_essayage.present? && @demande_rdv.demande_cabine_essayage.produits.any? %>
+      <div style="margin-top: 24px;">
+        <h3 style="margin-bottom: 16px; font-size: 18px;"><%= I18n.t('demande_rdv.confirmation_client.body.produits_title') %></h3>
+        
+        <div style="margin-top: 16px;">
+          <% @demande_rdv.demande_cabine_essayage.produits.each do |produit| %>
+            <% produit_url = "https://shop.a1soir.com/produit/#{produit.nom.parameterize}-#{produit.id}" %>
+            <div style="margin-bottom: 24px; padding-bottom: 24px; display: table; width: 100%;">
+              <div style="display: table-row;">
+                <% if produit.image1.attached? %>
+                  <% host = Rails.env.production? ? 'a1soir-2-2a03802389d6.herokuapp.com' : 'localhost:3000' %>
+                  <% protocol = Rails.env.production? ? 'https' : 'http' %>
+                  <div style="display: table-cell; vertical-align: top; padding-right: 16px; width: 120px;">
+                    <a href="<%= produit_url %>">
+                      <%= image_tag rails_blob_url(produit.image1, host: host, protocol: protocol), alt: produit.nom, style: "max-width: 100px; height: auto; border-radius: 4px;", width: "100" %>
+                    </a>
+                  </div>
+                <% end %>
+                <div style="display: table-cell; vertical-align: top;">
+                  <% if produit.nom.present? %>
+                    <p style="margin: 4px 0; font-size: 14px;"><strong><%= I18n.t('demande_rdv.confirmation_client.body.nom_label') %></strong> <%= produit.nom %></p>
+                  <% end %>
+                  <p style="margin: 4px 0; font-size: 14px;">
+                    <a href="<%= produit_url %>" style="color: #333; text-decoration: underline;"><%= I18n.t('demande_rdv.confirmation_client.body.voir_produit') %></a>
+                  </p>
+                </div>
+              </div>
+              <hr style="margin-top: 24px; border: none; border-top: 1px solid #e0e0e0;">
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
   </body>
 </html>
 

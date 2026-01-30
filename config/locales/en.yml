@@ -64,6 +64,9 @@ en:
         greeting_no_prenom: "Hello,"
         message_with_cabine: "We have received your fitting room request. Our team will contact you shortly to schedule an appointment."
         message_without_cabine: "We have received your appointment request. Our team will contact you shortly to confirm your time slot."
+        produits_title: "Products selected for your fitting :"
+        nom_label: "Name :"
+        voir_produit: "View product →"
     notification_admin:
       subject: "New appointment request"
       body:

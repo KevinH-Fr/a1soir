@@ -55,11 +55,14 @@ module Public
       
       if @demande_rdv.save
         
-        # Envoi des emails de confirmation et notification
+        # Notification admin pour toutes les demandes
         DemandeRdvMailer.notification_admin(@demande_rdv).deliver_later
         
         # Si le formulaire vient de la cabine d'essayage, créer et associer la demande cabine
         if params[:from_cabine] == "1" && session[:cabine_cart].present?
+          
+          # Email de confirmation client uniquement pour les demandes de cabine d'essayage
+          DemandeRdvMailer.confirmation_client(@demande_rdv).deliver_later
           
           @demande_cabine_essayage = @demande_rdv.build_demande_cabine_essayage
           

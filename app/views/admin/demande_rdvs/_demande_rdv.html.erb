@@ -1,10 +1,14 @@
 <div id="<%= dom_id demande_rdv %>" class="my-2">
   <div class="card mx-2 mb-3 light-beige-colored shadow-sm">
     <div class="card-body p-1">
-
       <div class="card-title d-flex align-items-center">
-        <div data-turbo="false">
-          <%= link_to admin_demande_rdv_path(demande_rdv), class: "text-decoration-none text-dark" do %>
+        <div>
+          <%= link_to "#collapseDemande#{dom_id(demande_rdv)}", 
+              class: "text-decoration-none text-dark", 
+              "data-bs-toggle": "collapse", 
+              role: "button", 
+              "aria-expanded": "false", 
+              "aria-controls": "collapseDemande#{dom_id(demande_rdv)}" do %>
             <%= custom_badge("", "", "", "fw-bold", demande_rdv.full_name) if demande_rdv.nom.present? %>
           <% end %>
         </div>
@@ -27,7 +31,7 @@
         </div>
       </div>
 
-      <div class="collapse px-2" id="collapseDemande<%= dom_id(demande_rdv) %>">
+      <div class="collapse py-1 px-2" id="collapseDemande<%= dom_id(demande_rdv) %>">
 
         <hr>
 
