@@ -26,8 +26,8 @@
               class: "btn btn-sm btn-outline-primary bi bi-eye m-1", "data-bs-toggle": "collapse", 
               role: "button", "aria-expanded": "false", "aria-controls": "collapseDemande#{dom_id(demande_rdv)}" %>
 
-        <div class="ms-auto">
-          <%= links_record(demande_rdv, show: false) %>  
+        <div class="ms-auto d-flex align-items-center">
+          <%= button_to("", edit_admin_demande_rdv_path(demande_rdv), method: :post, class: "btn btn-sm btn-secondary bi bi-pencil-square m-0") %> 
         </div>
       </div>
 
