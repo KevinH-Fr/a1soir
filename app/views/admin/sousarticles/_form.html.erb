@@ -17,8 +17,11 @@
     <%= form.hidden_field :produit_id, value: @produit.id if @produit %>
 
     <%= custom_form_elements(form, 
-      [:nature, :text_field], [:description, :text_area],
-      [:prix, :number_field], [:caution, :number_field], [:commentaires, :text_area])
+      [:nature, :text_field],
+      [:description, :text_area],
+      [:prix, :number_field, nil, { step: 0.01 }],
+      [:caution, :number_field],
+      [:commentaires, :text_area])
     %>
 
 

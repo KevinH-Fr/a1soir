@@ -57,7 +57,8 @@
 
       <div class="input-group input-group-sm my-1">
         <%= form.label :prix, class: "input-group-text fs-6 input-colored" %>
-        <%= form.number_field :prix, data: { action: "change->form-article#calculTotal", form_article_target: "prix" }, 
+        <%= form.number_field :prix, step: 0.01,
+              data: { action: "change->form-article#calculTotal", form_article_target: "prix" }, 
               class: "form-control label-colored" %>
       </div>
 
@@ -70,7 +71,7 @@
 
       <div class="input-group input-group-sm my-1">
         <%= form.label :total, class: "input-group-text fs-6 input-colored" %>
-        <%= form.number_field :total, 
+        <%= form.number_field :total, step: 0.01,
               data: { action: "change->form-article#calculTotal", form_article_target: "total" }, 
               class: "form-control label-colored", readonly: true %>
       </div>

@@ -19,8 +19,8 @@
               <%= field_with_label("couleur", article.produit&.couleur&.nom) %> 
               <%= field_with_label("taille", article.produit&.taille&.nom) %> 
               <%= field_with_label("qté", article.quantite) %> 
-              <%= field_with_label("prix", custom_currency_no_decimals_format(article.prix)) %> 
-              <%= field_with_label("total", custom_currency_no_decimals_format(article.total)) %> 
+              <%= field_with_label("prix", custom_currency_format(article.prix)) %> 
+              <%= field_with_label("total", custom_currency_format(article.total)) %> 
               
               <% if article.caution %>
                 <%= field_with_label("caution", custom_currency_no_decimals_format(article.caution)) %> 
