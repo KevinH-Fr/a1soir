@@ -51,7 +51,8 @@
             param_key: :filter_fournisseur,
             collection: @fournisseurs,
             model: Fournisseur,
-            current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_mode))
+            current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_mode)),
+            columns: 2
         ) %>
     </div>
     <div>
