@@ -1,8 +1,8 @@
 <%= page_header("Légal", "Mentions légales et conditions générales",
-image1: "https://images.pexels.com/photos/26238484/pexels-photo-26238484.jpeg",
-image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") %>
+image1: "legal2.webp",
+image2: "legal1.webp") %>
 
-<div class="public-main-content">
+<div id="top" class="public-main-content">
   <div class="container-fluid">
     <div class="row justify-content-center">
       <div class="col-lg-10">
@@ -30,31 +30,31 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
           <h4 class="h5 fw-bold mt-4 mb-3 text-light">Éditeur du site</h4>
           <p class="text-light opacity-75">
             <strong>Autour D'Un Soir</strong><br>
-            Forme juridique : [À compléter]<br>
-            Capital social : [À compléter]<br>
-            Siège social : [Adresse à compléter]<br>
-            RCS : [Numéro à compléter]<br>
-            SIRET : [Numéro à compléter]<br>
-            TVA intracommunautaire : [Numéro à compléter]<br>
+            Forme juridique : SARL<br>
+            Capital social : 75 000,00 Euros<br>
+            Siège social : 29 Boulevard Carnot 06400 Cannes<br>
+            RCS : 880 559 414 R.C.S. Cannes<br>
+            SIRET : 88055941400011<br>
+            TVA intracommunautaire : FR42880559414<br>
             Email : (<%= link_to "formulaire de contact", "#{contact_path}#message-form" %>)<br>
-            Téléphone : [Numéro à compléter]
+            Téléphone : 04 93 45 17 17
           </p>
 
           <h4 class="h5 fw-bold mt-4 mb-3 text-light">Directeur de la publication</h4>
-          <p class="text-light opacity-75">[Nom du directeur de publication à compléter]</p>
+          <p class="text-light opacity-75">Sophie Glasman</p>
 
           <h4 class="h5 fw-bold mt-4 mb-3 text-light">Hébergement</h4>
           <p class="text-light opacity-75">
             Le site est hébergé par :<br>
-            [Nom de l'hébergeur]<br>
-            [Adresse de l'hébergeur]<br>
-            [Téléphone de l'hébergeur]
+            HEROKU<br>
+            dont le siège social est situé au 415 Mission Street, 3rd Floor, San Francisco, CA 94105, États-Unis,<br>
+            téléphone : +1 (415) 901-7000.
           </p>
 
           <h4 class="h5 fw-bold mt-4 mb-3 text-light">Crédits</h4>
           <p class="text-light opacity-75">
-            Conception et développement : [À compléter]<br>
-            Photographies : [À compléter]
+           <%# Conception et développement : [À compléter] %> 
+            Photographies : fournisseurs de la société et banques d'images libres de droits
           </p>
         <% end %>
 
@@ -353,7 +353,7 @@ image2: "https://images.pexels.com/photos/23500968/pexels-photo-23500968.jpeg") 
               Pour toute question concernant ces conditions ou pour toute réclamation, 
               n'hésitez pas à nous contacter.
             </p>
-            <%= link_to "#{contact_path}#message-form", class: "btn btn-brand btn-lg px-5" do %>
+            <%= link_to "#{contact_path}#message-form", class: "btn btn-light btn-lg px-5 public-btn-border-radius" do %>
               <i class="bi bi-envelope me-2"></i>Nous contacter
             <% end %>
             
