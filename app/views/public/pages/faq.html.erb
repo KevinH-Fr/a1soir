@@ -1,6 +1,6 @@
 <%= page_header("FAQ", "Questions fréquemment posées",
-image1: "https://images.pexels.com/photos/21717506/pexels-photo-21717506.jpeg",
-image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") %>
+image1: "faq1.webp",
+image2: "faq2.webp") %>
 
 <div class="public-main-content">
   <div class="container-fluid">
@@ -16,18 +16,76 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
 
         <!-- Navigation rapide -->
         <%= quick_nav_links(links: [
+          { url: "#general", text: "Questions générales" },
           { url: "#location", text: "Location de tenues" },
           { url: "#vente", text: "Vente de tenues" },
           { url: "#retouches", text: "Retouches et personnalisation" },
           { url: "#livraison", text: "Livraison et retrait" },
-          { url: "#paiement", text: "Paiement et tarifs" },
-          { url: "#general", text: "Questions générales" }
+          { url: "#paiement", text: "Paiement et tarifs" }
         ]) %>
+
+        <!-- Questions Générales -->
+        <%= content_section(id: "general", icon: "question-circle", title: "Questions générales", accordion_id: "accordionGeneral") do %>
+          <%= collapsible_item(id: "general1", parent_id: "accordionGeneral", title: "Où se trouve votre boutique ?", expanded: true) do %>
+            <p><strong>Autour D'Un Soir</strong><br>
+            <%= @texteAdresse %><br>
+            
+            <p><strong>Horaires d'ouverture :</strong><br>
+            <%= @texteHoraire %><br>
+            
+            <p class="mb-0"><strong>Contact :</strong><br>
+            <%= @texteContact %><br>
+            Email : (<%= link_to "formulaire de contact", "#{contact_path}#message-form" %>)</p>
+          <% end %>
+
+          <%= collapsible_item(id: "general2", parent_id: "accordionGeneral", title: "Dois-je prendre rendez-vous ?") do %>
+            <p>Le rendez-vous n'est pas obligatoire mais <strong>fortement recommandé</strong> :</p>
+            <ul>
+              <li>Garantit la disponibilité d'une conseillère dédiée</li>
+              <li>Permet de préparer une sélection adaptée à vos goûts</li>
+              <li>Évite l'attente, surtout en haute saison</li>
+              <li>Nécessaire pour les essayages et retouches</li>
+            </ul>
+            <p class="mb-0">
+              Réservez votre créneau en ligne ou par téléphone !
+              Exception : Pendant le Festival de Cannes, pas de rendez-vous necessaire. Venez au plus vite et on s'occupe de vous !
+            </p>
+          <% end %>
+
+          <%= collapsible_item(id: "general3", parent_id: "accordionGeneral", title: "Puis-je venir avec mes proches lors de l'essayage ?") do %>
+            <p>Bien sûr ! Nous vous encourageons à venir accompagné(e) :</p>
+            <ul>
+              <li>Cabines d'essayage spacieuses</li>
+              <li>Espace d'attente confortable pour vos accompagnants</li>
+              <li>Ambiance conviviale et détendue</li>
+            </ul>
+            <p class="mb-0">Merci de nous indiquer le nombre de personnes lors de la prise de rendez-vous.</p>
+          <% end %>
+
+          <%= collapsible_item(id: "general4", parent_id: "accordionGeneral", title: "Que faire en cas d'accident ou de tache sur la tenue ?") do %>
+            <p><strong>Pas de panique !</strong> Voici la marche à suivre :</p>
+            <ol>
+              <li><strong>Ne tentez pas de nettoyer</strong> vous-même la tache</li>
+              <li>Retournez la tenue normalemen, votre location inclut le nettoyage au pressing</li>
+            </ol>
+            <p>Les taches légères et l'usure normale sont couvertes. En cas de dommage important, une partie de la caution pourra être retenue selon l'ampleur des dégâts.</p>
+          <% end %>
+
+          <%= collapsible_item(id: "general5", parent_id: "accordionGeneral", title: "Avez-vous des tenues pour enfants ?") do %>
+            <p>Oui ! Nous proposons une belle sélection de tenues pour les garçons :</p>
+            <ul>
+              <li>Costumes pour garçons (6 à 18 ans)</li>
+              <li>Location ou vente</li>
+              <li>Accessoires assortis</li>
+            </ul>
+            <p class="mb-0">Tarifs adaptés et retouches incluses, comme pour les adultes !</p>
+          <% end %>
+        <% end %>
 
         <!-- Questions sur la Location -->
         <%= content_section(id: "location", icon: "calendar-check", title: "Location de tenues", accordion_id: "accordionLocation") do %>
           <%= collapsible_item(id: "location1", parent_id: "accordionLocation", title: "Comment fonctionne la location de tenues ?", expanded: true) do %>
-            <p>La location chez A1soir est simple et flexible :</p>
+            <p>La location chez Autour D'Un Soir est simple et flexible :</p>
             <ol>
               <li><strong>Parcourez</strong> notre catalogue en ligne ou venez en boutique</li>
               <li><strong>Réservez</strong> votre tenue en indiquant les dates souhaitées</li>
@@ -76,6 +134,20 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             </ul>
             <p class="mb-0">La caution est restituée intégralement si la tenue est retournée en bon état et dans les délais.</p>
           <% end %>
+
+          <%= collapsible_item(id: "location6", parent_id: "accordionLocation", title: "Peut-on louer une robe de mariée ?") do %>
+            <p>Nous ne proposons pas de robe de mariée à la location pour des raisons de qualité.</p>
+            <p>Les robes de mariée sont des produits fragiles et nous avons à cœur qu'elles soient parfaites pour votre grand jour.</p>
+            <p class="mb-0">Il est essentiel pour nous que la robe soit parfaitement coupée et ajustée avec des retouches définitives.</p>
+          <% end %>
+
+          <%= collapsible_item(id: "location7", parent_id: "accordionLocation", title: "Peut-on louer une robe en ligne ?") do %>
+            <p>Pour le moment nous ne proposons pas le service de location à distance.</p>
+            <p class="mb-0">Nous pensons que notre conseil et les retouches incluses dans notre service valent le détour par la boutique de Cannes.</p>
+          <% end %>
+
+
+
         <% end %>
 
         <!-- Questions sur la Vente -->
@@ -84,7 +156,6 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             <p>Oui, absolument ! Si vous tombez amoureux d'une tenue pendant votre location, nous vous proposons :</p>
             <ul>
               <li><strong>Option d'achat après location</strong> avec déduction du prix de location</li>
-              <li><strong>Tarif préférentiel</strong> pour nos clients fidèles</li>
               <li><strong>Paiement en plusieurs fois</strong> possible selon le montant</li>
             </ul>
             <p class="mb-0">Contactez-nous pour connaître les modalités spécifiques à votre tenue.</p>
@@ -107,6 +178,8 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
               <li>La tenue doit être dans son état d'origine</li>
               <li>Non portée et avec ses étiquettes</li>
               <li>Dans son emballage d'origine</li>
+              <li>La tenue doit être non retouchée</li>
+
             </ul>
             <p class="mb-0">Le remboursement sera effectué sous 14 jours après réception du produit retourné.</p>
           <% end %>
@@ -124,6 +197,16 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             <p>Les retouches importantes ou complexes peuvent faire l'objet d'un devis supplémentaire.</p>
           <% end %>
 
+          <%= collapsible_item(id: "retouches-incluses-vente", parent_id: "accordionRetouches", title: "Les retouches sont-elles incluses dans le prix de vente ?") do %>
+            <p>
+              Pour les tenues dont le prix est supérieur à <strong>1000&nbsp;€</strong>, les <strong>retouches de longueur</strong> sont incluses dans le prix de vente.
+            </p>
+            <p>
+              Toutes les autres retouches et transformations font systématiquement l'objet d'un <strong>devis avant validation</strong>, afin de garantir la transparence sur les tarifs.
+            </p>
+          <% end %>
+
+
           <%= collapsible_item(id: "retouches2", parent_id: "accordionRetouches", title: "Quel est le délai pour les retouches ?") do %>
             <p>Les délais varient selon la complexité :</p>
             <ul>
@@ -132,18 +215,24 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
               <li><strong>Retouches complexes</strong> : 10 à 14 jours ouvrés</li>
               <li><strong>Service express</strong> : possible avec supplément (24-48h)</li>
             </ul>
-            <p class="mb-0">Nous vous recommandons de prévoir l'essayage 2 semaines avant votre événement.</p>
+            <p class="mb-0">Nous vous proposerons toujours pour les essayages une date adaptée a la complexité des retouches et à l'agenda de notre atelier.</p>
           <% end %>
 
           <%= collapsible_item(id: "retouches3", parent_id: "accordionRetouches", title: "Proposez-vous des créations sur mesure ?") do %>
             <p>Oui ! Notre atelier peut créer des tenues entièrement personnalisées :</p>
             <ul>
-              <li>Création de robes de mariée sur mesure</li>
+              <li>Création de robes de mariée sur mesure (à partir d'une base existante)</li>
               <li>Costumes personnalisés</li>
               <li>Modifications de créateur</li>
               <li>Répliques de costumes d'époque</li>
             </ul>
             <p class="mb-0">Prenez rendez-vous pour discuter de votre projet et obtenir un devis personnalisé.</p>
+          <% end %>
+
+          <%= collapsible_item(id: "retouches-autres-produits", parent_id: "accordionRetouches", title: "Est-ce que vous retouchez des produits qui ne viennent pas de votre boutique ?") do %>
+            <p>
+              Nous ne proposons pas ce service car notre atelier est déjà bien occupé.
+            </p>
           <% end %>
         <% end %>
 
@@ -153,19 +242,17 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             <p>Oui, plusieurs options de livraison sont disponibles :</p>
             <ul>
               <li><strong>Retrait en boutique</strong> : gratuit</li>
-              <li><strong>Livraison à domicile</strong> : selon la distance (tarif sur devis)</li>
-              <li><strong>Livraison express</strong> : pour les urgences de dernière minute</li>
-              <li><strong>Point relais</strong> : pour plus de flexibilité</li>
+              <li><strong>Livraison à domicile</strong> : tarifs selon le poids, et uniquement pour les articles achetés.</li>
             </ul>
-            <p class="mb-0">Les frais de livraison vous seront communiqués lors de la réservation.</p>
+            <p class="mb-0">Les frais de livraison vous seront communiqués lors de la validation de votre panier.</p>
           <% end %>
 
           <%= collapsible_item(id: "livraison2", parent_id: "accordionLivraison", title: "Comment retourner ma location ?") do %>
             <p>Vous pouvez retourner votre location de plusieurs façons :</p>
             <ul>
               <li><strong>En boutique</strong> : pendant nos horaires d'ouverture</li>
-              <li><strong>Par coursier</strong> : nous pouvons organiser la récupération</li>
-              <li><strong>Boîte de dépôt</strong> : disponible 24h/24 devant la boutique</li>
+              <li><strong>Par coursier</strong> : nous pouvons organiser la récupération de votre tenue dans les hôtels de Cannes</li>
+              <li><strong>Point de dépôt</strong> : disponible 7j/7 à côté de la boutique</li>
             </ul>
             <p class="mb-0">Important : Ne nettoyez pas la tenue vous-même, retournez-la telle quelle !</p>
           <% end %>
@@ -178,92 +265,30 @@ image2: "https://images.pexels.com/photos/22678539/pexels-photo-22678539.jpeg") 
             <ul>
               <li><strong>Cartes bancaires</strong> : Visa, Mastercard, American Express</li>
               <li><strong>Espèces</strong> : en boutique uniquement</li>
-              <li><strong>Chèques</strong> : à l'ordre de A1soir</li>
+              <li><strong>Chèques</strong> : pour la réservation et la caution. Les chèques ne sont pas acceptés pour le dernier paiement au moment d'emporter la tenue. </li>
               <li><strong>Virement bancaire</strong> : pour les montants importants</li>
-              <li><strong>Paiement en ligne</strong> : sécurisé via notre site</li>
+              <li><strong>Paiement en ligne</strong> : sécurisé via notre site ou par lien de paiement sécurisé.</li>
             </ul>
           <% end %>
 
           <%= collapsible_item(id: "paiement2", parent_id: "accordionPaiement", title: "Faut-il payer un acompte à la réservation ?") do %>
             <p>Oui, un acompte de <strong>30%</strong> est requis pour confirmer votre réservation.</p>
             <ul>
-              <li>L'acompte sécurise votre tenue aux dates choisies</li>
-              <li>Le solde est à régler lors du retrait</li>
-              <li>La caution est demandée séparément</li>
+              <li>L'acompte sécurise votre tenue aux dates choisies ou à la commande</li>
+              <li>Le solde est à régler lors du retrait final</li>
+              <li>Pour les locations : la caution est demandée séparément au moment du retrait de la tenue</li>
             </ul>
-            <p class="mb-0">Pour les achats, le paiement intégral est demandé à la commande.</p>
           <% end %>
 
           <%= collapsible_item(id: "paiement3", parent_id: "accordionPaiement", title: "Proposez-vous des tarifs de groupe ?") do %>
             <p>Oui ! Nous proposons des <strong>tarifs préférentiels pour les groupes</strong> :</p>
             <ul>
-              <li>À partir de 5 personnes : -10%</li>
-              <li>À partir de 10 personnes : -15%</li>
-              <li>À partir de 20 personnes : -20%</li>
+              <li>Selon votre projet nous réalisons un devis avec des tarifs adaptés</li>
             </ul>
             <p class="mb-0">Idéal pour les mariages, cortèges, événements d'entreprise. Contactez-nous pour un devis personnalisé !</p>
           <% end %>
         <% end %>
 
-        <!-- Questions Générales -->
-        <%= content_section(id: "general", icon: "question-circle", title: "Questions générales", accordion_id: "accordionGeneral") do %>
-          <%= collapsible_item(id: "general1", parent_id: "accordionGeneral", title: "Où se trouve votre boutique ?", expanded: true) do %>
-            <p><strong>Autour d'un Soir</strong><br>
-            <%= @texteAdresse %><br>
-            
-            <p><strong>Horaires d'ouverture :</strong><br>
-            <%= @texteHoraire %><br>
-            
-            <p class="mb-0"><strong>Contact :</strong><br>
-            <%= @texteContact %><br>
-            Email : (<%= link_to "formulaire de contact", "#{contact_path}#message-form" %>)</p>
-          <% end %>
-
-          <%= collapsible_item(id: "general2", parent_id: "accordionGeneral", title: "Dois-je prendre rendez-vous ?") do %>
-            <p>Le rendez-vous n'est pas obligatoire mais <strong>fortement recommandé</strong> :</p>
-            <ul>
-              <li>Garantit la disponibilité d'un conseiller dédié</li>
-              <li>Permet de préparer une sélection adaptée à vos goûts</li>
-              <li>Évite l'attente, surtout en haute saison</li>
-              <li>Nécessaire pour les essayages et retouches</li>
-            </ul>
-            <p class="mb-0">Réservez votre créneau en ligne ou par téléphone !</p>
-          <% end %>
-
-          <%= collapsible_item(id: "general3", parent_id: "accordionGeneral", title: "Puis-je venir avec mes proches lors de l'essayage ?") do %>
-            <p>Bien sûr ! Nous vous encourageons à venir accompagné(e) :</p>
-            <ul>
-              <li>Cabines d'essayage spacieuses</li>
-              <li>Espace d'attente confortable pour vos accompagnants</li>
-              <li>Rafraîchissements offerts</li>
-              <li>Ambiance conviviale et détendue</li>
-            </ul>
-            <p class="mb-0">Merci de nous indiquer le nombre de personnes lors de la prise de rendez-vous.</p>
-          <% end %>
-
-          <%= collapsible_item(id: "general4", parent_id: "accordionGeneral", title: "Que faire en cas d'accident ou de tache sur la tenue ?") do %>
-            <p><strong>Pas de panique !</strong> Voici la marche à suivre :</p>
-            <ol>
-              <li><strong>Contactez-nous immédiatement</strong> pour nous informer</li>
-              <li><strong>Ne tentez pas de nettoyer</strong> vous-même la tache</li>
-              <li><strong>Prenez des photos</strong> si possible</li>
-              <li>Retournez la tenue normalement</li>
-            </ol>
-            <p>Les taches légères et l'usure normale sont couvertes. En cas de dommage important, une partie de la caution pourra être retenue selon l'ampleur des dégâts.</p>
-            <p class="mb-0">Une assurance optionnelle est disponible pour couvrir les accidents.</p>
-          <% end %>
-
-          <%= collapsible_item(id: "general5", parent_id: "accordionGeneral", title: "Avez-vous des tenues pour enfants ?") do %>
-            <p>Oui ! Nous proposons une belle sélection de tenues pour enfants :</p>
-            <ul>
-              <li>Costumes pour garçons (2 à 16 ans)</li>
-              <li>Robes de cérémonie pour filles (2 à 16 ans)</li>
-              <li>Tenues de cortège</li>
-              <li>Accessoires assortis</li>
-            </ul>
-            <p class="mb-0">Tarifs adaptés et retouches incluses, comme pour les adultes !</p>
-          <% end %>
-        <% end %>
 
         <!-- CTA Contact -->
         <div class="my-5 py-5" data-scroll-reveal>

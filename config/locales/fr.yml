@@ -232,16 +232,16 @@ fr:
     next: ">>"
 
   reminders:
-    subject: "Rappel de votre rendez-vous chez Autour d'un Soir"
+    subject: "Rappel de votre rendez-vous chez Autour D'Un Soir"
     body:
-      greeting: "N'oubliez pas votre rendez-vous prochain chez Autour d'un Soir"
+      greeting: "N'oubliez pas votre rendez-vous prochain chez Autour D'Un Soir"
       appointment_details: "le %{date} pour %{name}."
       location_label: "Lieu du RDV :"
       location_boutique: "Boutique Autour D'un Soir, 27-29 Boulevard Carnot 06400 Cannes."
       alternative_location: "Si vous avez un empêchement, contactez-nous en répondant à ce mail ou par téléphone au 04.93.45.17.17."
 
   commande_email:
-    subject: "Votre %{doc_type} %{ref_commande} chez Autour d'un Soir"
+    subject: "Votre %{doc_type} %{ref_commande} chez Autour D'Un Soir"
     body:
       greeting: "Bonjour %{client},"
       document_info: "Veuillez trouver ci-joint votre %{doc_type}"
@@ -261,7 +261,7 @@ fr:
     facture simple: "Facture simple"
 
   email_footer:
-    thank_you: "Toute l'équipe Autour d'un Soir vous remercie pour votre confiance."
+    thank_you: "Toute l'équipe Autour D'Un Soir vous remercie pour votre confiance."
     availability: "Nous restons à votre disposition pour plus d'informations."
     review_invite: "N'hésitez pas à partager votre avis sur notre service en cliquant sur le lien ici :"
     review_link_text: "Lien"
