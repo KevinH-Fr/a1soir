@@ -63,7 +63,7 @@ image2: "legal1.webp") %>
           id: "cgv", 
           icon: "cart-check", 
           title: "Conditions Générales de Vente",
-          alert: { type: :info, icon: "calendar-event", text: "Dernière mise à jour : [Date à compléter]" }
+          alert: { type: :info, icon: "calendar-event", text: "Dernière mise à jour : 2026" }
         ) do %>
           <%= content_article(
             number: 1,
@@ -151,36 +151,36 @@ image2: "legal1.webp") %>
           <%= content_article(
             number: 2,
             title: "Réservation",
-            content: "La réservation peut s'effectuer en ligne ou en boutique. Elle devient définitive 
-              après versement d'un acompte de [pourcentage]% du montant total. Le solde est 
-              à régler au plus tard lors du retrait de la tenue."
+            content: "La réservation d'une location peut s'effectuer en boutique uniquement. 
+              Elle devient définitive après versement d'un acompte de 30% du montant total. 
+              Le solde est à régler au plus tard lors du retrait de la tenue."
           ) %>
 
           <%= content_article(
             number: 3,
             title: "Durée de location",
-            content: "La durée standard de location est de [X] jours. Les dates de retrait et de retour 
-              sont précisées lors de la réservation. Toute prolongation doit être validée au 
-              préalable par Autour D'Un Soir et fera l'objet d'une facturation complémentaire."
+            content: "La durée standard de location est de 3-4 jours. 
+              Les dates de retrait et de retour sont précisées lors de la réservation. 
+              Toute prolongation doit être validée au préalable par Autour D'Un Soir et fera l'objet d'une facturation complémentaire."
           ) %>
 
           <%= content_article(
             number: 4,
             title: "Caution",
-            content: "Une caution de [montant] € est demandée lors du retrait. Cette caution pourra être 
-              conservée en tout ou partie en cas de :<br>
-              • Retard de restitution<br>
-              • Dommages ou salissures importantes<br>
-              • Perte ou vol de l'article loué<br>
-              • Non-respect des conditions de location"
+            content: "Une caution proportionnelle à la valeur de la tenue est demandée lors du retrait. 
+            Cette caution pourra être conservée en tout ou partie en cas de :<br>
+            • Retard de restitution <br>
+            • Dommages ou salissures importantes <br>
+            • Perte ou vol de l'article loué <br>
+            • Non-respect des conditions de location"
           ) %>
 
           <%= content_article(
             number: 5,
             title: "Essayage et retouches",
-            content: "Un essayage préalable est vivement recommandé. Des retouches mineures peuvent être 
-              effectuées gratuitement dans la limite du raisonnable. Les retouches importantes 
-              feront l'objet d'un devis et d'une facturation supplémentaire."
+            content: "Un essayage préalable est vivement recommandé. 
+            Des retouches mineures peuvent être effectuées gratuitement dans la limite du raisonnable. 
+            Les retouches importantes feront l'objet d'un devis et d'une facturation supplémentaire."
           ) %>
 
           <%= content_article(
@@ -198,9 +198,8 @@ image2: "legal1.webp") %>
             number: 7,
             title: "Annulation",
             content: "En cas d'annulation par le client :<br>
-              • Plus de 30 jours avant l'événement : remboursement intégral<br>
-              • Entre 15 et 30 jours : remboursement de 50%<br>
-              • Moins de 15 jours : pas de remboursement<br>
+              • Dans les 14 jours suivants la réservation : remboursement intégral <br>
+              • après 14 jours : émission d'un avoir valable 1 an. <br>
               L'acompte reste acquis à Autour D'Un Soir sauf cas de force majeure justifié."
           ) %>
 
@@ -216,8 +215,7 @@ image2: "legal1.webp") %>
           <%= content_article(
             number: 9,
             title: "Assurance",
-            content: "Nous recommandons au locataire de souscrire une assurance couvrant les dommages 
-              éventuels. Autour D'Un Soir peut proposer une assurance optionnelle lors de la réservation."
+            content: "Nous recommandons au locataire de souscrire une assurance couvrant les dommages éventuels du type assurance de responsablilité civile."
           ) %>
         <% end %>
 
