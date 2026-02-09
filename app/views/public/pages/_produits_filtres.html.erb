@@ -29,7 +29,6 @@
                 en_promotion: params[:en_promotion],
                 format: :turbo_stream, 
                 page: @pagy.next,
-                subdomain: "shop",
                 from_cabine: params[:from_cabine])
             else
               produits_index_path(
@@ -42,7 +41,6 @@
                 format: :turbo_stream,
                 page: @pagy.next, 
                 q: params[:q]&.to_unsafe_h,
-                subdomain: "shop",
                 from_cabine: params[:from_cabine])
             end %>
         <% end %>

@@ -2,72 +2,67 @@ Rails.application.routes.draw do
 
   get 'stripe/purchase_success'
 
-  constraints subdomain: 'shop' do
+  scope module: :public do
+    devise_for :users, path: '', path_names: { sign_in: 'login', sign_out: 'logout' }, controllers: {
+      sessions: 'public/sessions',  # Optional if you need custom behavior for public login/logout
+      registrations: 'public/registrations'  # Add custom registrations controller
+    }
+    
+    get 'home', to: 'pages#home'
+    get 'about', to: 'pages#about'
+    get 'la_boutique', to: 'pages#la_boutique'
+    get 'nos_collections', to: 'pages#nos_collections'
+    get 'le_concept', to: 'pages#le_concept'
+    get 'nos_autres_activites', to: 'pages#nos_autres_activites'
+    get 'legal', to: 'pages#legal'
+    get 'faq', to: 'pages#faq'
+    get 'cabine_essayage', to: 'pages#cabine_essayage', as: 'cabine_essayage'
 
-    scope module: :public do
-      devise_for :users, path: '', path_names: { sign_in: 'login', sign_out: 'logout' }, controllers: {
-        sessions: 'public/sessions',  # Optional if you need custom behavior for public login/logout
-        registrations: 'public/registrations'  # Add custom registrations controller
-      }
+    get 'contact', to: 'pages#contact'
+    post 'send_contact_message', to: 'contact_messages#create'
+    get 'categories', to: 'pages#categories'
+
+    get 'rdv', to: 'pages#rdv'
+
+    # Demande de rendez-vous
+    resources :demande_rdv, only: [:new, :create], path: "rdv/reservation"
+
+    get 'produits/:slug-:id', to: 'pages#produits', as: :produits
+    get 'produits', to: 'pages#produits', as: :produits_index
+
+    get 'produit/:slug-:id', to: 'pages#produit', as: :produit
+
+    post 'update_filters', to: 'pages#update_filters'
+
+    if ENV["ONLINE_SALES_AVAILABLE"].present?
+      # stripe
+      resources :stripe_payments
+
+      get 'status/:id', to: 'stripe_payments#status', as: 'status_payment'
+
+      get 'purchase_success', to: 'stripe_payments#purchase_success'
+      get 'purchase_error', to: 'stripe_payments#purchase_error'
       
-      get 'home', to: 'pages#home'
-      get 'about', to: 'pages#about'
-      get 'la_boutique', to: 'pages#la_boutique'
-      get 'nos_collections', to: 'pages#nos_collections'
-      get 'le_concept', to: 'pages#le_concept'
-      get 'nos_autres_activites', to: 'pages#nos_autres_activites'
-      get 'legal', to: 'pages#legal'
-      get 'faq', to: 'pages#faq'
-      get 'cabine_essayage', to: 'pages#cabine_essayage', as: 'cabine_essayage'
-
-      get 'contact', to: 'pages#contact'
-      post 'send_contact_message', to: 'contact_messages#create'
-      get 'categories', to: 'pages#categories'
-
-      get 'rdv', to: 'pages#rdv'
-
-      # Demande de rendez-vous
-      resources :demande_rdv, only: [:new, :create], path: "rdv/reservation"
-
-      get 'produits/:slug-:id', to: 'pages#produits', as: :produits
-      get 'produits', to: 'pages#produits', as: :produits_index
-  
-      get 'produit/:slug-:id', to: 'pages#produit', as: :produit
-
-      post 'update_filters', to: 'pages#update_filters'
-
-      if ENV["ONLINE_SALES_AVAILABLE"].present?
-        # stripe
-        resources :stripe_payments
-  
-        get 'status/:id', to: 'stripe_payments#status', as: 'status_payment'
-  
-        get 'purchase_success', to: 'stripe_payments#purchase_success'
-        get 'purchase_error', to: 'stripe_payments#purchase_error'
-        
-        post "stripe_payments/add_to_cart/:id", to: "stripe_payments#add_to_cart", as: "add_to_cart"
-        delete "stripe_payments/remove_from_cart/:id", to: "stripe_payments#remove_from_cart", as: "remove_from_cart"
-        
-        delete "stripe_payments/remove_from_cart_go_back_to_cart/:id", to: "stripe_payments#remove_from_cart_go_back_to_cart", as: "remove_from_cart_go_back_to_cart"
-
-      end
-
-      get 'cart', to: 'pages#cart'
-
-      # Cabine d'essayage cart
-      post "cabine/add_product/:id", to: "pages#cabine_add_product", as: "cabine_add_product"
-      delete "cabine/remove_product/:id", to: "pages#cabine_remove_product", as: "cabine_remove_product"
-      delete "cabine/remove_from_cabine/:id", to: "pages#cabine_remove_from_cabine", as: "cabine_remove_from_cabine"
+      post "stripe_payments/add_to_cart/:id", to: "stripe_payments#add_to_cart", as: "add_to_cart"
+      delete "stripe_payments/remove_from_cart/:id", to: "stripe_payments#remove_from_cart", as: "remove_from_cart"
       
-      # Demande cabine essayage
-      resources :demande_cabine_essayages, only: [:new, :create], path: "cabine/reservation"
-
-      # assistant ia
-      get "chat/history", to: "chat#history"
-      post "chat", to: "chat#chat"
-
+      delete "stripe_payments/remove_from_cart_go_back_to_cart/:id", to: "stripe_payments#remove_from_cart_go_back_to_cart", as: "remove_from_cart_go_back_to_cart"
 
     end
+
+    get 'cart', to: 'pages#cart'
+
+    # Cabine d'essayage cart
+    post "cabine/add_product/:id", to: "pages#cabine_add_product", as: "cabine_add_product"
+    delete "cabine/remove_product/:id", to: "pages#cabine_remove_product", as: "cabine_remove_product"
+    delete "cabine/remove_from_cabine/:id", to: "pages#cabine_remove_from_cabine", as: "cabine_remove_from_cabine"
+    
+    # Demande cabine essayage
+    resources :demande_cabine_essayages, only: [:new, :create], path: "cabine/reservation"
+
+    # assistant ia
+    get "chat/history", to: "chat#history"
+    post "chat", to: "chat#chat"
 
   end 
     

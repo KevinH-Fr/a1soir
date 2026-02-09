@@ -3,9 +3,9 @@
 
 # Déterminer le host selon l'environnement
 if Rails.env.production?
-  default_host = ENV.fetch('SITEMAP_HOST', 'https://shop.a1soir-2-2a03802389d6.herokuapp.com')
+  default_host = ENV.fetch('SITEMAP_HOST', 'https://a1soir-2-2a03802389d6.herokuapp.com')
 else
-  default_host = ENV.fetch('SITEMAP_HOST', 'http://shop.lvh.me:3000')
+  default_host = ENV.fetch('SITEMAP_HOST', 'http://localhost:3000')
 end
 
 SitemapGenerator::Sitemap.default_host = default_host

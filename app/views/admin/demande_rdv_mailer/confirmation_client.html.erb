@@ -23,7 +23,7 @@
         
         <div style="margin-top: 16px;">
           <% @demande_rdv.demande_cabine_essayage.produits.each do |produit| %>
-            <% produit_url = "https://shop.a1soir.com/produit/#{produit.nom.parameterize}-#{produit.id}" %>
+            <% produit_url = "https://a1soir.com/produit/#{produit.nom.parameterize}-#{produit.id}" %>
             <div style="margin-bottom: 24px; padding-bottom: 24px; display: table; width: 100%;">
               <div style="display: table-row;">
                 <% if produit.image1.attached? %>

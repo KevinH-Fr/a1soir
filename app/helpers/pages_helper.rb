@@ -261,9 +261,8 @@ module PagesHelper
   end
 
 
-  #    laboutique_url(subdomain: "shop"),
   def card_categorie(categorie)
-    link_to produits_url(subdomain: "shop", slug: categorie.nom.parameterize, id: categorie.id), class: "text-decoration-none" do
+    link_to produits_url(slug: categorie.nom.parameterize, id: categorie.id), class: "text-decoration-none" do
       content_tag :div, class: "card text-bg-light mb-1" do
         image_tag(categorie.default_image, class: "card-img", style: "height: 350px; object-fit: cover;") +
         content_tag(:div, class: "card-img-overlay") do
@@ -374,9 +373,9 @@ module PagesHelper
     
     # Générer l'URL
     if categories.size == 1
-      produits_url(subdomain: "shop", slug: categories.first.nom.parameterize, **filter_params)
+      produits_url(slug: categories.first.nom.parameterize, **filter_params)
     else
-      produits_index_url(subdomain: "shop", **filter_params)
+      produits_index_url(**filter_params)
     end
   end
 

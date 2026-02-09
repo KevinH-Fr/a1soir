@@ -1,5 +1,5 @@
 <% from_cabine = local_assigns[:from_cabine] || false %>
-<%= form_with model: demande_rdv, url: demande_rdv_index_path(subdomain: "shop"), class: "needs-validation", data: { turbo: false } do |form| %>
+<%= form_with model: demande_rdv, url: demande_rdv_index_path, class: "needs-validation", data: { turbo: false } do |form| %>
   <%= hidden_field_tag :from_cabine, "1" if from_cabine %>
 
   <% if demande_rdv.errors.any? %>
