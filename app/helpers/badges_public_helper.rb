@@ -34,18 +34,24 @@ module BadgesPublicHelper
   end
 
   def badge_taille_link(produit)
+    # Utiliser la back_url de la session si disponible, sinon construire une nouvelle
+    back_url = session[:produit_back_url] || produits_index_path
+    
     link_to produit.taille.nom.upcase,
-            produit_path(slug: produit.nom.parameterize, id: produit.id),
+            produit_path(slug: produit.nom.parameterize, id: produit.id, back_url: back_url),
             class: "btn btn-sm btn-outline-secondary"
   end
 
   def badge_couleur_link(produit)
+    # Utiliser la back_url de la session si disponible, sinon construire une nouvelle
+    back_url = session[:produit_back_url] || produits_index_path
+    
     content = []
     content << content_tag(:i, '', class: "bi bi-circle-fill me-1", style: "color: #{produit.couleur.couleur_code}; font-size: 0.6rem;") if produit.couleur.couleur_code.present?
     content << produit.couleur.nom
     
     link_to safe_join(content),
-            produit_path(slug: produit.nom.parameterize, id: produit.id),
+            produit_path(slug: produit.nom.parameterize, id: produit.id, back_url: back_url),
             class: "btn btn-sm btn-outline-secondary"
   end
 

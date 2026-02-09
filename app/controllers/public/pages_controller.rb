@@ -59,6 +59,16 @@ module Public
 
     def produit
       @produit = Produit.find(params[:id])
+      
+      # Stocker la back_url dans la session si elle est présente dans les params
+      # Sinon, utiliser celle de la session pour préserver la navigation entre produits
+      if params[:back_url].present?
+        session[:produit_back_url] = params[:back_url]
+      end
+      
+      # Utiliser la back_url de la session ou une valeur par défaut
+      @back_url = session[:produit_back_url] || produits_index_path
+      
       @meme_produit_meme_couleur_autres_tailles = Produit
       .where(handle: @produit.handle, couleur_id: @produit.couleur_id)
       .where.not(id: @produit.id)

@@ -380,6 +380,36 @@ module PagesHelper
     end
   end
 
+  # Helper pour construire l'URL de retour vers la page produits avec tous les paramètres de filtres
+  def produits_back_url
+    # Construire les paramètres de filtres avec tous les filtres actifs
+    filter_params = {}
+    filter_params[:taille] = params[:taille] if params[:taille].present?
+    filter_params[:couleur] = params[:couleur] if params[:couleur].present?
+    filter_params[:prixmax] = params[:prixmax] if params[:prixmax].present?
+    filter_params[:type] = params[:type] if params[:type].present?
+    filter_params[:type_produit] = params[:type_produit] if params[:type_produit].present?
+    filter_params[:en_promotion] = params[:en_promotion] if params[:en_promotion].present?
+    filter_params[:from_cabine] = params[:from_cabine] if params[:from_cabine].present?
+    filter_params[:q] = params[:q]&.to_unsafe_h if params[:q].present?
+    
+    # Déterminer si on a une seule catégorie ou plusieurs
+    is_single_category = params[:id].present? && !params[:id].is_a?(Array)
+    
+    if is_single_category
+      produits_path(
+        id: params[:id],
+        slug: params[:slug],
+        **filter_params
+      )
+    else
+      produits_index_path(
+        id: params[:id],
+        **filter_params
+      )
+    end
+  end
+
   def public_card(
     icon:, 
     title:, 
