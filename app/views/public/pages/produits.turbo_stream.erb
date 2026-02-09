@@ -18,6 +18,7 @@
                     taille: params[:taille], couleur: params[:couleur], 
                     prixmax: params[:prixmax],
                     type: params[:type],
+                    en_promotion: params[:en_promotion],
                     page: @pagy.next, q: params[:q]&.to_unsafe_h,
                     from_cabine: params[:from_cabine],
                     type_produit: params[:type_produit])
@@ -27,6 +28,7 @@
                     taille: params[:taille], couleur: params[:couleur], 
                     prixmax: params[:prixmax],
                     type: params[:type],
+                    en_promotion: params[:en_promotion],
                     page: @pagy.next, q: params[:q]&.to_unsafe_h,
                     from_cabine: params[:from_cabine],
                     type_produit: params[:type_produit])
