@@ -69,7 +69,7 @@ module ProduitsFilterable
     produits_scope = FiltersProduitsService.new(
       categorie_param, params[:taille], params[:couleur],
       params[:prixmax], params[:type], 
-      params[:type_produit]
+      params[:type_produit], params[:en_promotion]
     ).call
   
     search_params = params.permit(:format, :page,
@@ -103,7 +103,7 @@ module ProduitsFilterable
       nil, # Pas de filtre de catégorie
       params[:taille], params[:couleur],
       params[:prixmax], params[:type], 
-      params[:type_produit]
+      params[:type_produit], params[:en_promotion]
     ).call
     
     # Appliquer la recherche et le filtre de disponibilité au scope sans catégorie

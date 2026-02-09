@@ -12,7 +12,6 @@ Rails.application.routes.draw do
       
       get 'home', to: 'pages#home'
       get 'about', to: 'pages#about'
-      get 'cgv', to: 'pages#cgv'
       get 'la_boutique', to: 'pages#la_boutique'
       get 'nos_collections', to: 'pages#nos_collections'
       get 'le_concept', to: 'pages#le_concept'

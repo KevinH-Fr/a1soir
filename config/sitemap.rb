@@ -20,7 +20,6 @@ SitemapGenerator::Sitemap.create do
   # Pages statiques
   add '/home', changefreq: 'weekly', priority: 1.0
   add '/about', changefreq: 'monthly', priority: 0.8
-  add '/cgv', changefreq: 'yearly', priority: 0.5
   add '/la_boutique', changefreq: 'weekly', priority: 0.9
   add '/nos_collections', changefreq: 'weekly', priority: 0.9
   add '/le_concept', changefreq: 'monthly', priority: 0.8

@@ -1,6 +1,6 @@
 class FiltersProduitsService
 
-  def initialize(categorie, taille, couleur, prixmax, type, type_produit)
+  def initialize(categorie, taille, couleur, prixmax, type, type_produit, en_promotion = nil)
     # Support both single category ID and array of IDs
     if categorie.present?
       @categories_ids = categorie.is_a?(Array) ? categorie : [categorie]
@@ -17,6 +17,7 @@ class FiltersProduitsService
     @couleur = couleur
     @prixmax = prixmax
     @type = type
+    @en_promotion = ActiveModel::Type::Boolean.new.cast(en_promotion)
 
   end
 
@@ -38,6 +39,7 @@ class FiltersProduitsService
     produits = produits.by_couleur(@couleur) if @couleur.present?
     produits = produits.by_prixmax(@prixmax) if @prixmax.present?
     produits = produits.by_type(@type) if @type.present?
+    produits = produits.en_promotion if @en_promotion
 
     produits
   end

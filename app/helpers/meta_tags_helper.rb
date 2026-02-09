@@ -51,10 +51,10 @@ module MetaTagsHelper
         description: "Découvrez toutes les activités d'Autour D'Un Soir au-delà des robes de mariée.",
         keywords: "activités Autour D'Un Soir, services, location, vente"
       },
-      cgv: {
-        title: "Conditions générales de vente - Autour D'Un Soir",
-        description: "Consultez les conditions générales de vente d'Autour D'Un Soir pour la location et la vente de robes de mariée.",
-        keywords: "CGV, conditions générales de vente, Autour D'Un Soir, location, vente"
+      legal: {
+        title: "Mentions légales & Conditions générales - Autour D'Un Soir",
+        description: "Consultez les mentions légales, conditions générales de vente et politique de confidentialité d'Autour D'Un Soir.",
+        keywords: "CGV, conditions générales de vente, mentions légales, Autour D'Un Soir, location, vente, politique de confidentialité"
       },
       faq: {
         title: "FAQ - Questions fréquemment posées - Autour D'Un Soir",
@@ -115,8 +115,8 @@ module MetaTagsHelper
       :produits
     when 'pages#nos_autres_activites'
       :nos_autres_activites
-    when 'pages#cgv'
-      :cgv
+    when 'pages#legal'
+      :legal
     when 'pages#faq'
       :faq
     when 'pages#produit'
