@@ -72,12 +72,14 @@ module Public
       @meme_produit_meme_couleur_autres_tailles = Produit
       .where(handle: @produit.handle, couleur_id: @produit.couleur_id)
       .where.not(id: @produit.id)
+      .where(today_availability: true)
       .joins(:taille) 
       .order('tailles.nom') 
     
       @meme_produit_meme_taille_autres_couleurs = Produit
       .where(handle: @produit.handle, taille_id: @produit.taille_id)
       .where.not(id: @produit.id)
+      .where(today_availability: true)
       .joins(:couleur) 
 
       @produits_similaires = @produit.similar_products(limit: 4)
