@@ -7,6 +7,7 @@
 
 
 <div class="public-main-content">
+  <%= render "public/shared/recaptcha_script" %>
   <div class="row g-4 my-5 bg-white">
     <!-- Process à gauche -->
     <div class="col-12 col-lg-6 d-flex align-items-center p-4" data-scroll-reveal>
@@ -51,7 +52,7 @@
 
     <!-- Formulaire à droite -->
     <div class="col-12 col-lg-6">
-      <div id="rdv-form" class="p-4 bg-white d-flex flex-column" style="background-image: url('<%= image_path('/images/dessin2.png') %>'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative; min-height: 500px;">
+      <div id="rdv-form" class="p-4 bg-white d-flex flex-column" style="min-height: 500px;">
         <div style="position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column;">
           <%= render "public/demande_rdv/form", demande_rdv: @demande_rdv || DemandeRdv.new, from_cabine: false %>
         </div>
