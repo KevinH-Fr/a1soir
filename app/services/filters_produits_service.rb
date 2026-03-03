@@ -32,7 +32,8 @@ class FiltersProduitsService
     if @taille.present?
       produits = produits.by_taille(@taille)
     else
-      produits_uniques = produits.group_by { |p| [p.handle, p.couleur] }.map { |_, ps| ps.first }
+      produits_uniques = produits.group_by { |p| [p.handle, p.couleur_id] }
+                                 .map { |_, ps| ps.find { |p| p.today_availability } || ps.first }
       produits = Produit.where(id: produits_uniques.map(&:id))
     end
 
