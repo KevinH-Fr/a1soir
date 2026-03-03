@@ -199,8 +199,8 @@ module PagesHelper
             loading: "lazy",
             style: "object-fit: cover; object-position: #{image_position};",
             alt: title,
-            width: 1920,
-            height: 1080
+            width: 800,
+            height: 600
           )
         else
           content_tag :div, class: "d-flex align-items-center justify-content-center bg-secondary w-100 h-100" do

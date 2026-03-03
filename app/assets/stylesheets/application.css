@@ -1,5 +1,6 @@
 
 /*
+ *= require vendor/bootstrap.min
  *= require_tree .
  *= require_self
  */

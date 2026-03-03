@@ -11,6 +11,7 @@
   <!-- Vidéo en pleine page -->
   <video autoplay muted loop playsinline poster="<%= poster_url %>" class="position-absolute top-0 start-0 w-100 h-100" style="object-fit: cover; z-index: 0;">
     <source src="<%= video_url %>">
+    <track kind="captions" src="" label="Français" srclang="fr" default>
     Votre navigateur ne prend pas en charge la lecture de vidéos.
   </video>
   

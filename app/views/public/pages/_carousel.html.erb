@@ -9,9 +9,9 @@
       <% if produit.video1.attached? %>
         <div class="carousel-item active" style="cursor: pointer;" role="button" data-bs-toggle="modal" data-bs-target="#modalProduit_<%= produit.id %>">
           <video autoplay loop muted playsinline class="d-block w-100"
-          src="<%= url_for(produit.video1) %>"
-          type="<%= produit.video1.content_type %>">
-          Votre navigateur ne prend pas en charge la lecture de vidéos.
+          src="<%= cloudinary_video_url(produit.video1) %>">
+            <track kind="captions" src="" label="Français" srclang="fr" default>
+            Votre navigateur ne prend pas en charge la lecture de vidéos.
           </video>
         </div>
         <% slide_index += 1 %>
@@ -29,19 +29,19 @@
       <% if produit.images %>
         <% produit.images.each_with_index do |image, img_index| %>
           <div class="carousel-item">
-            <%= image_tag(image, class: "d-block w-100", alt: produit.nom, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}", gallery_index: img_index }) %>
+            <%= cloudinary_attachment_image(image, width: 800, alt: produit.nom, class: "d-block w-100", style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}", gallery_index: img_index }) %>
           </div>
           <% slide_index += 1 %>
         <% end %>
       <% end %>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#<%= carousel_id %>" data-bs-slide="prev" style="filter: invert(1);">
+    <button class="carousel-control-prev" type="button" data-bs-target="#<%= carousel_id %>" data-bs-slide="prev" style="filter: invert(1);" aria-label="Image précédente">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
+      <span class="visually-hidden">Image précédente</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#<%= carousel_id %>" data-bs-slide="next" style="filter: invert(1);">
+    <button class="carousel-control-next" type="button" data-bs-target="#<%= carousel_id %>" data-bs-slide="next" style="filter: invert(1);" aria-label="Image suivante">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
+      <span class="visually-hidden">Image suivante</span>
     </button>
   </div>
 

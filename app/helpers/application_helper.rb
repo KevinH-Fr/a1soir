@@ -3,6 +3,7 @@ module ApplicationHelper
   include Pagy::Frontend
   
   CLOUDINARY_BASE_IMAGE_URL = "https://res.cloudinary.com/dukne3lhz/image/upload".freeze
+  CLOUDINARY_BASE_VIDEO_URL = "https://res.cloudinary.com/dukne3lhz/video/upload".freeze
 
   def custom_currency_format(amount)
     precision = amount.to_f == amount.to_i ? 0 : 2
@@ -107,6 +108,25 @@ module ApplicationHelper
     transformation = "q_auto,f_auto,w_#{width}"
     url = "#{CLOUDINARY_BASE_IMAGE_URL}/#{transformation}/#{public_id}"
     image_tag(url, { alt: alt }.merge(options))
+  end
+
+  def cloudinary_video_url(attachment, width: 800, quality: "auto")
+    key = attachment.blob.key
+    transformation = "q_#{quality},w_#{width},vc_auto,f_auto"
+    "#{CLOUDINARY_BASE_VIDEO_URL}/#{transformation}/#{key}"
+  end
+
+  # Génère un image_tag optimisé via Cloudinary à partir d'un attachment ActiveStorage.
+  # Fallback vers image_tag classique si l'argument est un chemin string (ex: no_photo).
+  def cloudinary_attachment_image(attachment, width: 800, alt:, **options)
+    if attachment.respond_to?(:blob)
+      key = attachment.blob.key
+      transformation = "q_auto,f_auto,w_#{width}"
+      url = "#{CLOUDINARY_BASE_IMAGE_URL}/#{transformation}/#{key}"
+      image_tag(url, { alt: alt }.merge(options))
+    else
+      image_tag(attachment, { alt: alt }.merge(options))
+    end
   end
 
     def google_calendar_embed_url
