@@ -1,6 +1,6 @@
 <%= page_header("Légal", "Mentions légales et conditions générales",
-image1: "legal2.webp",
-image2: "legal1.webp") %>
+image1: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/legal2_qqv61y",
+image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/legal1_eghzcu") %>
 
 <div id="top" class="public-main-content">
   <div class="container-fluid">
@@ -27,7 +27,7 @@ image2: "legal1.webp") %>
 
         <!-- Mentions légales -->
         <%= content_section(id: "mentions-legales", icon: "info-circle", title: "Mentions légales") do %>
-          <h4 class="h5 fw-bold mt-4 mb-3 text-light">Éditeur du site</h4>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Éditeur du site</h3>
           <p class="text-light opacity-75">
             <strong>Autour D'Un Soir</strong><br>
             Forme juridique : SARL<br>
@@ -40,10 +40,10 @@ image2: "legal1.webp") %>
             Téléphone : 04 93 45 17 17
           </p>
 
-          <h4 class="h5 fw-bold mt-4 mb-3 text-light">Directeur de la publication</h4>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Directeur de la publication</h3>
           <p class="text-light opacity-75">Sophie Glasman</p>
 
-          <h4 class="h5 fw-bold mt-4 mb-3 text-light">Hébergement</h4>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Hébergement</h3>
           <p class="text-light opacity-75">
             Le site est hébergé par :<br>
             HEROKU<br>
@@ -51,7 +51,7 @@ image2: "legal1.webp") %>
             téléphone : +1 (415) 901-7000.
           </p>
 
-          <h4 class="h5 fw-bold mt-4 mb-3 text-light">Crédits</h4>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Crédits</h3>
           <p class="text-light opacity-75">
            <%# Conception et développement : [À compléter] %> 
             Photographies : fournisseurs de la société et banques d'images libres de droits
@@ -60,7 +60,7 @@ image2: "legal1.webp") %>
 
         <!-- CGV -->
         <section id="cgv">
-          <h4 class="h5 fw-bold mt-4 mb-3 text-light">Conditions Générales de Vente</h4>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Conditions Générales de Vente</h3>
 
           <%= content_section(id: "perimetre", icon: "info-circle", title: "Périmètre et définitions") do %>
             <%= content_article(
@@ -196,7 +196,15 @@ image2: "legal1.webp") %>
             </p>
             <div class="my-4">
               <p class="text-light fw-bold mb-3">Livraison Colissimo contre signature :</p>
-              <%= image_tag('/images/frais_expedition.jpg', class: "img-fluid rounded", style: "max-height: 400px; object-fit: contain;") %>
+              <%= image_tag(
+                    '/images/frais_expedition.jpg',
+                    class: "img-fluid rounded",
+                    style: "max-height: 400px; object-fit: contain;",
+                    alt: "Tableau des frais d'expédition Colissimo contre signature",
+                    width: 800,
+                    height: 400,
+                    loading: "lazy"
+                  ) %>
             </div>
           <% end %>
 
@@ -498,7 +506,7 @@ image2: "legal1.webp") %>
 
         <!-- Politique de confidentialité -->
         <%= content_section(id: "confidentialite", icon: "shield-check", title: "Politique de Confidentialité") do %>
-          <h4 class="h5 fw-bold mt-4 mb-3 text-light">Collecte des données</h4>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Collecte des données</h3>
           <p class="text-light opacity-75">
             Autour D'Un Soir collecte les données personnelles suivantes dans le cadre de son activité :<br>
             • Nom, prénom<br>
@@ -509,7 +517,7 @@ image2: "legal1.webp") %>
             • Mensuration (pour les locations et personnalisations)
           </p>
 
-          <h4 class="h5 fw-bold mt-4 mb-3 text-light">Utilisation des données</h4>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Utilisation des données</h3>
           <p class="text-light opacity-75">
             Les données collectées sont utilisées pour :<br>
             • Traiter les commandes et réservations<br>
@@ -519,14 +527,14 @@ image2: "legal1.webp") %>
             • Respecter nos obligations légales
           </p>
 
-          <h4 class="h5 fw-bold mt-4 mb-3 text-light">Protection des données</h4>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Protection des données</h3>
           <p class="text-light opacity-75">
             Autour D'Un Soir met en œuvre toutes les mesures techniques et organisationnelles appropriées 
             pour protéger vos données personnelles contre la destruction, la perte, l'altération, 
             la divulgation non autorisée ou l'accès non autorisé.
           </p>
 
-          <h4 class="h5 fw-bold mt-4 mb-3 text-light">Vos droits</h4>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Vos droits</h3>
           <p class="text-light opacity-75">
             Conformément au RGPD, vous disposez des droits suivants :<br>
             • Droit d'accès à vos données<br>
@@ -538,13 +546,13 @@ image2: "legal1.webp") %>
             Pour exercer vos droits, contactez-nous à (<%= link_to "formulaire de contact", "#{contact_path}#message-form" %>)
           </p>
 
-          <h4 class="h5 fw-bold mt-4 mb-3 text-light">Conservation des données</h4>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Conservation des données</h3>
           <p class="text-light opacity-75">
             Vos données sont conservées pendant la durée nécessaire aux finalités pour lesquelles 
             elles sont traitées, et conformément aux obligations légales de conservation.
           </p>
 
-          <h4 class="h5 fw-bold mt-4 mb-3 text-light">Transfert de données</h4>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Transfert de données</h3>
           <p class="text-light opacity-75">
             Vos données personnelles ne sont pas transférées hors de l'Union Européenne. 
             Elles peuvent être transmises à nos prestataires de services (paiement, livraison) 
@@ -554,14 +562,14 @@ image2: "legal1.webp") %>
 
         <!-- Politique des cookies -->
         <%= content_section(id: "cookies", icon: "gear", title: "Politique des Cookies") do %>
-          <h4 class="h5 fw-bold mt-4 mb-3 text-light">Qu'est-ce qu'un cookie ?</h4>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Qu'est-ce qu'un cookie ?</h3>
           <p class="text-light opacity-75">
             Un cookie est un petit fichier texte stocké sur votre ordinateur ou appareil mobile 
             lors de votre visite sur notre site. Les cookies permettent de mémoriser vos préférences 
             et d'améliorer votre expérience de navigation.
           </p>
 
-          <h4 class="h5 fw-bold mt-4 mb-3 text-light">Types de cookies utilisés</h4>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Types de cookies utilisés</h3>
           <div class="text-light opacity-75">
             <p><strong>Cookies essentiels</strong><br>
             Nécessaires au fonctionnement du site (panier, connexion, sécurité)</p>
@@ -576,7 +584,7 @@ image2: "legal1.webp") %>
             Utilisés pour afficher des publicités pertinentes (avec votre consentement)</p>
           </div>
 
-          <h4 class="h5 fw-bold mt-4 mb-3 text-light">Gestion des cookies</h4>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Gestion des cookies</h3>
           <p class="text-light opacity-75">
             Vous pouvez à tout moment modifier vos préférences en matière de cookies en cliquant 
             sur le bouton "Gérer les cookies" en bas de page. Vous pouvez également configurer 
@@ -606,13 +614,13 @@ image2: "legal1.webp") %>
             dispositions des articles L.335-2 et suivants du Code de Propriété Intellectuelle.
           </p>
 
-          <h4 class="h5 fw-bold mt-4 mb-3 text-light">Marques</h4>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Marques</h3>
           <p class="text-light opacity-75">
             "Autour D'Un Soir" et son logo sont des marques déposées. Toute reproduction ou utilisation 
             de ces marques sans autorisation expresse est strictement interdite.
           </p>
 
-          <h4 class="h5 fw-bold mt-4 mb-3 text-light">Liens hypertextes</h4>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Liens hypertextes</h3>
           <p class="text-light opacity-75">
             La création de liens hypertextes vers le site Autour D'Un Soir nécessite une autorisation préalable. 
             Autour D'Un Soir se réserve le droit de demander la suppression d'un lien s'il estime que le site 

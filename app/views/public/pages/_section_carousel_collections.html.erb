@@ -51,7 +51,16 @@
       <div class="carousel-item <%= 'active' if index == 0 %> h-100 position-relative" style="min-height: 100vh; overflow: hidden;">
         <% if slide[:image_url].present? %>
           <!-- Image -->
-          <%= image_tag slide[:image_url], class: "d-block w-100 h-100 carousel-media", style: "object-fit: cover; z-index: 0; transition: transform 0.6s ease;", alt: slide[:title], data: { carousel_media: "" } %>
+          <%= image_tag(
+                slide[:image_url],
+                class: "d-block w-100 h-100 carousel-media",
+                style: "object-fit: cover; z-index: 0; transition: transform 0.6s ease;",
+                alt: slide[:title],
+                width: 1920,
+                height: 1080,
+                loading: "lazy",
+                data: { carousel_media: "" }
+              ) %>
           <!-- Overlay sombre pour la lisibilité -->
           <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0, 0, 0, 0.3); z-index: 1; pointer-events: none;"></div>
         <% end %>

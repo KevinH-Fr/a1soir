@@ -1,6 +1,14 @@
 <section data-controller="boutique-text-scroll" class="position-relative overflow-hidden" style="min-height: 100vh;">
   <!-- Image en pleine page -->
-  <%= image_tag("/images/dessin1.png", class: "position-absolute top-0 start-0 w-100 h-100", style: "object-fit: cover; object-position: left center; z-index: 0;", alt: "La boutique") %>
+  <%= cloudinary_image(
+        "dessin1_se495h",
+        width: 1920,
+        alt: "La boutique",
+        class: "position-absolute top-0 start-0 w-100 h-100",
+        style: "object-fit: cover; object-position: left center; z-index: 0;",
+        height: 1080,
+        loading: "lazy"
+      ) %>
   
   
   <!-- Card avec texte par-dessus l'image -->

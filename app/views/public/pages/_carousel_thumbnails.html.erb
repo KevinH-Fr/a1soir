@@ -26,14 +26,28 @@
         <button type="button" class="carousel-thumbnail flex-shrink-0 border-0 bg-transparent p-0" 
              data-bs-target="#<%= carousel_id %>"
              data-bs-slide-to="<%= thumbnail_index %>">
-          <%= image_tag(produit.default_image_white, class: "carousel-thumbnail-media", alt: produit.nom) %>
+          <%= image_tag(
+                produit.default_image_white,
+                class: "carousel-thumbnail-media",
+                alt: produit.nom,
+                loading: "lazy",
+                width: 200,
+                height: 200
+              ) %>
         </button>
         <% thumbnail_index += 1 %>
       <% else %>
         <button type="button" class="carousel-thumbnail flex-shrink-0 active border-0 bg-transparent p-0" 
              data-bs-target="#<%= carousel_id %>"
              data-bs-slide-to="<%= thumbnail_index %>">
-          <%= image_tag(produit.default_image_white, class: "carousel-thumbnail-media", alt: produit.nom) %>
+          <%= image_tag(
+                produit.default_image_white,
+                class: "carousel-thumbnail-media",
+                alt: produit.nom,
+                loading: "lazy",
+                width: 200,
+                height: 200
+              ) %>
         </button>
         <% thumbnail_index += 1 %>
       <% end %>
@@ -43,7 +57,14 @@
           <button type="button" class="carousel-thumbnail flex-shrink-0 border-0 bg-transparent p-0" 
                data-bs-target="#<%= carousel_id %>"
                data-bs-slide-to="<%= thumbnail_index %>">
-            <%= image_tag(image, class: "carousel-thumbnail-media", alt: produit.nom) %>
+            <%= image_tag(
+                  image,
+                  class: "carousel-thumbnail-media",
+                  alt: produit.nom,
+                  loading: "lazy",
+                  width: 200,
+                  height: 200
+                ) %>
           </button>
           <% thumbnail_index += 1 %>
         <% end %>

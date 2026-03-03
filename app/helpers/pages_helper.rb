@@ -23,7 +23,14 @@ module PagesHelper
           img1 = if image1.present?
             image_path = image_path_helper(image1)
             content_tag :div, class: "page-header-image-wrapper page-header-image-wrapper-first", style: "height: 100%; overflow: hidden;" do
-              image_tag(image_path, class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; object-position: #{image1_position}; transition: transform 0.6s ease;", data: { page_header_image: "1" })
+              image_tag(
+                image_path,
+                class: "img-fluid page-header-image",
+                style: "width: 100%; height: 100%; object-fit: cover; object-position: #{image1_position}; transition: transform 0.6s ease;",
+                alt: title,
+                width: 1920,
+                height: 1080
+              )
             end
           else
             content_tag(:div, class: "d-flex align-items-center justify-content-center page-header-image-wrapper-first", style: "height: 100%; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);") do
@@ -34,7 +41,15 @@ module PagesHelper
           img2 = if image2.present?
             image_path = image_path_helper(image2)
             content_tag :div, class: "page-header-image-wrapper d-none d-md-block", style: "width: 50%; height: 100%; overflow: hidden;" do
-              image_tag(image_path, class: "img-fluid page-header-image", style: "width: 100%; height: 100%; object-fit: cover; object-position: #{image2_position}; transition: transform 0.6s ease;", data: { page_header_image: "2" })
+              image_tag(
+                image_path,
+                class: "img-fluid page-header-image",
+                style: "width: 100%; height: 100%; object-fit: cover; object-position: #{image2_position}; transition: transform 0.6s ease;",
+                alt: title,
+                width: 1920,
+                height: 1080,
+                loading: "lazy"
+              )
             end
           else
             content_tag(:div, class: "d-none d-md-flex align-items-center justify-content-center", style: "width: 50%; height: 100%; background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);") do
@@ -75,7 +90,14 @@ module PagesHelper
       content_tag :div, class: "card shadow nav-card rounded-4 bg-darker-gradient text-light overflow-hidden" do
         # Image de fond (non cliquable)
         card_image = image.present? ? content_tag(:div, class: "nav-card-image-wrapper") do
-          image_tag("/images/#{image}", alt: title, class: "nav-card-image")
+          image_tag(
+            image_path_helper(image),
+            alt: title,
+            class: "nav-card-image",
+            width: 800,
+            height: 600,
+            loading: "lazy"
+          )
         end : ""
         
         # Contenu cliquable (icône, titre, description, flèche)
@@ -171,10 +193,14 @@ module PagesHelper
       content_tag :div, class: "collection-card position-relative overflow-hidden", style: "height: 600px;" do
         # Image de fond
         image_section = if image.present?
-          image_tag("/images/#{image}",
+          image_tag(
+            image_path_helper(image),
             class: "img-fluid w-100 h-100 collection-card-image",
             loading: "lazy",
-            style: "object-fit: cover; object-position: #{image_position};"
+            style: "object-fit: cover; object-position: #{image_position};",
+            alt: title,
+            width: 1920,
+            height: 1080
           )
         else
           content_tag :div, class: "d-flex align-items-center justify-content-center bg-secondary w-100 h-100" do
@@ -217,9 +243,25 @@ module PagesHelper
         # Colonne Image
         image_col = content_tag :div, class: "col-12 col-md-6 #{image_order} d-flex", data: { scroll_reveal: true } do
           image_container = content_tag :div, class: "image-hover-container w-100 h-100", style: "overflow: hidden;" do
-            base_image = image_tag("/images/#{image1}", class: "image-hover-base", style: "object-fit: cover; transition: opacity 0.5s ease;")
+            base_image = image_tag(
+              image_path_helper(image1),
+              class: "image-hover-base",
+              style: "object-fit: cover; transition: opacity 0.5s ease;",
+              alt: title,
+              width: 1920,
+              height: 1080,
+              loading: "lazy"
+            )
             if image2.present?
-              overlay_image = image_tag("/images/#{image2}", class: "image-hover-overlay", style: "object-fit: cover; transition: opacity 0.5s ease;")
+              overlay_image = image_tag(
+                image_path_helper(image2),
+                class: "image-hover-overlay",
+                style: "object-fit: cover; transition: opacity 0.5s ease;",
+                alt: "#{title} - deuxième visuel",
+                width: 1920,
+                height: 1080,
+                loading: "lazy"
+              )
               base_image + overlay_image
             else
               base_image
@@ -264,7 +306,15 @@ module PagesHelper
   def card_categorie(categorie)
     link_to produits_url(slug: categorie.nom.parameterize, id: categorie.id), class: "text-decoration-none" do
       content_tag :div, class: "card text-bg-light mb-1" do
-        image_tag(categorie.default_image, class: "card-img", style: "height: 350px; object-fit: cover;") +
+        image_tag(
+          categorie.default_image,
+          class: "card-img",
+          style: "height: 350px; object-fit: cover;",
+          alt: categorie.nom,
+          width: 400,
+          height: 350,
+          loading: "lazy"
+        ) +
         content_tag(:div, class: "card-img-overlay") do
           content_tag(:h5, categorie.nom, class: "card-title badge bg-brand-colored fs-6")
         end
@@ -609,7 +659,7 @@ module PagesHelper
       
       # Title with optional number
       title_text = number.present? ? "Article #{number} - #{title}" : title
-      title_html = content_tag(:h4, title_text, class: "h5 fw-bold mt-4 mb-3 text-light")
+      title_html = content_tag(:h3, title_text, class: "h5 fw-bold mt-4 mb-3 text-light")
       sections << title_html
       
       # Content (either from parameter or block)
@@ -630,7 +680,7 @@ module PagesHelper
   # Helper pour créer une liste de liens de navigation rapide
   def quick_nav_links(links:, columns: 3)
     content_tag :div, class: "concept-card my-4", "data-scroll-reveal": true do
-      title = content_tag(:h5, "Navigation rapide", class: "fw-bold mb-3 text-light")
+      title = content_tag(:h2, "Navigation rapide", class: "h5 fw-bold mb-3 text-light")
       
       nav_content = content_tag(:div, class: "row g-3") do
         links.map do |link|

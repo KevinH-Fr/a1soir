@@ -1,8 +1,8 @@
 <%= page_header(
   "Contact", 
   "Nous sommes à votre écoute",
-  image1: "contact1.webp",
-  image2: "contact2.webp",
+  image1: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/contact1_ygtjx7",
+  image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/contact2_omevx8",
   image2_position: "center top") %>
 
 <div class="public-main-content">
@@ -41,7 +41,10 @@
           <p class="text-light opacity-75 mb-3">
             Écrivez-nous, nous vous répondons rapidement
           </p>
-          <%= link_to "#{contact_path}#message-form", class: "btn btn-light btn-lg px-4 public-btn-border-radius" do %>
+          <%= link_to "#message-form",
+                      class: "btn btn-light btn-lg px-4 public-btn-border-radius",
+                      data: { turbo: false },
+                      onclick: "document.getElementById('message-form').scrollIntoView({ behavior: 'smooth', block: 'start' })" do %>
             <i class="bi bi-envelope me-2"></i>
             Nous écrire
           <% end %>

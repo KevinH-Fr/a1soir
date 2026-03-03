@@ -1,6 +1,6 @@
 <%= page_header("Cabine d'essayage", "Sélectionner vos produits et venez les essayer en boutique",
-image1: "essayage.webp",
-image2: "essayage2.webp") %>
+image1: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/essayage_hjd2pe",
+image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/essayage2_s3mof4") %>
 
 <div class="public-main-content">
   <div class="container-fluid p-0">
@@ -90,9 +90,15 @@ image2: "essayage2.webp") %>
                       <!-- Image -->
                       <div style="width: 80px; height: 80px; flex-shrink: 0;">
                         <% if produit.default_image.present? %>
-                          <%= image_tag produit.default_image, 
-                              class: "img-fluid rounded",
-                              style: "width: 100%; height: 100%; object-fit: cover;" %>
+                          <%= image_tag(
+                                produit.default_image, 
+                                class: "img-fluid rounded",
+                                style: "width: 100%; height: 100%; object-fit: cover;",
+                                alt: produit.nom,
+                                width: 80,
+                                height: 80,
+                                loading: "lazy"
+                              ) %>
                         <% else %>
                           <div class="d-flex align-items-center justify-content-center h-100 w-100 rounded border border-dark-subtle">
                             <i class="bi bi-image text-muted fs-4"></i>

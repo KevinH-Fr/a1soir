@@ -2,6 +2,8 @@ module ApplicationHelper
 
   include Pagy::Frontend
   
+  CLOUDINARY_BASE_IMAGE_URL = "https://res.cloudinary.com/dukne3lhz/image/upload".freeze
+
   def custom_currency_format(amount)
     precision = amount.to_f == amount.to_i ? 0 : 2
     number_to_currency(amount, precision: precision, unit: "€", format: "%n %u", delimiter: " ")
@@ -101,6 +103,12 @@ module ApplicationHelper
       'https://res.cloudinary.com/dukne3lhz/image/upload/v1738665309/no_photo_black_p8wyfh.png'
     end
 
+  def cloudinary_image(public_id, width:, alt:, **options)
+    transformation = "q_auto,f_auto,w_#{width}"
+    url = "#{CLOUDINARY_BASE_IMAGE_URL}/#{transformation}/#{public_id}"
+    image_tag(url, { alt: alt }.merge(options))
+  end
+
     def google_calendar_embed_url
       if Rails.env.development? || Rails.env.test?
         # URL pour l'environnement local (développement/test)
@@ -115,7 +123,15 @@ module ApplicationHelper
       content_tag(:div, class: "carousel-item #{active ? 'active' : ''}") do
         content_tag(:div, class: "container-fluid px-0") do
           content_tag(:div, class: "position-relative", style: "height: 90vh; overflow: hidden;") do
-            concat image_tag(image_path, class: "img-fluid w-100 h-100", style: "object-fit: cover; object-position: #{image_position};")
+            concat image_tag(
+              image_path,
+              class: "img-fluid w-100 h-100",
+              style: "object-fit: cover; object-position: #{image_position};",
+              alt: title,
+              width: 1920,
+              height: 1080,
+              loading: "lazy"
+            )
             concat(
               content_tag(:div, 
                 class: "position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center",

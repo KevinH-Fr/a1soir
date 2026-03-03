@@ -15,9 +15,15 @@
     <div class="col-12 col-lg-5" data-scroll-reveal>
       <div class="position-relative overflow-hidden rounded-0 shadow-lg" 
            style="height: <%= local_assigns[:image_height] || '450px' %>;">
-        <%= image_tag(image_path, 
-            class: "w-100 h-100", 
-            style: "object-fit: cover; object-position: #{local_assigns[:image_position] || 'center'};") %>
+        <%= image_tag(
+              image_path,
+              class: "w-100 h-100",
+              style: "object-fit: cover; object-position: #{local_assigns[:image_position] || 'center'};",
+              alt: (local_assigns[:title].presence || "Illustration #{local_assigns[:description].to_s.truncate(40)}"),
+              width: 1920,
+              height: 1080,
+              loading: "lazy"
+            ) %>
         <div class="position-absolute top-0 start-0 w-100 h-100" 
              style="background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3));"></div>
       </div>
