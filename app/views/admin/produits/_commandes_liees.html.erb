@@ -14,6 +14,7 @@
                     <div class="mx-2 mb-3 p-2 bg-light shadow-sm">
                         <%= custom_badge("", "", "", "fw-bold", commande.client.full_name ) %>
                         <%= custom_badge("", "", "", "", commande.full_name ) %>
+                        <%= custom_badge("fa-hourglass-half", "devis", "", "", "") if commande.devis? %>
                         <%= custom_badge("", "", "", "", commande.type_locvente ) %>
                         <%= custom_badge("", "", "", "", format_date_in_french(commande.debutloc))  if commande.debutloc.present? %>
                         <%= custom_badge("", "", "", "", format_date_in_french(commande.finloc)) if commande.finloc.present? %>
