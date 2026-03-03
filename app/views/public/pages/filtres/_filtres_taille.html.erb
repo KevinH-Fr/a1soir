@@ -1,6 +1,7 @@
 <div id="filtres-taille">
+    <% col_class = dropdown_col_class(@toutes_tailles) %>
 
-    <div class="dropdown" style="position: relative;">
+    <div class="dropdown position-relative">
         <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="tailleDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-rulers"></i>
             <span class="ms-1 d-none d-md-inline">
@@ -12,40 +13,41 @@
             </span>
         </button>
 
-        <ul class="dropdown-menu" aria-labelledby="tailleDropdown" style="position: absolute;">
-            <li>
-            <%= button_to "Toutes", 
-                update_filters_path(
-                    slug: params[:slug],
-                    id: params[:id],
-                    taille: nil,
-                    couleur: params[:couleur],
-                    prixmax: params[:prixmax],
-                    type: params[:type],
-                    from_cabine: params[:from_cabine],
-                    type_produit: params[:type_produit]
-                ),
-                class: "dropdown-item #{'fw-bold' if params[:taille].blank?}" %>
-            </li>
-
-            <% @toutes_tailles.each do |taille| %>
-            <li>
-                <%= button_to taille.nom,
+        <div class="dropdown-menu p-2" aria-labelledby="tailleDropdown">
+            <div class="mb-1 border-bottom pb-1">
+                <%= button_to "Toutes",
                     update_filters_path(
-                    slug: params[:slug],
-                    id: params[:id],
-                    taille: taille.id,
-                    couleur: params[:couleur],
-                    prixmax: params[:prixmax],
-                    type: params[:type],
-                    from_cabine: params[:from_cabine],
-                    type_produit: params[:type_produit]
+                        slug: params[:slug],
+                        id: params[:id],
+                        taille: nil,
+                        couleur: params[:couleur],
+                        prixmax: params[:prixmax],
+                        type: params[:type],
+                        from_cabine: params[:from_cabine],
+                        type_produit: params[:type_produit]
                     ),
-                    class: "dropdown-item #{'fw-bold' if params[:taille].to_s == taille.id.to_s}" %>
-            </li>
-            <% end %>
-        </ul>
-    </div>
+                    class: "dropdown-item #{'fw-bold' if params[:taille].blank?}" %>
+            </div>
 
+            <div class="row <%= col_class %> g-0">
+                <% @toutes_tailles.each do |taille| %>
+                    <div class="col">
+                        <%= button_to taille.nom,
+                            update_filters_path(
+                                slug: params[:slug],
+                                id: params[:id],
+                                taille: taille.id,
+                                couleur: params[:couleur],
+                                prixmax: params[:prixmax],
+                                type: params[:type],
+                                from_cabine: params[:from_cabine],
+                                type_produit: params[:type_produit]
+                            ),
+                            class: "dropdown-item #{'fw-bold' if params[:taille].to_s == taille.id.to_s}" %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
 
 </div>

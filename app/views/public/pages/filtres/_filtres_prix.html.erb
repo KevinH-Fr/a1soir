@@ -1,6 +1,7 @@
 <div id="filtres-prix">
+    <% col_class = dropdown_col_class(@tranches_prix) %>
 
-    <div class="dropdown" style="position: relative;">
+    <div class="dropdown position-relative">
         <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="prixDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-currency-euro"></i>
             <span class="ms-1 d-none d-md-inline">
@@ -14,61 +15,58 @@
             </span>
         </button>
 
-        <ul class="dropdown-menu" aria-labelledby="prixDropdown" style="position: absolute;">
-            <li>
-              <%= button_to "En promotion",
-                  update_filters_path(
-                    slug: params[:slug],
-                    id: params[:id],
-                    taille: params[:taille],
-                    couleur: params[:couleur],
-                    prixmax: nil,
-                    type: params[:type],
-                    en_promotion: true,
-                    from_cabine: params[:from_cabine],
-                    type_produit: params[:type_produit]
-                  ),
-                  class: "dropdown-item #{'fw-bold' if ActiveModel::Type::Boolean.new.cast(params[:en_promotion])}" %>
-            </li>
-
-            <li><hr class="dropdown-divider"></li>
-
-            <li>
-            <%= button_to "Tous",
-                update_filters_path(
-                    slug: params[:slug],
-                    id: params[:id],
-                    taille: params[:taille],
-                    couleur: params[:couleur],
-                    prixmax: nil,
-                    type: params[:type],
-                    en_promotion: nil,
-                    from_cabine: params[:from_cabine],
-                    type_produit: params[:type_produit]
-                ),
-                class: "dropdown-item #{'fw-bold' if params[:prixmax].blank? && !ActiveModel::Type::Boolean.new.cast(params[:en_promotion])}" %>
-            </li>
-
-            <% @tranches_prix.each do |prix| %>
-            <li>
-                <% label = "< #{custom_currency_no_decimals_format(prix)}" %>
-                <%= button_to label.html_safe,
+        <div class="dropdown-menu p-2" aria-labelledby="prixDropdown">
+            <div class="mb-1 border-bottom pb-1">
+                <%= button_to "En promotion",
                     update_filters_path(
-                    slug: params[:slug],
-                    id: params[:id],
-                    taille: params[:taille],
-                    couleur: params[:couleur],
-                    prixmax: prix,
-                    type: params[:type],
-                    en_promotion: nil,
-                    from_cabine: params[:from_cabine],
-                    type_produit: params[:type_produit]
+                        slug: params[:slug],
+                        id: params[:id],
+                        taille: params[:taille],
+                        couleur: params[:couleur],
+                        prixmax: nil,
+                        type: params[:type],
+                        en_promotion: true,
+                        from_cabine: params[:from_cabine],
+                        type_produit: params[:type_produit]
                     ),
-                    class: "dropdown-item #{'fw-bold' if params[:prixmax].to_s == prix.to_s}" %>
-            </li>
-            <% end %>
-        </ul>
-    </div>
+                    class: "dropdown-item #{'fw-bold' if ActiveModel::Type::Boolean.new.cast(params[:en_promotion])}" %>
 
+                <%= button_to "Tous",
+                    update_filters_path(
+                        slug: params[:slug],
+                        id: params[:id],
+                        taille: params[:taille],
+                        couleur: params[:couleur],
+                        prixmax: nil,
+                        type: params[:type],
+                        en_promotion: nil,
+                        from_cabine: params[:from_cabine],
+                        type_produit: params[:type_produit]
+                    ),
+                    class: "dropdown-item #{'fw-bold' if params[:prixmax].blank? && !ActiveModel::Type::Boolean.new.cast(params[:en_promotion])}" %>
+            </div>
+
+            <div class="row <%= col_class %> g-0">
+                <% @tranches_prix.each do |prix| %>
+                    <div class="col">
+                        <% label = "< #{custom_currency_no_decimals_format(prix)}" %>
+                        <%= button_to label.html_safe,
+                            update_filters_path(
+                                slug: params[:slug],
+                                id: params[:id],
+                                taille: params[:taille],
+                                couleur: params[:couleur],
+                                prixmax: prix,
+                                type: params[:type],
+                                en_promotion: nil,
+                                from_cabine: params[:from_cabine],
+                                type_produit: params[:type_produit]
+                            ),
+                            class: "dropdown-item #{'fw-bold' if params[:prixmax].to_s == prix.to_s}" %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
 
 </div>

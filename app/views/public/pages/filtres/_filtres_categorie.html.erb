@@ -1,8 +1,8 @@
 <div id="filtres-categorie">
-    <% 
+    <%
       # Gérer params[:id] comme un tableau ou une valeur unique
       selected_ids = params[:id].present? ? (params[:id].is_a?(Array) ? params[:id].map(&:to_i) : [params[:id].to_i]) : []
-      
+
       # Déterminer le texte à afficher
       display_text = if selected_ids.empty?
         "Catégorie"
@@ -11,9 +11,12 @@
       else
         "#{selected_ids.size} catégories"
       end
+
+      # Nombre de colonnes selon la taille de la liste
+      col_class = dropdown_col_class(@toutes_categories)
     %>
-    
-    <div class="dropdown" style="position: relative;">
+
+    <div class="dropdown position-relative">
         <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="categorieDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-list-ul"></i>
             <span class="ms-1 d-none d-md-inline">
@@ -21,41 +24,41 @@
             </span>
         </button>
 
-        <ul class="dropdown-menu" aria-labelledby="categorieDropdown" style="position: absolute;">
-            <li>
-            <%= button_to "Toutes", 
-                update_filters_path(
-                    slug: nil,
-                    id: nil,
-                    taille: params[:taille],
-                    couleur: params[:couleur],
-                    prixmax: params[:prixmax],
-                    type: params[:type],
-                    from_cabine: params[:from_cabine],
-                    type_produit: params[:type_produit]
-                ), 
-               # method: :get,
-                class: "dropdown-item #{'fw-bold' if selected_ids.empty?}" %>
-            </li>
-
-            <% @toutes_categories.each do |categorie| %>
-            <li>
-                <%= button_to categorie.nom,
+        <div class="dropdown-menu p-2" aria-labelledby="categorieDropdown">
+            <div class="mb-1 border-bottom pb-1">
+                <%= button_to "Toutes",
                     update_filters_path(
-                    slug: categorie.nom.parameterize,
-                    id: categorie.id,
-                    taille: params[:taille],
-                    couleur: params[:couleur],
-                    prixmax: params[:prixmax],
-                    type: params[:type],
-                    from_cabine: params[:from_cabine],
-                    type_produit: params[:type_produit]
+                        slug: nil,
+                        id: nil,
+                        taille: params[:taille],
+                        couleur: params[:couleur],
+                        prixmax: params[:prixmax],
+                        type: params[:type],
+                        from_cabine: params[:from_cabine],
+                        type_produit: params[:type_produit]
                     ),
-                    class: "dropdown-item #{'fw-bold' if selected_ids.include?(categorie.id)}" %>
-            </li>
-            <% end %>
-        </ul>
-    </div>
+                    class: "dropdown-item #{'fw-bold' if selected_ids.empty?}" %>
+            </div>
 
+            <div class="row <%= col_class %> g-0">
+                <% @toutes_categories.each do |categorie| %>
+                    <div class="col">
+                        <%= button_to categorie.nom,
+                            update_filters_path(
+                                slug: categorie.nom.parameterize,
+                                id: categorie.id,
+                                taille: params[:taille],
+                                couleur: params[:couleur],
+                                prixmax: params[:prixmax],
+                                type: params[:type],
+                                from_cabine: params[:from_cabine],
+                                type_produit: params[:type_produit]
+                            ),
+                            class: "dropdown-item #{'fw-bold' if selected_ids.include?(categorie.id)}" %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
 
 </div>

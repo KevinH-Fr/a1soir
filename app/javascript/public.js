@@ -1,5 +1,5 @@
 import "@hotwired/turbo-rails"
-import "./controllers"
+import "./controllers/public_index"
 
 document.addEventListener("turbo:load", () => {
     AOS.init({

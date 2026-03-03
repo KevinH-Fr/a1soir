@@ -7,6 +7,10 @@
   button_url = nos_collections_path
 %>
 
+<% content_for :hero_preload do %>
+  <link rel="preload" href="<%= poster_url %>" as="image" fetchpriority="high">
+<% end %>
+
 <div class="position-relative vh-100" style="height: 100vh; overflow: hidden;">
   <!-- Vidéo en pleine page -->
   <video autoplay muted loop playsinline poster="<%= poster_url %>" class="position-absolute top-0 start-0 w-100 h-100" style="object-fit: cover; z-index: 0;">

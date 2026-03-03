@@ -20,8 +20,7 @@
         <%= render partial: "public/pages/filtres/filtres_prix" %>
         <%= render partial: "public/pages/filtres/filtres_type" %>
 
-        <%= button_to "Effacer les filtres", 
-            update_filters_path(
+        <%= button_to update_filters_path(
                 slug: nil, 
                 id: nil, 
                 couleur: nil,
@@ -32,7 +31,10 @@
                 from_cabine: params[:from_cabine],
                 type_produit: nil
             ),
-            class: "btn btn-sm btn-outline-light text-secondary" %>
+            class: "btn btn-sm btn-outline-light",
+            title: "Effacer les filtres" do %>
+          <i class="bi bi-x-circle"></i>
+        <% end %>
    
     </div>
 

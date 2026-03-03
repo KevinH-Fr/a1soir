@@ -836,7 +836,7 @@ section {
    Page Home - Hero Section & 3D Model
    ======================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+/* Google Fonts Playfair Display — déjà chargée dans le <head> du layout, import supprimé */
 
 /* Hero section */
 .home-hero {

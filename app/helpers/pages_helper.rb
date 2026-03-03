@@ -731,6 +731,16 @@ module PagesHelper
     end
   end
 
+  # Retourne la classe Bootstrap row-cols adaptée selon la taille d'une collection
+  # Utilisable dans les dropdowns de filtres pour afficher les items en multi-colonnes
+  def dropdown_col_class(collection)
+    case collection.size
+    when 0..8   then "row-cols-1"
+    when 9..16  then "row-cols-2"
+    else             "row-cols-3"
+    end
+  end
+
   private
 
   def render_cabine_button(produit, extra_class = "")
