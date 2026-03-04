@@ -1,48 +1,23 @@
 <div id="filtres-type">
-    <% grid = dropdown_grid(@types) %>
 
     <div class="dropdown position-relative">
         <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="typeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-tags"></i>
             <span class="ms-1 d-none d-md-inline">
-            <%= params[:type].present? ? params[:type].capitalize : "Service" %>
+                <%= params[:type].present? ? params[:type].capitalize : "Service" %>
             </span>
         </button>
 
-        <div class="dropdown-menu p-2" aria-labelledby="typeDropdown" style="<%= grid[:min_width] %>">
-            <div class="mb-1 border-bottom pb-1">
-                <%= button_to "Tous",
-                    update_filters_path(
-                        slug: params[:slug],
-                        id: params[:id],
-                        taille: params[:taille],
-                        couleur: params[:couleur],
-                        prixmax: params[:prixmax],
-                        type: nil,
-                        from_cabine: params[:from_cabine],
-                        type_produit: params[:type_produit]
-                    ),
-                    class: "dropdown-item text-nowrap #{'fw-bold' if params[:type].blank?}" %>
-            </div>
-
-            <div class="row <%= grid[:cols] %> g-0">
-                <% @types.each do |type| %>
-                    <div class="col">
-                        <%= button_to type.capitalize,
-                            update_filters_path(
-                                slug: params[:slug],
-                                id: params[:id],
-                                taille: params[:taille],
-                                couleur: params[:couleur],
-                                prixmax: params[:prixmax],
-                                type: type,
-                                from_cabine: params[:from_cabine],
-                                type_produit: params[:type_produit]
-                            ),
-                            class: "dropdown-item text-nowrap #{'fw-bold' if params[:type].to_s == type.to_s}" %>
-                    </div>
-                <% end %>
-            </div>
+        <div class="dropdown-menu overflow-y-auto" aria-labelledby="typeDropdown" style="max-height: 18rem">
+            <%= button_to "Tous",
+                update_filters_path(slug: params[:slug], id: params[:id], taille: params[:taille], couleur: params[:couleur], prixmax: params[:prixmax], type: nil, from_cabine: params[:from_cabine], type_produit: params[:type_produit]),
+                class: "dropdown-item text-nowrap #{'fw-bold' if params[:type].blank?}" %>
+            <hr class="dropdown-divider">
+            <% @types.each do |type| %>
+                <%= button_to type.capitalize,
+                    update_filters_path(slug: params[:slug], id: params[:id], taille: params[:taille], couleur: params[:couleur], prixmax: params[:prixmax], type: type, from_cabine: params[:from_cabine], type_produit: params[:type_produit]),
+                    class: "dropdown-item text-nowrap #{'fw-bold' if params[:type].to_s == type.to_s}" %>
+            <% end %>
         </div>
     </div>
 

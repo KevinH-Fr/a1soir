@@ -731,20 +731,6 @@ module PagesHelper
     end
   end
 
-  # Retourne la configuration de layout pour un dropdown multi-colonnes.
-  # - cols      : classes Bootstrap responsives (1 col sur mobile, multi-col à partir de sm)
-  # - menu_style: min-width généreuse (14rem/col) + max-width viewport pour éviter le débordement mobile
-  # Utilisation :
-  #   <div class="dropdown-menu p-2" style="<%= grid[:menu_style] %>">
-  #     <div class="row <%= grid[:cols] %> g-0">
-  def dropdown_grid(collection)
-    viewport_cap = "max-width: calc(100vw - 1rem)"
-    case collection.size
-    when 0..9   then { cols: "row-cols-1",              menu_style: nil }
-    when 10..18 then { cols: "row-cols-1 row-cols-sm-2", menu_style: "min-width: 28rem; #{viewport_cap}" }
-    else             { cols: "row-cols-1 row-cols-sm-3", menu_style: "min-width: 42rem; #{viewport_cap}" }
-    end
-  end
 
   private
 

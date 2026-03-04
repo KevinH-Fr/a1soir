@@ -1,52 +1,23 @@
 <div id="filtres-couleur">
-    <% grid = dropdown_grid(@toutes_couleurs) %>
 
     <div class="dropdown position-relative">
         <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="couleurDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-palette"></i>
             <span class="ms-1 d-none d-md-inline">
-            <%= if params[:couleur].present?
-                    @toutes_couleurs.find { |c| c.id == params[:couleur].to_i }&.nom || "Couleur"
-                else
-                    "Couleur"
-                end %>
+                <%= params[:couleur].present? ? (@toutes_couleurs.find { |c| c.id == params[:couleur].to_i }&.nom || "Couleur") : "Couleur" %>
             </span>
         </button>
 
-        <div class="dropdown-menu p-2" aria-labelledby="couleurDropdown" style="<%= grid[:min_width] %>">
-            <div class="mb-1 border-bottom pb-1">
-                <%= button_to "Toutes",
-                    update_filters_path(
-                        slug: params[:slug],
-                        id: params[:id],
-                        taille: params[:taille],
-                        couleur: nil,
-                        prixmax: params[:prixmax],
-                        type: params[:type],
-                        from_cabine: params[:from_cabine],
-                        type_produit: params[:type_produit]
-                    ),
-                    class: "dropdown-item text-nowrap #{'fw-bold' if params[:couleur].blank?}" %>
-            </div>
-
-            <div class="row <%= grid[:cols] %> g-0">
-                <% @toutes_couleurs.each do |couleur| %>
-                    <div class="col">
-                        <%= button_to couleur.nom,
-                            update_filters_path(
-                                slug: params[:slug],
-                                id: params[:id],
-                                taille: params[:taille],
-                                couleur: couleur.id,
-                                prixmax: params[:prixmax],
-                                type: params[:type],
-                                from_cabine: params[:from_cabine],
-                                type_produit: params[:type_produit]
-                            ),
-                            class: "dropdown-item text-nowrap #{'fw-bold' if params[:couleur].to_s == couleur.id.to_s}" %>
-                    </div>
-                <% end %>
-            </div>
+        <div class="dropdown-menu overflow-y-auto" aria-labelledby="couleurDropdown" style="max-height: 18rem">
+            <%= button_to "Toutes",
+                update_filters_path(slug: params[:slug], id: params[:id], taille: params[:taille], couleur: nil, prixmax: params[:prixmax], type: params[:type], from_cabine: params[:from_cabine], type_produit: params[:type_produit]),
+                class: "dropdown-item text-nowrap #{'fw-bold' if params[:couleur].blank?}" %>
+            <hr class="dropdown-divider">
+            <% @toutes_couleurs.each do |couleur| %>
+                <%= button_to couleur.nom,
+                    update_filters_path(slug: params[:slug], id: params[:id], taille: params[:taille], couleur: couleur.id, prixmax: params[:prixmax], type: params[:type], from_cabine: params[:from_cabine], type_produit: params[:type_produit]),
+                    class: "dropdown-item text-nowrap #{'fw-bold' if params[:couleur].to_s == couleur.id.to_s}" %>
+            <% end %>
         </div>
     </div>
 
