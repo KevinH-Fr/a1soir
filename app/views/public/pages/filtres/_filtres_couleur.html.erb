@@ -13,7 +13,7 @@
             </span>
         </button>
 
-        <div class="dropdown-menu p-2 w-auto" aria-labelledby="couleurDropdown">
+        <div class="dropdown-menu p-2" aria-labelledby="couleurDropdown" style="<%= grid[:min_width] %>">
             <div class="mb-1 border-bottom pb-1">
                 <%= button_to "Toutes",
                     update_filters_path(
@@ -29,7 +29,7 @@
                     class: "dropdown-item text-nowrap #{'fw-bold' if params[:couleur].blank?}" %>
             </div>
 
-            <div class="row <%= grid %> g-0">
+            <div class="row <%= grid[:cols] %> g-0">
                 <% @toutes_couleurs.each do |couleur| %>
                     <div class="col">
                         <%= button_to couleur.nom,

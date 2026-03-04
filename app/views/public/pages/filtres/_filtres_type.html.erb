@@ -9,7 +9,7 @@
             </span>
         </button>
 
-        <div class="dropdown-menu p-2 w-auto" aria-labelledby="typeDropdown">
+        <div class="dropdown-menu p-2" aria-labelledby="typeDropdown" style="<%= grid[:min_width] %>">
             <div class="mb-1 border-bottom pb-1">
                 <%= button_to "Tous",
                     update_filters_path(
@@ -25,7 +25,7 @@
                     class: "dropdown-item text-nowrap #{'fw-bold' if params[:type].blank?}" %>
             </div>
 
-            <div class="row <%= grid %> g-0">
+            <div class="row <%= grid[:cols] %> g-0">
                 <% @types.each do |type| %>
                     <div class="col">
                         <%= button_to type.capitalize,

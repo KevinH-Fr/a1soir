@@ -731,14 +731,16 @@ module PagesHelper
     end
   end
 
-  # Retourne la classe Bootstrap row-cols adaptée selon la taille d'une collection.
-  # Le dropdown-menu doit avoir la classe "w-auto" et chaque item "text-nowrap"
-  # pour que le menu s'auto-dimensionne au contenu sans inline style.
+  # Retourne la configuration de layout pour un dropdown multi-colonnes.
+  # min_width garantit que le menu est assez large pour N colonnes de ~11rem chacune.
+  # Utilisation dans les vues :
+  #   <div class="dropdown-menu p-2" style="<%= grid[:min_width] %>">
+  #     <div class="row <%= grid[:cols] %> g-0">
   def dropdown_grid(collection)
     case collection.size
-    when 0..8  then "row-cols-1"
-    when 9..16 then "row-cols-2"
-    else            "row-cols-3"
+    when 0..8  then { cols: "row-cols-1", min_width: nil }
+    when 9..16 then { cols: "row-cols-2", min_width: "min-width: 22rem" }
+    else            { cols: "row-cols-3", min_width: "min-width: 33rem" }
     end
   end
 

@@ -15,7 +15,7 @@
             </span>
         </button>
 
-        <div class="dropdown-menu p-2 w-auto" aria-labelledby="prixDropdown">
+        <div class="dropdown-menu p-2" aria-labelledby="prixDropdown" style="<%= grid[:min_width] %>">
             <div class="mb-1 border-bottom pb-1">
                 <%= button_to "En promotion",
                     update_filters_path(
@@ -46,7 +46,7 @@
                     class: "dropdown-item text-nowrap #{'fw-bold' if params[:prixmax].blank? && !ActiveModel::Type::Boolean.new.cast(params[:en_promotion])}" %>
             </div>
 
-            <div class="row <%= grid %> g-0">
+            <div class="row <%= grid[:cols] %> g-0">
                 <% @tranches_prix.each do |prix| %>
                     <div class="col">
                         <% label = "< #{custom_currency_no_decimals_format(prix)}" %>
