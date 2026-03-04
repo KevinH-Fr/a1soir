@@ -49,7 +49,7 @@
 
   </head>
 
-  <body class="bg-black d-flex flex-column vh-100 overflow-hidden">
+  <body class="bg-black d-flex flex-column vh-100 overflow-hidden" data-controller="cookie-consent">
     
     <%= render "public/shared/navbar" %>
 
@@ -71,7 +71,9 @@
         <%= render "public/shared/footer" %>
       </footer>
     </div>
-    
+
+    <%= render "public/shared/cookie_banner" %>
+
     <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
   
   </body>

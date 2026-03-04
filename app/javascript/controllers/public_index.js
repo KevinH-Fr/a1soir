@@ -32,3 +32,6 @@ application.register("scroll-reveal", ScrollRevealController)
 
 import StickyTextController from "./sticky_text_controller"
 application.register("sticky-text", StickyTextController)
+
+import CookieConsentController from "./cookie_consent_controller"
+application.register("cookie-consent", CookieConsentController)

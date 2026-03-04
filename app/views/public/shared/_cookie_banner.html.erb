@@ -1,0 +1,45 @@
+<div
+  data-cookie-consent-target="banner"
+  class="position-fixed bottom-0 start-0 w-100 d-none border-top border-secondary"
+  style="z-index: 1080; background: rgba(15, 15, 15, 0.97); backdrop-filter: blur(8px);"
+>
+  <div class="container py-3 py-sm-4">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-10 col-xl-9">
+        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+
+          <%# Texte %>
+          <div class="d-flex align-items-start gap-3 flex-grow-1">
+            <i class="bi bi-cookie fs-4 text-secondary flex-shrink-0 mt-1"></i>
+            <div>
+              <p class="mb-1 fw-semibold text-white small">Préférences de cookies</p>
+              <p class="mb-0 text-secondary" style="font-size: 0.8rem; line-height: 1.5;">
+                Nous utilisons des cookies améliorer votre expérience et mesurer la performance de notre site.
+                <%= link_to "En savoir plus", legal_url(anchor: "cookies"), class: "text-white text-decoration-underline text-underline-opacity-50 ms-1" %>
+              </p>
+            </div>
+          </div>
+
+          <%# Actions %>
+          <div class="d-flex align-items-center gap-2 flex-shrink-0">
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-secondary"
+              data-action="click->cookie-consent#refuse"
+            >
+              Refuser
+            </button>
+            <button
+              type="button"
+              class="btn btn-sm btn-light fw-semibold px-3"
+              data-action="click->cookie-consent#accept"
+            >
+              Accepter
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
