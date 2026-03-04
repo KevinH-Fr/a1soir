@@ -3,7 +3,7 @@
 
 # Déterminer le host selon l'environnement
 if Rails.env.production?
-  default_host = ENV.fetch('SITEMAP_HOST', 'https://a1soir-2-2a03802389d6.herokuapp.com')
+  default_host = ENV.fetch('SITEMAP_HOST', 'https://a1soir.com')
 else
   default_host = ENV.fetch('SITEMAP_HOST', 'http://localhost:3000')
 end
