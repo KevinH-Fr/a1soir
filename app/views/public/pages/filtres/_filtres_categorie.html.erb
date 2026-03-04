@@ -12,8 +12,8 @@
         "#{selected_ids.size} catégories"
       end
 
-      # Nombre de colonnes selon la taille de la liste
-      col_class = dropdown_col_class(@toutes_categories)
+      # Layout du dropdown selon la taille de la liste
+      grid = dropdown_grid(@toutes_categories)
     %>
 
     <div class="dropdown position-relative">
@@ -24,7 +24,7 @@
             </span>
         </button>
 
-        <div class="dropdown-menu p-2" aria-labelledby="categorieDropdown">
+        <div class="dropdown-menu p-2 w-auto" aria-labelledby="categorieDropdown">
             <div class="mb-1 border-bottom pb-1">
                 <%= button_to "Toutes",
                     update_filters_path(
@@ -37,10 +37,10 @@
                         from_cabine: params[:from_cabine],
                         type_produit: params[:type_produit]
                     ),
-                    class: "dropdown-item #{'fw-bold' if selected_ids.empty?}" %>
+                    class: "dropdown-item text-nowrap #{'fw-bold' if selected_ids.empty?}" %>
             </div>
 
-            <div class="row <%= col_class %> g-0">
+            <div class="row <%= grid %> g-0">
                 <% @toutes_categories.each do |categorie| %>
                     <div class="col">
                         <%= button_to categorie.nom,
@@ -54,7 +54,7 @@
                                 from_cabine: params[:from_cabine],
                                 type_produit: params[:type_produit]
                             ),
-                            class: "dropdown-item #{'fw-bold' if selected_ids.include?(categorie.id)}" %>
+                            class: "dropdown-item text-nowrap #{'fw-bold' if selected_ids.include?(categorie.id)}" %>
                     </div>
                 <% end %>
             </div>

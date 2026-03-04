@@ -1,5 +1,5 @@
 <div id="filtres-type-produit">
-    <% col_class = dropdown_col_class(@types_produits) %>
+    <% grid = dropdown_grid(@types_produits) %>
 
     <div class="dropdown position-relative">
         <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="typeProduitDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -13,7 +13,7 @@
             </span>
         </button>
 
-        <div class="dropdown-menu p-2" aria-labelledby="typeProduitDropdown">
+        <div class="dropdown-menu p-2 w-auto" aria-labelledby="typeProduitDropdown">
             <div class="mb-1 border-bottom pb-1">
                 <%= button_to "Tous",
                     update_filters_path(
@@ -26,10 +26,10 @@
                         type_produit: nil,
                         from_cabine: params[:from_cabine]
                     ),
-                    class: "dropdown-item #{'fw-bold' if params[:type_produit].blank?}" %>
+                    class: "dropdown-item text-nowrap #{'fw-bold' if params[:type_produit].blank?}" %>
             </div>
 
-            <div class="row <%= col_class %> g-0">
+            <div class="row <%= grid %> g-0">
                 <% @types_produits.each do |type_produit| %>
                     <div class="col">
                         <%= button_to type_produit.nom,
@@ -43,7 +43,7 @@
                                 type_produit: type_produit.id,
                                 from_cabine: params[:from_cabine]
                             ),
-                            class: "dropdown-item #{'fw-bold' if params[:type_produit].to_s == type_produit.id.to_s}" %>
+                            class: "dropdown-item text-nowrap #{'fw-bold' if params[:type_produit].to_s == type_produit.id.to_s}" %>
                     </div>
                 <% end %>
             </div>

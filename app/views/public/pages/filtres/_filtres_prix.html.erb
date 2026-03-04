@@ -1,5 +1,5 @@
 <div id="filtres-prix">
-    <% col_class = dropdown_col_class(@tranches_prix) %>
+    <% grid = dropdown_grid(@tranches_prix) %>
 
     <div class="dropdown position-relative">
         <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="prixDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -15,7 +15,7 @@
             </span>
         </button>
 
-        <div class="dropdown-menu p-2" aria-labelledby="prixDropdown">
+        <div class="dropdown-menu p-2 w-auto" aria-labelledby="prixDropdown">
             <div class="mb-1 border-bottom pb-1">
                 <%= button_to "En promotion",
                     update_filters_path(
@@ -29,7 +29,7 @@
                         from_cabine: params[:from_cabine],
                         type_produit: params[:type_produit]
                     ),
-                    class: "dropdown-item #{'fw-bold' if ActiveModel::Type::Boolean.new.cast(params[:en_promotion])}" %>
+                    class: "dropdown-item text-nowrap #{'fw-bold' if ActiveModel::Type::Boolean.new.cast(params[:en_promotion])}" %>
 
                 <%= button_to "Tous",
                     update_filters_path(
@@ -43,10 +43,10 @@
                         from_cabine: params[:from_cabine],
                         type_produit: params[:type_produit]
                     ),
-                    class: "dropdown-item #{'fw-bold' if params[:prixmax].blank? && !ActiveModel::Type::Boolean.new.cast(params[:en_promotion])}" %>
+                    class: "dropdown-item text-nowrap #{'fw-bold' if params[:prixmax].blank? && !ActiveModel::Type::Boolean.new.cast(params[:en_promotion])}" %>
             </div>
 
-            <div class="row <%= col_class %> g-0">
+            <div class="row <%= grid %> g-0">
                 <% @tranches_prix.each do |prix| %>
                     <div class="col">
                         <% label = "< #{custom_currency_no_decimals_format(prix)}" %>
@@ -62,7 +62,7 @@
                                 from_cabine: params[:from_cabine],
                                 type_produit: params[:type_produit]
                             ),
-                            class: "dropdown-item #{'fw-bold' if params[:prixmax].to_s == prix.to_s}" %>
+                            class: "dropdown-item text-nowrap #{'fw-bold' if params[:prixmax].to_s == prix.to_s}" %>
                     </div>
                 <% end %>
             </div>

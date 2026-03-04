@@ -1,5 +1,5 @@
 <div id="filtres-taille">
-    <% col_class = dropdown_col_class(@toutes_tailles) %>
+    <% grid = dropdown_grid(@toutes_tailles) %>
 
     <div class="dropdown position-relative">
         <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="tailleDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -13,7 +13,7 @@
             </span>
         </button>
 
-        <div class="dropdown-menu p-2" aria-labelledby="tailleDropdown">
+        <div class="dropdown-menu p-2 w-auto" aria-labelledby="tailleDropdown">
             <div class="mb-1 border-bottom pb-1">
                 <%= button_to "Toutes",
                     update_filters_path(
@@ -26,10 +26,10 @@
                         from_cabine: params[:from_cabine],
                         type_produit: params[:type_produit]
                     ),
-                    class: "dropdown-item #{'fw-bold' if params[:taille].blank?}" %>
+                    class: "dropdown-item text-nowrap #{'fw-bold' if params[:taille].blank?}" %>
             </div>
 
-            <div class="row <%= col_class %> g-0">
+            <div class="row <%= grid %> g-0">
                 <% @toutes_tailles.each do |taille| %>
                     <div class="col">
                         <%= button_to taille.nom,
@@ -43,7 +43,7 @@
                                 from_cabine: params[:from_cabine],
                                 type_produit: params[:type_produit]
                             ),
-                            class: "dropdown-item #{'fw-bold' if params[:taille].to_s == taille.id.to_s}" %>
+                            class: "dropdown-item text-nowrap #{'fw-bold' if params[:taille].to_s == taille.id.to_s}" %>
                     </div>
                 <% end %>
             </div>
