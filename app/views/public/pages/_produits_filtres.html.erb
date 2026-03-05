@@ -29,7 +29,9 @@
                 en_promotion: params[:en_promotion],
                 format: :turbo_stream, 
                 page: @pagy.next,
-                from_cabine: params[:from_cabine])
+                q: params[:q]&.to_unsafe_h,
+                from_cabine: params[:from_cabine],
+                type_produit: params[:type_produit])
             else
               produits_index_path(
                 id: params[:id],
@@ -41,7 +43,8 @@
                 format: :turbo_stream,
                 page: @pagy.next, 
                 q: params[:q]&.to_unsafe_h,
-                from_cabine: params[:from_cabine])
+                from_cabine: params[:from_cabine],
+                type_produit: params[:type_produit])
             end %>
         <% end %>
       <% end %>
