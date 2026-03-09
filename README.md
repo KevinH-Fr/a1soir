@@ -22,7 +22,7 @@ Things you may want to cover:
 * Deployment instructions
 
 maj sitemap:
-RAILS_ENV=production bundle exec rake sitemap:refresh
+heroku run bundle exec rake sitemap:refresh -a a1soir-2
 
 * ...
 

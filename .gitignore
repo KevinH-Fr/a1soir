@@ -31,9 +31,6 @@
 
 /public/assets
 
-# Ignore generated sitemaps (do not commit env-specific sitemap files)
-/public/sitemap*.xml*
-
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
