@@ -14,6 +14,7 @@
               filter_statut: params[:filter_statut],
               filter_fournisseur: params[:filter_fournisseur],
               filter_mode: params[:filter_mode],
+              filter_prix: params[:filter_prix],
               sort: params[:sort], 
               q: params[:q]&.to_unsafe_h,
               page: @pagy.next) %>

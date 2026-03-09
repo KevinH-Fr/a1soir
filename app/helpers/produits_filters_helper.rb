@@ -18,6 +18,12 @@ module ProduitsFiltersHelper
       selected_value == "true" ? "actif" : "archivé"
     elsif selected_value.present? && param_key == :filter_mode
       selected_value == "analyse" ? "analyse" : "défaut"
+    elsif selected_value.present? && param_key == :filter_prix
+      if selected_value == "na"
+        "NA"
+      else
+        "< #{custom_currency_no_decimals_format(selected_value)}"
+      end
     end
   
   
@@ -54,7 +60,7 @@ module ProduitsFiltersHelper
       concat(
         content_tag(:ul, class: menu_classes.join(" "), aria: { labelledby: "#{param_key}Dropdown" }) do
   
-          if param_key == :filter_mode
+        if param_key == :filter_mode
             [
               { value: "analyse", label: "Analyse" },
               { value: "défaut", label: "Défaut" }
@@ -70,6 +76,43 @@ module ProduitsFiltersHelper
                 end
               )
             end
+          elsif param_key == :filter_prix
+            tranches_prix = [50, 100, 200, 500, 1000]
+
+            concat(
+              content_tag(:li) do
+                link_to(
+                  "Tous",
+                  url_for(current_params.merge(param_key => nil)),
+                  class: "dropdown-item #{'fw-bold' if selected_value.blank?}"
+                )
+              end
+            )
+
+            concat(
+              content_tag(:li) do
+                link_to(
+                  "NA",
+                  url_for(current_params.merge(param_key => "na")),
+                  class: "dropdown-item #{'fw-bold' if selected_value == "na"}"
+                )
+              end
+            )
+
+            tranches_prix.each do |prix|
+              label = "< #{custom_currency_no_decimals_format(prix)}"
+              active = selected_value.to_s == prix.to_s
+              concat(
+                content_tag(:li) do
+                  link_to(
+                    label.html_safe,
+                    url_for(current_params.merge(param_key => prix)),
+                    class: "dropdown-item #{'fw-bold' if active}"
+                  )
+                end
+              )
+            end
+
           elsif collection
             concat(
               content_tag(:li) do

@@ -5,14 +5,11 @@ class Admin::ProduitsController < Admin::ApplicationController
   before_action :set_produit, only: %i[ show edit update destroy delete_image_attachment delete_video_attachment toggle_coup_de_coeur move_up_coup_de_coeur move_down_coup_de_coeur apply_promotion remove_promotion ]
 
   def index
-    Rails.logger.debug do
-      "Admin::ProduitsController#index params q=#{params[:q].inspect} filters=#{params.slice(:filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_fournisseur, :filter_mode, :sort)}"
-    end
 
     @count_produits = Produit.count
   
     search_params = params.permit(
-      :format, :page, :filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_fournisseur,
+      :format, :page, :filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_fournisseur, :filter_prix,
       q: [:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont]
     )
   
@@ -23,6 +20,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     produits = apply_categorie_filter(produits, search_params[:filter_categorie])
     produits = apply_statut_filter(produits, search_params[:filter_statut])
     produits = apply_fournisseur_filter(produits, search_params[:filter_fournisseur])
+    produits = apply_prix_filter(produits, search_params[:filter_prix])
     produits = apply_sort(produits, params[:sort])
   
     @analysis_mode = params[:filter_mode] == "analyse"
@@ -567,6 +565,16 @@ class Admin::ProduitsController < Admin::ApplicationController
       scope.where(fournisseur_id: nil)
     else
       scope.by_fournisseur(Fournisseur.find(value))
+    end
+  end
+
+  def apply_prix_filter(scope, value)
+    return scope unless value.present?
+
+    if value == "na"
+      scope.where('(prixvente IS NULL OR prixvente <= 0) AND (prixlocation IS NULL OR prixlocation <= 0)')
+    else
+      scope.by_prixmax(value.to_f)
     end
   end
 
