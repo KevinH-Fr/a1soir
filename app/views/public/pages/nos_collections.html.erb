@@ -1,3 +1,13 @@
+<% content_for :structured_data do %>
+  <script type="application/ld+json">
+    <%= webpage_schema(
+          name: meta_title,
+          description: meta_description,
+          url: request.original_url
+        ).to_json.html_safe %>
+  </script>
+<% end %>
+
 <%= page_header(
   "Nos collections", 
   "Découvrez notre sélection de tenues d'exception",

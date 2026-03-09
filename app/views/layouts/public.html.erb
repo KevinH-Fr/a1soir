@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description" content="<%= meta_description %>">
     <meta name="keywords" content="<%= meta_keywords %>">
+    <%# Données structurées globales (entreprise + site) %>
+    <script type="application/ld+json">
+      <%= structured_data_global.to_json.html_safe %>
+    </script>
+    <%# Données structurées spécifiques à certaines pages (WebPage, BreadcrumbList, etc.) %>
+    <%= yield :structured_data %>
     <!-- Open Graph -->
     <meta property="og:title" content="<%= meta_title %>">
     <meta property="og:description" content="<%= meta_description %>">

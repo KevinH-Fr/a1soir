@@ -1,3 +1,21 @@
+<% content_for :structured_data do %>
+  <script type="application/ld+json">
+    <%= webpage_schema(
+          name: meta_title,
+          description: meta_description,
+          url: request.original_url
+        ).to_json.html_safe %>
+  </script>
+
+  <% breadcrumbs = [
+       { name: "Accueil", url: root_url },
+       { name: "Catégories", url: categories_url }
+     ] %>
+  <script type="application/ld+json">
+    <%= breadcrumb_schema(breadcrumbs).to_json.html_safe %>
+  </script>
+<% end %>
+
 <div class="public-main-content">
 
     <div class="container-fluid">

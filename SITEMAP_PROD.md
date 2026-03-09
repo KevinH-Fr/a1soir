@@ -14,6 +14,12 @@ cd ~/ror/a1soir
 ls public/sitemap*
 ```
 
+et ensuite le push en prod maj le sitemap en prod
 
-     heroku run bundle exec rake sitemap:refresh -a a1soir-2
-     heroku run "ls public/sitemap*" -a a1soir-2
+
+
+fonctionne avec le sitemap gz et que les pages statiques, voir pour pages categories et produits
+
+mieux gerer les priorités et enlevé ce qui nest pas essentiel si pertinent
+remettre les categories dans le sitemap et tester
+remettre les produits et tester

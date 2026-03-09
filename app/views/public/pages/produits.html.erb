@@ -1,3 +1,32 @@
+<% content_for :structured_data do %>
+  <script type="application/ld+json">
+    <%= webpage_schema(
+          name: meta_title,
+          description: meta_description,
+          url: request.original_url
+        ).to_json.html_safe %>
+  </script>
+
+  <% breadcrumbs = [
+       { name: "Accueil", url: root_url }
+     ] %>
+
+  <% if params[:id].present? && defined?(@toutes_categories) %>
+    <% current_category = @toutes_categories.find { |cat| cat.id.to_s == params[:id].to_s } %>
+  <% end %>
+
+  <% if defined?(current_category) && current_category.present? %>
+    <% breadcrumbs << { name: "Catégories", url: categories_url } %>
+    <% breadcrumbs << { name: current_category.nom, url: request.original_url } %>
+  <% else %>
+    <% breadcrumbs << { name: "Produits", url: request.original_url } %>
+  <% end %>
+
+  <script type="application/ld+json">
+    <%= breadcrumb_schema(breadcrumbs).to_json.html_safe %>
+  </script>
+<% end %>
+
 <div class="public-main-content">
 
     <div class="p-4">
