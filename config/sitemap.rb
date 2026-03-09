@@ -11,6 +11,8 @@ else
   default_host = ENV.fetch('SITEMAP_HOST', 'http://localhost:3000')
 end
 
+#SitemapGenerator::Sitemap.compress = false
+
 SitemapGenerator::Sitemap.default_host = default_host
 
 # Répertoire où les sitemaps seront générés (par défaut: public/)
@@ -33,23 +35,23 @@ SitemapGenerator::Sitemap.create do
   add '/contact', changefreq: 'monthly', priority: 0.7
   add '/categories', changefreq: 'weekly', priority: 0.9
   add '/rdv', changefreq: 'weekly', priority: 0.8
-  add '/produits', changefreq: 'daily', priority: 1.0
+  #add '/produits', changefreq: 'daily', priority: 1.0
 
   # Produits actifs
-  Produit.actif.find_each do |produit|
-    slug = produit.nom.parameterize
-    add "/produit/#{slug}-#{produit.id}",
-        changefreq: 'weekly',
-        priority: 0.4,
-        lastmod: produit.updated_at
-  end
+ # Produit.actif.find_each do |produit|
+  #  slug = produit.nom.parameterize
+  #  add "/produit/#{slug}-#{produit.id}",
+  #      changefreq: 'weekly',
+  #      priority: 0.4,
+  #      lastmod: produit.updated_at
+  #end
 
   # Catégories de produits (si vous avez des pages de catégories)
-  CategorieProduit.find_each do |categorie|
-    slug = categorie.nom.parameterize
-    add "/produits/#{slug}-#{categorie.id}",
-        changefreq: 'weekly',
-        priority: 0.7,
-        lastmod: categorie.updated_at
-  end
+  #CategorieProduit.find_each do |categorie|
+  #  slug = categorie.nom.parameterize
+  #  add "/produits/#{slug}-#{categorie.id}",
+  #      changefreq: 'weekly',
+  #      priority: 0.7,
+  #      lastmod: categorie.updated_at
+  #end
 end
