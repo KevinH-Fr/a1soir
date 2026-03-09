@@ -1,1 +1,8 @@
-# See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+User-agent: *
+
+# Le back-office admin est déjà protégé par la balise
+# <meta name="robots" content="noindex, nofollow"> dans le layout admin.
+# Ici on ne bloque donc pas tout le site, uniquement on déclare le sitemap.
+
+# Remplace ce domaine si nécessaire dans ton environnement de production.
+Sitemap: https://a1soir.com/sitemap.xml.gz

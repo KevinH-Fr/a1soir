@@ -3,8 +3,11 @@
 
 # Déterminer le host selon l'environnement
 if Rails.env.production?
+  # En production, on pointe toujours sur le domaine public (et pas sur le sous‑domaine admin)
   default_host = ENV.fetch('SITEMAP_HOST', 'https://a1soir.com')
 else
+  # En environnement non‑prod, on peut surcharger SITEMAP_HOST pour tester,
+  # mais le host par défaut reste en local.
   default_host = ENV.fetch('SITEMAP_HOST', 'http://localhost:3000')
 end
 
@@ -37,7 +40,7 @@ SitemapGenerator::Sitemap.create do
     slug = produit.nom.parameterize
     add "/produit/#{slug}-#{produit.id}",
         changefreq: 'weekly',
-        priority: 0.8,
+        priority: 0.4,
         lastmod: produit.updated_at
   end
 
