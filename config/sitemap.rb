@@ -43,11 +43,12 @@ SitemapGenerator::Sitemap.create do
   #end
 
   # Catégories de produits (uniquement celles qui ne sont pas des services)
-  CategorieProduit.not_service.find_each do |categorie|
-    slug = categorie.nom.parameterize
-    add "/produits/#{slug}-#{categorie.id}",
-      changefreq: 'weekly',
-      priority: 0.7,
-      lastmod: categorie.updated_at
-  end
+  #CategorieProduit.not_service.find_each do |categorie|
+  #  slug = categorie.nom.parameterize
+  #  add "/produits/#{slug}-#{categorie.id}",
+  #      changefreq: 'weekly',
+  #      priority: 0.7,
+  #      lastmod: categorie.updated_at
+  #end
+  
 end
