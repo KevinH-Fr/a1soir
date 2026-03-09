@@ -28,13 +28,10 @@ SitemapGenerator::Sitemap.create do
   add '/nos_collections', changefreq: 'weekly', priority: 0.9
   add '/le_concept', changefreq: 'monthly', priority: 0.8
   add '/nos_autres_activites', changefreq: 'monthly', priority: 0.8
-  add '/legal', changefreq: 'yearly', priority: 0.5
-  add '/faq', changefreq: 'monthly', priority: 0.7
   add '/cabine_essayage', changefreq: 'weekly', priority: 0.8
   add '/contact', changefreq: 'monthly', priority: 0.7
-  add '/categories', changefreq: 'weekly', priority: 0.9
   add '/rdv', changefreq: 'weekly', priority: 0.8
-  #add '/produits', changefreq: 'daily', priority: 1.0
+  add '/produits', changefreq: 'daily', priority: 0.6
 
   # Produits actifs
  # Produit.actif.find_each do |produit|
@@ -45,12 +42,12 @@ SitemapGenerator::Sitemap.create do
   #      lastmod: produit.updated_at
   #end
 
-  # Catégories de produits (si vous avez des pages de catégories)
-  #CategorieProduit.find_each do |categorie|
-  #  slug = categorie.nom.parameterize
-  #  add "/produits/#{slug}-#{categorie.id}",
-  #      changefreq: 'weekly',
-  #      priority: 0.7,
-  #      lastmod: categorie.updated_at
-  #end
+  # Catégories de produits (uniquement celles qui ne sont pas des services)
+  CategorieProduit.not_service.find_each do |categorie|
+    slug = categorie.nom.parameterize
+    add "/produits/#{slug}-#{categorie.id}",
+      changefreq: 'weekly',
+      priority: 0.7,
+      lastmod: categorie.updated_at
+  end
 end
