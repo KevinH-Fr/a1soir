@@ -14,195 +14,182 @@
   <% end %>
 
   <!-- Formulaire en 3 étapes -->
-  <div data-controller="calendar-picker" 
+  <div data-controller="calendar-picker"
        data-calendar-picker-periodes-non-disponibles-value="<%= DemandeRdv.periodes_non_disponibles.to_json %>"
        data-calendar-picker-creneaux-occupes-value="<%= DemandeRdv.creneaux_occupes_par_date.to_json %>"
+       data-calendar-picker-creneaux-autorises-value="<%= DemandeRdv.creneaux_autorises_par_date.to_json %>"
        data-calendar-picker-jours-desactives-value="<%= DemandeRdv.jours_desactives.to_json %>"
        class="mb-5">
-    
-    <!-- Contenu des étapes : pleine largeur -->
-    <div>
-        
-        <!-- Tabs Bootstrap cachés (nécessaires pour le fonctionnement) -->
-        <ul class="nav nav-tabs d-none" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="step1-tab" data-bs-toggle="tab" data-bs-target="#step1-pane" type="button" role="tab" aria-controls="step1-pane" aria-selected="true"></button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="step2-tab" data-bs-toggle="tab" data-bs-target="#step2-pane" type="button" role="tab" aria-controls="step2-pane" aria-selected="false"></button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="step3-tab" data-bs-toggle="tab" data-bs-target="#step3-pane" type="button" role="tab" aria-controls="step3-pane" aria-selected="false"></button>
-          </li>
-        </ul>
-        
-        <div class="tab-content px-2" id="rdv-tab-content">
-          <!-- ÉTAPE 1 : Calendrier -->
-          <div class="tab-pane fade show active" id="step1-pane" role="tabpanel" aria-labelledby="step1-tab" tabindex="0">
-              <h4 class="text-dark text-center fw-bold" style="letter-spacing: 0.5px;">
-                Sélectionnez une date
-              </h4>
-              <div class="mb-4 text-center">
-                <div data-calendar-picker-target="dateInput" class="calendar-container-large mx-auto" style="max-width: 100%; font-size: 1.2rem;"></div>
-                <%= form.hidden_field :date_rdv_date, data: { calendar_picker_target: "dateHidden" } %>
-              </div>
-          </div>
-          
-          <!-- ÉTAPE 2 : Choix du créneau -->
-          <div class="tab-pane fade" id="step2-pane" role="tabpanel" aria-labelledby="step2-tab" tabindex="0">
-              <div class="d-flex justify-content-between align-items-center mb-4">
-                <a href="#" class="text-secondary text-decoration-none text-decoration-underline" data-action="click->calendar-picker#goBack">
-                  <i class="bi bi-arrow-left me-2"></i>Retour
-                </a>
-                <h4 class="text-dark text-center fw-bold" style="letter-spacing: 0.5px;">
-                  Choisissez un horaire
-                  <small class="text-muted d-block" style="font-size: 0.7em; font-weight: normal;">
-                    (Heure de Paris)
-                  </small>
-                </h4>
-                <div style="width: 100px;"></div> <!-- Spacer pour centrer le titre -->
-              </div>
-              <div class="d-flex justify-content-center flex-wrap gap-3 py-4" data-calendar-picker-target="timeButtons">
-                <% DemandeRdv.creneaux_horaires.each do |creneau| %>
-                  <button type="button" 
-                          class="btn btn-outline-dark btn-lg" 
-                          style="min-width: 120px; padding: 16px 28px; font-size: 1.1rem; font-weight: 600; letter-spacing: 0.5px; border-width: 2px; transition: all 0.3s ease;"
-                          data-time="<%= creneau %>"
-                          data-action="click->calendar-picker#selectTime">
-                    <%= creneau %>
-                  </button>
-                <% end %>
-              </div>
-              <%= form.hidden_field :date_rdv_time, 
-                  data: { 
-                    calendar_picker_target: "timeInput"
-                  } %>
-          </div>
-          
-          <!-- ÉTAPE 3 : Formulaire coordonnées -->
-          <div class="tab-pane fade" id="step3-pane" role="tabpanel" aria-labelledby="step3-tab" tabindex="0" style="max-width: 1000px; margin: 0 auto;">
-              <div class="d-flex justify-content-between align-items-center mb-4">
-                <a href="#" class="text-dark text-decoration-none" style="text-decoration: underline !important; text-decoration-color: #000 !important; text-underline-offset: 4px;" data-action="click->calendar-picker#goBack">
-                  <i class="bi bi-arrow-left me-2"></i>Retour
-                </a>
-                <h4 class="text-dark text-center fw-bold" style="letter-spacing: 0.5px;">
-                  Vos coordonnées
-                </h4>
-                <div style="width: 100px;"></div> <!-- Spacer pour centrer le titre -->
-              </div>
-              <div class="row mb-3">
-                <div class="col-md-6 mb-1">
-                  <div class="form-floating">
-                    <%= form.text_field :prenom, class: "form-control border-dark border-2 bg-white text-dark", required: true %>
-                    <%= form.label :prenom, "Prénom *", class: "text-dark" %>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-1">
-                  <div class="form-floating">
-                    <%= form.text_field :nom, class: "form-control border-dark border-2 bg-white text-dark", required: true %>
-                    <%= form.label :nom, "Nom *", class: "text-dark" %>
-                  </div>
-                </div>
-              </div>
-              <div class="row mb-3">
-                <div class="col-md-6 mb-1">
-                  <div class="form-floating">
-                    <%= form.email_field :email, class: "form-control border-dark border-2 bg-white text-dark", required: true %>
-                    <%= form.label :email, "Email *", class: "text-dark" %>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-1">
-                  <div class="form-floating">
-                    <%= form.text_field :telephone, class: "form-control border-dark border-2 bg-white text-dark", required: true %>
-                    <%= form.label :telephone, "Téléphone *", class: "text-dark" %>
-                  </div>
-                </div>
-              </div>
 
-              <!-- Événement -->
-              <div class="row mb-3">
-                <div class="col-md-6 mb-1">
-                  <div class="form-floating">
-                    <%= form.select :evenement, 
-                        options_for_select([
-                          ["Mariage", "mariage"],
-                          ["Soirée", "soiree"],
-                          ["Autre", "autre"]
-                        ], demande_rdv.evenement),
-                        { include_blank: "Type d'événement" },
-                        { class: "form-select border-dark border-2 bg-white text-dark",
-                          required: true } %>
-                    <%= form.label :evenement, "Type d'événement *", class: "text-dark" %>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-1">
-                  <div class="form-floating">
-                    <%= form.date_field :date_evenement, required: true, class: "form-control border-dark border-2 bg-white text-dark" %>
-                    <%= form.label :date_evenement, "Date de l'événement *", class: "text-dark" %>
-                  </div>
-                </div>
-              </div>
+    <!-- Tabs Bootstrap cachés (nécessaires pour le fonctionnement des étapes) -->
+    <ul class="nav nav-tabs d-none" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="step1-tab" data-bs-toggle="tab" data-bs-target="#step1-pane" type="button" role="tab" aria-controls="step1-pane" aria-selected="true"></button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="step2-tab" data-bs-toggle="tab" data-bs-target="#step2-pane" type="button" role="tab" aria-controls="step2-pane" aria-selected="false"></button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="step3-tab" data-bs-toggle="tab" data-bs-target="#step3-pane" type="button" role="tab" aria-controls="step3-pane" aria-selected="false"></button>
+      </li>
+    </ul>
 
-              <!-- Type de RDV et Nombre de personnes -->
-              <div class="row mb-3">
-                <div class="col-md-6 mb-1">
-                  <div class="form-floating">
-                    <% 
-                      # Bloquer le select seulement si from_cabine ET que le type Essayage a été trouvé et assigné
-                      should_disable = from_cabine && demande_rdv.type_rdv.present?
-                    %>
-                    <%= form.select :type_rdv, 
-                        options_for_select(TypeRdv.options_for_select, demande_rdv.type_rdv),
-                        { include_blank: "Sélectionnez un type" },
-                        { 
-                          class: "form-select border-dark border-2 bg-white text-dark", 
-                          required: true,
-                          disabled: should_disable,
-                          style: should_disable ? "cursor: not-allowed;" : ""
-                        } %>
-                    <%= form.label :type_rdv, "Type de rendez-vous", class: "text-dark" %>
-                    <% if should_disable %>
-                      <%= form.hidden_field :type_rdv, value: demande_rdv.type_rdv %>
-                    <% end %>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-1">
-                  <div class="form-floating">
-                    <%= form.number_field :nombre_personnes, 
-                        class: "form-control border-dark border-2 bg-white text-dark", 
-                        required: !demande_rdv.demande_cabine_essayage.present?, 
-                        min: 1, 
-                        max: 10, 
-                        value: demande_rdv.nombre_personnes || 1 %>
-                    <%= form.label :nombre_personnes, "Nombre de personnes *", class: "text-dark" %>
-                  </div>
-                </div>
-              </div>
+    <div class="tab-content" id="rdv-tab-content">
 
-              <!-- Commentaires -->
-              <div class="mb-4">
-                <div class="form-floating">
-                  <%= form.text_area :commentaire, rows: 3, class: "form-control border-dark border-2 bg-white text-dark", style: "height: 100px;" %>
-                  <%= form.label :commentaire, "Message (optionnel)", class: "text-dark" %>
-                </div>
-              </div>
-
-              <!-- reCAPTCHA -->
-              <div class="mb-4 d-flex justify-content-center">
-                <div class="g-recaptcha" data-sitekey="<%= ENV['RECAPTCHA_SITE_KEY'] %>"></div>
-              </div>
-              <!-- Boutons -->
-              <div class="d-flex flex-column flex-md-row gap-3 justify-content-center align-items-center">
-                <button type="submit" class="btn p-2 shadow" style="background-color: #000; color: #fff; font-weight: 600; letter-spacing: 0.5px; border: 2px solid #000;">
-                  <i class="bi bi-send me-2"></i>Envoyer ma demande
-                </button>
-              </div>
-            </div>
+      <!-- ÉTAPE 1 : Calendrier -->
+      <div class="tab-pane fade show active" id="step1-pane" role="tabpanel" aria-labelledby="step1-tab" tabindex="0">
+        <h4 class="text-dark text-center fw-bold">Sélectionnez une date</h4>
+        <div class="mb-4 text-center">
+          <div data-calendar-picker-target="dateInput" class="calendar-container-large mx-auto w-100"></div>
+          <%= form.hidden_field :date_rdv_date, data: { calendar_picker_target: "dateHidden" } %>
         </div>
-    
+      </div>
+
+      <!-- ÉTAPE 2 : Choix du créneau -->
+      <div class="tab-pane fade" id="step2-pane" role="tabpanel" aria-labelledby="step2-tab" tabindex="0">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <a href="#" class="text-secondary text-decoration-none text-decoration-underline" data-action="click->calendar-picker#goBack">
+            <i class="bi bi-arrow-left me-2"></i>Retour
+          </a>
+          <h4 class="text-dark text-center fw-bold">
+            Choisissez un horaire
+            <small class="text-muted d-block fs-6 fw-normal">(Heure de Paris)</small>
+          </h4>
+          <div style="width: 100px;"></div>
+        </div>
+
+        <div class="d-flex justify-content-center flex-wrap gap-3 py-4" data-calendar-picker-target="timeButtons">
+          <% ParametreRdv::DEFAULT_CRENEAUX.each do |creneau| %>
+            <button type="button"
+                    class="btn btn-outline-dark btn-lg"
+                    data-time="<%= creneau %>"
+                    data-action="click->calendar-picker#selectTime">
+              <%= creneau %>
+            </button>
+          <% end %>
+        </div>
+
+        <%= form.hidden_field :date_rdv_time, data: { calendar_picker_target: "timeInput" } %>
+      </div>
+
+      <!-- ÉTAPE 3 : Coordonnées -->
+      <div class="tab-pane fade" id="step3-pane" role="tabpanel" aria-labelledby="step3-tab" tabindex="0">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <a href="#" class="text-dark text-decoration-underline" data-action="click->calendar-picker#goBack">
+            <i class="bi bi-arrow-left me-2"></i>Retour
+          </a>
+          <h4 class="text-dark text-center fw-bold">Vos coordonnées</h4>
+          <div style="width: 100px;"></div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6 mb-1">
+            <div class="form-floating">
+              <%= form.text_field :prenom, class: "form-control border-dark border-2 bg-white text-dark", required: true %>
+              <%= form.label :prenom, "Prénom *", class: "text-dark" %>
+            </div>
+          </div>
+          <div class="col-md-6 mb-1">
+            <div class="form-floating">
+              <%= form.text_field :nom, class: "form-control border-dark border-2 bg-white text-dark", required: true %>
+              <%= form.label :nom, "Nom *", class: "text-dark" %>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6 mb-1">
+            <div class="form-floating">
+              <%= form.email_field :email, class: "form-control border-dark border-2 bg-white text-dark", required: true %>
+              <%= form.label :email, "Email *", class: "text-dark" %>
+            </div>
+          </div>
+          <div class="col-md-6 mb-1">
+            <div class="form-floating">
+              <%= form.text_field :telephone, class: "form-control border-dark border-2 bg-white text-dark", required: true %>
+              <%= form.label :telephone, "Téléphone *", class: "text-dark" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Événement -->
+        <div class="row mb-3">
+          <div class="col-md-6 mb-1">
+            <div class="form-floating">
+              <%= form.select :evenement,
+                  options_for_select([
+                    ["Mariage", "mariage"],
+                    ["Soirée",  "soiree"],
+                    ["Autre",   "autre"]
+                  ], demande_rdv.evenement),
+                  { include_blank: "Type d'événement" },
+                  { class: "form-select border-dark border-2 bg-white text-dark", required: true } %>
+              <%= form.label :evenement, "Type d'événement *", class: "text-dark" %>
+            </div>
+          </div>
+          <div class="col-md-6 mb-1">
+            <div class="form-floating">
+              <%= form.date_field :date_evenement, required: true, class: "form-control border-dark border-2 bg-white text-dark" %>
+              <%= form.label :date_evenement, "Date de l'événement *", class: "text-dark" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Type de RDV et Nombre de personnes -->
+        <div class="row mb-3">
+          <div class="col-md-6 mb-1">
+            <div class="form-floating">
+              <%
+                # Le select est verrouillé si on vient de la cabine et qu'un type a déjà été assigné.
+                should_disable = from_cabine && demande_rdv.type_rdv.present?
+              %>
+              <%= form.select :type_rdv,
+                  options_for_select(TypeRdv.options_for_select, demande_rdv.type_rdv),
+                  { include_blank: "Sélectionnez un type" },
+                  { class: "form-select border-dark border-2 bg-white text-dark",
+                    required: true,
+                    disabled: should_disable } %>
+              <%= form.label :type_rdv, "Type de rendez-vous", class: "text-dark" %>
+              <%= form.hidden_field :type_rdv, value: demande_rdv.type_rdv if should_disable %>
+            </div>
+          </div>
+          <div class="col-md-6 mb-1">
+            <div class="form-floating">
+              <%= form.number_field :nombre_personnes,
+                  class: "form-control border-dark border-2 bg-white text-dark",
+                  required: !demande_rdv.demande_cabine_essayage.present?,
+                  min: 1, max: 10,
+                  value: demande_rdv.nombre_personnes || 1 %>
+              <%= form.label :nombre_personnes, "Nombre de personnes *", class: "text-dark" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Commentaires -->
+        <div class="mb-4">
+          <div class="form-floating">
+            <%= form.text_area :commentaire, rows: 3, class: "form-control border-dark border-2 bg-white text-dark" %>
+            <%= form.label :commentaire, "Message (optionnel)", class: "text-dark" %>
+          </div>
+        </div>
+
+        <!-- reCAPTCHA -->
+        <div class="mb-4 d-flex justify-content-center">
+          <div class="g-recaptcha" data-sitekey="<%= ENV['RECAPTCHA_SITE_KEY'] %>"></div>
+        </div>
+
+        <!-- Soumission -->
+        <div class="d-flex flex-column flex-md-row gap-3 justify-content-center align-items-center">
+          <button type="submit" class="btn p-2" style="background-color: #000; color: #fff; font-weight: 600; letter-spacing: 0.5px; border: 2px solid #000;">
+            <i class="bi bi-send me-2"></i>Envoyer ma demande
+          </button>
+        </div>
+      </div>
+
+    </div>
+
     <%= form.hidden_field :date_rdv, data: { calendar_picker_target: "hiddenInput" } %>
     <%= form.hidden_field :id if demande_rdv.persisted? %>
   </div>
 
 <% end %>
-

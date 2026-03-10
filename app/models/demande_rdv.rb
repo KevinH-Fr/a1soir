@@ -2,209 +2,94 @@ class DemandeRdv < ApplicationRecord
 
   has_one :meeting, dependent: :destroy
   has_one :demande_cabine_essayage, dependent: :destroy
-  
+
   STATUT = [
-    ["soumis", "soumis"],
-    ["confirmé", "confirmé"],
-    ["annulé", "annulé"]
+    ["soumis",    "soumis"],
+    ["confirmé",  "confirmé"],
+    ["annulé",    "annulé"]
   ].freeze
-      
+
   enum :evenement, {
     mariage: "mariage",
-    soiree: "soirée",
-    autre: "autre"
+    soiree:  "soirée",
+    autre:   "autre"
   }, prefix: true
-  
+
   # Validations
-  validates :nom, presence: true
-  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :telephone, presence: true
-  validates :date_rdv, presence: true
-  validates :type_rdv, presence: true
-  validates :evenement, presence: true
-  validates :date_evenement, presence: true
-  validates :nombre_personnes, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }
+  validates :nom,             presence: true
+  validates :email,           presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :telephone,       presence: true
+  validates :date_rdv,        presence: true
+  validates :type_rdv,        presence: true
+  validates :evenement,       presence: true
+  validates :date_evenement,  presence: true
+  validates :nombre_personnes, presence: true,
+                               numericality: { only_integer: true,
+                                               greater_than_or_equal_to: 1,
+                                               less_than_or_equal_to: 10 }
   validate :type_rdv_must_be_valid
 
   # Callbacks
   after_update :sync_meeting_with_statut
 
-  # Ransackable attributes for admin search
+  # Ransack
   def self.ransackable_attributes(auth_object = nil)
-    ["commentaire", "created_at", "date_evenement", "date_rdv", "email", "evenement", "id", "id_value", "nom", "nombre_personnes", "prenom", "statut", "telephone", "type_rdv", "updated_at"]
+    %w[commentaire created_at date_evenement date_rdv email evenement id id_value
+       nom nombre_personnes prenom statut telephone type_rdv updated_at]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["demande_cabine_essayage", "meeting"]
+    %w[demande_cabine_essayage meeting]
   end
 
-  # Helper methods
+  # ---- Helpers d'instance ------------------------------------------------
+
   def full_name_with_email
     "#{nom} (#{email})"
   end
-  
-  # Retourne le nom complet (prénom + nom) si prénom présent, sinon juste le nom
+
+  # Retourne "Prénom Nom" si le prénom est renseigné, sinon juste le nom.
   def full_name
     [prenom, nom].compact.join(" ")
   end
-  
-  # Pré-sélectionne le type "Essayage" si aucun type n'est défini
+
+  # Pré-sélectionne le type "Essayage" si aucun type n'est déjà défini.
   def set_type_essayage
-    return if type_rdv.present? # Ne pas écraser si déjà rempli
-    
+    return if type_rdv.present?
+
     essayage_type = TypeRdv.find_by("LOWER(code) = ?", "essayage")
     self.type_rdv = essayage_type.code if essayage_type.present?
   end
-  
 
-  # Créneaux horaires disponibles (configurés via ParametreRdv)
-  def self.creneaux_horaires
-    ParametreRdv.current&.creneaux_horaires_list.presence || ["10:00", "11:00", "15:00", "16:00", "17:00"]
-  end
-
-  # Retourne les jours de la semaine avec 0 capacité (à désactiver dans le calendrier)
-  # Format: array de numéros de jours (0 = dimanche, 1 = lundi, ..., 6 = samedi)
-  def self.jours_desactives
-    config = ParametreRdv.current
-    return [] unless config
-
-    jours = []
-    # En Ruby : 0 = dimanche, 1 = lundi, ..., 6 = samedi
-    jours << 0 if (config.nb_rdv_simultanes_dimanche || 0) == 0
-    jours << 1 if (config.nb_rdv_simultanes_lundi || 0) == 0
-    jours << 2 if (config.nb_rdv_simultanes_mardi || 0) == 0
-    jours << 3 if (config.nb_rdv_simultanes_mercredi || 0) == 0
-    jours << 4 if (config.nb_rdv_simultanes_jeudi || 0) == 0
-    jours << 5 if (config.nb_rdv_simultanes_vendredi || 0) == 0
-    jours << 6 if (config.nb_rdv_simultanes_samedi || 0) == 0
-    jours
-  end
-
-  # Périodes non disponibles (dates exclues)
-  # Format: array de hashes avec :debut et :fin (dates au format string "YYYY-MM-DD")
-  def self.periodes_non_disponibles
-    today = Date.today
-    current_year = today.year
-    next_year = current_year + 1
-
-    PeriodeNonDisponible.all.flat_map do |periode|
-      if periode.recurrence
-        # Période récurrente : on la projette sur l'année courante et la suivante
-        [current_year, next_year].map do |year|
-          debut = Date.new(year, periode.date_debut.month, periode.date_debut.day)
-          fin   = Date.new(year, periode.date_fin.month,   periode.date_fin.day)
-          { debut: debut.strftime("%Y-%m-%d"), fin: fin.strftime("%Y-%m-%d") }
-        end
-      else
-        # Période exceptionnelle : on utilise les dates telles quelles
-        { debut: periode.date_debut.strftime("%Y-%m-%d"), fin: periode.date_fin.strftime("%Y-%m-%d") }
-      end
-    end
-  end
-
-  # Récupère tous les créneaux occupés pour les prochaines dates (format: { "YYYY-MM-DD" => ["HH:MM", ...] })
-  # Un créneau est considéré comme occupé s'il atteint la capacité max OU s'il y a des chevauchements temporels
-  def self.creneaux_occupes_par_date(days_ahead: 90)
-    start_date = Date.today
-    end_date = start_date + days_ahead.days
-
-    result = {}
-    current_date = start_date
-    
-    # Pour chaque date dans la plage, utiliser la méthode creneaux_occupes_pour_date
-    while current_date <= end_date
-      creneaux_occupes = creneaux_occupes_pour_date(current_date)
-      result[current_date.strftime("%Y-%m-%d")] = creneaux_occupes unless creneaux_occupes.empty?
-      current_date += 1.day
-    end
-    
-    result
-  end
-
-  # Récupère les créneaux occupés pour une date donnée depuis les Meetings
-  # Un créneau est considéré comme occupé s'il atteint la capacité max OU s'il y a des chevauchements temporels
-  def self.creneaux_occupes_pour_date(date)
-    date_obj = date.is_a?(String) ? Time.zone.parse(date) : date
-
-    config = ParametreRdv.current
-    return [] unless config
-
-    capacity = config.nb_rdv_simultanes_for(date_obj)
-    return [] unless capacity.positive?
-
-    # Récupérer tous les meetings qui chevauchent avec cette journée
-    # Un meeting chevauche si : (datedebut <= fin_jour) ET (datefin >= debut_jour)
-    meetings_du_jour = Meeting.where.not(datefin: nil)
-                              .where("datedebut <= ? AND datefin >= ?", 
-                                     date_obj.end_of_day, 
-                                     date_obj.beginning_of_day)
-    
-    return [] if meetings_du_jour.empty?
-    
-    # Calculer la durée maximale possible pour un RDV (base 60min)
-    duree_max_minutes = 60
-    
-    # Pour chaque créneau horaire, vérifier s'il est occupé
-    creneaux_occupes = creneaux_horaires.select do |creneau_heure|
-      creneau_debut = Time.zone.parse("#{date_obj} #{creneau_heure}")
-      creneau_fin = creneau_debut + duree_max_minutes.minutes
-      
-      # Compter tous les meetings qui chevauchent avec ce créneau
-      # (en tenant compte de leur durée réelle)
-      meetings_chevauchent = meetings_du_jour.select do |meeting|
-        # Chevauchement si : (debut_creneau < fin_meeting) ET (fin_creneau > debut_meeting)
-        (creneau_debut < meeting.datefin) && (creneau_fin > meeting.datedebut)
-      end
-      
-      # Un créneau est occupé si le nombre de meetings qui chevauchent >= capacité
-      meetings_chevauchent.count >= capacity
-    end
-    
-    creneaux_occupes
-  end
-
-  # Récupère les créneaux disponibles pour une date donnée
-  def self.creneaux_disponibles_pour_date(date)
-    creneaux_horaires - creneaux_occupes_pour_date(date)
-  end
-
-  # Construit les attributs nécessaires pour initialiser un client à partir de la demande
+  # Construit les attributs pour initialiser un Client depuis la demande.
   def to_client_attributes
-    {
-      prenom: prenom,
-      nom: nom,
-      tel: telephone,
-      mail: email
-    }.select { |_key, value| value.present? }
+    { prenom: prenom, nom: nom, tel: telephone, mail: email }
+      .select { |_key, value| value.present? }
   end
 
-  # Calcule la durée du rendez-vous en fonction du type et du nombre de personnes
-  # Retourne la durée en minutes
+  # ---- Durée du rendez-vous ----------------------------------------------
+
+  # Calcule la durée du RDV (en minutes) selon le type et le nombre de personnes.
   def duree_rdv_minutes
-    return 60 unless type_rdv.present? # Durée par défaut si type non défini
-    
     type_record = TypeRdv.find_by(code: type_rdv)
-    duree_base = type_record&.duree_base_minutes || 60
+    duree_base  = type_record&.duree_base_minutes || 60
 
-    personnes_supp = [(nombre_personnes || 1) - 1, 0].max # Nombre de personnes supplémentaires
-
-    config = ParametreRdv.current
-    minutes_supp = config&.minutes_par_personne_supp || 15
+    personnes_supp = [(nombre_personnes || 1) - 1, 0].max
+    minutes_supp   = ParametreRdv.current&.minutes_par_personne_supp || 15
 
     duree_base + (personnes_supp * minutes_supp)
   end
 
-  # Retourne la durée du rendez-vous en heures (format décimal)
   def duree_rdv_heures
     duree_rdv_minutes / 60.0
   end
 
-  # Retourne la durée formatée (ex: "1h30", "45min")
+  # Retourne la durée formatée : "1h30", "2h", "45min", etc.
   def duree_rdv_formatee
-    minutes = duree_rdv_minutes
-    heures = minutes / 60
+    minutes        = duree_rdv_minutes
+    heures         = minutes / 60
     mins_restantes = minutes % 60
-    
+
     if heures > 0 && mins_restantes > 0
       "#{heures}h#{mins_restantes.to_s.rjust(2, '0')}"
     elsif heures > 0
@@ -214,9 +99,111 @@ class DemandeRdv < ApplicationRecord
     end
   end
 
+  # ---- Méthodes de classe pour les créneaux ------------------------------
+
+  # Créneaux autorisés pour une date donnée selon la config du jour.
+  # Retourne DEFAULT_CRENEAUX si aucune config n'existe.
+  def self.creneaux_horaires_pour_date(date)
+    date_obj = date.is_a?(String) ? Time.zone.parse(date) : date
+    config   = ParametreRdv.current
+    return ParametreRdv::DEFAULT_CRENEAUX unless config
+
+    config.creneaux_for(date_obj)
+  end
+
+  # Créneaux autorisés pour les <days_ahead> prochains jours.
+  # Retourne un Hash { "YYYY-MM-DD" => ["HH:MM", …] } (seules les dates avec des créneaux sont incluses).
+  def self.creneaux_autorises_par_date(days_ahead: 90)
+    config = ParametreRdv.current
+    return {} unless config
+
+    (Date.today..(Date.today + days_ahead)).each_with_object({}) do |date, result|
+      liste = config.creneaux_for(date)
+      result[date.strftime("%Y-%m-%d")] = liste if liste.present?
+    end
+  end
+
+  # Créneaux occupés pour une date précise.
+  # Un créneau est occupé dès que le nombre de meetings chevauchants atteint la capacité max.
+  def self.creneaux_occupes_pour_date(date)
+    date_obj = date.is_a?(String) ? Time.zone.parse(date) : date
+    config   = ParametreRdv.current
+    return [] unless config
+
+    capacity = config.nb_rdv_simultanes_for(date_obj)
+    return [] unless capacity.positive?
+
+    # Récupère tous les meetings de la journée (chevauchement avec la plage 00h–23h59).
+    meetings_du_jour = Meeting.where.not(datefin: nil)
+                              .where("datedebut <= ? AND datefin >= ?",
+                                     date_obj.end_of_day,
+                                     date_obj.beginning_of_day)
+    return [] if meetings_du_jour.empty?
+
+    # Durée de fenêtre de vérification : 60 min (durée maximale supposée d'un RDV de base).
+    fenetre = 60.minutes
+
+    creneaux_horaires_pour_date(date_obj).select do |heure|
+      debut = Time.zone.parse("#{date_obj} #{heure}")
+      fin   = debut + fenetre
+
+      # Nombre de meetings qui chevauchent ce créneau.
+      chevauchements = meetings_du_jour.count { |m| debut < m.datefin && fin > m.datedebut }
+      chevauchements >= capacity
+    end
+  end
+
+  # Créneaux occupés pour les <days_ahead> prochains jours.
+  # Retourne un Hash { "YYYY-MM-DD" => ["HH:MM", …] } (seules les dates avec des créneaux occupés).
+  def self.creneaux_occupes_par_date(days_ahead: 90)
+    (Date.today..(Date.today + days_ahead)).each_with_object({}) do |date, result|
+      occupes = creneaux_occupes_pour_date(date)
+      result[date.strftime("%Y-%m-%d")] = occupes if occupes.any?
+    end
+  end
+
+  # Créneaux encore disponibles pour une date donnée.
+  def self.creneaux_disponibles_pour_date(date)
+    creneaux_horaires_pour_date(date) - creneaux_occupes_pour_date(date)
+  end
+
+  # ---- Méthodes de classe pour le calendrier -----------------------------
+
+  # Numéros de jours de la semaine (wday Ruby : 0=dim … 6=sam) dont la capacité est 0.
+  # Utilisé par le calendrier JS pour désactiver ces jours.
+  def self.jours_desactives
+    config = ParametreRdv.current
+    return [] unless config
+
+    ParametreRdv::DAY_SYMBOLS.each_with_index.filter_map do |day_sym, wday|
+      wday if (config.public_send(:"nb_rdv_simultanes_#{day_sym}") || 0) == 0
+    end
+  end
+
+  # Périodes non disponibles (dates exclues dans le calendrier).
+  # Format : Array de { debut: "YYYY-MM-DD", fin: "YYYY-MM-DD" }.
+  # Les périodes récurrentes sont projetées sur l'année courante et la suivante.
+  def self.periodes_non_disponibles
+    today        = Date.today
+    current_year = today.year
+
+    PeriodeNonDisponible.all.flat_map do |periode|
+      if periode.recurrence
+        [current_year, current_year + 1].map do |year|
+          {
+            debut: Date.new(year, periode.date_debut.month, periode.date_debut.day).strftime("%Y-%m-%d"),
+            fin:   Date.new(year, periode.date_fin.month,   periode.date_fin.day).strftime("%Y-%m-%d")
+          }
+        end
+      else
+        { debut: periode.date_debut.strftime("%Y-%m-%d"), fin: periode.date_fin.strftime("%Y-%m-%d") }
+      end
+    end
+  end
+
   private
 
-  # Vérifie que type_rdv correspond bien à un TypeRdv existant
+  # Vérifie que type_rdv correspond à un TypeRdv existant.
   def type_rdv_must_be_valid
     return if type_rdv.blank?
     return if TypeRdv.exists?(code: type_rdv)
@@ -224,9 +211,11 @@ class DemandeRdv < ApplicationRecord
     errors.add(:type_rdv, "n'est pas un type de rendez-vous valide")
   end
 
-  # Synchronise le meeting avec le statut de la demande
-  # - Si statut = "confirmé" : crée ou met à jour le meeting
-  # - Sinon : supprime le meeting s'il existe
+  # ---- Synchronisation Meeting -------------------------------------------
+
+  # Maintient la cohérence entre le statut de la demande et le meeting associé :
+  #   - "confirmé"  → crée ou met à jour le meeting
+  #   - autre statut → supprime le meeting s'il existe
   def sync_meeting_with_statut
     if statut == "confirmé"
       create_or_update_meeting
@@ -235,43 +224,26 @@ class DemandeRdv < ApplicationRecord
     end
   end
 
-  # Crée ou met à jour le meeting pour une demande confirmée
   def create_or_update_meeting
     return unless date_rdv.present?
-    
-    # Trouver ou créer le client
+
     client, _created = Client.create_from_demande(self)
     return unless client&.persisted?
-    
-    # Calculer la date de fin en fonction du type de RDV et du nombre de personnes
+
     datedebut = date_rdv
-    datefin = datedebut + duree_rdv_minutes.minutes
-    
-    # Créer ou mettre à jour le meeting avec le client associé
+    datefin   = datedebut + duree_rdv_minutes.minutes
+
+    attrs = { nom: "RDV depuis site", datedebut: datedebut, datefin: datefin,
+              lieu: "boutique", client_id: client.id }
+
     if meeting.present?
-      meeting.update(
-        nom: "RDV depuis site",
-        datedebut: datedebut,
-        datefin: datefin,
-        lieu: "boutique",
-        client_id: client.id
-      )
+      meeting.update(attrs)
     else
-      create_meeting(
-        nom: "RDV depuis site",
-        datedebut: datedebut,
-        datefin: datefin,
-        lieu: "boutique",
-        demande_rdv_id: id,
-        client_id: client.id
-      )
+      create_meeting(attrs.merge(demande_rdv_id: id))
     end
   end
 
-  # Supprime le meeting si la demande n'est plus confirmée
   def destroy_meeting_if_exists
     meeting&.destroy
   end
-
 end
-

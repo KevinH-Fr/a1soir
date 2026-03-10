@@ -96,7 +96,7 @@ class Admin::ParametreRdvsController < Admin::ApplicationController
   end
 
   def parametre_rdv_params
-    params.require(:parametre_rdv).permit(
+    permitted = params.require(:parametre_rdv).permit(
       :nom,
       :minutes_par_personne_supp,
       :nb_rdv_simultanes_lundi,
@@ -106,8 +106,19 @@ class Admin::ParametreRdvsController < Admin::ApplicationController
       :nb_rdv_simultanes_vendredi,
       :nb_rdv_simultanes_samedi,
       :nb_rdv_simultanes_dimanche,
-      :creneaux_horaires
+      creneaux_lundi: [],
+      creneaux_mardi: [],
+      creneaux_mercredi: [],
+      creneaux_jeudi: [],
+      creneaux_vendredi: [],
+      creneaux_samedi: [],
+      creneaux_dimanche: []
     )
+
+    # Valeurs par défaut pour les champs array : []
+    defaults = ParametreRdv::CRENEAUX_COLUMNS.index_with { [] }
+
+    permitted.reverse_merge(defaults)
   end
 end
 

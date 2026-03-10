@@ -16,10 +16,8 @@ ls public/sitemap*
 
 et ensuite le push en prod maj le sitemap en prod
 
-
-
 fonctionne avec le sitemap gz et que les pages statiques, voir pour pages categories et produits
 
-mieux gerer les priorités et enlevé ce qui nest pas essentiel si pertinent
-remettre les categories dans le sitemap et tester
-remettre les produits et tester
+donc cest le sitemap dans le repo local qui est push en prod et utilisé
+
+

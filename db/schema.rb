@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_15_145847) do
+ActiveRecord::Schema[7.1].define(version: 2026_03_10_150000) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -315,6 +315,13 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_15_145847) do
     t.string "creneaux_horaires"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "creneaux_lundi"
+    t.string "creneaux_mardi"
+    t.string "creneaux_mercredi"
+    t.string "creneaux_jeudi"
+    t.string "creneaux_vendredi"
+    t.string "creneaux_samedi"
+    t.string "creneaux_dimanche"
   end
 
   create_table "periodes_non_disponibles", force: :cascade do |t|

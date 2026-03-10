@@ -2,7 +2,34 @@
   <% if parametre_rdv.persisted? %>
     <div class="row mb-2">
       <div class="col-md-12 mb-2">
-        <strong>Créneaux horaires:</strong> <%= parametre_rdv.creneaux_horaires || "-" %>
+        <strong>Créneaux horaires par jour:</strong>
+        <ul class="list-unstyled mb-0">
+          <% jours = [
+            [:lundi, "Lundi"],
+            [:mardi, "Mardi"],
+            [:mercredi, "Mercredi"],
+            [:jeudi, "Jeudi"],
+            [:vendredi, "Vendredi"],
+            [:samedi, "Samedi"],
+            [:dimanche, "Dimanche"]
+          ] %>
+
+          <% jours.each do |day_sym, day_label| %>
+            <% liste = parametre_rdv.creneaux_for(day_sym) %>
+            <li class="mb-1">
+              <strong class="me-2"><%= day_label %> :</strong>
+              <% if liste.any? %>
+                <% liste.each do |creneau| %>
+                  <span class="badge rounded-pill bg-primary text-light me-1 mb-1">
+                    <%= creneau %>
+                  </span>
+                <% end %>
+              <% else %>
+                <span class="text-muted">-</span>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
       </div>
     </div>
 
