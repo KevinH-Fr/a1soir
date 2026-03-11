@@ -41,7 +41,6 @@ module ProduitsFiltersHelper
           button_parts << tag.i(class: icon, aria: { hidden: true })
   
           if selected_label.present?
-            button_parts << content_tag(:span, "#{label} :", class: "ms-1 d-none d-md-inline")
             button_parts << content_tag(:span, selected_label, class: "ms-1")
           else
             button_parts << content_tag(:span, label, class: "ms-1 d-none d-md-inline")
@@ -221,7 +220,6 @@ module ProduitsFiltersHelper
           parts << tag.i(class: "bi bi-sort-up-alt", aria: { hidden: true })
 
           if current_label
-            parts << content_tag(:span, "Trier :", class: "ms-1 d-none d-md-inline")
             parts << content_tag(:span, current_label, class: "ms-1")
           else
             parts << content_tag(:span, "Trier", class: "ms-1 d-none d-md-inline")
