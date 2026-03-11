@@ -9,7 +9,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     @count_produits = Produit.count
   
     search_params = params.permit(
-      :format, :page, :filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_fournisseur, :filter_prix,
+      :format, :page, :filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_prix,
       q: [:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont]
     )
   
@@ -18,6 +18,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     produits = apply_taille_filter(produits, search_params[:filter_taille])
     produits = apply_couleur_filter(produits, search_params[:filter_couleur])
     produits = apply_categorie_filter(produits, search_params[:filter_categorie])
+    produits = apply_type_produit_filter(produits, search_params[:filter_type_produit])
     produits = apply_statut_filter(produits, search_params[:filter_statut])
     produits = apply_fournisseur_filter(produits, search_params[:filter_fournisseur])
     produits = apply_prix_filter(produits, search_params[:filter_prix])
@@ -555,6 +556,16 @@ class Admin::ProduitsController < Admin::ApplicationController
       scope.inactif
     else
       scope
+    end
+  end
+
+  def apply_type_produit_filter(scope, value)
+    return scope unless value.present?
+
+    if value == "na"
+      scope.where(type_produit_id: nil)
+    else
+      scope.where(type_produit_id: value)
     end
   end
 

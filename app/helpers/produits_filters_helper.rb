@@ -8,7 +8,7 @@ module ProduitsFiltersHelper
     selected_label =
     if selected_value.present? && model
       case param_key
-      when :filter_taille, :filter_categorie, :filter_couleur, :filter_fournisseur
+      when :filter_taille, :filter_categorie, :filter_couleur, :filter_fournisseur, :filter_type_produit
         selected_value == "na" ? "NA" : model.find_by(id: selected_value)&.nom
       else
         model.find_by(id: selected_value)&.nom
@@ -124,7 +124,7 @@ module ProduitsFiltersHelper
               end
             )
           
-            if [:filter_taille, :filter_categorie, :filter_couleur, :filter_statut, :filter_fournisseur].include?(param_key)
+            if [:filter_taille, :filter_categorie, :filter_couleur, :filter_statut, :filter_fournisseur, :filter_type_produit].include?(param_key)
               concat(
                 content_tag(:li) do
                   link_to(

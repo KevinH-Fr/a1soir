@@ -160,7 +160,7 @@
                   required: !demande_rdv.demande_cabine_essayage.present?,
                   min: 1, max: 10,
                   value: demande_rdv.nombre_personnes || 1 %>
-              <%= form.label :nombre_personnes, "Nombre de personnes *", class: "text-dark" %>
+              <%= form.label :nombre_personnes, "Nombre de personnes en essayage *", class: "text-dark" %>
             </div>
           </div>
         </div>
