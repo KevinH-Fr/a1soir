@@ -1,6 +1,6 @@
 <%
-  video_url  = "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,f_auto,w_1920/v1772563700/robe_mariee_soiree_hp_ov2a1v.mp4"
-  poster_url = "https://res.cloudinary.com/dukne3lhz/video/upload/so_0,q_auto,f_jpg,w_1920/v1772563700/robe_mariee_soiree_hp_ov2a1v.jpg"
+  video_url  = "/images/robe_mariee_soiree_hp.webm"
+  poster_url = "/images/robe_mariee_soiree_hp.jpg"
   title      = "Mariage et Tenues de Soirée"
   subtitle   = "Des collections pour vous embellir"
   button_text = "Découvrir"
@@ -14,7 +14,7 @@
 <div class="position-relative vh-100" style="height: 100vh; overflow: hidden;">
   <!-- Vidéo en pleine page -->
   <video autoplay muted loop playsinline poster="<%= poster_url %>" class="position-absolute top-0 start-0 w-100 h-100" style="object-fit: cover; z-index: 0;">
-    <source src="<%= video_url %>">
+    <source src="<%= video_url %>" type="video/webm">
     <track kind="captions" src="" label="Français" srclang="fr" default>
     Votre navigateur ne prend pas en charge la lecture de vidéos.
   </video>

@@ -3,11 +3,14 @@ module PagesHelper
   # Méthode privée pour déterminer le chemin de l'image (URL complète ou fichier local)
   def image_path_helper(image)
     return nil unless image.present?
-    # Si l'image commence par http:// ou https://, c'est une URL complète
+    # URL absolue (Cloudinary, CDN, etc.)
     if image.start_with?('http://', 'https://')
       image
+    # Chemin absolu depuis la racine du site (ex. /images/foo.webp)
+    elsif image.start_with?('/')
+      image
     else
-      # Sinon, c'est un fichier local dans /images/
+      # Nom de fichier seul → /images/
       "/images/#{image}"
     end
   end
