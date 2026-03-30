@@ -2,44 +2,44 @@
   
   <div class="col-12 col-md-6 col-lg-6" data-scroll-reveal>
     <%= collection_card(
-      title: "Robes de mariée",
+      title: t("public.pages.home.categories.wedding_dresses.title"),
       items: ["Courtes", "Longues"],
       url: produits_filter_url(category_names: ["robes de mariée courtes", "robes de mariée longues"]),
       image: "/images/cat_robes_mariees.webp",
-      subtitle: "Découvrez notre sélection de robes de mariée courtes et longues pour votre jour spécial",
+      subtitle: t("public.pages.home.categories.wedding_dresses.subtitle"),
       image_position: "center 25%"
     ) %>
   </div>
 
   <div class="col-12 col-md-6 col-lg-6" data-scroll-reveal>
     <%= collection_card(
-      title: "Tenues de Soirée",
+      title: t("public.pages.home.categories.evening_wear.title"),
       items: ["Longues", "Courtes", "Ensembles pantalon", "Combinaisons"],
       url: produits_filter_url(category_names: ["robes courtes", "robes longues", "ensembles pantalons"]),
       image: "/images/cat_tenues_soiree.webp",
-      subtitle: "Explorez notre collection de tenues de soirée élégantes pour toutes vos occasions",
+      subtitle: t("public.pages.home.categories.evening_wear.subtitle"),
       image_position: "center"
     ) %>
   </div>
 
   <div class="col-12 col-md-6 col-lg-6" data-scroll-reveal>
     <%= collection_card(
-      title: "Costumes",
+      title: t("public.pages.home.categories.suits.title"),
       items: ["Smokings", "Cérémonies", "Enfant"],
       url: produits_filter_url(category_names: "costume"),
       image: "/images/cat_costume.webp",
-      subtitle: "Parcourez notre gamme de costumes et smokings pour hommes de toutes tailles",
+      subtitle: t("public.pages.home.categories.suits.subtitle"),
       image_position: "top"
     ) %>
   </div>
 
   <div class="col-12 col-md-6 col-lg-6" data-scroll-reveal>
     <%= collection_card(
-      title: "Accessoires",
+      title: t("public.pages.home.categories.accessories.title"),
       items: ["Chaussures Homme", "Chaussures Femmes", "Accessoires Hommes", "Accessoires Femmes"],
       url: produits_filter_url(category_names: ["chaussures", "accessoires", "accessoires femmes"]), 
       image: "/images/cat_accessoires.webp",
-      subtitle: "Complétez votre tenue avec nos chaussures et accessoires soigneusement sélectionnés",
+      subtitle: t("public.pages.home.categories.accessories.subtitle"),
       image_position: "center"
     ) %>
   </div>

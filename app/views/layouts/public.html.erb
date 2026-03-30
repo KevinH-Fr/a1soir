@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<%= I18n.locale %>">
   <head>
     <title><%= meta_title %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description" content="<%= meta_description %>">
     <meta name="keywords" content="<%= meta_keywords %>">
+    <% hreflang_params = request.path_parameters.merge(request.query_parameters).symbolize_keys.except(:locale) %>
+    <link rel="canonical" href="<%= url_for(hreflang_params.merge(locale: I18n.locale, only_path: false)) %>">
+    <% I18n.available_locales.each do |locale| %>
+      <link rel="alternate" hreflang="<%= locale %>" href="<%= url_for(hreflang_params.merge(locale: locale, only_path: false)) %>">
+    <% end %>
+    <link rel="alternate" hreflang="x-default" href="<%= url_for(hreflang_params.merge(locale: I18n.default_locale, only_path: false)) %>">
     <%# Données structurées globales (entreprise + site) %>
     <script type="application/ld+json">
       <%= structured_data_global.to_json.html_safe %>

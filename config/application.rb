@@ -24,7 +24,7 @@ module A1soir
     config.time_zone = "Europe/Paris"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    # config/application.rb
+    config.i18n.available_locales = %i[fr en]
     config.i18n.default_locale = :fr
 
 

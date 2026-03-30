@@ -89,7 +89,16 @@ module MetaTagsHelper
     # Récupérer les meta tags pour la page spécifique ou les valeurs par défaut
     page_meta = (page_key && META_TAGS[:pages][page_key.to_sym]) || META_TAGS[:default]
 
+    i18n_value = localized_meta_tag_value(page_key, key)
+    return i18n_value if i18n_value.present?
+
     page_meta[key] || META_TAGS[:default][key]
+  end
+
+  def localized_meta_tag_value(page_key, key)
+    key_path = page_key ? "meta_tags.pages.#{page_key}.#{key}" : "meta_tags.default.#{key}"
+    value = I18n.t(key_path, default: nil)
+    value.is_a?(String) ? value : nil
   end
 
   def determine_page_key

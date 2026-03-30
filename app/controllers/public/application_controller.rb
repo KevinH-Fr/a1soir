@@ -4,6 +4,7 @@ module Public
 
       include Pagy::Backend
 
+      before_action :set_locale
       before_action :initialize_session
       before_action :load_cart
       before_action :initialize_cabine_session
@@ -18,6 +19,15 @@ module Public
      # before_action :authenticate_vendeur_or_admin! 
 
       private
+
+      def set_locale
+        requested_locale = params[:locale]&.to_sym
+        I18n.locale = I18n.available_locales.include?(requested_locale) ? requested_locale : I18n.default_locale
+      end
+
+      def default_url_options
+        { locale: I18n.locale }
+      end
 
       def initialize_session
          session[:cart] ||= [] # empty cart = empty array

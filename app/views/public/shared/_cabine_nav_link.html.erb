@@ -18,7 +18,7 @@
   <% classes << "active" if is_active %>
   <li class="<%= classes.join(' ') %>">
     <%= link_to cabine_essayage_url, class: "text-decoration-none nav-link-public #{is_active ? 'nav-link-active' : ''} position-relative" do %>
-      <span class="fw-bold">Cabine d'essayage</span>
+      <span class="fw-bold"><%= t("public.navbar.fitting_room") %></span>
       <% if badge_count.present? && badge_count.to_i.positive? %>
         <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle public-brand-bg-color d-inline-flex align-items-center justify-content-center"
               style="width: 1.2rem;">

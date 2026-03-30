@@ -302,3 +302,110 @@ fr:
         commentaires: "Commentaires"
         produits_demandes: "Produits demandés (cabine d'essayage)"
         message_automatique: "Message automatique."
+
+  meta_tags:
+    default:
+      title: "Autour D'Un Soir"
+      description: "Location, fabrication et vente de costumes et accessoires a Cannes."
+      keywords: "location costumes cannes, robes de mariee, smoking, accessoires"
+    pages:
+      home:
+        title: "Autour D'Un Soir - Robes de mariée et location de tenues de soirée"
+        description: "Location, fabrication et vente de costumes et accessoires à Cannes."
+      la_boutique:
+        title: "La boutique - Autour D'Un Soir"
+        description: "Visitez notre boutique Autour D'Un Soir et decouvrez nos collections."
+      nos_collections:
+        title: "Nos collections - Autour D'Un Soir"
+        description: "Explorez nos collections de robes de mariée pour votre jour J."
+      le_concept:
+        title: "Le concept - Autour D'Un Soir"
+        description: "Decouvrez l'histoire et les valeurs d'Autour D'Un Soir."
+      cabine_essayage:
+        title: "Cabine d'essayage - Autour D'Un Soir"
+        description: "Réservez votre séance d'essayage dans notre cabine privée."
+      rdv:
+        title: "Prendre rendez-vous - Autour D'Un Soir"
+        description: "Réservez votre rendez-vous en boutique."
+      contact:
+        title: "Contact - Autour D'Un Soir"
+        description: "Contactez Autour D'Un Soir pour toute question."
+      produits:
+        title: "Nos produits - Autour D'Un Soir"
+        description: "Decouvrez notre catalogue de produits et accessoires."
+      nos_autres_activites:
+        title: "Nos autres activités - Autour D'Un Soir"
+        description: "Découvrez les autres activités et services de la boutique."
+      legal:
+        title: "Mentions légales & Conditions générales - Autour D'Un Soir"
+        description: "Consultez les mentions légales, CGV et politique de confidentialité."
+      faq:
+        title: "FAQ - Questions fréquentes - Autour D'Un Soir"
+        description: "Retrouvez les réponses aux questions fréquentes."
+
+  public:
+    cta:
+      collections: "Découvrir nos collections"
+      rdv: "Prendre rendez-vous"
+      boutique: "La boutique"
+      contact: "Nous contacter"
+      produits: "Voir nos produits"
+      ecrire: "Nous écrire"
+      appeler: "Nous appeler"
+    navbar:
+      book_appointment: "Prendre rendez-vous"
+      home: "Accueil"
+      shop: "Boutique"
+      collections: "Collections"
+      fitting_room: "Cabine d'essayage"
+      concept: "Concept"
+      other_activities: "Autres activites"
+    footer:
+      navigation: "Navigation"
+      home: "Accueil"
+      shop: "La boutique"
+      collections: "Collections"
+      concept: "Le concept"
+      other_activities: "Nos autres activites"
+      services: "Services"
+      products: "Produits"
+      appointment: "Rendez-vous"
+      contact: "Contact"
+      follow_us: "Suivez-nous"
+      legal: "Legal"
+      legal_mentions: "Mentions legales & CGV"
+      manage_cookies: "Gerer mes cookies"
+      copyright: "© %{year} Autour D'Un Soir - Tous droits reserves"
+    pages:
+      home:
+        collections_title: "Nos collections"
+        coups_de_coeur_title: "Nos coups de cœur"
+        cta_title: "Pret a decouvrir nos collections ?"
+        categories:
+          wedding_dresses:
+            title: "Robes de mariée"
+            subtitle: "Découvrez notre sélection de robes de mariée courtes et longues pour votre jour spécial"
+          evening_wear:
+            title: "Tenues de soirée"
+            subtitle: "Explorez notre collection de tenues de soirée élégantes pour toutes vos occasions"
+          suits:
+            title: "Costumes"
+            subtitle: "Parcourez notre gamme de costumes et smokings pour hommes de toutes tailles"
+          accessories:
+            title: "Accessoires"
+            subtitle: "Complétez votre tenue avec nos chaussures et accessoires soigneusement sélectionnés"
+        boutique_section:
+          title: "La boutique"
+          body: "Notre boutique de Cannes au cœur de la Côte d'Azur et de tous ses événements prestigieux."
+        hero:
+          title: "Mariage et Tenues de Soirée"
+          subtitle: "Des collections pour vous embellir"
+          button_text: "Découvrir"
+      la_boutique:
+        header_title: "La boutique de Cannes"
+        header_subtitle: "Decouvrez notre equipe et notre boutique"
+        cta_title: "Pret a decouvrir nos collections ?"
+        google_reviews:
+          title: "Avis clients"
+          based_on: "Base sur %{count} avis Google"
+          view_all: "Voir tous les avis sur Google"

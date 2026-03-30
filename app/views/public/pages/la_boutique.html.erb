@@ -9,8 +9,8 @@
 <% end %>
 
 <%= page_header(
-  "La boutique de Cannes", 
-  "Découvrez notre équipe et notre boutique", 
+  t("public.pages.la_boutique.header_title"),
+  t("public.pages.la_boutique.header_subtitle"),
   image1: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/dessin1b_vqkxwg", 
   image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/manchette_zgcbb0") %>
 
@@ -26,9 +26,9 @@
 
 <!-- Call to action -->
 <div class="text-center my-5 py-4" data-scroll-reveal>
-  <h3 class="mb-4 text-light">Prêt à découvrir nos collections ?</h3>
+  <h3 class="mb-4 text-light"><%= t("public.pages.la_boutique.cta_title") %></h3>
   <div class="d-flex gap-3 justify-content-center flex-wrap">
     <%= cta_button(type: "collections", url: nos_collections_path, variant: "light") %>
-    <%= cta_button(type: "rdv", url: "#{rdv_url}#rdv-form", variant: "dark", outline: "light") %>
+    <%= cta_button(type: "rdv", url: "#{rdv_path}#rdv-form", variant: "dark", outline: "light") %>
   </div>
 </div>

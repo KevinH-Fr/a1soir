@@ -79,3 +79,110 @@ en:
         commentaires: "Comments"
         produits_demandes: "Requested products (fitting room)"
         message_automatique: "Automatic message."
+
+  meta_tags:
+    default:
+      title: "Autour D'Un Soir"
+      description: "Costume and accessories rental, tailoring, and sales in Cannes."
+      keywords: "cannes costume rental, wedding dresses, tuxedo, accessories"
+    pages:
+      home:
+        title: "Autour D'Un Soir - Wedding dresses and evening wear rental"
+        description: "Costume and accessories rental, tailoring, and sales in Cannes."
+      la_boutique:
+        title: "The boutique - Autour D'Un Soir"
+        description: "Visit our Autour D'Un Soir boutique and discover our collections."
+      nos_collections:
+        title: "Our collections - Autour D'Un Soir"
+        description: "Explore our wedding dress collections for your special day."
+      le_concept:
+        title: "Our concept - Autour D'Un Soir"
+        description: "Discover the story and values behind Autour D'Un Soir."
+      cabine_essayage:
+        title: "Fitting room - Autour D'Un Soir"
+        description: "Book your fitting session in our private fitting room."
+      rdv:
+        title: "Book an appointment - Autour D'Un Soir"
+        description: "Book your in-store appointment."
+      contact:
+        title: "Contact - Autour D'Un Soir"
+        description: "Contact Autour D'Un Soir for any question."
+      produits:
+        title: "Our products - Autour D'Un Soir"
+        description: "Discover our product and accessories catalog."
+      nos_autres_activites:
+        title: "Our other activities - Autour D'Un Soir"
+        description: "Discover the other activities and services of the boutique."
+      legal:
+        title: "Legal notice & Terms - Autour D'Un Soir"
+        description: "Read legal notice, terms and privacy policy."
+      faq:
+        title: "FAQ - Frequently asked questions - Autour D'Un Soir"
+        description: "Find answers to frequently asked questions."
+
+  public:
+    cta:
+      collections: "Discover our collections"
+      rdv: "Book an appointment"
+      boutique: "The boutique"
+      contact: "Contact us"
+      produits: "View our products"
+      ecrire: "Email us"
+      appeler: "Call us"
+    navbar:
+      book_appointment: "Book an appointment"
+      home: "Home"
+      shop: "Shop"
+      collections: "Collections"
+      fitting_room: "Fitting room"
+      concept: "Concept"
+      other_activities: "Other activities"
+    footer:
+      navigation: "Navigation"
+      home: "Home"
+      shop: "The boutique"
+      collections: "Collections"
+      concept: "Concept"
+      other_activities: "Other activities"
+      services: "Services"
+      products: "Products"
+      appointment: "Appointment"
+      contact: "Contact"
+      follow_us: "Follow us"
+      legal: "Legal"
+      legal_mentions: "Legal notice & Terms"
+      manage_cookies: "Manage cookies"
+      copyright: "© %{year} Autour D'Un Soir - All rights reserved"
+    pages:
+      home:
+        collections_title: "Our collections"
+        coups_de_coeur_title: "Our favorites"
+        cta_title: "Ready to discover our collections?"
+        categories:
+          wedding_dresses:
+            title: "Wedding dresses"
+            subtitle: "Discover our curated selection of short and long wedding dresses for your special day"
+          evening_wear:
+            title: "Evening wear"
+            subtitle: "Explore our elegant evening wear collection for all your occasions"
+          suits:
+            title: "Suits"
+            subtitle: "Browse our range of suits and tuxedos for men in all sizes"
+          accessories:
+            title: "Accessories"
+            subtitle: "Complete your outfit with our carefully selected shoes and accessories"
+        boutique_section:
+          title: "The shop"
+          body: "Our Cannes boutique in the heart of the French Riviera and its prestigious events."
+        hero:
+          title: "Wedding and Evening Wear"
+          subtitle: "Collections designed to elevate your look"
+          button_text: "Discover"
+      la_boutique:
+        header_title: "Cannes boutique"
+        header_subtitle: "Meet our team and discover our boutique"
+        cta_title: "Ready to discover our collections?"
+        google_reviews:
+          title: "Customer reviews"
+          based_on: "Based on %{count} Google reviews"
+          view_all: "View all reviews on Google"

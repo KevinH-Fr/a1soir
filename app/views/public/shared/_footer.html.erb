@@ -4,7 +4,7 @@
       
       <!-- Logo et Informations -->
       <div class="col-12 col-md-4 mb-4 mb-md-0">
-        <%= link_to root_url, class: "d-inline-block mb-3" do %>
+        <%= link_to home_path, class: "d-inline-block mb-3" do %>
           <%= image_tag('/images/a1soirlogo2.png', class: 'mb-0', width: "200", alt: "Autour d'un Soir") %>
         <% end %>
         
@@ -41,30 +41,30 @@
       
       <!-- Navigation -->
       <div class="col-6 col-md-2">
-        <h6 class="text-uppercase mb-4 text-light">Navigation</h6>
+        <h6 class="text-uppercase mb-4 text-light"><%= t("public.footer.navigation") %></h6>
         <ul class="list-unstyled">
-          <li class="mb-2"><%= link_to "Accueil", home_path, class: "text-light text-decoration-none hover-link" %></li>
-          <li class="mb-2"><%= link_to "La boutique", la_boutique_url, class: "text-light text-decoration-none hover-link" %></li>
-          <li class="mb-2"><%= link_to "Collections", nos_collections_url, class: "text-light text-decoration-none hover-link" %></li>
-          <li class="mb-2"><%= link_to "Le concept", le_concept_url, class: "text-light text-decoration-none hover-link" %></li>
-          <li class="mb-2"><%= link_to "Nos autres activités", nos_autres_activites_url, class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to t("public.footer.home"), home_path, class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to t("public.footer.shop"), la_boutique_url, class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to t("public.footer.collections"), nos_collections_url, class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to t("public.footer.concept"), le_concept_url, class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to t("public.footer.other_activities"), nos_autres_activites_url, class: "text-light text-decoration-none hover-link" %></li>
         </ul>
       </div>
 
       <!-- Services -->
       <div class="col-6 col-md-2">
-        <h6 class="text-uppercase mb-4 text-light">Services</h6>
+        <h6 class="text-uppercase mb-4 text-light"><%= t("public.footer.services") %></h6>
         <ul class="list-unstyled">
-          <li class="mb-2"><%= link_to "Produits", produits_index_url, class: "text-light text-decoration-none hover-link" %></li>
-          <li class="mb-2"><%= link_to "Rendez-vous", rdv_url, class: "text-light text-decoration-none hover-link" %></li>
-          <li class="mb-2"><%= link_to "Contact", contact_url, class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to t("public.footer.products"), produits_index_url, class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to t("public.footer.appointment"), rdv_url, class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to t("public.footer.contact"), contact_url, class: "text-light text-decoration-none hover-link" %></li>
           <li class="mb-2"><%= link_to "FAQ", faq_url, class: "text-light text-decoration-none hover-link" %></li>
         </ul>
       </div>
 
       <!-- Suivez-nous -->
       <div class="col-6 col-md-2">
-        <h6 class="text-uppercase mb-4 text-light">Suivez-nous</h6>
+        <h6 class="text-uppercase mb-4 text-light"><%= t("public.footer.follow_us") %></h6>
         <div class="d-flex flex-column gap-2">
           <%= link_to "https://www.instagram.com/autourdunsoir/", class: "text-light text-decoration-none hover-link d-flex align-items-center gap-2", target: "_blank", rel: "noopener noreferrer" do %>
             <i class="bi bi-instagram fs-5"></i>
@@ -83,16 +83,16 @@
 
       <!-- Légal -->
       <div class="col-6 col-md-2">
-        <h6 class="text-uppercase mb-4 text-light">Légal</h6>
+        <h6 class="text-uppercase mb-4 text-light"><%= t("public.footer.legal") %></h6>
         <ul class="list-unstyled">
-          <li class="mb-2"><%= link_to "Mentions légales & CGV", legal_url, class: "text-light text-decoration-none hover-link" %></li>
+          <li class="mb-2"><%= link_to t("public.footer.legal_mentions"), legal_url, class: "text-light text-decoration-none hover-link" %></li>
           <li class="mb-2">
             <button
               type="button"
               class="btn btn-link p-0 text-light text-decoration-none hover-link small"
               data-action="click->cookie-consent#reset"
             >
-              Gérer mes cookies
+              <%= t("public.footer.manage_cookies") %>
             </button>
           </li>
         </ul>
@@ -106,8 +106,18 @@
     <div class="container">
       <div class="row">
         <div class="col-12 text-center">
+          <div class="d-flex justify-content-center align-items-center gap-2 mb-2">
+            <%= link_to url_for(locale: :fr), class: "btn btn-sm public-btn-border-radius d-inline-flex align-items-center gap-2 #{I18n.locale == :fr ? 'btn-light text-dark' : 'btn-outline-light'}" do %>
+              <%= image_tag("/images/fr.webp", alt: "", width: 16, height: 16, class: "rounded-circle", style: "object-fit: cover;") %>
+              FR
+            <% end %>
+            <%= link_to url_for(locale: :en), class: "btn btn-sm public-btn-border-radius d-inline-flex align-items-center gap-2 #{I18n.locale == :en ? 'btn-light text-dark' : 'btn-outline-light'}" do %>
+              <%= image_tag("/images/uk.webp", alt: "", width: 16, height: 16, class: "rounded-circle", style: "object-fit: cover;") %>
+              EN
+            <% end %>
+          </div>
           <p class="text-light small mb-0 opacity-75">
-            &copy; <%= Time.current.year %> Autour D'Un Soir - Tous droits réservés
+            <%= t("public.footer.copyright", year: Time.current.year) %>
           </p>
         </div>
       </div>
