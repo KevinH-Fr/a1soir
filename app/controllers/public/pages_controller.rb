@@ -20,6 +20,7 @@ module Public
         @texteAdresse = Texte.last.adresse
         @texteEquipe = Texte.last.equipe
       end
+      @google_data = GooglePlacesService.fetch
     end
 
     def nos_collections
