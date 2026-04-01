@@ -44,7 +44,7 @@ en:
     review_invite: "Feel free to share your feedback on our service by clicking the link here:"
     review_link_text: "Link"
     closing: "Best regards,"
-    team: "The entire boutique team"
+    team: "The entire shop team"
     phone: "Phone: 04 93 45 17 17"
     find_us: "Find us on our"
     website: "website"
@@ -90,8 +90,8 @@ en:
         title: "Autour D'Un Soir - Wedding dresses and evening wear rental"
         description: "Costume and accessories rental, tailoring, and sales in Cannes."
       la_boutique:
-        title: "The boutique - Autour D'Un Soir"
-        description: "Visit our Autour D'Un Soir boutique and discover our collections."
+        title: "The shop - Autour D'Un Soir"
+        description: "Visit our Autour D'Un Soir shop and discover our collections."
       nos_collections:
         title: "Our collections - Autour D'Un Soir"
         description: "Explore our wedding dress collections for your special day."
@@ -112,7 +112,7 @@ en:
         description: "Discover our product and accessories catalog."
       nos_autres_activites:
         title: "Our other activities - Autour D'Un Soir"
-        description: "Discover the other activities and services of the boutique."
+        description: "Discover the other activities and services of the shop."
       legal:
         title: "Legal notice & Terms - Autour D'Un Soir"
         description: "Read legal notice, terms and privacy policy."
@@ -121,10 +121,27 @@ en:
         description: "Find answers to frequently asked questions."
 
   public:
+    cookie_banner:
+      title: "Cookie preferences"
+      description: "We use cookies to improve your experience and measure our site performance."
+      learn_more: "Learn more"
+      refuse: "Decline"
+      accept: "Accept"
+    helpers:
+      quick_nav_links:
+        title: "Quick navigation"
+    demande_rdv:
+      form:
+        select_date_title: "Select a date"
+        back: "Back"
+        select_time_title: "Choose a time slot"
+        paris_time: "Paris time"
+        contact_details_title: "Your contact details"
+        submit_request: "Send my request"
     cta:
       collections: "Discover our collections"
       rdv: "Book an appointment"
-      boutique: "The boutique"
+      boutique: "The shop"
       contact: "Contact us"
       produits: "View our products"
       ecrire: "Email us"
@@ -140,7 +157,7 @@ en:
     footer:
       navigation: "Navigation"
       home: "Home"
-      shop: "The boutique"
+      shop: "The shop"
       collections: "Collections"
       concept: "Concept"
       other_activities: "Other activities"
@@ -173,15 +190,564 @@ en:
             subtitle: "Complete your outfit with our carefully selected shoes and accessories"
         boutique_section:
           title: "The shop"
-          body: "Our Cannes boutique in the heart of the French Riviera and its prestigious events."
+          body: "Our Cannes shop in the heart of the French Riviera and its prestigious events."
         hero:
           title: "Wedding and Evening Wear"
           subtitle: "Collections designed to elevate your look"
           button_text: "Discover"
-      la_boutique:
-        header_title: "Cannes boutique"
-        header_subtitle: "Meet our team and discover our boutique"
+      nos_collections:
+        header_title: "Our collections"
+        header_subtitle: "Discover our selection of exceptional outfits"
+        intro_text: "Discover our collections of wedding dresses, evening wear, tuxedos, and accessories. Whether you are looking to rent or buy, our Cannes shop offers a carefully curated selection to elevate your most precious moments."
+        view_all_products: "View all products"
         cta_title: "Ready to discover our collections?"
+      rdv:
+        header_title: "Book an appointment"
+        header_subtitle: "Reserve your in-store time slot"
+        steps:
+          reservation:
+            title: "1. Reservation"
+            description: "Enter your contact details and choose the date that suits you to visit our shop."
+          confirmation:
+            title: "2. Confirmation"
+            description: "Receive a confirmation email for your appointment or a call from our team."
+          fitting:
+            title: "3. Fitting"
+            description: "Enjoy a personalized moment with our image consultants."
+      contact:
+        header_title: "Contact"
+        header_subtitle: "We are here to help"
+        introduction:
+          title: "Let's stay in touch"
+          description: "Our Autour D'Un Soir shop in Cannes is here for any question about our collections, or our outfit rental and sales services. Call us, write to us, or visit us directly in store."
+        cards:
+          phone:
+            title: "Phone"
+            description: "Call us directly for an immediate response"
+          email:
+            title: "Email"
+            description: "Write to us, we reply quickly"
+            button: "Write to us"
+          shop:
+            title: "Shop"
+            open_maps: "Open in Maps"
+        appointment:
+          title: "Book an appointment"
+          description: "Book a slot to discover our in-store collections, receive personalized advice, or come for your fittings. Our team welcomes you in the best conditions."
+          button: "Book an appointment"
+        hours_title: "Opening hours"
+        map:
+          title: "Find us"
+          subtitle: "Come discover our boutique in the heart of Cannes"
+          open_new_window: "Open in a new window"
+        form:
+          title: "Send us a message"
+          description: "Fill in the form below and we will get back to you as soon as possible"
+          submit: "Send message"
+          fields:
+            first_name:
+              label: "First name"
+              placeholder: "First name"
+            last_name:
+              label: "Last name *"
+              placeholder: "Last name *"
+            email:
+              label: "Email *"
+              placeholder: "Email *"
+            phone:
+              label: "Phone"
+              placeholder: "Phone"
+            subject:
+              label: "Subject"
+              placeholder: "Subject"
+            message:
+              label: "Message *"
+              placeholder: "Your message *"
+        cta:
+          title: "A question? A project?"
+          description: "Our team is looking forward to meeting and assisting you"
+      faq:
+        header_title: "FAQ"
+        header_subtitle: "Frequently asked questions"
+        intro: "Do you have questions? We have answers. Browse our FAQ to quickly find what you need."
+        nav:
+          general: "General questions"
+          location: "Outfit rental"
+          sale: "Outfit sales"
+          alterations: "Alterations and customization"
+          delivery: "Delivery and pickup"
+          payment: "Payment and pricing"
+        sections:
+          general:
+            title: "General questions"
+            q1:
+              question: "Where is your boutique located?"
+              contact_form: "contact form"
+              answer_html: "<p><strong>Autour D'Un Soir</strong><br>%{address}</p><p><strong>Opening hours:</strong><br>%{hours}</p><p class='mb-0'><strong>Contact:</strong><br>%{phone}<br>Email: (%{contact_link})</p>"
+            q2:
+              question: "Do I need an appointment?"
+              answer_html: "<p>An appointment is not mandatory but <strong>strongly recommended</strong>:</p><ul><li>Ensures a dedicated advisor is available</li><li>Lets us prepare a curated selection</li><li>Avoids waiting in high season</li><li>Required for fittings and alterations</li></ul><p class='mb-0'>Book online or by phone. Exception: during Cannes Festival, no appointment required.</p>"
+            q3:
+              question: "Can I come with family or friends for fittings?"
+              answer_html: "<p>Of course:</p><ul><li>Spacious fitting rooms</li><li>Comfortable waiting area</li><li>Friendly atmosphere</li></ul><p class='mb-0'>Please tell us how many people will come with you.</p>"
+            q4:
+              question: "What if there is an accident or stain?"
+              answer_html: "<p><strong>No worries.</strong> Please:</p><ol><li>Do not try to clean it yourself</li><li>Return the outfit normally, cleaning is included</li></ol><p>Light stains and normal wear are covered. Major damage may impact the deposit.</p>"
+            q5:
+              question: "Do you have outfits for children?"
+              answer_html: "<p>Yes, we offer outfits for boys:</p><ul><li>Suits (6 months to 18 years)</li><li>Rental or purchase</li><li>Matching accessories</li></ul><p class='mb-0'>Adjusted rates and included alterations, just like adults.</p>"
+          location:
+            title: "Outfit rental"
+            q1:
+              question: "How does outfit rental work?"
+              answer_html: "<p>Rental is simple and flexible:</p><ol><li><strong>Browse</strong> online or in store</li><li><strong>Book</strong> your outfit and dates</li><li><strong>Try on</strong> during an appointment</li><li><strong>Pick up</strong> before your event</li><li><strong>Return</strong> on time</li></ol><p class='mb-0'>Care and cleaning are included.</p>"
+            q2:
+              question: "What is the standard rental period?"
+              answer_html: "<p>The standard period is <strong>4 days</strong>:</p><ul><li>Pickup: 2 days before event</li><li>Return: 2 days after event</li></ul><p class='mb-0'>Longer rentals are possible on request.</p>"
+            q3:
+              question: "How far in advance should I book?"
+              answer_html: "<p>Recommended:</p><ul><li><strong>2-3 months</strong> for weddings</li><li><strong>3-4 weeks</strong> for standard events</li><li><strong>1-2 weeks minimum</strong> for urgent needs</li></ul><p class='mb-0'>Earlier booking means more choice.</p>"
+            q4:
+              question: "What if the outfit does not fit?"
+              answer_html: "<p>We offer:</p><ul><li><strong>Free minor alterations</strong></li><li><strong>Pre-fitting</strong> before event</li><li><strong>Exchange</strong> if needed</li></ul><p class='mb-0'>Our workshop ensures a perfect fit.</p>"
+            q5:
+              question: "How much is the deposit?"
+              answer_html: "<p>A deposit proportional to the outfit value is required.</p><p class='mb-0'>It is fully returned if the outfit is returned on time and in good condition.</p>"
+            q6:
+              question: "Can I rent a wedding dress?"
+              answer_html: "<p>We do not rent wedding dresses for quality reasons.</p><p>We want each dress to be perfect for your special day.</p><p class='mb-0'>Final alterations are essential.</p>"
+            q7:
+              question: "Can I rent a dress online?"
+              answer_html: "<p>Not at the moment.</p><p class='mb-0'>Our in-store advice and alterations are part of the service quality.</p>"
+          sale:
+            title: "Outfit sales"
+            q1:
+              question: "Can I buy an outfit I rented?"
+              answer_html: "<p>Yes.</p><ul><li><strong>Buy-after-rent option</strong></li><li><strong>Installment payment</strong> possible</li></ul><p class='mb-0'>Contact us for details.</p>"
+            q2:
+              question: "Do you sell new outfits?"
+              answer_html: "<p>Yes, including:</p><ul><li>Designer collections</li><li>Custom outfits</li><li>Matching accessories</li></ul><p class='mb-0'>Visit our boutique to discover them.</p>"
+            q3:
+              question: "What is the withdrawal period?"
+              answer_html: "<p>You have <strong>14 days</strong> to exercise your right of withdrawal.</p><p>Conditions:</p><ul><li>Original condition</li><li>Unworn with tags</li><li>Original packaging</li><li>Not altered</li></ul><p class='mb-0'>Refund within 14 days after receiving returned product.</p>"
+          alterations:
+            title: "Alterations and customization"
+            q1:
+              question: "Are alterations included in rental price?"
+              answer_html: "<p>Yes, minor alterations are included:</p><ul><li>Hem adjustments</li><li>Waist adjustments</li><li>Simple modifications</li></ul><p>Complex work may require a quote.</p>"
+            q2:
+              question: "Are alterations included in sale price?"
+              answer_html: "<p>For outfits over <strong>1000 EUR</strong>, length alterations are included.</p><p>All other changes require a quote before approval.</p>"
+            q3:
+              question: "What are alteration lead times?"
+              answer_html: "<p>Depending on complexity:</p><ul><li><strong>Simple</strong>: 2-3 days</li><li><strong>Standard</strong>: 5-7 days</li><li><strong>Complex</strong>: 10-14 days</li><li><strong>Express</strong>: 24-48h with surcharge</li></ul><p class='mb-0'>We adapt timing to workshop availability.</p>"
+            q4:
+              question: "Do you offer bespoke creations?"
+              answer_html: "<p>Yes, including:</p><ul><li>Custom wedding dresses</li><li>Personalized suits</li><li>Designer modifications</li><li>Period costume replicas</li></ul><p class='mb-0'>Book an appointment for a personalized quote.</p>"
+            q5:
+              question: "Do you alter items not bought in your boutique?"
+              answer_html: "<p>No, our workshop is fully dedicated to in-boutique items.</p>"
+          delivery:
+            title: "Delivery and pickup"
+            q1:
+              question: "Do you offer home delivery?"
+              answer_html: "<p>Yes, options include:</p><ul><li><strong>In-store pickup</strong>: free</li><li><strong>Home delivery</strong>: for purchased items</li></ul><p class='mb-0'>Fees are provided at checkout.</p>"
+            q2:
+              question: "How do I return my rental?"
+              answer_html: "<p>You can return:</p><ul><li><strong>In store</strong></li><li><strong>By courier</strong> (Cannes hotels)</li><li><strong>Drop-off point</strong> 7/7</li></ul><p class='mb-0'>Please do not clean the outfit yourself.</p>"
+          payment:
+            title: "Payment and pricing"
+            q1:
+              question: "What payment methods do you accept?"
+              answer_html: "<p>We accept:</p><ul><li><strong>Cards</strong></li><li><strong>Cash</strong> in store</li><li><strong>Checks</strong> (conditions apply)</li><li><strong>Bank transfer</strong></li><li><strong>Secure online payment</strong></li></ul>"
+            q2:
+              question: "Is a deposit required at booking?"
+              answer_html: "<p>Yes, a <strong>30%</strong> deposit is required.</p><ul><li>Secures your outfit</li><li>Balance paid at pickup</li><li>Rental deposit paid separately</li></ul>"
+            q3:
+              question: "Do you offer group pricing?"
+              answer_html: "<p>Yes, we offer preferential group rates.</p><ul><li>Custom quote based on your project</li></ul><p class='mb-0'>Ideal for weddings, processions, and corporate events.</p>"
+        cta:
+          title: "Can't find the answer to your question?"
+          description: "Our team is here to help. Feel free to contact us."
+          contact_button: "Contact us"
+          call_button: "Call us"
+        back_to_top: "Back to top"
+      legal:
+        header_title: "Legal"
+        header_subtitle: "Legal notice and general terms"
+        intro: "Find all legal information, our general terms, and our privacy policy here. Transparency and compliance are our priorities."
+        nav:
+          legal_notices: "Legal notice"
+          terms_of_sale: "General terms of sale"
+          rental_terms: "Rental terms"
+          privacy_policy: "Privacy policy"
+          cookies_policy: "Cookies policy"
+          intellectual_property: "Intellectual property"
+        sections:
+          legal_notices:
+            title: "Legal notice"
+            publisher_title: "Website publisher"
+            publisher_text_html: "<strong>Autour D'Un Soir</strong><br>Legal form: LLC<br>Share capital: 75,000.00 EUR<br>Registered office: 29 Boulevard Carnot 06400 Cannes<br>Trade register: 880 559 414 R.C.S. Cannes<br>SIRET: 88055941400011<br>VAT number: FR42880559414<br>Email: (%{contact_form_link})<br>Phone: 04 93 45 17 17"
+            publication_director_title: "Publication director"
+            publication_director_name: "Sophie Glasman"
+            hosting_title: "Hosting"
+            hosting_text_html: "The website is hosted by:<br>HEROKU<br>whose registered office is located at 415 Mission Street, 3rd Floor, San Francisco, CA 94105, United States,<br>phone: +1 (415) 901-7000."
+            credits_title: "Credits"
+            credits_text: "Photography: company suppliers and royalty-free image banks"
+          cgv:
+            main_title: "General Terms of Sale"
+            scope_definitions: "Scope and definitions"
+            our_contract: "Our contract"
+            order_process: "Order process"
+            delivery: "Product delivery"
+            pricing_shipping: "Pricing and shipping fees"
+            colissimo_title: "Colissimo signed delivery:"
+            payment_default: "Payment and default"
+            withdrawal_right: "Right of withdrawal"
+            guarantees: "Guarantees"
+            personal_information: "Your personal information"
+            liability: "Liability"
+            website_availability: "Website availability and usage"
+            comments_claims: "Comments and claims"
+            ip_rights: "Intellectual property rights"
+            service_changes: "Service or terms changes"
+            no_waiver: "Non-waiver"
+            final_provisions: "Final provisions"
+            legal_information: "Legal information"
+          rental_terms:
+            title: "General Rental Terms"
+            alert: "Please read these terms carefully before booking"
+          privacy_policy:
+            title: "Privacy Policy"
+            data_collection: "Data collection"
+            data_collection_text_html: "Autour D'Un Soir collects the following personal data as part of its activity:<br>• First and last name<br>• Email address<br>• Phone number<br>• Postal address<br>• Payment information<br>• Measurements (for rentals and customizations)"
+            data_use: "Data use"
+            data_use_text_html: "Collected data is used to:<br>• Process orders and bookings<br>• Manage customer relationships<br>• Send commercial information (with consent)<br>• Improve our services<br>• Comply with legal obligations"
+            data_protection: "Data protection"
+            data_protection_text: "Autour D'Un Soir implements all appropriate technical and organizational measures to protect your personal data against destruction, loss, alteration, unauthorized disclosure, or unauthorized access."
+            your_rights: "Your rights"
+            your_rights_text_html: "In accordance with GDPR, you have the following rights:<br>• Right of access<br>• Right to rectification<br>• Right to erasure<br>• Right to restriction of processing<br>• Right to portability<br>• Right to object<br>To exercise your rights, contact us via (%{contact_form_link})"
+            data_retention: "Data retention"
+            data_retention_text: "Your data is retained for the period necessary for the purposes for which it is processed, and in accordance with legal retention obligations."
+            data_transfer: "Data transfer"
+            data_transfer_text: "Your personal data is not transferred outside the European Union. It may be shared with our service providers (payment, delivery) only for the performance of our services."
+          cookies:
+            title: "Cookies Policy"
+            what_is_cookie: "What is a cookie?"
+            what_is_cookie_text: "A cookie is a small text file stored on your computer or mobile device when visiting our website. Cookies help remember your preferences and improve your browsing experience."
+            types_used: "Types of cookies used"
+            essential_title: "Essential cookies"
+            essential_text: "Required for website operation (cart, login, security)"
+            performance_title: "Performance cookies"
+            performance_text: "Used to analyze website usage and improve our services"
+            functionality_title: "Functionality cookies"
+            functionality_text: "Remember your preferences (language, region, display)"
+            advertising_title: "Advertising cookies"
+            advertising_text: "Used to display relevant ads (with your consent)"
+            management: "Cookie management"
+            management_text: "You can change your cookie preferences at any time by clicking the \"Manage cookies\" button at the bottom of the page. You can also configure your browser to reject all cookies or to alert you when a cookie is sent."
+            warning: "Warning: refusing essential cookies may affect website functionality"
+          intellectual_property:
+            title: "Intellectual Property"
+            content_1: "All website content (texts, images, videos, logos, graphics, etc.) is the exclusive property of Autour D'Un Soir or its partners. Any reproduction, representation, modification, publication, or adaptation of all or part of website elements, by any means or process, is prohibited without prior written authorization from Autour D'Un Soir."
+            content_2: "Any unauthorized use of the website or any element it contains will be considered infringement and prosecuted in accordance with applicable intellectual property law."
+            trademarks: "Trademarks"
+            trademarks_text: "\"Autour D'Un Soir\" and its logo are registered trademarks. Any reproduction or use of these marks without express authorization is strictly prohibited."
+            hyperlinks: "Hyperlinks"
+            hyperlinks_text: "Creating hyperlinks to the Autour D'Un Soir website requires prior authorization. Autour D'Un Soir reserves the right to request removal of a link if the source website does not comply with applicable laws."
+        contact_form: "contact form"
+        cta_questions:
+          title: "Questions or claims?"
+          description: "For any question regarding these terms or any claim, feel free to contact us."
+          contact_button: "Contact us"
+          mediation_title: "Mediation and disputes"
+          mediation_text_html: "In accordance with Article L.612-1 of the French Consumer Code, you may use a consumer mediator free of charge in case of dispute. Mediator details are available upon request.<br>In case of dispute, French courts shall have exclusive jurisdiction."
+        back_to_top: "Back to top"
+        articles:
+          perimetre:
+            a1: { title: "Scope of terms", content: "These General Terms of Sale apply as soon as you access the Autour D'Un Soir online shop at https://a1soir.com/ (the \"Website\") or place orders by phone. However, these terms do not apply to purchases made directly in our Cannes boutique." }
+            a2: { title: "Definitions", content: "References to \"we\" or \"our\" mean Autour D'Un Soir, while \"you\" refers to the user of the Website." }
+            a3: { title: "Acceptance of terms", content: "Please read these terms carefully before using the Website and placing an order. By accessing any part of the Website or ordering products, you agree to be bound by these terms. We recommend keeping a copy for future reference." }
+            a4: { title: "Language and applicability", content: "These terms are available only in French and apply to orders delivered in France." }
+          contrat:
+            a1: { title: "Product availability", content: "All products and services offered on the Website are subject to availability." }
+            a2: { title: "Order finalization", content: "Finalizing your order means accepting our offer and confirming your intention to purchase products or services as described on the Website, at the stated price, and acknowledging that the order creates a payment obligation." }
+            a3: { title: "Personal use", content: "The Website is intended exclusively for private consumers and personal use. Products must not be resold or used for commercial purposes. We reserve the right to refuse multiple-item orders from one customer or to one address." }
+          deroulement:
+            a1: { title: "Item selection", content: "You can select items from our product range and add them to your cart by clicking \"Add to Cart\"." }
+            a2: { title: "Purchase process", content: "By clicking \"Order\", you start the purchase process. You will review item references, sizes, prices, quantities, delivery methods, related costs, and available options, then provide your personal data and payment details." }
+            a3: { title: "Acceptance of terms", content: "You must check the box accepting the general terms of sale before validating your order. By clicking \"Order\", you finalize your order subject to product availability and payment validity." }
+            a4: { title: "Confirmation email", content: "You will automatically receive an email confirming receipt and details of your order. This is only an acknowledgment of receipt, not confirmation of product availability." }
+            a5: { title: "Delivery email", content: "You will receive a second email confirming availability of ordered products. If none are available, your order is canceled and your card is not charged. If only some products are available, only those are delivered and charged." }
+          prix_frais:
+            intro: "All prices shown on the Website include VAT at the legal rate in effect on the billing date. Prices are in euros and exclude shipping fees. In rare cases, pricing errors may occur. If a correct price is lower, we charge the lower price. If higher, we may contact you or cancel the order."
+          livraison:
+            a1: { title: "Delivery areas", content: "We deliver products only in Metropolitan France and Corsica, excluding all other territories including military sites." }
+            a2: { title: "Delivery times", content: "Estimated delivery times are 7 business days (excluding Saturdays, Sundays, and public holidays) from the Delivery Email. Delivery may take longer for hard-to-reach areas. We will make our best efforts to deliver within the indicated timeframe." }
+            a3: { title: "Delivery timeframe guarantee", content: "Although we make every effort to deliver within the stated timelines, delivery dates are estimates only and are not guaranteed. Delays may occur due to postal services, carriers, logistics, or weather conditions. However, a maximum period of thirty (30) days from the Delivery Email is guaranteed." }
+            a4: { title: "Late delivery", content_html: "If we cannot meet the initial delivery timeline indicated in the Delivery Email, we will inform you as soon as possible and provide a revised estimate, without liability. You may cancel your order if total delivery exceeds thirty (30) days. To cancel, contact us via %{contact_link}. We will refund the card used for payment within fourteen (14) days of receiving your cancellation request." }
+            a5: { title: "Receipt verification", content: "If you have not received your order within the indicated timeframe, first check with your local post office whether they hold your parcel. If not, contact us and we will assist you. Delivery delays may occur during seasonal peaks or due to weather or unforeseen events. The carrier requires a signature upon delivery." }
+            a6: { title: "Multiple deliveries", content: "If you order multiple products, we may need to deliver them in several shipments. If so, you will be informed in advance." }
+            a7: { title: "Parcel inspection", content_html: "When receiving your parcel, please check its condition. You are responsible for the parcel and its contents once delivered. In case of issue (opened parcel, empty parcel, damaged content), refuse the parcel and contact customer service to report the reason (customer service: %{contact_link}). If missing items are not reported with proper reservation, Autour D'Un Soir cannot be held responsible and we cannot guarantee reimbursement." }
+            a8: { title: "Delivery address", content: "Your order will be sent to the delivery address provided at checkout. We cannot be held responsible if this address is incorrect or incomplete." }
+          cgl:
+            a1: { title: "Purpose of rental", content: "These general terms govern rental of outfits and accessories offered by Autour D'Un Soir. Each rental is personal and nominative." }
+            a2: { title: "Booking", content: "Rental booking can be made in boutique only. It becomes final after payment of a 30% deposit. The balance is due no later than pickup." }
+            a3: { title: "Rental duration", content: "Standard rental duration is 3-4 days. Pickup and return dates are specified at booking. Any extension must be approved in advance and will incur additional charges." }
+            a4: { title: "Deposit", content_html: "A deposit proportional to the outfit value is required at pickup.<br>The deposit may be retained in whole or in part in case of:<br>• Late return<br>• Significant damage or heavy soiling<br>• Loss or theft of rented item<br>• Breach of rental terms" }
+            a5: { title: "Fitting and alterations", content: "A prior fitting is strongly recommended. Minor alterations may be done free of charge within reason. Major alterations require a quote and additional charge." }
+            a6: { title: "Renter responsibility", content_html: "The renter agrees to:<br>• Take care of the rented outfit<br>• Not modify or alter the item<br>• Not sub-rent the outfit<br>• Return the outfit on time<br>• Report any accidental damage immediately" }
+            a7: { title: "Cancellation", content_html: "If canceled by the customer:<br>• Within 14 days of booking: full refund<br>• After 14 days: store credit valid for 1 year<br>The deposit remains due to Autour D'Un Soir except in justified force majeure cases." }
+            a8: { title: "Maintenance", content: "Maintenance and cleaning are included in rental price. The renter must never clean the outfit themselves. Exceptional soiling requiring special treatment may incur extra fees." }
+            a9: { title: "Insurance", content: "We recommend that renters subscribe to insurance covering possible damages, such as civil liability insurance." }
+          paiement:
+            a1: { title: "Payment methods", content: "Payment for products must be made by bank card, American Express, or Apple Pay, according to the instructions shown on the payment page." }
+            a2: { title: "Card charge", content: "Full payment, including shipping and any additional service fees, will be charged to your card or Apple Pay account after product availability is verified, at or shortly before shipment. We will deliver products only if payment is successful." }
+            a3: { title: "Card validation", content: "You confirm that the bank card used is yours. Cardholders are subject to validation checks and issuer authorization. If your card issuer refuses authorization, we may refuse delivery and are not responsible for resulting delays or non-delivery. We will inform you by email." }
+            a4: { title: "Bank data security", content: "Your banking data is processed securely, in accordance with our Privacy Policy available above in this document." }
+          retractation:
+            a1: { title: "Return of products", content: "You may return only products purchased directly on the Website. Products bought in our Cannes boutique must be returned to the store. We reserve the right to refuse returns that do not meet the conditions below; return shipping costs are at your expense." }
+            a2: { title: "Withdrawal conditions", content: "If for any reason you are not satisfied or wish to cancel, you may exercise your right of withdrawal no later than fourteen (14) days after receiving your order, subject to the conditions stated in this article and applicable law." }
+            a3: { title: "Refund", content: "In accordance with consumer law, we refund product prices and delivery costs to the original payment method. Refunds are made as soon as possible and no later than fourteen (14) days after receiving returned goods." }
+            a4: { title: "Care of products", content: "Please take care of products while in your possession and return them without undue delay, no later than fourteen (14) days after exercising withdrawal. If products are not properly cared for or returned under stated conditions, refund may be refused." }
+          garanties:
+            a1: { title: "Scope", content: "You benefit from the guarantees listed in this section only for products purchased directly on the Website." }
+            a2: { title: "Legal conformity guarantee", content_html: "You benefit from legal guarantees, including conformity guarantee. If products are non-compliant, you have two years from delivery to contact customer service via %{contact_link} or by mail, and return non-compliant products. We will send replacement products when available, or provide appropriate remedy." }
+            a3: { title: "Proof of defect", content: "You are exempt from proving the existence of a conformity defect during the first twenty-four (24) months after delivery." }
+            a4: { title: "Independence of guarantees", content: "The legal conformity guarantee applies independently of any commercial guarantee and regardless of product nature." }
+            a5: { title: "Hidden defects guarantee", content: "The legal guarantee against hidden defects applies. If a hidden defect is proven, we are legally required to remedy its consequences. You may choose rescission of sale or price reduction in accordance with civil law." }
+            a6: { title: "Return shipping costs", content: "In case of replacement or refund, we cover return shipping costs." }
+          informations_personnelles:
+            a1: { title: "Accuracy of information", content: "By providing information on the Website, you guarantee your true identity and that all information provided is true, accurate, up to date, and complete." }
+            a2: { title: "Information updates", content: "If information provided is incorrect or no longer valid, you must update it. Otherwise, we cannot be held liable for resulting consequences." }
+            a3: { title: "Use of information", content: "Personal information provided through the Website is recorded and used only in accordance with our Privacy Policy, available above." }
+            a4: { title: "Data storage", content: "By placing an order, you accept that we may store and process your personal data. We fully respect the privacy of users of this Website." }
+          responsabilite:
+            a1: { title: "Limitation of liability", content: "We are not liable for losses or damages resulting from force majeure, unforeseeable and unavoidable acts of third parties, or your own actions." }
+            a2: { title: "Breach of terms", content: "In case of breach of these terms, we will send formal notice to remedy. If unresolved after fifteen (15) days, we may refuse access to the Website or future orders." }
+          disponibilite_site:
+            a1: { title: "Website availability", content: "The Website is provided as-is. We do not guarantee uninterrupted 24/7 availability. Access may be interrupted without notice for technical issues or maintenance." }
+            a2: { title: "Device protection", content: "You are responsible for protecting your computer or any device used to access the Website. We are not liable for device damage or data loss resulting from Website use." }
+          commentaires_reclamations:
+            content_html: "We invite you to share feedback so we can continuously improve. Our goal is to resolve issues quickly and fairly. Please send comments, questions, or claims via customer service through the Contact section (%{contact_link}). You may also call 04 93 45 17 17. If you file a claim, state it clearly; we aim to respond within seven (7) business days."
+          propriete_intellectuelle:
+            a1: { title: "No ownership rights", content: "Your use of the Website gives you no intellectual property rights over the Website or its content, including copyrights, designs, and trademarks owned by us or third parties." }
+            a2: { title: "Personal use", content: "The Website is made available for personal, non-commercial use only. Its content may not be used for other purposes without our express written permission." }
+          modification_cgv:
+            content: "We reserve the right to modify the Website and these terms at any time. Your use and orders are governed by terms in force at the time of use or order, unless legal or regulatory changes require otherwise."
+          non_renonciation:
+            content: "Failure by either party to enforce any provision of these terms does not constitute waiver, unless expressly and in writing."
+          stipulations_finales:
+            a1: { title: "Applicable law", content: "These terms are governed by French law." }
+            a2: { title: "Severability", content: "If any provision of these terms is held invalid, void, or unenforceable, that provision is severable and does not affect validity or enforceability of remaining provisions." }
+            a3: { title: "Registered trademarks", content: "Autour D'Un Soir and brands sold on the website are registered trademarks." }
+          informations_legales:
+            a1: { title: "Website publisher", content: "The Website is published by Autour D'Un Soir, a limited liability company with share capital of EUR 75,000, registered office at 29 boulevard Carnot, 06400 Cannes, France, registered with the Cannes Trade and Companies Register under number 880 559 414, phone +33 (0)4.93.45.17.17." }
+            a2: { title: "Contact", content_html: "You can contact customer service via the Contact section on the online boutique (%{contact_link}). By phone Tuesday to Friday from 10:00 to 12:00 and 15:00 to 19:00, and Saturday from 10:00 to 16:00 at: 04 93 45 17 17." }
+      nos_autres_activites:
+        header_title: "Our other activities"
+        header_subtitle: "Explore all our services"
+        introduction:
+          title: "Much more than a simple shop"
+          description: "Beyond our evening wear collections, Autour D'Un Soir supports you in all your projects requiring exceptional outfits. Whether for a corporate event, an audiovisual production, or a historical reenactment, we are here for you."
+          features:
+            "1": "Period costumes"
+            "2": "Corporate events"
+            "3": "Audiovisual productions"
+        epoch_costumes:
+          title: "Period costumes"
+          description: "Dive into history with our exceptional collection of period costumes. From the 18th century to the Roaring Twenties, we offer a wide range of authentic outfits for themed events, stage productions, and historical reenactments."
+          periods_title: "Our available periods:"
+          periods:
+            "1": "Renaissance"
+            "2": "18th century"
+            "3": "Napoleonic era"
+            "4": "Belle Epoque"
+            "5": "1920s-1930s"
+            "6": "1950s-1960s"
+            "7": "1970s-1980s"
+            "8": "Custom costumes"
+          ideal_for: "Ideal for: themed weddings, costume parties, theater, cinema, historical reenactments"
+        business_services:
+          title: "Corporate & group services"
+          description: "For professionals and event organizers, we provide tailored solutions to outfit your teams and participants. Benefit from preferential rates and personalized support for your group projects."
+          services_title: "Our professional services:"
+          items:
+            corporate_events:
+              title: "Corporate events"
+              description: "Galas, gala evenings, cocktail parties, award ceremonies"
+            groups_associations:
+              title: "Groups & associations"
+              description: "Group weddings, processions, community events"
+            audiovisual_productions:
+              title: "Audiovisual productions"
+              description: "Cinema, television, music videos, advertising, photoshoots"
+            events:
+              title: "Event services"
+              description: "Trade shows, fashion shows, presentations, product launches"
+          benefits: "Benefits: group rates, simplified logistics, personalized advice, tailored quotes"
+        why_choose_us:
+          title: "Why choose us for your projects?"
+          items:
+            expertise:
+              title: "Expertise"
+              description: "Years of experience in dressing events of all scales"
+            large_stock:
+              title: "Large stock"
+              description: "Hundreds of outfits available to meet all your needs"
+            reactivity:
+              title: "Responsiveness"
+              description: "Express solutions and personalized support for urgent needs"
+            group_rates:
+              title: "Group rates"
+              description: "Advantageous conditions for bulk bookings"
+        cta:
+          title: "Got a project in mind? Let's talk!"
+          description: "Contact us to discuss your project and get a personalized quote. Our team is at your disposal to advise you."
+        references:
+          title: "They trust us"
+          subtitle: "Prestigious establishments trust us"
+      le_concept:
+        header_title: "The concept"
+        header_subtitle: "Discover our unique concept for outfit rental"
+        cta_title: "Ready to discover more?"
+        sticky_text:
+          block_1: "Autour D'Un Soir supports you at every step in your search for the perfect outfit. Our expert team listens to your needs, advises you, and guides you toward choices that reflect your personality and elevate your most precious moments."
+          block_2: "Discover our selection of evening outfits that combine sophistication and modernity. Each piece is carefully chosen to offer you a unique and memorable experience."
+          block_3: "Our commitment is to provide you with personalized service and exceptional outfits that will enhance your most important moments. Trust our expertise."
+        introduction:
+          title: "A new way to experience fashion"
+          description: "Autour D'Un Soir reinvents your fashion experience with an innovative concept that combines elegance, accessibility, and personalization. Whether for a wedding, an evening, or a special event, we offer you the freedom to choose how to wear fashion."
+          features:
+            "1": "Flexible rental"
+            "2": "Exclusive purchase"
+            "3": "Tailor-made"
+        pillars:
+          rental:
+            title: "Rental"
+            description: "Wear exceptional outfits without commitment. Our rental service gives you access to a haute couture wardrobe for your special events, at a fraction of the purchase price. Service available only at the Cannes shop. Wedding dresses excluded."
+            features:
+              "1": "Wide range of outfits and sizes"
+              "2": "Rental duration: 4 days or 1-week package"
+              "3": "Alterations included"
+              "4": "Maintenance included"
+          sale:
+            title: "Purchase"
+            description: "Fall in love with a piece? Make it yours. Our shop offers an exclusive selection of outfits and accessories you can buy to enrich your personal wardrobe."
+            features:
+              "1": "Exclusive collections"
+              "2": "Unique pieces"
+              "3": "Personalized advice"
+              "4": "Purchase option after rental"
+          customization:
+            title: "Customization"
+            description: "Every person is unique, and your outfit should be too. Our alteration and customization workshop ensures each piece fits your body shape and style perfectly."
+            features:
+              "1": "Made-to-measure alterations"
+              "2": "Express adjustments"
+              "3": "Custom creation"
+              "4": "Expert workshop service"
+        how_it_works:
+          title: "How does it work?"
+          step1:
+            title: "Browse"
+            description: "Explore our collections and find the perfect outfit for your event"
+          step2:
+            title: "Book"
+            description: "Choose a date for an in-store appointment or place an order for purchase"
+          step3:
+            title: "Customize"
+            description: "Benefit from our alteration services for a perfect fit"
+          step4:
+            title: "Shine"
+            description: "Wear your outfit with confidence at your event"
+      cabine_essayage:
+        header_title: "Fitting room"
+        header_subtitle: "Select your products and come try them in our shop"
+        cart_title: "My fitting room"
+        add_products: "Add products"
+        book_fitting: "Book my fitting"
+        empty_title: "Your fitting room is empty"
+        empty_text: "Start selecting your favorite outfits now for your next event."
+        steps:
+          selection:
+            title: "1. Selection"
+            text: "Browse our collection and add the outfits you like to your virtual fitting room."
+          reservation:
+            title: "2. Reservation"
+            text: "Enter your contact details and choose the date that suits you to visit the shop."
+          confirmation:
+            title: "3. Confirmation"
+            text: "Receive a confirmation email and our team prepares your outfits for your visit."
+          fitting:
+            title: "4. Fitting"
+            text: "Try your outfits in our fitting room with help from our style advisors."
+      la_boutique:
+        header_title: "Cannes shop"
+        header_subtitle: "Meet our team and discover our shop"
+        cta_title: "Ready to discover our collections?"
+        map:
+          title: "Find us"
+          subtitle: "Come discover our shop in the heart of Cannes"
+          open_in_google_maps: "Open in Google Maps"
+        rdv:
+          title: "Ready to meet us?"
+          subtitle: "Book your slot and come discover our world"
+        infos:
+          title: "Practical information"
+          subtitle: "Everything you need to visit us"
+          write_us: "Write to us"
+          contacts_title: "Contacts"
+          hours_title: "Opening hours"
+          address_title: "Address"
+        public_cards:
+          experience:
+            title: "Experience"
+            content: "<p class='text-center mb-0'>Over 20 years of experience in fashion and events. Our team knows trends and the expectations of every type of event.</p>"
+          expertise:
+            title: "Expertise"
+            content: "<p class='text-center mb-0'>Stylists specialized in styling, professional alterations on site, and personalized support for every client. Your satisfaction is our priority.</p>"
+          passion:
+            title: "Passion"
+            content: "<p class='text-center mb-0'>A team passionate about fashion and customer service. We take the time to listen to you to offer the perfect outfit that matches your expectations.</p>"
+          quality:
+            title: "Quality"
+            content: "<p class='text-center mb-0'>A rigorous selection of our designers and suppliers. We only offer exceptional quality pieces to guarantee your elegance.</p>"
+          advice:
+            title: "Advice"
+            content: "<p class='text-center mb-0'>Attentive listening to your needs, tailor-made advice and support throughout your project. We are here to guide you at every step.</p>"
+          trust:
+            title: "Trust"
+            content: "<p class='text-center mb-0'>Hundreds of satisfied clients trust us every year. Discover our reviews and testimonials to learn more about our service.</p>"
+        carousel:
+          evening_wear:
+            title: "Evening wear"
+            text: "Discover our large collection of dresses and evening outfits for all your events. Whether renting or buying, we help you choose the perfect look for your special occasion."
+          wedding_dresses:
+            title: "Wedding dresses"
+            text: "Find the wedding dress of your dreams in our exclusive selection. From classic lace to modern designs, every piece is chosen to elevate your most important day."
+          suits:
+            title: "Suits and tuxedos"
+            text: "Gentlemen, discover our collection of suits, tuxedos, and ceremony outfits. Elegance and refinement guaranteed for all your prestigious events."
+          accessories:
+            title: "Accessories and bespoke"
+            text: "Complete your look with our carefully selected accessories. We also offer alteration and tailoring services for a perfectly fitted outfit."
+        team:
+          title: "A team at your service"
+          p1: "Our passionate team is here to guide you:"
+          p2: "Sophie: a passionate costume designer for over 40 years - creative at heart!"
+          p3: "Charlotte: joined her mother in 2016 after 7 years of experience in marketing and fashion in Paris - passionate about wedding dresses!"
+          p4: "Sandra: joined the team in 2018 and enhances every outfit with her couture and alteration skills - couture expert."
+          p5: "Celia: discovered the team during Cannes Festival 2022 after 20 years at the Monaco Opera as dresser and seamstress. A creative and meticulous seamstress!"
+          p6: "Whether you are looking for a romantic wedding dress, an elegant evening outfit, or an exceptional suit."
+          p7: "We put our expertise at your service so you can shine during your events."
+        universe:
+          title: "Our world"
+          p1: "Step into the world of Autour D'Un Soir, where elegance meets excellence. Our Cannes shop welcomes you in a refined setting to help you choose your evening outfits."
+          p2: "Since our creation in 1980, we have been committed to offering you a unique experience, combining personalized advice with a carefully curated selection. Every visit is a chance to discover creations that elevate your most precious moments."
+          p3: "Discover our carefully selected collection of wedding dresses, evening wear, and suits. Each piece is chosen for its quality, elegance, and unique character."
+          p4: "We work with renowned designers and select only pieces that meet our standards of excellence. From noble fabrics to meticulous finishes, every detail matters to offer you the very best."
+          p5: "Whether you choose rental or purchase, we guarantee impeccable outfits, maintained with the utmost care. Our goal: to help you shine at your most important events."
         google_reviews:
           title: "Customer reviews"
           based_on: "Based on %{count} Google reviews"

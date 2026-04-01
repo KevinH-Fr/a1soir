@@ -4,18 +4,18 @@
   <div class="container">
     <div class="row mb-5" data-scroll-reveal>
       <div class="col-12 text-center">
-        <h2 class="mb-3" style="font-family: 'Playfair Display', serif; font-size: 2.5rem;">Informations pratiques</h2>
-        <p class="opacity-75" style="font-size: 1.1rem;">Toutes les informations pour nous rendre visite</p>
+        <h2 class="mb-3" style="font-family: 'Playfair Display', serif; font-size: 2.5rem;"><%= t("public.pages.la_boutique.infos.title") %></h2>
+        <p class="opacity-75" style="font-size: 1.1rem;"><%= t("public.pages.la_boutique.infos.subtitle") %></p>
       </div>
     </div>
     
     <div class="row g-4 justify-content-center" data-scroll-reveal>
       <div class="col-12 col-md-6 col-lg-4 d-flex">
-        <% contact_button = link_to('Nous écrire', "#{contact_path}#message-form", class: 'btn btn-outline-dark btn-sm public-btn-border-radius px-4') %>
+        <% contact_button = link_to(t("public.pages.la_boutique.infos.write_us"), "#{contact_path}#message-form", class: 'btn btn-outline-dark btn-sm public-btn-border-radius px-4') %>
         <% contact_content = "#{@texteContact}<div class='text-start mt-2'>#{contact_button}</div>" %>
         <%= public_card(
           icon: "person-lines-fill",
-          title: "Contacts",
+          title: t("public.pages.la_boutique.infos.contacts_title"),
           content: contact_content.html_safe,
           theme: "light",
           card_style: "info",
@@ -25,7 +25,7 @@
       <div class="col-12 col-md-6 col-lg-4 d-flex">
         <%= public_card(
           icon: "clock",
-          title: "Horaires",
+          title: t("public.pages.la_boutique.infos.hours_title"),
           content: @texteHoraire,
           theme: "light",
           card_style: "info",
@@ -35,7 +35,7 @@
       <div class="col-12 col-md-6 col-lg-4 d-flex">
         <%= public_card(
           icon: "geo-alt-fill",
-          title: "Adresse",
+          title: t("public.pages.la_boutique.infos.address_title"),
           content: @texteAdresse,
           theme: "light",
           card_style: "info",

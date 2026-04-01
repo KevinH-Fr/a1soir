@@ -5,9 +5,9 @@
         <div class="row justify-content-center">
           <div class="col-12 col-lg-8">
             <div class="p-4">
-              <h3 class="text-center mb-4 fw-bold">Envoyez-nous un message</h3>
+              <h3 class="text-center mb-4 fw-bold"><%= t("public.pages.contact.form.title") %></h3>
               <p class="text-center opacity-75 mb-4">
-                Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais
+                <%= t("public.pages.contact.form.description") %>
               </p>
               
                 <% if contact_message.errors.any? %>
@@ -24,14 +24,14 @@
                 <div class="row mb-3">
                     <div class="col-md-6 mb-1">
                     <div class="form-floating">
-                        <%= form.text_field :prenom, class: "form-control border-secondary", placeholder: "Prénom" %>
-                        <%= form.label :prenom, "Prénom" %>
+                        <%= form.text_field :prenom, class: "form-control border-secondary", placeholder: t("public.pages.contact.form.fields.first_name.placeholder") %>
+                        <%= form.label :prenom, t("public.pages.contact.form.fields.first_name.label") %>
                     </div>
                     </div>
                     <div class="col-md-6 mb-1">
                     <div class="form-floating">
-                        <%= form.text_field :nom, class: "form-control border-secondary", placeholder: "Nom *", required: true %>
-                        <%= form.label :nom, "Nom *" %>
+                        <%= form.text_field :nom, class: "form-control border-secondary", placeholder: t("public.pages.contact.form.fields.last_name.placeholder"), required: true %>
+                        <%= form.label :nom, t("public.pages.contact.form.fields.last_name.label") %>
                     </div>
                     </div>
                 </div>
@@ -39,29 +39,29 @@
                 <div class="row mb-3">
                     <div class="col-md-6 mb-1">
                     <div class="form-floating">
-                        <%= form.email_field :email, class: "form-control border-secondary", placeholder: "Email *", required: true %>
-                        <%= form.label :email, "Email *" %>
+                        <%= form.email_field :email, class: "form-control border-secondary", placeholder: t("public.pages.contact.form.fields.email.placeholder"), required: true %>
+                        <%= form.label :email, t("public.pages.contact.form.fields.email.label") %>
                     </div>
                     </div>
                     <div class="col-md-6 mb-1">
                     <div class="form-floating">
-                        <%= form.text_field :telephone, class: "form-control border-secondary", placeholder: "Téléphone" %>
-                        <%= form.label :telephone, "Téléphone" %>
+                        <%= form.text_field :telephone, class: "form-control border-secondary", placeholder: t("public.pages.contact.form.fields.phone.placeholder") %>
+                        <%= form.label :telephone, t("public.pages.contact.form.fields.phone.label") %>
                     </div>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <div class="form-floating">
-                    <%= form.text_field :sujet, class: "form-control border-secondary", placeholder: "Sujet" %>
-                    <%= form.label :sujet, "Sujet" %>
+                    <%= form.text_field :sujet, class: "form-control border-secondary", placeholder: t("public.pages.contact.form.fields.subject.placeholder") %>
+                    <%= form.label :sujet, t("public.pages.contact.form.fields.subject.label") %>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <div class="form-floating">
-                    <%= form.text_area :message, rows: 5, class: "form-control border-secondary", placeholder: "Votre message *", required: true, style: "height: 150px;" %>
-                    <%= form.label :message, "Message *" %>
+                    <%= form.text_area :message, rows: 5, class: "form-control border-secondary", placeholder: t("public.pages.contact.form.fields.message.placeholder"), required: true, style: "height: 150px;" %>
+                    <%= form.label :message, t("public.pages.contact.form.fields.message.label") %>
                     </div>
                 </div>
 
@@ -73,7 +73,7 @@
                 <!-- Bouton -->
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-dark btn-lg px-5 public-btn-border-radius">
-                    <i class="bi bi-send me-2"></i>Envoyer le message
+                    <i class="bi bi-send me-2"></i><%= t("public.pages.contact.form.submit") %>
                     </button>
                 </div>
                 <% end %>

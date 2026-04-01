@@ -5,14 +5,14 @@
       <div class="row justify-content-center">
         <div class="col-12 col-lg-8 text-center" data-scroll-reveal>
           <div class="concept-card p-5">
-            <h3 class="text-light mb-3" style="font-family: 'Playfair Display', serif; font-size: 2rem;">Prêt à nous rencontrer ?</h3>
+            <h3 class="text-light mb-3" style="font-family: 'Playfair Display', serif; font-size: 2rem;"><%= t("public.pages.la_boutique.rdv.title") %></h3>
             <p class="text-light opacity-75 mb-4" style="font-size: 1.1rem;">
-              Réservez votre créneau et venez découvrir notre univers
+              <%= t("public.pages.la_boutique.rdv.subtitle") %>
             </p>
             <%= link_to "#{rdv_url}#rdv-form",
                 class: "btn btn-sm btn-light px-3 ms-4 me-2 d-inline-flex align-items-center btn-rdv-hover public-btn-border-radius" do %>
               <i class="bi bi-calendar-check me-2"></i>
-              <span class="fw-bold text-uppercase small">Prendre rendez-vous</span>
+              <span class="fw-bold text-uppercase small"><%= t("public.navbar.book_appointment") %></span>
             <% end %>
           </div>
         </div>

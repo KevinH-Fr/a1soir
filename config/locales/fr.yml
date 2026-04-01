@@ -344,6 +344,23 @@ fr:
         description: "Retrouvez les réponses aux questions fréquentes."
 
   public:
+    cookie_banner:
+      title: "Préférences de cookies"
+      description: "Nous utilisons des cookies pour améliorer votre expérience et mesurer la performance de notre site."
+      learn_more: "En savoir plus"
+      refuse: "Refuser"
+      accept: "Accepter"
+    helpers:
+      quick_nav_links:
+        title: "Navigation rapide"
+    demande_rdv:
+      form:
+        select_date_title: "Sélectionnez une date"
+        back: "Retour"
+        select_time_title: "Choisissez un horaire"
+        paris_time: "Heure de Paris"
+        contact_details_title: "Vos coordonnées"
+        submit_request: "Envoyer ma demande"
     cta:
       collections: "Découvrir nos collections"
       rdv: "Prendre rendez-vous"
@@ -359,7 +376,7 @@ fr:
       collections: "Collections"
       fitting_room: "Cabine d'essayage"
       concept: "Concept"
-      other_activities: "Autres activites"
+      other_activities: "Autres activités"
     footer:
       navigation: "Navigation"
       home: "Accueil"
@@ -373,14 +390,14 @@ fr:
       contact: "Contact"
       follow_us: "Suivez-nous"
       legal: "Legal"
-      legal_mentions: "Mentions legales & CGV"
-      manage_cookies: "Gerer mes cookies"
-      copyright: "© %{year} Autour D'Un Soir - Tous droits reserves"
+      legal_mentions: "Mentions légales & CGV"
+      manage_cookies: "Gérer mes cookies"
+      copyright: "© %{year} Autour D'Un Soir - Tous droits réservés"
     pages:
       home:
         collections_title: "Nos collections"
         coups_de_coeur_title: "Nos coups de cœur"
-        cta_title: "Pret a decouvrir nos collections ?"
+        cta_title: "Prêt à découvrir nos collections ?"
         categories:
           wedding_dresses:
             title: "Robes de mariée"
@@ -401,10 +418,559 @@ fr:
           title: "Mariage et Tenues de Soirée"
           subtitle: "Des collections pour vous embellir"
           button_text: "Découvrir"
+      nos_collections:
+        header_title: "Nos collections"
+        header_subtitle: "Découvrez notre sélection de tenues d'exception"
+        intro_text: "Découvrez nos collections de robes de mariée, tenues de soirée, smokings et accessoires. Que vous cherchiez à louer ou acheter, notre boutique à Cannes vous propose une sélection soigneusement choisie pour sublimer vos moments les plus précieux."
+        view_all_products: "Voir tous les produits"
+        cta_title: "Prêt à découvrir nos collections ?"
+      rdv:
+        header_title: "Prendre rendez-vous"
+        header_subtitle: "Réservez votre créneau en boutique"
+        steps:
+          reservation:
+            title: "1. Réservation"
+            description: "Indiquez vos coordonnées et choisissez la date qui vous convient pour venir en boutique."
+          confirmation:
+            title: "2. Confirmation"
+            description: "Recevez un email de confirmation pour votre rendez-vous ou un appel de notre équipe."
+          fitting:
+            title: "3. Essayage"
+            description: "Profitez d'un moment personnalisé avec nos conseillères en image."
+      contact:
+        header_title: "Contact"
+        header_subtitle: "Nous sommes à votre écoute"
+        introduction:
+          title: "Restons en contact"
+          description: "Notre boutique Autour D'Un Soir à Cannes est à votre disposition pour toute question sur nos collections, nos services de location ou de vente de tenues. Appelez-nous, écrivez-nous ou venez nous rendre visite directement en boutique."
+        cards:
+          phone:
+            title: "Téléphone"
+            description: "Appelez-nous directement pour une réponse immédiate"
+          email:
+            title: "Email"
+            description: "Écrivez-nous, nous vous répondons rapidement"
+            button: "Nous écrire"
+          shop:
+            title: "Boutique"
+            open_maps: "Ouvrir dans Maps"
+        appointment:
+          title: "Prendre rendez-vous"
+          description: "Réservez un créneau pour découvrir nos collections en boutique, bénéficier de conseils personnalisés ou pour vos essayages. Notre équipe vous accueille dans les meilleures conditions."
+          button: "Réserver un rendez-vous"
+        hours_title: "Horaires d'ouverture"
+        map:
+          title: "Nous trouver"
+          subtitle: "Venez découvrir notre boutique au cœur de Cannes"
+          open_new_window: "Ouvrir dans une nouvelle fenêtre"
+        form:
+          title: "Envoyez-nous un message"
+          description: "Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais"
+          submit: "Envoyer le message"
+          fields:
+            first_name:
+              label: "Prénom"
+              placeholder: "Prénom"
+            last_name:
+              label: "Nom *"
+              placeholder: "Nom *"
+            email:
+              label: "Email *"
+              placeholder: "Email *"
+            phone:
+              label: "Téléphone"
+              placeholder: "Téléphone"
+            subject:
+              label: "Sujet"
+              placeholder: "Sujet"
+            message:
+              label: "Message *"
+              placeholder: "Votre message *"
+        cta:
+          title: "Une question ? Un projet ?"
+          description: "Notre équipe est impatiente de vous rencontrer et de vous accompagner"
+      faq:
+        header_title: "FAQ"
+        header_subtitle: "Questions fréquemment posées"
+        intro: "Vous avez des questions ? Nous avons les réponses ! Consultez notre FAQ pour trouver rapidement les informations dont vous avez besoin."
+        nav:
+          general: "Questions générales"
+          location: "Location de tenues"
+          sale: "Vente de tenues"
+          alterations: "Retouches et personnalisation"
+          delivery: "Livraison et retrait"
+          payment: "Paiement et tarifs"
+        sections:
+          general:
+            title: "Questions générales"
+            q1:
+              question: "Où se trouve votre boutique ?"
+              contact_form: "formulaire de contact"
+              answer_html: "<p><strong>Autour D'Un Soir</strong><br>%{address}</p><p><strong>Horaires d'ouverture :</strong><br>%{hours}</p><p class='mb-0'><strong>Contact :</strong><br>%{phone}<br>Email : (%{contact_link})</p>"
+            q2:
+              question: "Dois-je prendre rendez-vous ?"
+              answer_html: "<p>Le rendez-vous n'est pas obligatoire mais <strong>fortement recommandé</strong> :</p><ul><li>Garantit la disponibilité d'une conseillère dédiée</li><li>Permet de préparer une sélection adaptée à vos goûts</li><li>Évite l'attente, surtout en haute saison</li><li>Nécessaire pour les essayages et retouches</li></ul><p class='mb-0'>Réservez votre créneau en ligne ou par téléphone ! Exception : Pendant le Festival de Cannes, pas de rendez-vous nécessaire.</p>"
+            q3:
+              question: "Puis-je venir avec mes proches lors de l'essayage ?"
+              answer_html: "<p>Bien sûr ! Nous vous encourageons à venir accompagné(e) :</p><ul><li>Cabines d'essayage spacieuses</li><li>Espace d'attente confortable pour vos accompagnants</li><li>Ambiance conviviale et détendue</li></ul><p class='mb-0'>Merci de nous indiquer le nombre de personnes lors de la prise de rendez-vous.</p>"
+            q4:
+              question: "Que faire en cas d'accident ou de tache sur la tenue ?"
+              answer_html: "<p><strong>Pas de panique !</strong> Voici la marche à suivre :</p><ol><li><strong>Ne tentez pas de nettoyer</strong> vous-même la tache</li><li>Retournez la tenue normalement, le nettoyage est inclus</li></ol><p>Les taches légères et l'usure normale sont couvertes. En cas de dommage important, une partie de la caution pourra être retenue.</p>"
+            q5:
+              question: "Avez-vous des tenues pour enfants ?"
+              answer_html: "<p>Oui ! Nous proposons une belle sélection de tenues pour les garçons :</p><ul><li>Costumes pour garçons (6 mois à 18 ans)</li><li>Location ou vente</li><li>Accessoires assortis</li></ul><p class='mb-0'>Tarifs adaptés et retouches incluses, comme pour les adultes !</p>"
+          location:
+            title: "Location de tenues"
+            q1:
+              question: "Comment fonctionne la location de tenues ?"
+              answer_html: "<p>La location chez Autour D'Un Soir est simple et flexible :</p><ol><li><strong>Parcourez</strong> notre catalogue en ligne ou venez en boutique</li><li><strong>Réservez</strong> votre tenue en indiquant les dates souhaitées</li><li><strong>Essayez</strong> la tenue lors d'un rendez-vous (retouches incluses)</li><li><strong>Récupérez</strong> votre tenue avant l'événement</li><li><strong>Retournez</strong> la tenue dans les délais</li></ol><p class='mb-0'>L'entretien et le nettoyage sont inclus dans le prix de location.</p>"
+            q2:
+              question: "Quelle est la durée standard de location ?"
+              answer_html: "<p>La durée standard de location est de <strong>4 jours</strong> :</p><ul><li>Retrait : 2 jours avant votre événement</li><li>Retour : 2 jours après votre événement</li></ul><p class='mb-0'>Des locations plus longues sont possibles sur demande.</p>"
+            q3:
+              question: "Combien de temps à l'avance dois-je réserver ?"
+              answer_html: "<p>Nous recommandons de réserver :</p><ul><li><strong>2 à 3 mois</strong> pour les mariages</li><li><strong>3 à 4 semaines</strong> pour les événements classiques</li><li><strong>1 à 2 semaines minimum</strong> pour les urgences</li></ul><p class='mb-0'>Plus vous réservez tôt, plus vous avez de choix.</p>"
+            q4:
+              question: "Que se passe-t-il si la tenue ne me va pas ?"
+              answer_html: "<p>Pas de panique ! Nous proposons :</p><ul><li><strong>Retouches gratuites</strong> mineures</li><li><strong>Essayage préalable</strong> recommandé</li><li><strong>Échange possible</strong> si nécessaire</li></ul><p class='mb-0'>Notre atelier s'assure d'un ajustement parfait.</p>"
+            q5:
+              question: "Quel montant de caution est demandé ?"
+              answer_html: "<p>Une caution proportionnelle à la valeur de la tenue est demandée lors du retrait.</p><p class='mb-0'>Elle est restituée si la tenue est rendue en bon état et dans les délais.</p>"
+            q6:
+              question: "Peut-on louer une robe de mariée ?"
+              answer_html: "<p>Nous ne proposons pas de robe de mariée à la location pour des raisons de qualité.</p><p>Nous voulons garantir une robe parfaite pour votre grand jour.</p><p class='mb-0'>La coupe et les retouches définitives sont essentielles.</p>"
+            q7:
+              question: "Peut-on louer une robe en ligne ?"
+              answer_html: "<p>Nous ne proposons pas encore la location à distance.</p><p class='mb-0'>Notre conseil et nos retouches en boutique font partie intégrante du service.</p>"
+          sale:
+            title: "Vente de tenues"
+            q1:
+              question: "Puis-je acheter une tenue que j'ai louée ?"
+              answer_html: "<p>Oui, absolument !</p><ul><li><strong>Option d'achat</strong> après location</li><li><strong>Paiement en plusieurs fois</strong> possible</li></ul><p class='mb-0'>Contactez-nous pour les modalités.</p>"
+            q2:
+              question: "Proposez-vous des tenues neuves à la vente ?"
+              answer_html: "<p>Oui, nous proposons :</p><ul><li>Collections de créateurs</li><li>Tenues sur mesure</li><li>Accessoires assortis</li></ul><p class='mb-0'>Venez en boutique pour découvrir la sélection.</p>"
+            q3:
+              question: "Quel est le délai de rétractation ?"
+              answer_html: "<p>Vous disposez de <strong>14 jours</strong> pour exercer votre droit de rétractation.</p><p>Conditions :</p><ul><li>Tenue en état d'origine</li><li>Non portée avec étiquettes</li><li>Emballage d'origine</li><li>Tenue non retouchée</li></ul><p class='mb-0'>Remboursement sous 14 jours après réception du retour.</p>"
+          alterations:
+            title: "Retouches et personnalisation"
+            q1:
+              question: "Les retouches sont-elles incluses dans le prix de location ?"
+              answer_html: "<p>Oui, les retouches mineures sont incluses :</p><ul><li>Ourlets</li><li>Ajustement de taille</li><li>Modifications simples</li></ul><p>Les retouches complexes peuvent nécessiter un devis.</p>"
+            q2:
+              question: "Les retouches sont-elles incluses dans le prix de vente ?"
+              answer_html: "<p>Pour les tenues de plus de <strong>1000 €</strong>, les retouches de longueur sont incluses.</p><p>Toute autre retouche fait l'objet d'un <strong>devis</strong> avant validation.</p>"
+            q3:
+              question: "Quel est le délai pour les retouches ?"
+              answer_html: "<p>Selon la complexité :</p><ul><li><strong>Simples</strong> : 2 à 3 jours</li><li><strong>Standards</strong> : 5 à 7 jours</li><li><strong>Complexes</strong> : 10 à 14 jours</li><li><strong>Express</strong> : 24-48h avec supplément</li></ul><p class='mb-0'>Nous adaptons les délais à l'agenda de l'atelier.</p>"
+            q4:
+              question: "Proposez-vous des créations sur mesure ?"
+              answer_html: "<p>Oui, notre atelier propose :</p><ul><li>Robes de mariée sur mesure</li><li>Costumes personnalisés</li><li>Modifications de créateur</li><li>Répliques de costumes d'époque</li></ul><p class='mb-0'>Prenez rendez-vous pour un devis personnalisé.</p>"
+            q5:
+              question: "Est-ce que vous retouchez des produits qui ne viennent pas de votre boutique ?"
+              answer_html: "<p>Non, notre atelier est déjà pleinement mobilisé sur les tenues de la boutique.</p>"
+          delivery:
+            title: "Livraison et retrait"
+            q1:
+              question: "Proposez-vous la livraison à domicile ?"
+              answer_html: "<p>Oui, plusieurs options :</p><ul><li><strong>Retrait boutique</strong> : gratuit</li><li><strong>Livraison à domicile</strong> : pour les articles achetés</li></ul><p class='mb-0'>Les frais sont précisés lors de la validation.</p>"
+            q2:
+              question: "Comment retourner ma location ?"
+              answer_html: "<p>Vous pouvez retourner :</p><ul><li><strong>En boutique</strong></li><li><strong>Par coursier</strong> (hôtels de Cannes)</li><li><strong>Point de dépôt</strong> 7j/7</li></ul><p class='mb-0'>Ne nettoyez pas la tenue vous-même.</p>"
+          payment:
+            title: "Paiement et tarifs"
+            q1:
+              question: "Quels moyens de paiement acceptez-vous ?"
+              answer_html: "<p>Nous acceptons :</p><ul><li><strong>Cartes bancaires</strong></li><li><strong>Espèces</strong> en boutique</li><li><strong>Chèques</strong> (selon conditions)</li><li><strong>Virement</strong></li><li><strong>Paiement en ligne</strong> sécurisé</li></ul>"
+            q2:
+              question: "Faut-il payer un acompte à la réservation ?"
+              answer_html: "<p>Oui, un acompte de <strong>30%</strong> est requis.</p><ul><li>Il sécurise la tenue</li><li>Le solde est réglé au retrait</li><li>La caution est demandée séparément</li></ul>"
+            q3:
+              question: "Proposez-vous des tarifs de groupe ?"
+              answer_html: "<p>Oui, nous proposons des tarifs préférentiels pour les groupes.</p><ul><li>Devis adapté selon votre projet</li></ul><p class='mb-0'>Idéal pour mariages, cortèges et événements d'entreprise.</p>"
+        cta:
+          title: "Vous ne trouvez pas la réponse à votre question ?"
+          description: "Notre équipe est là pour vous aider ! N'hésitez pas à nous contacter."
+          contact_button: "Nous contacter"
+          call_button: "Appelez-nous"
+        back_to_top: "Retour en haut"
+      legal:
+        header_title: "Légal"
+        header_subtitle: "Mentions légales et conditions générales"
+        intro: "Retrouvez ici toutes les informations légales, nos conditions générales et notre politique de confidentialité. Transparence et conformité sont nos priorités."
+        nav:
+          legal_notices: "Mentions légales"
+          terms_of_sale: "Conditions générales de vente"
+          rental_terms: "Conditions de location"
+          privacy_policy: "Politique de confidentialité"
+          cookies_policy: "Politique des cookies"
+          intellectual_property: "Propriété intellectuelle"
+        sections:
+          legal_notices:
+            title: "Mentions légales"
+            publisher_title: "Éditeur du site"
+            publisher_text_html: "<strong>Autour D'Un Soir</strong><br>Forme juridique : SARL<br>Capital social : 75 000,00 Euros<br>Siège social : 29 Boulevard Carnot 06400 Cannes<br>RCS : 880 559 414 R.C.S. Cannes<br>SIRET : 88055941400011<br>TVA intracommunautaire : FR42880559414<br>Email : (%{contact_form_link})<br>Téléphone : 04 93 45 17 17"
+            publication_director_title: "Directeur de la publication"
+            publication_director_name: "Sophie Glasman"
+            hosting_title: "Hébergement"
+            hosting_text_html: "Le site est hébergé par :<br>HEROKU<br>dont le siège social est situé au 415 Mission Street, 3rd Floor, San Francisco, CA 94105, États-Unis,<br>téléphone : +1 (415) 901-7000."
+            credits_title: "Crédits"
+            credits_text: "Photographies : fournisseurs de la société et banques d'images libres de droits"
+          cgv:
+            main_title: "Conditions Générales de Vente"
+            scope_definitions: "Périmètre et définitions"
+            our_contract: "Notre contrat"
+            order_process: "Le déroulement de la commande"
+            delivery: "Livraison des produits"
+            pricing_shipping: "Prix et frais d'expédition"
+            colissimo_title: "Livraison Colissimo contre signature :"
+            payment_default: "Paiement et défaut de paiement"
+            withdrawal_right: "Droit de rétractation"
+            guarantees: "Garanties"
+            personal_information: "Vos informations personnelles"
+            liability: "Responsabilité"
+            website_availability: "Disponibilité et utilisation du Site Web"
+            comments_claims: "Commentaires et réclamations"
+            ip_rights: "Droits de la propriété intellectuelle"
+            service_changes: "Modification du service ou modification des CGV"
+            no_waiver: "Non-renonciation"
+            final_provisions: "Stipulations finales"
+            legal_information: "Informations légales"
+          rental_terms:
+            title: "Conditions Générales de Location"
+            alert: "Veuillez lire attentivement ces conditions avant toute réservation"
+          privacy_policy:
+            title: "Politique de Confidentialité"
+            data_collection: "Collecte des données"
+            data_collection_text_html: "Autour D'Un Soir collecte les données personnelles suivantes dans le cadre de son activité :<br>• Nom, prénom<br>• Adresse email<br>• Numéro de téléphone<br>• Adresse postale<br>• Informations de paiement<br>• Mensuration (pour les locations et personnalisations)"
+            data_use: "Utilisation des données"
+            data_use_text_html: "Les données collectées sont utilisées pour :<br>• Traiter les commandes et réservations<br>• Gérer la relation client<br>• Envoyer des informations commerciales (avec consentement)<br>• Améliorer nos services<br>• Respecter nos obligations légales"
+            data_protection: "Protection des données"
+            data_protection_text: "Autour D'Un Soir met en œuvre toutes les mesures techniques et organisationnelles appropriées pour protéger vos données personnelles contre la destruction, la perte, l'altération, la divulgation non autorisée ou l'accès non autorisé."
+            your_rights: "Vos droits"
+            your_rights_text_html: "Conformément au RGPD, vous disposez des droits suivants :<br>• Droit d'accès à vos données<br>• Droit de rectification<br>• Droit à l'effacement<br>• Droit à la limitation du traitement<br>• Droit à la portabilité<br>• Droit d'opposition<br>Pour exercer vos droits, contactez-nous à (%{contact_form_link})"
+            data_retention: "Conservation des données"
+            data_retention_text: "Vos données sont conservées pendant la durée nécessaire aux finalités pour lesquelles elles sont traitées, et conformément aux obligations légales de conservation."
+            data_transfer: "Transfert de données"
+            data_transfer_text: "Vos données personnelles ne sont pas transférées hors de l'Union Européenne. Elles peuvent être transmises à nos prestataires de services (paiement, livraison) uniquement dans le cadre de l'exécution de nos services."
+          cookies:
+            title: "Politique des Cookies"
+            what_is_cookie: "Qu'est-ce qu'un cookie ?"
+            what_is_cookie_text: "Un cookie est un petit fichier texte stocké sur votre ordinateur ou appareil mobile lors de votre visite sur notre site. Les cookies permettent de mémoriser vos préférences et d'améliorer votre expérience de navigation."
+            types_used: "Types de cookies utilisés"
+            essential_title: "Cookies essentiels"
+            essential_text: "Nécessaires au fonctionnement du site (panier, connexion, sécurité)"
+            performance_title: "Cookies de performance"
+            performance_text: "Permettent d'analyser l'utilisation du site pour améliorer nos services"
+            functionality_title: "Cookies de fonctionnalité"
+            functionality_text: "Mémorisent vos préférences (langue, région, affichage)"
+            advertising_title: "Cookies publicitaires"
+            advertising_text: "Utilisés pour afficher des publicités pertinentes (avec votre consentement)"
+            management: "Gestion des cookies"
+            management_text: "Vous pouvez à tout moment modifier vos préférences en matière de cookies en cliquant sur le bouton \"Gérer les cookies\" en bas de page. Vous pouvez également configurer votre navigateur pour refuser tous les cookies ou pour être averti lorsqu'un cookie est envoyé."
+            warning: "Attention : Le refus des cookies essentiels peut affecter le fonctionnement du site"
+          intellectual_property:
+            title: "Propriété Intellectuelle"
+            content_1: "L'ensemble du contenu de ce site (textes, images, vidéos, logos, graphismes, etc.) est la propriété exclusive de Autour D'Un Soir ou de ses partenaires. Toute reproduction, représentation, modification, publication, adaptation de tout ou partie des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite, sauf autorisation écrite préalable de Autour D'Un Soir."
+            content_2: "Toute exploitation non autorisée du site ou de l'un quelconque des éléments qu'il contient sera considérée comme constitutive d'une contrefaçon et poursuivie conformément aux dispositions des articles L.335-2 et suivants du Code de Propriété Intellectuelle."
+            trademarks: "Marques"
+            trademarks_text: "\"Autour D'Un Soir\" et son logo sont des marques déposées. Toute reproduction ou utilisation de ces marques sans autorisation expresse est strictement interdite."
+            hyperlinks: "Liens hypertextes"
+            hyperlinks_text: "La création de liens hypertextes vers le site Autour D'Un Soir nécessite une autorisation préalable. Autour D'Un Soir se réserve le droit de demander la suppression d'un lien s'il estime que le site source ne respecte pas les lois en vigueur."
+        contact_form: "formulaire de contact"
+        cta_questions:
+          title: "Questions ou réclamations ?"
+          description: "Pour toute question concernant ces conditions ou pour toute réclamation, n'hésitez pas à nous contacter."
+          contact_button: "Nous contacter"
+          mediation_title: "Médiation et litiges"
+          mediation_text_html: "Conformément à l'article L.612-1 du Code de la consommation, nous vous informons que vous pouvez recourir gratuitement à un médiateur de la consommation en cas de litige. Les coordonnées du médiateur seront communiquées sur demande.<br>En cas de litige, les tribunaux français seront seuls compétents."
+        back_to_top: "Retour en haut"
+        articles:
+          perimetre:
+            a1: { title: "Application des CGV", content: "Les présentes Conditions Générales de Vente (les « CGV ») sont applicables dès que vous accédez à la Boutique en ligne Autour D'Un Soir URL : https://a1soir.com/ (le « Site Web ») ou passez des commandes par téléphone. Toutefois, les présentes CGV ne s'appliquent pas à tout achat de produits à la Boutique Autour D'Un Soir de Cannes." }
+            a2: { title: "Définitions", content: "Les références à « nous » ou « notre » dans le cadre de ces CGV désigne la société Autour D'Un Soir, quand les références à « vous » ou « votre » vous désigne, en qualité d'utilisateur du Site Web." }
+            a3: { title: "Acceptation des CGV", content: "Nous vous demandons et remercions de lire attentivement ces CGV avant d'utiliser le Site Web et de passer votre commande. En accédant à l'une quelconque des parties du Site Web ou en commandant des produits sur le Site Web, vous acceptez être soumis à ces CGV. Nous vous recommandons de garder un exemplaire de ces CGV afin de pouvoir vous y référer ultérieurement." }
+            a4: { title: "Langue et applicabilité", content: "Ces CGV sont uniquement disponibles en français et sont applicables à toute commande livrée en France." }
+          contrat:
+            a1: { title: "Disponibilité des produits", content: "Tous les produits ou services proposés à la vente sur le Site Web le sont sous réserve de leur disponibilité." }
+            a2: { title: "Finalisation de la commande", content: "La finalisation de votre commande constitue l'acceptation de notre offre, c'est-à-dire qu'elle confirme votre volonté d'acquérir les produits ou services tels que décrits sur le Site Web, avec acceptation du prix proposé et reconnaissance que la passation de cette commande génère une obligation de paiement de votre part. Aussi, lorsque vous confirmez votre commande, vous acceptez d'être lié à notre entreprise par un contrat de vente, sous réserve de la disponibilité des produits et services et de la validation de votre paiement dans les conditions prévues ci-après." }
+            a3: { title: "Usage personnel", content: "Est ici rappelé que le Site Web est exclusivement destiné aux consommateurs particuliers, dans le cadre d'un usage personnel, y compris pour des cadeaux personnels, et ne devront être ni revendus, ni utilisés dans un contexte commercial, ni utilisés en vue de réaliser un bénéfice commercial. Nous nous réservons la possibilité de refuser les commandes de quantité multiple d'un même article émanant d'un seul client ou destinées à une seule adresse postale." }
+          deroulement:
+            a1: { title: "Sélection des articles", content: "Vous pouvez choisir des articles dans notre gamme de produits et les mettre dans votre « Panier » en cliquant sur le bouton « Ajouter au Panier »." }
+            a2: { title: "Processus d'achat", content: "En cliquant sur le bouton « Commander », vous initiez le processus d'achat des produits figurant dans votre Panier. Une page listant les produits que vous souhaitez acheter s'ouvre. Cette page indique la référence, la taille, le prix et la quantité d'articles que vous êtes sur le point d'acheter, et précise notamment les modes de livraison et les coûts liés applicables à votre commande, ainsi que tous les autres services et options que nous proposons ; vous validez le contenu de votre panier et les options que vous souhaitez retenir. Il vous sera alors demandé de nous communiquer les données personnelles vous concernant ; il vous sera également demandé de sélectionner votre mode de paiement, d'indiquer les informations y-afférentes." }
+            a3: { title: "Acceptation des CGV", content: "Au moment de remplir vos données personnelles vous avez obligation de cocher la case « j'accepte les conditions générales de vente » (présentées ici) sans quoi vous ne pourrez pas valider votre commande. En cliquant sur le bouton « Commander », vous finalisez la commande des produits figurant dans le Panier. La passation de votre commande par Internet constitue un contrat de vente entre vous et nous, sous réserve de la disponibilité des produits et services commandés et de la validité du moyen de paiement que vous utilisez." }
+            a4: { title: "Courriel de confirmation", content: "Vous recevrez automatiquement un courriel confirmant la réception et les détails de votre commande (« le Courriel de Confirmation de commande »). Nous vous recommandons d'imprimer et de conserver le Courriel de Confirmation. Le Courriel de Confirmation ne constitue pas une confirmation de la disponibilité des produits ; il s'agit simplement d'un accusé de réception automatique qui confirme le fait que nous avons reçu votre commande." }
+            a5: { title: "Courriel de livraison", content: "Nous vous enverrons un second courriel, qui constituera la confirmation de la disponibilité des produits commandés (le « Courriel de Livraison »), que nous vous recommandons également d'imprimer et de conserver. Si aucun des produits commandés n'est disponible, votre commande sera annulée, et votre carte bancaire ne sera pas débitée. Si une partie seulement des produits est disponible, ceux-ci vous seront envoyés conformément à ces CGV, et vous ne paierez que les produits livrés. Il vous appartient de conserver des copies des documents concernant votre commande (le Courriel de Confirmation, le Courriel de Livraison, ces CGV, et tout autre document utile). Par ailleurs, si le montant de votre commande excède 120 euros, nous conserverons une copie de votre commande dans nos dossiers, pour la durée prévue par la loi. Pendant cette durée, vous pouvez demander une copie de votre commande à n'importe quel moment. Dans ce cas, nous nous réservons le droit de vous facturer les coûts relatifs à la récupération et à l'envoi du document demandé." }
+          prix_frais:
+            intro: "Tous les prix indiqués sur le Site Web comprennent la taxe à la valeur ajoutée, au taux légal en vigueur à la date de facturation. Les prix indiqués sur le Site Web sont en euros et n'incluent pas les frais d'expédition. En dépit de tous nos efforts, il peut exceptionnellement arriver que des produits référencés sur le Site Web aient un prix erroné. Si le prix exact d'un produit est inférieur au prix indiqué, nous vous facturerons le prix inférieur et vous enverrons le produit. Si le prix exact d'un produit est supérieur au prix indiqué, nous vous facturerons le prix indiqué, sauf si celui-ci est dérisoire et manifestement erroné, auquel cas nous vous contacterons afin d'obtenir vos instructions, ou nous annulerons votre commande et vous informerons de cette annulation. Nos frais d'expédition sont les suivants et apparaîtrons dès la validation de votre commande avant le paiement:"
+          livraison:
+            a1: { title: "Zones de livraison", content: "Nous ne livrons nos produits qu'en France Métropolitaine et Corse, à l'exclusion de tous autres territoires y compris les sites des armées." }
+            a2: { title: "Délais de livraison", content: "Les délais de livraisons estimés sont de : 7 jours ouvrés (à l'exclusion des samedi, dimanches et jours fériés) à compter de l'envoi du Courriel de Livraison. Le délai peut être légèrement plus long lorsque les produits doivent être livrés dans des zones d'accès difficile. Nous ferons nos meilleurs efforts pour livrer les produits commandés dans le délai indiqué dans le Courriel de Livraison." }
+            a3: { title: "Garantie des délais", content: "Même si nous faisons tout notre possible pour livrer vos produits dans le respect des délais définis ci-dessus, les dates de livraison ne sont que des estimations, elles ne sont pas garanties, et elles ne sauraient être invoquées à notre encontre. Du retard ne peut pas être exclu, notamment du fait des services postaux, du ou des prestataires missionnés, des transporteurs, de la logistique ou encore des conditions météorologiques. Toutefois, le délai maximum de trente (30) jours à compter de la date de réception du Courriel de Livraison est garanti." }
+            a4: { title: "Retard de livraison", content_html: "Au cas où nous serions dans l'impossibilité de respecter le délai de livraison initialement prévu et figurant dans le Courriel de Livraison, nous vous en informerons dès que possible, en indiquant en même temps un nouveau délai de livraison estimé, sans encourir de responsabilité à votre égard, étant toutefois précisé que vous pouvez annuler votre commande si le délai total de livraison dépasse trente (30) jours. Pour annuler votre commande, vous devez nous envoyer un courriel via le formulaire de contact %{contact_link}. Nous recréditerons alors la carte bancaire utilisé pour passer la commande, dans les quatorze (14) jours de la réception du courriel notifiant son annulation." }
+            a5: { title: "Vérification de la réception", content: "Si vous n'avez pas reçu votre commande dans les délais indiqués, nous vous remercions de vérifier, dans un premier temps, auprès des agents de votre bureau de poste que ces derniers ne détiennent pas votre colis. S'ils vous confirment qu'ils ne détiennent par vos produits, nous vous remercions de bien vouloir nous contacter et nous ferons de notre mieux pour vous assister. Tous les délais de livraison peuvent être sujets à des retards dus à des périodes saisonnières ou de pleine activité, à des conditions climatiques ou circonstances imprévues, notamment sanitaires, mais nous ferons tout notre possible pour vous adresser votre commande dans les délais indiqués. Durant ces périodes exceptionnelles de pleine activité (ex : soldes, Noël) ou de conditions climatiques ou sanitaires particulièrement défavorables, nous vous saurions gré de nous laisser un jour de plus avant de nous contacter. Nous vous remercions de noter que le transporteur requerra une signature à la livraison et ne vous remettra pas les produits sans signature." }
+            a6: { title: "Livraisons multiples", content: "Si vous passez commande de nombreux produits, nous pouvons être obligés de livrer vos produits en plusieurs fois. S'il est nécessaire de procéder à plus d'une livraison, vous en serez informé à l'avance." }
+            a7: { title: "Contrôle du colis", content_html: "Nous attirons votre attention sur la nécessité, lors de la réception de votre colis de contrôler son état général. Vous serez responsables du colis et de son contenu lorsqu'il vous aura été remis. En cas de problème (colis ouvert, colis vide, contenu abîmé), vous devez refuser le colis et contacter notre Service Client pour signaler le problème et la raison du refus (service client : %{contact_link}). Nous vous informons qu'en cas de manquant sans réserve émise, Autour D'Un Soir ne pourra être tenu pour responsable et nous ne pourrons garantir un remboursement." }
+            a8: { title: "Adresse de livraison", content: "Votre commande sera envoyée à l'adresse de livraison que vous aurez indiquée lors de votre commande. Nous ne saurions être tenus pour responsables si cette adresse de livraison est incorrecte ou incomplète." }
+          cgl:
+            a1: { title: "Objet de la location", content: "Les présentes conditions générales régissent la location de tenues et accessoires proposés par Autour D'Un Soir. Chaque location est nominative et personnelle." }
+            a2: { title: "Réservation", content: "La réservation d'une location peut s'effectuer en boutique uniquement. Elle devient définitive après versement d'un acompte de 30% du montant total. Le solde est à régler au plus tard lors du retrait de la tenue." }
+            a3: { title: "Durée de location", content: "La durée standard de location est de 3-4 jours. Les dates de retrait et de retour sont précisées lors de la réservation. Toute prolongation doit être validée au préalable par Autour D'Un Soir et fera l'objet d'une facturation complémentaire." }
+            a4: { title: "Caution", content_html: "Une caution proportionnelle à la valeur de la tenue est demandée lors du retrait.<br>Cette caution pourra être conservée en tout ou partie en cas de :<br>• Retard de restitution<br>• Dommages ou salissures importantes<br>• Perte ou vol de l'article loué<br>• Non-respect des conditions de location" }
+            a5: { title: "Essayage et retouches", content: "Un essayage préalable est vivement recommandé. Des retouches mineures peuvent être effectuées gratuitement dans la limite du raisonnable. Les retouches importantes feront l'objet d'un devis et d'une facturation supplémentaire." }
+            a6: { title: "Responsabilité du locataire", content_html: "Le locataire s'engage à :<br>• Prendre soin de la tenue louée<br>• Ne pas modifier ou altérer l'article<br>• Ne pas sous-louer la tenue<br>• Restituer la tenue dans les délais convenus<br>• Signaler immédiatement tout dommage accidentel" }
+            a7: { title: "Annulation", content_html: "En cas d'annulation par le client :<br>• Dans les 14 jours suivants la réservation : remboursement intégral<br>• Après 14 jours : émission d'un avoir valable 1 an.<br>L'acompte reste acquis à Autour D'Un Soir sauf cas de force majeure justifié." }
+            a8: { title: "Entretien", content: "L'entretien et le nettoyage des tenues sont inclus dans le prix de location. Le locataire ne doit en aucun cas nettoyer lui-même la tenue. En cas de salissures exceptionnelles nécessitant un traitement spécial, des frais supplémentaires pourront être facturés." }
+            a9: { title: "Assurance", content: "Nous recommandons au locataire de souscrire une assurance couvrant les dommages éventuels de type assurance de responsabilité civile." }
+          paiement:
+            a1: { title: "Modes de paiement", content: "Le paiement de vos produits devra être effectué par carte bancaire, American Express ou Apple Pay, suivant les indications figurant sur la page concernant le paiement." }
+            a2: { title: "Débit de la carte", content: "Le paiement complet du prix, y compris les frais d'expédition et tous frais supplémentaires pour des services que vous aurez commandés, sera débité de votre carte bancaire ou de votre compte Apple Pay, après vérification de la disponibilité des produits commandés, au moment ou peu de temps avant l'expédition des produits chez vous. Nous ne vous livrerons les produits que si votre paiement est effectif." }
+            a3: { title: "Validation de la carte", content: "Vous confirmez que la carte bancaire utilisée est la vôtre. Tous les détenteurs de cartes bancaires sont soumis à des contrôles de validation et à l'autorisation par l'émetteur de la carte. Si l'émetteur de votre carte refuse d'autoriser le paiement, nous serons en droit de refuser de procéder à la livraison de votre commande et ne serons pas responsables de tout retard ou de toute absence de livraison. Nous vous enverrons un courriel pour vous informer du refus." }
+            a4: { title: "Sécurité des données bancaires", content: "Vos données bancaires seront traitées de manière sécurisée, conformément à notre Déclaration de Protection de la Vie Privée, que vous pouvez consulter plus haut dans ce document." }
+          retractation:
+            a1: { title: "Retour des produits", content: "Vous pouvez nous retourner uniquement les produits qui ont été achetés directement sur le Site Web. Si vous achetez vos produits dans notre boutique de Cannes, les produits devront être retournés au magasin. Nous nous réservons le droit de refuser le retour de marchandises qui n'auront pas été retournées dans le respect des stipulations prévues ci-après et les frais de transport pour le renvoi de chaque marchandise au lieu de livraison indiqué seront à votre charge." }
+            a2: { title: "Conditions de rétractation", content: "Si, pour quelque raison que ce soit, vous n'étiez pas satisfait de nos produits ou souhaitiez annuler votre commande, vous pouvez exercer votre droit de rétractation au plus tard dans les quatorze (14) jours suivants la réception de votre commande, et vous serez remboursé conformément aux dispositions de cet article, à condition : que les produits soient retournés leur conditionnement d'origine permettant leur transport à l'adresse mentionnée par le service client ; que les produits soient dans leur état initial avec l'étiquette attachée au produit, sans avoir été endommagés, tachés, lavés, modifiés ou portés (à l'exception de l'essayage), en y joignant l'emballage original et tous accessoires se rapportant aux produits, tels que les emballages ou notices d'utilisation, ainsi que la facture d'origine. Si le délai de rétractation de quatorze (14) jours expire un samedi, un dimanche ou un jour férié, ce délai est prolongé jusqu'au jour ouvré suivant. Pour tout achat réalisé sur notre Site Web, les demandes de rétractation, quel que soit le mode de livraison, devront toutes nous être adressées via l'adresse de contact sur notre site, ou par tout autre moyen de votre choix exprimant explicitement votre volonté de vous rétracter." }
+            a3: { title: "Remboursement", content: "Conformément aux dispositions de l'article L 221-24 du code de la consommation, nous rembourserons le prix des produits de votre commande ainsi que les frais de livraison en recréditant le moyen de paiement utilisé lors de votre commande initiale. Nous effectuerons ce remboursement dans les meilleurs délais et au plus tard dans les quatorze (14) jours suivants la réception des marchandises que vous nous aurez renvoyés. A défaut de remboursement sous ce délai, les sommes que nous vous devrions produiront intérêts aux conditions suivantes : 10 jours après l'expiration du délai : taux d'intérêt légal ; 10-20 jours de retard : taux d'intérêt de 5% ; 20-30 jours de retard : taux d'intérêt de 10% ; 30-60 jours de retard : taux d'intérêt de 20% ; 60-90 jours de retard : taux d'intérêt de 50% ; Au-delà de 90 jours : 5 points supplémentaires par nouveau mois de retard." }
+            a4: { title: "Soin des produits", content: "Nous vous demandons de prendre soin des produits pendant qu'ils sont en votre possession et de nous les retourner à l'adresse indiquée aux présentes, sans retard excessif et au plus tard dans les quatorze (14) jours suivants l'exercice de votre droit de rétractation. Veuillez prendre acte du fait que si vous ne prenez pas soin des produits, ou si vous ne nous les retournez pas en respectant les conditions prévues au présent article, vous ne pourrez pas réclamer le remboursement des produits." }
+          garanties:
+            a1: { title: "Champ d'application", content: "Vous bénéficiez des garanties énumérées au présent article 12 uniquement dans la mesure où les produits ont été achetés directement sur le Site Web." }
+            a2: { title: "Garantie légale de conformité", content_html: "Vous bénéficiez des garanties légales suivantes : La garantie légale de conformité (articles L.217-4 et suivants du Code de la consommation), Si vos produits sont non conformes (par exemple s'ils ne correspondent pas à la description donnée sur le site ou à votre commande), vous bénéficiez d'un délai de deux ans à compter de la délivrance du bien pour contacter notre Service Clientèle par courriel via le formulaire de contact %{contact_link}, ou par courrier postal à l'adresse suivante : Autour d'Un Soir, 29 Boulevard Carnot, 06400 Cannes, France, et nous retourner les produits non conformes. Nous vous renverrons alors des produits de remplacement, lorsque ceux-ci sont disponibles. Si nous ne sommes pas en mesure de remplacer les produits non conformes dans un délai de trente (30) jours, vous pouvez : demander un remboursement intégral des produits non conformes ou conserver les produits non conformes et nous demander une réduction d'une partie du prix, qui sera déterminé au cas par cas." }
+            a3: { title: "Preuve du défaut", content: "Vous êtes dispensés de rapporter la preuve de l'existence du défaut de conformité du produit durant les vingt-quatre (24) mois suivant la délivrance du bien." }
+            a4: { title: "Indépendance des garanties", content: "Cette garantie légale de conformité s'applique indépendamment de toute garantie commerciale éventuellement souscrite et ainsi que de la nature du produit." }
+            a5: { title: "Garantie contre les vices cachés", content: "La garantie légale contre les vices cachés (articles 1641 et suivants du Code civil). Si vous parvenez à prouver le vice caché d'un produit, nous sommes légalement tenus de réparer toutes les conséquences d'un tel vice caché (articles 1641 et suivants du Code civil). Vous pourrez alors choisir entre la résolution de la vente ou une réduction du prix (conformément à l'article 1644 du code civil)." }
+            a6: { title: "Coûts de renvoi", content: "En cas de remplacement des produits ou de remboursement, nous prenons en charge vos coûts de renvoi des produits." }
+          informations_personnelles:
+            a1: { title: "Exactitude des informations", content: "En communiquant des informations sur le Site Web, vous garantissez que vous utilisez votre véritable identité et que toutes les informations fournies sont vraies, précises, à jour et complètes au moment où vous nous fournissez ces informations." }
+            a2: { title: "Mise à jour des informations", content: "Si vous constatez qu'une ou plusieurs des informations transmises sont incorrectes ou ne sont plus valables, vous devrez les modifier. A défaut, nous ne pourrons être tenus pour responsables des conséquences qui pourraient en résulter." }
+            a3: { title: "Utilisation des informations", content: "Les informations personnelles que vous nous fournissez en utilisant le Site Web seront enregistrées et utilisées uniquement dans le respect de notre Déclaration de Protection de la Vie Privée, qui peut être consultée plus haut." }
+            a4: { title: "Stockage des données", content: "En passant une commande, vous acceptez et comprenez que nous serons en droit de stocker et traiter vos données personnelles. Nous respectons pleinement la vie privée des personnes qui consultent et utilisent ce Site Web." }
+          responsabilite:
+            a1: { title: "Limitation de responsabilité", content: "Nous ne serons pas responsables des pertes ou dommages que vous pourriez subir si de tels pertes ou dommages résultent d'un cas de force majeure, s'ils sont imputables au fait imprévisible et insurmontable d'un tiers, ou s'ils vous sont imputables." }
+            a2: { title: "Manquement aux CGV", content: "En cas de manquement de votre part à ces CGV, nous vous enverrons une mise en demeure d'y remédier. Si cette mise en demeure reste sans effet après un délai de quinze (15) jours, nous pourrons, de plein droit, vous refuser le droit d'accès au Site Web, ou refuser vos commandes futures." }
+          disponibilite_site:
+            a1: { title: "Disponibilité du site", content: "Le Site Web est mis à votre disposition en l'état. Aucune garantie n'est apportée quant au fait que le Site Web soit disponible sans interruption 24 heures sur 24 et de façon pleinement opérationnelle. Par exemple, l'accès au Site Web peut être interrompu sans préavis en cas de problèmes techniques ou encore pour des raisons de maintenance." }
+            a2: { title: "Protection de votre appareil", content: "Il est de votre responsabilité de protéger votre ordinateur ou tout autre appareil numérique utilisé pour accéder au Site Web. Nous ne serons pas responsables des dommages qui pourraient être causés à votre ou vos appareils, ou de la perte de données qui pourrait résulter de l'utilisation du Site Web." }
+          commentaires_reclamations:
+            content_html: "Nous vous invitons à faire des commentaires sur notre service afin que nous puissions continuellement l'améliorer. Notre objectif est de régler les problèmes rapidement et équitablement. Nous vous remercions de nous informer de tous vos commentaires, questions ou réclamations par courriel à notre Service Clientèle via la rubrique « Contact » sur la Boutique en ligne (%{contact_link}). Vous pouvez également nous appeler au numéro suivant 04 93 45 17 17. Si vous souhaitez déposer une réclamation, indiquez-le clairement. Notre objectif est de répondre à votre réclamation dans un délai de sept (7) jours ouvrés, soit en y apportant une solution, soit en vous indiquant les modalités du traitement de votre réclamation."
+          propriete_intellectuelle:
+            a1: { title: "Absence de droit de propriété", content: "Votre utilisation du Site Web ne vous confère aucun droit de propriété intellectuelle sur le Site Web et son contenu. Vous n'avez notamment aucun droit sur nos créations protégées par le droit d'auteur, sur nos dessins et modèles et sur nos marques, ni sur ceux appartenant à des tiers." }
+            a2: { title: "Usage personnel", content: "Nous vous mettons à disposition le Site Web uniquement à des fins d'utilisation personnelles et non commerciales. Le contenu du Site Web ne saurait être utilisé pour des besoins autres quels qu'ils soient, sans notre autorisation expresse et par écrit." }
+          modification_cgv:
+            content: "Nous nous réservons le droit de procéder à des modifications de notre Site Web et des présentes CGV à tout moment. Votre utilisation du Site Web et vos commandes seront soumises aux CGV en vigueur au moment de votre utilisation du Site Web ou de votre commande de produits, à moins qu'un changement de ces CGV ne soit exigé par la loi ou par une autorité gouvernementale (auquel cas ce changement s'appliquera également à toutes les commandes que vous avez déjà passées)."
+          non_renonciation:
+            content: "Le fait pour l'une ou l'autre des parties de ne pas agir au titre de ces CGV ne constitue pas pour autant une renonciation au droit d'agir, sauf renonciation expresse et écrite."
+          stipulations_finales:
+            a1: { title: "Législation applicable", content: "Ces CGV sont régies par la législation française." }
+            a2: { title: "Divisibilité des stipulations", content: "Si l'une quelconque des stipulations des présentes CGV est jugée invalide, nulle ou inapplicable pour quelque raison que ce soit, cette stipulation sera considérée comme divisible du reste des CGV et n'affectera pas la validité et l'applicabilité des autres stipulations des CGV." }
+            a3: { title: "Marques déposées", content: "Autour D'Un Soir ainsi que les marques qui y sont vendues sur le site sont des marques déposées." }
+          informations_legales:
+            a1: { title: "Éditeur du site", content: "Le Site Web est édité par Autour D'Un Soir, Société à responsabilité limitée au capital social de 75 000,00 Euro, ayant son siège social au 29 boulevard Carnot, 06400 Cannes, France, immatriculée au Registre du Commerce et des Sociétés de Cannes sous le numéro 880 559 414, tél. 0033 (0)4.93.45.17.17" }
+            a2: { title: "Contact", content_html: "Vous pouvez écrire à notre service client via la rubrique « Contacts » sur la Boutique en ligne (%{contact_link}). Par téléphone du mardi au vendredi de 10h à 12h et de 15h à 19h et le samedi de 10h à 16h au numéro suivant : 04 93 45 17 17." }
+      nos_autres_activites:
+        header_title: "Nos autres activités"
+        header_subtitle: "Explorez l'ensemble de nos services"
+        introduction:
+          title: "Bien plus qu'une simple boutique"
+          description: "Au-delà de nos collections de tenues de soirée, Autour D'Un Soir vous accompagne dans tous vos projets nécessitant des tenues d'exception. Que ce soit pour un événement d'entreprise, une production audiovisuelle ou une reconstitution historique, nous sommes là pour vous."
+          features:
+            "1": "Costumes d'époque"
+            "2": "Événements d'entreprise"
+            "3": "Productions audiovisuelles"
+        epoch_costumes:
+          title: "Costumes d'Époque"
+          description: "Plongez dans l'histoire avec notre collection exceptionnelle de costumes d'époque. Du XVIIIe siècle aux années folles, nous disposons d'une large gamme de tenues authentiques pour vos événements à thème, productions théâtrales ou reconstitutions historiques."
+          periods_title: "Nos périodes disponibles :"
+          periods:
+            "1": "Renaissance"
+            "2": "XVIIIe siècle"
+            "3": "Époque Napoléonienne"
+            "4": "Belle Époque"
+            "5": "Années 1920-1930"
+            "6": "Années 1950-1960"
+            "7": "Années 1970-1980"
+            "8": "Costumes sur mesure"
+          ideal_for: "Idéal pour : Mariages thématiques, fêtes costumées, théâtre, cinéma, reconstitutions historiques"
+        business_services:
+          title: "Prestations Entreprises & Groupes"
+          description: "Professionnels et organisateurs d'événements, nous vous proposons des solutions sur mesure pour habiller vos équipes et participants. Bénéficiez de tarifs préférentiels et d'un accompagnement personnalisé pour vos projets de groupe."
+          services_title: "Nos services professionnels :"
+          items:
+            corporate_events:
+              title: "Événements d'entreprise"
+              description: "Galas, soirées de gala, cocktails, cérémonies de remise de prix"
+            groups_associations:
+              title: "Groupes & associations"
+              description: "Mariages de groupe, cortèges, événements associatifs"
+            audiovisual_productions:
+              title: "Productions audiovisuelles"
+              description: "Cinéma, télévision, clips, publicités, photos"
+            events:
+              title: "Événementiel"
+              description: "Salons, défilés de mode, présentations, lancements de produits"
+          benefits: "Avantages : Tarifs groupés, logistique simplifiée, conseil personnalisé, devis sur mesure"
+        why_choose_us:
+          title: "Pourquoi nous choisir pour vos projets ?"
+          items:
+            expertise:
+              title: "Expertise"
+              description: "Des années d'expérience dans l'habillement d'événements de toutes envergures"
+            large_stock:
+              title: "Large stock"
+              description: "Des centaines de tenues disponibles pour répondre à tous vos besoins"
+            reactivity:
+              title: "Réactivité"
+              description: "Solutions express et accompagnement personnalisé pour vos urgences"
+            group_rates:
+              title: "Tarifs groupés"
+              description: "Des conditions avantageuses pour les réservations en nombre"
+        cta:
+          title: "Un projet en tête ? Parlons-en !"
+          description: "Contactez-nous pour discuter de votre projet et obtenir un devis personnalisé. Notre équipe est à votre disposition pour vous conseiller."
+        references:
+          title: "Ils nous font confiance"
+          subtitle: "Des établissements prestigieux nous font confiance"
+      le_concept:
+        header_title: "Le concept"
+        header_subtitle: "Découvrez notre concept unique de location de tenues"
+        cta_title: "Prêt à en découvrir plus ?"
+        sticky_text:
+          block_1: "Autour D'Un Soir vous accompagne dans chaque étape de votre recherche de la tenue parfaite. Notre équipe experte est à votre écoute pour vous conseiller et vous guider vers des choix qui reflètent votre personnalité et sublimeront vos moments les plus précieux."
+          block_2: "Découvrez notre sélection de tenues de soirée qui allient sophistication et modernité. Chaque pièce est soigneusement choisie pour vous offrir une expérience unique et mémorable."
+          block_3: "Notre engagement est de vous offrir un service personnalisé et des tenues d'exception qui sauront sublimer vos moments les plus importants. Faites confiance à notre expertise."
+        introduction:
+          title: "Une nouvelle façon de vivre la mode"
+          description: "Autour D'Un Soir révolutionne votre expérience vestimentaire avec un concept innovant qui allie élégance, accessibilité et personnalisation. Que ce soit pour un mariage, une soirée ou un événement spécial, nous vous offrons la liberté de choisir comment porter la mode."
+          features:
+            "1": "Location flexible"
+            "2": "Vente exclusive"
+            "3": "Sur mesure"
+        pillars:
+          rental:
+            title: "Location"
+            description: "Portez des tenues d'exception sans engagement. Notre service de location vous permet d'accéder à une garde-robe haute couture pour vos événements spéciaux, à une fraction du prix d'achat. Service disponible uniquement à la boutique de Cannes. Robes de mariées exclues."
+            features:
+              "1": "Large choix de tenues et de tailles"
+              "2": "Durée de location : 4 jours ou forfait 1 semaine"
+              "3": "Retouches incluses"
+              "4": "Entretien inclus"
+          sale:
+            title: "Vente"
+            description: "Tombez amoureux d'une pièce ? Faites-en l'acquisition ! Notre boutique propose une sélection exclusive de tenues et accessoires que vous pouvez acheter pour enrichir votre garde-robe personnelle."
+            features:
+              "1": "Collections exclusives"
+              "2": "Pièces uniques"
+              "3": "Conseils personnalisés"
+              "4": "Option d'achat après location"
+          customization:
+            title: "Personnalisation"
+            description: "Chaque personne est unique, votre tenue aussi ! Notre atelier de retouches et de personnalisation s'assure que chaque pièce s'adapte parfaitement à votre morphologie et à votre style."
+            features:
+              "1": "Retouches sur mesure"
+              "2": "Ajustements express"
+              "3": "Création personnalisée"
+              "4": "Service d'atelier expert"
+        how_it_works:
+          title: "Comment ça marche ?"
+          step1:
+            title: "Parcourez"
+            description: "Explorez nos collections et trouvez la tenue parfaite pour votre événement"
+          step2:
+            title: "Réservez"
+            description: "Choisissez une date pour un rdv en boutique ou passez commande pour un achat"
+          step3:
+            title: "Personnalisez"
+            description: "Profitez de nos services de retouches pour un ajustement parfait"
+          step4:
+            title: "Brillez"
+            description: "Portez votre tenue en toute confiance lors de votre événement"
+      cabine_essayage:
+        header_title: "Cabine d'essayage"
+        header_subtitle: "Sélectionnez vos produits et venez les essayer en boutique"
+        cart_title: "Ma cabine d'essayage"
+        add_products: "Ajouter des produits"
+        book_fitting: "Réserver mon essayage"
+        empty_title: "Votre cabine est vide"
+        empty_text: "Commencez dès maintenant à sélectionner vos tenues favorites pour votre prochain événement."
+        steps:
+          selection:
+            title: "1. Sélection"
+            text: "Parcourez notre collection et ajoutez les tenues qui vous plaisent à votre cabine d'essayage virtuelle."
+          reservation:
+            title: "2. Réservation"
+            text: "Indiquez vos coordonnées et choisissez la date qui vous convient pour venir en boutique."
+          confirmation:
+            title: "3. Confirmation"
+            text: "Recevez un email de confirmation et notre équipe prépare vos tenues pour votre venue."
+          fitting:
+            title: "4. Essayage"
+            text: "Testez vos tenues dans notre cabine avec l'aide de nos conseillères en image."
       la_boutique:
         header_title: "La boutique de Cannes"
-        header_subtitle: "Decouvrez notre equipe et notre boutique"
-        cta_title: "Pret a decouvrir nos collections ?"
+        header_subtitle: "Découvrez notre équipe et notre boutique"
+        cta_title: "Prêt à découvrir nos collections ?"
+        map:
+          title: "Nous trouver"
+          subtitle: "Venez découvrir notre boutique au cœur de Cannes"
+          open_in_google_maps: "Ouvrir dans Google Maps"
+        rdv:
+          title: "Prêt à nous rencontrer ?"
+          subtitle: "Réservez votre créneau et venez découvrir notre univers"
+        infos:
+          title: "Informations pratiques"
+          subtitle: "Toutes les informations pour nous rendre visite"
+          write_us: "Nous écrire"
+          contacts_title: "Contacts"
+          hours_title: "Horaires"
+          address_title: "Adresse"
+        public_cards:
+          experience:
+            title: "Expérience"
+            content: "<p class='text-center mb-0'>Plus de 20 ans d'expérience dans le domaine de la mode et de l'événementiel. Notre équipe connait parfaitement les tendances et les exigences de chaque type d'événement.</p>"
+          expertise:
+            title: "Expertise"
+            content: "<p class='text-center mb-0'>Conseillères spécialisées en styling, retouches professionnelles sur place, et accompagnement personnalisé pour chaque client. Votre satisfaction est notre priorité.</p>"
+          passion:
+            title: "Passion"
+            content: "<p class='text-center mb-0'>Une équipe passionnée par la mode et le service client. Nous prenons le temps de vous écouter pour vous proposer la tenue parfaite qui correspondra à vos attentes.</p>"
+          quality:
+            title: "Qualité"
+            content: "<p class='text-center mb-0'>Sélection rigoureuse de nos créateurs et fournisseurs. Nous ne proposons que des pièces de qualité exceptionnelle pour garantir votre élégance.</p>"
+          advice:
+            title: "Conseil"
+            content: "<p class='text-center mb-0'>Écoute attentive de vos besoins, conseils sur mesure et accompagnement tout au long de votre projet. Nous sommes là pour vous guider à chaque étape.</p>"
+          trust:
+            title: "Confiance"
+            content: "<p class='text-center mb-0'>Des centaines de clients satisfaits nous font confiance chaque année. Découvrez nos avis et témoignages pour en savoir plus sur notre service.</p>"
+        carousel:
+          evening_wear:
+            title: "Tenues de soirée"
+            text: "Découvrez notre vaste collection de robes et tenues de soirée pour tous vos événements. Location ou achat, nous vous accompagnons dans votre choix pour que vous soyez parfaite le jour J."
+          wedding_dresses:
+            title: "Robes de mariée"
+            text: "Trouvez la robe de mariée de vos rêves parmi notre sélection exclusive. De la dentelle classique aux créations modernes, chaque modèle est choisi pour sublimer votre jour le plus important."
+          suits:
+            title: "Costumes et smokings"
+            text: "Messieurs, découvrez notre collection de costumes, smokings et tenues de cérémonie. Élégance et raffinement assurés pour tous vos événements prestigieux."
+          accessories:
+            title: "Accessoires et sur-mesure"
+            text: "Complétez votre tenue avec nos accessoires soigneusement sélectionnés. Nous proposons également un service de retouches et d'ajustements pour une tenue parfaitement adaptée à votre morphologie."
+        team:
+          title: "Une équipe à votre service"
+          p1: "Notre équipe passionnée est là pour vous guider :"
+          p2: "Sophie : costumière passionnée depuis plus de 40 ans – Créative dans l'âme !"
+          p3: "Charlotte : qui rejoint sa mère en 2016 après 7 ans d'expérience dans le marketing et la mode à Paris – Passionnée de robes de mariées !"
+          p4: "Sandra : qui rejoint l'équipe en 2018, elle sublime toutes les tenues grâce à ses talents de couture et retouches – Experte couture."
+          p5: "Célia : qui découvre l'équipe en plein Festival de Cannes 2022 après 20 ans d'expérience à l'Opéra de Monaco comme habilleuse et couturière. Couturière créative et minutieuse !"
+          p6: "Que vous recherchiez une robe de mariée romantique, une tenue de soirée élégante ou un costume d'exception."
+          p7: "Nous mettons notre savoir-faire à votre service pour que vous resplendissiez lors de vos événements."
+        universe:
+          title: "Notre univers"
+          p1: "Plongez dans l'univers d'Autour D'Un Soir, où l'élégance rencontre l'exception. Notre boutique de Cannes vous accueille dans un cadre raffiné pour vous accompagner dans le choix de vos tenues de soirée."
+          p2: "Depuis notre création en 1980, nous avons à cœur de vous offrir une expérience unique, alliant conseils personnalisés et sélection rigoureuse de nos pièces. Chaque visite est l'occasion de découvrir des créations qui sauront sublimer vos moments les plus précieux."
+          p3: "Découvrez notre collection soigneusement sélectionnée de robes de mariée, tenues de soirée et costumes. Chaque pièce est choisie pour sa qualité, son élégance et son caractère unique."
+          p4: "Nous travaillons avec des créateurs reconnus et sélectionnons uniquement des pièces qui répondent à nos critères d'excellence. Des matières nobles aux finitions soignées, chaque détail compte pour vous offrir le meilleur."
+          p5: "Que vous optiez pour la location ou l'achat, nous vous garantissons des tenues impeccables, entretenues avec le plus grand soin. Notre objectif : vous permettre de briller lors de vos événements les plus importants."
         google_reviews:
           title: "Avis clients"
           based_on: "Base sur %{count} avis Google"

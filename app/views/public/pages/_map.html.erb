@@ -1,8 +1,8 @@
 <!-- Carte Google Maps -->
 <div class="my-5" data-scroll-reveal>
-    <h3 class="text-center mb-4 fw-bold text-light">Nous trouver</h3>
+    <h3 class="text-center mb-4 fw-bold text-light"><%= t("public.pages.contact.map.title") %></h3>
     <p class="text-center text-light opacity-75 mb-4">
-      Venez découvrir notre boutique au cœur de Cannes
+      <%= t("public.pages.contact.map.subtitle") %>
     </p>
     <div class="ratio ratio-16x9 overflow-hidden">
       <iframe 
@@ -15,7 +15,7 @@
     </div>
     <div class="text-center mt-4">
       <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape('autour d\'un soir 06400 cannes')}", target: "_blank", class: "btn btn-outline-light" do %>
-        <i class="bi bi-arrow-up-right-square me-2"></i>Ouvrir dans une nouvelle fenêtre
+        <i class="bi bi-arrow-up-right-square me-2"></i><%= t("public.pages.contact.map.open_new_window") %>
       <% end %>
     </div>
 </div>

@@ -3,8 +3,8 @@
   <div class="container">
     <div class="row mb-5" data-scroll-reveal>
       <div class="col-12 text-center">
-        <h2 class="text-light mb-3" style="font-family: 'Playfair Display', serif; font-size: 2.5rem;">Nous trouver</h2>
-        <p class="text-light opacity-75" style="font-size: 1.1rem;">Venez découvrir notre boutique au cœur de Cannes</p>
+        <h2 class="text-light mb-3" style="font-family: 'Playfair Display', serif; font-size: 2.5rem;"><%= t("public.pages.la_boutique.map.title") %></h2>
+        <p class="text-light opacity-75" style="font-size: 1.1rem;"><%= t("public.pages.la_boutique.map.subtitle") %></p>
       </div>
     </div>
     
@@ -21,7 +21,7 @@
           </div>
           <div class="text-center mt-4">
             <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape('autour d\'un soir 06400 cannes')}", target: "_blank", class: "btn public-btn-border-radius btn-outline-light" do %>
-              <i class="bi bi-arrow-up-right-square me-2"></i>Ouvrir dans Google Maps
+              <i class="bi bi-arrow-up-right-square me-2"></i><%= t("public.pages.la_boutique.map.open_in_google_maps") %>
             <% end %>
           </div>
       </div>

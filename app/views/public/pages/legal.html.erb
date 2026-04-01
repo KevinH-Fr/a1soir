@@ -8,7 +8,7 @@
   </script>
 <% end %>
 
-<%= page_header("Légal", "Mentions légales et conditions générales",
+<%= page_header(t("public.pages.legal.header_title"), t("public.pages.legal.header_subtitle"),
 image1: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/legal2_qqv61y",
 image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/legal1_eghzcu") %>
 
@@ -20,192 +20,178 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
         <!-- Introduction -->
         <div class="text-center my-5 px-3" data-scroll-reveal>
           <p class="lead text-light opacity-75">
-            Retrouvez ici toutes les informations légales, nos conditions générales et notre politique 
-            de confidentialité. Transparence et conformité sont nos priorités.
+            <%= t("public.pages.legal.intro") %>
           </p>
         </div>
 
         <!-- Navigation rapide -->
         <%= quick_nav_links(links: [
-          { url: "#mentions-legales", text: "Mentions légales" },
-          { url: "#cgv", text: "Conditions générales de vente" },
-          { url: "#cgl", text: "Conditions de location" },
-          { url: "#confidentialite", text: "Politique de confidentialité" },
-          { url: "#cookies", text: "Politique des cookies" },
-          { url: "#propriete", text: "Propriété intellectuelle" }
+          { url: "#mentions-legales", text: t("public.pages.legal.nav.legal_notices") },
+          { url: "#cgv", text: t("public.pages.legal.nav.terms_of_sale") },
+          { url: "#cgl", text: t("public.pages.legal.nav.rental_terms") },
+          { url: "#confidentialite", text: t("public.pages.legal.nav.privacy_policy") },
+          { url: "#cookies", text: t("public.pages.legal.nav.cookies_policy") },
+          { url: "#propriete", text: t("public.pages.legal.nav.intellectual_property") }
         ]) %>
 
         <!-- Mentions légales -->
-        <%= content_section(id: "mentions-legales", icon: "info-circle", title: "Mentions légales") do %>
-          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Éditeur du site</h3>
+        <%= content_section(id: "mentions-legales", icon: "info-circle", title: t("public.pages.legal.sections.legal_notices.title")) do %>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.legal_notices.publisher_title") %></h3>
           <p class="text-light opacity-75">
-            <strong>Autour D'Un Soir</strong><br>
-            Forme juridique : SARL<br>
-            Capital social : 75 000,00 Euros<br>
-            Siège social : 29 Boulevard Carnot 06400 Cannes<br>
-            RCS : 880 559 414 R.C.S. Cannes<br>
-            SIRET : 88055941400011<br>
-            TVA intracommunautaire : FR42880559414<br>
-            Email : (<%= link_to "formulaire de contact", "#{contact_path}#message-form" %>)<br>
-            Téléphone : 04 93 45 17 17
+            <%= t("public.pages.legal.sections.legal_notices.publisher_text_html", contact_form_link: link_to(t("public.pages.legal.contact_form"), "#{contact_path}#message-form")).html_safe %>
           </p>
 
-          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Directeur de la publication</h3>
-          <p class="text-light opacity-75">Sophie Glasman</p>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.legal_notices.publication_director_title") %></h3>
+          <p class="text-light opacity-75"><%= t("public.pages.legal.sections.legal_notices.publication_director_name") %></p>
 
-          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Hébergement</h3>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.legal_notices.hosting_title") %></h3>
           <p class="text-light opacity-75">
-            Le site est hébergé par :<br>
-            HEROKU<br>
-            dont le siège social est situé au 415 Mission Street, 3rd Floor, San Francisco, CA 94105, États-Unis,<br>
-            téléphone : +1 (415) 901-7000.
+            <%= t("public.pages.legal.sections.legal_notices.hosting_text_html", default: "Le site est hébergé par :<br>HEROKU<br>dont le siège social est situé au 415 Mission Street, 3rd Floor, San Francisco, CA 94105, États-Unis,<br>téléphone : +1 (415) 901-7000.").html_safe %>
           </p>
 
-          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Crédits</h3>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.legal_notices.credits_title") %></h3>
           <p class="text-light opacity-75">
            <%# Conception et développement : [À compléter] %> 
-            Photographies : fournisseurs de la société et banques d'images libres de droits
+            <%= t("public.pages.legal.sections.legal_notices.credits_text", default: "Photographies : fournisseurs de la société et banques d'images libres de droits") %>
           </p>
         <% end %>
 
         <!-- CGV -->
         <section id="cgv">
-          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Conditions Générales de Vente</h3>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.cgv.main_title") %></h3>
 
-          <%= content_section(id: "perimetre", icon: "info-circle", title: "Périmètre et définitions") do %>
+          <%= content_section(id: "perimetre", icon: "info-circle", title: t("public.pages.legal.sections.cgv.scope_definitions")) do %>
             <%= content_article(
               number: 1,
-              title: "Application des CGV",
-              content: "Les présentes Conditions Générales de Vente (les « CGV ») sont applicables dès que vous accédez à la Boutique en ligne Autour D'Un Soir URL : https://a1soir.com/ (le « Site Web ») ou passez des commandes par téléphone. Toutefois, les présentes CGV ne s'appliquent pas à tout achat de produits à la Boutique Autour D'Un Soir de Cannes."
+              title: t("public.pages.legal.articles.perimetre.a1.title", default: "Application des CGV"),
+              content: t("public.pages.legal.articles.perimetre.a1.content", default: "Les présentes Conditions Générales de Vente (les « CGV ») sont applicables dès que vous accédez à la Boutique en ligne Autour D'Un Soir URL : https://a1soir.com/ (le « Site Web ») ou passez des commandes par téléphone. Toutefois, les présentes CGV ne s'appliquent pas à tout achat de produits à la Boutique Autour D'Un Soir de Cannes.")
             ) %>
             
             <%= content_article(
               number: 2,
-              title: "Définitions",
-              content: "Les références à « nous » ou « notre » dans le cadre de ces CGV désigne la société Autour D'Un Soir, quand les références à « vous » ou « votre » vous désigne, en qualité d'utilisateur du Site Web."
+              title: t("public.pages.legal.articles.perimetre.a2.title", default: "Définitions"),
+              content: t("public.pages.legal.articles.perimetre.a2.content", default: "Les références à « nous » ou « notre » dans le cadre de ces CGV désigne la société Autour D'Un Soir, quand les références à « vous » ou « votre » vous désigne, en qualité d'utilisateur du Site Web.")
             ) %>
             
             <%= content_article(
               number: 3,
-              title: "Acceptation des CGV",
-              content: "Nous vous demandons et remercions de lire attentivement ces CGV avant d'utiliser le Site Web et de passer votre commande. En accédant à l'une quelconque des parties du Site Web ou en commandant des produits sur le Site Web, vous acceptez être soumis à ces CGV. Nous vous recommandons de garder un exemplaire de ces CGV afin de pouvoir vous y référer ultérieurement."
+              title: t("public.pages.legal.articles.perimetre.a3.title", default: "Acceptation des CGV"),
+              content: t("public.pages.legal.articles.perimetre.a3.content", default: "Nous vous demandons et remercions de lire attentivement ces CGV avant d'utiliser le Site Web et de passer votre commande. En accédant à l'une quelconque des parties du Site Web ou en commandant des produits sur le Site Web, vous acceptez être soumis à ces CGV. Nous vous recommandons de garder un exemplaire de ces CGV afin de pouvoir vous y référer ultérieurement.")
             ) %>
             
             <%= content_article(
               number: 4,
-              title: "Langue et applicabilité",
-              content: "Ces CGV sont uniquement disponibles en français et sont applicables à toute commande livrée en France."
+              title: t("public.pages.legal.articles.perimetre.a4.title", default: "Langue et applicabilité"),
+              content: t("public.pages.legal.articles.perimetre.a4.content", default: "Ces CGV sont uniquement disponibles en français et sont applicables à toute commande livrée en France.")
             ) %>
           <% end %>
 
-          <%= content_section(id: "contrat", icon: "file-earmark-text", title: "Notre contrat") do %>
+          <%= content_section(id: "contrat", icon: "file-earmark-text", title: t("public.pages.legal.sections.cgv.our_contract")) do %>
             <%= content_article(
               number: 1,
-              title: "Disponibilité des produits",
-              content: "Tous les produits ou services proposés à la vente sur le Site Web le sont sous réserve de leur disponibilité."
+              title: t("public.pages.legal.articles.contrat.a1.title", default: "Disponibilité des produits"),
+              content: t("public.pages.legal.articles.contrat.a1.content", default: "Tous les produits ou services proposés à la vente sur le Site Web le sont sous réserve de leur disponibilité.")
             ) %>
             
             <%= content_article(
               number: 2,
-              title: "Finalisation de la commande",
-              content: "La finalisation de votre commande constitue l'acceptation de notre offre, c'est-à-dire qu'elle confirme votre volonté d'acquérir les produits ou services tels que décrits sur le Site Web, avec acceptation du prix proposé et reconnaissance que la passation de cette commande génère une obligation de paiement de votre part. Aussi, lorsque vous confirmez votre commande, vous acceptez d'être lié à notre entreprise par un contrat de vente, sous réserve de la disponibilité des produits et services et de la validation de votre paiement dans les conditions prévues ci-après."
+              title: t("public.pages.legal.articles.contrat.a2.title", default: "Finalisation de la commande"),
+              content: t("public.pages.legal.articles.contrat.a2.content", default: "La finalisation de votre commande constitue l'acceptation de notre offre, c'est-à-dire qu'elle confirme votre volonté d'acquérir les produits ou services tels que décrits sur le Site Web, avec acceptation du prix proposé et reconnaissance que la passation de cette commande génère une obligation de paiement de votre part. Aussi, lorsque vous confirmez votre commande, vous acceptez d'être lié à notre entreprise par un contrat de vente, sous réserve de la disponibilité des produits et services et de la validation de votre paiement dans les conditions prévues ci-après.")
             ) %>
             
             <%= content_article(
               number: 3,
-              title: "Usage personnel",
-              content: "Est ici rappelé que le Site Web est exclusivement destiné aux consommateurs particuliers, dans le cadre d'un usage personnel, y compris pour des cadeaux personnels, et ne devront être ni revendus, ni utilisés dans un contexte commercial, ni utilisés en vue de réaliser un bénéfice commercial. Nous nous réservons la possibilité de refuser les commandes de quantité multiple d'un même article émanant d'un seul client ou destinées à une seule adresse postale."
+              title: t("public.pages.legal.articles.contrat.a3.title", default: "Usage personnel"),
+              content: t("public.pages.legal.articles.contrat.a3.content", default: "Est ici rappelé que le Site Web est exclusivement destiné aux consommateurs particuliers, dans le cadre d'un usage personnel, y compris pour des cadeaux personnels, et ne devront être ni revendus, ni utilisés dans un contexte commercial, ni utilisés en vue de réaliser un bénéfice commercial. Nous nous réservons la possibilité de refuser les commandes de quantité multiple d'un même article émanant d'un seul client ou destinées à une seule adresse postale.")
             ) %>
           <% end %>
 
-          <%= content_section(id: "deroulement-commande", icon: "cart", title: "Le déroulement de la commande") do %>
+          <%= content_section(id: "deroulement-commande", icon: "cart", title: t("public.pages.legal.sections.cgv.order_process")) do %>
             <%= content_article(
               number: 1,
-              title: "Sélection des articles",
-              content: "Vous pouvez choisir des articles dans notre gamme de produits et les mettre dans votre « Panier » en cliquant sur le bouton « Ajouter au Panier »."
+              title: t("public.pages.legal.articles.deroulement.a1.title", default: "Sélection des articles"),
+              content: t("public.pages.legal.articles.deroulement.a1.content", default: "Vous pouvez choisir des articles dans notre gamme de produits et les mettre dans votre « Panier » en cliquant sur le bouton « Ajouter au Panier ».")
             ) %>
             
             <%= content_article(
               number: 2,
-              title: "Processus d'achat",
-              content: "En cliquant sur le bouton « Commander », vous initiez le processus d'achat des produits figurant dans votre Panier. Une page listant les produits que vous souhaitez acheter s'ouvre. Cette page indique la référence, la taille, le prix et la quantité d'articles que vous êtes sur le point d'acheter, et précise notamment les modes de livraison et les coûts liés applicables à votre commande, ainsi que tous les autres services et options que nous proposons ; vous validez le contenu de votre panier et les options que vous souhaitez retenir. Il vous sera alors demandé de nous communiquer les données personnelles vous concernant ; il vous sera également demandé de sélectionner votre mode de paiement, d'indiquer les informations y-afférentes."
+              title: t("public.pages.legal.articles.deroulement.a2.title", default: "Processus d'achat"),
+              content: t("public.pages.legal.articles.deroulement.a2.content", default: "En cliquant sur le bouton « Commander », vous initiez le processus d'achat des produits figurant dans votre Panier. Une page listant les produits que vous souhaitez acheter s'ouvre. Cette page indique la référence, la taille, le prix et la quantité d'articles que vous êtes sur le point d'acheter, et précise notamment les modes de livraison et les coûts liés applicables à votre commande, ainsi que tous les autres services et options que nous proposons ; vous validez le contenu de votre panier et les options que vous souhaitez retenir. Il vous sera alors demandé de nous communiquer les données personnelles vous concernant ; il vous sera également demandé de sélectionner votre mode de paiement, d'indiquer les informations y-afférentes.")
             ) %>
             
             <%= content_article(
               number: 3,
-              title: "Acceptation des CGV",
-              content: "Au moment de remplir vos données personnelles vous avez obligation de cocher la case « j'accepte les conditions générales de vente » (présentées ici) sans quoi vous ne pourrez pas valider votre commande. En cliquant sur le bouton « Commander », vous finalisez la commande des produits figurant dans le Panier. La passation de votre commande par Internet constitue un contrat de vente entre vous et nous, sous réserve de la disponibilité des produits et services commandés et de la validité du moyen de paiement que vous utilisez."
+              title: t("public.pages.legal.articles.deroulement.a3.title", default: "Acceptation des CGV"),
+              content: t("public.pages.legal.articles.deroulement.a3.content", default: "Au moment de remplir vos données personnelles vous avez obligation de cocher la case « j'accepte les conditions générales de vente » (présentées ici) sans quoi vous ne pourrez pas valider votre commande. En cliquant sur le bouton « Commander », vous finalisez la commande des produits figurant dans le Panier. La passation de votre commande par Internet constitue un contrat de vente entre vous et nous, sous réserve de la disponibilité des produits et services commandés et de la validité du moyen de paiement que vous utilisez.")
             ) %>
             
             <%= content_article(
               number: 4,
-              title: "Courriel de confirmation",
-              content: "Vous recevrez automatiquement un courriel confirmant la réception et les détails de votre commande (« le Courriel de Confirmation de commande »). Nous vous recommandons d'imprimer et de conserver le Courriel de Confirmation. Le Courriel de Confirmation ne constitue pas une confirmation de la disponibilité des produits ; il s'agit simplement d'un accusé de réception automatique qui confirme le fait que nous avons reçu votre commande."
+              title: t("public.pages.legal.articles.deroulement.a4.title", default: "Courriel de confirmation"),
+              content: t("public.pages.legal.articles.deroulement.a4.content", default: "Vous recevrez automatiquement un courriel confirmant la réception et les détails de votre commande (« le Courriel de Confirmation de commande »). Nous vous recommandons d'imprimer et de conserver le Courriel de Confirmation. Le Courriel de Confirmation ne constitue pas une confirmation de la disponibilité des produits ; il s'agit simplement d'un accusé de réception automatique qui confirme le fait que nous avons reçu votre commande.")
             ) %>
             
             <%= content_article(
               number: 5,
-              title: "Courriel de livraison",
-              content: "Nous vous enverrons un second courriel, qui constituera la confirmation de la disponibilité des produits commandés (le « Courriel de Livraison »), que nous vous recommandons également d'imprimer et de conserver. Si aucun des produits commandés n'est disponible, votre commande sera annulée, et votre carte bancaire ne sera pas débitée. Si une partie seulement des produits est disponible, ceux-ci vous seront envoyés conformément à ces CGV, et vous ne paierez que les produits livrés. Il vous appartient de conserver des copies des documents concernant votre commande (le Courriel de Confirmation, le Courriel de Livraison, ces CGV, et tout autre document utile). Par ailleurs, si le montant de votre commande excède 120 euros, nous conserverons une copie de votre commande dans nos dossiers, pour la durée prévue par la loi. Pendant cette durée, vous pouvez demander une copie de votre commande à n'importe quel moment. Dans ce cas, nous nous réservons le droit de vous facturer les coûts relatifs à la récupération et à l'envoi du document demandé."
+              title: t("public.pages.legal.articles.deroulement.a5.title", default: "Courriel de livraison"),
+              content: t("public.pages.legal.articles.deroulement.a5.content", default: "Nous vous enverrons un second courriel, qui constituera la confirmation de la disponibilité des produits commandés (le « Courriel de Livraison »), que nous vous recommandons également d'imprimer et de conserver. Si aucun des produits commandés n'est disponible, votre commande sera annulée, et votre carte bancaire ne sera pas débitée. Si une partie seulement des produits est disponible, ceux-ci vous seront envoyés conformément à ces CGV, et vous ne paierez que les produits livrés. Il vous appartient de conserver des copies des documents concernant votre commande (le Courriel de Confirmation, le Courriel de Livraison, ces CGV, et tout autre document utile). Par ailleurs, si le montant de votre commande excède 120 euros, nous conserverons une copie de votre commande dans nos dossiers, pour la durée prévue par la loi. Pendant cette durée, vous pouvez demander une copie de votre commande à n'importe quel moment. Dans ce cas, nous nous réservons le droit de vous facturer les coûts relatifs à la récupération et à l'envoi du document demandé.")
             ) %>
           <% end %>
 
-          <%= content_section(id: "livraison", icon: "truck", title: "Livraison des produits") do %>
+          <%= content_section(id: "livraison", icon: "truck", title: t("public.pages.legal.sections.cgv.delivery")) do %>
             <%= content_article(
               number: 1,
-              title: "Zones de livraison",
-              content: "Nous ne livrons nos produits qu'en France Métropolitaine et Corse, à l'exclusion de tous autres territoires y compris les sites des armées."
+              title: t("public.pages.legal.articles.livraison.a1.title"),
+              content: t("public.pages.legal.articles.livraison.a1.content")
             ) %>
             
             <%= content_article(
               number: 2,
-              title: "Délais de livraison",
-              content: "Les délais de livraisons estimés sont de : 7 jours ouvrés (à l'exclusion des samedi, dimanches et jours fériés) à compter de l'envoi du Courriel de Livraison. Le délai peut être légèrement plus long lorsque les produits doivent être livrés dans des zones d'accès difficile. Nous ferons nos meilleurs efforts pour livrer les produits commandés dans le délai indiqué dans le Courriel de Livraison."
+              title: t("public.pages.legal.articles.livraison.a2.title"),
+              content: t("public.pages.legal.articles.livraison.a2.content")
             ) %>
             
             <%= content_article(
               number: 3,
-              title: "Garantie des délais",
-              content: "Même si nous faisons tout notre possible pour livrer vos produits dans le respect des délais définis ci-dessus, les dates de livraison ne sont que des estimations, elles ne sont pas garanties, et elles ne sauraient être invoquées à notre encontre. Du retard ne peut pas être exclu, notamment du fait des services postaux, du ou des prestataires missionnés, des transporteurs, de la logistique ou encore des conditions météorologiques. Toutefois, le délai maximum de trente (30) jours à compter de la date de réception du Courriel de Livraison est garanti."
+              title: t("public.pages.legal.articles.livraison.a3.title"),
+              content: t("public.pages.legal.articles.livraison.a3.content")
             ) %>
             
             <%= content_article(
               number: 4,
-              title: "Retard de livraison",
-              content: "Au cas où nous serions dans l'impossibilité de respecter le délai de livraison initialement prévu et figurant dans le Courriel de Livraison, nous vous en informerons dès que possible, en indiquant en même temps un nouveau délai de livraison estimé, sans encourir de responsabilité à votre égard, étant toutefois précisé que vous pouvez annuler votre commande si le délai total de livraison dépasse trente (30) jours. Pour annuler votre commande, vous devez nous envoyer un courriel via le formulaire de contact #{link_to "https://a1soir.com/contact", contact_path, class: "text-light text-decoration-underline"}. Nous recréditerons alors la carte bancaire utilisé pour passer la commande, dans les quatorze (14) jours de la réception du courriel notifiant son annulation.".html_safe
+              title: t("public.pages.legal.articles.livraison.a4.title"),
+              content: t("public.pages.legal.articles.livraison.a4.content_html", contact_link: link_to("https://a1soir.com/contact", contact_path, class: "text-light text-decoration-underline")).html_safe
             ) %>
             
             <%= content_article(
               number: 5,
-              title: "Vérification de la réception",
-              content: "Si vous n'avez pas reçu votre commande dans les délais indiqués, nous vous remercions de vérifier, dans un premier temps, auprès des agents de votre bureau de poste que ces derniers ne détiennent pas votre colis. S'ils vous confirment qu'ils ne détiennent par vos produits, nous vous remercions de bien vouloir nous contacter et nous ferons de notre mieux pour vous assister. Tous les délais de livraison peuvent être sujets à des retards dus à des périodes saisonnières ou de pleine activité, à des conditions climatiques ou circonstances imprévues, notamment sanitaires, mais nous ferons tout notre possible pour vous adresser votre commande dans les délais indiqués. Durant ces périodes exceptionnelles de pleine activité (ex : soldes, Noël) ou de conditions climatiques ou sanitaires particulièrement défavorables, nous vous saurions gré de nous laisser un jour de plus avant de nous contacter. Nous vous remercions de noter que le transporteur requerra une signature à la livraison et ne vous remettra pas les produits sans signature."
+              title: t("public.pages.legal.articles.livraison.a5.title"),
+              content: t("public.pages.legal.articles.livraison.a5.content")
             ) %>
             
             <%= content_article(
               number: 6,
-              title: "Livraisons multiples",
-              content: "Si vous passez commande de nombreux produits, nous pouvons être obligés de livrer vos produits en plusieurs fois. S'il est nécessaire de procéder à plus d'une livraison, vous en serez informé à l'avance."
+              title: t("public.pages.legal.articles.livraison.a6.title"),
+              content: t("public.pages.legal.articles.livraison.a6.content")
             ) %>
             
             <%= content_article(
               number: 7,
-              title: "Contrôle du colis",
-              content: "Nous attirons votre attention sur la nécessité, lors de la réception de votre colis de contrôler son état général. Vous serez responsables du colis et de son contenu lorsqu'il vous aura été remis. En cas de problème (colis ouvert, colis vide, contenu abîmé), vous devez refuser le colis et contacter notre Service Client pour signaler le problème et la raison du refus (service client : #{link_to "https://a1soir.com/contact", contact_path, class: "text-light text-decoration-underline"}). Nous vous informons qu'en cas de manquant sans réserve émise, Autour D'Un Soir ne pourra être tenu pour responsable et nous ne pourrons garantir un remboursement.".html_safe
+              title: t("public.pages.legal.articles.livraison.a7.title"),
+              content: t("public.pages.legal.articles.livraison.a7.content_html", contact_link: link_to("https://a1soir.com/contact", contact_path, class: "text-light text-decoration-underline")).html_safe
             ) %>
             
             <%= content_article(
               number: 8,
-              title: "Adresse de livraison",
-              content: "Votre commande sera envoyée à l'adresse de livraison que vous aurez indiquée lors de votre commande. Nous ne saurions être tenus pour responsables si cette adresse de livraison est incorrecte ou incomplète."
+              title: t("public.pages.legal.articles.livraison.a8.title"),
+              content: t("public.pages.legal.articles.livraison.a8.content")
             ) %>
           <% end %>
 
-          <%= content_section(id: "prix-frais", icon: "currency-euro", title: "Prix et frais d'expédition") do %>
-            <p class="text-light opacity-75">
-              Tous les prix indiqués sur le Site Web comprennent la taxe à la valeur ajoutée, au taux légal en vigueur à la date de facturation. Les prix indiqués sur le Site Web sont en euros et n'incluent pas les frais d'expédition. En dépit de tous nos efforts, il peut exceptionnellement arriver que des produits référencés sur le Site Web aient un prix erroné. Si le prix exact d'un produit est inférieur au prix indiqué, nous vous facturerons le prix inférieur et vous enverrons le produit. Si le prix exact d'un produit est supérieur au prix indiqué, nous vous facturerons le prix indiqué, sauf si celui-ci est dérisoire et manifestement erroné, auquel cas nous vous contacterons afin d'obtenir vos instructions, ou nous annulerons votre commande et vous informerons de cette annulation. Nos frais d'expédition sont les suivants et apparaîtrons dès la validation de votre commande avant le paiement:
-            </p>
+          <%= content_section(id: "prix-frais", icon: "currency-euro", title: t("public.pages.legal.sections.cgv.pricing_shipping")) do %>
+            <p class="text-light opacity-75"><%= t("public.pages.legal.articles.prix_frais.intro", default: "Tous les prix indiqués sur le Site Web comprennent la taxe à la valeur ajoutée, au taux légal en vigueur à la date de facturation. Les prix indiqués sur le Site Web sont en euros et n'incluent pas les frais d'expédition. En dépit de tous nos efforts, il peut exceptionnellement arriver que des produits référencés sur le Site Web aient un prix erroné. Si le prix exact d'un produit est inférieur au prix indiqué, nous vous facturerons le prix inférieur et vous enverrons le produit. Si le prix exact d'un produit est supérieur au prix indiqué, nous vous facturerons le prix indiqué, sauf si celui-ci est dérisoire et manifestement erroné, auquel cas nous vous contacterons afin d'obtenir vos instructions, ou nous annulerons votre commande et vous informerons de cette annulation. Nos frais d'expédition sont les suivants et apparaîtrons dès la validation de votre commande avant le paiement:") %></p>
             <div class="my-4">
-              <p class="text-light fw-bold mb-3">Livraison Colissimo contre signature :</p>
+              <p class="text-light fw-bold mb-3"><%= t("public.pages.legal.sections.cgv.colissimo_title") %></p>
               <%= image_tag(
                     '/images/frais_expedition.jpg',
                     class: "img-fluid rounded",
@@ -218,213 +204,213 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
             </div>
           <% end %>
 
-          <%= content_section(id: "paiement", icon: "credit-card", title: "Paiement et défaut de paiement") do %>
+          <%= content_section(id: "paiement", icon: "credit-card", title: t("public.pages.legal.sections.cgv.payment_default")) do %>
             <%= content_article(
               number: 1,
-              title: "Modes de paiement",
-              content: "Le paiement de vos produits devra être effectué par carte bancaire, American Express ou Apple Pay, suivant les indications figurant sur la page concernant le paiement."
+              title: t("public.pages.legal.articles.paiement.a1.title", default: "Modes de paiement"),
+              content: t("public.pages.legal.articles.paiement.a1.content", default: "Le paiement de vos produits devra être effectué par carte bancaire, American Express ou Apple Pay, suivant les indications figurant sur la page concernant le paiement.")
             ) %>
             
             <%= content_article(
               number: 2,
-              title: "Débit de la carte",
-              content: "Le paiement complet du prix, y compris les frais d'expédition et tous frais supplémentaires pour des services que vous aurez commandés, sera débité de votre carte bancaire ou de votre compte Apple Pay, après vérification de la disponibilité des produits commandés, au moment ou peu de temps avant l'expédition des produits chez vous. Nous ne vous livrerons les produits que si votre paiement est effectif."
+              title: t("public.pages.legal.articles.paiement.a2.title", default: "Débit de la carte"),
+              content: t("public.pages.legal.articles.paiement.a2.content", default: "Le paiement complet du prix, y compris les frais d'expédition et tous frais supplémentaires pour des services que vous aurez commandés, sera débité de votre carte bancaire ou de votre compte Apple Pay, après vérification de la disponibilité des produits commandés, au moment ou peu de temps avant l'expédition des produits chez vous. Nous ne vous livrerons les produits que si votre paiement est effectif.")
             ) %>
             
             <%= content_article(
               number: 3,
-              title: "Validation de la carte",
-              content: "Vous confirmez que la carte bancaire utilisée est la vôtre. Tous les détenteurs de cartes bancaires sont soumis à des contrôles de validation et à l'autorisation par l'émetteur de la carte. Si l'émetteur de votre carte refuse d'autoriser le paiement, nous serons en droit de refuser de procéder à la livraison de votre commande et ne serons pas responsables de tout retard ou de toute absence de livraison. Nous vous enverrons un courriel pour vous informer du refus."
+              title: t("public.pages.legal.articles.paiement.a3.title", default: "Validation de la carte"),
+              content: t("public.pages.legal.articles.paiement.a3.content", default: "Vous confirmez que la carte bancaire utilisée est la vôtre. Tous les détenteurs de cartes bancaires sont soumis à des contrôles de validation et à l'autorisation par l'émetteur de la carte. Si l'émetteur de votre carte refuse d'autoriser le paiement, nous serons en droit de refuser de procéder à la livraison de votre commande et ne serons pas responsables de tout retard ou de toute absence de livraison. Nous vous enverrons un courriel pour vous informer du refus.")
             ) %>
             
             <%= content_article(
               number: 4,
-              title: "Sécurité des données bancaires",
-              content: "Vos données bancaires seront traitées de manière sécurisée, conformément à notre Déclaration de Protection de la Vie Privée, que vous pouvez consulter plus haut dans ce document."
+              title: t("public.pages.legal.articles.paiement.a4.title", default: "Sécurité des données bancaires"),
+              content: t("public.pages.legal.articles.paiement.a4.content", default: "Vos données bancaires seront traitées de manière sécurisée, conformément à notre Déclaration de Protection de la Vie Privée, que vous pouvez consulter plus haut dans ce document.")
             ) %>
           <% end %>
 
-          <%= content_section(id: "retractation", icon: "arrow-counterclockwise", title: "Droit de rétractation") do %>
+          <%= content_section(id: "retractation", icon: "arrow-counterclockwise", title: t("public.pages.legal.sections.cgv.withdrawal_right")) do %>
             <%= content_article(
               number: 1,
-              title: "Retour des produits",
-              content: "Vous pouvez nous retourner uniquement les produits qui ont été achetés directement sur le Site Web. Si vous achetez vos produits dans notre boutique de Cannes, les produits devront être retournés au magasin. Nous nous réservons le droit de refuser le retour de marchandises qui n'auront pas été retournées dans le respect des stipulations prévues ci-après et les frais de transport pour le renvoi de chaque marchandise au lieu de livraison indiqué seront à votre charge."
+              title: t("public.pages.legal.articles.retractation.a1.title", default: "Retour des produits"),
+              content: t("public.pages.legal.articles.retractation.a1.content", default: "Vous pouvez nous retourner uniquement les produits qui ont été achetés directement sur le Site Web. Si vous achetez vos produits dans notre boutique de Cannes, les produits devront être retournés au magasin. Nous nous réservons le droit de refuser le retour de marchandises qui n'auront pas été retournées dans le respect des stipulations prévues ci-après et les frais de transport pour le renvoi de chaque marchandise au lieu de livraison indiqué seront à votre charge.")
             ) %>
             
             <%= content_article(
               number: 2,
-              title: "Conditions de rétractation",
-              content: "Si, pour quelque raison que ce soit, vous n'étiez pas satisfait de nos produits ou souhaitiez annuler votre commande, vous pouvez exercer votre droit de rétractation au plus tard dans les quatorze (14) jours suivants la réception de votre commande, et vous serez remboursé conformément aux dispositions de cet article, à condition : que les produits soient retournés leur conditionnement d'origine permettant leur transport à l'adresse mentionnée par le service client ; que les produits soient dans leur état initial avec l'étiquette attachée au produit, sans avoir été endommagés, tachés, lavés, modifiés ou portés (à l'exception de l'essayage), en y joignant l'emballage original et tous accessoires se rapportant aux produits, tels que les emballages ou notices d'utilisation, ainsi que la facture d'origine. Si le délai de rétractation de quatorze (14) jours expire un samedi, un dimanche ou un jour férié, ce délai est prolongé jusqu'au jour ouvré suivant. Pour tout achat réalisé sur notre Site Web, les demandes de rétractation, quel que soit le mode de livraison, devront toutes nous être adressées via l'adresse de contact sur notre site, ou par tout autre moyen de votre choix exprimant explicitement votre volonté de vous rétracter."
+              title: t("public.pages.legal.articles.retractation.a2.title", default: "Conditions de rétractation"),
+              content: t("public.pages.legal.articles.retractation.a2.content", default: "Si, pour quelque raison que ce soit, vous n'étiez pas satisfait de nos produits ou souhaitiez annuler votre commande, vous pouvez exercer votre droit de rétractation au plus tard dans les quatorze (14) jours suivants la réception de votre commande, et vous serez remboursé conformément aux dispositions de cet article, à condition : que les produits soient retournés leur conditionnement d'origine permettant leur transport à l'adresse mentionnée par le service client ; que les produits soient dans leur état initial avec l'étiquette attachée au produit, sans avoir été endommagés, tachés, lavés, modifiés ou portés (à l'exception de l'essayage), en y joignant l'emballage original et tous accessoires se rapportant aux produits, tels que les emballages ou notices d'utilisation, ainsi que la facture d'origine. Si le délai de rétractation de quatorze (14) jours expire un samedi, un dimanche ou un jour férié, ce délai est prolongé jusqu'au jour ouvré suivant. Pour tout achat réalisé sur notre Site Web, les demandes de rétractation, quel que soit le mode de livraison, devront toutes nous être adressées via l'adresse de contact sur notre site, ou par tout autre moyen de votre choix exprimant explicitement votre volonté de vous rétracter.")
             ) %>
             
             <%= content_article(
               number: 3,
-              title: "Remboursement",
-              content: "Conformément aux dispositions de l'article L 221-24 du code de la consommation, nous rembourserons le prix des produits de votre commande ainsi que les frais de livraison en recréditant le moyen de paiement utilisé lors de votre commande initiale. Nous effectuerons ce remboursement dans les meilleurs délais et au plus tard dans les quatorze (14) jours suivants la réception des marchandises que vous nous aurez renvoyés. A défaut de remboursement sous ce délai, les sommes que nous vous devrions produiront intérêts aux conditions suivantes : 10 jours après l'expiration du délai : taux d'intérêt légal ; 10-20 jours de retard : taux d'intérêt de 5% ; 20-30 jours de retard : taux d'intérêt de 10% ; 30-60 jours de retard : taux d'intérêt de 20% ; 60-90 jours de retard : taux d'intérêt de 50% ; Au-delà de 90 jours : 5 points supplémentaires par nouveau mois de retard."
+              title: t("public.pages.legal.articles.retractation.a3.title", default: "Remboursement"),
+              content: t("public.pages.legal.articles.retractation.a3.content", default: "Conformément aux dispositions de l'article L 221-24 du code de la consommation, nous rembourserons le prix des produits de votre commande ainsi que les frais de livraison en recréditant le moyen de paiement utilisé lors de votre commande initiale. Nous effectuerons ce remboursement dans les meilleurs délais et au plus tard dans les quatorze (14) jours suivants la réception des marchandises que vous nous aurez renvoyés. A défaut de remboursement sous ce délai, les sommes que nous vous devrions produiront intérêts aux conditions suivantes : 10 jours après l'expiration du délai : taux d'intérêt légal ; 10-20 jours de retard : taux d'intérêt de 5% ; 20-30 jours de retard : taux d'intérêt de 10% ; 30-60 jours de retard : taux d'intérêt de 20% ; 60-90 jours de retard : taux d'intérêt de 50% ; Au-delà de 90 jours : 5 points supplémentaires par nouveau mois de retard.")
             ) %>
             
             <%= content_article(
               number: 4,
-              title: "Soin des produits",
-              content: "Nous vous demandons de prendre soin des produits pendant qu'ils sont en votre possession et de nous les retourner à l'adresse indiquée aux présentes, sans retard excessif et au plus tard dans les quatorze (14) jours suivants l'exercice de votre droit de rétractation. Veuillez prendre acte du fait que si vous ne prenez pas soin des produits, ou si vous ne nous les retournez pas en respectant les conditions prévues au présent article, vous ne pourrez pas réclamer le remboursement des produits."
+              title: t("public.pages.legal.articles.retractation.a4.title", default: "Soin des produits"),
+              content: t("public.pages.legal.articles.retractation.a4.content", default: "Nous vous demandons de prendre soin des produits pendant qu'ils sont en votre possession et de nous les retourner à l'adresse indiquée aux présentes, sans retard excessif et au plus tard dans les quatorze (14) jours suivants l'exercice de votre droit de rétractation. Veuillez prendre acte du fait que si vous ne prenez pas soin des produits, ou si vous ne nous les retournez pas en respectant les conditions prévues au présent article, vous ne pourrez pas réclamer le remboursement des produits.")
             ) %>
           <% end %>
 
-          <%= content_section(id: "garanties", icon: "shield-check", title: "Garanties") do %>
+          <%= content_section(id: "garanties", icon: "shield-check", title: t("public.pages.legal.sections.cgv.guarantees")) do %>
             <%= content_article(
               number: 1,
-              title: "Champ d'application",
-              content: "Vous bénéficiez des garanties énumérées au présent article 12 uniquement dans la mesure où les produits ont été achetés directement sur le Site Web."
+              title: t("public.pages.legal.articles.garanties.a1.title", default: "Champ d'application"),
+              content: t("public.pages.legal.articles.garanties.a1.content", default: "Vous bénéficiez des garanties énumérées au présent article 12 uniquement dans la mesure où les produits ont été achetés directement sur le Site Web.")
             ) %>
             
             <%= content_article(
               number: 2,
-              title: "Garantie légale de conformité",
-              content: "Vous bénéficiez des garanties légales suivantes : La garantie légale de conformité (articles L.217-4 et suivants du Code de la consommation), Si vos produits sont non conformes (par exemple s'ils ne correspondent pas à la description donnée sur le site ou à votre commande), vous bénéficiez d'un délai de deux ans à compter de la délivrance du bien pour contacter notre Service Clientèle par courriel via le formulaire de contact #{link_to "https://a1soir.com/contact", contact_path, class: "text-light text-decoration-underline"}, ou par courrier postal à l'adresse suivante : Autour d'Un Soir, 29 Boulevard Carnot, 06400 Cannes, France, et nous retourner les produits non conformes. Nous vous renverrons alors des produits de remplacement, lorsque ceux-ci sont disponibles. Si nous ne sommes pas en mesure de remplacer les produits non conformes dans un délai de trente (30) jours, vous pouvez : demander un remboursement intégral des produits non conformes ou conserver les produits non conformes et nous demander une réduction d'une partie du prix, qui sera déterminé au cas par cas.".html_safe
+              title: t("public.pages.legal.articles.garanties.a2.title", default: "Garantie légale de conformité"),
+              content: t("public.pages.legal.articles.garanties.a2.content_html", contact_link: link_to("https://a1soir.com/contact", contact_path, class: "text-light text-decoration-underline"), default: "Vous bénéficiez des garanties légales suivantes : La garantie légale de conformité (articles L.217-4 et suivants du Code de la consommation), Si vos produits sont non conformes (par exemple s'ils ne correspondent pas à la description donnée sur le site ou à votre commande), vous bénéficiez d'un délai de deux ans à compter de la délivrance du bien pour contacter notre Service Clientèle par courriel via le formulaire de contact %{contact_link}, ou par courrier postal à l'adresse suivante : Autour d'Un Soir, 29 Boulevard Carnot, 06400 Cannes, France, et nous retourner les produits non conformes. Nous vous renverrons alors des produits de remplacement, lorsque ceux-ci sont disponibles. Si nous ne sommes pas en mesure de remplacer les produits non conformes dans un délai de trente (30) jours, vous pouvez : demander un remboursement intégral des produits non conformes ou conserver les produits non conformes et nous demander une réduction d'une partie du prix, qui sera déterminé au cas par cas.").html_safe
             ) %>
             
             <%= content_article(
               number: 3,
-              title: "Preuve du défaut",
-              content: "Vous êtes dispensés de rapporter la preuve de l'existence du défaut de conformité du produit durant les vingt-quatre (24) mois suivant la délivrance du bien."
+              title: t("public.pages.legal.articles.garanties.a3.title", default: "Preuve du défaut"),
+              content: t("public.pages.legal.articles.garanties.a3.content", default: "Vous êtes dispensés de rapporter la preuve de l'existence du défaut de conformité du produit durant les vingt-quatre (24) mois suivant la délivrance du bien.")
             ) %>
             
             <%= content_article(
               number: 4,
-              title: "Indépendance des garanties",
-              content: "Cette garantie légale de conformité s'applique indépendamment de toute garantie commerciale éventuellement souscrite et ainsi que de la nature du produit."
+              title: t("public.pages.legal.articles.garanties.a4.title", default: "Indépendance des garanties"),
+              content: t("public.pages.legal.articles.garanties.a4.content", default: "Cette garantie légale de conformité s'applique indépendamment de toute garantie commerciale éventuellement souscrite et ainsi que de la nature du produit.")
             ) %>
             
             <%= content_article(
               number: 5,
-              title: "Garantie contre les vices cachés",
-              content: "La garantie légale contre les vices cachés (articles 1641 et suivants du Code civil). Si vous parvenez à prouver le vice caché d'un produit, nous sommes légalement tenus de réparer toutes les conséquences d'un tel vice caché (articles 1641 et suivants du Code civil). Vous pourrez alors choisir entre la résolution de la vente ou une réduction du prix (conformément à l'article 1644 du code civil)."
+              title: t("public.pages.legal.articles.garanties.a5.title", default: "Garantie contre les vices cachés"),
+              content: t("public.pages.legal.articles.garanties.a5.content", default: "La garantie légale contre les vices cachés (articles 1641 et suivants du Code civil). Si vous parvenez à prouver le vice caché d'un produit, nous sommes légalement tenus de réparer toutes les conséquences d'un tel vice caché (articles 1641 et suivants du Code civil). Vous pourrez alors choisir entre la résolution de la vente ou une réduction du prix (conformément à l'article 1644 du code civil).")
             ) %>
             
             <%= content_article(
               number: 6,
-              title: "Coûts de renvoi",
-              content: "En cas de remplacement des produits ou de remboursement, nous prenons en charge vos coûts de renvoi des produits."
+              title: t("public.pages.legal.articles.garanties.a6.title", default: "Coûts de renvoi"),
+              content: t("public.pages.legal.articles.garanties.a6.content", default: "En cas de remplacement des produits ou de remboursement, nous prenons en charge vos coûts de renvoi des produits.")
             ) %>
           <% end %>
 
-          <%= content_section(id: "informations-personnelles", icon: "person-badge", title: "Vos informations personnelles") do %>
+          <%= content_section(id: "informations-personnelles", icon: "person-badge", title: t("public.pages.legal.sections.cgv.personal_information")) do %>
             <%= content_article(
               number: 1,
-              title: "Exactitude des informations",
-              content: "En communiquant des informations sur le Site Web, vous garantissez que vous utilisez votre véritable identité et que toutes les informations fournies sont vraies, précises, à jour et complètes au moment où vous nous fournissez ces informations."
+              title: t("public.pages.legal.articles.informations_personnelles.a1.title", default: "Exactitude des informations"),
+              content: t("public.pages.legal.articles.informations_personnelles.a1.content", default: "En communiquant des informations sur le Site Web, vous garantissez que vous utilisez votre véritable identité et que toutes les informations fournies sont vraies, précises, à jour et complètes au moment où vous nous fournissez ces informations.")
             ) %>
             
             <%= content_article(
               number: 2,
-              title: "Mise à jour des informations",
-              content: "Si vous constatez qu'une ou plusieurs des informations transmises sont incorrectes ou ne sont plus valables, vous devrez les modifier. A défaut, nous ne pourrons être tenus pour responsables des conséquences qui pourraient en résulter."
+              title: t("public.pages.legal.articles.informations_personnelles.a2.title", default: "Mise à jour des informations"),
+              content: t("public.pages.legal.articles.informations_personnelles.a2.content", default: "Si vous constatez qu'une ou plusieurs des informations transmises sont incorrectes ou ne sont plus valables, vous devrez les modifier. A défaut, nous ne pourrons être tenus pour responsables des conséquences qui pourraient en résulter.")
             ) %>
             
             <%= content_article(
               number: 3,
-              title: "Utilisation des informations",
-              content: "Les informations personnelles que vous nous fournissez en utilisant le Site Web seront enregistrées et utilisées uniquement dans le respect de notre Déclaration de Protection de la Vie Privée, qui peut être consultée plus haut."
+              title: t("public.pages.legal.articles.informations_personnelles.a3.title", default: "Utilisation des informations"),
+              content: t("public.pages.legal.articles.informations_personnelles.a3.content", default: "Les informations personnelles que vous nous fournissez en utilisant le Site Web seront enregistrées et utilisées uniquement dans le respect de notre Déclaration de Protection de la Vie Privée, qui peut être consultée plus haut.")
             ) %>
             
             <%= content_article(
               number: 4,
-              title: "Stockage des données",
-              content: "En passant une commande, vous acceptez et comprenez que nous serons en droit de stocker et traiter vos données personnelles. Nous respectons pleinement la vie privée des personnes qui consultent et utilisent ce Site Web."
+              title: t("public.pages.legal.articles.informations_personnelles.a4.title", default: "Stockage des données"),
+              content: t("public.pages.legal.articles.informations_personnelles.a4.content", default: "En passant une commande, vous acceptez et comprenez que nous serons en droit de stocker et traiter vos données personnelles. Nous respectons pleinement la vie privée des personnes qui consultent et utilisent ce Site Web.")
             ) %>
           <% end %>
 
-          <%= content_section(id: "responsabilite", icon: "exclamation-triangle", title: "Responsabilité") do %>
+          <%= content_section(id: "responsabilite", icon: "exclamation-triangle", title: t("public.pages.legal.sections.cgv.liability")) do %>
             <%= content_article(
               number: 1,
-              title: "Limitation de responsabilité",
-              content: "Nous ne serons pas responsables des pertes ou dommages que vous pourriez subir si de tels pertes ou dommages résultent d'un cas de force majeure, s'ils sont imputables au fait imprévisible et insurmontable d'un tiers, ou s'ils vous sont imputables."
+              title: t("public.pages.legal.articles.responsabilite.a1.title", default: "Limitation de responsabilité"),
+              content: t("public.pages.legal.articles.responsabilite.a1.content", default: "Nous ne serons pas responsables des pertes ou dommages que vous pourriez subir si de tels pertes ou dommages résultent d'un cas de force majeure, s'ils sont imputables au fait imprévisible et insurmontable d'un tiers, ou s'ils vous sont imputables.")
             ) %>
             
             <%= content_article(
               number: 2,
-              title: "Manquement aux CGV",
-              content: "En cas de manquement de votre part à ces CGV, nous vous enverrons une mise en demeure d'y remédier. Si cette mise en demeure reste sans effet après un délai de quinze (15) jours, nous pourrons, de plein droit, vous refuser le droit d'accès au Site Web, ou refuser vos commandes futures."
+              title: t("public.pages.legal.articles.responsabilite.a2.title", default: "Manquement aux CGV"),
+              content: t("public.pages.legal.articles.responsabilite.a2.content", default: "En cas de manquement de votre part à ces CGV, nous vous enverrons une mise en demeure d'y remédier. Si cette mise en demeure reste sans effet après un délai de quinze (15) jours, nous pourrons, de plein droit, vous refuser le droit d'accès au Site Web, ou refuser vos commandes futures.")
             ) %>
           <% end %>
 
-          <%= content_section(id: "disponibilite-site", icon: "wifi", title: "Disponibilité et utilisation du Site Web") do %>
+          <%= content_section(id: "disponibilite-site", icon: "wifi", title: t("public.pages.legal.sections.cgv.website_availability")) do %>
             <%= content_article(
               number: 1,
-              title: "Disponibilité du site",
-              content: "Le Site Web est mis à votre disposition en l'état. Aucune garantie n'est apportée quant au fait que le Site Web soit disponible sans interruption 24 heures sur 24 et de façon pleinement opérationnelle. Par exemple, l'accès au Site Web peut être interrompu sans préavis en cas de problèmes techniques ou encore pour des raisons de maintenance."
+              title: t("public.pages.legal.articles.disponibilite_site.a1.title", default: "Disponibilité du site"),
+              content: t("public.pages.legal.articles.disponibilite_site.a1.content", default: "Le Site Web est mis à votre disposition en l'état. Aucune garantie n'est apportée quant au fait que le Site Web soit disponible sans interruption 24 heures sur 24 et de façon pleinement opérationnelle. Par exemple, l'accès au Site Web peut être interrompu sans préavis en cas de problèmes techniques ou encore pour des raisons de maintenance.")
             ) %>
             
             <%= content_article(
               number: 2,
-              title: "Protection de votre appareil",
-              content: "Il est de votre responsabilité de protéger votre ordinateur ou tout autre appareil numérique utilisé pour accéder au Site Web. Nous ne serons pas responsables des dommages qui pourraient être causés à votre ou vos appareils, ou de la perte de données qui pourrait résulter de l'utilisation du Site Web."
+              title: t("public.pages.legal.articles.disponibilite_site.a2.title", default: "Protection de votre appareil"),
+              content: t("public.pages.legal.articles.disponibilite_site.a2.content", default: "Il est de votre responsabilité de protéger votre ordinateur ou tout autre appareil numérique utilisé pour accéder au Site Web. Nous ne serons pas responsables des dommages qui pourraient être causés à votre ou vos appareils, ou de la perte de données qui pourrait résulter de l'utilisation du Site Web.")
             ) %>
           <% end %>
 
-          <%= content_section(id: "commentaires-reclamations", icon: "chat-dots", title: "Commentaires et réclamations") do %>
+          <%= content_section(id: "commentaires-reclamations", icon: "chat-dots", title: t("public.pages.legal.sections.cgv.comments_claims")) do %>
             <p class="text-light opacity-75">
-              Nous vous invitons à faire des commentaires sur notre service afin que nous puissions continuellement l'améliorer. Notre objectif est de régler les problèmes rapidement et équitablement. Nous vous remercions de nous informer de tous vos commentaires, questions ou réclamations par courriel à notre Service Clientèle via la rubrique « Contact » sur la Boutique en ligne (<%= link_to "https://a1soir.com/contact", contact_path, class: "text-light text-decoration-underline" %>). Vous pouvez également nous appeler au numéro suivant 04 93 45 17 17. Si vous souhaitez déposer une réclamation, indiquez-le clairement. Notre objectif est de répondre à votre réclamation dans un délai de sept (7) jours ouvrés, soit en y apportant une solution, soit en vous indiquant les modalités du traitement de votre réclamation.
+              <%= t("public.pages.legal.articles.commentaires_reclamations.content_html", contact_link: link_to("https://a1soir.com/contact", contact_path, class: "text-light text-decoration-underline"), default: "Nous vous invitons à faire des commentaires sur notre service afin que nous puissions continuellement l'améliorer. Notre objectif est de régler les problèmes rapidement et équitablement. Nous vous remercions de nous informer de tous vos commentaires, questions ou réclamations par courriel à notre Service Clientèle via la rubrique « Contact » sur la Boutique en ligne (%{contact_link}). Vous pouvez également nous appeler au numéro suivant 04 93 45 17 17. Si vous souhaitez déposer une réclamation, indiquez-le clairement. Notre objectif est de répondre à votre réclamation dans un délai de sept (7) jours ouvrés, soit en y apportant une solution, soit en vous indiquant les modalités du traitement de votre réclamation.").html_safe %>
             </p>
           <% end %>
 
-          <%= content_section(id: "propriete-intellectuelle", icon: "copyright", title: "Droits de la propriété intellectuelle") do %>
+          <%= content_section(id: "propriete-intellectuelle", icon: "copyright", title: t("public.pages.legal.sections.cgv.ip_rights")) do %>
             <%= content_article(
               number: 1,
-              title: "Absence de droit de propriété",
-              content: "Votre utilisation du Site Web ne vous confère aucun droit de propriété intellectuelle sur le Site Web et son contenu. Vous n'avez notamment aucun droit sur nos créations protégées par le droit d'auteur, sur nos dessins et modèles et sur nos marques, ni sur ceux appartenant à des tiers."
+              title: t("public.pages.legal.articles.propriete_intellectuelle.a1.title", default: "Absence de droit de propriété"),
+              content: t("public.pages.legal.articles.propriete_intellectuelle.a1.content", default: "Votre utilisation du Site Web ne vous confère aucun droit de propriété intellectuelle sur le Site Web et son contenu. Vous n'avez notamment aucun droit sur nos créations protégées par le droit d'auteur, sur nos dessins et modèles et sur nos marques, ni sur ceux appartenant à des tiers.")
             ) %>
             
             <%= content_article(
               number: 2,
-              title: "Usage personnel",
-              content: "Nous vous mettons à disposition le Site Web uniquement à des fins d'utilisation personnelles et non commerciales. Le contenu du Site Web ne saurait être utilisé pour des besoins autres quels qu'ils soient, sans notre autorisation expresse et par écrit."
+              title: t("public.pages.legal.articles.propriete_intellectuelle.a2.title", default: "Usage personnel"),
+              content: t("public.pages.legal.articles.propriete_intellectuelle.a2.content", default: "Nous vous mettons à disposition le Site Web uniquement à des fins d'utilisation personnelles et non commerciales. Le contenu du Site Web ne saurait être utilisé pour des besoins autres quels qu'ils soient, sans notre autorisation expresse et par écrit.")
             ) %>
           <% end %>
 
-          <%= content_section(id: "modification-cgv", icon: "pencil", title: "Modification du service ou modification des CGV") do %>
+          <%= content_section(id: "modification-cgv", icon: "pencil", title: t("public.pages.legal.sections.cgv.service_changes")) do %>
             <p class="text-light opacity-75">
-              Nous nous réservons le droit de procéder à des modifications de notre Site Web et des présentes CGV à tout moment. Votre utilisation du Site Web et vos commandes seront soumises aux CGV en vigueur au moment de votre utilisation du Site Web ou de votre commande de produits, à moins qu'un changement de ces CGV ne soit exigé par la loi ou par une autorité gouvernementale (auquel cas ce changement s'appliquera également à toutes les commandes que vous avez déjà passées).
+              <%= t("public.pages.legal.articles.modification_cgv.content", default: "Nous nous réservons le droit de procéder à des modifications de notre Site Web et des présentes CGV à tout moment. Votre utilisation du Site Web et vos commandes seront soumises aux CGV en vigueur au moment de votre utilisation du Site Web ou de votre commande de produits, à moins qu'un changement de ces CGV ne soit exigé par la loi ou par une autorité gouvernementale (auquel cas ce changement s'appliquera également à toutes les commandes que vous avez déjà passées).") %>
             </p>
           <% end %>
 
-          <%= content_section(id: "non-renonciation", icon: "file-x", title: "Non-renonciation") do %>
+          <%= content_section(id: "non-renonciation", icon: "file-x", title: t("public.pages.legal.sections.cgv.no_waiver")) do %>
             <p class="text-light opacity-75">
-              Le fait pour l'une ou l'autre des parties de ne pas agir au titre de ces CGV ne constitue pas pour autant une renonciation au droit d'agir, sauf renonciation expresse et écrite.
+              <%= t("public.pages.legal.articles.non_renonciation.content", default: "Le fait pour l'une ou l'autre des parties de ne pas agir au titre de ces CGV ne constitue pas pour autant une renonciation au droit d'agir, sauf renonciation expresse et écrite.") %>
             </p>
           <% end %>
 
-          <%= content_section(id: "stipulations-finales", icon: "file-earmark-check", title: "Stipulations finales") do %>
+          <%= content_section(id: "stipulations-finales", icon: "file-earmark-check", title: t("public.pages.legal.sections.cgv.final_provisions")) do %>
             <%= content_article(
               number: 1,
-              title: "Législation applicable",
-              content: "Ces CGV sont régies par la législation française."
+              title: t("public.pages.legal.articles.stipulations_finales.a1.title", default: "Législation applicable"),
+              content: t("public.pages.legal.articles.stipulations_finales.a1.content", default: "Ces CGV sont régies par la législation française.")
             ) %>
             
             <%= content_article(
               number: 2,
-              title: "Divisibilité des stipulations",
-              content: "Si l'une quelconque des stipulations des présentes CGV est jugée invalide, nulle ou inapplicable pour quelque raison que ce soit, cette stipulation sera considérée comme divisible du reste des CGV et n'affectera pas la validité et l'applicabilité des autres stipulations des CGV."
+              title: t("public.pages.legal.articles.stipulations_finales.a2.title", default: "Divisibilité des stipulations"),
+              content: t("public.pages.legal.articles.stipulations_finales.a2.content", default: "Si l'une quelconque des stipulations des présentes CGV est jugée invalide, nulle ou inapplicable pour quelque raison que ce soit, cette stipulation sera considérée comme divisible du reste des CGV et n'affectera pas la validité et l'applicabilité des autres stipulations des CGV.")
             ) %>
             
             <%= content_article(
               number: 3,
-              title: "Marques déposées",
-              content: "Autour D'Un Soir ainsi que les marques qui y sont vendues sur le site sont des marques déposées."
+              title: t("public.pages.legal.articles.stipulations_finales.a3.title", default: "Marques déposées"),
+              content: t("public.pages.legal.articles.stipulations_finales.a3.content", default: "Autour D'Un Soir ainsi que les marques qui y sont vendues sur le site sont des marques déposées.")
             ) %>
           <% end %>
 
-          <%= content_section(id: "informations-legales", icon: "building", title: "Informations légales") do %>
+          <%= content_section(id: "informations-legales", icon: "building", title: t("public.pages.legal.sections.cgv.legal_information")) do %>
             <%= content_article(
               number: 1,
-              title: "Éditeur du site",
-              content: "Le Site Web est édité par Autour D'Un Soir, Société à responsabilité limitée au capital social de 75 000,00 Euro, ayant son siège social au 29 boulevard Carnot, 06400 Cannes, France, immatriculée au Registre du Commerce et des Sociétés de Cannes sous le numéro 880 559 414, tél. 0033 (0)4.93.45.17.17"
+              title: t("public.pages.legal.articles.informations_legales.a1.title", default: "Éditeur du site"),
+              content: t("public.pages.legal.articles.informations_legales.a1.content", default: "Le Site Web est édité par Autour D'Un Soir, Société à responsabilité limitée au capital social de 75 000,00 Euro, ayant son siège social au 29 boulevard Carnot, 06400 Cannes, France, immatriculée au Registre du Commerce et des Sociétés de Cannes sous le numéro 880 559 414, tél. 0033 (0)4.93.45.17.17")
             ) %>
             
             <%= content_article(
               number: 2,
-              title: "Contact",
-              content: "Vous pouvez écrire à notre service client via la rubrique « Contacts » sur la Boutique en ligne (#{link_to "https://a1soir.com/contact", contact_path, class: "text-light text-decoration-underline"}). Par téléphone du mardi au vendredi de 10h à 12h et de 15h à 19h et le samedi de 10h à 16h au numéro suivant : 04 93 45 17 17.".html_safe
+              title: t("public.pages.legal.articles.informations_legales.a2.title", default: "Contact"),
+              content: t("public.pages.legal.articles.informations_legales.a2.content_html", contact_link: link_to("https://a1soir.com/contact", contact_path, class: "text-light text-decoration-underline"), default: "Vous pouvez écrire à notre service client via la rubrique « Contacts » sur la Boutique en ligne (%{contact_link}). Par téléphone du mardi au vendredi de 10h à 12h et de 15h à 19h et le samedi de 10h à 16h au numéro suivant : 04 93 45 17 17.").html_safe
             ) %>
           <% end %>
         </section>
@@ -433,230 +419,166 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
         <%= content_section(
           id: "cgl", 
           icon: "calendar-check", 
-          title: "Conditions Générales de Location",
-          alert: { type: :warning, icon: "exclamation-triangle", text: "Veuillez lire attentivement ces conditions avant toute réservation" }
+          title: t("public.pages.legal.sections.rental_terms.title"),
+          alert: { type: :warning, icon: "exclamation-triangle", text: t("public.pages.legal.sections.rental_terms.alert", default: "Veuillez lire attentivement ces conditions avant toute réservation") }
         ) do %>
           <%= content_article(
             number: 1,
-            title: "Objet de la location",
-            content: "Les présentes conditions générales régissent la location de tenues et accessoires 
-              proposés par Autour D'Un Soir. Chaque location est nominative et personnelle."
+            title: t("public.pages.legal.articles.cgl.a1.title", default: "Objet de la location"),
+            content: t("public.pages.legal.articles.cgl.a1.content", default: "Les présentes conditions générales régissent la location de tenues et accessoires proposés par Autour D'Un Soir. Chaque location est nominative et personnelle.")
           ) %>
 
           <%= content_article(
             number: 2,
-            title: "Réservation",
-            content: "La réservation d'une location peut s'effectuer en boutique uniquement. 
-              Elle devient définitive après versement d'un acompte de 30% du montant total. 
-              Le solde est à régler au plus tard lors du retrait de la tenue."
+            title: t("public.pages.legal.articles.cgl.a2.title", default: "Réservation"),
+            content: t("public.pages.legal.articles.cgl.a2.content", default: "La réservation d'une location peut s'effectuer en boutique uniquement. Elle devient définitive après versement d'un acompte de 30% du montant total. Le solde est à régler au plus tard lors du retrait de la tenue.")
           ) %>
 
           <%= content_article(
             number: 3,
-            title: "Durée de location",
-            content: "La durée standard de location est de 3-4 jours. 
-              Les dates de retrait et de retour sont précisées lors de la réservation. 
-              Toute prolongation doit être validée au préalable par Autour D'Un Soir et fera l'objet d'une facturation complémentaire."
+            title: t("public.pages.legal.articles.cgl.a3.title", default: "Durée de location"),
+            content: t("public.pages.legal.articles.cgl.a3.content", default: "La durée standard de location est de 3-4 jours. Les dates de retrait et de retour sont précisées lors de la réservation. Toute prolongation doit être validée au préalable par Autour D'Un Soir et fera l'objet d'une facturation complémentaire.")
           ) %>
 
           <%= content_article(
             number: 4,
-            title: "Caution",
-            content: "Une caution proportionnelle à la valeur de la tenue est demandée lors du retrait. 
-            Cette caution pourra être conservée en tout ou partie en cas de :<br>
-            • Retard de restitution <br>
-            • Dommages ou salissures importantes <br>
-            • Perte ou vol de l'article loué <br>
-            • Non-respect des conditions de location"
+            title: t("public.pages.legal.articles.cgl.a4.title", default: "Caution"),
+            content: t("public.pages.legal.articles.cgl.a4.content_html", default: "Une caution proportionnelle à la valeur de la tenue est demandée lors du retrait.<br>Cette caution pourra être conservée en tout ou partie en cas de :<br>• Retard de restitution<br>• Dommages ou salissures importantes<br>• Perte ou vol de l'article loué<br>• Non-respect des conditions de location").html_safe
           ) %>
 
           <%= content_article(
             number: 5,
-            title: "Essayage et retouches",
-            content: "Un essayage préalable est vivement recommandé. 
-            Des retouches mineures peuvent être effectuées gratuitement dans la limite du raisonnable. 
-            Les retouches importantes feront l'objet d'un devis et d'une facturation supplémentaire."
+            title: t("public.pages.legal.articles.cgl.a5.title", default: "Essayage et retouches"),
+            content: t("public.pages.legal.articles.cgl.a5.content", default: "Un essayage préalable est vivement recommandé. Des retouches mineures peuvent être effectuées gratuitement dans la limite du raisonnable. Les retouches importantes feront l'objet d'un devis et d'une facturation supplémentaire.")
           ) %>
 
           <%= content_article(
             number: 6,
-            title: "Responsabilité du locataire",
-            content: "Le locataire s'engage à :<br>
-              • Prendre soin de la tenue louée<br>
-              • Ne pas modifier ou altérer l'article<br>
-              • Ne pas sous-louer la tenue<br>
-              • Restituer la tenue dans les délais convenus<br>
-              • Signaler immédiatement tout dommage accidentel"
+            title: t("public.pages.legal.articles.cgl.a6.title", default: "Responsabilité du locataire"),
+            content: t("public.pages.legal.articles.cgl.a6.content_html", default: "Le locataire s'engage à :<br>• Prendre soin de la tenue louée<br>• Ne pas modifier ou altérer l'article<br>• Ne pas sous-louer la tenue<br>• Restituer la tenue dans les délais convenus<br>• Signaler immédiatement tout dommage accidentel").html_safe
           ) %>
 
           <%= content_article(
             number: 7,
-            title: "Annulation",
-            content: "En cas d'annulation par le client :<br>
-              • Dans les 14 jours suivants la réservation : remboursement intégral <br>
-              • après 14 jours : émission d'un avoir valable 1 an. <br>
-              L'acompte reste acquis à Autour D'Un Soir sauf cas de force majeure justifié."
+            title: t("public.pages.legal.articles.cgl.a7.title", default: "Annulation"),
+            content: t("public.pages.legal.articles.cgl.a7.content_html", default: "En cas d'annulation par le client :<br>• Dans les 14 jours suivants la réservation : remboursement intégral<br>• Après 14 jours : émission d'un avoir valable 1 an.<br>L'acompte reste acquis à Autour D'Un Soir sauf cas de force majeure justifié.").html_safe
           ) %>
 
           <%= content_article(
             number: 8,
-            title: "Entretien",
-            content: "L'entretien et le nettoyage des tenues sont inclus dans le prix de location. 
-              Le locataire ne doit en aucun cas nettoyer lui-même la tenue. En cas de salissures 
-              exceptionnelles nécessitant un traitement spécial, des frais supplémentaires pourront 
-              être facturés."
+            title: t("public.pages.legal.articles.cgl.a8.title", default: "Entretien"),
+            content: t("public.pages.legal.articles.cgl.a8.content", default: "L'entretien et le nettoyage des tenues sont inclus dans le prix de location. Le locataire ne doit en aucun cas nettoyer lui-même la tenue. En cas de salissures exceptionnelles nécessitant un traitement spécial, des frais supplémentaires pourront être facturés.")
           ) %>
 
           <%= content_article(
             number: 9,
-            title: "Assurance",
-            content: "Nous recommandons au locataire de souscrire une assurance couvrant les dommages éventuels du type assurance de responsablilité civile."
+            title: t("public.pages.legal.articles.cgl.a9.title", default: "Assurance"),
+            content: t("public.pages.legal.articles.cgl.a9.content", default: "Nous recommandons au locataire de souscrire une assurance couvrant les dommages éventuels de type assurance de responsabilité civile.")
           ) %>
         <% end %>
 
         <!-- Politique de confidentialité -->
-        <%= content_section(id: "confidentialite", icon: "shield-check", title: "Politique de Confidentialité") do %>
-          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Collecte des données</h3>
+        <%= content_section(id: "confidentialite", icon: "shield-check", title: t("public.pages.legal.sections.privacy_policy.title")) do %>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.privacy_policy.data_collection") %></h3>
           <p class="text-light opacity-75">
-            Autour D'Un Soir collecte les données personnelles suivantes dans le cadre de son activité :<br>
-            • Nom, prénom<br>
-            • Adresse email<br>
-            • Numéro de téléphone<br>
-            • Adresse postale<br>
-            • Informations de paiement<br>
-            • Mensuration (pour les locations et personnalisations)
+            <%= t("public.pages.legal.sections.privacy_policy.data_collection_text_html", default: "Autour D'Un Soir collecte les données personnelles suivantes dans le cadre de son activité :<br>• Nom, prénom<br>• Adresse email<br>• Numéro de téléphone<br>• Adresse postale<br>• Informations de paiement<br>• Mensuration (pour les locations et personnalisations)").html_safe %>
           </p>
 
-          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Utilisation des données</h3>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.privacy_policy.data_use") %></h3>
           <p class="text-light opacity-75">
-            Les données collectées sont utilisées pour :<br>
-            • Traiter les commandes et réservations<br>
-            • Gérer la relation client<br>
-            • Envoyer des informations commerciales (avec consentement)<br>
-            • Améliorer nos services<br>
-            • Respecter nos obligations légales
+            <%= t("public.pages.legal.sections.privacy_policy.data_use_text_html", default: "Les données collectées sont utilisées pour :<br>• Traiter les commandes et réservations<br>• Gérer la relation client<br>• Envoyer des informations commerciales (avec consentement)<br>• Améliorer nos services<br>• Respecter nos obligations légales").html_safe %>
           </p>
 
-          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Protection des données</h3>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.privacy_policy.data_protection") %></h3>
           <p class="text-light opacity-75">
-            Autour D'Un Soir met en œuvre toutes les mesures techniques et organisationnelles appropriées 
-            pour protéger vos données personnelles contre la destruction, la perte, l'altération, 
-            la divulgation non autorisée ou l'accès non autorisé.
+            <%= t("public.pages.legal.sections.privacy_policy.data_protection_text", default: "Autour D'Un Soir met en œuvre toutes les mesures techniques et organisationnelles appropriées pour protéger vos données personnelles contre la destruction, la perte, l'altération, la divulgation non autorisée ou l'accès non autorisé.") %>
           </p>
 
-          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Vos droits</h3>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.privacy_policy.your_rights") %></h3>
           <p class="text-light opacity-75">
-            Conformément au RGPD, vous disposez des droits suivants :<br>
-            • Droit d'accès à vos données<br>
-            • Droit de rectification<br>
-            • Droit à l'effacement<br>
-            • Droit à la limitation du traitement<br>
-            • Droit à la portabilité<br>
-            • Droit d'opposition<br>
-            Pour exercer vos droits, contactez-nous à (<%= link_to "formulaire de contact", "#{contact_path}#message-form" %>)
+            <%= t("public.pages.legal.sections.privacy_policy.your_rights_text_html", contact_form_link: link_to(t("public.pages.legal.contact_form", default: "formulaire de contact"), "#{contact_path}#message-form"), default: "Conformément au RGPD, vous disposez des droits suivants :<br>• Droit d'accès à vos données<br>• Droit de rectification<br>• Droit à l'effacement<br>• Droit à la limitation du traitement<br>• Droit à la portabilité<br>• Droit d'opposition<br>Pour exercer vos droits, contactez-nous à (%{contact_form_link})").html_safe %>
           </p>
 
-          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Conservation des données</h3>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.privacy_policy.data_retention") %></h3>
           <p class="text-light opacity-75">
-            Vos données sont conservées pendant la durée nécessaire aux finalités pour lesquelles 
-            elles sont traitées, et conformément aux obligations légales de conservation.
+            <%= t("public.pages.legal.sections.privacy_policy.data_retention_text", default: "Vos données sont conservées pendant la durée nécessaire aux finalités pour lesquelles elles sont traitées, et conformément aux obligations légales de conservation.") %>
           </p>
 
-          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Transfert de données</h3>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.privacy_policy.data_transfer") %></h3>
           <p class="text-light opacity-75">
-            Vos données personnelles ne sont pas transférées hors de l'Union Européenne. 
-            Elles peuvent être transmises à nos prestataires de services (paiement, livraison) 
-            uniquement dans le cadre de l'exécution de nos services.
+            <%= t("public.pages.legal.sections.privacy_policy.data_transfer_text", default: "Vos données personnelles ne sont pas transférées hors de l'Union Européenne. Elles peuvent être transmises à nos prestataires de services (paiement, livraison) uniquement dans le cadre de l'exécution de nos services.") %>
           </p>
         <% end %>
 
         <!-- Politique des cookies -->
-        <%= content_section(id: "cookies", icon: "gear", title: "Politique des Cookies") do %>
-          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Qu'est-ce qu'un cookie ?</h3>
+        <%= content_section(id: "cookies", icon: "gear", title: t("public.pages.legal.sections.cookies.title")) do %>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.cookies.what_is_cookie") %></h3>
           <p class="text-light opacity-75">
-            Un cookie est un petit fichier texte stocké sur votre ordinateur ou appareil mobile 
-            lors de votre visite sur notre site. Les cookies permettent de mémoriser vos préférences 
-            et d'améliorer votre expérience de navigation.
+            <%= t("public.pages.legal.sections.cookies.what_is_cookie_text", default: "Un cookie est un petit fichier texte stocké sur votre ordinateur ou appareil mobile lors de votre visite sur notre site. Les cookies permettent de mémoriser vos préférences et d'améliorer votre expérience de navigation.") %>
           </p>
 
-          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Types de cookies utilisés</h3>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.cookies.types_used") %></h3>
           <div class="text-light opacity-75">
-            <p><strong>Cookies essentiels</strong><br>
-            Nécessaires au fonctionnement du site (panier, connexion, sécurité)</p>
+            <p><strong><%= t("public.pages.legal.sections.cookies.essential_title", default: "Cookies essentiels") %></strong><br>
+            <%= t("public.pages.legal.sections.cookies.essential_text", default: "Nécessaires au fonctionnement du site (panier, connexion, sécurité)") %></p>
             
-            <p><strong>Cookies de performance</strong><br>
-            Permettent d'analyser l'utilisation du site pour améliorer nos services</p>
+            <p><strong><%= t("public.pages.legal.sections.cookies.performance_title", default: "Cookies de performance") %></strong><br>
+            <%= t("public.pages.legal.sections.cookies.performance_text", default: "Permettent d'analyser l'utilisation du site pour améliorer nos services") %></p>
             
-            <p><strong>Cookies de fonctionnalité</strong><br>
-            Mémorisent vos préférences (langue, région, affichage)</p>
+            <p><strong><%= t("public.pages.legal.sections.cookies.functionality_title", default: "Cookies de fonctionnalité") %></strong><br>
+            <%= t("public.pages.legal.sections.cookies.functionality_text", default: "Mémorisent vos préférences (langue, région, affichage)") %></p>
             
-            <p><strong>Cookies publicitaires</strong><br>
-            Utilisés pour afficher des publicités pertinentes (avec votre consentement)</p>
+            <p><strong><%= t("public.pages.legal.sections.cookies.advertising_title", default: "Cookies publicitaires") %></strong><br>
+            <%= t("public.pages.legal.sections.cookies.advertising_text", default: "Utilisés pour afficher des publicités pertinentes (avec votre consentement)") %></p>
           </div>
 
-          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Gestion des cookies</h3>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.cookies.management") %></h3>
           <p class="text-light opacity-75">
-            Vous pouvez à tout moment modifier vos préférences en matière de cookies en cliquant 
-            sur le bouton "Gérer les cookies" en bas de page. Vous pouvez également configurer 
-            votre navigateur pour refuser tous les cookies ou pour être averti lorsqu'un cookie 
-            est envoyé.
+            <%= t("public.pages.legal.sections.cookies.management_text", default: "Vous pouvez à tout moment modifier vos préférences en matière de cookies en cliquant sur le bouton \"Gérer les cookies\" en bas de page. Vous pouvez également configurer votre navigateur pour refuser tous les cookies ou pour être averti lorsqu'un cookie est envoyé.") %>
           </p>
 
           <div class="alert alert-warning mt-4" style="background: rgba(255, 193, 7, 0.15); border: 1px solid rgba(255, 193, 7, 0.3);">
             <i class="bi bi-exclamation-circle text-warning me-2"></i>
-            <small class="text-light">Attention : Le refus des cookies essentiels peut affecter le fonctionnement du site</small>
+            <small class="text-light"><%= t("public.pages.legal.sections.cookies.warning") %></small>
           </div>
         <% end %>
 
         <!-- Propriété intellectuelle -->
-        <%= content_section(id: "propriete", icon: "file-earmark-lock", title: "Propriété Intellectuelle") do %>
+        <%= content_section(id: "propriete", icon: "file-earmark-lock", title: t("public.pages.legal.sections.intellectual_property.title")) do %>
           <p class="text-light opacity-75">
-            L'ensemble du contenu de ce site (textes, images, vidéos, logos, graphismes, etc.) 
-            est la propriété exclusive de Autour D'Un Soir ou de ses partenaires. Toute reproduction, 
-            représentation, modification, publication, adaptation de tout ou partie des éléments 
-            du site, quel que soit le moyen ou le procédé utilisé, est interdite, sauf autorisation 
-            écrite préalable de Autour D'Un Soir.
+            <%= t("public.pages.legal.sections.intellectual_property.content_1", default: "L'ensemble du contenu de ce site (textes, images, vidéos, logos, graphismes, etc.) est la propriété exclusive de Autour D'Un Soir ou de ses partenaires. Toute reproduction, représentation, modification, publication, adaptation de tout ou partie des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite, sauf autorisation écrite préalable de Autour D'Un Soir.") %>
           </p>
 
           <p class="text-light opacity-75 mt-3">
-            Toute exploitation non autorisée du site ou de l'un quelconque des éléments qu'il contient 
-            sera considérée comme constitutive d'une contrefaçon et poursuivie conformément aux 
-            dispositions des articles L.335-2 et suivants du Code de Propriété Intellectuelle.
+            <%= t("public.pages.legal.sections.intellectual_property.content_2", default: "Toute exploitation non autorisée du site ou de l'un quelconque des éléments qu'il contient sera considérée comme constitutive d'une contrefaçon et poursuivie conformément aux dispositions des articles L.335-2 et suivants du Code de Propriété Intellectuelle.") %>
           </p>
 
-          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Marques</h3>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.intellectual_property.trademarks") %></h3>
           <p class="text-light opacity-75">
-            "Autour D'Un Soir" et son logo sont des marques déposées. Toute reproduction ou utilisation 
-            de ces marques sans autorisation expresse est strictement interdite.
+            <%= t("public.pages.legal.sections.intellectual_property.trademarks_text", default: "\"Autour D'Un Soir\" et son logo sont des marques déposées. Toute reproduction ou utilisation de ces marques sans autorisation expresse est strictement interdite.") %>
           </p>
 
-          <h3 class="h5 fw-bold mt-4 mb-3 text-light">Liens hypertextes</h3>
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.intellectual_property.hyperlinks") %></h3>
           <p class="text-light opacity-75">
-            La création de liens hypertextes vers le site Autour D'Un Soir nécessite une autorisation préalable. 
-            Autour D'Un Soir se réserve le droit de demander la suppression d'un lien s'il estime que le site 
-            source ne respecte pas les lois en vigueur.
+            <%= t("public.pages.legal.sections.intellectual_property.hyperlinks_text", default: "La création de liens hypertextes vers le site Autour D'Un Soir nécessite une autorisation préalable. Autour D'Un Soir se réserve le droit de demander la suppression d'un lien s'il estime que le site source ne respecte pas les lois en vigueur.") %>
           </p>
         <% end %>
 
         <!-- Contact et litiges -->
         <section class="my-5" data-scroll-reveal>
           <div class="concept-card text-center">
-            <h2 class="h3 fw-bold mb-4 text-light">Questions ou réclamations ?</h2>
+            <h2 class="h3 fw-bold mb-4 text-light"><%= t("public.pages.legal.cta_questions.title") %></h2>
             <p class="text-light opacity-75 mb-4">
-              Pour toute question concernant ces conditions ou pour toute réclamation, 
-              n'hésitez pas à nous contacter.
+              <%= t("public.pages.legal.cta_questions.description", default: "Pour toute question concernant ces conditions ou pour toute réclamation, n'hésitez pas à nous contacter.") %>
             </p>
             <%= link_to "#{contact_path}#message-form", class: "btn btn-light btn-lg px-5 public-btn-border-radius" do %>
-              <i class="bi bi-envelope me-2"></i>Nous contacter
+              <i class="bi bi-envelope me-2"></i><%= t("public.pages.legal.cta_questions.contact_button", default: "Nous contacter") %>
             <% end %>
             
             <div class="mt-5 pt-4" style="border-top: 1px solid rgba(255, 255, 255, 0.2);">
-              <h5 class="fw-bold mb-3 text-light">Médiation et litiges</h5>
+              <h5 class="fw-bold mb-3 text-light"><%= t("public.pages.legal.cta_questions.mediation_title") %></h5>
               <p class="text-light opacity-75 small">
-                Conformément à l'article L.612-1 du Code de la consommation, nous vous informons que 
-                vous pouvez recourir gratuitement à un médiateur de la consommation en cas de litige. 
-                Les coordonnées du médiateur seront communiquées sur demande.<br>
-                En cas de litige, les tribunaux français seront seuls compétents.
+                <%= t("public.pages.legal.cta_questions.mediation_text_html", default: "Conformément à l'article L.612-1 du Code de la consommation, nous vous informons que vous pouvez recourir gratuitement à un médiateur de la consommation en cas de litige. Les coordonnées du médiateur seront communiquées sur demande.<br>En cas de litige, les tribunaux français seront seuls compétents.").html_safe %>
               </p>
             </div>
           </div>
@@ -665,7 +587,7 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
         <!-- Retour en haut -->
         <div class="text-center my-4">
           <a href="#top" class="btn btn-outline-light">
-            <i class="bi bi-arrow-up me-2"></i>Retour en haut
+            <i class="bi bi-arrow-up me-2"></i><%= t("public.pages.legal.back_to_top", default: "Retour en haut") %>
           </a>
         </div>
       </div>

@@ -38,7 +38,7 @@
 
       <!-- ÉTAPE 1 : Calendrier -->
       <div class="tab-pane fade show active" id="step1-pane" role="tabpanel" aria-labelledby="step1-tab" tabindex="0">
-        <h4 class="text-dark text-center fw-bold">Sélectionnez une date</h4>
+        <h4 class="text-dark text-center fw-bold"><%= t("public.demande_rdv.form.select_date_title") %></h4>
         <div class="mb-4 text-center">
           <div data-calendar-picker-target="dateInput" class="calendar-container-large mx-auto w-100"></div>
           <%= form.hidden_field :date_rdv_date, data: { calendar_picker_target: "dateHidden" } %>
@@ -49,11 +49,11 @@
       <div class="tab-pane fade" id="step2-pane" role="tabpanel" aria-labelledby="step2-tab" tabindex="0">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <a href="#" class="text-secondary text-decoration-none text-decoration-underline" data-action="click->calendar-picker#goBack">
-            <i class="bi bi-arrow-left me-2"></i>Retour
+            <i class="bi bi-arrow-left me-2"></i><%= t("public.demande_rdv.form.back") %>
           </a>
           <h4 class="text-dark text-center fw-bold">
-            Choisissez un horaire
-            <small class="text-muted d-block fs-6 fw-normal">(Heure de Paris)</small>
+            <%= t("public.demande_rdv.form.select_time_title") %>
+            <small class="text-muted d-block fs-6 fw-normal">(<%= t("public.demande_rdv.form.paris_time") %>)</small>
           </h4>
           <div style="width: 100px;"></div>
         </div>
@@ -76,9 +76,9 @@
       <div class="tab-pane fade" id="step3-pane" role="tabpanel" aria-labelledby="step3-tab" tabindex="0">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <a href="#" class="text-dark text-decoration-underline" data-action="click->calendar-picker#goBack">
-            <i class="bi bi-arrow-left me-2"></i>Retour
+            <i class="bi bi-arrow-left me-2"></i><%= t("public.demande_rdv.form.back") %>
           </a>
-          <h4 class="text-dark text-center fw-bold">Vos coordonnées</h4>
+          <h4 class="text-dark text-center fw-bold"><%= t("public.demande_rdv.form.contact_details_title") %></h4>
           <div style="width: 100px;"></div>
         </div>
 
@@ -181,7 +181,7 @@
         <!-- Soumission -->
         <div class="d-flex flex-column flex-md-row gap-3 justify-content-center align-items-center">
           <button type="submit" class="btn p-2" style="background-color: #000; color: #fff; font-weight: 600; letter-spacing: 0.5px; border: 2px solid #000;">
-            <i class="bi bi-send me-2"></i>Envoyer ma demande
+            <i class="bi bi-send me-2"></i><%= t("public.demande_rdv.form.submit_request") %>
           </button>
         </div>
       </div>

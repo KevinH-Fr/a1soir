@@ -9,8 +9,8 @@
 <% end %>
 
 <%= page_header(
-  "Nos autres activités", 
-  "Explorez l'ensemble de nos services",
+  t("public.pages.nos_autres_activites.header_title"),
+  t("public.pages.nos_autres_activites.header_subtitle"),
   image1: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/autres_activites1_n4ldap",
   image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/autres_activites2_vhynvk"
 ) %>
@@ -20,13 +20,13 @@
   <div class="container-fluid">
     <!-- Introduction -->
     <%= render partial: "public/shared/section_image_text", locals: {
-      title: "Bien plus qu'une simple boutique",
+      title: t("public.pages.nos_autres_activites.introduction.title"),
       image_path: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1600/tournage_fsteud",
-      description: "Au-delà de nos collections de tenues de soirée, Autour D'Un Soir vous accompagne dans tous vos projets nécessitant des tenues d'exception. Que ce soit pour un événement d'entreprise, une production audiovisuelle ou une reconstitution historique, nous sommes là pour vous.",
+      description: t("public.pages.nos_autres_activites.introduction.description"),
       features: [
-        "Costumes d'époque",
-        "Événements d'entreprise",
-        "Productions audiovisuelles"
+        t("public.pages.nos_autres_activites.introduction.features.1"),
+        t("public.pages.nos_autres_activites.introduction.features.2"),
+        t("public.pages.nos_autres_activites.introduction.features.3")
       ]
     } %>
 
@@ -36,34 +36,34 @@
       <div class="col-lg-6 d-flex" data-scroll-reveal>
         <%= public_card(
           icon: "clock-history",
-          title: "Costumes d'Époque",
-          description: "Plongez dans l'histoire avec notre collection exceptionnelle de costumes d'époque. Du XVIIIe siècle aux années folles, nous disposons d'une large gamme de tenues authentiques pour vos événements à thème, productions théâtrales ou reconstitutions historiques.",
+          title: t("public.pages.nos_autres_activites.epoch_costumes.title"),
+          description: t("public.pages.nos_autres_activites.epoch_costumes.description"),
           theme: "light",
           card_style: "activity"
         ) do %>
-          <h5 class="fw-bold mb-3 mt-4 text-light">Nos périodes disponibles :</h5>
+          <h5 class="fw-bold mb-3 mt-4 text-light"><%= t("public.pages.nos_autres_activites.epoch_costumes.periods_title") %></h5>
           <div class="row g-3">
             <div class="col-md-6">
               <ul class="list-unstyled">
-                <li class="mb-2"><i class="bi bi-star-fill me-2"></i>Renaissance</li>
-                <li class="mb-2"><i class="bi bi-star-fill me-2"></i>XVIIIe siècle</li>
-                <li class="mb-2"><i class="bi bi-star-fill me-2"></i>Époque Napoléonienne</li>
-                <li class="mb-2"><i class="bi bi-star-fill me-2"></i>Belle Époque</li>
+                <li class="mb-2"><i class="bi bi-star-fill me-2"></i><%= t("public.pages.nos_autres_activites.epoch_costumes.periods.1") %></li>
+                <li class="mb-2"><i class="bi bi-star-fill me-2"></i><%= t("public.pages.nos_autres_activites.epoch_costumes.periods.2") %></li>
+                <li class="mb-2"><i class="bi bi-star-fill me-2"></i><%= t("public.pages.nos_autres_activites.epoch_costumes.periods.3") %></li>
+                <li class="mb-2"><i class="bi bi-star-fill me-2"></i><%= t("public.pages.nos_autres_activites.epoch_costumes.periods.4") %></li>
               </ul>
             </div>
             <div class="col-md-6">
               <ul class="list-unstyled">
-                <li class="mb-2"><i class="bi bi-star-fill me-2"></i>Années 1920-1930</li>
-                <li class="mb-2"><i class="bi bi-star-fill me-2"></i>Années 1950-1960</li>
-                <li class="mb-2"><i class="bi bi-star-fill me-2"></i>Années 1970-1980</li>
-                <li class="mb-2"><i class="bi bi-star-fill me-2"></i>Costumes sur mesure</li>
+                <li class="mb-2"><i class="bi bi-star-fill me-2"></i><%= t("public.pages.nos_autres_activites.epoch_costumes.periods.5") %></li>
+                <li class="mb-2"><i class="bi bi-star-fill me-2"></i><%= t("public.pages.nos_autres_activites.epoch_costumes.periods.6") %></li>
+                <li class="mb-2"><i class="bi bi-star-fill me-2"></i><%= t("public.pages.nos_autres_activites.epoch_costumes.periods.7") %></li>
+                <li class="mb-2"><i class="bi bi-star-fill me-2"></i><%= t("public.pages.nos_autres_activites.epoch_costumes.periods.8") %></li>
               </ul>
             </div>
           </div>
 
           <div class="mt-4 mb-0">
             <i class="bi bi-info-circle me-2"></i>
-            <small class="">Idéal pour : Mariages thématiques, fêtes costumées, théâtre, cinéma, reconstitutions historiques</small>
+            <small class=""><%= t("public.pages.nos_autres_activites.epoch_costumes.ideal_for") %></small>
           </div>
         <% end %>
       </div>
@@ -72,19 +72,19 @@
       <div class="col-lg-6 d-flex" data-scroll-reveal>
         <%= public_card(
           icon: "buildings",
-          title: "Prestations Entreprises & Groupes",
-          description: "Professionnels et organisateurs d'événements, nous vous proposons des solutions sur mesure pour habiller vos équipes et participants. Bénéficiez de tarifs préférentiels et d'un accompagnement personnalisé pour vos projets de groupe.",
+          title: t("public.pages.nos_autres_activites.business_services.title"),
+          description: t("public.pages.nos_autres_activites.business_services.description"),
           theme: "light",
           card_style: "activity"
         ) do %>
-          <h5 class="fw-bold mb-3 mt-4">Nos services professionnels :</h5>
+          <h5 class="fw-bold mb-3 mt-4"><%= t("public.pages.nos_autres_activites.business_services.services_title") %></h5>
           <ul class="list-unstyled mb-4">
             <li class="mb-3">
               <div class="d-flex">
                 <i class="bi bi-briefcase-fill me-3 mt-1"></i>
                 <div>
-                  <strong>Événements d'entreprise</strong>
-                  <p class="text-light opacity-75 mb-0 small">Galas, soirées de gala, cocktails, cérémonies de remise de prix</p>
+                  <strong><%= t("public.pages.nos_autres_activites.business_services.items.corporate_events.title") %></strong>
+                  <p class="text-light opacity-75 mb-0 small"><%= t("public.pages.nos_autres_activites.business_services.items.corporate_events.description") %></p>
                 </div>
               </div>
             </li>
@@ -92,8 +92,8 @@
               <div class="d-flex">
                 <i class="bi bi-people-fill me-3 mt-1"></i>
                 <div>
-                  <strong>Groupes & associations</strong>
-                  <p class="opacity-75 mb-0 small">Mariages de groupe, cortèges, événements associatifs</p>
+                  <strong><%= t("public.pages.nos_autres_activites.business_services.items.groups_associations.title") %></strong>
+                  <p class="opacity-75 mb-0 small"><%= t("public.pages.nos_autres_activites.business_services.items.groups_associations.description") %></p>
                 </div>
               </div>
             </li>
@@ -101,8 +101,8 @@
               <div class="d-flex">
                 <i class="bi bi-camera-reels-fill me-3 mt-1"></i>
                 <div>
-                  <strong>Productions audiovisuelles</strong>
-                  <p class="opacity-75 mb-0 small">Cinéma, télévision, clips, publicités, photos</p>
+                  <strong><%= t("public.pages.nos_autres_activites.business_services.items.audiovisual_productions.title") %></strong>
+                  <p class="opacity-75 mb-0 small"><%= t("public.pages.nos_autres_activites.business_services.items.audiovisual_productions.description") %></p>
                 </div>
               </div>
             </li>
@@ -110,8 +110,8 @@
               <div class="d-flex">
                 <i class="bi bi-calendar-event-fill me-3 mt-1"></i>
                 <div>
-                  <strong>Événementiel</strong>
-                  <p class="opacity-75 mb-0 small">Salons, défilés de mode, présentations, lancements de produits</p>
+                  <strong><%= t("public.pages.nos_autres_activites.business_services.items.events.title") %></strong>
+                  <p class="opacity-75 mb-0 small"><%= t("public.pages.nos_autres_activites.business_services.items.events.description") %></p>
                 </div>
               </div>
             </li>
@@ -119,7 +119,7 @@
 
           <div class="mt-4 mb-0">
             <i class="bi bi-gift me-2"></i>
-            <small class="">Avantages : Tarifs groupés, logistique simplifiée, conseil personnalisé, devis sur mesure</small>
+            <small class=""><%= t("public.pages.nos_autres_activites.business_services.benefits") %></small>
           </div>
         <% end %>
       </div>
@@ -128,35 +128,35 @@
     <!-- Nos avantages -->
     <div class="bg-black text-light my-5 py-5" data-scroll-reveal>
       <div class="container">
-        <h2 class="text-center mb-5 fw-bold">Pourquoi nous choisir pour vos projets ?</h2>
+        <h2 class="text-center mb-5 fw-bold"><%= t("public.pages.nos_autres_activites.why_choose_us.title") %></h2>
         <div class="row g-4">
           <div class="col-md-3 text-center">
             <div class="mb-3">
               <i class="bi bi-award-fill fs-1"></i>
             </div>
-            <h5 class="fw-bold mb-2">Expertise</h5>
-            <p class="text-light opacity-75 small">Des années d'expérience dans l'habillement d'événements de toutes envergures</p>
+            <h5 class="fw-bold mb-2"><%= t("public.pages.nos_autres_activites.why_choose_us.items.expertise.title") %></h5>
+            <p class="text-light opacity-75 small"><%= t("public.pages.nos_autres_activites.why_choose_us.items.expertise.description") %></p>
           </div>
           <div class="col-md-3 text-center">
             <div class="mb-3">
               <i class="bi bi-box-seam fs-1"></i>
             </div>
-            <h5 class="fw-bold mb-2">Large Stock</h5>
-            <p class="text-light opacity-75 small">Des centaines de tenues disponibles pour répondre à tous vos besoins</p>
+            <h5 class="fw-bold mb-2"><%= t("public.pages.nos_autres_activites.why_choose_us.items.large_stock.title") %></h5>
+            <p class="text-light opacity-75 small"><%= t("public.pages.nos_autres_activites.why_choose_us.items.large_stock.description") %></p>
           </div>
           <div class="col-md-3 text-center">
             <div class="mb-3">
               <i class="bi bi-lightning-charge-fill fs-1"></i>
             </div>
-            <h5 class="fw-bold mb-2">Réactivité</h5>
-            <p class="text-light opacity-75 small">Solutions express et accompagnement personnalisé pour vos urgences</p>
+            <h5 class="fw-bold mb-2"><%= t("public.pages.nos_autres_activites.why_choose_us.items.reactivity.title") %></h5>
+            <p class="text-light opacity-75 small"><%= t("public.pages.nos_autres_activites.why_choose_us.items.reactivity.description") %></p>
           </div>
           <div class="col-md-3 text-center">
             <div class="mb-3">
               <i class="bi bi-calculator fs-1"></i>
             </div>
-            <h5 class="fw-bold mb-2">Tarifs Groupés</h5>
-            <p class="text-light opacity-75 small">Des conditions avantageuses pour les réservations en nombre</p>
+            <h5 class="fw-bold mb-2"><%= t("public.pages.nos_autres_activites.why_choose_us.items.group_rates.title") %></h5>
+            <p class="text-light opacity-75 small"><%= t("public.pages.nos_autres_activites.why_choose_us.items.group_rates.description") %></p>
           </div>
         </div>
       </div>
@@ -167,10 +167,9 @@
 
     <!-- Call to action -->
     <div class="bg-white text-dark text-center my-5 py-5" data-scroll-reveal>
-        <h3 class="mb-4">Un projet en tête ? Parlons-en !</h3>
+        <h3 class="mb-4"><%= t("public.pages.nos_autres_activites.cta.title") %></h3>
         <p class="lead mb-4 opacity-75">
-          Contactez-nous pour discuter de votre projet et obtenir un devis personnalisé. 
-          Notre équipe est à votre disposition pour vous conseiller.
+          <%= t("public.pages.nos_autres_activites.cta.description") %>
         </p>
         <div class="d-flex gap-3 justify-content-center flex-wrap">
           <%= cta_button(type: "ecrire", url: "#{contact_path}#message-form", variant: "dark") %>

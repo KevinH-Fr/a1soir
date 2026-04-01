@@ -9,8 +9,8 @@
 <% end %>
 
 <%= page_header(
-  "Nos collections", 
-  "Découvrez notre sélection de tenues d'exception",
+  t("public.pages.nos_collections.header_title"),
+  t("public.pages.nos_collections.header_subtitle"),
   image1: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/nos_collections1_qu7xzb",
   image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/collections2_vnfhvp"
 ) %>
@@ -19,7 +19,7 @@
   <!-- Introduction -->
   <div class="text-center my-5 px-3" data-scroll-reveal>
     <p class="text-light opacity-75 mx-auto" style="max-width: 700px; font-size: 1.1rem; line-height: 1.8;">
-      Découvrez nos collections de robes de mariée, tenues de soirée, smokings et accessoires. Que vous cherchiez à louer ou acheter, notre boutique à Cannes vous propose une sélection soigneusement choisie pour sublimer vos moments les plus précieux.
+      <%= t("public.pages.nos_collections.intro_text") %>
     </p>
   </div>
   <div class="container-fluid p-0">
@@ -30,14 +30,14 @@
 <%#= render partial: "public/pages/section_carousel_collections" %>
 
 <div class="container my-5 py-5 text-center" data-scroll-reveal>
-  <%= link_to "Voir tous les produits", produits_index_url, class: "btn btn-light btn-lg px-5 public-btn-border-radius" %>
+  <%= link_to t("public.pages.nos_collections.view_all_products"), produits_index_url, class: "btn btn-light btn-lg px-5 public-btn-border-radius" %>
 </div>
 
 <%= render partial: "public/pages/home/coups_de_coeur" %>
 
 <!-- Call to action -->
 <div class="text-center my-5 py-4" data-scroll-reveal>
-  <h3 class="mb-4 text-light">Prêt à découvrir nos collections ?</h3>
+  <h3 class="mb-4 text-light"><%= t("public.pages.nos_collections.cta_title") %></h3>
   <div class="d-flex gap-3 justify-content-center flex-wrap">
     <%= cta_button(type: "produits", url: produits_index_path, variant: "light") %>
     <%= cta_button(type: "rdv", url: "#{rdv_url}#rdv-form", variant: "dark", outline: "light") %>

@@ -683,7 +683,7 @@ module PagesHelper
   # Helper pour créer une liste de liens de navigation rapide
   def quick_nav_links(links:, columns: 3)
     content_tag :div, class: "concept-card my-4", "data-scroll-reveal": true do
-      title = content_tag(:h2, "Navigation rapide", class: "h5 fw-bold mb-3 text-light")
+      title = content_tag(:h2, t("public.helpers.quick_nav_links.title"), class: "h5 fw-bold mb-3 text-light")
       
       nav_content = content_tag(:div, class: "row g-3") do
         links.map do |link|

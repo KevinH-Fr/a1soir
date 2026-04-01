@@ -9,8 +9,8 @@
 <% end %>
 
 <%= page_header(
-  "Contact", 
-  "Nous sommes à votre écoute",
+  t("public.pages.contact.header_title"),
+  t("public.pages.contact.header_subtitle"),
   image1: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/contact1_ygtjx7",
   image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/contact2_omevx8",
   image2_position: "center top") %>
@@ -20,9 +20,9 @@
     <div class="container-fluid">
     <!-- Introduction -->
     <div class="text-center my-5 px-3" data-scroll-reveal>
-      <h2 class="mb-4 fw-bold text-light">Restons en contact</h2>
+      <h2 class="mb-4 fw-bold text-light"><%= t("public.pages.contact.introduction.title") %></h2>
       <p class="text-light opacity-75 mx-auto" style="max-width: 700px; font-size: 1.1rem; line-height: 1.8;">
-        Notre boutique Autour D'Un Soir à Cannes est à votre disposition pour toute question sur nos collections, nos services de location ou de vente de tenues. Appelez-nous, écrivez-nous ou venez nous rendre visite directement en boutique.
+        <%= t("public.pages.contact.introduction.description") %>
       </p>
     </div>
 
@@ -34,9 +34,9 @@
           <div class="concept-card-icon mx-auto mb-3">
             <i class="bi bi-telephone-fill fs-4"></i>
           </div>
-          <h4 class="fw-bold mb-3">Téléphone</h4>
+          <h4 class="fw-bold mb-3"><%= t("public.pages.contact.cards.phone.title") %></h4>
           <p class="opacity-75 mb-3">
-            Appelez-nous directement pour une réponse immédiate
+            <%= t("public.pages.contact.cards.phone.description") %>
           </p>
           <%= link_to "tel:+33493451717", class: "btn btn-light btn-lg px-4 public-btn-border-radius" do %>
             <i class="bi bi-telephone me-2"></i><%= @texteContact.present? ? @texteContact.to_plain_text : '+33 4 93 45 17 17' %>
@@ -50,16 +50,16 @@
           <div class="concept-card-icon mx-auto mb-3">
             <i class="bi fs-4 bi-envelope-fill"></i>
           </div>
-          <h4 class="fw-bold mb-3">Email</h4>
+          <h4 class="fw-bold mb-3"><%= t("public.pages.contact.cards.email.title") %></h4>
           <p class="text-light opacity-75 mb-3">
-            Écrivez-nous, nous vous répondons rapidement
+            <%= t("public.pages.contact.cards.email.description") %>
           </p>
           <%= link_to "#message-form",
                       class: "btn btn-light btn-lg px-4 public-btn-border-radius",
                       data: { turbo: false },
                       onclick: "document.getElementById('message-form').scrollIntoView({ behavior: 'smooth', block: 'start' })" do %>
             <i class="bi bi-envelope me-2"></i>
-            Nous écrire
+            <%= t("public.pages.contact.cards.email.button") %>
           <% end %>
         </div>
       </div>
@@ -70,13 +70,13 @@
           <div class="concept-card-icon mx-auto mb-3">
             <i class="bi bi-geo-alt-fill fs-4"></i>
           </div>
-          <h4 class="fw-bold mb-3 text-light">Boutique</h4>
+          <h4 class="fw-bold mb-3 text-light"><%= t("public.pages.contact.cards.shop.title") %></h4>
           <p class="opacity-75 mb-3">
             <%= @texteAdresse.present? ? @texteAdresse.to_plain_text : "Venez nous rendre visite en boutique" %>
           </p>
           <% adresse = "autour d'un soir 06400 cannes" %>
           <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape(adresse)}", target: "_blank", class: "btn btn-light btn-lg px-4 public-btn-border-radius" do %>
-            <i class="bi bi-geo-alt me-2"></i>Ouvrir dans Maps
+            <i class="bi bi-geo-alt me-2"></i><%= t("public.pages.contact.cards.shop.open_maps") %>
           <% end %>
         </div>
       </div>
@@ -93,13 +93,12 @@
         <div class="mb-4">
           <i class="bi bi-calendar-check fs-2"></i>
         </div>
-        <h3 class="mb-4 fw-bold">Prendre rendez-vous</h3>
+        <h3 class="mb-4 fw-bold"><%= t("public.pages.contact.appointment.title") %></h3>
         <p class="lead opacity-75 mb-4 mx-auto" style="max-width: 700px;">
-          Réservez un créneau pour découvrir nos collections en boutique, bénéficier de conseils personnalisés 
-          ou pour vos essayages. Notre équipe vous accueille dans les meilleures conditions.
+          <%= t("public.pages.contact.appointment.description") %>
         </p>
         <%= link_to "#{rdv_url}#rdv-form", class: "btn btn-dark btn-lg px-5 public-btn-border-radius" do %>
-          <i class="bi bi-calendar-plus me-2"></i>Réserver un rendez-vous
+          <i class="bi bi-calendar-plus me-2"></i><%= t("public.pages.contact.appointment.button") %>
         <% end %>
       </div>
     </div>
@@ -107,7 +106,7 @@
     <!-- Horaires -->
     <div class="my-5" data-scroll-reveal>
       <div class="concept-card">
-        <h3 class="text-center mb-5 fw-bold text-light">Horaires d'ouverture</h3>
+        <h3 class="text-center mb-5 fw-bold text-light"><%= t("public.pages.contact.hours_title") %></h3>
         <div class="text-light">
           <% if @texteHoraire.present? %>
             <% horaires_lignes = @texteHoraire.to_plain_text.split("\n").reject(&:blank?) %>
@@ -125,9 +124,9 @@
 
     <!-- Call to action final -->
     <div class="text-center my-5 py-4" data-scroll-reveal>
-      <h3 class="mb-4 text-light">Une question ? Un projet ?</h3>
+      <h3 class="mb-4 text-light"><%= t("public.pages.contact.cta.title") %></h3>
       <p class="text-light opacity-75 mb-4">
-        Notre équipe est impatiente de vous rencontrer et de vous accompagner
+        <%= t("public.pages.contact.cta.description") %>
       </p>
       <div class="d-flex gap-3 justify-content-center flex-wrap">
         <%= cta_button(type: "collections", url: nos_collections_url, variant: "light") %>

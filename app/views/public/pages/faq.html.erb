@@ -8,7 +8,7 @@
   </script>
 <% end %>
 
-<%= page_header("FAQ", "Questions fréquemment posées",
+<%= page_header(t("public.pages.faq.header_title"), t("public.pages.faq.header_subtitle"),
 image1: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/faq1_fp6utw",
 image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/faq2_yarmzv") %>
 
@@ -19,136 +19,71 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
         <!-- Introduction -->
         <div class="text-center my-5 px-3" data-scroll-reveal>
           <p class="lead text-light opacity-75">
-            Vous avez des questions ? Nous avons les réponses ! Consultez notre FAQ pour trouver 
-            rapidement les informations dont vous avez besoin.
+            <%= t("public.pages.faq.intro") %>
           </p>
         </div>
 
         <!-- Navigation rapide -->
         <%= quick_nav_links(links: [
-          { url: "#general", text: "Questions générales" },
-          { url: "#location", text: "Location de tenues" },
-          { url: "#vente", text: "Vente de tenues" },
-          { url: "#retouches", text: "Retouches et personnalisation" },
-          { url: "#livraison", text: "Livraison et retrait" },
-          { url: "#paiement", text: "Paiement et tarifs" }
+          { url: "#general", text: t("public.pages.faq.nav.general") },
+          { url: "#location", text: t("public.pages.faq.nav.location") },
+          { url: "#vente", text: t("public.pages.faq.nav.sale") },
+          { url: "#retouches", text: t("public.pages.faq.nav.alterations") },
+          { url: "#livraison", text: t("public.pages.faq.nav.delivery") },
+          { url: "#paiement", text: t("public.pages.faq.nav.payment") }
         ]) %>
 
         <!-- Questions Générales -->
-        <%= content_section(id: "general", icon: "question-circle", title: "Questions générales", accordion_id: "accordionGeneral") do %>
-          <%= collapsible_item(id: "general1", parent_id: "accordionGeneral", title: "Où se trouve votre boutique ?", expanded: true) do %>
-            <p><strong>Autour D'Un Soir</strong><br>
-            <%= @texteAdresse %><br>
-            
-            <p><strong>Horaires d'ouverture :</strong><br>
-            <%= @texteHoraire %><br>
-            
-            <p class="mb-0"><strong>Contact :</strong><br>
-            <%= @texteContact %><br>
-            Email : (<%= link_to "formulaire de contact", "#{contact_path}#message-form" %>)</p>
+        <%= content_section(id: "general", icon: "question-circle", title: t("public.pages.faq.sections.general.title"), accordion_id: "accordionGeneral") do %>
+          <%= collapsible_item(id: "general1", parent_id: "accordionGeneral", title: t("public.pages.faq.sections.general.q1.question"), expanded: true) do %>
+            <%= t("public.pages.faq.sections.general.q1.answer_html", contact_link: link_to(t("public.pages.faq.sections.general.q1.contact_form"), "#{contact_path}#message-form"), address: @texteAdresse, hours: @texteHoraire, phone: @texteContact).html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "general2", parent_id: "accordionGeneral", title: "Dois-je prendre rendez-vous ?") do %>
-            <p>Le rendez-vous n'est pas obligatoire mais <strong>fortement recommandé</strong> :</p>
-            <ul>
-              <li>Garantit la disponibilité d'une conseillère dédiée</li>
-              <li>Permet de préparer une sélection adaptée à vos goûts</li>
-              <li>Évite l'attente, surtout en haute saison</li>
-              <li>Nécessaire pour les essayages et retouches</li>
-            </ul>
-            <p class="mb-0">
-              Réservez votre créneau en ligne ou par téléphone !
-              Exception : Pendant le Festival de Cannes, pas de rendez-vous necessaire. Venez au plus vite et on s'occupe de vous !
-            </p>
+          <%= collapsible_item(id: "general2", parent_id: "accordionGeneral", title: t("public.pages.faq.sections.general.q2.question")) do %>
+            <%= t("public.pages.faq.sections.general.q2.answer_html").html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "general3", parent_id: "accordionGeneral", title: "Puis-je venir avec mes proches lors de l'essayage ?") do %>
-            <p>Bien sûr ! Nous vous encourageons à venir accompagné(e) :</p>
-            <ul>
-              <li>Cabines d'essayage spacieuses</li>
-              <li>Espace d'attente confortable pour vos accompagnants</li>
-              <li>Ambiance conviviale et détendue</li>
-            </ul>
-            <p class="mb-0">Merci de nous indiquer le nombre de personnes lors de la prise de rendez-vous.</p>
+          <%= collapsible_item(id: "general3", parent_id: "accordionGeneral", title: t("public.pages.faq.sections.general.q3.question")) do %>
+            <%= t("public.pages.faq.sections.general.q3.answer_html").html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "general4", parent_id: "accordionGeneral", title: "Que faire en cas d'accident ou de tache sur la tenue ?") do %>
-            <p><strong>Pas de panique !</strong> Voici la marche à suivre :</p>
-            <ol>
-              <li><strong>Ne tentez pas de nettoyer</strong> vous-même la tache</li>
-              <li>Retournez la tenue normalemen, votre location inclut le nettoyage au pressing</li>
-            </ol>
-            <p>Les taches légères et l'usure normale sont couvertes. En cas de dommage important, une partie de la caution pourra être retenue selon l'ampleur des dégâts.</p>
+          <%= collapsible_item(id: "general4", parent_id: "accordionGeneral", title: t("public.pages.faq.sections.general.q4.question")) do %>
+            <%= t("public.pages.faq.sections.general.q4.answer_html").html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "general5", parent_id: "accordionGeneral", title: "Avez-vous des tenues pour enfants ?") do %>
-            <p>Oui ! Nous proposons une belle sélection de tenues pour les garçons :</p>
-            <ul>
-              <li>Costumes pour garçons (6 mois à 18 ans)</li>
-              <li>Location ou vente</li>
-              <li>Accessoires assortis</li>
-            </ul>
-            <p class="mb-0">Tarifs adaptés et retouches incluses, comme pour les adultes !</p>
+          <%= collapsible_item(id: "general5", parent_id: "accordionGeneral", title: t("public.pages.faq.sections.general.q5.question")) do %>
+            <%= t("public.pages.faq.sections.general.q5.answer_html").html_safe %>
           <% end %>
         <% end %>
 
         <!-- Questions sur la Location -->
-        <%= content_section(id: "location", icon: "calendar-check", title: "Location de tenues", accordion_id: "accordionLocation") do %>
-          <%= collapsible_item(id: "location1", parent_id: "accordionLocation", title: "Comment fonctionne la location de tenues ?", expanded: true) do %>
-            <p>La location chez Autour D'Un Soir est simple et flexible :</p>
-            <ol>
-              <li><strong>Parcourez</strong> notre catalogue en ligne ou venez en boutique</li>
-              <li><strong>Réservez</strong> votre tenue en indiquant les dates souhaitées</li>
-              <li><strong>Essayez</strong> la tenue lors d'un rendez-vous (retouches incluses)</li>
-              <li><strong>Récupérez</strong> votre tenue quelques jours avant l'événement</li>
-              <li><strong>Retournez</strong> la tenue dans les délais convenus</li>
-            </ol>
-            <p class="mb-0">L'entretien et le nettoyage sont inclus dans le prix de location !</p>
+        <%= content_section(id: "location", icon: "calendar-check", title: t("public.pages.faq.sections.location.title"), accordion_id: "accordionLocation") do %>
+          <%= collapsible_item(id: "location1", parent_id: "accordionLocation", title: t("public.pages.faq.sections.location.q1.question"), expanded: true) do %>
+            <%= t("public.pages.faq.sections.location.q1.answer_html").html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "location2", parent_id: "accordionLocation", title: "Quelle est la durée standard de location ?") do %>
-            <p>La durée standard de location est de <strong>4 jours</strong> :</p>
-            <ul>
-              <li>Retrait : 2 jours avant votre événement</li>
-              <li>Retour : 2 jours après votre événement</li>
-            </ul>
-            <p class="mb-0">Des locations plus longues sont possibles sur demande avec une tarification adaptée.</p>
+          <%= collapsible_item(id: "location2", parent_id: "accordionLocation", title: t("public.pages.faq.sections.location.q2.question")) do %>
+            <%= t("public.pages.faq.sections.location.q2.answer_html").html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "location3", parent_id: "accordionLocation", title: "Combien de temps à l'avance dois-je réserver ?") do %>
-            <p>Nous recommandons de réserver :</p>
-            <ul>
-              <li><strong>2 à 3 mois à l'avance</strong> pour les mariages et grandes occasions</li>
-              <li><strong>3 à 4 semaines</strong> pour les événements classiques</li>
-              <li><strong>1 à 2 semaines minimum</strong> pour les événements urgents</li>
-            </ul>
-            <p class="mb-0">Plus vous réservez tôt, plus vous aurez de choix disponibles !</p>
+          <%= collapsible_item(id: "location3", parent_id: "accordionLocation", title: t("public.pages.faq.sections.location.q3.question")) do %>
+            <%= t("public.pages.faq.sections.location.q3.answer_html").html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "location4", parent_id: "accordionLocation", title: "Que se passe-t-il si la tenue ne me va pas ?") do %>
-            <p>Pas de panique ! Nous proposons plusieurs solutions :</p>
-            <ul>
-              <li><strong>Retouches gratuites</strong> : ajustements mineurs inclus dans le prix</li>
-              <li><strong>Essayage préalable</strong> : recommandé 1 à 2 semaines avant l'événement</li>
-              <li><strong>Échange possible</strong> : si la taille ne convient vraiment pas</li>
-            </ul>
-            <p class="mb-0">Notre atelier de retouches s'assure que chaque tenue soit parfaitement ajustée à votre morphologie.</p>
+          <%= collapsible_item(id: "location4", parent_id: "accordionLocation", title: t("public.pages.faq.sections.location.q4.question")) do %>
+            <%= t("public.pages.faq.sections.location.q4.answer_html").html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "location5", parent_id: "accordionLocation", title: "Quel montant de caution est demandé ?") do %>
-            <p>Une caution proportionnelle à la valeur de la tenue est demandée lors du retrait.</p>
-            <p class="mb-0">La caution est restituée intégralement si la tenue est retournée en bon état et dans les délais.</p>
+          <%= collapsible_item(id: "location5", parent_id: "accordionLocation", title: t("public.pages.faq.sections.location.q5.question")) do %>
+            <%= t("public.pages.faq.sections.location.q5.answer_html").html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "location6", parent_id: "accordionLocation", title: "Peut-on louer une robe de mariée ?") do %>
-            <p>Nous ne proposons pas de robe de mariée à la location pour des raisons de qualité.</p>
-            <p>Les robes de mariée sont des produits fragiles et nous avons à cœur qu'elles soient parfaites pour votre grand jour.</p>
-            <p class="mb-0">Il est essentiel pour nous que la robe soit parfaitement coupée et ajustée avec des retouches définitives.</p>
+          <%= collapsible_item(id: "location6", parent_id: "accordionLocation", title: t("public.pages.faq.sections.location.q6.question")) do %>
+            <%= t("public.pages.faq.sections.location.q6.answer_html").html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "location7", parent_id: "accordionLocation", title: "Peut-on louer une robe en ligne ?") do %>
-            <p>Pour le moment nous ne proposons pas le service de location à distance.</p>
-            <p class="mb-0">Nous pensons que notre conseil et les retouches incluses dans notre service valent le détour par la boutique de Cannes.</p>
+          <%= collapsible_item(id: "location7", parent_id: "accordionLocation", title: t("public.pages.faq.sections.location.q7.question")) do %>
+            <%= t("public.pages.faq.sections.location.q7.answer_html").html_safe %>
           <% end %>
 
 
@@ -156,141 +91,67 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
         <% end %>
 
         <!-- Questions sur la Vente -->
-        <%= content_section(id: "vente", icon: "bag-check", title: "Vente de tenues", accordion_id: "accordionVente") do %>
-          <%= collapsible_item(id: "vente1", parent_id: "accordionVente", title: "Puis-je acheter une tenue que j'ai louée ?", expanded: true) do %>
-            <p>Oui, absolument ! Si vous tombez amoureux d'une tenue pendant votre location, nous vous proposons :</p>
-            <ul>
-              <li><strong>Option d'achat après location</strong> avec déduction du prix de location</li>
-              <li><strong>Paiement en plusieurs fois</strong> possible selon le montant</li>
-            </ul>
-            <p class="mb-0">Contactez-nous pour connaître les modalités spécifiques à votre tenue.</p>
+        <%= content_section(id: "vente", icon: "bag-check", title: t("public.pages.faq.sections.sale.title"), accordion_id: "accordionVente") do %>
+          <%= collapsible_item(id: "vente1", parent_id: "accordionVente", title: t("public.pages.faq.sections.sale.q1.question"), expanded: true) do %>
+            <%= t("public.pages.faq.sections.sale.q1.answer_html").html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "vente2", parent_id: "accordionVente", title: "Proposez-vous des tenues neuves à la vente ?") do %>
-            <p>Oui, nous proposons une sélection de tenues neuves :</p>
-            <ul>
-              <li>Collections exclusives de créateurs</li>
-              <li>Tenues sur mesure personnalisables</li>
-              <li>Accessoires assortis (chaussures, bijoux, etc.)</li>
-            </ul>
-            <p class="mb-0">Venez en boutique ou contactez-nous pour découvrir nos collections à la vente.</p>
+          <%= collapsible_item(id: "vente2", parent_id: "accordionVente", title: t("public.pages.faq.sections.sale.q2.question")) do %>
+            <%= t("public.pages.faq.sections.sale.q2.answer_html").html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "vente3", parent_id: "accordionVente", title: "Quel est le délai de rétractation ?") do %>
-            <p>Conformément à la loi, vous disposez de <strong>14 jours</strong> pour exercer votre droit de rétractation.</p>
-            <p>Conditions :</p>
-            <ul>
-              <li>La tenue doit être dans son état d'origine</li>
-              <li>Non portée et avec ses étiquettes</li>
-              <li>Dans son emballage d'origine</li>
-              <li>La tenue doit être non retouchée</li>
-
-            </ul>
-            <p class="mb-0">Le remboursement sera effectué sous 14 jours après réception du produit retourné.</p>
+          <%= collapsible_item(id: "vente3", parent_id: "accordionVente", title: t("public.pages.faq.sections.sale.q3.question")) do %>
+            <%= t("public.pages.faq.sections.sale.q3.answer_html").html_safe %>
           <% end %>
         <% end %>
 
         <!-- Questions sur les Retouches -->
-        <%= content_section(id: "retouches", icon: "scissors", title: "Retouches et personnalisation", accordion_id: "accordionRetouches") do %>
-          <%= collapsible_item(id: "retouches1", parent_id: "accordionRetouches", title: "Les retouches sont-elles incluses dans le prix de location ?", expanded: true) do %>
-            <p>Oui ! Les retouches mineures sont <strong>incluses gratuitement</strong> dans le prix de location :</p>
-            <ul>
-              <li>Ajustement de la longueur (ourlets)</li>
-              <li>Ajustement de la taille</li>
-              <li>Modifications simples</li>
-            </ul>
-            <p>Les retouches importantes ou complexes peuvent faire l'objet d'un devis supplémentaire.</p>
+        <%= content_section(id: "retouches", icon: "scissors", title: t("public.pages.faq.sections.alterations.title"), accordion_id: "accordionRetouches") do %>
+          <%= collapsible_item(id: "retouches1", parent_id: "accordionRetouches", title: t("public.pages.faq.sections.alterations.q1.question"), expanded: true) do %>
+            <%= t("public.pages.faq.sections.alterations.q1.answer_html").html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "retouches-incluses-vente", parent_id: "accordionRetouches", title: "Les retouches sont-elles incluses dans le prix de vente ?") do %>
-            <p>
-              Pour les tenues dont le prix est supérieur à <strong>1000&nbsp;€</strong>, les <strong>retouches de longueur</strong> sont incluses dans le prix de vente.
-            </p>
-            <p>
-              Toutes les autres retouches et transformations font systématiquement l'objet d'un <strong>devis avant validation</strong>, afin de garantir la transparence sur les tarifs.
-            </p>
+          <%= collapsible_item(id: "retouches-incluses-vente", parent_id: "accordionRetouches", title: t("public.pages.faq.sections.alterations.q2.question")) do %>
+            <%= t("public.pages.faq.sections.alterations.q2.answer_html").html_safe %>
           <% end %>
 
 
-          <%= collapsible_item(id: "retouches2", parent_id: "accordionRetouches", title: "Quel est le délai pour les retouches ?") do %>
-            <p>Les délais varient selon la complexité :</p>
-            <ul>
-              <li><strong>Retouches simples</strong> : 2 à 3 jours ouvrés</li>
-              <li><strong>Retouches standards</strong> : 5 à 7 jours ouvrés</li>
-              <li><strong>Retouches complexes</strong> : 10 à 14 jours ouvrés</li>
-              <li><strong>Service express</strong> : possible avec supplément (24-48h)</li>
-            </ul>
-            <p class="mb-0">Nous vous proposerons toujours pour les essayages une date adaptée a la complexité des retouches et à l'agenda de notre atelier.</p>
+          <%= collapsible_item(id: "retouches2", parent_id: "accordionRetouches", title: t("public.pages.faq.sections.alterations.q3.question")) do %>
+            <%= t("public.pages.faq.sections.alterations.q3.answer_html").html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "retouches3", parent_id: "accordionRetouches", title: "Proposez-vous des créations sur mesure ?") do %>
-            <p>Oui ! Notre atelier peut créer des tenues entièrement personnalisées :</p>
-            <ul>
-              <li>Création de robes de mariée sur mesure (à partir d'une base existante)</li>
-              <li>Costumes personnalisés</li>
-              <li>Modifications de créateur</li>
-              <li>Répliques de costumes d'époque</li>
-            </ul>
-            <p class="mb-0">Prenez rendez-vous pour discuter de votre projet et obtenir un devis personnalisé.</p>
+          <%= collapsible_item(id: "retouches3", parent_id: "accordionRetouches", title: t("public.pages.faq.sections.alterations.q4.question")) do %>
+            <%= t("public.pages.faq.sections.alterations.q4.answer_html").html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "retouches-autres-produits", parent_id: "accordionRetouches", title: "Est-ce que vous retouchez des produits qui ne viennent pas de votre boutique ?") do %>
-            <p>
-              Nous ne proposons pas ce service car notre atelier est déjà bien occupé.
-            </p>
+          <%= collapsible_item(id: "retouches-autres-produits", parent_id: "accordionRetouches", title: t("public.pages.faq.sections.alterations.q5.question")) do %>
+            <%= t("public.pages.faq.sections.alterations.q5.answer_html").html_safe %>
           <% end %>
         <% end %>
 
         <!-- Questions sur la Livraison -->
-        <%= content_section(id: "livraison", icon: "truck", title: "Livraison et retrait", accordion_id: "accordionLivraison") do %>
-          <%= collapsible_item(id: "livraison1", parent_id: "accordionLivraison", title: "Proposez-vous la livraison à domicile ?", expanded: true) do %>
-            <p>Oui, plusieurs options de livraison sont disponibles :</p>
-            <ul>
-              <li><strong>Retrait en boutique</strong> : gratuit</li>
-              <li><strong>Livraison à domicile</strong> : tarifs selon le poids, et uniquement pour les articles achetés.</li>
-            </ul>
-            <p class="mb-0">Les frais de livraison vous seront communiqués lors de la validation de votre panier.</p>
+        <%= content_section(id: "livraison", icon: "truck", title: t("public.pages.faq.sections.delivery.title"), accordion_id: "accordionLivraison") do %>
+          <%= collapsible_item(id: "livraison1", parent_id: "accordionLivraison", title: t("public.pages.faq.sections.delivery.q1.question"), expanded: true) do %>
+            <%= t("public.pages.faq.sections.delivery.q1.answer_html").html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "livraison2", parent_id: "accordionLivraison", title: "Comment retourner ma location ?") do %>
-            <p>Vous pouvez retourner votre location de plusieurs façons :</p>
-            <ul>
-              <li><strong>En boutique</strong> : pendant nos horaires d'ouverture</li>
-              <li><strong>Par coursier</strong> : nous pouvons organiser la récupération de votre tenue dans les hôtels de Cannes</li>
-              <li><strong>Point de dépôt</strong> : disponible 7j/7 à côté de la boutique</li>
-            </ul>
-            <p class="mb-0">Important : Ne nettoyez pas la tenue vous-même, retournez-la telle quelle !</p>
+          <%= collapsible_item(id: "livraison2", parent_id: "accordionLivraison", title: t("public.pages.faq.sections.delivery.q2.question")) do %>
+            <%= t("public.pages.faq.sections.delivery.q2.answer_html").html_safe %>
           <% end %>
         <% end %>
 
         <!-- Questions sur le Paiement -->
-        <%= content_section(id: "paiement", icon: "credit-card", title: "Paiement et tarifs", accordion_id: "accordionPaiement") do %>
-          <%= collapsible_item(id: "paiement1", parent_id: "accordionPaiement", title: "Quels moyens de paiement acceptez-vous ?", expanded: true) do %>
-            <p>Nous acceptons tous les moyens de paiement courants :</p>
-            <ul>
-              <li><strong>Cartes bancaires</strong> : Visa, Mastercard, American Express</li>
-              <li><strong>Espèces</strong> : en boutique uniquement</li>
-              <li><strong>Chèques</strong> : pour la réservation et la caution. Les chèques ne sont pas acceptés pour le dernier paiement au moment d'emporter la tenue. </li>
-              <li><strong>Virement bancaire</strong> : pour les montants importants</li>
-              <li><strong>Paiement en ligne</strong> : sécurisé via notre site ou par lien de paiement sécurisé.</li>
-            </ul>
+        <%= content_section(id: "paiement", icon: "credit-card", title: t("public.pages.faq.sections.payment.title"), accordion_id: "accordionPaiement") do %>
+          <%= collapsible_item(id: "paiement1", parent_id: "accordionPaiement", title: t("public.pages.faq.sections.payment.q1.question"), expanded: true) do %>
+            <%= t("public.pages.faq.sections.payment.q1.answer_html").html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "paiement2", parent_id: "accordionPaiement", title: "Faut-il payer un acompte à la réservation ?") do %>
-            <p>Oui, un acompte de <strong>30%</strong> est requis pour confirmer votre réservation.</p>
-            <ul>
-              <li>L'acompte sécurise votre tenue aux dates choisies ou à la commande</li>
-              <li>Le solde est à régler lors du retrait final</li>
-              <li>Pour les locations : la caution est demandée séparément au moment du retrait de la tenue</li>
-            </ul>
+          <%= collapsible_item(id: "paiement2", parent_id: "accordionPaiement", title: t("public.pages.faq.sections.payment.q2.question")) do %>
+            <%= t("public.pages.faq.sections.payment.q2.answer_html").html_safe %>
           <% end %>
 
-          <%= collapsible_item(id: "paiement3", parent_id: "accordionPaiement", title: "Proposez-vous des tarifs de groupe ?") do %>
-            <p>Oui ! Nous proposons des <strong>tarifs préférentiels pour les groupes</strong> :</p>
-            <ul>
-              <li>Selon votre projet nous réalisons un devis avec des tarifs adaptés</li>
-            </ul>
-            <p class="mb-0">Idéal pour les mariages, cortèges, événements d'entreprise. Contactez-nous pour un devis personnalisé !</p>
+          <%= collapsible_item(id: "paiement3", parent_id: "accordionPaiement", title: t("public.pages.faq.sections.payment.q3.question")) do %>
+            <%= t("public.pages.faq.sections.payment.q3.answer_html").html_safe %>
           <% end %>
         <% end %>
 
@@ -299,17 +160,16 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
         <div class="my-5 py-5" data-scroll-reveal>
           <div class="concept-card text-center text-light">
             <i class="bi bi-chat-dots fs-1 mb-3 d-block"></i>
-            <h3 class="mb-3">Vous ne trouvez pas la réponse à votre question ?</h3>
+            <h3 class="mb-3"><%= t("public.pages.faq.cta.title") %></h3>
             <p class="lead mb-4 opacity-75">
-              Notre équipe est là pour vous aider ! N'hésitez pas à nous contacter, 
-              nous serons ravis de répondre à toutes vos questions.
+              <%= t("public.pages.faq.cta.description") %>
             </p>
             <div class="d-flex gap-3 justify-content-center flex-wrap">
             <%= link_to "#{contact_path}#message-form", class: "btn btn-light btn-lg px-4 public-btn-border-radius" do %>
-                <i class="bi bi-envelope me-2"></i>Nous contacter
+                <i class="bi bi-envelope me-2"></i><%= t("public.pages.faq.cta.contact_button") %>
               <% end %>
-              <a href="tel:+493451717" class="btn btn-outline-light btn-lg px-5 public-btn-border-radius" title="Appelez-nous">
-                <i class="bi bi-telephone me-2"></i>Appelez-nous
+              <a href="tel:+493451717" class="btn btn-outline-light btn-lg px-5 public-btn-border-radius" title="<%= t("public.pages.faq.cta.call_button") %>">
+                <i class="bi bi-telephone me-2"></i><%= t("public.pages.faq.cta.call_button") %>
               </a>
             </div>
           </div>
@@ -318,7 +178,7 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
         <!-- Retour en haut -->
         <div class="text-center my-4">
           <a href="#top" class="btn btn-outline-light">
-            <i class="bi bi-arrow-up me-2"></i>Retour en haut
+            <i class="bi bi-arrow-up me-2"></i><%= t("public.pages.faq.back_to_top") %>
           </a>
         </div>
       </div>

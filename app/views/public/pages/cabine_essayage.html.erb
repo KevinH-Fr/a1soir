@@ -8,7 +8,7 @@
   </script>
 <% end %>
 
-<%= page_header("Cabine d'essayage", "Sélectionner vos produits et venez les essayer en boutique",
+<%= page_header(t("public.pages.cabine_essayage.header_title"), t("public.pages.cabine_essayage.header_subtitle"),
 image1: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/essayage_hjd2pe",
 image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/essayage2_s3mof4") %>
 
@@ -24,9 +24,9 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
             <div class="concept-card-icon text-light mx-auto mb-3">
               <i class="bi bi-bag-check fs-2"></i>
             </div>
-            <h5 class="fw-bold mb-3 text-light">1. Sélection</h5>
+            <h5 class="fw-bold mb-3 text-light"><%= t("public.pages.cabine_essayage.steps.selection.title") %></h5>
             <p class="text-light opacity-75 small mb-0">
-              Parcourez notre collection et ajoutez les tenues qui vous plaisent à votre cabine d'essayage virtuelle.
+              <%= t("public.pages.cabine_essayage.steps.selection.text") %>
             </p>
           </div>
           </div>
@@ -35,9 +35,9 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
             <div class="concept-card-icon text-light mx-auto mb-3">
               <i class="bi bi-calendar-check fs-2"></i>
             </div>
-            <h5 class="fw-bold mb-3 text-light">2. Réservation</h5>
+            <h5 class="fw-bold mb-3 text-light"><%= t("public.pages.cabine_essayage.steps.reservation.title") %></h5>
             <p class="text-light opacity-75 small mb-0">
-              Indiquez vos coordonnées et choisissez la date qui vous convient pour venir en boutique.
+              <%= t("public.pages.cabine_essayage.steps.reservation.text") %>
             </p>
           </div>
         </div>
@@ -46,9 +46,9 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
             <div class="concept-card-icon text-light mx-auto mb-3">
               <i class="bi bi-bell fs-2"></i>
             </div>
-            <h5 class="fw-bold mb-3 text-light">3. Confirmation</h5>
+            <h5 class="fw-bold mb-3 text-light"><%= t("public.pages.cabine_essayage.steps.confirmation.title") %></h5>
             <p class="text-light opacity-75 small mb-0">
-              Recevez un email de confirmation et notre équipe prépare vos tenues pour votre venue.
+              <%= t("public.pages.cabine_essayage.steps.confirmation.text") %>
             </p>
           </div>
         </div>
@@ -57,9 +57,9 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
             <div class="concept-card-icon text-light mx-auto mb-3">
               <i class="bi bi-star-fill fs-2"></i>
             </div>
-            <h5 class="fw-bold mb-3 text-light">4. Essayage</h5>
+            <h5 class="fw-bold mb-3 text-light"><%= t("public.pages.cabine_essayage.steps.fitting.title") %></h5>
             <p class="text-light opacity-75 small mb-0">
-              Testez vos tenues dans notre cabine avec l'aide de nos conseillères en image.
+              <%= t("public.pages.cabine_essayage.steps.fitting.text") %>
             </p>
           </div>
         </div>
@@ -78,7 +78,7 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
               <div class="d-flex align-items-center gap-3">
                 <h3 class="mb-0">
                   <i class="bi bi-bag-check me-2"></i>
-                  Ma cabine d'essayage
+                  <%= t("public.pages.cabine_essayage.cart_title") %>
                 </h3>
                 <span class="px-3 py-2 border border-dark-subtle rounded-pill small fw-semibold">
                   <%= @cabine_cart.size %> / 10
@@ -86,7 +86,7 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
               </div>
               <!-- Bouton Ajouter -->
               <%= link_to produits_index_path(from_cabine: true), class: "btn btn-dark btn-lg px-4 rounded-0" do %>
-                <i class="bi bi-plus-circle me-2"></i>Ajouter des produits
+                <i class="bi bi-plus-circle me-2"></i><%= t("public.pages.cabine_essayage.add_products") %>
               <% end %>
             </div>
           </div>
@@ -149,7 +149,7 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
               <button type="button"
                       class="btn btn-dark text-light btn-lg px-5 rounded-0"
                       onclick="document.getElementById('reservationForm').scrollIntoView({ behavior: 'smooth', block: 'start' })">
-                <i class="bi bi-calendar-check me-2"></i>Réserver mon essayage
+                <i class="bi bi-calendar-check me-2"></i><%= t("public.pages.cabine_essayage.book_fitting") %>
               </button>
             </div>
             <div class="p-0 m-0">
@@ -159,9 +159,9 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
             <!-- État vide -->
             <div class="py-5 text-center">
               <i class="bi bi-inbox text-muted" style="font-size: 4rem;"></i>
-              <h4 class="my-4">Votre cabine est vide</h4>
+              <h4 class="my-4"><%= t("public.pages.cabine_essayage.empty_title") %></h4>
               <p class="text-muted mb-4">
-                Commencez dès maintenant à sélectionner vos tenues favorites pour votre prochain événement.
+                <%= t("public.pages.cabine_essayage.empty_text") %>
               </p>
             </div>
 
