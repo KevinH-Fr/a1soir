@@ -3,11 +3,14 @@
       selected_ids = params[:id].present? ? (params[:id].is_a?(Array) ? params[:id].map(&:to_i) : [params[:id].to_i]) : []
 
       display_text = if selected_ids.empty?
-        "Catégorie"
+        t("public.pages.produits.filters.categorie.all_label")
       elsif selected_ids.size == 1
-        @toutes_categories.find { |c| c.id == selected_ids.first }&.nom || "Catégorie"
+        @toutes_categories.find { |c| c.id == selected_ids.first }&.nom || t("public.pages.produits.filters.categorie.all_label")
       else
-        "#{selected_ids.size} catégories"
+        t(
+          "public.pages.produits.filters.categorie.selected_count",
+          count: selected_ids.size
+        )
       end
     %>
 
@@ -18,7 +21,7 @@
         </button>
 
         <div class="dropdown-menu overflow-y-auto" aria-labelledby="categorieDropdown" style="max-height: 18rem">
-            <%= button_to "Toutes",
+            <%= button_to t("public.pages.produits.filters.categorie.all_button"),
                 update_filters_path(slug: nil, id: nil, taille: params[:taille], couleur: params[:couleur], prixmax: params[:prixmax], type: params[:type], from_cabine: params[:from_cabine], type_produit: params[:type_produit]),
                 class: "dropdown-item text-nowrap #{'fw-bold' if selected_ids.empty?}" %>
             <hr class="dropdown-divider">

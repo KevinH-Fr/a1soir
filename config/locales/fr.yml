@@ -350,9 +350,29 @@ fr:
       learn_more: "En savoir plus"
       refuse: "Refuser"
       accept: "Accepter"
+    floating_contact_icons:
+      book_appointment_title: "Prendre rendez-vous"
+      book_appointment_aria: "Prendre rendez-vous en boutique"
+      write_title: "Nous écrire"
+      write_aria: "Nous écrire via le formulaire de contact"
+      call_title: "Nous appeler"
+      call_aria: "Nous appeler au +33 4 93 45 17 17"
     helpers:
       quick_nav_links:
         title: "Navigation rapide"
+      badges_public_helper:
+        labels:
+          size: "Taille"
+          color: "Couleur"
+      prix_labels:
+        sale: "Vente"
+        rental: "Location"
+      cart_buttons:
+        remove_from_fitting_room: "Retirer de la cabine"
+        fitting_room_limit_reached: "Limite atteinte (10 produits max)"
+        add_to_fitting_room: "Ajouter à la cabine"
+        remove_from_cart: "Retirer du panier"
+        add_to_cart: "Ajouter au panier"
     demande_rdv:
       form:
         select_date_title: "Sélectionnez une date"
@@ -361,6 +381,34 @@ fr:
         paris_time: "Heure de Paris"
         contact_details_title: "Vos coordonnées"
         submit_request: "Envoyer ma demande"
+        event_type_placeholder: "Type d'événement"
+        appointment_type_placeholder: "Sélectionnez un type"
+        event_options:
+          wedding: "Mariage"
+          evening: "Soirée"
+          other: "Autre"
+        fields:
+          first_name: "Prénom *"
+          last_name: "Nom *"
+          email: "Email *"
+          phone: "Téléphone *"
+          event_type: "Type d'événement *"
+          event_date: "Date de l'événement *"
+          appointment_type: "Type de rendez-vous"
+          people_in_fitting: "Nombre de personnes en essayage *"
+          message_optional: "Message (optionnel)"
+      flash:
+        recaptcha_required: "Veuillez compléter le reCAPTCHA pour prouver que vous n'êtes pas un robot"
+        cabine_create_error: "Erreur lors de la création de la demande cabine d'essayage : %{errors}"
+        save_error: "Erreur lors de l'enregistrement : %{errors}"
+      notice:
+        cabine_sent: "Votre demande de rendez-vous avec cabine d'essayage a bien été envoyée. Nous vous contacterons bientôt."
+        rdv_sent: "Votre demande de rendez-vous a bien été envoyée. Nous vous contacterons bientôt."
+    demande_cabine_essayages:
+      flash:
+        recaptcha_required: "Veuillez compléter le reCAPTCHA pour prouver que vous n'êtes pas un robot"
+      notice:
+        cabine_sent: "Votre demande de réservation a bien été envoyée. Nous vous contacterons bientôt."
     cta:
       collections: "Découvrir nos collections"
       rdv: "Prendre rendez-vous"
@@ -489,6 +537,42 @@ fr:
         cta:
           title: "Une question ? Un projet ?"
           description: "Notre équipe est impatiente de vous rencontrer et de vous accompagner"
+      produits:
+        search:
+          placeholder: "Rechercher"
+        filters:
+          clear_button_title: "Effacer les filtres"
+          categorie:
+            all_label: "Catégorie"
+            all_button: "Toutes"
+            selected_count:
+              one: "%{count} catégorie"
+              other: "%{count} catégories"
+          type:
+            fallback: "Service"
+            all_button: "Tous"
+          type_produit:
+            fallback: "Type"
+            all_button: "Tous"
+          taille:
+            fallback: "Taille"
+            all_button: "Toutes"
+          couleur:
+            fallback: "Couleur"
+            all_button: "Toutes"
+          prix:
+            fallback: "Prix"
+            promo_label: "En promotion"
+            all_button: "Tous"
+            promo_button: "En promotion"
+      produit:
+        back: "Retour"
+        rental_info: "La location se fait uniquement au magasin."
+        other_sizes_title: "Autres tailles disponibles"
+        other_colors_title: "Autres couleurs disponibles"
+        add_other_products: "Ajouter d'autres produits"
+      vous_aimerez_aussi:
+        title: "Vous aimerez aussi"
       faq:
         header_title: "FAQ"
         header_subtitle: "Questions fréquemment posées"
@@ -892,6 +976,11 @@ fr:
         book_fitting: "Réserver mon essayage"
         empty_title: "Votre cabine est vide"
         empty_text: "Commencez dès maintenant à sélectionner vos tenues favorites pour votre prochain événement."
+        flash:
+          already_in_cart: "Ce produit est déjà dans votre cabine d'essayage"
+          limit_reached: "Limite de 10 produits atteinte. Retirez un produit pour en ajouter un autre."
+          added: "%{product_name} ajouté à votre cabine d'essayage"
+          removed: "%{product_name} retiré de votre cabine d'essayage"
         steps:
           selection:
             title: "1. Sélection"

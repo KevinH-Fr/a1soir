@@ -20,7 +20,7 @@ module Public
       
       # Vérifier reCAPTCHA
       unless verify_recaptcha(model: @demande_cabine_essayage)
-        flash.now[:alert] = "Veuillez compléter le reCAPTCHA pour prouver que vous n'êtes pas un robot"
+        flash.now[:alert] = t("public.demande_cabine_essayages.flash.recaptcha_required")
         
         respond_to do |format|
           format.html
@@ -42,7 +42,7 @@ module Public
         # DemandeCabineMailer.confirmation_client(@demande_cabine_essayage).deliver_later
         # Notification admin
         # DemandeCabineMailer.notification_admin(@demande_cabine_essayage).deliver_later
-        redirect_to cabine_essayage_path, notice: "Votre demande de réservation a bien été envoyée. Nous vous contacterons bientôt."
+        redirect_to cabine_essayage_path, notice: t("public.demande_cabine_essayages.notice.cabine_sent")
       end
     end
 

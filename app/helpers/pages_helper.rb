@@ -741,16 +741,16 @@ module PagesHelper
     if session[:cabine_cart].include?(produit.id)
       button_to cabine_remove_product_path(produit), method: :delete,
           class: "btn btn-sm w-100 btn-outline-danger #{extra_class}" do
-        (content_tag(:i, nil, class: "bi bi-bag-x me-2") + "Retirer de la cabine").html_safe
+        (content_tag(:i, nil, class: "bi bi-bag-x me-2") + t("public.helpers.cart_buttons.remove_from_fitting_room")).html_safe
       end
     elsif session[:cabine_cart].size >= 10
       content_tag :button, type: "button", class: "btn btn-sm w-100 btn-secondary #{extra_class}", disabled: true do
-        (content_tag(:i, nil, class: "bi bi-exclamation-triangle me-2") + "Limite atteinte (10 produits max)").html_safe
+        (content_tag(:i, nil, class: "bi bi-exclamation-triangle me-2") + t("public.helpers.cart_buttons.fitting_room_limit_reached")).html_safe
       end
     else
       button_to cabine_add_product_path(produit),
           class: "btn btn-sm w-100 btn-light hover-lift public-btn-border-radius #{extra_class}" do
-        (content_tag(:i, nil, class: "bi bi-bag-plus me-2") + "Ajouter à la cabine").html_safe
+        (content_tag(:i, nil, class: "bi bi-bag-plus me-2") + t("public.helpers.cart_buttons.add_to_fitting_room")).html_safe
       end
     end
   end
@@ -759,12 +759,12 @@ module PagesHelper
     if session[:cart].include?(produit.id)
       button_to remove_from_cart_path(produit), method: :delete,
           class: "btn btn-sm w-100 btn-secondary #{extra_class}" do
-        (content_tag(:i, nil, class: "bi bi-bag-x me-2") + "Retirer du panier").html_safe
+        (content_tag(:i, nil, class: "bi bi-bag-x me-2") + t("public.helpers.cart_buttons.remove_from_cart")).html_safe
       end
     else
       button_to add_to_cart_path(produit),
           class: "btn btn-sm w-100 btn-light hover-lift public-btn-border-radius #{extra_class}" do
-        (content_tag(:i, nil, class: "bi bi-bag-plus me-2") + "Ajouter au panier").html_safe
+        (content_tag(:i, nil, class: "bi bi-bag-plus me-2") + t("public.helpers.cart_buttons.add_to_cart")).html_safe
       end
     end
   end

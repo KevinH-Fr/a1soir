@@ -33,7 +33,7 @@ module Public
       unless RecaptchaVerifier.verify(recaptcha_token, request.remote_ip)
         
         @from_cabine = params[:from_cabine] == "1"
-        flash[:alert] = "Veuillez compléter le reCAPTCHA pour prouver que vous n'êtes pas un robot"
+        flash[:alert] = t("public.demande_rdv.flash.recaptcha_required")
         respond_to do |format|
           format.html do
             if @from_cabine
@@ -78,12 +78,16 @@ module Public
             
             # Vider le panier cabine après création réussie
             session[:cabine_cart] = []
-            redirect_to cabine_essayage_path, notice: "Votre demande de rendez-vous avec cabine d'essayage a bien été envoyée. Nous vous contacterons bientôt."
+            redirect_to cabine_essayage_path, notice: t("public.demande_rdv.notice.cabine_sent")
           else
             # Si l'association échoue, supprimer la demande RDV créée
             @demande_rdv.destroy
             @from_cabine = true
-            flash[:alert] = "Erreur lors de la création de la demande cabine d'essayage: #{@demande_cabine_essayage.errors.full_messages.join(', ')}"
+              errors_list = @demande_cabine_essayage.errors.full_messages.join(", ")
+              flash[:alert] = t(
+                "public.demande_rdv.flash.cabine_create_error",
+                errors: errors_list
+              )
             respond_to do |format|
               format.html { redirect_to cabine_essayage_path }
               format.turbo_stream do
@@ -97,12 +101,16 @@ module Public
             return
           end
         else
-          redirect_to rdv_path, notice: "Votre demande de rendez-vous a bien été envoyée. Nous vous contacterons bientôt."
+          redirect_to rdv_path, notice: t("public.demande_rdv.notice.rdv_sent")
         end
       else
         
         @from_cabine = params[:from_cabine] == "1"
-        flash[:alert] = "Erreur lors de l'enregistrement : #{@demande_rdv.errors.full_messages.join(', ')}"
+        errors_list = @demande_rdv.errors.full_messages.join(", ")
+        flash[:alert] = t(
+          "public.demande_rdv.flash.save_error",
+          errors: errors_list
+        )
         respond_to do |format|
           format.html do
             if @from_cabine

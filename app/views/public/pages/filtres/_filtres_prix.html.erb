@@ -5,20 +5,20 @@
             <i class="bi bi-currency-euro"></i>
             <span class="ms-1 d-none d-md-inline">
                 <%= if ActiveModel::Type::Boolean.new.cast(params[:en_promotion])
-                      "En promotion"
+                      t("public.pages.produits.filters.prix.promo_label")
                     elsif params[:prixmax].present?
                       "&lt; #{custom_currency_no_decimals_format(params[:prixmax])}".html_safe
                     else
-                      "Prix"
+                      t("public.pages.produits.filters.prix.fallback")
                     end %>
             </span>
         </button>
 
         <div class="dropdown-menu overflow-y-auto" aria-labelledby="prixDropdown" style="max-height: 18rem">
-            <%= button_to "Tous",
+            <%= button_to t("public.pages.produits.filters.prix.all_button"),
                 update_filters_path(slug: params[:slug], id: params[:id], taille: params[:taille], couleur: params[:couleur], prixmax: nil, type: params[:type], en_promotion: nil, from_cabine: params[:from_cabine], type_produit: params[:type_produit]),
                 class: "dropdown-item text-nowrap #{'fw-bold' if params[:prixmax].blank? && !ActiveModel::Type::Boolean.new.cast(params[:en_promotion])}" %>
-            <%= button_to "En promotion",
+            <%= button_to t("public.pages.produits.filters.prix.promo_button"),
                 update_filters_path(slug: params[:slug], id: params[:id], taille: params[:taille], couleur: params[:couleur], prixmax: nil, type: params[:type], en_promotion: true, from_cabine: params[:from_cabine], type_produit: params[:type_produit]),
                 class: "dropdown-item text-nowrap #{'fw-bold' if ActiveModel::Type::Boolean.new.cast(params[:en_promotion])}" %>
             <hr class="dropdown-divider">

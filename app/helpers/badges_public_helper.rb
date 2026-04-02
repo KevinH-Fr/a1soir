@@ -5,29 +5,46 @@ module BadgesPublicHelper
   
   def badge_taille(produit)
     content_tag :span, class: "small opacity-75" do
-      concat content_tag(:span, "Taille: ", class: "me-1")
+      concat content_tag(:span, t("public.helpers.badges_public_helper.labels.size") + ": ", class: "me-1")
       concat content_tag(:span, produit.taille.nom.upcase, class: "")
     end
   end
 
   def badge_couleur(produit)
     content_tag :span, class: "small opacity-75" do
-      concat content_tag(:span, "Couleur: ", class: "me-1")
+      concat content_tag(:span, t("public.helpers.badges_public_helper.labels.color") + ": ", class: "me-1")
       concat content_tag(:span, produit.couleur.nom, class: "")
     end
   end
 
 
   def badge_prix(type, montant, produit = nil)
-    if type == "Vente" && produit&.en_promotion?
+    type_key =
+      case type
+      when :sale, "Vente" then :sale
+      when :rental, "Location" then :rental
+      else type
+      end
+
+    label =
+      case type_key
+      when :sale
+        t("public.helpers.prix_labels.sale")
+      when :rental
+        t("public.helpers.prix_labels.rental")
+      else
+        type.to_s
+      end
+
+    if type_key == :sale && produit&.en_promotion?
       content_tag :span, class: "small opacity-75" do
-        concat content_tag(:span, "#{type}: ", class: "me-1")
+        concat content_tag(:span, "#{label}: ", class: "me-1")
         concat content_tag(:span, custom_currency_no_decimals_format(montant), class: "")
         concat content_tag(:span, custom_currency_no_decimals_format(produit.ancien_prixvente), class: "ms-2 small text-decoration-line-through opacity-50")
       end
     else
       content_tag :span, class: "small opacity-75" do
-        concat content_tag(:span, "#{type}: ", class: "me-1")
+        concat content_tag(:span, "#{label}: ", class: "me-1")
         concat content_tag(:span, custom_currency_no_decimals_format(montant), class: "")
       end
     end

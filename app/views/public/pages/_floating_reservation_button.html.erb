@@ -7,7 +7,7 @@
       <%= link_to "#{cabine_essayage_path(open_form: true, from_cabine: true)}#reservationForm", 
           class: "btn btn-light btn-lg px-5 rounded-0",
           data: { turbo_frame: "_top" } do %>
-        <i class="bi bi-calendar-check me-2"></i>Réserver mon essayage
+        <i class="bi bi-calendar-check me-2"></i><%= t("public.pages.cabine_essayage.book_fitting") %>
       <% end %>
     </div>
   </div>

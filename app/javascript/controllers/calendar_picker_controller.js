@@ -49,17 +49,7 @@ export default class extends Controller {
       minDate:    "today",
       inline:     true,
       disable:    this.getDatesDesactivees(),
-      locale: {
-        firstDayOfWeek: 1,
-        weekdays: {
-          shorthand: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
-          longhand:  ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"]
-        },
-        months: {
-          shorthand: ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Aoû", "Sep", "Oct", "Nov", "Déc"],
-          longhand:  ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
-        }
-      },
+      locale:     this.getCalendarLocale(),
       onChange: (selectedDates, dateStr) => {
         if (selectedDates.length === 0) return;
         if (this.hasDateHiddenTarget) this.dateHiddenTarget.value = dateStr;
@@ -73,6 +63,37 @@ export default class extends Controller {
 
     const calendarElement = this.flatpickrInstance.calendarContainer;
     if (calendarElement) this.dateInputTarget.appendChild(calendarElement);
+  }
+
+  getCalendarLocale() {
+    const currentLocale = document.documentElement.lang?.toLowerCase() || "fr";
+    const isEnglish = currentLocale.startsWith("en");
+
+    if (isEnglish) {
+      return {
+        firstDayOfWeek: 1,
+        weekdays: {
+          shorthand: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+          longhand:  ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        },
+        months: {
+          shorthand: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+          longhand:  ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+        }
+      };
+    }
+
+    return {
+      firstDayOfWeek: 1,
+      weekdays: {
+        shorthand: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+        longhand:  ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"]
+      },
+      months: {
+        shorthand: ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Aoû", "Sep", "Oct", "Nov", "Déc"],
+        longhand:  ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
+      }
+    };
   }
 
   // ---- Navigation entre les étapes -------------------------------------

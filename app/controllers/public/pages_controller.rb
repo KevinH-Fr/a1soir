@@ -106,12 +106,12 @@ module Public
       ensure_cabine_cart_session
 
       if session[:cabine_cart].include?(id)
-        flash.now[:notice] = "Ce produit est déjà dans votre cabine d'essayage"
+        flash.now[:notice] = t("public.pages.cabine_essayage.flash.already_in_cart")
       elsif session[:cabine_cart].size >= 10
-        flash.now[:alert] = "Limite de 10 produits atteinte. Retirez un produit pour en ajouter un autre."
+        flash.now[:alert] = t("public.pages.cabine_essayage.flash.limit_reached")
       else
         session[:cabine_cart] = (session[:cabine_cart] + [id]).uniq
-        flash.now[:success] = "#{@produit.nom} ajouté à votre cabine d'essayage"
+        flash.now[:success] = t("public.pages.cabine_essayage.flash.added", product_name: @produit.nom)
       end
 
       refresh_cabine_cart
@@ -124,7 +124,7 @@ module Public
       
       ensure_cabine_cart_session
       session[:cabine_cart] = session[:cabine_cart] - [id]
-      flash.now[:info] = "#{@produit.nom} retiré de votre cabine d'essayage"
+      flash.now[:info] = t("public.pages.cabine_essayage.flash.removed", product_name: @produit.nom)
       
       refresh_cabine_cart
       render_cabine_cart_turbo_stream_for(@produit)

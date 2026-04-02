@@ -86,13 +86,13 @@
           <div class="col-md-6 mb-1">
             <div class="form-floating">
               <%= form.text_field :prenom, class: "form-control border-dark border-2 bg-white text-dark", required: true %>
-              <%= form.label :prenom, "Prénom *", class: "text-dark" %>
+              <%= form.label :prenom, t("public.demande_rdv.form.fields.first_name"), class: "text-dark" %>
             </div>
           </div>
           <div class="col-md-6 mb-1">
             <div class="form-floating">
               <%= form.text_field :nom, class: "form-control border-dark border-2 bg-white text-dark", required: true %>
-              <%= form.label :nom, "Nom *", class: "text-dark" %>
+              <%= form.label :nom, t("public.demande_rdv.form.fields.last_name"), class: "text-dark" %>
             </div>
           </div>
         </div>
@@ -101,13 +101,13 @@
           <div class="col-md-6 mb-1">
             <div class="form-floating">
               <%= form.email_field :email, class: "form-control border-dark border-2 bg-white text-dark", required: true %>
-              <%= form.label :email, "Email *", class: "text-dark" %>
+              <%= form.label :email, t("public.demande_rdv.form.fields.email"), class: "text-dark" %>
             </div>
           </div>
           <div class="col-md-6 mb-1">
             <div class="form-floating">
               <%= form.text_field :telephone, class: "form-control border-dark border-2 bg-white text-dark", required: true %>
-              <%= form.label :telephone, "Téléphone *", class: "text-dark" %>
+              <%= form.label :telephone, t("public.demande_rdv.form.fields.phone"), class: "text-dark" %>
             </div>
           </div>
         </div>
@@ -118,19 +118,19 @@
             <div class="form-floating">
               <%= form.select :evenement,
                   options_for_select([
-                    ["Mariage", "mariage"],
-                    ["Soirée",  "soiree"],
-                    ["Autre",   "autre"]
+                    [t("public.demande_rdv.form.event_options.wedding"), "mariage"],
+                    [t("public.demande_rdv.form.event_options.evening"), "soiree"],
+                    [t("public.demande_rdv.form.event_options.other"),   "autre"]
                   ], demande_rdv.evenement),
-                  { include_blank: "Type d'événement" },
+                  { include_blank: t("public.demande_rdv.form.event_type_placeholder") },
                   { class: "form-select border-dark border-2 bg-white text-dark", required: true } %>
-              <%= form.label :evenement, "Type d'événement *", class: "text-dark" %>
+              <%= form.label :evenement, t("public.demande_rdv.form.fields.event_type"), class: "text-dark" %>
             </div>
           </div>
           <div class="col-md-6 mb-1">
             <div class="form-floating">
               <%= form.date_field :date_evenement, required: true, class: "form-control border-dark border-2 bg-white text-dark" %>
-              <%= form.label :date_evenement, "Date de l'événement *", class: "text-dark" %>
+              <%= form.label :date_evenement, t("public.demande_rdv.form.fields.event_date"), class: "text-dark" %>
             </div>
           </div>
         </div>
@@ -145,11 +145,11 @@
               %>
               <%= form.select :type_rdv,
                   options_for_select(TypeRdv.options_for_select, demande_rdv.type_rdv),
-                  { include_blank: "Sélectionnez un type" },
+                  { include_blank: t("public.demande_rdv.form.appointment_type_placeholder") },
                   { class: "form-select border-dark border-2 bg-white text-dark",
                     required: true,
                     disabled: should_disable } %>
-              <%= form.label :type_rdv, "Type de rendez-vous", class: "text-dark" %>
+              <%= form.label :type_rdv, t("public.demande_rdv.form.fields.appointment_type"), class: "text-dark" %>
               <%= form.hidden_field :type_rdv, value: demande_rdv.type_rdv if should_disable %>
             </div>
           </div>
@@ -160,7 +160,7 @@
                   required: !demande_rdv.demande_cabine_essayage.present?,
                   min: 1, max: 10,
                   value: demande_rdv.nombre_personnes || 1 %>
-              <%= form.label :nombre_personnes, "Nombre de personnes en essayage *", class: "text-dark" %>
+              <%= form.label :nombre_personnes, t("public.demande_rdv.form.fields.people_in_fitting"), class: "text-dark" %>
             </div>
           </div>
         </div>
@@ -169,7 +169,7 @@
         <div class="mb-4">
           <div class="form-floating">
             <%= form.text_area :commentaire, rows: 3, class: "form-control border-dark border-2 bg-white text-dark" %>
-            <%= form.label :commentaire, "Message (optionnel)", class: "text-dark" %>
+            <%= form.label :commentaire, t("public.demande_rdv.form.fields.message_optional"), class: "text-dark" %>
           </div>
         </div>
 

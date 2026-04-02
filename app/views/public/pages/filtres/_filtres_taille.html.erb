@@ -4,12 +4,12 @@
         <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="tailleDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-rulers"></i>
             <span class="ms-1 d-none d-md-inline">
-                <%= params[:taille].present? ? (@toutes_tailles.find { |t| t.id == params[:taille].to_i }&.nom || "Taille") : "Taille" %>
+                <%= params[:taille].present? ? (@toutes_tailles.find { |t| t.id == params[:taille].to_i }&.nom || t("public.pages.produits.filters.taille.fallback")) : t("public.pages.produits.filters.taille.fallback") %>
             </span>
         </button>
 
         <div class="dropdown-menu overflow-y-auto" aria-labelledby="tailleDropdown" style="max-height: 18rem">
-            <%= button_to "Toutes",
+            <%= button_to t("public.pages.produits.filters.taille.all_button"),
                 update_filters_path(slug: params[:slug], id: params[:id], taille: nil, couleur: params[:couleur], prixmax: params[:prixmax], type: params[:type], from_cabine: params[:from_cabine], type_produit: params[:type_produit]),
                 class: "dropdown-item text-nowrap #{'fw-bold' if params[:taille].blank?}" %>
             <hr class="dropdown-divider">

@@ -127,9 +127,29 @@ en:
       learn_more: "Learn more"
       refuse: "Decline"
       accept: "Accept"
+    floating_contact_icons:
+      book_appointment_title: "Book an appointment"
+      book_appointment_aria: "Book an in-store appointment"
+      write_title: "Write to us"
+      write_aria: "Write to us via the contact form"
+      call_title: "Call us"
+      call_aria: "Call us at +33 4 93 45 17 17"
     helpers:
       quick_nav_links:
         title: "Quick navigation"
+      badges_public_helper:
+        labels:
+          size: "Size"
+          color: "Color"
+      prix_labels:
+        sale: "Sale"
+        rental: "Rental"
+      cart_buttons:
+        remove_from_fitting_room: "Remove from fitting room"
+        fitting_room_limit_reached: "Limit reached (10 products max)"
+        add_to_fitting_room: "Add to fitting room"
+        remove_from_cart: "Remove from cart"
+        add_to_cart: "Add to cart"
     demande_rdv:
       form:
         select_date_title: "Select a date"
@@ -138,6 +158,34 @@ en:
         paris_time: "Paris time"
         contact_details_title: "Your contact details"
         submit_request: "Send my request"
+        event_type_placeholder: "Event type"
+        appointment_type_placeholder: "Select a type"
+        event_options:
+          wedding: "Wedding"
+          evening: "Evening"
+          other: "Other"
+        fields:
+          first_name: "First name *"
+          last_name: "Last name *"
+          email: "Email *"
+          phone: "Phone *"
+          event_type: "Event type *"
+          event_date: "Event date *"
+          appointment_type: "Appointment type"
+          people_in_fitting: "Number of people in fitting *"
+          message_optional: "Message (optional)"
+      flash:
+        recaptcha_required: "Please complete the reCAPTCHA to prove that you are not a robot"
+        cabine_create_error: "Error while creating the fitting room appointment request: %{errors}"
+        save_error: "Error while saving: %{errors}"
+      notice:
+        cabine_sent: "Your fitting room appointment request has been successfully sent. We'll get back to you soon."
+        rdv_sent: "Your appointment request has been successfully sent. We'll get back to you soon."
+    demande_cabine_essayages:
+      flash:
+        recaptcha_required: "Please complete the reCAPTCHA to prove that you are not a robot"
+      notice:
+        cabine_sent: "Your reservation request has been successfully sent. We'll get back to you soon."
     cta:
       collections: "Discover our collections"
       rdv: "Book an appointment"
@@ -266,6 +314,42 @@ en:
         cta:
           title: "A question? A project?"
           description: "Our team is looking forward to meeting and assisting you"
+      produits:
+        search:
+          placeholder: "Search"
+        filters:
+          clear_button_title: "Clear filters"
+          categorie:
+            all_label: "Category"
+            all_button: "All"
+            selected_count:
+              one: "%{count} category"
+              other: "%{count} categories"
+          type:
+            fallback: "Service"
+            all_button: "All"
+          type_produit:
+            fallback: "Type"
+            all_button: "All"
+          taille:
+            fallback: "Size"
+            all_button: "All"
+          couleur:
+            fallback: "Color"
+            all_button: "All"
+          prix:
+            fallback: "Price"
+            promo_label: "On sale"
+            all_button: "All"
+            promo_button: "On sale"
+      produit:
+        back: "Back"
+        rental_info: "Rental is available only in our shop."
+        other_sizes_title: "Other available sizes"
+        other_colors_title: "Other available colors"
+        add_other_products: "Add more products"
+      vous_aimerez_aussi:
+        title: "You may also like"
       faq:
         header_title: "FAQ"
         header_subtitle: "Frequently asked questions"
@@ -669,6 +753,11 @@ en:
         book_fitting: "Book my fitting"
         empty_title: "Your fitting room is empty"
         empty_text: "Start selecting your favorite outfits now for your next event."
+        flash:
+          already_in_cart: "This product is already in your fitting room"
+          limit_reached: "Limit of 10 products reached. Remove one product to add another."
+          added: "%{product_name} added to your fitting room"
+          removed: "%{product_name} removed from your fitting room"
         steps:
           selection:
             title: "1. Selection"

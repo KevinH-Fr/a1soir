@@ -4,12 +4,12 @@
         <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="couleurDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-palette"></i>
             <span class="ms-1 d-none d-md-inline">
-                <%= params[:couleur].present? ? (@toutes_couleurs.find { |c| c.id == params[:couleur].to_i }&.nom || "Couleur") : "Couleur" %>
+                <%= params[:couleur].present? ? (@toutes_couleurs.find { |c| c.id == params[:couleur].to_i }&.nom || t("public.pages.produits.filters.couleur.fallback")) : t("public.pages.produits.filters.couleur.fallback") %>
             </span>
         </button>
 
         <div class="dropdown-menu overflow-y-auto" aria-labelledby="couleurDropdown" style="max-height: 18rem">
-            <%= button_to "Toutes",
+            <%= button_to t("public.pages.produits.filters.couleur.all_button"),
                 update_filters_path(slug: params[:slug], id: params[:id], taille: params[:taille], couleur: nil, prixmax: params[:prixmax], type: params[:type], from_cabine: params[:from_cabine], type_produit: params[:type_produit]),
                 class: "dropdown-item text-nowrap #{'fw-bold' if params[:couleur].blank?}" %>
             <hr class="dropdown-divider">

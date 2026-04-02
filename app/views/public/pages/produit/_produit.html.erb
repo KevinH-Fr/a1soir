@@ -53,8 +53,8 @@
                   <% end %>
 
                   <p class="card-text d-flex justify-content-between m-0">
-                      <%= badge_prix("Vente", produit.prixvente, produit) %>
-                      <%= badge_prix("Location", produit.prixlocation) if produit.prixlocation.present? %>
+                      <%= badge_prix(:sale, produit.prixvente, produit) %>
+                      <%= badge_prix(:rental, produit.prixlocation) if produit.prixlocation.present? %>
                   </p>
                   
                   <p class="card-text d-flex justify-content-between">

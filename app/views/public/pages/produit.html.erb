@@ -7,7 +7,7 @@
       <div class="mb-1">
         <%= link_to @back_url, class: "text-secondary text-decoration-none d-inline-flex align-items-center btn btn-link p-0" do %>
           <i class="bi bi-arrow-left me-2 fs-5"></i>
-          <span>Retour</span>
+          <span><%= t("public.pages.produit.back") %></span>
         <% end %>
       </div>
       <!-- Image/Carousel Column - En haut sur mobile, 50% sur grand écran -->
@@ -45,15 +45,15 @@
 
           <!-- Badges: prix vente, prix location -->
           <div class="d-flex justify-content-start gap-5 mb-2 fs-3 text-black">
-            <%= badge_prix("Vente", @produit.prixvente, @produit) %>
-            <%= badge_prix("Location", @produit.prixlocation) if @produit.prixlocation.present? %>
+            <%= badge_prix(:sale, @produit.prixvente, @produit) %>
+            <%= badge_prix(:rental, @produit.prixlocation) if @produit.prixlocation.present? %>
           </div>
 
           <!-- Location info -->
           <% if @produit.prixlocation.present? %>
             <div class="mb-2 d-flex align-items-center">
               <i class="bi bi-info-circle me-3 fs-5"></i>
-              <small class="opacity-75" style="font-size: 0.95rem;">La location se fait uniquement au magasin.</small>
+              <small class="opacity-75" style="font-size: 0.95rem;"><%= t("public.pages.produit.rental_info") %></small>
             </div>
           <% end %>
 
@@ -62,7 +62,7 @@
           <% if @meme_produit_meme_couleur_autres_tailles.any? %>
             <div class="mb-2 fs-3">
               <h6 class="mb-2 d-flex align-items-center text-secondary">
-                <span>Autres tailles disponibles</span>
+                <span><%= t("public.pages.produit.other_sizes_title") %></span>
               </h6>
               <div class="d-flex flex-wrap gap-2">
                 <% @meme_produit_meme_couleur_autres_tailles.each do |produit| %>
@@ -76,7 +76,7 @@
           <% if @meme_produit_meme_taille_autres_couleurs.any? %>
             <div class="my-3 fs-3">
               <h6 class="mb-2 d-flex align-items-center text-secondary">
-                <span>Autres couleurs disponibles</span>
+                <span><%= t("public.pages.produit.other_colors_title") %></span>
               </h6>
               <div class="d-flex flex-wrap gap-2">
                 <% @meme_produit_meme_taille_autres_couleurs.each do |produit| %>
@@ -111,6 +111,6 @@
 
 <div class="text-center"> 
   <%= link_to produits_index_path(from_cabine: true), class: "btn btn-dark btn-lg px-4 rounded-0" do %>
-    <i class="bi bi-plus-circle me-2"></i>Ajouter d'autres produits
+    <i class="bi bi-plus-circle me-2"></i><%= t("public.pages.produit.add_other_products") %>
   <% end %>
 </div>
