@@ -233,7 +233,13 @@ class DemandeRdv < ApplicationRecord
     datedebut = date_rdv
     datefin   = datedebut + duree_rdv_minutes.minutes
 
-    attrs = { nom: "RDV depuis site", datedebut: datedebut, datefin: datefin,
+    meeting_nom = if demande_cabine_essayage.present?
+                    "RDV depuis site - cabine d'essayage"
+                  else
+                    "RDV depuis site"
+                  end
+
+    attrs = { nom: meeting_nom, datedebut: datedebut, datefin: datefin,
               lieu: "boutique", client_id: client.id }
 
     if meeting.present?

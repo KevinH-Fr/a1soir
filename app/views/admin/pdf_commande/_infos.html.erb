@@ -47,6 +47,7 @@
         <div class="doc-important"><%= @doc_edition.doc_type.capitalize %></div>
       <% end %>
       <div class="doc-important"><%= @doc_edition.commande.ref_commande %></div>
+      <div class="doc-important"><%= @doc_edition.commande.created_at.strftime("%d/%m/%Y") %></div>
 
       <% if @doc_edition.commande.qr_code.present? %>
         <div>
