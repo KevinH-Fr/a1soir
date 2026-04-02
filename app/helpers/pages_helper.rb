@@ -283,7 +283,8 @@ module PagesHelper
   def nav_link_public(path, name)
       classes = ["nav-item text-center mx-3 my-1"]
       
-      is_active = current_page?(path) || (path == home_path && current_page?(root_path))
+      localized_root = localized_root_path(locale: I18n.locale)
+      is_active = current_page?(path) || (path == home_path && current_page?(localized_root))
       # Activer le lien cabine quand on revient des produits avec le paramètre from_cabine
       is_active ||= (
         path == cabine_essayage_path &&
