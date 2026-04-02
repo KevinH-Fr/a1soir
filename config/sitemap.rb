@@ -22,16 +22,22 @@ SitemapGenerator::Sitemap.public_path = 'public/'
 SitemapGenerator::Sitemap.adapter = SitemapGenerator::FileAdapter.new
 
 SitemapGenerator::Sitemap.create do
-  # Pages statiques
-  add '/home', changefreq: 'weekly', priority: 1.0
-  add '/la_boutique', changefreq: 'weekly', priority: 0.9
-  add '/nos_collections', changefreq: 'weekly', priority: 0.9
-  add '/le_concept', changefreq: 'monthly', priority: 0.8
-  add '/nos_autres_activites', changefreq: 'monthly', priority: 0.8
-  add '/cabine_essayage', changefreq: 'weekly', priority: 0.8
-  add '/contact', changefreq: 'monthly', priority: 0.7
-  add '/rdv', changefreq: 'weekly', priority: 0.8
-  add '/produits', changefreq: 'daily', priority: 0.6
+  # Pages statiques localisées
+  [
+    ['/home', 'weekly', 1.0],
+    ['/la_boutique', 'weekly', 0.9],
+    ['/nos_collections', 'weekly', 0.9],
+    ['/le_concept', 'monthly', 0.8],
+    ['/nos_autres_activites', 'monthly', 0.8],
+    ['/cabine_essayage', 'weekly', 0.8],
+    ['/contact', 'monthly', 0.7],
+    ['/rdv', 'weekly', 0.8],
+    ['/produits', 'daily', 0.6]
+  ].each do |path, changefreq, priority|
+    [:fr, :en].each do |locale|
+      add "/#{locale}#{path}", changefreq: changefreq, priority: priority
+    end
+  end
 
   # Produits actifs
  # Produit.actif.find_each do |produit|
