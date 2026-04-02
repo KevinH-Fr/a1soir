@@ -1,0 +1,11 @@
+Bonjour,
+
+Nous avons bien enregistré votre paiement en ligne.
+
+<% @items.each do |item| %>
+- <%= item.produit&.nom %> — quantité <%= item.quantity || 1 %>
+<% end %>
+
+Montant total : <%= number_to_currency(@payment.amount.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %> (<%= @payment.currency&.upcase %>)
+
+Merci pour votre confiance.

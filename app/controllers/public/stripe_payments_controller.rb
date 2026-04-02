@@ -2,25 +2,44 @@ module Public
   class StripePaymentsController < ApplicationController
     before_action :check_online_sales
 
-    layout 'public'
+    layout "public"
 
     def create
-      # Create a Stripe Checkout Session
-      session = Stripe::Checkout::Session.create(
-        payment_method_types: ['card'],
-        line_items: @cart.collect { |item| item.to_builder.attributes! },
-        mode: 'payment',
-        success_url: root_url + "purchase_success?session_id={CHECKOUT_SESSION_ID}",
-        cancel_url: root_url + "purchase_error?session_id={CHECKOUT_SESSION_ID}"
+      return unless ensure_cart_eligible_for_checkout!
+
+      base = root_url.chomp("/")
+      stripe_session = Stripe::Checkout::Session.create(
+        payment_method_types: ["card"],
+        line_items: @cart.map { |item| item.to_builder.attributes! },
+        mode: "payment",
+        success_url: "#{base}/purchase_success?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url: "#{base}/purchase_error?session_id={CHECKOUT_SESSION_ID}",
+        metadata: {
+          locale: I18n.locale.to_s,
+          cart_product_ids: session[:cart].join(",")
+        }
       )
 
-      # Redirect to Stripe Checkout
-      redirect_to session.url, allow_other_host: true
+      redirect_to stripe_session.url, allow_other_host: true
     end
 
     def add_to_cart
       id = params[:id].to_i
       @produit = Produit.find(id)
+
+      unless @produit.eshop? && @produit.stripe_price_id.present?
+        respond_to do |format|
+          flash.now[:alert] = "Ce produit n'est pas disponible à l'achat en ligne."
+          format.turbo_stream do
+            render turbo_stream: [
+              turbo_stream.append(:flash, partial: "public/shared/flash"),
+              turbo_stream.replace("cart_badge", partial: "public/shared/cart_nav_link")
+            ]
+          end
+          format.html { redirect_to produit_path(slug: @produit.nom.parameterize, id: @produit.id), alert: flash.now[:alert] }
+        end
+        return
+      end
 
       respond_to do |format|
         if session[:cart].include?(id)
@@ -30,30 +49,22 @@ module Public
           flash.now[:success] = "#{@produit.nom} ajouté à votre panier"
         end
 
-        # Recharger @cart après modification de session[:cart]
-        @cart = Produit.find(session[:cart])
+        ids = session[:cart]
+        by_id = Produit.where(id: ids).index_by(&:id)
+        @cart = ids.filter_map { |cid| by_id[cid] }
 
         format.turbo_stream do
           render turbo_stream: [
-            # bouton du produit
             turbo_stream.replace(
               "produit_#{@produit.id}_button",
               partial: "public/pages/cart_buttons/shop_product_button",
               locals: { produit: @produit }
             ),
-            # flash
-            turbo_stream.append(
-              :flash,
-              partial: "public/shared/flash"
-            ),
-            # badge navbar
-            turbo_stream.replace(
-              "cart_badge",
-              partial: "public/shared/cart_nav_link"
-            )
+            turbo_stream.append(:flash, partial: "public/shared/flash"),
+            turbo_stream.replace("cart_badge", partial: "public/shared/cart_nav_link")
           ]
         end
-        format.html { redirect_to produit_path(id) }
+        format.html { redirect_to produit_path(slug: @produit.nom.parameterize, id: @produit.id) }
       end
     end
 
@@ -63,31 +74,22 @@ module Public
       session[:cart].delete(id)
       flash.now[:info] = "#{@produit.nom} retiré de votre panier"
 
-      # Recharger @cart après modification de session[:cart]
-      @cart = Produit.find(session[:cart])
+      by_id = Produit.where(id: session[:cart]).index_by(&:id)
+      @cart = session[:cart].filter_map { |cid| by_id[cid] }
 
       respond_to do |format|
         format.turbo_stream do
           render turbo_stream: [
-            # bouton du produit
             turbo_stream.replace(
               "produit_#{@produit.id}_button",
               partial: "public/pages/cart_buttons/shop_product_button",
               locals: { produit: @produit }
             ),
-            # flash
-            turbo_stream.append(
-              :flash,
-              partial: "public/shared/flash"
-            ),
-            # badge navbar
-            turbo_stream.replace(
-              "cart_badge",
-              partial: "public/shared/cart_nav_link"
-            )
+            turbo_stream.append(:flash, partial: "public/shared/flash"),
+            turbo_stream.replace("cart_badge", partial: "public/shared/cart_nav_link")
           ]
         end
-        format.html { redirect_to produit_path(id) }
+        format.html { redirect_to produit_path(slug: @produit.nom.parameterize, id: @produit.id) }
       end
     end
 
@@ -98,68 +100,66 @@ module Public
     end
 
     def purchase_success
-      stripe_session = Stripe::Checkout::Session.retrieve({
-        id: params[:session_id],
-        expand: ['line_items.data.price.product']
-      })
-    
-      payment = StripePayment.create!(
-        stripe_payment_id: stripe_session.payment_intent,
-        amount: stripe_session.amount_total,
-        currency: stripe_session.currency,
-        status: stripe_session.payment_status,
-        payment_method: stripe_session.payment_method_types.first,
-        charge_id: stripe_session.payment_intent
-      )
-    
-      session[:cart].each do |item|
-        produit = Produit.find(item) 
-        StripePaymentItem.create!(
-          stripe_payment: payment,
-          produit: produit
-        )
+      if params[:session_id].blank?
+        redirect_to cart_path, alert: "Session de paiement invalide."
+        return
       end
-    
-      if stripe_session.payment_status == 'paid'
-        session[:cart] = []
+
+      stripe_session = StripeCheckoutFulfillmentService.retrieve_session!(params[:session_id])
+
+      unless stripe_session.payment_status == "paid"
+        redirect_to cart_path, alert: "Le paiement n'est pas finalisé."
+        return
       end
-      
+
+      result = StripeCheckoutFulfillmentService.new(stripe_session).fulfill!
+      payment = result.payment
+
+      if payment.nil?
+        redirect_to cart_path, alert: "Impossible d'enregistrer le paiement. Contactez le magasin."
+        return
+      end
+
+      session[:cart] = [] if stripe_session.payment_status == "paid"
       redirect_to status_payment_path(payment.id)
+    rescue Stripe::InvalidRequestError, ArgumentError => e
+      Rails.logger.warn("purchase_success: #{e.class} #{e.message}")
+      redirect_to cart_path, alert: "Erreur lors de la confirmation du paiement."
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotFound => e
+      Rails.logger.error("purchase_success fulfillment: #{e.class} #{e.message}")
+      redirect_to cart_path, alert: "Erreur lors de l'enregistrement de la commande."
     end
-    
 
     def purchase_error
-      # stripe_session = Stripe::Checkout::Session.retrieve({
-      #   id: params[:session_id],
-      #   expand: ['line_items.data.price.product']
-      # })
-    
-      # payment = StripePayment.create!(
-      #   stripe_payment_id: stripe_session.payment_intent,
-      #   amount: stripe_session.amount_total,
-      #   currency: stripe_session.currency,
-      #   status: stripe_session.payment_status,
-      #   payment_method: stripe_session.payment_method_types.first,
-      #   charge_id: stripe_session.payment_intent
-      # )
-    
       redirect_to cart_path
     end
 
     def status
       @payment = StripePayment.find(params[:id])
-      if @payment.nil?
-        flash[:alert] = "Payment not found."
-        redirect_to root_path
-      end
+    rescue ActiveRecord::RecordNotFound
+      flash[:alert] = "Paiement introuvable."
+      redirect_to root_path
     end
 
     private
 
     def check_online_sales
-      unless ENV["ONLINE_SALES_AVAILABLE"] == "true"
-        redirect_to root_path, alert: "Online sales are currently unavailable."
+      return if OnlineSales.available?
+
+      redirect_to root_path, alert: "Online sales are currently unavailable."
+    end
+
+    def ensure_cart_eligible_for_checkout!
+      if @cart.blank?
+        redirect_to cart_path, alert: "Votre panier est vide."
+        return false
       end
+      unless @cart.all? { |p| p.eshop? && p.stripe_price_id.present? && p.today_availability? }
+        redirect_to cart_path,
+                    alert: "Un ou plusieurs articles ne sont plus disponibles à la vente en ligne. Vérifiez votre panier."
+        return false
+      end
+      true
     end
   end
 end

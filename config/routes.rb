@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  get 'stripe/purchase_success'
+  post "/webhooks/stripe", to: "webhooks/stripe#create"
 
   root to: redirect('/fr')
 
@@ -36,9 +36,9 @@ Rails.application.routes.draw do
 
       post 'update_filters', to: 'pages#update_filters'
 
-      if ENV["ONLINE_SALES_AVAILABLE"].present?
+      if Rails.application.config.x.online_sales_available
         # stripe
-        resources :stripe_payments
+        resources :stripe_payments, only: [:create]
 
         get 'status/:id', to: 'stripe_payments#status', as: 'status_payment'
 
@@ -226,6 +226,8 @@ Rails.application.routes.draw do
           post :edit
         end
       end
+
+      resources :stripe_payments, only: %i[index show]
 
       resources :type_rdvs do
         member do

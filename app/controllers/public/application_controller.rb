@@ -34,7 +34,13 @@ module Public
       end
    
       def load_cart
-         @cart = Produit.find(session[:cart])
+        ids = Array(session[:cart]).map(&:to_i).reject(&:zero?).uniq
+        @cart = if ids.empty?
+                  []
+                else
+                  by_id = Produit.where(id: ids).index_by(&:id)
+                  ids.filter_map { |id| by_id[id] }
+                end
       end
 
       def initialize_cabine_session

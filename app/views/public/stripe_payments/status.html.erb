@@ -30,7 +30,7 @@
     
     <p><strong>Montant :</strong> <%= @payment.amount / 100.0 %> <%= @payment.currency.upcase %></p>
     <p><strong>Statut :</strong> <%= @payment.status.capitalize %></p>
-    <p><strong>Moyen de paiement :</strong> <%= @payment.payment_method.capitalize %></p>
+    <p><strong>Moyen de paiement :</strong> <%= @payment.payment_method.present? ? @payment.payment_method.capitalize : "—" %></p>
 
     <% if @payment.status == 'paid' %>
       <p class="text-success">Merci pour votre achat !</p>

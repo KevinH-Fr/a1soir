@@ -143,7 +143,7 @@ class Admin::ProduitsController < Admin::ApplicationController
         format.html { redirect_to new_admin_produit_path, notice: "Un produit avec la même référence existe déjà"}
       
       elsif @produit.save
-        if ENV["ONLINE_SALES_AVAILABLE"] == "true"
+        if OnlineSales.available?
           StripeProductService.new(@produit).create_product_and_price
         end
         
@@ -187,7 +187,7 @@ class Admin::ProduitsController < Admin::ApplicationController
         format.html { redirect_to admin_produit_path(@produit), notice: "Un produit avec la même référence existe déjà"}
       
       elsif @produit.update(produit_params)
-        if ENV["ONLINE_SALES_AVAILABLE"] == "true"
+        if OnlineSales.available?
           StripeProductService.new(@produit).update_product_and_price
         end
         
@@ -279,7 +279,7 @@ class Admin::ProduitsController < Admin::ApplicationController
       end
   
       # Call Stripe Service outside the transaction
-      if ENV["ONLINE_SALES_AVAILABLE"] == "true"
+      if OnlineSales.available?
         StripeProductService.new(copy).create_product_and_price 
       end
 
@@ -432,7 +432,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     @produit.prixvente = nouveau_prix
 
     if @produit.save
-      if ENV["ONLINE_SALES_AVAILABLE"] == "true"
+      if OnlineSales.available?
         StripeProductService.new(@produit).update_product_and_price
       end
       
@@ -474,7 +474,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     @produit.ancien_prixvente = nil
 
     if @produit.save
-      if ENV["ONLINE_SALES_AVAILABLE"] == "true"
+      if OnlineSales.available?
         StripeProductService.new(@produit).update_product_and_price
       end
       

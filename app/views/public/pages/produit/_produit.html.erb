@@ -67,7 +67,7 @@
                   
                   <% if session[:from_cabine] %>
                     <%= render partial: "public/pages/cart_buttons/cabine_product_button", locals: { produit: produit } %>
-                  <% elsif ENV["ONLINE_SALES_AVAILABLE"] == "true" %>
+                  <% elsif OnlineSales.available? && produit.eshop? && produit.stripe_price_id.present? %>
                     <%= render partial: "public/pages/cart_buttons/shop_product_button", locals: { produit: produit } %>
                   <% end %>
               </div>

@@ -3,6 +3,7 @@ class Commande < ApplicationRecord
   belongs_to :profile
 
   has_many :articles, dependent: :destroy
+  has_one :stripe_payment, dependent: :nullify
   has_many :paiement_recus, dependent: :destroy
   has_many :avoir_rembs, dependent: :destroy
   has_many :meetings, dependent: :destroy

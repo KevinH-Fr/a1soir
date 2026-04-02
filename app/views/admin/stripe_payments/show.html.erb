@@ -1,0 +1,42 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Paiement Stripe #<%= @stripe_payment.id %></h1>
+    <%= link_to "← Liste", admin_stripe_payments_path, class: "btn btn-outline-secondary btn-sm" %>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header fw-bold">Résumé</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><strong>Montant :</strong> <%= number_to_currency(@stripe_payment.amount.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %></li>
+          <li class="list-group-item"><strong>Devise :</strong> <%= @stripe_payment.currency&.upcase %></li>
+          <li class="list-group-item"><strong>Statut :</strong> <%= @stripe_payment.status %></li>
+          <li class="list-group-item"><strong>Email :</strong> <%= @stripe_payment.customer_email.presence || "—" %></li>
+          <li class="list-group-item"><strong>PaymentIntent :</strong> <code class="small"><%= @stripe_payment.stripe_payment_id %></code></li>
+          <li class="list-group-item"><strong>Session Checkout :</strong> <code class="small"><%= @stripe_payment.stripe_checkout_session_id.presence || "—" %></code></li>
+          <% if @stripe_payment.commande %>
+            <li class="list-group-item">
+              <strong>Commande :</strong>
+              <%= link_to @stripe_payment.commande.ref_commande, admin_commande_path(@stripe_payment.commande), class: "text-decoration-none" %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header fw-bold">Articles</div>
+        <ul class="list-group list-group-flush">
+          <% @stripe_payment.stripe_payment_items.each do |item| %>
+            <li class="list-group-item d-flex justify-content-between">
+              <span><%= link_to item.produit.nom, admin_produit_path(item.produit), class: "text-decoration-none" %></span>
+              <span class="text-muted">× <%= item.quantity || 1 %></span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

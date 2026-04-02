@@ -90,7 +90,7 @@
           <div class="py-4">
             <% if session[:from_cabine] %>
               <%= cart_button_for(@produit, type: :cabine, button_class: "py-2 fs-5 bg-black text-white border-0") %>
-            <% elsif ENV["ONLINE_SALES_AVAILABLE"] == "true" %>
+            <% elsif OnlineSales.available? && @produit.eshop? && @produit.stripe_price_id.present? %>
               <%= cart_button_for(@produit, type: :shop, button_class: "py-2 fs-5 bg-black text-white border-0") %>
             <% end %>
           </div>

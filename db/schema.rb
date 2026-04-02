@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_03_10_150000) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_02_120000) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -410,7 +410,13 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_10_150000) do
     t.string "charge_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "stripe_checkout_session_id"
+    t.string "customer_email"
+    t.datetime "confirmation_email_sent_at"
+    t.integer "commande_id"
+    t.index ["commande_id"], name: "index_stripe_payments_on_commande_id"
     t.index ["produit_id"], name: "index_stripe_payments_on_produit_id"
+    t.index ["stripe_checkout_session_id"], name: "index_stripe_payments_on_stripe_checkout_session_id", unique: true, where: "stripe_checkout_session_id IS NOT NULL"
   end
 
   create_table "tailles", force: :cascade do |t|
@@ -501,6 +507,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_03_10_150000) do
   add_foreign_key "sousarticles", "produits"
   add_foreign_key "stripe_payment_items", "produits"
   add_foreign_key "stripe_payment_items", "stripe_payments"
+  add_foreign_key "stripe_payments", "commandes"
   add_foreign_key "stripe_payments", "produits"
   add_foreign_key "texte_produits", "produits"
   add_foreign_key "texte_produits", "textes"

@@ -4,9 +4,6 @@ class StripeProductService
   end
 
   def create_product_and_price
-
-    puts " __________ crate produtc and price stripe called _________________"
-      
     return if @produit.stripe_product_id.present? && @produit.stripe_price_id.present?
   
     stripe_product = Stripe::Product.create({
@@ -24,9 +21,6 @@ class StripeProductService
   end
 
   def update_product_and_price
-
-    puts " __________ update produtc and price stripe called _________________"
-
     return unless @produit.stripe_product_id.present? && @produit.stripe_price_id.present?
 
     # Update product details (name and description)
