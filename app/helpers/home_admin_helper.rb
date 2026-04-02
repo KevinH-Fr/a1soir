@@ -22,9 +22,30 @@ module HomeAdminHelper
           concat(content_tag(:tbody, class: "table-light") do
             items.each do |item|
               concat(content_tag(:tr) do
-                concat(content_tag(:td, class: "text-truncate") do
-                  concat(content_tag(:i, nil, class: "bi bi-#{item[:icon]} me-1")) # Include icon for each item
-                  concat(link_to item[:text], item[:path], class: "text-dark text-decoration-none")
+                concat(content_tag(:td, class: "text-truncate align-middle") do
+                  if item[:order_ref].present?
+                    concat(link_to(item[:path], class: "text-dark text-decoration-none") do
+                      concat item[:order_ref]
+                      concat item[:tail].to_s
+                      if item[:row_icon] == :eshop
+                        concat content_tag(:i, nil,
+                          class: "bi bi-cart-check text-warning ms-2",
+                          title: "Commande e-shop")
+                      end
+                    end)
+                  else
+                    case item[:row_icon]
+                    when :eshop
+                      concat(content_tag(:i, nil,
+                        class: "bi bi-cart-check text-warning me-1",
+                        title: "Commande e-shop"))
+                    when :none, false
+                      # pas d’icône
+                    else
+                      concat(content_tag(:i, nil))
+                    end
+                    concat(link_to(item[:text], item[:path], class: "text-dark text-decoration-none"))
+                  end
                 end)
               end)
             end
@@ -34,14 +55,13 @@ module HomeAdminHelper
     end
   end
 
-  def options_supplementaires_link(path, icon_class, text, btn_class, badge_count: nil)
+  def options_supplementaires_link(path, icon_class, text, btn_class, badge_count: nil, badge_show_zero: false, badge_class: "bg-danger")
     link_to(path, class: "me-1 mb-2 btn btn-sm #{btn_class} position-relative") do
       concat content_tag(:i, "", class: "bi #{icon_class} me-1")
       concat content_tag(:span, text, class: "fw-bold")
-      # badge pour demande cabine essayage
-      if badge_count.present? && badge_count > 0
-        concat content_tag(:span, badge_count, 
-          class: "position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger", 
+      if !badge_count.nil? && (badge_show_zero || badge_count > 0)
+        concat content_tag(:span, badge_count,
+          class: "position-absolute top-0 start-100 translate-middle badge rounded-pill #{badge_class}",
           style: "font-size: 0.65rem; padding: 0.2rem 0.4rem;")
       end
     end

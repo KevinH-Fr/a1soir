@@ -38,7 +38,7 @@ Sans `STRIPE_WEBHOOK_SECRET`, le endpoint `POST /webhooks/stripe` répond **503*
 4. **Page panier** : [`pages#cart`](../app/controllers/public/pages_controller.rb) + vue panier ; le bouton « Passer au paiement » envoie un **POST** vers `stripe_payments` (`create`).
 5. **Avant Checkout** : `create` vérifie que le panier n'est pas vide et que **chaque** ligne a `eshop`, `stripe_price_id` et `today_availability` à `true`. Sinon redirection vers le panier avec message d'alerte.
 6. **Session Checkout** : création d'une `Stripe::Checkout::Session` en mode `payment`, une ligne par article du panier, via [`Produit#to_builder`](../app/models/produit.rb) (`price` = `stripe_price_id`, `quantity` = 1). Les métadonnées incluent la locale et la liste des IDs produits du panier.
-7. **Après paiement réussi** : Stripe redirige vers `…/purchase_success?session_id=…` (URL construite à partir de `root_url` et de la locale courante).
+7. **Après paiement réussi** : Stripe redirige vers `/{locale}/purchase_success?session_id=…` (URL construite avec `request.base_url` + `purchase_success_path(locale: …)` pour éviter de concaténer après `root_url`, qui peut contenir `?locale=…` et produire une URL invalide).
 8. **Page de statut** : après traitement, redirection vers `status/:id` (récapitulatif local du paiement).
 
 Annulation côté utilisateur sur Checkout : redirection vers `purchase_error`, puis retour au panier.
@@ -91,6 +91,25 @@ Quand `OnlineSales.available?` est vrai, les actions pertinentes du [`Admin::Pro
 
 Les identifiants Stripe sont stockés sur `produits` : `stripe_product_id`, `stripe_price_id`.
 
+### Recréer produits et prix (console Rails)
+
+Sur un **nouveau compte Stripe** ou après changement de clés, les anciens `prod_…` / `price_…` ne sont plus valides. Avec `STRIPE_SECRET_KEY` pointant vers le bon compte, exécuter dans **`bin/rails console`** :
+
+**Recréation complète** pour les produits **e-shop**, **disponibles aujourd’hui** (`today_availability: true`) et avec **`prixvente` > 0** (les IDs en base sont effacés puis `StripeProductService` recrée Product + Price) :
+
+```ruby
+scope = Produit.where(eshop: true, today_availability: true)
+               .where("prixvente IS NOT NULL AND prixvente > 0")
+
+scope.update_all(stripe_product_id: nil, stripe_price_id: nil)
+
+scope.find_each do |p|
+  StripeProductService.new(p.reload).create_product_and_price
+  puts "#{p.id} → #{p.reload.stripe_price_id}"
+end
+
+Le service pose une métadonnée `produit_id` sur le Product Stripe et n’envoie la description que si elle est renseignée ([`StripeProductService`](../app/services/stripe_product_service.rb)).
+
 ---
 
 ## Stock et disponibilité
@@ -101,8 +120,7 @@ Les ventes e-shop comptent dans la logique de stock via les `StripePaymentItem` 
 
 ## Interface d'administration
 
-- Liste et fiche des paiements Stripe : namespace admin, [`Admin::StripePaymentsController`](../app/controllers/admin/stripe_payments_controller.rb), entrée de menu « E-shop Stripe » dans la navbar admin.
-- Lien vers la **commande** magasin associée lorsqu'elle existe.
+- Liste des paiements Stripe (index admin uniquement) : [`Admin::StripePaymentsController#index`](../app/controllers/admin/stripe_payments_controller.rb), entrée « Paiements e-shop » dans le bloc Accès du tableau de bord admin. Le détail d’un paiement est affiché sur la **fiche commande** associée lorsqu’elle existe ; la liste propose un lien direct vers cette commande.
 
 ---
 

@@ -8,6 +8,7 @@
 
           <%#= custom_badge("", "", "", commande.ref_commande) %>
           <%= custom_badge("", "", "", "fw-bold", commande.full_name) %>
+          <%= commande_eshop_badge(commande) %>
           <%= custom_badge("", "", "", "", commande.client.full_name) %>
           <%= custom_badge("", "", "", "", commande.type_locvente) if commande.type_locvente %>
           <%= custom_badge("fa-calendar", "", "", "", commande.full_event) %>

@@ -7,13 +7,18 @@ module Public
     def create
       return unless ensure_cart_eligible_for_checkout!
 
-      base = root_url.chomp("/")
+      # Ne pas utiliser root_url ici : default_url_options ajoute ?locale=fr et une concaténation
+      # produit une URL invalide du type /?locale=fr/purchase_success?... (Stripe ne rappelle jamais purchase_success).
+      # Stripe exige le littéral {CHECKOUT_SESSION_ID} non encodé dans la chaîne envoyée à leur API.
+      success_url = "#{request.base_url}#{purchase_success_path(locale: I18n.locale)}?session_id={CHECKOUT_SESSION_ID}"
+      cancel_url = "#{request.base_url}#{purchase_error_path(locale: I18n.locale)}?session_id={CHECKOUT_SESSION_ID}"
+
       stripe_session = Stripe::Checkout::Session.create(
         payment_method_types: ["card"],
         line_items: @cart.map { |item| item.to_builder.attributes! },
         mode: "payment",
-        success_url: "#{base}/purchase_success?session_id={CHECKOUT_SESSION_ID}",
-        cancel_url: "#{base}/purchase_error?session_id={CHECKOUT_SESSION_ID}",
+        success_url: success_url,
+        cancel_url: cancel_url,
         metadata: {
           locale: I18n.locale.to_s,
           cart_product_ids: session[:cart].join(",")
@@ -121,7 +126,8 @@ module Public
       end
 
       session[:cart] = [] if stripe_session.payment_status == "paid"
-      redirect_to status_payment_path(payment.id)
+      redirect_to status_payment_path(payment.id),
+                  notice: "Votre paiement a bien été enregistré. Merci pour votre achat !"
     rescue Stripe::InvalidRequestError, ArgumentError => e
       Rails.logger.warn("purchase_success: #{e.class} #{e.message}")
       redirect_to cart_path, alert: "Erreur lors de la confirmation du paiement."
@@ -131,11 +137,11 @@ module Public
     end
 
     def purchase_error
-      redirect_to cart_path
+      redirect_to cart_path, alert: "Paiement annulé ou interrompu. Votre panier est toujours disponible."
     end
 
     def status
-      @payment = StripePayment.find(params[:id])
+      @payment = StripePayment.includes(:commande).find(params[:id])
     rescue ActiveRecord::RecordNotFound
       flash[:alert] = "Paiement introuvable."
       redirect_to root_path

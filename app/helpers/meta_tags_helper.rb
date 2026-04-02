@@ -31,6 +31,16 @@ module MetaTagsHelper
         description: "Réservez votre séance d'essayage dans notre cabine privée. Moment personnalisé avec nos conseillères.",
         keywords: "essayage, cabine essayage, rendez-vous, Autour D'Un Soir"
       },
+      cart: {
+        title: "Mon panier - Autour D'Un Soir",
+        description: "Finalisez votre commande en ligne : robes et tenues sélectionnées, paiement sécurisé.",
+        keywords: "panier, achat en ligne, Autour D'Un Soir, Cannes"
+      },
+      payment_status: {
+        title: "Statut du paiement - Autour D'Un Soir",
+        description: "Récapitulatif de votre commande en ligne et du paiement sécurisé.",
+        keywords: "commande, paiement, Autour D'Un Soir, e-boutique"
+      },
       rdv: {
         title: "Prendre rendez-vous - Autour D'Un Soir",
         description: "Réservez votre rendez-vous en boutique pour découvrir nos collections de robes de mariée.",
@@ -116,6 +126,10 @@ module MetaTagsHelper
       :le_concept
     when 'pages#cabine_essayage'
       :cabine_essayage
+    when 'pages#cart'
+      :cart
+    when 'stripe_payments#status'
+      :payment_status
     when 'pages#rdv'
       :rdv
     when 'pages#contact'

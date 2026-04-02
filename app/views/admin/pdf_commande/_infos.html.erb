@@ -5,6 +5,11 @@
       <span>Client </span> 
       <span class="doc-important"> <%= @doc_edition.commande.client.full_name %> </span> <br>
 
+      <% if @doc_edition.commande.eshop? %>
+        <br>
+        <span class="doc-important">Vente e-shop</span> <span>(commande issue du site, paiement en ligne)</span><br>
+      <% end %>
+
       <br>
 
       <span>Langue : <%= @doc_edition.commande.client.language_label %>  </span> 

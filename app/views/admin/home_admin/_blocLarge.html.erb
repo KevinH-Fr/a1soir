@@ -40,6 +40,16 @@
             ) if current_admin_user.admin? %>
 
         <%= options_supplementaires_link(
+              admin_stripe_payments_path,
+              "bi-cart-check",
+              "Paiements e-shop",
+              "btn-outline-warning",
+              badge_count: StripePayment.count,
+              badge_show_zero: true,
+              badge_class: "bg-warning"
+            ) %>
+
+        <%= options_supplementaires_link(
               root_url(host: ENV["PUBLIC_APP_HOST"] || request.domain || request.host),
               "bi-house",
               "Site public",

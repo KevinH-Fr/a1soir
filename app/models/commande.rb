@@ -32,6 +32,7 @@ class Commande < ApplicationRecord
   scope :filtredatefin, -> (fin) { where("created_at <= ?", fin.end_of_day) }
 
   scope :par_profile, ->(profile) { where(profile: profile) if profile.present? }
+  scope :eshop_sales, -> { where(eshop: true) }
 
 
   EVENEMENTS_OPTIONS = ['mariage', 'soirée', 'festival de Cannes', 'divers']
@@ -84,7 +85,7 @@ class Commande < ApplicationRecord
       "id", "nom", "montant", "description", "client_id",
       "debutloc", "finloc", "dateevent", "statutarticles", "typeevent",
       "profile_id", "commentaires", "commentaires_doc", "type_locvente",
-      "devis", "ref_commande" 
+      "devis", "ref_commande", "eshop"
     ]
   end
   

@@ -101,6 +101,12 @@ en:
       cabine_essayage:
         title: "Fitting room - Autour D'Un Soir"
         description: "Book your fitting session in our private fitting room."
+      cart:
+        title: "My cart - Autour D'Un Soir"
+        description: "Complete your online order: selected outfits, secure payment."
+      payment_status:
+        title: "Payment status - Autour D'Un Soir"
+        description: "Summary of your online order and secure payment."
       rdv:
         title: "Book an appointment - Autour D'Un Soir"
         description: "Book your in-store appointment."
@@ -202,6 +208,7 @@ en:
       fitting_room: "Fitting room"
       concept: "Concept"
       other_activities: "Other activities"
+      cart: "Cart"
     footer:
       navigation: "Navigation"
       home: "Home"
@@ -771,6 +778,44 @@ en:
           fitting:
             title: "4. Fitting"
             text: "Try your outfits in our fitting room with help from our style advisors."
+      cart:
+        header_title: "My cart"
+        header_subtitle: "Review your selection before checkout"
+        intro_title: "Your selection"
+        intro_text: "Check your items and continue to secure card payment. You can remove an item at any time before paying."
+        summary_title: "Summary"
+        summary_hint: "Secure payment via Stripe. Review your selection before confirming."
+        subtotal: "Subtotal"
+        checkout: "Proceed to payment"
+        continue_shopping: "Browse more products"
+        remove: "Remove"
+        empty_title: "Your cart is empty"
+        empty_text: "Explore our collections to add outfits to your cart."
+        discover: "Discover our products"
+        items_count:
+          one: "1 item"
+          other: "%{count} items"
+      stripe_payment_status:
+        header_title: "Your order"
+        header_title_with_ref: "Your order %{ref}"
+        header_subtitle: "Summary of your online purchase"
+        products_title: "Items"
+        summary_title: "Payment"
+        amount: "Amount"
+        status_label: "Status"
+        payment_method: "Payment method"
+        payment_method_unknown: "—"
+        thank_you: "Thank you for your purchase! We’re processing your order and will keep you updated by email."
+        issue: "Your payment could not be confirmed. You can try again from your cart or contact us."
+        not_found: "We couldn’t find this payment information."
+        back_shop: "Browse more products"
+        back_home: "Back to home"
+        status:
+          paid: "Paid"
+          unpaid: "Unpaid"
+          pending: "Pending"
+          failed: "Failed"
+          canceled: "Canceled"
       la_boutique:
         header_title: "Cannes shop"
         header_subtitle: "Meet our team and discover our shop"

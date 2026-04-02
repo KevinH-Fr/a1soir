@@ -1,0 +1,48 @@
+<% stripe_payment = @commande.stripe_payment %>
+<% if stripe_payment.present? %>
+  <%= card_main_model("Paiement en ligne (Stripe)", "cart-check", nil) %>
+
+  <div class="card mx-2 mb-3 p-3 light-beige-colored shadow-sm">
+    <div class="row g-2 small">
+      <div class="col-sm-6">
+        <strong>Montant</strong>
+        <div><%= custom_currency_format(stripe_payment.amount.to_f / 100) %> <%= stripe_payment.currency&.upcase %></div>
+      </div>
+      <div class="col-sm-6">
+        <strong>Statut</strong>
+        <div>
+          <span class="badge <%= stripe_payment.status == "paid" ? "bg-success" : "bg-secondary" %>">
+            <%= stripe_payment.status %>
+          </span>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <strong>Email (checkout)</strong>
+        <div class="text-break"><%= stripe_payment.customer_email.presence || "—" %></div>
+      </div>
+      <div class="col-sm-6">
+        <strong>Moyen de paiement</strong>
+        <div><%= stripe_payment.payment_method.present? ? stripe_payment.payment_method.titleize : "—" %></div>
+      </div>
+      <div class="col-sm-6">
+        <strong>Enregistré le</strong>
+        <div><%= l(stripe_payment.created_at, format: :short) %></div>
+      </div>
+      <% if stripe_payment.confirmation_email_sent_at.present? %>
+        <div class="col-sm-6">
+          <strong>Email de confirmation</strong>
+          <div><%= l(stripe_payment.confirmation_email_sent_at, format: :short) %></div>
+        </div>
+      <% end %>
+      <div class="col-12">
+        <strong>Identifiants Stripe</strong>
+        <div class="font-monospace text-muted" style="font-size: 0.8rem;">
+          PaymentIntent : <%= stripe_payment.stripe_payment_id %>
+          <% if stripe_payment.stripe_checkout_session_id.present? %>
+            <br>Session : <%= stripe_payment.stripe_checkout_session_id %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -34,7 +34,8 @@ class StripeEshopCommandeService
       commentaires: commande_comment,
       devis: false,
       type_locvente: "vente",
-      typeevent: Commande::EVENEMENTS_OPTIONS.first
+      typeevent: Commande::EVENEMENTS_OPTIONS.first,
+      eshop: true
     )
 
     @payment.stripe_payment_items.each do |item|

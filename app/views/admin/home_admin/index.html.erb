@@ -7,7 +7,12 @@
     </div>
     <div class="col-md-6 m-0 p-0">
       <%= dashboard_card("Commandes", admin_commandes_path, new_admin_commande_path, 'file-earmark-fill',
-            @commandes.order(updated_at: :desc).map { |commande| { text: commande.full_name_with_client, path: admin_commande_path(commande) } } )  %>
+            @commandes.order(updated_at: :desc).map { |commande| {
+              path: admin_commande_path(commande),
+              order_ref: commande.ref_commande,
+              tail: " #{commande.client.full_name} #{commande.created_at.strftime('%d/%m/%Y')}",
+              row_icon: commande.eshop? ? :eshop : :none
+            } } )  %>
     </div>
   </div>
 

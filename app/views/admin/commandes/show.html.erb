@@ -1,11 +1,23 @@
 
 <%= card_main_model("Commande", "file-earmark-fill", "") %>
 
+<% if @commande.eshop? %>
+  <div class="alert alert-warning d-flex align-items-center gap-2 mb-3 mx-2 border border-dark shadow-sm" role="status">
+    <i class="bi bi-cart-check fs-3"></i>
+    <div>
+      <strong>Vente e-shop</strong>
+      <span class="d-block small mb-0">Cette commande provient d’un achat en ligne (paiement Stripe).</span>
+    </div>
+  </div>
+<% end %>
+
 <%= render @commande %>
 
 <%= render partial: 'admin/clients/client_mini', locals: { client: @commande.client } %>
 
 <%= render 'admin/articles/articles' %>
+
+<%= render "admin/commandes/stripe_payment" %>
 
 <%= render 'admin/paiement_recus/paiement_recus' %>
 

@@ -1,4 +1,15 @@
 module CommandesHelper
+    # Badge visible liste commandes / fiche
+    def commande_eshop_badge(commande)
+      return "".html_safe unless commande&.eshop?
+
+      content_tag(:span,
+                  class: "badge border border-warning text-dark fw-semibold m-1 shadow-sm",
+                  title: "Commande issue du site e-shop (paiement Stripe)") do
+        concat content_tag(:i, nil, class: "bi bi-cart-check me-1")
+        concat "E-shop"
+      end
+    end
 
     def compte_articles(commande)
         if commande 

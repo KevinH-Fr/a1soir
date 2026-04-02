@@ -11,7 +11,6 @@
             <th>Statut</th>
             <th>Email client</th>
             <th>Commande</th>
-            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -23,12 +22,11 @@
               <td><%= p.customer_email.presence || "—" %></td>
               <td>
                 <% if p.commande %>
-                  <%= link_to p.commande.ref_commande, admin_commande_path(p.commande), class: "text-decoration-none" %>
+                  <%= link_to p.commande.ref_commande, admin_commande_path(p.commande), class: "btn btn-sm btn-outline-primary" %>
                 <% else %>
-                  —
+                  <span class="text-muted">—</span>
                 <% end %>
               </td>
-              <td><%= link_to "Détail", admin_stripe_payment_path(p), class: "btn btn-sm btn-outline-primary" %></td>
             </tr>
           <% end %>
         </tbody>

@@ -1,44 +1,126 @@
-<div class="p-4">
-  <% if @payment.present? %>
-    <h1>Statut du paiement</h1>
+<div class="public-main-content stripe-status-page">
+  <div class="container-fluid px-3 px-md-4 py-4 py-md-5">
+    <div class="mx-auto" style="max-width: 58rem;">
+      <header class="text-center mb-4 mb-md-5 px-2" data-scroll-reveal>
+        <h1 class="stripe-status-page-title text-light mb-3">
+          <% if @payment&.commande.present? %>
+            <%= t("public.pages.stripe_payment_status.header_title_with_ref", ref: @payment.commande.ref_commande) %>
+          <% else %>
+            <%= t("public.pages.stripe_payment_status.header_title") %>
+          <% end %>
+        </h1>
+        <p class="stripe-status-page-lead text-light text-opacity-75 mb-0 mx-auto" style="max-width: 36rem;">
+          <%= t("public.pages.stripe_payment_status.header_subtitle") %>
+        </p>
+      </header>
 
-    <div><strong>Produit(s) :</strong></div>
-    
-    <% @payment.stripe_payment_items.each do |item| %>
+      <% if @payment.present? %>
+        <% paid = @payment.status == "paid" %>
 
-      <div class="card mb-2 h-100 d-flex">
-        <div class="row g-0 flex-grow-1">
-            <div class="col-auto">
-                <%= image_tag(item.produit.default_image, 
-                    class: "rounded-start", style: "max-height: 80px; object-fit: cover;") %>
-            </div>
-
-            <div class="col p-2 d-flex flex-column">
-                <div class="fs-6 fw-bold">
-                    <%= item.produit.nom %> 
-                </div>                      
-
-                <div class="mt-2">
-                    <%= badge_taille(item.produit) if item.produit.taille %>
+        <div class="row g-4 g-xl-5 align-items-start">
+          <div class="col-lg-7 min-w-0">
+            <h2 class="stripe-status-section-title mb-3 px-1"><%= t("public.pages.stripe_payment_status.products_title") %></h2>
+            <div class="d-flex flex-column gap-3">
+              <% @payment.stripe_payment_items.each do |item| %>
+                <div class="stripe-status-surface stripe-status-product-card p-3 p-md-4 text-light" data-scroll-reveal>
+                  <div class="d-flex align-items-center gap-3 gap-md-4 w-100 min-w-0">
+                    <%= image_tag(item.produit.default_image,
+                        class: "stripe-status-thumb flex-shrink-0 shadow-sm",
+                        style: "width: 5.5rem; height: 7rem;",
+                        alt: item.produit.nom,
+                        loading: "lazy") %>
+                    <div class="min-w-0 flex-grow-1 overflow-hidden">
+                      <h3 class="h5 fw-bold text-light mb-2 mb-md-3 text-truncate min-w-0" title="<%= h(item.produit.nom) %>">
+                        <%= item.produit.nom %>
+                      </h3>
+                      <% if item.produit.taille %>
+                        <div class="d-flex flex-wrap gap-2">
+                          <%= badge_taille(item.produit) %>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
                 </div>
-
+              <% end %>
             </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="stripe-status-surface stripe-status-summary-sticky p-4 p-md-5 text-light <%= paid ? "stripe-status-surface--paid" : "stripe-status-surface--warn" %>" data-scroll-reveal>
+              <div class="d-flex align-items-center gap-3 mb-4">
+                <span class="stripe-status-icon-box border <%= paid ? "border-light border-opacity-25 bg-light bg-opacity-10 text-light" : "border-danger border-opacity-40 bg-danger bg-opacity-10 text-danger" %>">
+                  <i class="bi <%= paid ? "bi-check-lg" : "bi-exclamation-circle" %> fs-5"></i>
+                </span>
+                <h2 class="stripe-status-section-title mb-0 text-start"><%= t("public.pages.stripe_payment_status.summary_title") %></h2>
+              </div>
+
+              <div class="fs-6 lh-lg">
+                <div class="d-flex justify-content-between align-items-baseline gap-3 flex-wrap mb-2">
+                  <span class="text-light opacity-75"><%= t("public.pages.stripe_payment_status.amount") %></span>
+                  <span class="fw-bold text-light fs-4"><%= custom_currency_format(@payment.amount / 100.0) %></span>
+                </div>
+                <div class="stripe-status-divider"></div>
+                <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap mb-2">
+                  <span class="text-light opacity-75"><%= t("public.pages.stripe_payment_status.status_label") %></span>
+                  <span class="badge text-uppercase px-3 py-2 fw-semibold border <%= paid ? "bg-light bg-opacity-10 text-light border-light border-opacity-25" : "bg-danger bg-opacity-10 text-danger border-danger border-opacity-35" %>" style="font-size: 0.7rem; border-radius: 4px;">
+                    <%= t("public.pages.stripe_payment_status.status.#{@payment.status}", default: @payment.status.to_s.titleize) %>
+                  </span>
+                </div>
+                <div class="stripe-status-divider"></div>
+                <div class="d-flex justify-content-between align-items-baseline gap-3 flex-wrap">
+                  <span class="text-light opacity-75"><%= t("public.pages.stripe_payment_status.payment_method") %></span>
+                  <span class="text-end fw-medium text-light">
+                    <% if @payment.payment_method.present? %>
+                      <%= @payment.payment_method.titleize %>
+                    <% else %>
+                      <%= t("public.pages.stripe_payment_status.payment_method_unknown") %>
+                    <% end %>
+                  </span>
+                </div>
+              </div>
+
+              <div class="stripe-status-divider"></div>
+              <% if paid %>
+                <p class="text-light text-opacity-90 text-center mb-0 lh-base" style="font-size: 1rem;">
+                  <%= t("public.pages.stripe_payment_status.thank_you") %>
+                </p>
+              <% else %>
+                <p class="text-danger text-center mb-0 lh-base" style="font-size: 1rem;">
+                  <%= t("public.pages.stripe_payment_status.issue") %>
+                </p>
+              <% end %>
+
+              <div class="d-grid gap-2 mt-4">
+                <%= link_to t("public.pages.stripe_payment_status.back_shop"),
+                    produits_index_url,
+                    class: "btn fw-semibold public-btn-border-radius btn-light text-dark py-2" %>
+                <%= link_to t("public.pages.stripe_payment_status.back_home"),
+                    root_path,
+                    class: "btn fw-semibold public-btn-border-radius btn-outline-light border-opacity-25 py-2" %>
+              </div>
+            </div>
+          </div>
         </div>
+      <% else %>
+        <div class="stripe-status-surface p-4 p-md-5 text-center text-light mx-auto" style="max-width: 32rem;" data-scroll-reveal>
+          <div class="d-flex justify-content-center mb-4">
+            <div class="stripe-status-icon-box border border-light border-opacity-20 bg-light bg-opacity-10 text-light">
+              <i class="bi bi-search fs-5"></i>
+            </div>
+          </div>
+          <p class="fw-bold text-light mb-4" style="font-size: 1.1rem; line-height: 1.5;">
+            <%= t("public.pages.stripe_payment_status.not_found") %>
+          </p>
+          <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center">
+            <%= link_to t("public.pages.stripe_payment_status.back_shop"),
+                produits_index_url,
+                class: "btn fw-semibold public-btn-border-radius btn-light text-dark py-2" %>
+            <%= link_to t("public.pages.stripe_payment_status.back_home"),
+                root_path,
+                class: "btn fw-semibold public-btn-border-radius btn-outline-light border-opacity-25 py-2" %>
+          </div>
+        </div>
+      <% end %>
     </div>
-
-    <% end %>
-    
-    <p><strong>Montant :</strong> <%= @payment.amount / 100.0 %> <%= @payment.currency.upcase %></p>
-    <p><strong>Statut :</strong> <%= @payment.status.capitalize %></p>
-    <p><strong>Moyen de paiement :</strong> <%= @payment.payment_method.present? ? @payment.payment_method.capitalize : "—" %></p>
-
-    <% if @payment.status == 'paid' %>
-      <p class="text-success">Merci pour votre achat !</p>
-    <% else %>
-      <p>There was an issue with your payment. Please try again later.</p>
-    <% end %>
-  <% else %>
-    <p>Payment information could not be found.</p>
-  <% end %>
-
+  </div>
 </div>

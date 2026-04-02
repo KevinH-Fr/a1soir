@@ -29,7 +29,7 @@ class Admin::CommandesController < Admin::ApplicationController
 
   def show
 
-    @commande = Commande.includes(articles: [:produit, :sousarticles]).find(params[:commande]) if params[:commande]
+    @commande = Commande.includes(:stripe_payment, articles: [:produit, :sousarticles]).find(params[:commande]) if params[:commande]
     session[:commande] = @commande.id if @commande
 
     @articles = @commande.articles.includes(produit: [:image1_attachment, :couleur, :taille])

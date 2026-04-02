@@ -227,7 +227,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :stripe_payments, only: %i[index show]
+      resources :stripe_payments, only: [:index]
 
       resources :type_rdvs do
         member do

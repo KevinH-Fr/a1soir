@@ -324,6 +324,12 @@ fr:
       cabine_essayage:
         title: "Cabine d'essayage - Autour D'Un Soir"
         description: "Réservez votre séance d'essayage dans notre cabine privée."
+      cart:
+        title: "Mon panier - Autour D'Un Soir"
+        description: "Finalisez votre commande en ligne : tenues sélectionnées, paiement sécurisé."
+      payment_status:
+        title: "Statut du paiement - Autour D'Un Soir"
+        description: "Récapitulatif de votre commande en ligne et du paiement sécurisé."
       rdv:
         title: "Prendre rendez-vous - Autour D'Un Soir"
         description: "Réservez votre rendez-vous en boutique."
@@ -425,6 +431,7 @@ fr:
       fitting_room: "Cabine d'essayage"
       concept: "Concept"
       other_activities: "Autres activités"
+      cart: "Panier"
     footer:
       navigation: "Navigation"
       home: "Accueil"
@@ -994,6 +1001,44 @@ fr:
           fitting:
             title: "4. Essayage"
             text: "Testez vos tenues dans notre cabine avec l'aide de nos conseillères en image."
+      cart:
+        header_title: "Mon panier"
+        header_subtitle: "Retrouvez vos sélections prêtes à être validées"
+        intro_title: "Votre sélection"
+        intro_text: "Vérifiez les articles choisis puis poursuivez vers un paiement sécurisé par carte. Vous pouvez retirer un article à tout moment avant de payer."
+        summary_title: "Résumé"
+        summary_hint: "Paiement sécurisé par notre prestataire Stripe. Revoyez votre sélection avant de valider."
+        subtotal: "Sous-total"
+        checkout: "Passer au paiement"
+        continue_shopping: "Voir plus de produits"
+        remove: "Retirer"
+        empty_title: "Votre panier est vide"
+        empty_text: "Explorez nos collections pour ajouter des tenues à votre panier."
+        discover: "Découvrir nos produits"
+        items_count:
+          one: "1 article"
+          other: "%{count} articles"
+      stripe_payment_status:
+        header_title: "Votre commande"
+        header_title_with_ref: "Votre commande %{ref}"
+        header_subtitle: "Récapitulatif de votre achat en ligne"
+        products_title: "Articles"
+        summary_title: "Paiement"
+        amount: "Montant"
+        status_label: "Statut"
+        payment_method: "Moyen de paiement"
+        payment_method_unknown: "—"
+        thank_you: "Merci pour votre achat ! Nous traitons votre commande et vous tiendrons informé·e par email."
+        issue: "Le paiement n’a pas pu être confirmé. Vous pouvez réessayer depuis votre panier ou nous contacter."
+        not_found: "Les informations de ce paiement sont introuvables."
+        back_shop: "Voir plus de produits"
+        back_home: "Retour à l’accueil"
+        status:
+          paid: "Payé"
+          unpaid: "Non payé"
+          pending: "En attente"
+          failed: "Échoué"
+          canceled: "Annulé"
       la_boutique:
         header_title: "La boutique de Cannes"
         header_subtitle: "Découvrez notre équipe et notre boutique"

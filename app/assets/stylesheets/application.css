@@ -2257,6 +2257,120 @@ section {
   margin-bottom: 1rem;
 }
 
+/* Page récap paiement Stripe (alignée concept-card / panier : angles serrés, typo lisible) */
+.stripe-status-page {
+  --stripe-status-border: rgba(255, 255, 255, 0.1);
+  --stripe-status-bg: rgba(22, 22, 24, 0.94);
+  --stripe-status-radius: 4px;
+}
+
+.stripe-status-page .stripe-status-surface {
+  background: var(--stripe-status-bg);
+  border: 1px solid var(--stripe-status-border);
+  border-radius: var(--stripe-status-radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+.stripe-status-page .stripe-status-surface:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.stripe-status-page .stripe-status-surface--paid {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.stripe-status-page .stripe-status-surface--warn {
+  border-color: rgba(220, 90, 90, 0.4);
+}
+
+.stripe-status-page .stripe-status-page-title {
+  font-size: clamp(1.35rem, 2.2vw, 1.65rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
+}
+
+.stripe-status-page .stripe-status-page-lead {
+  font-size: 1.1rem;
+  line-height: 1.75;
+  font-weight: 400;
+}
+
+.stripe-status-page .stripe-status-section-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.52);
+}
+
+.stripe-status-page .stripe-status-product-card {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.stripe-status-page .stripe-status-thumb {
+  border-radius: var(--stripe-status-radius);
+  object-fit: cover;
+}
+
+.stripe-status-page .stripe-status-icon-box {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--stripe-status-radius);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stripe-status-page .stripe-status-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 1rem 0;
+}
+
+@media (min-width: 992px) {
+  .stripe-status-page .stripe-status-summary-sticky {
+    position: sticky;
+    top: 5.5rem;
+    z-index: 2;
+  }
+}
+
+/* Panier public : pas de gradient concept-card, pas de doré, cartes compactes */
+.public-cart-page {
+  --cart-surface-bg: rgba(24, 24, 26, 0.92);
+  --cart-surface-border: rgba(255, 255, 255, 0.12);
+  --cart-radius: 4px;
+}
+
+.public-cart-page .cart-surface {
+  background: var(--cart-surface-bg);
+  border: 1px solid var(--cart-surface-border);
+  border-radius: var(--cart-radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.public-cart-page .cart-surface:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.public-cart-page .cart-product-thumb {
+  border-radius: var(--cart-radius);
+  object-fit: cover;
+  width: 100%;
+}
+
+.public-cart-page .cart-desc-truncate {
+  max-height: 2.6rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
 /* Collection Card Specific Styles */
 .collection-card-placeholder {
   font-size: 3rem;
