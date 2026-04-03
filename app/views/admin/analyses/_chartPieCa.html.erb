@@ -3,13 +3,14 @@
     <canvas id="myChartPiePaiements"></canvas>
   </div>
 
-  <% @data = [@totalPrixCaCb, @totalPrixCaEspeces, @totalPrixCaCheque, @totalPrixCaVirement] %>
+  <% @data = [@totalPrixCaCb, @totalPrixCaEspeces, @totalPrixCaCheque, @totalPrixCaVirement, @totalPrixCaStripe] %>
 
 <script>
   var couleur1 = 'rgb(30, 90, 180)';   // bleu doux
   var couleur2 = 'rgb(40, 170, 120)';  // vert menthe
   var couleur3 = 'rgb(140, 140, 140)'; // gris chaud
   var couleur4 = 'rgb(255, 200, 60)';  // jaune doré
+  var couleur5 = 'rgb(97, 119, 200)';  // Stripe
 
 
   var nbTotalPaiements = <%= @totalPrixCa %>;
@@ -21,7 +22,7 @@
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.font = "bold 12px sans-serif";
-      const text = "total " + nbTotalPaiements ;
+      const text = "total " + Math.round(Number(nbTotalPaiements));
       const textWidth = ctx.measureText(text).width;
       const x = chart.getDatasetMeta(0).data[0].x;
       const y = chart.getDatasetMeta(0).data[0].y;
@@ -30,11 +31,11 @@
   }
 
    var dataPiePaiements = {
-      labels: ['CB', 'Espèces', 'Chèque', 'Virement'],
+      labels: ['CB', 'Espèces', 'Chèque', 'Virement', 'Stripe'],
       datasets: [{
         data: <%= @data.to_json.html_safe %>,
         fill: true,
-        backgroundColor: [ couleur1, couleur2, couleur3, couleur4 ],
+        backgroundColor: [ couleur1, couleur2, couleur3, couleur4, couleur5 ],
         borderWidth: 1
       }]
     };
@@ -42,10 +43,10 @@
     var configPiePaiements = {
       type: 'doughnut',
           data: {
-            labels: ['CB', 'Espèces', 'Chèque', 'Virement'],
+            labels: ['CB', 'Espèces', 'Chèque', 'Virement', 'Stripe'],
             datasets: [{
-              data: <%= @data.to_json.html_safe %>,       
-              backgroundColor: [ couleur1, couleur2, couleur3, couleur4 ],
+              data: <%= @data.to_json.html_safe %>,
+              backgroundColor: [ couleur1, couleur2, couleur3, couleur4, couleur5 ],
               hoverOffset: 40,
               borderWidth: 1,
               cutout: '50%'

@@ -1,9 +1,7 @@
 
   <div class="chartBox mx-auto">
-    <canvas id="myChartLineCa"></canvas>
+    <canvas id="myChartLineTransactions"></canvas>
   </div>
-
-  <%# @data = Article.group('DATE(created_at)').sum('total') %>
 
 
 <script>
@@ -11,21 +9,22 @@
   var couleur1 = 'rgb(116, 159, 130)';
   var couleur2 = 'rgb(66, 95, 87)';
 
-// CHART BAR
-    var dataLineCa = {
+    var dataLineTransactions = {
       datasets: [{
         data: <%= @groupedByDateTransactions.to_json.html_safe %>,
         fill: true,
         backgroundColor: [couleur2, couleur1 ],
-        borderWidth: 1
+        borderWidth: 1,
+        borderColor: 'rgb(0, 0, 0)',
+        tension: 0.4
       }]
     };
 
-    var delayedLineCa;
+    var delayedLineTransactions;
 
-    var configLineCa = {
+    var configLineTransactions = {
       type: 'line',
-      data: dataLineCa,
+      data: dataLineTransactions,
       options: {
 
         plugins: {
@@ -35,31 +34,34 @@
         },
         aspectRatio: 1,
 
+        elements: {
+          point: {
+            radius: 2,
+            hoverRadius: 4,
+            borderWidth: 1,
+            hoverBorderWidth: 2
+          }
+        },
+
          animation: {
                 onComplete: () => {
                     delayed = true;
                 },
                 delay: (context) => {
                     let delay = 0;
-                    if (context.type === 'data' && context.mode === 'default' && !delayedLineCa) {
+                    if (context.type === 'data' && context.mode === 'default' && !delayedLineTransactions) {
                     delay = context.dataIndex * 2000  + context.datasetIndex * 10;
                     }
                     return delay;
                 },
             },
 
-            borderColor:'rgb(0, 0, 0)',
-            pointBorderWidth: 1,
-            pointHoverBorderWidth: 20,
-            lineTension: 0.4,
-
           }
       };
 
-        // render init block
-    var myChartLineCa = new Chart(
-      document.getElementById('myChartLineCa'),
-      configLineCa
+    var myChartLineTransactions = new Chart(
+      document.getElementById('myChartLineTransactions'),
+      configLineTransactions
     );
-  
+
 </script>

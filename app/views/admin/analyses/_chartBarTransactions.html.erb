@@ -1,20 +1,19 @@
 
   <div class="chartBox mx-auto">
-    <canvas id="myChartBarCa"></canvas>
+    <canvas id="myChartBarTransactions"></canvas>
   </div>
 
   <% @data = [@totalTransactionsLoc, @totalTransactionsVente] %>
- 
+
 <script>
-   
+
   var couleur1 = 'rgb(116, 159, 130)';
   var couleur2 = 'rgb(66, 95, 87)';
 
-// CHART BAR
-    var dataBarCa = {
+    var dataBarTransactions = {
       labels: ['location', 'vente'],
       datasets: [{
-      
+
         data: <%= @data.to_json.html_safe %>,
         fill: true,
         backgroundColor: [ couleur1, couleur2 ],
@@ -22,11 +21,11 @@
       }]
     };
 
-    var delayedBarCa;
+    var delayedBarTransactions;
 
-    var configBarCa = {
+    var configBarTransactions = {
       type: 'bar',
-      data: dataBarCa,
+      data: dataBarTransactions,
       options: {
 
         plugins: {
@@ -42,7 +41,7 @@
                 },
                 delay: (context) => {
                     let delay = 0;
-                    if (context.type === 'data' && context.mode === 'default' && !delayedBarCa) {
+                    if (context.type === 'data' && context.mode === 'default' && !delayedBarTransactions) {
                     delay = context.dataIndex * 2000  + context.datasetIndex * 10;
                     }
                     return delay;
@@ -50,17 +49,14 @@
             },
 
             borderColor:'rgb(0, 0, 0)',
-            pointBorderWidth: 1,
-            pointHoverBorderWidth: 20,
             lineTension: 0.4,
 
           }
       };
 
-        // render init block
-    var myChartBarCa = new Chart(
-      document.getElementById('myChartBarCa'),
-      configBarCa
+    var myChartBarTransactions = new Chart(
+      document.getElementById('myChartBarTransactions'),
+      configBarTransactions
     );
 
 

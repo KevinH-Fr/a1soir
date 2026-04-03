@@ -18,6 +18,7 @@
                         <%= custom_badge("", "", "", "", commande.type_locvente ) %>
                         <%= custom_badge("", "", "", "", format_date_in_french(commande.debutloc))  if commande.debutloc.present? %>
                         <%= custom_badge("", "", "", "", format_date_in_french(commande.finloc)) if commande.finloc.present? %>
+                        <%= commande_eshop_badge(commande) %>
                     </div>
                 <% end %>
                 

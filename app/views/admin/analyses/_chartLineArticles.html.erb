@@ -14,8 +14,6 @@
       backgroundColor: [couleur2, couleur1],
       borderColor: 'rgb(0, 0, 0)',
       borderWidth: 1,
-      pointBorderWidth: 1,
-      pointHoverBorderWidth: 20,
       tension: 0.4
     }]
   };
@@ -32,6 +30,15 @@
         }
       },
       aspectRatio: 1,
+
+      elements: {
+        point: {
+          radius: 2,
+          hoverRadius: 4,
+          borderWidth: 1,
+          hoverBorderWidth: 2
+        }
+      },
 
       animation: {
         onComplete: () => {

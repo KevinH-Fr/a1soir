@@ -6,6 +6,11 @@ class StripePayment < ApplicationRecord
   validates :stripe_payment_id, presence: true, uniqueness: true
   validates :stripe_checkout_session_id, uniqueness: true, allow_nil: true
 
+  scope :paid, -> { where(status: "paid") }
+
+  scope :filtredatedebut, ->(debut) { where("stripe_payments.created_at >= ?", debut.beginning_of_day) }
+  scope :filtredatefin, ->(fin) { where("stripe_payments.created_at <= ?", fin.end_of_day) }
+
   after_commit :update_produits_availability_if_paid, on: :update
 
   private

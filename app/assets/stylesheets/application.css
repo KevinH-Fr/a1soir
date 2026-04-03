@@ -491,6 +491,19 @@ footer .bi-facebook:hover {
   transition: all 0.3s ease;
 }
 
+/* Site public : liseré fin — séparation discrète sur fond noir */
+.public-site-navbar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.public-site-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.public-floating-bar {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
 /* Admin carousel images */
 .admin-carousel-image {
   object-fit: cover;
