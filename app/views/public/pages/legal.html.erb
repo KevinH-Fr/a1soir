@@ -192,7 +192,7 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
             <p class="text-light opacity-75"><%= t("public.pages.legal.articles.prix_frais.intro", default: "Tous les prix indiqués sur le Site Web comprennent la taxe à la valeur ajoutée, au taux légal en vigueur à la date de facturation. Les prix indiqués sur le Site Web sont en euros et n'incluent pas les frais d'expédition. En dépit de tous nos efforts, il peut exceptionnellement arriver que des produits référencés sur le Site Web aient un prix erroné. Si le prix exact d'un produit est inférieur au prix indiqué, nous vous facturerons le prix inférieur et vous enverrons le produit. Si le prix exact d'un produit est supérieur au prix indiqué, nous vous facturerons le prix indiqué, sauf si celui-ci est dérisoire et manifestement erroné, auquel cas nous vous contacterons afin d'obtenir vos instructions, ou nous annulerons votre commande et vous informerons de cette annulation. Nos frais d'expédition sont les suivants et apparaîtrons dès la validation de votre commande avant le paiement:") %></p>
             <div class="my-4">
               <p class="text-light fw-bold mb-3"><%= t("public.pages.legal.sections.cgv.colissimo_title") %></p>
-              <%= image_tag(
+              <%#= image_tag(
                     '/images/frais_expedition.jpg',
                     class: "img-fluid rounded",
                     style: "max-height: 400px; object-fit: contain;",
@@ -201,6 +201,7 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
                     height: 400,
                     loading: "lazy"
                   ) %>
+              <%= render "public/pages/shipping_tiers_table" %>
             </div>
           <% end %>
 

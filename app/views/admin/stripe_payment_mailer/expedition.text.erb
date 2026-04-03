@@ -1,0 +1,23 @@
+<%= I18n.t("stripe_payment_mailer.expedition.body.greeting") %>
+
+<%= I18n.t("stripe_payment_mailer.expedition.body.intro") %>
+
+<% if @numero_suivi.present? %>
+<%= I18n.t("stripe_payment_mailer.expedition.body.tracking_label") %> : <%= @numero_suivi %>
+<% if @tracking_url.present? %>
+<%= I18n.t("stripe_payment_mailer.expedition.body.tracking_link_label") %> <%= @tracking_url %>
+<% end %>
+<% else %>
+<%= I18n.t("stripe_payment_mailer.expedition.body.no_tracking") %>
+<% end %>
+
+<%= I18n.t("stripe_payment_mailer.expedition.body.produits_title") %>
+
+<% @items.each do |item| %>
+<% produit = item.produit %>
+<% if produit.present? %>
+- <%= produit.nom %> — <%= I18n.t("stripe_payment_mailer.confirmation.body.quantity", n: item.quantity || 1) %>
+<% end %>
+<% end %>
+
+<%= I18n.t("stripe_payment_mailer.expedition.body.thanks") %>

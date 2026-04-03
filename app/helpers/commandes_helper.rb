@@ -18,12 +18,12 @@ module CommandesHelper
     end
 
     def du_prix(commande)
-        if commande 
-            prix_articles = commande.articles.sum(:total)
-            prix_sous_articles = commande.articles.joins(:sousarticles).sum('sousarticles.prix')
-            du_prix = prix_articles + prix_sous_articles
-            du_prix.round(2)
-        end
+        return unless commande
+
+        prix_articles = commande.articles.sum(:total)
+        prix_sous_articles = commande.articles.joins(:sousarticles).sum('sousarticles.prix')
+        frais_livraison = commande.stripe_payment&.frais_livraison_centimes.to_d / 100
+        (prix_articles + prix_sous_articles + frais_livraison).round(2)
     end
 
     def du_prix_ht(commande)
@@ -45,8 +45,20 @@ module CommandesHelper
     end
 
     def recu_prix(commande)
-        commande.paiement_recus.only_prix.sum(:montant)
-    end 
+        return 0 unless commande
+
+        manuel = commande.paiement_recus.only_prix.sum(:montant).to_d
+        stripe = recu_prix_stripe_euros(commande)
+        (manuel + stripe).round(2)
+    end
+
+    # Paiement Checkout Stripe lié à la commande (non dupliqué dans paiement_recus)
+    def recu_prix_stripe_euros(commande)
+        sp = commande.stripe_payment
+        return 0.to_d if sp.blank? || sp.status != "paid" || sp.amount.blank?
+
+        sp.amount.to_d / 100
+    end
 
     def recu_caution(commande)
         commande.paiement_recus.only_caution.sum(:montant)

@@ -3,7 +3,8 @@ class Admin::CommandesController < Admin::ApplicationController
 
   before_action :set_commande, only: [:show, :edit, :update, :destroy,
     :toggle_statut_non_retire, :toggle_statut_retire,
-    :toggle_statut_rendu_with_email, :toggle_statut_rendu_without_email]
+    :toggle_statut_rendu_with_email, :toggle_statut_rendu_without_email,
+    :marquer_expedie_with_email, :marquer_expedie_without_email]
 
     def index
       @count_commandes = Commande.count
@@ -155,7 +156,18 @@ class Admin::CommandesController < Admin::ApplicationController
       notice: "Commande rendue (sans envoi d'email)"
   end
 
+  def marquer_expedie_with_email
+    @commande.update!(numero_suivi: params[:numero_suivi].presence, expedie_le: Time.current)
+    StripePaymentMailer.expedition(@commande).deliver_later
+    redirect_to admin_commande_url(@commande),
+      notice: "Commande expédiée — email envoyé au client"
+  end
 
+  def marquer_expedie_without_email
+    @commande.update!(numero_suivi: params[:numero_suivi].presence, expedie_le: Time.current)
+    redirect_to admin_commande_url(@commande),
+      notice: "Commande expédiée (sans email)"
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -166,7 +178,8 @@ class Admin::CommandesController < Admin::ApplicationController
     # Only allow a list of trusted parameters through.
     def commande_params
       params.require(:commande).permit(:nom, :montant, :description, :client_id, :debutloc, :finloc, :dateevent, 
-        :statutarticles, :typeevent, :profile_id, :commentaires, :commentaires_doc, :type_locvente, :devis)
+        :statutarticles, :typeevent, :profile_id, :commentaires, :commentaires_doc, :type_locvente, :devis,
+        :numero_suivi, :expedie_le)
     end
 
     

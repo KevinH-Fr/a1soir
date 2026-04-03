@@ -1,48 +1,149 @@
 <% stripe_payment = @commande.stripe_payment %>
 <% if stripe_payment.present? %>
-  <%= card_main_model("Paiement en ligne (Stripe)", "cart-check", nil) %>
+  <%= card_main_model("Paiement Stripe", "cart-check", nil) %>
 
-  <div class="card mx-2 mb-3 p-3 light-beige-colored shadow-sm">
-    <div class="row g-2 small">
-      <div class="col-sm-6">
-        <strong>Montant</strong>
-        <div><%= custom_currency_format(stripe_payment.amount.to_f / 100) %> <%= stripe_payment.currency&.upcase %></div>
-      </div>
-      <div class="col-sm-6">
-        <strong>Statut</strong>
-        <div>
-          <span class="badge <%= stripe_payment.status == "paid" ? "bg-success" : "bg-secondary" %>">
-            <%= stripe_payment.status %>
-          </span>
+  <div class="card mx-2 mb-3 light-beige-colored shadow-sm">
+    <%# Ligne principale : montant + statut + moyen de paiement %>
+    <div class="d-flex align-items-center gap-3 px-3 py-2 flex-wrap">
+
+      <%# Montant %>
+      <% if stripe_payment.frais_livraison_centimes.present? %>
+        <% sous_total_cents = stripe_payment.amount.to_i - stripe_payment.frais_livraison_centimes.to_i %>
+        <div class="small">
+          <div class="text-muted" style="font-size: 0.75rem;">
+            Articles <%= custom_currency_format(sous_total_cents.to_f / 100) %>
+            &nbsp;+&nbsp;
+            Livraison <%= custom_currency_format(stripe_payment.frais_livraison_centimes.to_f / 100) %>
+          </div>
+          <span class="fw-bold"><%= custom_currency_format(stripe_payment.amount.to_f / 100) %> <%= stripe_payment.currency&.upcase %></span>
         </div>
-      </div>
-      <div class="col-sm-6">
-        <strong>Email (checkout)</strong>
-        <div class="text-break"><%= stripe_payment.customer_email.presence || "—" %></div>
-      </div>
-      <div class="col-sm-6">
-        <strong>Moyen de paiement</strong>
-        <div><%= stripe_payment.payment_method.present? ? stripe_payment.payment_method.titleize : "—" %></div>
-      </div>
-      <div class="col-sm-6">
-        <strong>Enregistré le</strong>
-        <div><%= l(stripe_payment.created_at, format: :short) %></div>
-      </div>
-      <% if stripe_payment.confirmation_email_sent_at.present? %>
-        <div class="col-sm-6">
-          <strong>Email de confirmation</strong>
-          <div><%= l(stripe_payment.confirmation_email_sent_at, format: :short) %></div>
-        </div>
+      <% else %>
+        <span class="fw-bold small"><%= custom_currency_format(stripe_payment.amount.to_f / 100) %> <%= stripe_payment.currency&.upcase %></span>
       <% end %>
-      <div class="col-12">
-        <strong>Identifiants Stripe</strong>
-        <div class="font-monospace text-muted" style="font-size: 0.8rem;">
-          PaymentIntent : <%= stripe_payment.stripe_payment_id %>
+
+      <%# Statut %>
+      <span class="badge <%= stripe_payment.status == "paid" ? "bg-success" : "bg-secondary" %>">
+        <%= stripe_payment.status %>
+      </span>
+
+      <%# Moyen de paiement %>
+      <% if stripe_payment.payment_method.present? %>
+        <span class="small text-muted"><i class="bi bi-credit-card me-1"></i><%= stripe_payment.payment_method.titleize %></span>
+      <% end %>
+
+      <%# Email %>
+      <% if stripe_payment.customer_email.present? %>
+        <span class="small text-muted text-break"><i class="bi bi-envelope me-1"></i><%= stripe_payment.customer_email %></span>
+      <% end %>
+
+      <%# Date %>
+      <span class="small text-muted ms-auto"><%= l(stripe_payment.created_at, format: :short) %></span>
+    </div>
+
+    <%# Collapse : identifiants Stripe + email de confirmation %>
+    <div class="px-3 pb-2">
+      <a class="small text-muted text-decoration-none" data-bs-toggle="collapse" href="#stripe-ids-<%= stripe_payment.id %>" role="button" aria-expanded="false">
+        <i class="bi bi-chevron-down me-1" style="font-size: 0.7rem;"></i>Identifiants Stripe
+      </a>
+      <div class="collapse" id="stripe-ids-<%= stripe_payment.id %>">
+        <div class="font-monospace text-muted mt-1" style="font-size: 0.75rem;">
+          <% if stripe_payment.stripe_payment_id.present? %>
+            <div>PI&nbsp;: <%= stripe_payment.stripe_payment_id %></div>
+          <% end %>
           <% if stripe_payment.stripe_checkout_session_id.present? %>
-            <br>Session : <%= stripe_payment.stripe_checkout_session_id %>
+            <div>CS&nbsp;: <%= stripe_payment.stripe_checkout_session_id %></div>
+          <% end %>
+          <% if stripe_payment.confirmation_email_sent_at.present? %>
+            <div class="mt-1 text-muted">
+              <i class="bi bi-check-circle me-1"></i>Email envoyé le <%= l(stripe_payment.confirmation_email_sent_at, format: :short) %>
+            </div>
           <% end %>
         </div>
       </div>
+    </div>
+  </div>
+
+  <%# Section expédition %>
+  <div class="card mx-2 mb-2 light-beige-colored shadow-sm">
+    <div class="px-3 py-2">
+      <% if @commande.expedie_le.present? %>
+        <%# Déjà expédié %>
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <span class="badge bg-success"><i class="bi bi-truck me-1"></i>Expédié</span>
+          <span class="small text-muted">le <%= l(@commande.expedie_le, format: :short) %></span>
+          <% if @commande.numero_suivi.present? %>
+            <span class="small fw-semibold font-monospace"><%= @commande.numero_suivi %></span>
+            <a href="https://www.laposte.fr/outils/suivre-vos-envois?code=<%= @commande.numero_suivi %>"
+               target="_blank" rel="noopener"
+               class="small text-decoration-none">
+              <i class="bi bi-box-arrow-up-right me-1"></i>Suivre le colis
+            </a>
+          <% end %>
+        </div>
+      <% else %>
+        <%# Formulaire d'expédition %>
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <label class="small fw-semibold mb-0" for="numero_suivi_input_<%= @commande.id %>">N° de suivi</label>
+          <input type="text"
+                 id="numero_suivi_input_<%= @commande.id %>"
+                 class="form-control form-control-sm"
+                 style="max-width: 220px;"
+                 placeholder="ex : 1A12345678901"
+                 oninput="document.querySelectorAll('.suivi-hidden-<%= @commande.id %>').forEach(el => el.value = this.value)">
+          <button type="button"
+                  class="btn btn-sm btn-warning"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modal-expedition-<%= @commande.id %>">
+            <i class="bi bi-truck me-1"></i>Marquer expédié
+          </button>
+        </div>
+
+        <!-- Modal expédition -->
+        <div class="modal fade" id="modal-expedition-<%= @commande.id %>" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Marquer comme expédié</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                Envoyer un email au client pour l'informer que son colis est en route ?
+              </div>
+              <div class="modal-footer">
+                <%= form_with url: marquer_expedie_with_email_admin_commande_path(@commande), method: :post, class: "d-inline" do %>
+                  <input type="hidden" name="numero_suivi" value="" class="suivi-hidden-<%= @commande.id %>">
+                  <button type="submit" class="btn btn-success">
+                    <i class="bi bi-envelope me-1"></i>Avec email
+                  </button>
+                <% end %>
+                <%= form_with url: marquer_expedie_without_email_admin_commande_path(@commande), method: :post, class: "d-inline" do %>
+                  <input type="hidden" name="numero_suivi" value="" class="suivi-hidden-<%= @commande.id %>">
+                  <button type="submit" class="btn btn-outline-secondary">
+                    <i class="bi bi-truck me-1"></i>Sans email
+                  </button>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card mx-2 rounded bg-secondary mb-3">
+    <div class="container-fluid text-center py-1">
+      <% if stripe_payment.frais_livraison_centimes.present? %>
+        <% sous_total_cents = stripe_payment.amount.to_i - stripe_payment.frais_livraison_centimes.to_i %>
+        <span class="badge fs-6 bg-secondary mx-1">
+          Articles : <span><%= custom_currency_format(sous_total_cents.to_f / 100) %></span>
+        </span>
+        <span class="badge fs-6 bg-secondary mx-1">
+          Livraison : <span><%= custom_currency_format(stripe_payment.frais_livraison_centimes.to_f / 100) %></span>
+        </span>
+      <% end %>
+      <span class="badge fs-6 bg-secondary mx-1">
+        Total : <span><%= custom_currency_format(stripe_payment.amount.to_f / 100) %></span>
+      </span>
     </div>
   </div>
 <% end %>

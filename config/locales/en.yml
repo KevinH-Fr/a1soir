@@ -80,6 +80,43 @@ en:
         produits_demandes: "Requested products (fitting room)"
         message_automatique: "Automatic message."
 
+  stripe_payment_mailer:
+    confirmation:
+      subject: "Purchase confirmation — Autour D'un Soir"
+      body:
+        greeting: "Hello,"
+        intro: "We have successfully recorded your online payment."
+        produits_title: "Your order"
+        nom_label: "Name:"
+        voir_produit: "View product →"
+        quantity: "quantity %{n}"
+        total_label: "Total amount"
+        thanks: "Thank you for your trust."
+    notification_admin:
+      subject: "New e-shop order (Stripe payment)"
+      body:
+        title: "An online shop order has just been recorded."
+        customer_email: "Customer email (Stripe)"
+        amount: "Amount"
+        currency: "Currency"
+        ref_commande: "Order ref."
+        open_commande_admin: "Open order in admin"
+        lines_title: "Line items"
+        line_quantity: "Qty"
+        voir_produit: "View product on the site"
+        unknown_product: "Unknown product"
+        message_automatique: "Automatic message — e-shop notification."
+    expedition:
+      subject: "Your parcel is on its way — Autour D'un Soir"
+      body:
+        greeting: "Hello,"
+        intro: "Great news! Your order has been dispatched and is on its way to you."
+        produits_title: "Your order summary"
+        tracking_label: "Tracking number"
+        tracking_link_label: "Track my parcel on laposte.fr →"
+        no_tracking: "Your tracking number will be provided shortly."
+        thanks: "Thank you for your trust — see you soon!"
+
   meta_tags:
     default:
       title: "Autour D'Un Soir"
@@ -174,6 +211,7 @@ en:
         online_sales_unavailable: "Online sales are currently unavailable."
         cart_empty: "Your cart is empty."
         cart_items_unavailable: "One or more items are no longer available for online sale. Please check your cart."
+      shipping_label: "Shipping"
     demande_rdv:
       form:
         select_date_title: "Select a date"
@@ -572,6 +610,10 @@ en:
           mediation_title: "Mediation and disputes"
           mediation_text_html: "In accordance with Article L.612-1 of the French Consumer Code, you may use a consumer mediator free of charge in case of dispute. Mediator details are available upon request.<br>In case of dispute, French courts shall have exclusive jurisdiction."
         back_to_top: "Back to top"
+        shipping_table:
+          weight_min: "Minimum weight"
+          weight_max: "Maximum weight"
+          shipping_fee: "Shipping fee"
         articles:
           perimetre:
             a1: { title: "Scope of terms", content: "These General Terms of Sale apply as soon as you access the Autour D'Un Soir online shop at https://a1soir.com/ (the \"Website\") or place orders by phone. However, these terms do not apply to purchases made directly in our Cannes boutique." }

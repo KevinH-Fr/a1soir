@@ -13,10 +13,19 @@ module Public
       success_url = "#{request.base_url}#{purchase_success_path(locale: I18n.locale)}?session_id={CHECKOUT_SESSION_ID}"
       cancel_url = "#{request.base_url}#{purchase_error_path(locale: I18n.locale)}?session_id={CHECKOUT_SESSION_ID}"
 
+      total_grams  = @cart.sum { |p| p.poids.to_i }
+      fee_cents    = ShippingCostService.fee_cents_for(total_grams)
+      shipping_rate = Stripe::ShippingRate.create(
+        display_name: I18n.t("public.stripe_payments.shipping_label"),
+        type: "fixed_amount",
+        fixed_amount: { amount: fee_cents, currency: "eur" }
+      )
+
       stripe_session = Stripe::Checkout::Session.create(
         payment_method_types: ["card"],
         line_items: @cart.map { |item| item.to_builder.attributes! },
         mode: "payment",
+        shipping_options: [{ shipping_rate: shipping_rate.id }],
         success_url: success_url,
         cancel_url: cancel_url,
         metadata: {

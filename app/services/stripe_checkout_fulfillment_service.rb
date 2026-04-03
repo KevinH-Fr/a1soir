@@ -41,7 +41,8 @@ class StripeCheckoutFulfillmentService
           status: @session.payment_status,
           payment_method: pm_type,
           charge_id: payment_intent_id,
-          customer_email: email
+          customer_email: email,
+          frais_livraison_centimes: @session.total_details&.amount_shipping
         )
 
         build_line_items!(payment)
@@ -59,7 +60,7 @@ class StripeCheckoutFulfillmentService
   def self.retrieve_session!(session_id)
     Stripe::Checkout::Session.retrieve({
       id: session_id,
-      expand: ["line_items.data.price"]
+      expand: ["line_items.data.price", "total_details"]
     })
   end
 
@@ -119,15 +120,25 @@ class StripeCheckoutFulfillmentService
 
     Stripe::Checkout::Session.retrieve(
       id: @session.id,
-      expand: ["line_items.data.price"]
+      expand: ["line_items.data.price", "total_details"]
     ).line_items.data
   end
 
   def enqueue_confirmation!(payment)
-    return if payment.customer_email.blank?
     return if payment.confirmation_email_sent_at.present?
 
-    StripePaymentMailer.confirmation(payment).deliver_later
-    payment.update_column(:confirmation_email_sent_at, Time.current)
+    queued = false
+
+    if payment.customer_email.present?
+      StripePaymentMailer.confirmation(payment).deliver_later
+      queued = true
+    end
+
+    if ENV["GMAIL_ACCOUNT"].present?
+      StripePaymentMailer.notification_admin(payment).deliver_later
+      queued = true
+    end
+
+    payment.update_column(:confirmation_email_sent_at, Time.current) if queued
   end
 end

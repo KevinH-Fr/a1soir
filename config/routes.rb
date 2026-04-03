@@ -169,6 +169,8 @@ Rails.application.routes.draw do
           get :toggle_statut_rendu
           post :toggle_statut_rendu_with_email
           post :toggle_statut_rendu_without_email
+          post :marquer_expedie_with_email
+          post :marquer_expedie_without_email
         end
         
         collection do

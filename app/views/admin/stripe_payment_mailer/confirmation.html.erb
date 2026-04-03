@@ -1,0 +1,52 @@
+<p><%= I18n.t("stripe_payment_mailer.confirmation.body.greeting") %></p>
+
+<p><%= I18n.t("stripe_payment_mailer.confirmation.body.intro") %></p>
+
+<div style="margin-top: 24px;">
+  <h3 style="margin-bottom: 16px; font-size: 18px;"><%= I18n.t("stripe_payment_mailer.confirmation.body.produits_title") %></h3>
+
+  <% @items.each do |item| %>
+    <% produit = item.produit %>
+    <% if produit.present? %>
+      <% product_page_url = produit_url(locale: I18n.locale, slug: produit.nom.to_s.parameterize, id: produit.id, **@public_site_url_options) %>
+      <div style="margin-bottom: 24px; padding-bottom: 24px; display: table; width: 100%;">
+        <div style="display: table-row;">
+          <% if produit.image1.attached? %>
+            <div style="display: table-cell; vertical-align: top; padding-right: 16px; width: 120px;">
+              <a href="<%= product_page_url %>">
+                <%= image_tag rails_blob_url(produit.image1, host: @blob_rails_host, protocol: @blob_rails_protocol), alt: produit.nom, style: "max-width: 100px; height: auto; border-radius: 4px;", width: "100" %>
+              </a>
+            </div>
+          <% end %>
+          <div style="display: table-cell; vertical-align: top;">
+            <% if produit.nom.present? %>
+              <p style="margin: 4px 0; font-size: 14px;">
+                <strong><%= I18n.t("stripe_payment_mailer.confirmation.body.nom_label") %></strong> <%= produit.nom %>
+              </p>
+            <% end %>
+            <p style="margin: 4px 0; font-size: 14px;">
+              <%= I18n.t("stripe_payment_mailer.confirmation.body.quantity", n: item.quantity || 1) %>
+            </p>
+            <p style="margin: 4px 0; font-size: 14px;">
+              <a href="<%= product_page_url %>" style="color: #333; text-decoration: underline;"><%= I18n.t("stripe_payment_mailer.confirmation.body.voir_produit") %></a>
+            </p>
+          </div>
+        </div>
+        <hr style="margin-top: 24px; border: none; border-top: 1px solid #e0e0e0;">
+      </div>
+    <% else %>
+      <p style="margin: 8px 0;">
+        <%= I18n.t("stripe_payment_mailer.notification_admin.body.unknown_product") %>
+        — <%= I18n.t("stripe_payment_mailer.confirmation.body.quantity", n: item.quantity || 1) %>
+      </p>
+    <% end %>
+  <% end %>
+</div>
+
+<p>
+  <strong><%= I18n.t("stripe_payment_mailer.confirmation.body.total_label") %> :</strong>
+  <%= number_to_currency(@payment.amount.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %>
+  (<%= @payment.currency&.upcase %>)
+</p>
+
+<p><%= I18n.t("stripe_payment_mailer.confirmation.body.thanks") %></p>

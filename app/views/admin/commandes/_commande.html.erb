@@ -9,6 +9,11 @@
           <%#= custom_badge("", "", "", commande.ref_commande) %>
           <%= custom_badge("", "", "", "fw-bold", commande.full_name) %>
           <%= commande_eshop_badge(commande) %>
+          <% if commande.eshop? && commande.expedie_le.present? %>
+            <span class="badge border border-success text-success fw-semibold m-1 shadow-sm" title="Expédié le <%= l(commande.expedie_le, format: :short) %>">
+              <i class="bi bi-truck me-1"></i>Expédié
+            </span>
+          <% end %>
           <%= custom_badge("", "", "", "", commande.client.full_name) %>
           <%= custom_badge("", "", "", "", commande.type_locvente) if commande.type_locvente %>
           <%= custom_badge("fa-calendar", "", "", "", commande.full_event) %>

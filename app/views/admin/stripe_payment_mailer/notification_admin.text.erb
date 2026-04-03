@@ -1,0 +1,26 @@
+<%= I18n.t("stripe_payment_mailer.notification_admin.body.title") %>
+
+<%= I18n.t("stripe_payment_mailer.notification_admin.body.customer_email") %> : <%= @payment.customer_email.presence || "—" %>
+<%= I18n.t("stripe_payment_mailer.notification_admin.body.amount") %> : <%= number_to_currency(@payment.amount.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %>
+<%= I18n.t("stripe_payment_mailer.notification_admin.body.currency") %> : <%= @payment.currency&.upcase %>
+
+<% if @payment.commande&.ref_commande.present? %>
+<%= I18n.t("stripe_payment_mailer.notification_admin.body.ref_commande") %> : <%= @payment.commande.ref_commande %>
+<% end %>
+
+<% if @commande_admin_url.present? %>
+<%= I18n.t("stripe_payment_mailer.notification_admin.body.open_commande_admin") %> : <%= @commande_admin_url %>
+<% end %>
+
+<%= I18n.t("stripe_payment_mailer.notification_admin.body.lines_title") %>
+<% @items.each do |item| %>
+<% produit = item.produit %>
+<% if produit.present? %>
+<% product_page_url = produit_url(locale: I18n.locale, slug: produit.nom.to_s.parameterize, id: produit.id, **@public_site_url_options) %>
+- <%= produit.nom %> (<%= I18n.t("stripe_payment_mailer.notification_admin.body.line_quantity") %> <%= item.quantity || 1 %>) — <%= product_page_url %>
+<% else %>
+- <%= I18n.t("stripe_payment_mailer.notification_admin.body.unknown_product") %> (<%= I18n.t("stripe_payment_mailer.notification_admin.body.line_quantity") %> <%= item.quantity || 1 %>)
+<% end %>
+<% end %>
+
+<%= I18n.t("stripe_payment_mailer.notification_admin.body.message_automatique") %>

@@ -303,6 +303,43 @@ fr:
         produits_demandes: "Produits demandés (cabine d'essayage)"
         message_automatique: "Message automatique."
 
+  stripe_payment_mailer:
+    confirmation:
+      subject: "Confirmation de votre achat — Autour D'un Soir"
+      body:
+        greeting: "Bonjour,"
+        intro: "Nous avons bien enregistré votre paiement en ligne."
+        produits_title: "Votre commande"
+        nom_label: "Nom :"
+        voir_produit: "Voir le produit →"
+        quantity: "quantité %{n}"
+        total_label: "Montant total"
+        thanks: "Merci pour votre confiance."
+    notification_admin:
+      subject: "Nouvelle commande e-shop (paiement Stripe)"
+      body:
+        title: "Une commande boutique en ligne vient d'être enregistrée."
+        customer_email: "Email client (Stripe)"
+        amount: "Montant"
+        currency: "Devise"
+        ref_commande: "Réf. commande"
+        open_commande_admin: "Ouvrir la commande dans l'admin"
+        lines_title: "Lignes"
+        line_quantity: "Qté"
+        voir_produit: "Voir le produit sur le site"
+        unknown_product: "Produit inconnu"
+        message_automatique: "Message automatique — notification e-shop."
+    expedition:
+      subject: "Votre colis est en route — Autour D'un Soir"
+      body:
+        greeting: "Bonjour,"
+        intro: "Bonne nouvelle ! Votre commande a été expédiée et est en route vers vous."
+        produits_title: "Rappel de votre commande"
+        tracking_label: "Numéro de suivi"
+        tracking_link_label: "Suivre mon colis sur laposte.fr →"
+        no_tracking: "Le numéro de suivi vous sera communiqué prochainement."
+        thanks: "Merci pour votre confiance et à bientôt !"
+
   meta_tags:
     default:
       title: "Autour D'Un Soir"
@@ -397,6 +434,7 @@ fr:
         online_sales_unavailable: "Les ventes en ligne sont actuellement indisponibles."
         cart_empty: "Votre panier est vide."
         cart_items_unavailable: "Un ou plusieurs articles ne sont plus disponibles à la vente en ligne. Vérifiez votre panier."
+      shipping_label: "Frais d'expédition"
     demande_rdv:
       form:
         select_date_title: "Sélectionnez une date"
@@ -795,6 +833,10 @@ fr:
           mediation_title: "Médiation et litiges"
           mediation_text_html: "Conformément à l'article L.612-1 du Code de la consommation, nous vous informons que vous pouvez recourir gratuitement à un médiateur de la consommation en cas de litige. Les coordonnées du médiateur seront communiquées sur demande.<br>En cas de litige, les tribunaux français seront seuls compétents."
         back_to_top: "Retour en haut"
+        shipping_table:
+          weight_min: "Poids minimum"
+          weight_max: "Poids maximum"
+          shipping_fee: "Tarif expédition"
         articles:
           perimetre:
             a1: { title: "Application des CGV", content: "Les présentes Conditions Générales de Vente (les « CGV ») sont applicables dès que vous accédez à la Boutique en ligne Autour D'Un Soir URL : https://a1soir.com/ (le « Site Web ») ou passez des commandes par téléphone. Toutefois, les présentes CGV ne s'appliquent pas à tout achat de produits à la Boutique Autour D'Un Soir de Cannes." }

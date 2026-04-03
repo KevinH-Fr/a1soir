@@ -63,9 +63,14 @@ En production, le **webhook** assure l'enregistrement même si l'utilisateur fer
 
 ---
 
-## Email de confirmation
+## Emails après paiement (client + admin)
 
-Lors du **premier** enregistrement réussi d'un paiement (`created: true` dans le résultat du service), si `customer_email` est renseigné, un email est mis en file via [`StripePaymentMailer#confirmation`](../app/mailers/stripe_payment_mailer.rb). Un horodatage `confirmation_email_sent_at` évite les envois en double — ce guard est vérifié avant l'envoi, sans transaction imbriquée supplémentaire (l'idempotence de l'enregistrement est déjà assurée en amont).
+Lors du **premier** enregistrement réussi d'un paiement (`created: true` dans le résultat du service), [`StripeCheckoutFulfillmentService#enqueue_confirmation!`](../app/services/stripe_checkout_fulfillment_service.rb) met en file un ou deux emails via [`StripePaymentMailer`](../app/mailers/stripe_payment_mailer.rb) :
+
+- **Client** — [`#confirmation`](../app/mailers/stripe_payment_mailer.rb) : envoyé si `customer_email` est renseigné sur le paiement (email saisi côté Stripe Checkout). Langue : préférence du client lié à la commande si disponible, sinon français. Chaque ligne affiche l’image du produit (si `image1` est attachée), le nom, la quantité et un lien vers la fiche produit sur le site public (comme le mail cabine d’essayage).
+- **Admin** — [`#notification_admin`](../app/mailers/stripe_payment_mailer.rb) : envoyé si la variable d'environnement `GMAIL_ACCOUNT` est définie (même adresse que les notifications contact / demande de RDV). Contenu : email client, montant, lignes avec image + lien produit, référence de commande si présente, et **lien direct vers la fiche commande dans l’admin** lorsque la commande e-shop a été créée. En production, l’hôte du lien admin est lu dans `ADMIN_MAILER_HOST` (défaut `admin.a1soir.com`) ; en développement, `http://admin.lvh.me:3000/...`.
+
+Un horodatage `confirmation_email_sent_at` est posé dès qu'**au moins un** de ces envois a été mis en file, ce qui évite les doublons (webhook + redirect, ou rejeu). L'idempotence de l'enregistrement du paiement reste assurée en amont dans la transaction du service.
 
 ---
 

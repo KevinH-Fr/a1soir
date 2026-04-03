@@ -1,0 +1,58 @@
+<p><%= I18n.t("stripe_payment_mailer.expedition.body.greeting") %></p>
+
+<p><%= I18n.t("stripe_payment_mailer.expedition.body.intro") %></p>
+
+<%# Numéro de suivi %>
+<div style="margin: 24px 0; padding: 16px; background: #f5f5f5; border-left: 4px solid #333; border-radius: 4px;">
+  <% if @numero_suivi.present? %>
+    <p style="margin: 0 0 8px 0; font-size: 14px;">
+      <strong><%= I18n.t("stripe_payment_mailer.expedition.body.tracking_label") %> :</strong>
+      <span style="font-family: monospace; font-size: 16px;"><%= @numero_suivi %></span>
+    </p>
+    <% if @tracking_url.present? %>
+      <p style="margin: 0;">
+        <a href="<%= @tracking_url %>" style="color: #333; font-weight: bold; text-decoration: underline;">
+          <%= I18n.t("stripe_payment_mailer.expedition.body.tracking_link_label") %>
+        </a>
+      </p>
+    <% end %>
+  <% else %>
+    <p style="margin: 0; font-size: 14px; color: #666;"><%= I18n.t("stripe_payment_mailer.expedition.body.no_tracking") %></p>
+  <% end %>
+</div>
+
+<%# Récap produits %>
+<div style="margin-top: 24px;">
+  <h3 style="margin-bottom: 16px; font-size: 18px;"><%= I18n.t("stripe_payment_mailer.expedition.body.produits_title") %></h3>
+
+  <% @items.each do |item| %>
+    <% produit = item.produit %>
+    <% if produit.present? %>
+      <% product_page_url = produit_url(locale: I18n.locale, slug: produit.nom.to_s.parameterize, id: produit.id, **@public_site_url_options) %>
+      <div style="margin-bottom: 24px; padding-bottom: 24px; display: table; width: 100%;">
+        <div style="display: table-row;">
+          <% if produit.image1.attached? %>
+            <div style="display: table-cell; vertical-align: top; padding-right: 16px; width: 120px;">
+              <a href="<%= product_page_url %>">
+                <%= image_tag rails_blob_url(produit.image1, host: @blob_rails_host, protocol: @blob_rails_protocol), alt: produit.nom, style: "max-width: 100px; height: auto; border-radius: 4px;", width: "100" %>
+              </a>
+            </div>
+          <% end %>
+          <div style="display: table-cell; vertical-align: top;">
+            <% if produit.nom.present? %>
+              <p style="margin: 4px 0; font-size: 14px;">
+                <strong><%= I18n.t("stripe_payment_mailer.confirmation.body.nom_label") %></strong> <%= produit.nom %>
+              </p>
+            <% end %>
+            <p style="margin: 4px 0; font-size: 14px;">
+              <%= I18n.t("stripe_payment_mailer.confirmation.body.quantity", n: item.quantity || 1) %>
+            </p>
+          </div>
+        </div>
+        <hr style="margin-top: 24px; border: none; border-top: 1px solid #e0e0e0;">
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<p><%= I18n.t("stripe_payment_mailer.expedition.body.thanks") %></p>

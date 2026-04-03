@@ -1,0 +1,67 @@
+<p><strong><%= I18n.t("stripe_payment_mailer.notification_admin.body.title") %></strong></p>
+
+<p>
+  <%= I18n.t("stripe_payment_mailer.notification_admin.body.customer_email") %> :
+  <%= @payment.customer_email.presence || "—" %><br>
+  <%= I18n.t("stripe_payment_mailer.notification_admin.body.amount") %> :
+  <%= number_to_currency(@payment.amount.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %><br>
+  <%= I18n.t("stripe_payment_mailer.notification_admin.body.currency") %> :
+  <%= @payment.currency&.upcase %>
+</p>
+
+<% if @payment.commande&.ref_commande.present? %>
+  <p>
+    <%= I18n.t("stripe_payment_mailer.notification_admin.body.ref_commande") %> :
+    <%= @payment.commande.ref_commande %>
+  </p>
+<% end %>
+
+<% if @commande_admin_url.present? %>
+  <p style="margin: 12px 0;">
+    <a href="<%= @commande_admin_url %>" style="color: #333; text-decoration: underline;">
+      <%= I18n.t("stripe_payment_mailer.notification_admin.body.open_commande_admin") %>
+    </a>
+  </p>
+<% end %>
+
+<h4 style="margin-top: 16px;"><%= I18n.t("stripe_payment_mailer.notification_admin.body.lines_title") %></h4>
+
+<% @items.each do |item| %>
+  <% produit = item.produit %>
+  <% if produit.present? %>
+    <% product_page_url = produit_url(locale: I18n.locale, slug: produit.nom.to_s.parameterize, id: produit.id, **@public_site_url_options) %>
+    <div style="margin-bottom: 24px; padding-bottom: 24px; display: table; width: 100%;">
+      <div style="display: table-row;">
+        <% if produit.image1.attached? %>
+          <div style="display: table-cell; vertical-align: top; padding-right: 16px; width: 120px;">
+            <a href="<%= product_page_url %>">
+              <%= image_tag rails_blob_url(produit.image1, host: @blob_rails_host, protocol: @blob_rails_protocol), alt: produit.nom, style: "max-width: 100px; height: auto; border-radius: 4px;", width: "100" %>
+            </a>
+          </div>
+        <% end %>
+        <div style="display: table-cell; vertical-align: top;">
+          <% if produit.nom.present? %>
+            <p style="margin: 4px 0; font-size: 14px;">
+              <strong><%= I18n.t("stripe_payment_mailer.confirmation.body.nom_label") %></strong> <%= produit.nom %>
+            </p>
+          <% end %>
+          <p style="margin: 4px 0; font-size: 14px;">
+            <%= I18n.t("stripe_payment_mailer.notification_admin.body.line_quantity") %> <%= item.quantity || 1 %>
+          </p>
+          <p style="margin: 4px 0; font-size: 14px;">
+            <a href="<%= product_page_url %>" style="color: #333; text-decoration: underline;"><%= I18n.t("stripe_payment_mailer.notification_admin.body.voir_produit") %></a>
+          </p>
+        </div>
+      </div>
+      <hr style="margin-top: 24px; border: none; border-top: 1px solid #e0e0e0;">
+    </div>
+  <% else %>
+    <p style="margin: 8px 0;">
+      <strong><%= I18n.t("stripe_payment_mailer.notification_admin.body.unknown_product") %></strong>
+      — <%= I18n.t("stripe_payment_mailer.notification_admin.body.line_quantity") %> <%= item.quantity || 1 %>
+    </p>
+  <% end %>
+<% end %>
+
+<hr>
+<p style="margin: 0; opacity: 0.8; font-size: 12px;"><%= I18n.t("stripe_payment_mailer.notification_admin.body.message_automatique") %></p>

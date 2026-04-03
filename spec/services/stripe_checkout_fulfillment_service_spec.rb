@@ -4,8 +4,13 @@ require "rails_helper"
 require "ostruct"
 
 RSpec.describe StripeCheckoutFulfillmentService do
+  let(:mail_delivery) { instance_double(ActionMailer::MessageDelivery, deliver_later: true) }
+
   before do
-    allow(StripePaymentMailer).to receive(:confirmation).and_return(instance_double(ActionMailer::MessageDelivery, deliver_later: true))
+    allow(ENV).to receive(:[]).and_call_original
+    allow(ENV).to receive(:[]).with("GMAIL_ACCOUNT").and_return(nil)
+    allow(StripePaymentMailer).to receive(:confirmation).and_return(mail_delivery)
+    allow(StripePaymentMailer).to receive(:notification_admin).and_return(mail_delivery)
   end
 
   let!(:profile) { Profile.create!(prenom: "Admin", nom: "Boutique") }
@@ -70,6 +75,30 @@ RSpec.describe StripeCheckoutFulfillmentService do
       expect do
         described_class.new(mock_session).fulfill!
       end.not_to change(StripePayment, :count)
+    end
+
+    it "enqueues client confirmation email" do
+      expect(StripePaymentMailer).to receive(:confirmation).with(an_instance_of(StripePayment)).and_return(mail_delivery)
+      described_class.new(mock_session).fulfill!
+    end
+
+    it "does not enqueue admin notification when GMAIL_ACCOUNT is blank" do
+      expect(StripePaymentMailer).not_to receive(:notification_admin)
+      described_class.new(mock_session).fulfill!
+    end
+
+    it "enqueues admin notification when GMAIL_ACCOUNT is set" do
+      allow(ENV).to receive(:[]).with("GMAIL_ACCOUNT").and_return("admin@example.com")
+      expect(StripePaymentMailer).to receive(:notification_admin).with(an_instance_of(StripePayment)).and_return(mail_delivery)
+      described_class.new(mock_session).fulfill!
+    end
+
+    it "enqueues only admin email when customer_email is missing but GMAIL_ACCOUNT is set" do
+      allow(ENV).to receive(:[]).with("GMAIL_ACCOUNT").and_return("admin@example.com")
+      mock_session.customer_email = nil
+      expect(StripePaymentMailer).not_to receive(:confirmation)
+      expect(StripePaymentMailer).to receive(:notification_admin).with(an_instance_of(StripePayment)).and_return(mail_delivery)
+      described_class.new(mock_session).fulfill!
     end
   end
 end
