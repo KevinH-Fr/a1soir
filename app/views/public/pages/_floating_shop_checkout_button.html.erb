@@ -1,0 +1,14 @@
+  
+<div class="position-fixed bottom-0 start-0 end-0 bg-black p-2 shadow-lg" 
+     id="floating_shop_checkout_btn"
+     style="z-index: 1050;">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-center">
+      <%= link_to cart_path,
+          class: "btn btn-light btn-lg px-5 rounded-0",
+          data: { turbo_frame: "_top" } do %>
+        <i class="bi bi-bag-check me-2"></i><%= t("public.pages.cart.floating_validate") %>
+      <% end %>
+    </div>
+  </div>
+</div>

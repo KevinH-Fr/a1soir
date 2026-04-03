@@ -156,6 +156,24 @@ en:
         add_to_fitting_room: "Add to fitting room"
         remove_from_cart: "Remove from cart"
         add_to_cart: "Add to cart"
+    stripe_payments:
+      flash:
+        product_not_available: "This product is not available for online purchase."
+        already_in_cart: "This product is already in your cart."
+        added_to_cart: "%{name} added to your cart."
+        removed_from_cart: "%{name} removed from your cart."
+        invalid_session: "Invalid payment session."
+        payment_not_finalized: "The payment has not been finalised."
+        payment_record_error: "Unable to record the payment. Please contact the store."
+        payment_success: "Your payment has been recorded. Thank you for your purchase!"
+        payment_confirmation_error: "An error occurred while confirming the payment."
+        payment_fulfillment_error: "An error occurred while recording the order."
+        payment_cancelled: "Payment cancelled or interrupted. Your cart is still available."
+        unauthorized: "Unauthorised access."
+        not_found: "Payment not found."
+        online_sales_unavailable: "Online sales are currently unavailable."
+        cart_empty: "Your cart is empty."
+        cart_items_unavailable: "One or more items are no longer available for online sale. Please check your cart."
     demande_rdv:
       form:
         select_date_title: "Select a date"
@@ -789,12 +807,22 @@ en:
         checkout: "Proceed to payment"
         continue_shopping: "Browse more products"
         remove: "Remove"
+        view_detail: "View details"
         empty_title: "Your cart is empty"
         empty_text: "Explore our collections to add outfits to your cart."
         discover: "Discover our products"
         items_count:
           one: "1 item"
           other: "%{count} items"
+        floating_validate: "Review my cart"
+        try_in_store: "Try in store — Book an appointment"
+        print_list: "Print my list"
+        instore_callout_title: "See these pieces in the shop?"
+        instore_callout_lead: "Would you like to view them in store and try them on at your own pace?"
+        instore_callout_body: "Move your selection to our fitting room flow, pick a date and time that suit you, and we will prepare the pieces before you arrive. You can also print a list to bring with you."
+        transfer_to_cabine_success:
+          one: "1 item transferred to your fitting room"
+          other: "%{count} items transferred to your fitting room"
       stripe_payment_status:
         header_title: "Your order"
         header_title_with_ref: "Your order %{ref}"

@@ -10,6 +10,8 @@ module Public
       before_action :initialize_cabine_session
       before_action :load_cabine_cart
       before_action :load_footer_textes
+
+      helper_method :show_shop_cart_floating_footer?
       # Protect every action in the public (shop) namespace with HTTP Basic when enabled.
       before_action :authenticate_shop, if: :shop_basic_enabled?
     
@@ -58,6 +60,17 @@ module Public
         
         ids = session[:cabine_cart] || []
         @cabine_cart = ids.any? ? Produit.where(id: ids) : Produit.none
+      end
+
+      # Barre flottante « valider le panier » (e-shop) : partout sauf page panier et parcours cabine.
+      def show_shop_cart_floating_footer?
+        return false unless OnlineSales.available?
+        return false if @cart.blank?
+        return false if controller_path == "public/pages" && action_name == "cart"
+        return false if session[:from_cabine].present?
+        return false if params[:from_cabine].present?
+
+        true
       end
 
       def load_footer_textes

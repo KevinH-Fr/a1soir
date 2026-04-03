@@ -19,7 +19,7 @@
         <p> 
             Total vendus : 
             <span class="fw-bold"> 
-                <%= total_vendus(extract_ids(@produit)) + total_vendus_eshop(extract_ids(@produit)) %>        
+                <%= total_vendus_boutique(extract_ids(@produit)) + total_vendus_eshop(extract_ids(@produit)) %>        
             </span> 
             <% if total_vendus_eshop(extract_ids(@produit)) > 0 %>
                 <span class="small">

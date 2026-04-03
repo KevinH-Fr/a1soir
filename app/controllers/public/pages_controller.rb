@@ -51,10 +51,7 @@ module Public
     end
 
     def produits
-      # Si le paramètre from_cabine est présent, on active le mode cabine d'essayage
-      if params[:from_cabine].present?
-        session[:from_cabine] = true
-      end
+      session[:from_cabine] = params[:from_cabine].present?
       produits_with_filters
     end
 
@@ -88,15 +85,26 @@ module Public
 
     
     def update_filters
-      # Si le paramètre from_cabine est présent, on active le mode cabine d'essayage
-      if params[:from_cabine].present?
-        session[:from_cabine] = true
-      end
+      session[:from_cabine] = params[:from_cabine].present?
       update_filters_turbo
     end
     
     def cart
-      @total_amount = @cart.sum { |item| item.prixvente } # Sum of all item prices
+      @total_amount = @cart.sum { |item| item.prixvente }
+    end
+
+    def transfer_cart_to_cabine
+      if @cart.blank?
+        redirect_to cart_path, alert: t("public.pages.cart.empty_title")
+        return
+      end
+
+      session[:cabine_cart] ||= []
+      session[:cabine_cart] = (session[:cabine_cart] + session[:cart]).uniq
+      session[:from_cabine] = true
+
+      redirect_to cabine_essayage_path,
+                  notice: t("public.pages.cart.transfer_to_cabine_success", count: @cart.size)
     end
 
     def cabine_add_product

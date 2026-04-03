@@ -34,11 +34,12 @@ module Public
 
       unless @produit.eshop? && @produit.stripe_price_id.present?
         respond_to do |format|
-          flash.now[:alert] = "Ce produit n'est pas disponible à l'achat en ligne."
+          flash.now[:alert] = t("public.stripe_payments.flash.product_not_available")
           format.turbo_stream do
             render turbo_stream: [
               turbo_stream.append(:flash, partial: "public/shared/flash"),
-              turbo_stream.replace("cart_badge", partial: "public/shared/cart_nav_link")
+              turbo_stream.replace("cart_badge", partial: "public/shared/cart_nav_link"),
+              shop_cart_floating_footer_stream
             ]
           end
           format.html { redirect_to produit_path(slug: @produit.nom.parameterize, id: @produit.id), alert: flash.now[:alert] }
@@ -48,10 +49,10 @@ module Public
 
       respond_to do |format|
         if session[:cart].include?(id)
-          flash.now[:notice] = "Ce produit est déjà dans votre panier"
+          flash.now[:notice] = t("public.stripe_payments.flash.already_in_cart")
         else
           session[:cart] << id
-          flash.now[:success] = "#{@produit.nom} ajouté à votre panier"
+          flash.now[:success] = t("public.stripe_payments.flash.added_to_cart", name: @produit.nom)
         end
 
         ids = session[:cart]
@@ -66,7 +67,8 @@ module Public
               locals: { produit: @produit }
             ),
             turbo_stream.append(:flash, partial: "public/shared/flash"),
-            turbo_stream.replace("cart_badge", partial: "public/shared/cart_nav_link")
+            turbo_stream.replace("cart_badge", partial: "public/shared/cart_nav_link"),
+            shop_cart_floating_footer_stream
           ]
         end
         format.html { redirect_to produit_path(slug: @produit.nom.parameterize, id: @produit.id) }
@@ -77,7 +79,7 @@ module Public
       id = params[:id].to_i
       @produit = Produit.find(id)
       session[:cart].delete(id)
-      flash.now[:info] = "#{@produit.nom} retiré de votre panier"
+      flash.now[:info] = t("public.stripe_payments.flash.removed_from_cart", name: @produit.nom)
 
       by_id = Produit.where(id: session[:cart]).index_by(&:id)
       @cart = session[:cart].filter_map { |cid| by_id[cid] }
@@ -91,7 +93,8 @@ module Public
               locals: { produit: @produit }
             ),
             turbo_stream.append(:flash, partial: "public/shared/flash"),
-            turbo_stream.replace("cart_badge", partial: "public/shared/cart_nav_link")
+            turbo_stream.replace("cart_badge", partial: "public/shared/cart_nav_link"),
+            shop_cart_floating_footer_stream
           ]
         end
         format.html { redirect_to produit_path(slug: @produit.nom.parameterize, id: @produit.id) }
@@ -106,14 +109,14 @@ module Public
 
     def purchase_success
       if params[:session_id].blank?
-        redirect_to cart_path, alert: "Session de paiement invalide."
+        redirect_to cart_path, alert: t("public.stripe_payments.flash.invalid_session")
         return
       end
 
       stripe_session = StripeCheckoutFulfillmentService.retrieve_session!(params[:session_id])
 
       unless stripe_session.payment_status == "paid"
-        redirect_to cart_path, alert: "Le paiement n'est pas finalisé."
+        redirect_to cart_path, alert: t("public.stripe_payments.flash.payment_not_finalized")
         return
       end
 
@@ -121,29 +124,36 @@ module Public
       payment = result.payment
 
       if payment.nil?
-        redirect_to cart_path, alert: "Impossible d'enregistrer le paiement. Contactez le magasin."
+        redirect_to cart_path, alert: t("public.stripe_payments.flash.payment_record_error")
         return
       end
 
       session[:cart] = [] if stripe_session.payment_status == "paid"
+      session[:accessible_payment_ids] = Array(session[:accessible_payment_ids]) | [payment.id]
       redirect_to status_payment_path(payment.id),
-                  notice: "Votre paiement a bien été enregistré. Merci pour votre achat !"
+                  notice: t("public.stripe_payments.flash.payment_success")
     rescue Stripe::InvalidRequestError, ArgumentError => e
       Rails.logger.warn("purchase_success: #{e.class} #{e.message}")
-      redirect_to cart_path, alert: "Erreur lors de la confirmation du paiement."
+      redirect_to cart_path, alert: t("public.stripe_payments.flash.payment_confirmation_error")
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotFound => e
       Rails.logger.error("purchase_success fulfillment: #{e.class} #{e.message}")
-      redirect_to cart_path, alert: "Erreur lors de l'enregistrement de la commande."
+      redirect_to cart_path, alert: t("public.stripe_payments.flash.payment_fulfillment_error")
     end
 
     def purchase_error
-      redirect_to cart_path, alert: "Paiement annulé ou interrompu. Votre panier est toujours disponible."
+      redirect_to cart_path, alert: t("public.stripe_payments.flash.payment_cancelled")
     end
 
     def status
+      accessible_ids = Array(session[:accessible_payment_ids]).map(&:to_i)
+      unless accessible_ids.include?(params[:id].to_i)
+        flash[:alert] = t("public.stripe_payments.flash.unauthorized")
+        redirect_to root_path and return
+      end
+
       @payment = StripePayment.includes(:commande).find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      flash[:alert] = "Paiement introuvable."
+      flash[:alert] = t("public.stripe_payments.flash.not_found")
       redirect_to root_path
     end
 
@@ -152,20 +162,34 @@ module Public
     def check_online_sales
       return if OnlineSales.available?
 
-      redirect_to root_path, alert: "Online sales are currently unavailable."
+      redirect_to root_path, alert: t("public.stripe_payments.flash.online_sales_unavailable")
     end
 
     def ensure_cart_eligible_for_checkout!
       if @cart.blank?
-        redirect_to cart_path, alert: "Votre panier est vide."
+        redirect_to cart_path, alert: t("public.stripe_payments.flash.cart_empty")
         return false
       end
       unless @cart.all? { |p| p.eshop? && p.stripe_price_id.present? && p.today_availability? }
-        redirect_to cart_path,
-                    alert: "Un ou plusieurs articles ne sont plus disponibles à la vente en ligne. Vérifiez votre panier."
+        redirect_to cart_path, alert: t("public.stripe_payments.flash.cart_items_unavailable")
         return false
       end
       true
+    end
+
+    # Même idée que CabineCartResponder#cabine_cart_floating_button_stream, mais local à ce contrôleur.
+    def shop_cart_floating_footer_stream
+      if show_shop_cart_floating_footer?
+        turbo_stream.replace(
+          "floating_shop_checkout_btn",
+          partial: "public/pages/floating_shop_checkout_button"
+        )
+      else
+        turbo_stream.replace(
+          "floating_shop_checkout_btn",
+          view_context.tag.div(nil, id: "floating_shop_checkout_btn")
+        )
+      end
     end
   end
 end

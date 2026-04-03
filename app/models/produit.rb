@@ -9,6 +9,8 @@ class Produit < ApplicationRecord
   belongs_to :taille, optional: true
 
   validates :nom, presence: true
+  validates :stripe_price_id,   uniqueness: true, allow_nil: true
+  validates :stripe_product_id, uniqueness: true, allow_nil: true
 
   has_many :articles, dependent: :destroy
   has_many :sousarticles, dependent: :destroy
@@ -176,10 +178,11 @@ class Produit < ApplicationRecord
     type_produit.nom == 'ensemble' if type_produit
   end
   
-  def total_vendus
+  def total_vendus_boutique
     total_quantite = Article.joins(:commande, :produit)
   #  .merge(Produit.not_service)
     .merge(Commande.hors_devis)
+    .where(commandes: { eshop: [false, nil] })
     .vente_only
     .where(produit_id: id)
     .sum(:quantite)
@@ -188,6 +191,7 @@ class Produit < ApplicationRecord
     .where(produit_id: id)
   #  .merge(Produit.not_service)
     .merge(Commande.hors_devis)
+    .where(commandes: { eshop: [false, nil] })
     .vente_only
     .count
 
@@ -229,7 +233,7 @@ class Produit < ApplicationRecord
                                 .location_only.sum(:quantite).to_i
 
       initial_stock = self.quantite.to_i
-      vendus = total_vendus + total_vendus_eshop
+      vendus = total_vendus_boutique + total_vendus_eshop
     end
 
     disponibles = initial_stock - (loues_a_date + vendus)

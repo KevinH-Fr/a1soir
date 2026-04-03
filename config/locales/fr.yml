@@ -379,6 +379,24 @@ fr:
         add_to_fitting_room: "Ajouter à la cabine"
         remove_from_cart: "Retirer du panier"
         add_to_cart: "Ajouter au panier"
+    stripe_payments:
+      flash:
+        product_not_available: "Ce produit n'est pas disponible à l'achat en ligne."
+        already_in_cart: "Ce produit est déjà dans votre panier."
+        added_to_cart: "%{name} ajouté à votre panier."
+        removed_from_cart: "%{name} retiré de votre panier."
+        invalid_session: "Session de paiement invalide."
+        payment_not_finalized: "Le paiement n'est pas finalisé."
+        payment_record_error: "Impossible d'enregistrer le paiement. Contactez le magasin."
+        payment_success: "Votre paiement a bien été enregistré. Merci pour votre achat !"
+        payment_confirmation_error: "Erreur lors de la confirmation du paiement."
+        payment_fulfillment_error: "Erreur lors de l'enregistrement de la commande."
+        payment_cancelled: "Paiement annulé ou interrompu. Votre panier est toujours disponible."
+        unauthorized: "Accès non autorisé."
+        not_found: "Paiement introuvable."
+        online_sales_unavailable: "Les ventes en ligne sont actuellement indisponibles."
+        cart_empty: "Votre panier est vide."
+        cart_items_unavailable: "Un ou plusieurs articles ne sont plus disponibles à la vente en ligne. Vérifiez votre panier."
     demande_rdv:
       form:
         select_date_title: "Sélectionnez une date"
@@ -1012,12 +1030,22 @@ fr:
         checkout: "Passer au paiement"
         continue_shopping: "Voir plus de produits"
         remove: "Retirer"
+        view_detail: "Voir le détail"
         empty_title: "Votre panier est vide"
         empty_text: "Explorez nos collections pour ajouter des tenues à votre panier."
         discover: "Découvrir nos produits"
         items_count:
           one: "1 article"
           other: "%{count} articles"
+        floating_validate: "Valider mon panier"
+        try_in_store: "Essayer en boutique — Prendre RDV"
+        print_list: "Imprimer ma liste"
+        instore_callout_title: "Voir ces tenues en boutique ?"
+        instore_callout_lead: "Vous souhaitez les découvrir en magasin et les essayer tranquillement ?"
+        instore_callout_body: "Transférez votre sélection vers notre cabine d’essayage, choisissez la date et l’horaire qui vous conviennent, et notre équipe préparera les articles avant votre venue. Vous pouvez aussi imprimer une liste à apporter en boutique."
+        transfer_to_cabine_success:
+          one: "1 article transféré dans votre cabine d'essayage"
+          other: "%{count} articles transférés dans votre cabine d'essayage"
       stripe_payment_status:
         header_title: "Votre commande"
         header_title_with_ref: "Votre commande %{ref}"

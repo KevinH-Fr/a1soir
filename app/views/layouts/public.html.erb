@@ -72,6 +72,12 @@
         </div>
         <%= yield %>
       </main>
+
+      <% if show_shop_cart_floating_footer? %>
+        <%= render partial: "public/pages/floating_shop_checkout_button" %>
+      <% else %>
+        <%= tag.div id: "floating_shop_checkout_btn" %>
+      <% end %>
       
       <%# chatbot %>
       <%#= render "public/chat/conversation" %>

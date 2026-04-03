@@ -10,120 +10,219 @@
 
 <div class="public-main-content public-cart-page">
   <div class="container-fluid px-3 px-md-4">
-    <header class="text-center mb-3 mb-md-4 pt-3 pt-md-4 px-2" data-scroll-reveal>
-      <h1 class="text-light fw-bold mb-2 cart-intro-title"><%= t("public.pages.cart.header_title") %></h1>
-      <p class="text-light opacity-75 mx-auto mb-0" style="max-width: 36rem; font-size: 1.05rem; line-height: 1.6;">
+
+    <%# ── Page header ─────────────────────────────────────────────── %>
+    <header class="text-center pt-4 pt-md-5 pb-3 pb-md-4 px-2" data-scroll-reveal>
+      <h1 class="text-light fw-bold mb-2 cart-intro-title">
+        <%= t("public.pages.cart.header_title") %>
+      </h1>
+      <p class="text-light opacity-75 mx-auto mb-0"
+         style="max-width: 38rem; font-size: 1.05rem; line-height: 1.65;">
         <%= t("public.pages.cart.header_subtitle") %>
       </p>
     </header>
 
-    <div class="text-center my-3 my-md-4 px-2" data-scroll-reveal>
-      <h2 class="mb-2 h6 fw-semibold text-light opacity-90"><%= t("public.pages.cart.intro_title") %></h2>
-      <p class="text-light opacity-75 mx-auto mb-0" style="max-width: 640px; font-size: 1.05rem; line-height: 1.65;">
-        <%= t("public.pages.cart.intro_text") %>
-      </p>
-    </div>
-
     <% if @cart.present? %>
-      <div class="row g-3 g-lg-4 mb-4 mb-lg-5 justify-content-center">
+
+      <%# ── Main grid ───────────────────────────────────────────────── %>
+      <div class="row justify-content-center g-3 g-lg-4 mb-5">
         <div class="col-12 col-xl-10 col-xxl-9">
           <div class="row g-3 g-lg-4">
-            <div class="col-lg-8 d-flex flex-column gap-2 gap-md-3 min-w-0">
+
+            <%# ── Cart items ──────────────────────────────────────────── %>
+            <div class="col-lg-8 d-flex flex-column gap-2 gap-md-3">
               <% @cart.each do |cart_item| %>
-                <div class="cart-surface p-2 p-md-3 text-light" data-scroll-reveal>
-                  <div class="row g-2 g-md-3 align-items-center">
-                    <div class="col-4 col-sm-3 col-md-3 col-lg-2 flex-shrink-0">
+                <div class="cart-surface text-light overflow-hidden" data-scroll-reveal>
+                  <div class="d-flex align-items-stretch">
+
+                    <%# Thumbnail %>
+                    <%= link_to produit_path(slug: cart_item.nom.parameterize, id: cart_item.id),
+                        class: "cart-item-thumb-wrap flex-shrink-0" do %>
                       <%= image_tag(cart_item.default_image,
-                          class: "cart-product-thumb shadow-sm d-block mx-auto",
-                          style: "max-height: 5.5rem; width: 100%;",
+                          class: "cart-item-thumb",
                           alt: cart_item.nom,
                           loading: "lazy") %>
-                    </div>
-                    <div class="col-8 col-sm-9 col-md-9 col-lg-10 min-w-0">
-                      <h3 class="h6 fw-bold text-light mb-1 text-truncate"><%= cart_item.nom %></h3>
-                      <p class="text-light opacity-75 small mb-2 cart-desc-truncate">
-                        <%= cart_item.description %>
-                      </p>
-                      <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-                        <%= badge_taille(cart_item) if cart_item.taille %>
-                      </div>
-                      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
-                        <div class="text-light">
-                          <%= badge_prix("Vente", cart_item.prixvente) %>
-                        </div>
-                        <%= button_to remove_from_cart_go_back_to_cart_path(cart_item),
-                            method: :delete,
-                            class: "btn btn-outline-light btn-sm d-inline-flex align-items-center gap-1 public-btn-border-radius border-opacity-25 py-1 px-2" do %>
-                          <i class="bi bi-trash"></i>
-                          <span><%= t("public.pages.cart.remove") %></span>
+                    <% end %>
+
+                    <%# Body %>
+                    <div class="flex-grow-1 min-w-0 p-3 d-flex flex-column gap-2">
+
+                      <%# Nom + taille %>
+                      <div>
+                        <h3 class="h6 fw-bold text-light text-truncate mb-1">
+                          <%= cart_item.nom %>
+                        </h3>
+                        <% if cart_item.taille %>
+                          <%= badge_taille(cart_item) %>
                         <% end %>
                       </div>
+
+                      <%# Description %>
+                      <p class="small text-light opacity-60 mb-0 cart-desc-truncate">
+                        <%= cart_item.description %>
+                      </p>
+
+                      <%# Footer : prix + boutons %>
+                      <div class="cart-item-footer d-flex flex-wrap align-items-center justify-content-between gap-2 mt-auto pt-2 border-top border-light border-opacity-10">
+                        <span class="fw-bold text-light small">
+                          <%= badge_prix("Vente", cart_item.prixvente) %>
+                        </span>
+
+                        <div class="d-flex gap-2 flex-shrink-0">
+                          <%= link_to produit_path(slug: cart_item.nom.parameterize, id: cart_item.id),
+                              class: "btn btn-sm btn-light text-dark fw-semibold public-btn-border-radius d-inline-flex align-items-center gap-1" do %>
+                            <span><%= t("public.pages.cart.view_detail") %></span>
+                            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                          <% end %>
+
+                          <%= button_to remove_from_cart_go_back_to_cart_path(cart_item),
+                              method: :delete,
+                              class: "btn btn-sm btn-outline-light public-btn-border-radius border-opacity-25 d-inline-flex align-items-center gap-1",
+                              form: { class: "m-0" },
+                              title: t("public.pages.cart.remove") do %>
+                            <i class="bi bi-x-lg" aria-hidden="true"></i>
+                            <span><%= t("public.pages.cart.remove") %></span>
+                          <% end %>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
                 </div>
               <% end %>
             </div>
 
-            <div class="col-lg-4 min-w-0">
-              <div class="cart-surface p-3 p-md-4 text-light position-sticky top-0" style="z-index: 2;" data-scroll-reveal>
-                <div class="d-flex align-items-start gap-2 mb-3">
-                  <i class="bi bi-bag-check fs-4 text-light opacity-75 flex-shrink-0 mt-1"></i>
-                  <div class="flex-grow-1 min-w-0 text-start">
-                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
-                      <h2 class="h6 text-light fw-bold mb-0"><%= t("public.pages.cart.summary_title") %></h2>
-                      <span class="badge rounded-1 text-uppercase fw-semibold bg-light bg-opacity-10 text-light border border-light border-opacity-25">
-                        <%= t("public.pages.cart.items_count", count: @cart.size) %>
-                      </span>
-                    </div>
-                  </div>
+            <%# ── Order summary ───────────────────────────────────────── %>
+            <div class="col-lg-4">
+              <div class="cart-surface p-3 p-md-4 text-light position-sticky"
+                   style="top: 1.25rem; z-index: 2;" data-scroll-reveal>
+
+                <%# Summary header %>
+                <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+                  <h2 class="h6 fw-bold text-light mb-0">
+                    <i class="bi bi-bag-check me-2 opacity-75"></i>
+                    <%= t("public.pages.cart.summary_title") %>
+                  </h2>
+                  <span class="badge rounded-1 fw-normal text-uppercase ls-1
+                               bg-light bg-opacity-10 text-light border border-light border-opacity-15"
+                        style="font-size: .7rem;">
+                    <%= t("public.pages.cart.items_count", count: @cart.size) %>
+                  </span>
                 </div>
 
-                <p class="text-light opacity-75 mb-0 small">
+                <p class="text-light opacity-60 small mb-3">
                   <%= t("public.pages.cart.summary_hint") %>
                 </p>
 
-                <div class="border-top border-light border-opacity-10 my-3 pt-3">
-                  <div class="d-flex align-items-center justify-content-between">
-                    <span class="text-light opacity-75 small"><%= t("public.pages.cart.subtotal") %></span>
+                <%# Subtotal row %>
+                <div class="border-top border-light border-opacity-10 pt-3 mb-3">
+                  <div class="d-flex align-items-baseline justify-content-between">
+                    <span class="text-light opacity-75 small">
+                      <%= t("public.pages.cart.subtotal") %>
+                    </span>
                     <span class="fs-5 fw-bold text-light">
                       <%= custom_currency_no_decimals_format(@total_amount) %>
                     </span>
                   </div>
                 </div>
 
-                <div class="d-grid gap-2 pt-1">
+                <%# CTA buttons — primary %>
+                <div class="d-grid gap-2">
                   <%= button_to t("public.pages.cart.checkout"),
                       stripe_payments_path,
                       method: :post,
-                      class: "btn btn-light btn-lg fw-semibold public-btn-border-radius shadow-sm text-dark",
+                      class: "btn btn-light btn-lg fw-semibold public-btn-border-radius shadow-sm text-dark w-100",
                       data: { turbo: false } %>
 
                   <%= link_to t("public.pages.cart.continue_shopping"),
                       produits_index_url,
-                      class: "btn btn-outline-light public-btn-border-radius border-opacity-25" %>
+                      class: "btn btn-outline-light public-btn-border-radius border-opacity-20 opacity-80" %>
                 </div>
+
+              </div>
+            </div>
+
+          </div>
+
+          <%# Essai en boutique + liste imprimable — collapse %>
+          <div class="row justify-content-center mt-4 mt-lg-5 no-print">
+            <div class="col-12">
+              <div class="cart-surface cart-instore-callout text-light" data-scroll-reveal>
+
+                <%# Trigger collapse %>
+                <button class="btn w-100 d-flex align-items-center justify-content-between gap-3 px-3 px-md-4 py-3 text-light"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#instoreCallout"
+                        aria-expanded="false"
+                        aria-controls="instoreCallout">
+                  <span class="d-flex align-items-center gap-2 fw-semibold">
+                    <%= t("public.pages.cart.instore_callout_title") %>
+                  </span>
+                  <i class="bi bi-chevron-down cart-instore-chevron" aria-hidden="true"></i>
+                </button>
+
+                <%# Contenu collapsible %>
+                <div class="collapse" id="instoreCallout">
+                  <div class="text-center px-3 pb-4 px-md-5 border-top border-light border-opacity-10 pt-3">
+                    <p class="text-light opacity-85 mb-2 mx-auto cart-instore-callout-lead">
+                      <%= t("public.pages.cart.instore_callout_lead") %>
+                    </p>
+                    <p class="text-light opacity-65 small mb-0 mx-auto cart-instore-callout-body">
+                      <%= t("public.pages.cart.instore_callout_body") %>
+                    </p>
+
+                    <div class="d-flex flex-column flex-sm-row flex-wrap align-items-stretch align-items-sm-center justify-content-center gap-2 gap-sm-3 mt-4">
+                      <%= button_to transfer_cart_to_cabine_path,
+                          method: :post,
+                          form: { class: "cart-instore-callout-form m-0" },
+                          class: "btn btn-light text-dark fw-semibold public-btn-border-radius shadow-sm px-4 py-2 d-inline-flex align-items-center justify-content-center gap-2" do %>
+                        <i class="bi bi-bag-heart" aria-hidden="true"></i>
+                        <span><%= t("public.pages.cart.try_in_store") %></span>
+                      <% end %>
+
+                      <button type="button"
+                              onclick="window.print()"
+                              class="btn btn-outline-light public-btn-border-radius border-opacity-25 px-4 py-2 d-inline-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-printer" aria-hidden="true"></i>
+                        <span><%= t("public.pages.cart.print_list") %></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
+
         </div>
       </div>
+
     <% else %>
+
+      <%# ── Empty cart ──────────────────────────────────────────────── %>
       <div class="row justify-content-center mb-5">
-        <div class="col-md-10 col-lg-7 col-xl-6">
-          <div class="cart-surface p-4 p-md-5 text-center text-light" data-scroll-reveal>
-            <div class="d-inline-flex align-items-center justify-content-center rounded border border-light border-opacity-20 bg-light bg-opacity-5 text-light mb-3" style="width: 3rem; height: 3rem;">
-              <i class="bi bi-bag fs-5"></i>
+        <div class="col-md-8 col-lg-6 col-xl-5">
+          <div class="cart-surface p-5 text-center text-light" data-scroll-reveal>
+            <div class="d-inline-flex align-items-center justify-content-center rounded-circle
+                        border border-light border-opacity-20 bg-light bg-opacity-5 mb-4"
+                 style="width: 4rem; height: 4rem;">
+              <i class="bi bi-bag text-dark fs-4 opacity-75"></i>
             </div>
-            <h2 class="h5 fw-bold text-light mb-2"><%= t("public.pages.cart.empty_title") %></h2>
-            <p class="text-light opacity-75 mb-4 mx-auto small" style="max-width: 420px;">
+            <h2 class="h5 fw-bold text-light mb-2">
+              <%= t("public.pages.cart.empty_title") %>
+            </h2>
+            <p class="text-light opacity-60 mb-4 mx-auto small" style="max-width: 380px;">
               <%= t("public.pages.cart.empty_text") %>
             </p>
             <%= link_to t("public.pages.cart.discover"),
                 produits_index_url,
-                class: "btn btn-light fw-semibold public-btn-border-radius px-4" %>
+                class: "btn btn-light fw-semibold public-btn-border-radius px-5" %>
           </div>
         </div>
       </div>
+
     <% end %>
+
   </div>
 </div>

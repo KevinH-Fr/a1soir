@@ -53,6 +53,7 @@ Rails.application.routes.draw do
       end
 
       get 'cart', to: 'pages#cart'
+      post 'cart/transfer_to_cabine', to: 'pages#transfer_cart_to_cabine', as: 'transfer_cart_to_cabine'
 
       # Cabine d'essayage cart
       post "cabine/add_product/:id", to: "pages#cabine_add_product", as: "cabine_add_product"

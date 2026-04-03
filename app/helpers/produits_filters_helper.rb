@@ -1,6 +1,7 @@
 module ProduitsFiltersHelper
   SEARCH_QUERY_FIELDS = %i[
     nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont
+    id_eq
   ].freeze
 
   def filter_dropdown(label:, icon:, param_key:, collection: nil, model: nil, current_params: {}, all_label: nil, columns: nil)

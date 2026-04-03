@@ -285,18 +285,13 @@ module PagesHelper
       
       localized_root = localized_root_path(locale: I18n.locale)
       is_active = current_page?(path) || (path == home_path && current_page?(localized_root))
-      # Activer le lien cabine quand on revient des produits avec le paramètre from_cabine
+      # Activer le lien cabine quand on est sur produits avec le paramètre from_cabine
       is_active ||= (
         path == cabine_essayage_path &&
         params[:controller] == "public/pages" &&
         params[:action] == "produits" &&
         params[:from_cabine].present?
       )
-      # Sur la page produits sans paramètre from_cabine, on met en avant Collections
-      # MAIS seulement si aucun autre lien n'est déjà actif
-      if !is_active && params[:controller] == "public/pages" && params[:action] == "produits" && params[:from_cabine].blank? && path == nos_collections_url
-        is_active = true
-      end
       classes << "active" if is_active
   
       content_tag :li, class: classes do

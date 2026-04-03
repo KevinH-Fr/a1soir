@@ -27,7 +27,10 @@ class StripeProductService
   end
 
   def update_product_and_price
-    return unless @produit.stripe_product_id.present? && @produit.stripe_price_id.present?
+    unless @produit.stripe_product_id.present? && @produit.stripe_price_id.present?
+      create_product_and_price
+      return
+    end
 
     apply_stripe_updates
   rescue Stripe::InvalidRequestError => e

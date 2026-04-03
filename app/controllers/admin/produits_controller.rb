@@ -10,7 +10,7 @@ class Admin::ProduitsController < Admin::ApplicationController
   
     search_params = params.permit(
       :format, :page, :filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_prix,
-      q: [:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont]
+      q: [:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont, :id_eq]
     )
   
     produits = Produit.all
@@ -44,18 +44,20 @@ class Admin::ProduitsController < Admin::ApplicationController
     end
   
     # Traitement de la recherche multi-mots
-    if search_params[:q].present? &&
-       search_params[:q][:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont].present?
-  
-      keywords = search_params[:q][:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont]
-                 .to_s.strip.split
-  
+    raw_term = search_params.dig(:q, :nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont).to_s.strip
+
+    if raw_term.match?(/\A\d+\z/)
+      # Terme purement numérique → recherche exacte par ID (id_cont ne fonctionne pas sur integer)
+      @q = produits.ransack(id_eq: raw_term)
+    elsif raw_term.present?
+      keywords = raw_term.split
+
       groupings = keywords.map do |word|
         {
           nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont: word
         }
       end
-  
+
       @q = produits.ransack(combinator: 'and', groupings: groupings)
     else
       @q = produits.ransack(search_params[:q])
@@ -262,10 +264,12 @@ class Admin::ProduitsController < Admin::ApplicationController
         original = @produitBase
         copy = original.dup
         copy.nom = "#{original.nom}_new"
-  
+        copy.stripe_product_id = nil
+        copy.stripe_price_id   = nil
+
         # Copy associated categories (if any)
         copy.categorie_produits = original.categorie_produits
-  
+
         copy.save! # Save the copy inside the transaction
       end
   
@@ -508,7 +512,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     def produit_params
       params.require(:produit).permit(:nom, :prixvente, :prixlocation, :description, :type_produit_id,
         :caution, :handle, :reffrs, :quantite, :fournisseur_id, :dateachat, :prixachat, :actif,
-        :image1, :video1, :couleur_id, :taille_id, :eshop, :poids, :stripe_product_id, :stripe_price_id,
+        :image1, :video1, :couleur_id, :taille_id, :eshop, :poids,
         :coup_de_coeur, :coup_de_coeur_position, :ancien_prixvente,
         categorie_produit_ids: [])
     end

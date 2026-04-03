@@ -76,12 +76,23 @@ class StripeCheckoutFulfillmentService
       raise ActiveRecord::RecordNotFound, "Stripe session #{@session.id} has no line items"
     end
 
+    # Prefer products from cart metadata to avoid ambiguity when multiple products
+    # share the same stripe_price_id (no unique DB constraint). The metadata stores
+    # the exact product IDs the customer actually added to their cart.
+    cart_product_ids = @session.metadata&.cart_product_ids.to_s
+                               .split(",").map(&:to_i).reject(&:zero?)
+    cart_products_by_price_id = if cart_product_ids.any?
+      Produit.where(id: cart_product_ids).index_by(&:stripe_price_id)
+    else
+      {}
+    end
+
     line_data.each do |li|
       price = li.price
       price_id = price.is_a?(String) ? price : price&.id
       raise "Stripe line item without price id" if price_id.blank?
 
-      produit = Produit.find_by(stripe_price_id: price_id)
+      produit = cart_products_by_price_id[price_id] || Produit.find_by(stripe_price_id: price_id)
       raise ActiveRecord::RecordNotFound, "No produit for Stripe price #{price_id}" unless produit
 
       qty = li.quantity.to_i
