@@ -25,7 +25,7 @@ module Public
 
     def nos_collections
       @coups_de_coeur = Produit.where(today_availability: true).coups_de_coeur.eshop_diffusion.actif.limit(8)
-      session[:from_cabine] = false
+      session[:from_cabine] = false if session[:cabine_cart].blank?
     end
 
     def le_concept
@@ -100,11 +100,20 @@ module Public
       end
 
       session[:cabine_cart] ||= []
-      session[:cabine_cart] = (session[:cabine_cart] + session[:cart]).uniq
+      combined = (session[:cabine_cart] + session[:cart]).uniq
+
+      if combined.size > 10
+        redirect_to cart_path, alert: t("public.pages.cabine_essayage.flash.limit_reached")
+        return
+      end
+
+      transferred_count = @cart.size
+      session[:cabine_cart] = combined
+      session[:cart] = []
       session[:from_cabine] = true
 
       redirect_to cabine_essayage_path,
-                  notice: t("public.pages.cart.transfer_to_cabine_success", count: @cart.size)
+                  notice: t("public.pages.cart.transfer_to_cabine_success", count: transferred_count)
     end
 
     def cabine_add_product

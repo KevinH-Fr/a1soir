@@ -2,16 +2,22 @@
 
 <%= I18n.t("stripe_payment_mailer.confirmation.body.intro") %>
 
+<%= I18n.t("stripe_payment_mailer.confirmation.body.order_ref") %> : #<%= @payment.id.to_s.rjust(5, "0") %>
+<%= I18n.t("stripe_payment_mailer.confirmation.body.order_date") %> : <%= I18n.l(@payment.created_at.to_date, format: :long) %>
+
 <% @items.each do |item| %>
 <% produit = item.produit %>
 <% if produit.present? %>
 <% product_page_url = produit_url(locale: I18n.locale, slug: produit.nom.to_s.parameterize, id: produit.id, **@public_site_url_options) %>
-- <%= produit.nom %> — <%= I18n.t("stripe_payment_mailer.confirmation.body.quantity", n: item.quantity || 1) %> — <%= product_page_url %>
+- <%= produit.nom %><% if item.unit_amount.present? %> — <%= number_to_currency(item.unit_amount.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %><% end %> — <%= I18n.t("stripe_payment_mailer.confirmation.body.quantity", n: item.quantity || 1) %> — <%= product_page_url %>
 <% else %>
 - <%= I18n.t("stripe_payment_mailer.notification_admin.body.unknown_product") %> — <%= I18n.t("stripe_payment_mailer.confirmation.body.quantity", n: item.quantity || 1) %>
 <% end %>
 <% end %>
 
+<% subtotal_cents = @payment.amount.to_i - @payment.frais_livraison_centimes.to_i %>
+<%= I18n.t("stripe_payment_mailer.confirmation.body.subtotal_label") %> : <%= number_to_currency(subtotal_cents.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %>
+<%= I18n.t("stripe_payment_mailer.confirmation.body.shipping_label") %> : <%= @payment.frais_livraison_centimes.to_i == 0 ? I18n.t("stripe_payment_mailer.confirmation.body.shipping_free") : number_to_currency(@payment.frais_livraison_centimes.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %>
 <%= I18n.t("stripe_payment_mailer.confirmation.body.total_label") %> : <%= number_to_currency(@payment.amount.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %> (<%= @payment.currency&.upcase %>)
 
 <%= I18n.t("stripe_payment_mailer.confirmation.body.thanks") %>

@@ -4,6 +4,7 @@ en:
   date:
     formats:
       default: "%d/%m/%Y"
+      long: "%-d %B %Y"
 
   datetime:
     formats:
@@ -90,7 +91,12 @@ en:
         nom_label: "Name:"
         voir_produit: "View product →"
         quantity: "quantity %{n}"
-        total_label: "Total amount"
+        order_ref: "Order ref."
+        order_date: "Date"
+        subtotal_label: "Subtotal"
+        shipping_label: "Shipping"
+        shipping_free: "Free"
+        total_label: "Total (incl. VAT)"
         thanks: "Thank you for your trust."
     notification_admin:
       subject: "New e-shop order (Stripe payment)"
@@ -115,6 +121,10 @@ en:
         tracking_label: "Tracking number"
         tracking_link_label: "Track my parcel on laposte.fr →"
         no_tracking: "Your tracking number will be provided shortly."
+        subtotal_label: "Subtotal"
+        shipping_label: "Shipping"
+        shipping_free: "Free"
+        total_label: "Total (incl. VAT)"
         thanks: "Thank you for your trust — see you soon!"
 
   meta_tags:

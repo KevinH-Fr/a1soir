@@ -55,4 +55,40 @@
   <% end %>
 </div>
 
+<%# Récapitulatif financier %>
+<% if @payment.present? %>
+  <% subtotal_cents = @payment.amount.to_i - @payment.frais_livraison_centimes.to_i %>
+  <table style="margin: 16px 0 24px; border-collapse: collapse; font-size: 14px; min-width: 260px;">
+    <tr>
+      <td style="padding: 4px 24px 4px 0; color: #555;">
+        <%= I18n.t("stripe_payment_mailer.expedition.body.subtotal_label") %>
+      </td>
+      <td style="padding: 4px 0; text-align: right;">
+        <%= number_to_currency(subtotal_cents.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 4px 24px 4px 0; color: #555;">
+        <%= I18n.t("stripe_payment_mailer.expedition.body.shipping_label") %>
+      </td>
+      <td style="padding: 4px 0; text-align: right;">
+        <% if @payment.frais_livraison_centimes.to_i == 0 %>
+          <%= I18n.t("stripe_payment_mailer.expedition.body.shipping_free") %>
+        <% else %>
+          <%= number_to_currency(@payment.frais_livraison_centimes.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %>
+        <% end %>
+      </td>
+    </tr>
+    <tr style="border-top: 1px solid #e0e0e0;">
+      <td style="padding: 8px 24px 4px 0; font-weight: bold;">
+        <%= I18n.t("stripe_payment_mailer.expedition.body.total_label") %>
+      </td>
+      <td style="padding: 8px 0 4px; text-align: right; font-weight: bold;">
+        <%= number_to_currency(@payment.amount.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %>
+        (<%= @payment.currency&.upcase %>)
+      </td>
+    </tr>
+  </table>
+<% end %>
+
 <p><%= I18n.t("stripe_payment_mailer.expedition.body.thanks") %></p>

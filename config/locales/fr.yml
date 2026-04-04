@@ -313,7 +313,12 @@ fr:
         nom_label: "Nom :"
         voir_produit: "Voir le produit →"
         quantity: "quantité %{n}"
-        total_label: "Montant total"
+        order_ref: "Réf. commande"
+        order_date: "Date"
+        subtotal_label: "Sous-total"
+        shipping_label: "Frais de livraison"
+        shipping_free: "Offerts"
+        total_label: "Total TTC"
         thanks: "Merci pour votre confiance."
     notification_admin:
       subject: "Nouvelle commande e-shop (paiement Stripe)"
@@ -338,6 +343,10 @@ fr:
         tracking_label: "Numéro de suivi"
         tracking_link_label: "Suivre mon colis sur laposte.fr →"
         no_tracking: "Le numéro de suivi vous sera communiqué prochainement."
+        subtotal_label: "Sous-total"
+        shipping_label: "Frais de livraison"
+        shipping_free: "Offerts"
+        total_label: "Total TTC"
         thanks: "Merci pour votre confiance et à bientôt !"
 
   meta_tags:

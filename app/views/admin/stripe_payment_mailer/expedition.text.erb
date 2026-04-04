@@ -20,4 +20,11 @@
 <% end %>
 <% end %>
 
+<% if @payment.present? %>
+<% subtotal_cents = @payment.amount.to_i - @payment.frais_livraison_centimes.to_i %>
+<%= I18n.t("stripe_payment_mailer.expedition.body.subtotal_label") %> : <%= number_to_currency(subtotal_cents.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %>
+<%= I18n.t("stripe_payment_mailer.expedition.body.shipping_label") %> : <%= @payment.frais_livraison_centimes.to_i == 0 ? I18n.t("stripe_payment_mailer.expedition.body.shipping_free") : number_to_currency(@payment.frais_livraison_centimes.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %>
+<%= I18n.t("stripe_payment_mailer.expedition.body.total_label") %> : <%= number_to_currency(@payment.amount.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %> (<%= @payment.currency&.upcase %>)
+<% end %>
+
 <%= I18n.t("stripe_payment_mailer.expedition.body.thanks") %>
