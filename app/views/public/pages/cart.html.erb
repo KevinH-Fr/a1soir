@@ -128,11 +128,28 @@
 
                 <%# CTA buttons — primary %>
                 <div class="d-grid gap-2">
-                  <%= button_to t("public.pages.cart.checkout"),
-                      stripe_payments_path,
-                      method: :post,
-                      class: "btn btn-light btn-lg fw-semibold public-btn-border-radius shadow-sm text-dark w-100",
-                      data: { turbo: false } %>
+                  <%= form_with url: stripe_payments_path, method: :post,
+                      data: { turbo: false }, class: "m-0" do |f| %>
+                    <div class="form-check mb-2">
+                      <input type="checkbox"
+                             class="form-check-input"
+                             name="cgv_accepted"
+                             value="1"
+                             id="cgv_checkbox"
+                             onchange="this.form.querySelector('[type=submit]').disabled = !this.checked">
+                      <label class="form-check-label small text-light opacity-80" for="cgv_checkbox">
+                        <%= t("public.pages.cart.cgv_accept_prefix") %>
+                        <%= link_to t("public.pages.cart.cgv_link_text"),
+                            legal_path(anchor: "cgv"),
+                            target: "_blank",
+                            rel: "noopener noreferrer",
+                            class: "text-light text-decoration-underline" %>
+                      </label>
+                    </div>
+                    <%= f.submit t("public.pages.cart.checkout"),
+                        class: "btn btn-light btn-lg fw-semibold public-btn-border-radius shadow-sm text-dark w-100",
+                        disabled: true %>
+                  <% end %>
 
                   <%= link_to t("public.pages.cart.continue_shopping"),
                       produits_index_url,

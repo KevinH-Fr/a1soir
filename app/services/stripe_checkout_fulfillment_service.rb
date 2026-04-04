@@ -42,7 +42,8 @@ class StripeCheckoutFulfillmentService
           payment_method: pm_type,
           charge_id: payment_intent_id,
           customer_email: email,
-          frais_livraison_centimes: @session.total_details&.amount_shipping
+          frais_livraison_centimes: @session.total_details&.amount_shipping,
+          cgv_accepted_at: parse_cgv_accepted_at(@session.metadata&.cgv_accepted_at)
         )
 
         build_line_items!(payment)
@@ -65,6 +66,12 @@ class StripeCheckoutFulfillmentService
   end
 
   private
+
+  def parse_cgv_accepted_at(value)
+    Time.iso8601(value) if value.present?
+  rescue ArgumentError
+    nil
+  end
 
   def extract_payment_intent_id(session)
     pi = session.payment_intent

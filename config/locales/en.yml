@@ -211,6 +211,7 @@ en:
         online_sales_unavailable: "Online sales are currently unavailable."
         cart_empty: "Your cart is empty."
         cart_items_unavailable: "One or more items are no longer available for online sale. Please check your cart."
+        cgv_not_accepted: "You must accept the general terms of sale to place an order."
       shipping_label: "Shipping"
     demande_rdv:
       form:
@@ -847,6 +848,8 @@ en:
         summary_hint: "Secure payment via Stripe. Review your selection before confirming."
         subtotal: "Subtotal"
         checkout: "Proceed to payment"
+        cgv_accept_prefix: "I accept the"
+        cgv_link_text: "general terms of sale"
         continue_shopping: "Browse more products"
         remove: "Remove"
         view_detail: "View details"

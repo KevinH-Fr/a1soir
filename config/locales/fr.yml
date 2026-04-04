@@ -434,6 +434,7 @@ fr:
         online_sales_unavailable: "Les ventes en ligne sont actuellement indisponibles."
         cart_empty: "Votre panier est vide."
         cart_items_unavailable: "Un ou plusieurs articles ne sont plus disponibles à la vente en ligne. Vérifiez votre panier."
+        cgv_not_accepted: "Vous devez accepter les conditions générales de vente pour finaliser votre commande."
       shipping_label: "Frais d'expédition"
     demande_rdv:
       form:
@@ -1070,6 +1071,8 @@ fr:
         summary_hint: "Paiement sécurisé par notre prestataire Stripe. Revoyez votre sélection avant de valider."
         subtotal: "Sous-total"
         checkout: "Passer au paiement"
+        cgv_accept_prefix: "J'accepte les"
+        cgv_link_text: "conditions générales de vente"
         continue_shopping: "Voir plus de produits"
         remove: "Retirer"
         view_detail: "Voir le détail"

@@ -5,6 +5,11 @@ module Public
     layout "public"
 
     def create
+      unless params[:cgv_accepted] == "1"
+        redirect_to cart_path, alert: t("public.stripe_payments.flash.cgv_not_accepted")
+        return
+      end
+
       return unless ensure_cart_eligible_for_checkout!
 
       # Ne pas utiliser root_url ici : default_url_options ajoute ?locale=fr et une concaténation
@@ -30,7 +35,8 @@ module Public
         cancel_url: cancel_url,
         metadata: {
           locale: I18n.locale.to_s,
-          cart_product_ids: session[:cart].join(",")
+          cart_product_ids: session[:cart].join(","),
+          cgv_accepted_at: Time.current.iso8601
         }
       )
 

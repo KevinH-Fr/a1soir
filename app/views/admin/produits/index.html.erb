@@ -51,7 +51,6 @@
 
       <div id="produits"> </div> 
 
-
       <%= turbo_frame_tag :pagination, loading: :lazy, 
             src: admin_produits_path(format: :turbo_stream,
             filter_taille: params[:filter_taille], 
@@ -65,5 +64,3 @@
             sort: params[:sort],
             q: params[:q]&.to_unsafe_h) %>
 <% end %>
-
-
