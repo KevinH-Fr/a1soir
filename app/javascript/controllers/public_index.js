@@ -35,3 +35,6 @@ application.register("sticky-text", StickyTextController)
 
 import CookieConsentController from "./cookie_consent_controller"
 application.register("cookie-consent", CookieConsentController)
+
+import ShareListController from "./share_list_controller"
+application.register("share-list", ShareListController)

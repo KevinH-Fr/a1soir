@@ -396,6 +396,14 @@ fr:
         description: "Retrouvez les réponses aux questions fréquentes."
 
   public:
+    shared:
+      share_buttons:
+        whatsapp: "WhatsApp"
+        email: "E-mail"
+        copy: "Copier"
+        copied: "Liste copiée dans le presse-papier !"
+        copied_short: "Copié !"
+        native: "Partager"
     cookie_banner:
       title: "Préférences de cookies"
       description: "Nous utilisons des cookies pour améliorer votre expérience et mesurer la performance de notre site."
@@ -1051,6 +1059,12 @@ fr:
         cart_title: "Ma cabine d'essayage"
         add_products: "Ajouter des produits"
         book_fitting: "Réserver mon essayage"
+        share_whatsapp: "WhatsApp"
+        share_email: "E-mail"
+        share_copy: "Copier"
+        share_copied: "Copié !"
+        share_native: "Partager"
+        share_title: "Ma sélection Autour D'Un Soir"
         empty_title: "Votre cabine est vide"
         empty_text: "Commencez dès maintenant à sélectionner vos tenues favorites pour votre prochain événement."
         flash:
@@ -1094,6 +1108,12 @@ fr:
         floating_validate: "Valider mon panier"
         try_in_store: "Essayer en boutique — Prendre RDV"
         print_list: "Imprimer ma liste"
+        share_whatsapp: "WhatsApp"
+        share_email: "E-mail"
+        share_copy: "Copier"
+        share_copied: "Copié !"
+        share_native: "Partager"
+        share_title: "Ma sélection Autour D'Un Soir"
         instore_callout_title: "Voir ces tenues en boutique ?"
         instore_callout_lead: "Vous souhaitez les découvrir en magasin et les essayer tranquillement ?"
         instore_callout_body: "Transférez votre sélection vers notre cabine d’essayage, choisissez la date et l’horaire qui vous conviennent, et notre équipe préparera les articles avant votre venue. Vous pouvez aussi imprimer une liste à apporter en boutique."
@@ -1101,6 +1121,7 @@ fr:
           one: "1 article transféré dans votre cabine d'essayage"
           other: "%{count} articles transférés dans votre cabine d'essayage"
       stripe_payment_status:
+        share_title: "Je viens de commander chez Autour D'Un Soir"
         header_title: "Votre commande"
         header_title_with_ref: "Votre commande %{ref}"
         header_subtitle: "Récapitulatif de votre achat en ligne"

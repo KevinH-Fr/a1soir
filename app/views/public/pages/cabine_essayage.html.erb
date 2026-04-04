@@ -75,7 +75,7 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
           <!-- Header commun -->
           <div class="p-3">
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-              <div class="d-flex align-items-center gap-3">
+              <div class="d-flex align-items-center gap-2 flex-wrap">
                 <h3 class="mb-0">
                   <i class="bi bi-bag-check me-2"></i>
                   <%= t("public.pages.cabine_essayage.cart_title") %>
@@ -83,6 +83,16 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
                 <span class="px-3 py-2 border border-dark-subtle rounded-pill small fw-semibold">
                   <%= @cabine_cart.size %> / 10
                 </span>
+                <% if @cabine_cart.any? %>
+                  <% share_items_header = @cabine_cart.map { |p| { name: p.nom, url: produit_url(slug: p.nom.parameterize, id: p.id) } } %>
+                  <%= render "public/shared/share_buttons",
+                        items: share_items_header,
+                        share_title: t("public.pages.cabine_essayage.share_title"),
+                        btn_variant: "dark",
+                        btn_radius: "rounded-0",
+                        icon_only: true,
+                        wrapper_class: "d-flex align-items-center gap-1" %>
+                <% end %>
               </div>
               <!-- Bouton Ajouter -->
               <%= link_to produits_index_path(from_cabine: true), class: "btn btn-dark btn-lg px-4 rounded-0" do %>
@@ -151,6 +161,7 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
                       onclick="document.getElementById('reservationForm').scrollIntoView({ behavior: 'smooth', block: 'start' })">
                 <i class="bi bi-calendar-check me-2"></i><%= t("public.pages.cabine_essayage.book_fitting") %>
               </button>
+
             </div>
             <div class="p-0 m-0">
               <%= render partial: "public/pages/reservation_essayage" %>

@@ -2290,22 +2290,23 @@ section {
   margin-bottom: 1rem;
 }
 
-/* Page récap paiement Stripe (alignée concept-card / panier : angles serrés, typo lisible) */
+/* Page récap paiement Stripe — alignée visuellement avec le panier */
 .stripe-status-page {
-  --stripe-status-border: rgba(255, 255, 255, 0.1);
+  --stripe-status-border: rgba(255, 255, 255, 0.10);
   --stripe-status-bg: rgba(22, 22, 24, 0.94);
-  --stripe-status-radius: 4px;
+  --stripe-status-radius: 0;
 }
 
 .stripe-status-page .stripe-status-surface {
   background: var(--stripe-status-bg);
   border: 1px solid var(--stripe-status-border);
   border-radius: var(--stripe-status-radius);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.20);
+  transition: border-color 0.2s ease;
 }
 
 .stripe-status-page .stripe-status-surface:hover {
-  border-color: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 .stripe-status-page .stripe-status-surface--paid {
@@ -2316,58 +2317,31 @@ section {
   border-color: rgba(220, 90, 90, 0.4);
 }
 
-.stripe-status-page .stripe-status-page-title {
-  font-size: clamp(1.35rem, 2.2vw, 1.65rem);
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  line-height: 1.25;
-}
-
-.stripe-status-page .stripe-status-page-lead {
-  font-size: 1.1rem;
-  line-height: 1.75;
-  font-weight: 400;
-}
-
-.stripe-status-page .stripe-status-section-title {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.52);
-}
-
-.stripe-status-page .stripe-status-product-card {
-  min-width: 0;
-  max-width: 100%;
-  overflow: hidden;
-}
-
-.stripe-status-page .stripe-status-thumb {
-  border-radius: var(--stripe-status-radius);
-  object-fit: cover;
-}
-
-.stripe-status-page .stripe-status-icon-box {
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: var(--stripe-status-radius);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+/* Thumbnail — mêmes proportions que le panier */
+.stripe-status-page .stripe-status-thumb-wrap {
+  display: block;
+  width: 6.5rem;
   flex-shrink: 0;
 }
 
-.stripe-status-page .stripe-status-divider {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-  margin: 1rem 0;
+.stripe-status-page .stripe-status-thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 7rem;
+  object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  .stripe-status-page .stripe-status-thumb-wrap {
+    width: 8rem;
+  }
 }
 
 @media (min-width: 992px) {
   .stripe-status-page .stripe-status-summary-sticky {
     position: sticky;
-    top: 5.5rem;
+    top: 1.25rem;
     z-index: 2;
   }
 }

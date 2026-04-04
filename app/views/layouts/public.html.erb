@@ -22,12 +22,12 @@
     <meta property="og:description" content="<%= meta_description %>">
     <meta property="og:type" content="website">
     <meta property="og:url" content="<%= request.original_url %>">
-    <meta property="og:image" content="<%= "#{root_url}images/autourdunsoir_drapeau.png" %>">
+    <meta property="og:image" content="<%= content_for?(:og_image) ? yield(:og_image) : "#{root_url}images/autourdunsoir_drapeau.png" %>">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<%= meta_title %>">
     <meta name="twitter:description" content="<%= meta_description %>">
-    <meta name="twitter:image" content="<%= "#{root_url}images/autourdunsoir_drapeau.png" %>">
+    <meta name="twitter:image" content="<%= content_for?(:og_image) ? yield(:og_image) : "#{root_url}images/autourdunsoir_drapeau.png" %>">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 

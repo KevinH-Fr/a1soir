@@ -45,7 +45,7 @@
                     <% end %>
 
                     <%# Body %>
-                    <div class="flex-grow-1 min-w-0 p-3 d-flex flex-column gap-2">
+                    <div class="flex-grow-1 min-w-0 overflow-hidden p-3 d-flex flex-column gap-2">
 
                       <%# Nom + taille %>
                       <div>
@@ -98,16 +98,26 @@
                    style="top: 1.25rem; z-index: 2;" data-scroll-reveal>
 
                 <%# Summary header %>
-                <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
-                  <h2 class="h6 fw-bold text-light mb-0">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                  <h2 class="h6 fw-bold text-light mb-0 text-nowrap">
                     <i class="bi bi-bag-check me-2 opacity-75"></i>
                     <%= t("public.pages.cart.summary_title") %>
                   </h2>
-                  <span class="badge rounded-1 fw-normal text-uppercase ls-1
-                               bg-light bg-opacity-10 text-light border border-light border-opacity-15"
-                        style="font-size: .7rem;">
-                    <%= t("public.pages.cart.items_count", count: @cart.size) %>
-                  </span>
+                  <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                    <span class="badge rounded-1 fw-normal text-uppercase ls-1
+                                 bg-light bg-opacity-10 text-light border border-light border-opacity-15"
+                          style="font-size: .7rem;">
+                      <%= t("public.pages.cart.items_count", count: @cart.size) %>
+                    </span>
+                    <% share_items = @cart.map { |p| { name: p.nom, price: custom_currency_no_decimals_format(p.prixvente), url: produit_url(slug: p.nom.parameterize, id: p.id) } } %>
+                    <%= render "public/shared/share_buttons",
+                          items: share_items,
+                          share_title: t("public.pages.cart.share_title"),
+                          btn_variant: "light",
+                          icon_only: true,
+                          btn_radius: "rounded-1",
+                          wrapper_class: "d-flex align-items-center gap-1" %>
+                  </div>
                 </div>
 
                 <p class="text-light opacity-60 small mb-3">
@@ -205,6 +215,7 @@
                         <span><%= t("public.pages.cart.print_list") %></span>
                       </button>
                     </div>
+
                   </div>
                 </div>
 

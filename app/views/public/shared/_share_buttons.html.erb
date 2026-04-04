@@ -1,0 +1,63 @@
+<%# Locals:
+  #   items        — Array of { name:, price: (optional), url: }
+  #   share_title  — String shown as header of the shared text
+  #   btn_variant  — "light" (dark backgrounds) or "dark" (light backgrounds)
+  #   btn_radius   — optional extra CSS class for border-radius (default: "public-btn-border-radius")
+  #   icon_only    — true to render compact icon-only buttons with no text (default: false)
+  #   wrapper_class — optional extra classes on the container div
+%>
+<% btn_radius    ||= "public-btn-border-radius" %>
+<% icon_only     ||= false %>
+<% wrapper_class ||= "mt-3 d-flex flex-wrap align-items-center justify-content-center gap-2" %>
+<% btn_size        = icon_only ? "btn-sm" : "" %>
+<% btn_padding     = icon_only ? "" : "px-3 py-2" %>
+
+<div class="<%= wrapper_class %>"
+     data-controller="share-list"
+     data-share-list-title-value="<%= share_title %>"
+     data-share-list-items-value="<%= items.to_json %>"
+     data-share-list-copied-value="<%= t('public.shared.share_buttons.copied') %>"
+     data-share-list-copied-short-value="<%= t('public.shared.share_buttons.copied_short') %>">
+
+  <%# Desktop: WhatsApp %>
+  <a href="#"
+     class="btn <%= btn_size %> btn-outline-<%= btn_variant %> <%= btn_radius %> border-opacity-25 <%= btn_padding %> d-none d-inline-flex align-items-center gap-1"
+     rel="noopener noreferrer"
+     data-share-list-target="whatsapp"
+     data-action="click->share-list#shareWhatsapp"
+     aria-label="<%= t('public.shared.share_buttons.whatsapp') %>">
+    <i class="bi bi-whatsapp" aria-hidden="true"></i>
+    <% unless icon_only %><span><%= t("public.shared.share_buttons.whatsapp") %></span><% end %>
+  </a>
+
+  <%# Desktop: Email %>
+  <a href="#"
+     class="btn <%= btn_size %> btn-outline-<%= btn_variant %> <%= btn_radius %> border-opacity-25 <%= btn_padding %> d-none d-inline-flex align-items-center gap-1"
+     data-share-list-target="email"
+     data-action="click->share-list#shareEmail"
+     aria-label="<%= t('public.shared.share_buttons.email') %>">
+    <i class="bi bi-envelope" aria-hidden="true"></i>
+    <% unless icon_only %><span><%= t("public.shared.share_buttons.email") %></span><% end %>
+  </a>
+
+  <%# Mobile: native share %>
+  <button type="button"
+          class="btn <%= btn_size %> btn-outline-<%= btn_variant %> <%= btn_radius %> border-opacity-25 <%= btn_padding %> d-none d-inline-flex align-items-center gap-1"
+          data-share-list-target="native"
+          data-action="click->share-list#shareNative"
+          aria-label="<%= t('public.shared.share_buttons.native') %>">
+    <i class="bi bi-share" aria-hidden="true"></i>
+    <% unless icon_only %><span><%= t("public.shared.share_buttons.native") %></span><% end %>
+  </button>
+
+  <%# Always: copy %>
+  <button type="button"
+          class="btn <%= btn_size %> btn-outline-<%= btn_variant %> <%= btn_radius %> border-opacity-25 <%= btn_padding %> d-inline-flex align-items-center gap-1"
+          data-share-list-target="copy"
+          data-action="click->share-list#copyToClipboard"
+          aria-label="<%= t('public.shared.share_buttons.copy') %>">
+    <i class="bi bi-clipboard" aria-hidden="true"></i>
+    <% unless icon_only %><span><%= t("public.shared.share_buttons.copy") %></span><% end %>
+  </button>
+
+</div>
