@@ -9,7 +9,7 @@
       <strong><%= I18n.t("stripe_payment_mailer.confirmation.body.order_ref") %> :</strong>
     </td>
     <td style="padding: 2px 0;">
-      #<%= @payment.id.to_s.rjust(5, "0") %>
+      <%= @payment.commande&.ref_commande || "##{@payment.id}" %>
     </td>
   </tr>
   <tr>

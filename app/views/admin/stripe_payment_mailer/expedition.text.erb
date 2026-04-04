@@ -2,6 +2,10 @@
 
 <%= I18n.t("stripe_payment_mailer.expedition.body.intro") %>
 
+<% if @payment.present? %>
+<%= I18n.t("stripe_payment_mailer.confirmation.body.order_ref") %> : <%= @payment.commande&.ref_commande || "##{@payment.id}" %>
+<% end %>
+
 <% if @numero_suivi.present? %>
 <%= I18n.t("stripe_payment_mailer.expedition.body.tracking_label") %> : <%= @numero_suivi %>
 <% if @tracking_url.present? %>

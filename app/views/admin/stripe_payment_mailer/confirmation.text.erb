@@ -2,7 +2,7 @@
 
 <%= I18n.t("stripe_payment_mailer.confirmation.body.intro") %>
 
-<%= I18n.t("stripe_payment_mailer.confirmation.body.order_ref") %> : #<%= @payment.id.to_s.rjust(5, "0") %>
+<%= I18n.t("stripe_payment_mailer.confirmation.body.order_ref") %> : <%= @payment.commande&.ref_commande || "##{@payment.id}" %>
 <%= I18n.t("stripe_payment_mailer.confirmation.body.order_date") %> : <%= I18n.l(@payment.created_at.to_date, format: :long) %>
 
 <% @items.each do |item| %>
