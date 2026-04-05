@@ -736,7 +736,7 @@ module PagesHelper
   def render_cabine_button(produit, extra_class = "")
     if session[:cabine_cart].include?(produit.id)
       button_to cabine_remove_product_path(produit), method: :delete,
-          class: "btn btn-sm w-100 btn-outline-danger #{extra_class}" do
+          class: "btn btn-sm w-100 btn-outline-secondary rounded-0 #{extra_class}" do
         (content_tag(:i, nil, class: "bi bi-bag-x me-2") + t("public.helpers.cart_buttons.remove_from_fitting_room")).html_safe
       end
     elsif session[:cabine_cart].size >= 10
@@ -754,7 +754,7 @@ module PagesHelper
   def render_shop_button(produit, extra_class = "")
     if session[:cart].include?(produit.id)
       button_to remove_from_cart_path(produit), method: :delete,
-          class: "btn btn-sm w-100 btn-secondary #{extra_class}" do
+          class: "btn btn-sm w-100 btn-outline-secondary rounded-0 #{extra_class}" do
         (content_tag(:i, nil, class: "bi bi-bag-x me-2") + t("public.helpers.cart_buttons.remove_from_cart")).html_safe
       end
     else
