@@ -45,41 +45,33 @@ class Client < ApplicationRecord
 
   def self.create_from_demande(demande)
     # Retourne un client correspondant à la demande.
-    # Si un client existe déjà (mail ou téléphone), on le renvoie et on indique que rien n'a été créé.
+    # Si un client existe déjà, on le renvoie tel quel (les données client restent sous contrôle de l'admin).
     # Sinon, on instancie un nouveau client à partir des attributs fournis par la demande.
     existing = find_existing_from_demande(demande)
-    if existing
-      return [existing, false]
-    end
+    return [existing, false] if existing
 
     client = new(demande.to_client_attributes)
     [client, client.save]
   end
 
   def self.find_existing_from_demande(demande)
-    # Tente de retrouver un client existant à partir du mail, téléphone, ou prénom/nom
-    # Priorité : email > téléphone > prénom + nom
-    
-    # Chercher par email (si disponible dans demande)
+    # Priorité : email + nom (combinés) > prénom + nom
+    # Le téléphone n'est pas utilisé comme critère : trop peu fiable (valeurs corrompues, numéros partagés).
+
     email = demande.respond_to?(:email) ? demande.email : demande.mail
-    if email.present?
-      found = find_by(mail: email)
+
+    # Email + nom combinés : évite les faux positifs pour les couples partageant un email
+    if email.present? && demande.nom.present?
+      found = find_by(mail: email, nom: demande.nom)
       return found if found
     end
-    
-    # Chercher par téléphone (si disponible dans demande)
-    tel = demande.respond_to?(:telephone) ? demande.telephone : demande.tel
-    if tel.present?
-      found = find_by(tel: tel)
-      return found if found
-    end
-    
-    # Chercher par prénom + nom
+
+    # Fallback : prénom + nom
     if demande.prenom.present? && demande.nom.present?
       found = where(prenom: demande.prenom, nom: demande.nom).first
       return found if found
     end
-    
+
     nil
   end
     
