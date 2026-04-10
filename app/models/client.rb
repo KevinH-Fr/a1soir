@@ -11,7 +11,8 @@ class Client < ApplicationRecord
     validate :tel_or_mail_present
   
     PROPART_OPTIONS = ["particulier", "professionnel"]
-    INTITULE_OPTIONS = ["Madame", "Monsieur", "Madame et Monsieur"]
+    INTITULE_OPTIONS = ["Madame", "Monsieur", "Madame et Monsieur", "Madame/Monsieur"]
+    ESHOP_DEFAULT_INTITULE = "Madame/Monsieur"
     
     def full_name
       prenom + " " + nom

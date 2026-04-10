@@ -79,11 +79,12 @@ Un horodatage `confirmation_email_sent_at` est posé dès qu'**au moins un** de 
 [`StripeEshopCommandeService`](../app/services/stripe_eshop_commande_service.rb) est appelé depuis le service de fulfillment après création des lignes, si le paiement est nouveau :
 
 - Création ou réutilisation d'un **Client** à partir de l'email Stripe.
-- Création d'une **Commande** vente (`type_locvente: "vente"`) rattachée au **premier `Profile`** en base (`Profile.order(:id).first`).
+- Création d'une **Commande** vente (`type_locvente: "vente"`) rattachée au profil vendeur **e-shop** : [`Profile.for_eshop_commandes`](../app/models/profile.rb) (profil dont le `nom` correspond à `eshop`, insensible à la casse ; s'il n'existe pas, création avec `prenom` « E-shop » et `nom` `eshop`).
+- Les **nouveaux clients** créés depuis le checkout ont l'intitulé **`Madame/Monsieur`** ([`Client::ESHOP_DEFAULT_INTITULE`](../app/models/client.rb)), faute de civilité connue côté Stripe.
 - Création d'**Articles** en `locvente: "vente"` avec quantités et montants dérivés des `StripePaymentItem`.
 - Mise à jour de `stripe_payment.commande_id`.
 
-Si aucun profil ou aucun email n'est disponible, la commande n'est pas créée ; un avertissement est écrit dans les logs.
+Si aucun **email client** n'est disponible, la commande n'est pas créée ; un avertissement est écrit dans les logs. Un profil e-shop est toujours obtenu ou créé automatiquement.
 
 ---
 

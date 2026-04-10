@@ -11,11 +11,7 @@ class StripeEshopCommandeService
     return if @payment.commande_id.present?
     return if @payment.stripe_payment_items.blank?
 
-    profile = Profile.order(:id).first
-    unless profile
-      Rails.logger.warn("StripeEshopCommandeService: no Profile — skip Commande for StripePayment #{@payment.id}")
-      return
-    end
+    profile = Profile.for_eshop_commandes
 
     email = @payment.customer_email.presence
     unless email
@@ -89,7 +85,7 @@ class StripeEshopCommandeService
         nom: name_nom,
         mail: email,
         propart: "particulier",
-        intitule: Client::INTITULE_OPTIONS.first
+        intitule: Client::ESHOP_DEFAULT_INTITULE
       }.merge(addr_attrs)
     )
   end

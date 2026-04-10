@@ -73,52 +73,54 @@ class Admin::AnalysesController < Admin::ApplicationController
     groupedByDateCaPaiements = @paiementsFiltres.group("DATE(created_at)").order("DATE(paiement_recus.created_at)").sum(:montant)
     @groupedByDateCa = merge_grouped_by_day(groupedByDateCaPaiements, grouped_stripe_jour_eur)
 
-    # profiles (hors commandes e-shop regroupées sous « E-shop »)
+    # Une ligne par profil : le profil technique eshop (nom insensible à la casse) agrège commandes e-shop + CA Stripe.
     base_r, base_g, base_b = 208, 77, 123
     target_r, target_g, target_b = 245, 190, 210
 
     profiles = Profile.includes(commandes: [:paiement_recus, :articles])
     total = profiles.size
 
-    @stats_par_profile = profiles.map.with_index do |profile, index|
-      commandes = @commandesFiltres.where(profile_id: profile.id).where(eshop: [false, nil])
-      commandes_ids = commandes.pluck(:id)
-      paiements = @paiementsFiltres.only_prix.where(commande_id: commandes_ids)
-      ca = paiements.sum(:montant).to_d
-
-      if datedebut.present? && datefin.present?
-        commandesDevis = Commande.est_devis.filtredatedebut(datedebut).filtredatefin(datefin)
-      else
-        commandesDevis = Commande.est_devis.all
-      end
-
-      devis_count = commandesDevis.where(profile_id: profile.id).count
-
-      ratio = index.to_f / [total - 1, 1].max
-
-      r = (base_r + (target_r - base_r) * ratio).round
-      g = (base_g + (target_g - base_g) * ratio).round
-      b = (base_b + (target_b - base_b) * ratio).round
-
-      couleur = "rgb(#{r}, #{g}, #{b})"
-
-      {
-        profile: profile.prenom,
-        commandes: commandes.size,
-        devis: devis_count,
-        ca: ca,
-        couleur: couleur
-      }
+    if datedebut.present? && datefin.present?
+      commandesDevis = Commande.est_devis.filtredatedebut(datedebut).filtredatefin(datefin)
+    else
+      commandesDevis = Commande.est_devis.all
     end
 
-    eshop_commandes = @commandesFiltres.merge(Commande.eshop_sales)
-    @stats_par_profile << {
-      profile: "E-shop",
-      commandes: eshop_commandes.count,
-      devis: 0,
-      ca: @total_stripe_eur,
-      couleur: "rgb(226, 120, 160)"
-    }
+    @stats_par_profile = profiles.map.with_index do |profile, index|
+      if profile.nom.to_s.casecmp?(Profile::ESHOP_LAST_NAME)
+        eshop_commandes = @commandesFiltres.merge(Commande.eshop_sales)
+        {
+          profile: profile.prenom.presence || "E-shop",
+          commandes: eshop_commandes.count,
+          devis: 0,
+          ca: @total_stripe_eur,
+          couleur: "rgb(226, 120, 160)"
+        }
+      else
+        commandes = @commandesFiltres.where(profile_id: profile.id).where(eshop: [false, nil])
+        commandes_ids = commandes.pluck(:id)
+        paiements = @paiementsFiltres.only_prix.where(commande_id: commandes_ids)
+        ca = paiements.sum(:montant).to_d
+
+        devis_count = commandesDevis.where(profile_id: profile.id).count
+
+        ratio = index.to_f / [total - 1, 1].max
+
+        r = (base_r + (target_r - base_r) * ratio).round
+        g = (base_g + (target_g - base_g) * ratio).round
+        b = (base_b + (target_b - base_b) * ratio).round
+
+        couleur = "rgb(#{r}, #{g}, #{b})"
+
+        {
+          profile: profile.prenom,
+          commandes: commandes.size,
+          devis: devis_count,
+          ca: ca,
+          couleur: couleur
+        }
+      end
+    end
   end
 
   private

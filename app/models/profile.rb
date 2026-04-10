@@ -1,8 +1,18 @@
 class Profile < ApplicationRecord
     
+    ESHOP_LAST_NAME = "eshop"
+
     has_one_attached :profile_pic
     has_many :commandes
-    
+
+    # Profil vendeur pour les commandes créées depuis Stripe (peu de lignes en base : filtre Ruby, pas de LOWER SQL).
+    def self.for_eshop_commandes
+        row = pluck(:id, :nom).find { |_id, nom| nom.to_s.casecmp?(ESHOP_LAST_NAME) }
+        return find(row.first) if row
+
+        create!(prenom: "E-shop", nom: ESHOP_LAST_NAME)
+    end
+
     def full_name
         prenom + " " + nom
     end

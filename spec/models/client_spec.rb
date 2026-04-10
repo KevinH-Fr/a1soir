@@ -93,6 +93,18 @@ RSpec.describe 'Client' do
       end
     end
 
+    describe '#full_intitule' do
+      it 'uses Madame/Monsieur with family name for particulier' do
+        client = Client.new(
+          prenom: 'Marie',
+          nom: 'Durand',
+          propart: 'particulier',
+          intitule: Client::ESHOP_DEFAULT_INTITULE
+        )
+        expect(client.full_intitule).to eq('Madame/Monsieur Durand')
+      end
+    end
+
     describe ".find_existing_for_public_contact" do
       it "returns nil when only prenom+nom would match and e-shop fallback is off" do
         Client.create!(
