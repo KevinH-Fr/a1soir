@@ -75,16 +75,13 @@ class StripeEshopCommandeService
       StripeCheckoutShippingMapper.shipping_recipient_name(@session, @payment)
     )
 
-    existing = Client.find_by(mail: email)
-    if existing
-      updates = addr_attrs.stringify_keys
-      if StripeCheckoutShippingMapper.placeholder_eshop_client?(existing)
-        updates["prenom"] = name_prenom
-        updates["nom"] = name_nom
-      end
-      existing.update!(updates) if updates.any?
-      return existing
-    end
+    existing = Client.find_existing_for_public_contact(
+      email: email,
+      nom: name_nom,
+      prenom: name_prenom,
+      use_prenom_nom_fallback: false
+    )
+    return existing if existing
 
     Client.create!(
       {

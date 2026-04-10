@@ -56,25 +56,32 @@ class Client < ApplicationRecord
     [client, client.save]
   end
 
-  def self.find_existing_from_demande(demande)
-    # Priorité : email + nom (combinés) > prénom + nom
-    # Le téléphone n'est pas utilisé comme critère : trop peu fiable (valeurs corrompues, numéros partagés).
-    # Mail : même normalisation qu’en base (normalizes :mail) → where simple, pas de LOWER SQL.
-    # Nom / prénom : String#casecmp? (insensible à la casse), espaces gérés avec strip.
-
-    email = demande.respond_to?(:email) ? demande.email : demande.mail
-
-    if email.present? && demande.nom.present?
-      found = find_by_normalized_mail_and_nom(email, demande.nom)
+  # Exposée pour l’e-shop (Stripe) et tout autre flux public.
+  # Priorité : e-mail normalisé + nom ; optionnellement repli prénom + nom (RDV avec mail ambigu).
+  # L’e-shop doit appeler avec use_prenom_nom_fallback: false : le placeholder « Client / E-shop » ne doit pas
+  # collisionner avec un autre client via le repli sans e-mail.
+  def self.find_existing_for_public_contact(email:, nom:, prenom:, use_prenom_nom_fallback: true)
+    if email.present? && nom.present?
+      found = find_by_normalized_mail_and_nom(email, nom)
       return found if found
     end
 
-    if demande.prenom.present? && demande.nom.present?
-      found = find_by_normalized_prenom_and_nom(demande.prenom, demande.nom)
+    if use_prenom_nom_fallback && prenom.present? && nom.present?
+      found = find_by_normalized_prenom_and_nom(prenom, nom)
       return found if found
     end
 
     nil
+  end
+
+  def self.find_existing_from_demande(demande)
+    email = demande.respond_to?(:email) ? demande.email : demande.mail
+    find_existing_for_public_contact(
+      email: email,
+      nom: demande.nom,
+      prenom: demande.prenom,
+      use_prenom_nom_fallback: true
+    )
   end
 
   def self.normalize_mail_for_lookup(value)
@@ -82,25 +89,33 @@ class Client < ApplicationRecord
   end
   private_class_method :normalize_mail_for_lookup
 
+  # Insensible à la casse ; espaces / tirets équivalents (ex. "E-shop" vs "E Shop" après titleize).
+  def self.normalize_name_for_lookup(value)
+    value.to_s.strip.downcase.gsub(/[-\s]+/, " ").squeeze(" ").presence
+  end
+  private_class_method :normalize_name_for_lookup
+
   def self.find_by_normalized_mail_and_nom(mail, nom)
     m = normalize_mail_for_lookup(mail)
-    n = nom.to_s.strip
-    return nil if m.blank? || n.blank?
+    n_key = normalize_name_for_lookup(nom)
+    return nil if m.blank? || n_key.blank?
 
-    where(mail: m).find { |c| c.nom.to_s.strip.casecmp?(n) }
+    where(mail: m).find { |c| normalize_name_for_lookup(c.nom) == n_key }
   end
   private_class_method :find_by_normalized_mail_and_nom
 
   # Secours si le mail n’a pas permis de trancher : parcourt les clients (cas rare).
   def self.find_by_normalized_prenom_and_nom(prenom, nom)
-    p = prenom.to_s.strip
-    n = nom.to_s.strip
-    return nil if p.blank? || n.blank?
+    p_key = normalize_name_for_lookup(prenom)
+    n_key = normalize_name_for_lookup(nom)
+    return nil if p_key.blank? || n_key.blank?
 
     find_each do |c|
       next if c.prenom.blank? || c.nom.blank?
 
-      return c if c.prenom.strip.casecmp?(p) && c.nom.strip.casecmp?(n)
+      next unless normalize_name_for_lookup(c.prenom) == p_key && normalize_name_for_lookup(c.nom) == n_key
+
+      return c
     end
     nil
   end

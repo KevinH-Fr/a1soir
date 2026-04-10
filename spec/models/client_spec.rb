@@ -92,4 +92,23 @@ RSpec.describe 'Client' do
         expect(client.id).to eq(other_mail.id)
       end
     end
+
+    describe ".find_existing_for_public_contact" do
+      it "returns nil when only prenom+nom would match and e-shop fallback is off" do
+        Client.create!(
+          prenom: "Client",
+          nom: "E-shop",
+          mail: "other@example.com",
+          propart: "particulier",
+          intitule: Client::INTITULE_OPTIONS.first
+        )
+        found = Client.find_existing_for_public_contact(
+          email: "checkout@example.com",
+          nom: "E-shop",
+          prenom: "Client",
+          use_prenom_nom_fallback: false
+        )
+        expect(found).to be_nil
+      end
+    end
 end

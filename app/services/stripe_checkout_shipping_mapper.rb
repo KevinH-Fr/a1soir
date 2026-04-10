@@ -44,7 +44,7 @@ class StripeCheckoutShippingMapper
     # Préfère la session ; si elle est vide (tests / ancien flux), utilise l’instantané StripePayment.
     def client_address_attrs(session, payment = nil)
       attrs = address_fields_for_client(session)
-      return attrs if attrs.any?
+      return attrs if attrs.compact_blank.any?
       return {} if payment.blank?
 
       line12 = [payment.shipping_address_line1, payment.shipping_address_line2].compact.map(&:to_s).map(&:strip).reject(&:blank?)
@@ -98,8 +98,10 @@ class StripeCheckoutShippingMapper
     end
 
     def placeholder_eshop_client?(client)
-      client.prenom.to_s.strip.casecmp("client").zero? &&
-        client.nom.to_s.strip.casecmp("e-shop").zero?
+      return false unless client.prenom.to_s.strip.casecmp?("client")
+
+      nom_key = client.nom.to_s.strip.downcase.gsub(/[-\s]+/, " ").squeeze(" ")
+      nom_key == "e shop"
     end
 
     private

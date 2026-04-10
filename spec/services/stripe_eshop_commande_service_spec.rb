@@ -6,11 +6,16 @@ require "ostruct"
 RSpec.describe StripeEshopCommandeService do
   let!(:profile) { Profile.create!(prenom: "Vendeur", nom: "Eshop") }
 
+  let!(:es_example_uid) { SecureRandom.hex(8) }
+  let(:es_checkout_session_id) { "cs_es_#{es_example_uid}" }
+  let(:es_payment_intent_id) { "pi_es_#{es_example_uid}" }
+  let(:checkout_customer_email) { "svc-#{SecureRandom.hex(6)}@example.com" }
+
   let!(:produit) do
     Produit.create!(
       nom: "Robe commande svc",
       prixvente: 60,
-      stripe_price_id: "price_svc_001",
+      stripe_price_id: "price_svc_#{SecureRandom.hex(8)}",
       eshop: true,
       today_availability: true,
       quantite: 2
@@ -19,12 +24,12 @@ RSpec.describe StripeEshopCommandeService do
 
   let!(:payment) do
     StripePayment.create!(
-      stripe_payment_id: "pi_svc_001",
-      stripe_checkout_session_id: "cs_svc_001",
+      stripe_payment_id: es_payment_intent_id,
+      stripe_checkout_session_id: es_checkout_session_id,
       amount: 6000,
       currency: "eur",
       status: "paid",
-      customer_email: "svc@example.com"
+      customer_email: checkout_customer_email
     )
   end
 
@@ -37,7 +42,7 @@ RSpec.describe StripeEshopCommandeService do
     )
   end
 
-  let(:mock_session) { OpenStruct.new(id: "cs_svc_001") }
+  let(:mock_session) { OpenStruct.new(id: es_checkout_session_id) }
 
   subject(:service) { described_class.new(payment, mock_session) }
 
@@ -68,16 +73,34 @@ RSpec.describe StripeEshopCommandeService do
       expect(payment.reload.commande.type_locvente).to eq("vente")
     end
 
-    it "creates or finds a Client by email" do
+    it "creates a Client when no shipping name (placeholder prenom/nom)" do
       expect { service.attach_commande_if_possible! }.to change(Client, :count).by(1)
-      client = Client.find_by(mail: "svc@example.com")
-      expect(client).to be_present
+      client = payment.reload.commande.client
+      expect(client.mail).to eq(checkout_customer_email)
+      expect(client.prenom).to eq("Client")
+      expect(client.nom).to eq("E Shop")
     end
 
-    it "reuses an existing Client with the same email" do
-      Client.create!(prenom: "Existant", nom: "Client", mail: "svc@example.com",
+    it "reuses an existing Client when normalized mail and family name match (case-insensitive)" do
+      Client.create!(prenom: "Jean", nom: "E-shop", mail: checkout_customer_email,
                      propart: "particulier", intitule: Client::INTITULE_OPTIONS.first)
       expect { service.attach_commande_if_possible! }.not_to change(Client, :count)
+      expect(payment.reload.commande.client.nom).to eq("E Shop")
+    end
+
+    it "reuses when checkout email casing differs from stored mail" do
+      Client.create!(prenom: "Jean", nom: "E-shop", mail: checkout_customer_email,
+                     propart: "particulier", intitule: Client::INTITULE_OPTIONS.first)
+      payment.update_column(:customer_email, checkout_customer_email.upcase)
+      expect { service.attach_commande_if_possible! }.not_to change(Client, :count)
+    end
+
+    it "creates a new Client when mail matches but family name does not" do
+      Client.create!(prenom: "Paul", nom: "Martin", mail: checkout_customer_email,
+                     propart: "particulier", intitule: Client::INTITULE_OPTIONS.first)
+      expect { service.attach_commande_if_possible! }.to change(Client, :count).by(1)
+      expect(Client.where(mail: checkout_customer_email).count).to eq(2)
+      expect(payment.reload.commande.client.nom).to eq("E Shop")
     end
 
     context "when the checkout session includes shipping" do
@@ -93,15 +116,19 @@ RSpec.describe StripeEshopCommandeService do
       let(:mock_shipping) { OpenStruct.new(name: "Sophie Livraison", address: mock_addr) }
       let(:mock_session) do
         OpenStruct.new(
-          id: "cs_svc_001",
+          id: es_checkout_session_id,
           shipping_details: mock_shipping,
           customer_details: OpenStruct.new(phone: "+33611112222")
         )
       end
 
+      before do
+        payment.update!(StripeCheckoutShippingMapper.stripe_payment_shipping_attrs(mock_session))
+      end
+
       it "creates the Client with address and name from shipping" do
         service.attach_commande_if_possible!
-        client = Client.find_by(mail: "svc@example.com")
+        client = Client.find_by(mail: checkout_customer_email)
         expect(client.prenom).to eq("Sophie")
         expect(client.nom).to eq("Livraison")
         expect(client.adresse).to eq("8 avenue des Tests")
@@ -116,6 +143,30 @@ RSpec.describe StripeEshopCommandeService do
         expect(payment.reload.commande.commentaires).to include("Livraison:")
         expect(payment.commande.commentaires).to include("Sophie Livraison")
         expect(payment.commande.commentaires).to include("Bordeaux")
+      end
+
+      it "does not overwrite an existing matched Client address or phone from Stripe" do
+        existing = Client.create!(
+          prenom: "Sophie",
+          nom: "Livraison",
+          mail: checkout_customer_email,
+          adresse: "1 rue Ancienne",
+          cp: "06000",
+          ville: "Nice",
+          pays: "FR",
+          tel: "+33600000001",
+          propart: "particulier",
+          intitule: Client::INTITULE_OPTIONS.first
+        )
+        service.attach_commande_if_possible!
+        existing.reload
+        expect(existing.adresse).to eq("1 rue Ancienne")
+        expect(existing.cp).to eq("06000")
+        expect(existing.ville).to eq("Nice")
+        expect(existing.tel).to eq("+33600000001")
+        expect(payment.reload.commande.client_id).to eq(existing.id)
+        expect(payment.shipping_address_line1).to eq("8 avenue des Tests")
+        expect(payment.commande.commentaires).to include("8 avenue des Tests")
       end
     end
 
@@ -143,7 +194,9 @@ RSpec.describe StripeEshopCommandeService do
     end
 
     context "when no Profile exists" do
-      before { Profile.delete_all }
+      before do
+        allow(Profile).to receive(:order).with(:id).and_return(Profile.where("1 = 0"))
+      end
 
       it "does not create a Commande" do
         expect { service.attach_commande_if_possible! }.not_to change(Commande, :count)
@@ -155,7 +208,7 @@ RSpec.describe StripeEshopCommandeService do
         Produit.create!(
           nom: "Jupe commande svc",
           prixvente: 40,
-          stripe_price_id: "price_svc_002",
+          stripe_price_id: "price_svc2_#{SecureRandom.hex(8)}",
           eshop: true,
           today_availability: true,
           quantite: 1
@@ -196,6 +249,11 @@ RSpec.describe StripeEshopCommandeService do
   # -------------------------------------------------------------------------
 
   describe "stock race condition: boutique sells last unit before webhook fires" do
+    let!(:race_uid) { SecureRandom.hex(8) }
+    let(:race_checkout_session_id) { "cs_race_#{race_uid}" }
+    let(:race_payment_intent_id) { "pi_race_#{race_uid}" }
+    let(:mock_session_race) { OpenStruct.new(id: race_checkout_session_id) }
+
     let!(:client_boutique) do
       Client.create!(
         nom: "Boutique Client",
@@ -209,7 +267,7 @@ RSpec.describe StripeEshopCommandeService do
       Produit.create!(
         nom: "Robe race svc",
         prixvente: 60,
-        stripe_price_id: "price_race_svc",
+        stripe_price_id: "price_race_#{SecureRandom.hex(8)}",
         eshop: true,
         today_availability: true,
         quantite: 1
@@ -218,8 +276,8 @@ RSpec.describe StripeEshopCommandeService do
 
     let!(:payment_race) do
       StripePayment.create!(
-        stripe_payment_id: "pi_race_svc_001",
-        stripe_checkout_session_id: "cs_race_svc_001",
+        stripe_payment_id: race_payment_intent_id,
+        stripe_checkout_session_id: race_checkout_session_id,
         amount: 6000,
         currency: "eur",
         status: "paid",
@@ -253,7 +311,7 @@ RSpec.describe StripeEshopCommandeService do
     end
 
     it "fulfillment still creates the Commande (gate is at checkout, not at webhook)" do
-      svc = described_class.new(payment_race, mock_session)
+      svc = described_class.new(payment_race, mock_session_race)
       expect { svc.attach_commande_if_possible! }.to change(Commande, :count).by(1)
     end
 
