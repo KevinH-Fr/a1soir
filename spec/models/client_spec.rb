@@ -30,5 +30,66 @@ RSpec.describe 'Client' do
             end
         end
     end
-    
+
+    describe '.create_from_demande' do
+      FakeDemande = Struct.new(:prenom, :nom, :email, :telephone, keyword_init: true) do
+        def respond_to?(method_name, include_private = false)
+          method_name == :email || super
+        end
+
+        def to_client_attributes
+          { prenom: prenom, nom: nom, tel: telephone, mail: email }
+            .select { |_k, v| v.present? }
+        end
+      end
+
+      let(:demande_lowercase) do
+        FakeDemande.new(
+          prenom: 'jean',
+          nom: 'dupont',
+          email: 'jean@example.com',
+          telephone: '0612345678'
+        )
+      end
+
+      before do
+        Client.create!(
+          nom: 'Dupont',
+          prenom: 'Jean',
+          mail: 'jean@example.com',
+          tel: '0612345678',
+          propart: 'particulier',
+          intitule: Client::INTITULE_OPTIONS.first
+        )
+      end
+
+      it 'reuses existing client when mail and nom match ignoring case' do
+        client, created = Client.create_from_demande(demande_lowercase)
+        expect(created).to be false
+        expect(client.mail).to eq('jean@example.com')
+        expect(client.nom).to eq('Dupont')
+      end
+
+      it 'reuses existing client via prenom+nom fallback when case differs' do
+        other_mail = Client.create!(
+          nom: 'Martin',
+          prenom: 'Paul',
+          mail: 'paul@example.com',
+          tel: '0699999999',
+          propart: 'particulier',
+          intitule: Client::INTITULE_OPTIONS.first
+        )
+
+        demande = FakeDemande.new(
+          prenom: 'paul',
+          nom: 'martin',
+          email: 'unique-fallback@example.com',
+          telephone: '0688888888'
+        )
+
+        client, created = Client.create_from_demande(demande)
+        expect(created).to be false
+        expect(client.id).to eq(other_mail.id)
+      end
+    end
 end
