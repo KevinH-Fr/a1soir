@@ -1,33 +1,35 @@
 <div id="<%= dom_id demande_rdv %>" class="my-2">
   <div class="card mx-2 mb-3 light-beige-colored shadow-sm">
     <div class="card-body p-1">
-      <div class="card-title d-flex align-items-center">
-        <div>
+      <div class="card-title mb-1">
+        <%# Ligne 1 : nom + boutons d'action %>
+        <div class="d-flex align-items-center justify-content-between">
           <%= link_to "#collapseDemande#{dom_id(demande_rdv)}", 
-              class: "text-decoration-none text-dark", 
+              class: "text-decoration-none text-dark flex-grow-1", 
               "data-bs-toggle": "collapse", 
               role: "button", 
               "aria-expanded": "false", 
               "aria-controls": "collapseDemande#{dom_id(demande_rdv)}" do %>
             <%= custom_badge("", "", "", "fw-bold", demande_rdv.full_name) if demande_rdv.nom.present? %>
           <% end %>
-        </div>
-        <%= badge_statut_demande_cabine(demande_rdv.statut) %>
-        <%= custom_badge("fa-calendar", "", "", "", " envoyée le #{demande_rdv.created_at.strftime('%d/%m/%Y %H:%M')}") %>
-        <%= custom_badge("fa-calendar-check", "", "", "", demande_rdv.date_rdv.strftime('%d/%m/%Y à %H:%M')) if demande_rdv.date_rdv.present? && demande_rdv.date_rdv.respond_to?(:strftime) %>
-        <% if demande_rdv.demande_cabine_essayage&.produits&.any? %>
-          <div class="badge lighter-beige-colored fw-normal m-1 fs-6 shadow-sm text-warning text-break" style="white-space: normal;">
-            <i class="bi bi-cart-check me-1"></i>
-            <%= demande_rdv.demande_cabine_essayage.produits.count %> produit<%= 's' if demande_rdv.demande_cabine_essayage.produits.count > 1 %>
+          <div class="d-flex align-items-center gap-1 ms-1 flex-shrink-0">
+            <%= link_to "", "#collapseDemande#{dom_id(demande_rdv)}", 
+                  class: "btn btn-sm btn-outline-primary bi bi-eye", "data-bs-toggle": "collapse", 
+                  role: "button", "aria-expanded": "false", "aria-controls": "collapseDemande#{dom_id(demande_rdv)}" %>
+            <%= button_to("", edit_admin_demande_rdv_path(demande_rdv), method: :post, class: "btn btn-sm btn-secondary bi bi-pencil-square m-0") %>
           </div>
-        <% end %>
-
-        <%= link_to "", "#collapseDemande#{dom_id(demande_rdv)}", 
-              class: "btn btn-sm btn-outline-primary bi bi-eye m-1", "data-bs-toggle": "collapse", 
-              role: "button", "aria-expanded": "false", "aria-controls": "collapseDemande#{dom_id(demande_rdv)}" %>
-
-        <div class="ms-auto d-flex align-items-center">
-          <%= button_to("", edit_admin_demande_rdv_path(demande_rdv), method: :post, class: "btn btn-sm btn-secondary bi bi-pencil-square m-0") %> 
+        </div>
+        <%# Ligne 2 : badges statut / dates / produits (wrappables sur mobile) %>
+        <div class="d-flex flex-wrap align-items-center">
+          <%= badge_statut_demande_cabine(demande_rdv.statut) %>
+          <%= custom_badge("fa-calendar", "", "", "", "envoyée le #{demande_rdv.created_at.strftime('%d/%m/%Y %H:%M')}") %>
+          <%= custom_badge("fa-calendar-check", "", "", "", demande_rdv.date_rdv.strftime('%d/%m/%Y à %H:%M')) if demande_rdv.date_rdv.present? && demande_rdv.date_rdv.respond_to?(:strftime) %>
+          <% if demande_rdv.demande_cabine_essayage&.produits&.any? %>
+            <div class="badge lighter-beige-colored fw-normal m-1 fs-6 shadow-sm text-warning text-break" style="white-space: normal;">
+              <i class="bi bi-cart-check me-1"></i>
+              <%= demande_rdv.demande_cabine_essayage.produits.count %> produit<%= 's' if demande_rdv.demande_cabine_essayage.produits.count > 1 %>
+            </div>
+          <% end %>
         </div>
       </div>
 

@@ -1,5 +1,7 @@
 class Client < ApplicationRecord
-    
+    # Même forme qu’en base pour les recherches : find_by(mail: …) sans SQL LOWER.
+    normalizes :mail, with: ->(mail) { mail.to_s.strip.downcase.presence }
+
     before_validation :capitalize_names
 
     has_many :commandes
@@ -45,44 +47,65 @@ class Client < ApplicationRecord
 
   def self.create_from_demande(demande)
     # Retourne un client correspondant à la demande.
-    # Si un client existe déjà (mail ou téléphone), on le renvoie et on indique que rien n'a été créé.
+    # Si un client existe déjà, on le renvoie tel quel (les données client restent sous contrôle de l'admin).
     # Sinon, on instancie un nouveau client à partir des attributs fournis par la demande.
     existing = find_existing_from_demande(demande)
-    if existing
-      return [existing, false]
-    end
+    return [existing, false] if existing
 
     client = new(demande.to_client_attributes)
     [client, client.save]
   end
 
   def self.find_existing_from_demande(demande)
-    # Tente de retrouver un client existant à partir du mail, téléphone, ou prénom/nom
-    # Priorité : email > téléphone > prénom + nom
-    
-    # Chercher par email (si disponible dans demande)
+    # Priorité : email + nom (combinés) > prénom + nom
+    # Le téléphone n'est pas utilisé comme critère : trop peu fiable (valeurs corrompues, numéros partagés).
+    # Mail : même normalisation qu’en base (normalizes :mail) → where simple, pas de LOWER SQL.
+    # Nom / prénom : String#casecmp? (insensible à la casse), espaces gérés avec strip.
+
     email = demande.respond_to?(:email) ? demande.email : demande.mail
-    if email.present?
-      found = find_by(mail: email)
+
+    if email.present? && demande.nom.present?
+      found = find_by_normalized_mail_and_nom(email, demande.nom)
       return found if found
     end
-    
-    # Chercher par téléphone (si disponible dans demande)
-    tel = demande.respond_to?(:telephone) ? demande.telephone : demande.tel
-    if tel.present?
-      found = find_by(tel: tel)
-      return found if found
-    end
-    
-    # Chercher par prénom + nom
+
     if demande.prenom.present? && demande.nom.present?
-      found = where(prenom: demande.prenom, nom: demande.nom).first
+      found = find_by_normalized_prenom_and_nom(demande.prenom, demande.nom)
       return found if found
     end
-    
+
     nil
   end
-    
+
+  def self.normalize_mail_for_lookup(value)
+    value.to_s.strip.downcase.presence
+  end
+  private_class_method :normalize_mail_for_lookup
+
+  def self.find_by_normalized_mail_and_nom(mail, nom)
+    m = normalize_mail_for_lookup(mail)
+    n = nom.to_s.strip
+    return nil if m.blank? || n.blank?
+
+    where(mail: m).find { |c| c.nom.to_s.strip.casecmp?(n) }
+  end
+  private_class_method :find_by_normalized_mail_and_nom
+
+  # Secours si le mail n’a pas permis de trancher : parcourt les clients (cas rare).
+  def self.find_by_normalized_prenom_and_nom(prenom, nom)
+    p = prenom.to_s.strip
+    n = nom.to_s.strip
+    return nil if p.blank? || n.blank?
+
+    find_each do |c|
+      next if c.prenom.blank? || c.nom.blank?
+
+      return c if c.prenom.strip.casecmp?(p) && c.nom.strip.casecmp?(n)
+    end
+    nil
+  end
+  private_class_method :find_by_normalized_prenom_and_nom
+
     private
   
     def capitalize_names
