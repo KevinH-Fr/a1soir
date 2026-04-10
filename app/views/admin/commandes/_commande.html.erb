@@ -45,8 +45,10 @@
         <%= field_with_label("debutloc: ", commande.debutloc)  %>
         <%= field_with_label("finloc: ", commande.finloc)  %>
         <%= field_with_label("dateevent: ", commande.dateevent)  %>
-        <%= field_with_label("commentaires: ", commande.commentaires) %>
-      
+        <%# E-shop : commentaires = récap Stripe (livraison, PI…) — déjà sur la section Paiement Stripe, pas dans ce collapse %>
+        <% unless commande.eshop? %>
+          <%= field_with_label("commentaires: ", commande.commentaires) %>
+        <% end %>
 
       </div>
     </div>

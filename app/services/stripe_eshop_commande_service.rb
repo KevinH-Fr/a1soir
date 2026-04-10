@@ -64,19 +64,36 @@ class StripeEshopCommandeService
     parts = []
     parts << "Stripe PaymentIntent: #{@payment.stripe_payment_id}" if @payment.stripe_payment_id.present?
     parts << "Session: #{@session.id}" if @session.respond_to?(:id) && @session.id.present?
+    ship = StripeCheckoutShippingMapper.commande_shipping_comment(@payment)
+    parts << ship if ship.present?
     parts.join(" — ")
   end
 
   def find_or_create_eshop_client!(email)
+    addr_attrs = StripeCheckoutShippingMapper.client_address_attrs(@session, @payment)
+    name_prenom, name_nom = StripeCheckoutShippingMapper.name_parts_from_shipping_name(
+      StripeCheckoutShippingMapper.shipping_recipient_name(@session, @payment)
+    )
+
     existing = Client.find_by(mail: email)
-    return existing if existing
+    if existing
+      updates = addr_attrs.stringify_keys
+      if StripeCheckoutShippingMapper.placeholder_eshop_client?(existing)
+        updates["prenom"] = name_prenom
+        updates["nom"] = name_nom
+      end
+      existing.update!(updates) if updates.any?
+      return existing
+    end
 
     Client.create!(
-      prenom: "Client",
-      nom: "E-shop",
-      mail: email,
-      propart: "particulier",
-      intitule: Client::INTITULE_OPTIONS.first
+      {
+        prenom: name_prenom,
+        nom: name_nom,
+        mail: email,
+        propart: "particulier",
+        intitule: Client::INTITULE_OPTIONS.first
+      }.merge(addr_attrs)
     )
   end
 end

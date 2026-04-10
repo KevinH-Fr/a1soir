@@ -80,6 +80,45 @@ RSpec.describe StripeEshopCommandeService do
       expect { service.attach_commande_if_possible! }.not_to change(Client, :count)
     end
 
+    context "when the checkout session includes shipping" do
+      let(:mock_addr) do
+        OpenStruct.new(
+          line1: "8 avenue des Tests",
+          line2: nil,
+          city: "Bordeaux",
+          postal_code: "33000",
+          country: "FR"
+        )
+      end
+      let(:mock_shipping) { OpenStruct.new(name: "Sophie Livraison", address: mock_addr) }
+      let(:mock_session) do
+        OpenStruct.new(
+          id: "cs_svc_001",
+          shipping_details: mock_shipping,
+          customer_details: OpenStruct.new(phone: "+33611112222")
+        )
+      end
+
+      it "creates the Client with address and name from shipping" do
+        service.attach_commande_if_possible!
+        client = Client.find_by(mail: "svc@example.com")
+        expect(client.prenom).to eq("Sophie")
+        expect(client.nom).to eq("Livraison")
+        expect(client.adresse).to eq("8 avenue des Tests")
+        expect(client.cp).to eq("33000")
+        expect(client.ville).to eq("Bordeaux")
+        expect(client.pays).to eq("FR")
+        expect(client.tel).to eq("+33611112222")
+      end
+
+      it "includes a Livraison line in commande commentaires" do
+        service.attach_commande_if_possible!
+        expect(payment.reload.commande.commentaires).to include("Livraison:")
+        expect(payment.commande.commentaires).to include("Sophie Livraison")
+        expect(payment.commande.commentaires).to include("Bordeaux")
+      end
+    end
+
     it "is idempotent when called twice on the same payment" do
       service.attach_commande_if_possible!
       expect { service.attach_commande_if_possible! }.not_to change(Commande, :count)

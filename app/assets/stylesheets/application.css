@@ -2398,8 +2398,9 @@ section {
   }
 }
 
-/* Panier : encart essai boutique collapse */
-.public-cart-page .cart-instore-callout .btn:hover {
+/* Panier : encart essai boutique — survol uniquement sur le déclencheur du collapse,
+   pas sur les CTA (sinon on écrase le hover Bootstrap de btn-light / btn-outline-light). */
+.public-cart-page .cart-instore-callout .cart-instore-callout-toggle:hover {
   background: transparent;
   color: #fff;
 }
@@ -2411,7 +2412,7 @@ section {
   opacity: 0.6;
 }
 
-.public-cart-page .cart-instore-callout .btn[aria-expanded="true"] .cart-instore-chevron {
+.public-cart-page .cart-instore-callout .cart-instore-callout-toggle[aria-expanded="true"] .cart-instore-chevron {
   transform: rotate(180deg);
 }
 

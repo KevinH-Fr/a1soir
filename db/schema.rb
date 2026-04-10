@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_04_113040) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_10_113752) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -421,6 +421,13 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_04_113040) do
     t.integer "commande_id"
     t.integer "frais_livraison_centimes"
     t.datetime "cgv_accepted_at"
+    t.string "shipping_name"
+    t.string "shipping_address_line1"
+    t.string "shipping_address_line2"
+    t.string "shipping_city"
+    t.string "shipping_postal_code"
+    t.string "shipping_country"
+    t.string "customer_phone"
     t.index ["commande_id"], name: "index_stripe_payments_on_commande_id"
     t.index ["produit_id"], name: "index_stripe_payments_on_produit_id"
     t.index ["stripe_checkout_session_id"], name: "index_stripe_payments_on_stripe_checkout_session_id", unique: true, where: "stripe_checkout_session_id IS NOT NULL"

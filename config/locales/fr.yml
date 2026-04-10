@@ -1091,7 +1091,7 @@ fr:
         intro_title: "Votre sélection"
         intro_text: "Vérifiez les articles choisis puis poursuivez vers un paiement sécurisé par carte. Vous pouvez retirer un article à tout moment avant de payer."
         summary_title: "Résumé"
-        summary_hint: "Paiement sécurisé par notre prestataire Stripe. Revoyez votre sélection avant de valider."
+        summary_hint: "Paiement sécurisé par Stripe"
         subtotal: "Sous-total"
         checkout: "Passer au paiement"
         cgv_accept_prefix: "J'accepte les"

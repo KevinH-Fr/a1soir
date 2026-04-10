@@ -123,6 +123,28 @@ RSpec.describe "Public StripePayments", type: :request do
       end
     end
 
+    context "when Stripe checkout session is created" do
+      let(:checkout_url) { "https://checkout.stripe.test/captured" }
+
+      before do
+        allow(Stripe::ShippingRate).to receive(:create).and_return(OpenStruct.new(id: "sr_test_req"))
+      end
+
+      it "passes shipping_address_collection and phone_number_collection to Stripe" do
+        expect(Stripe::Checkout::Session).to receive(:create).with(
+          a_hash_including(
+            :line_items,
+            shipping_address_collection: a_hash_including(allowed_countries: %w[FR BE CH]),
+            phone_number_collection: { enabled: true }
+          )
+        ).and_return(OpenStruct.new(url: checkout_url))
+
+        post "/fr/stripe_payments/add_to_cart/#{produit_eshop.id}"
+        post "/fr/stripe_payments", params: { cgv_accepted: "1" }
+        expect(response).to redirect_to(checkout_url)
+      end
+    end
+
     context "when a product in the cart has today_availability: false (stock exhausted)" do
       let!(:produit_out_of_stock) do
         Produit.create!(

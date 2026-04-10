@@ -100,6 +100,41 @@ RSpec.describe StripeCheckoutFulfillmentService do
       expect(StripePaymentMailer).to receive(:notification_admin).with(an_instance_of(StripePayment)).and_return(mail_delivery)
       described_class.new(mock_session).fulfill!
     end
+
+    it "persists Stripe Checkout shipping and phone on StripePayment" do
+      ship_addr = OpenStruct.new(
+        line1: "12 rue du Port",
+        line2: "Bât. B",
+        city: "Marseille",
+        postal_code: "13001",
+        country: "FR"
+      )
+      ship_details = OpenStruct.new(name: "Claire Mer", address: ship_addr)
+      cust = OpenStruct.new(phone: "+33698765432")
+      session = OpenStruct.new(
+        id: "cs_test_fulfill_ship",
+        payment_status: "paid",
+        payment_intent: "pi_test_fulfill_ship",
+        amount_total: 5000,
+        currency: "eur",
+        payment_method_types: ["card"],
+        customer_email: "ship@example.com",
+        customer_details: cust,
+        shipping_details: ship_details,
+        line_items: mock_line_items,
+        metadata: nil
+      )
+
+      described_class.new(session).fulfill!
+      pay = StripePayment.order(:id).last
+      expect(pay.shipping_name).to eq("Claire Mer")
+      expect(pay.shipping_address_line1).to eq("12 rue du Port")
+      expect(pay.shipping_address_line2).to eq("Bât. B")
+      expect(pay.shipping_city).to eq("Marseille")
+      expect(pay.shipping_postal_code).to eq("13001")
+      expect(pay.shipping_country).to eq("FR")
+      expect(pay.customer_phone).to eq("+33698765432")
+    end
   end
 
   # -------------------------------------------------------------------------

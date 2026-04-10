@@ -869,7 +869,7 @@ en:
         intro_title: "Your selection"
         intro_text: "Check your items and continue to secure card payment. You can remove an item at any time before paying."
         summary_title: "Summary"
-        summary_hint: "Secure payment via Stripe. Review your selection before confirming."
+        summary_hint: "Secure payment by Stripe"
         subtotal: "Subtotal"
         checkout: "Proceed to payment"
         cgv_accept_prefix: "I accept the"

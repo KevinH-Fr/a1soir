@@ -27,10 +27,11 @@ export default class extends Controller {
 
   shareNative(event) {
     event.preventDefault()
+    // Pas de `url` : sinon on partage aussi l’URL de la page courante (ex. panier)
+    // alors que le texte contient déjà les liens produits (#buildText).
     navigator.share({
       title: this.titleValue,
-      text: this.#buildText(),
-      url: window.location.href
+      text: this.#buildText()
     }).catch(() => {})
   }
 

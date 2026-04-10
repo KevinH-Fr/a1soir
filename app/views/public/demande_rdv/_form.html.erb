@@ -178,10 +178,10 @@
           <div class="g-recaptcha" data-sitekey="<%= ENV['RECAPTCHA_SITE_KEY'] %>"></div>
         </div>
 
-        <!-- Soumission -->
+        <!-- Soumission (même style que les CTA publics : noir, grand, angles droits) -->
         <div class="d-flex flex-column flex-md-row gap-3 justify-content-center align-items-center">
-          <button type="submit" class="btn p-2" style="background-color: #000; color: #fff; font-weight: 600; letter-spacing: 0.5px; border: 2px solid #000;">
-            <i class="bi bi-send me-2"></i><%= t("public.demande_rdv.form.submit_request") %>
+          <button type="submit" class="btn btn-dark text-light btn-lg px-5 rounded-0 fw-semibold d-inline-flex align-items-center justify-content-center">
+            <i class="bi bi-send me-2" aria-hidden="true"></i><%= t("public.demande_rdv.form.submit_request") %>
           </button>
         </div>
       </div>

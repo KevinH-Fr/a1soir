@@ -34,16 +34,18 @@ class StripeCheckoutFulfillmentService
         pm_type = @session.payment_method_types&.first
 
         payment = StripePayment.create!(
-          stripe_checkout_session_id: @session.id,
-          stripe_payment_id: payment_intent_id,
-          amount: @session.amount_total,
-          currency: @session.currency,
-          status: @session.payment_status,
-          payment_method: pm_type,
-          charge_id: payment_intent_id,
-          customer_email: email,
-          frais_livraison_centimes: @session.total_details&.amount_shipping,
-          cgv_accepted_at: parse_cgv_accepted_at(@session.metadata&.cgv_accepted_at)
+          {
+            stripe_checkout_session_id: @session.id,
+            stripe_payment_id: payment_intent_id,
+            amount: @session.amount_total,
+            currency: @session.currency,
+            status: @session.payment_status,
+            payment_method: pm_type,
+            charge_id: payment_intent_id,
+            customer_email: email,
+            frais_livraison_centimes: @session.total_details&.amount_shipping,
+            cgv_accepted_at: parse_cgv_accepted_at(@session.metadata&.cgv_accepted_at)
+          }.merge(StripeCheckoutShippingMapper.stripe_payment_shipping_attrs(@session))
         )
 
         build_line_items!(payment)

@@ -30,6 +30,10 @@ module Public
         payment_method_types: ["card"],
         line_items: @cart.map { |item| item.to_builder.attributes! },
         mode: "payment",
+        shipping_address_collection: {
+          allowed_countries: Rails.application.config.x.stripe_eshop_checkout_shipping_countries
+        },
+        phone_number_collection: { enabled: true },
         shipping_options: [{ shipping_rate: shipping_rate.id }],
         success_url: success_url,
         cancel_url: cancel_url,
