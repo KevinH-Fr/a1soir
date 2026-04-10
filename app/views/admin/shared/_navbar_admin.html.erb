@@ -5,15 +5,15 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar" aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse justify-content-end" id="adminNavbar">
-      <ul class="navbar-nav me-auto mb-0 d-flex align-items-center gap-3 flex-wrap">
-        <%= nav_link(admin_home_admin_path, "Accueil", "bi-house") %>
-        <%= nav_link(admin_clients_path, "Clients", "bi-person") %>
-        <%= nav_link(admin_produits_path, "Produits", "bi-person-standing-dress") %>
-        <%= nav_link(admin_commandes_path, "Commandes", "bi-file-earmark-post") %>
-        <%= nav_link(admin_meetings_path, "Calendrier", "bi-calendar-date") %>
-        <%= nav_link(admin_analyses_index_path, "Analyses", "bi-graph-up-arrow") %>
-        <%= nav_link(admin_textes_path, "Marketing", "bi-flag") if current_admin_user&.admin? %>
+    <div class="collapse navbar-collapse justify-content-start justify-content-xxl-end" id="adminNavbar">
+      <ul class="navbar-nav mb-0 d-flex flex-column flex-xxl-row align-items-start align-items-xxl-center gap-2 gap-xxl-3 flex-wrap w-100 w-xxl-auto ms-xxl-auto">
+        <%= nav_link admin_home_admin_path, "Accueil", "bi-house", nav_controller: "admin/home_admin" %>
+        <%= nav_link admin_clients_path, "Clients", "bi-person", nav_controller: "admin/clients" %>
+        <%= nav_link admin_produits_path, "Produits", "bi-person-standing-dress", nav_controller: "admin/produits" %>
+        <%= nav_link admin_commandes_path, "Commandes", "bi-file-earmark-post", nav_controller: "admin/commandes" %>
+        <%= nav_link admin_meetings_path, "Calendrier", "bi-calendar-date", nav_controller: "admin/meetings" %>
+        <%= nav_link admin_analyses_index_path, "Analyses", "bi-graph-up-arrow", nav_controller: "admin/analyses" %>
+        <%= nav_link(admin_textes_path, "Marketing", "bi-flag", nav_controller: "admin/textes") if current_admin_user&.admin? %>
       </ul>
     </div>
   </div>

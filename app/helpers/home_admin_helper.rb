@@ -56,9 +56,15 @@ module HomeAdminHelper
   end
 
   def options_supplementaires_link(path, icon_class, text, btn_class, badge_count: nil, badge_show_zero: false, badge_class: "bg-danger")
-    link_to(path, class: "me-1 mb-2 btn btn-sm #{btn_class} position-relative") do
-      concat content_tag(:i, "", class: "bi #{icon_class} me-1")
-      concat content_tag(:span, text, class: "fw-bold")
+    classes = [
+      "admin-quick-action-btn",
+      "btn btn-sm rounded-3 px-2 d-inline-flex align-items-center justify-content-center gap-2",
+      "me-1 mb-2 position-relative text-nowrap",
+      btn_class
+    ]
+    link_to(path, class: classes.join(" ")) do
+      concat content_tag(:i, "", class: "bi #{icon_class} flex-shrink-0")
+      concat content_tag(:span, text, class: "")
       if !badge_count.nil? && (badge_show_zero || badge_count > 0)
         concat content_tag(:span, badge_count,
           class: "position-absolute top-0 start-100 translate-middle badge rounded-pill #{badge_class}",

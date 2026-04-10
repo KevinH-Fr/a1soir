@@ -148,6 +148,7 @@
 }
 
 .navbar-admin {
+  --nav-admin-accent: rgb(208, 77, 123);
   background-color: var(--light-beige-color) !important;
 }
 
@@ -164,6 +165,21 @@
 .navbar-admin .nav-item,
 .navbar-admin .nav-link {
   white-space: nowrap;
+}
+
+/* Site brand color (not in Bootstrap palette) */
+.navbar-admin .navbar-nav .nav-link {
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+}
+
+.navbar-admin .navbar-nav .nav-link:hover:not(.active) {
+  color: var(--nav-admin-accent);
+  background-color: rgba(208, 77, 123, 0.08);
+}
+
+.navbar-admin .navbar-nav .nav-link.active {
+  color: var(--nav-admin-accent);
+  background-color: rgba(208, 77, 123, 0.12);
 }
 
 .navbar-admin .container-fluid,
@@ -183,22 +199,33 @@
   padding-right: 0;
 }
 
-@media (max-width: 1199.98px) {
+/* Align with navbar-expand-xxl (≥1400px expanded) */
+@media (max-width: 1399.98px) {
   .navbar-admin .navbar-collapse {
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
-   /* padding: 0.75rem 1rem;*/
+    z-index: 1040;
+    align-items: flex-start;
+    padding: 0.75rem 1rem 1rem;
     background-color: var(--light-beige-color);
-    box-shadow: 0 6px 10px rgba(0,0,0,.08);
-    border-top: 1px solid rgba(0,0,0,.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 0 0 0.5rem 0.5rem;
+    max-height: min(70vh, calc(100vh - 4rem));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .navbar-admin .navbar-nav {
-    flex-direction: column;
     align-items: flex-start;
-    gap: 0.5rem;
+  }
+
+  .navbar-admin .navbar-nav .nav-link {
+    min-height: 2.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
   }
 
   .navbar-admin .navbar-nav .nav-item:not(:last-child) {
@@ -224,6 +251,33 @@
 
 .light-beige-colored {
   background-color: var(--light-beige-color);
+}
+
+/* Admin home quick links — léger relief au survol (complète les hovers Bootstrap des .btn) */
+.admin-quick-action-btn {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-quick-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.375rem 0.75rem rgba(0, 0, 0, 0.1);
+}
+
+.admin-quick-action-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-quick-action-btn {
+    transition: none;
+  }
+
+  .admin-quick-action-btn:hover,
+  .admin-quick-action-btn:active {
+    transform: none;
+    box-shadow: none;
+  }
 }
 
 .page-max-widthed {
