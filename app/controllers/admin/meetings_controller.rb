@@ -58,10 +58,10 @@ class Admin::MeetingsController < Admin::ApplicationController
 
     respond_to do |format|
       format.html 
-      format.turbo_stream do  
-        render turbo_stream: turbo_stream.update(@meeting, 
-          partial: "admin/meetings/form", 
-          locals: {meeting: @meeting})
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update(@meeting,
+          partial: "admin/meetings/form",
+          locals: { meeting: @meeting })
       end
     end
   end
@@ -125,6 +125,13 @@ class Admin::MeetingsController < Admin::ApplicationController
         format.html { redirect_to meeting_url(@meeting), notice: "Meeting was updated" }
         format.json { render :show, status: :ok, location: @meeting }
       else
+        format.turbo_stream do
+          render turbo_stream:
+            turbo_stream.update(@meeting,
+              partial: "admin/meetings/form",
+              locals: { meeting: @meeting, commande_id: @meeting.commande_id, client_id: @meeting.client_id })
+        end
+
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @meeting.errors, status: :unprocessable_entity }
       end

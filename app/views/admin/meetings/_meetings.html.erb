@@ -8,8 +8,8 @@
 
 
 <% if @commande %>
-    <div class="collapse" id="collapseNewMeeting">
-        <div id="new_meeting" class="mb-3">
+    <div class="collapse pt-1" id="collapseNewMeeting">
+        <div id="new_meeting">
             <%= render partial: 'admin/meetings/form', locals: { commande_id: @commande.id, client_id: nil, meeting: Meeting.new } %>
         </div>
     </div>
@@ -21,8 +21,8 @@
     </div>
 
 <% elsif @client %>
-    <div class="collapse" id="collapseNewMeeting">
-        <div id="new_meeting" class="mb-3">
+    <div class="collapse pt-1" id="collapseNewMeeting">
+        <div id="new_meeting">
             <%= render partial: 'admin/meetings/form', locals: { client_id: @client.id, commande_id: nil, meeting: Meeting.new } %>
         </div>
     </div>

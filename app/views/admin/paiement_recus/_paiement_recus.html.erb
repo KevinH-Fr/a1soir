@@ -6,10 +6,10 @@
   data: { bs_toggle: "collapse" }, 
   role: "button", aria: { expanded: "false", controls: "collapseNewPaiement" })) %>
 
-<div class="collapse" id="collapseNewPaiement">
-    <div id="new_paiement" class="mb-3 mt-2">
-        <%= render partial: 'admin/paiement_recus/form', locals: { commande_id: @commande.id, paiement_recu: PaiementRecu.new } %>
-    </div>
+<div class="collapse pt-1" id="collapseNewPaiement">
+  <div id="new_paiement">
+    <%= render partial: "admin/paiement_recus/form", locals: { commande_id: @commande.id, paiement_recu: PaiementRecu.new } %>
+  </div>
 </div>
 
 <div id="paiement_recus">
