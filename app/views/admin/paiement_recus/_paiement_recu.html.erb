@@ -1,34 +1,46 @@
 <div id="<%= dom_id paiement_recu %>">
 
-  <div class="card mx-2 mb-3 p-2 light-beige-colored shadow-sm">
+  <div class="card mx-2 mb-3 light-beige-colored shadow-sm">
+    <div class="card-body p-2 d-flex flex-column">
 
-    <div class="row d-flex align-items-center">
-
-      <div class="col">
-        <strong> <%= paiement_recu.typepaiement %> </strong>
-        <%= custom_currency_format(paiement_recu.montant) %>
-        <%= "par #{paiement_recu.moyen}" if paiement_recu.moyen.present? %>
-        <%= "le #{paiement_recu.custom_date.strftime("%d/%m/%Y")}" if paiement_recu.custom_date.present? %>
-
-
-        <%= link_to "", "#collapsePaiementRecu#{dom_id(paiement_recu)}", 
-              class: "btn btn-sm btn-outline-primary bi bi-eye m-1", "data-bs-toggle": "collapse", 
-              role: "button", "aria-expanded": "false", "aria-controls": "collapsePaiementRecu#{dom_id(paiement_recu)}" %>
+      <div class="d-flex flex-wrap gap-2">
+        <%= field_with_label("type", paiement_recu.typepaiement, icon_class: "bi-tag") %>
+        <%= field_with_label("montant", custom_currency_format(paiement_recu.montant), icon_class: "bi-cash-stack") %>
+        <%= field_with_label("moyen", paiement_recu.moyen, icon_class: "bi-wallet2") %>
+        <% if paiement_recu.custom_date.present? %>
+          <%= field_with_label("date", paiement_recu.custom_date.strftime("%d/%m/%Y"), icon_class: "bi-calendar3") %>
+        <% end %>
       </div>
 
-      <div class="text-end">
-        <%= links_record(paiement_recu) %>  
+      <% collapse_id = "collapsePaiementRecu#{dom_id(paiement_recu)}" %>
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-2">
+        <button type="button"
+                class="btn btn-link btn-sm small text-muted p-0 text-decoration-none d-inline-flex align-items-center shadow-none border-0"
+                data-bs-toggle="collapse"
+                data-bs-target="#<%= collapse_id %>"
+                aria-expanded="false"
+                aria-controls="<%= collapse_id %>">
+          <%= admin_collapse_details_button_content %>
+        </button>
+        <div class="ms-auto">
+          <%= links_record(paiement_recu) %>
+        </div>
+      </div>
+
+      <div class="w-100 flex-shrink-0">
+        <div class="collapse" id="<%= collapse_id %>">
+          <hr class="mt-2 mb-2 border-0 border-top border-secondary opacity-25">
+          <div class="d-flex flex-wrap gap-2 px-2">
+            <% if paiement_recu.commentaires.present? %>
+              <%= field_with_label("commentaires: ", paiement_recu.commentaires, icon_class: "bi-chat-left-text") %>
+            <% else %>
+              <p class="small text-muted mb-0">Aucun commentaire.</p>
+            <% end %>
+          </div>
+        </div>
       </div>
 
     </div>
-
-     <div class="collapse" id="collapsePaiementRecu<%= dom_id(paiement_recu) %>">
-      <p>
-        <strong>Commentaires:</strong>
-        <%= paiement_recu.commentaires %>
-      </p>
-    </div>
-
   </div>
 
 </div>

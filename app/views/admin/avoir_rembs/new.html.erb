@@ -1,9 +1,9 @@
 <h1>New avoir remb</h1>
 
-<%= render "form", avoir_remb: @avoir_remb %>
+<%= render "form", avoir_remb: @avoir_remb, commande_id: @avoir_remb.commande_id %>
 
 <br>
 
 <div>
-  <%= link_to "Back to avoir rembs", avoir_rembs_path %>
+  <%= link_to "Liste des avoir-remb.", admin_avoir_rembs_path %>
 </div>

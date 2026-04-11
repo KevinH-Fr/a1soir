@@ -83,8 +83,8 @@ module IndexModelHelper
       polymorphic_path([:admin, model])
     end
     
-    # Masquer le bouton show pour ParametreRdv, TypeRdv et PeriodeNonDisponible
-    hide_show = !show || ["ParametreRdv", "TypeRdv", "PeriodeNonDisponible"].include?(model.class.name)
+    # Masquer le bouton show pour ParametreRdv, TypeRdv, PeriodeNonDisponible et PaiementRecu
+    hide_show = !show || ["ParametreRdv", "TypeRdv", "PeriodeNonDisponible", "PaiementRecu", "AvoirRemb"].include?(model.class.name)
     
     content_tag(:div, class: "d-flex justify-content-end gap-1") do
       concat(link_to("", show_path, class: "btn btn-sm btn-primary bi bi-arrow-up-right-square", data: { turbo: false })) unless hide_show

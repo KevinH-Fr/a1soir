@@ -7,7 +7,7 @@
   role: "button", aria: { expanded: "false", controls: "collapseNewPaiement" })) %>
 
 <div class="collapse" id="collapseNewPaiement">
-    <div id="new_paiement" class="mb-3">
+    <div id="new_paiement" class="mb-3 mt-2">
         <%= render partial: 'admin/paiement_recus/form', locals: { commande_id: @commande.id, paiement_recu: PaiementRecu.new } %>
     </div>
 </div>

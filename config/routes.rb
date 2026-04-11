@@ -190,13 +190,13 @@ Rails.application.routes.draw do
         end
       end
       
-      resources :paiement_recus do 
+      resources :paiement_recus, except: [:show] do
         member do
           post :edit
         end
       end
       
-      resources :avoir_rembs do 
+      resources :avoir_rembs, except: [:show] do
         member do
           post :edit
         end

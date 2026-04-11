@@ -55,11 +55,15 @@
       <%= render @produit %>
 
       <% if @article %>
-        <%= render partial: 'admin/sousarticles/form', 
-            locals: { commande_id: @commande.id, produit_id: @produit.id, article: @article.id, sousarticle: Sousarticle.new } %>    
+        <div class="mx-2 my-2">
+          <%= render partial: "admin/sousarticles/form",
+              locals: { commande_id: @commande.id, produit_id: @produit.id, article: @article.id, sousarticle: Sousarticle.new } %>
+        </div>
       <% else %>
-        <%= render partial: 'admin/articles/form', 
-            locals: { commande_id: @commande.id, produit_id: @produit.id, article: Article.new } %>
+        <div class="mx-2 my-2">
+          <%= render partial: "admin/articles/form",
+              locals: { commande_id: @commande.id, produit_id: @produit.id, article: Article.new } %>
+        </div>
       <% end %>
 
     <% else %>

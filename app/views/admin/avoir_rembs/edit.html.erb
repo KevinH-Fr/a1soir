@@ -1,10 +1,10 @@
 <h1>Editing avoir remb</h1>
 
-<%= render "form", avoir_remb: @avoir_remb %>
+<%= render "form", avoir_remb: @avoir_remb, commande_id: @avoir_remb.commande_id %>
 
 <br>
 
 <div>
-  <%= link_to "Show this avoir remb", @avoir_remb %> |
-  <%= link_to "Back to avoir rembs", avoir_rembs_path %>
+  <%= link_to "Retour à la commande", admin_commande_path(@avoir_remb.commande) %> |
+  <%= link_to "Liste des avoir-remb.", admin_avoir_rembs_path %>
 </div>

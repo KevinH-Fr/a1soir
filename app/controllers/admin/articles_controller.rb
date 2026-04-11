@@ -55,7 +55,8 @@ class Admin::ArticlesController < Admin::ApplicationController
   # PATCH/PUT /articles/1 or /articles/1.json
   def update
 
-    @commande = @article.commande 
+    @commande = @article.commande
+    @produit = @article.produit
 
     respond_to do |format|
       if @article.update(article_params)
@@ -83,6 +84,13 @@ class Admin::ArticlesController < Admin::ApplicationController
         format.html { redirect_to article_url(@article), notice: "Article was successfully updated." }
         format.json { render :show, status: :ok, location: @article }
       else
+        format.turbo_stream do
+          render turbo_stream:
+            turbo_stream.update(@article,
+              partial: "admin/articles/form",
+              locals: { commande_id: @article.commande_id, produit_id: @article.produit_id, article: @article })
+        end
+
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end

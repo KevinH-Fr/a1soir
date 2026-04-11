@@ -1,13 +1,10 @@
 class Admin::PaiementRecusController < Admin::ApplicationController
   #before_action :authenticate_vendeur_or_admin!
 
-  before_action :set_paiement_recu, only: %i[ show edit update destroy ]
+  before_action :set_paiement_recu, only: %i[edit update destroy]
 
   def index
     @paiement_recus = PaiementRecu.all
-  end
-
-  def show
   end
 
   def new
@@ -56,8 +53,8 @@ class Admin::PaiementRecusController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to paiement_recu_url(@paiement_recu), notice: "Paiement recu was successfully created." }
-        format.json { render :show, status: :created, location: @paiement_recu }
+        format.html { redirect_to admin_commande_path(@paiement_recu.commande), notice: "Paiement recu was successfully created." }
+        format.json { render json: @paiement_recu, status: :created, location: polymorphic_url([:admin, @paiement_recu]) }
       else
 
         format.turbo_stream do
@@ -101,8 +98,8 @@ class Admin::PaiementRecusController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to paiement_recu_url(@paiement_recu), notice: "Paiement recu was successfully updated." }
-        format.json { render :show, status: :ok, location: @paiement_recu }
+        format.html { redirect_to admin_commande_path(@paiement_recu.commande), notice: "Paiement recu was successfully updated." }
+        format.json { render json: @paiement_recu, status: :ok, location: polymorphic_url([:admin, @paiement_recu]) }
       else
 
         format.turbo_stream do
@@ -138,7 +135,7 @@ class Admin::PaiementRecusController < Admin::ApplicationController
         ]
       end 
       
-      format.html { redirect_to paiement_recus_url, notice:  "Suppression réussie"  }
+      format.html { redirect_to admin_commande_path(@commande), notice: "Suppression réussie" }
       format.json { head :no_content }
     end
   end

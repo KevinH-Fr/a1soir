@@ -43,7 +43,9 @@
   </td>
   <td class="py-3 px-3">
     <% if c %>
-      <%= link_to admin_commande_path(c), class: "btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1" do %>
+      <%= link_to admin_commande_path(c),
+                  class: "btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1",
+                  data: { turbo: false } do %>
         <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
         <%= c.ref_commande %>
       <% end %>

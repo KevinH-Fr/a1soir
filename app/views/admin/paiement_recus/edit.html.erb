@@ -5,6 +5,6 @@
 <br>
 
 <div>
-  <%= link_to "Show this paiement recu", @paiement_recu %> |
-  <%= link_to "Back to paiement recus", paiement_recus_path %>
+  <%= link_to "Retour à la commande", admin_commande_path(@paiement_recu.commande) %> |
+  <%= link_to "Liste des paiements reçus", admin_paiement_recus_path %>
 </div>

@@ -4,11 +4,8 @@
 
 <div id="avoir_rembs">
   <% @avoir_rembs.each do |avoir_remb| %>
-    <%= render avoir_remb %>
-    <p>
-      <%= link_to "Show this avoir remb", avoir_remb %>
-    </p>
+    <%= render partial: "admin/avoir_rembs/avoir_remb", locals: { avoir_remb: avoir_remb } %>
   <% end %>
 </div>
 
-<%= link_to "New avoir remb", new_avoir_remb_path %>
+<%= link_to "Nouvel avoir-remb.", new_admin_avoir_remb_path %>

@@ -4,11 +4,8 @@
 
 <div id="paiement_recus">
   <% @paiement_recus.each do |paiement_recu| %>
-    <%= render paiement_recu %>
-    <p>
-      <%= link_to "Show this paiement recu", paiement_recu %>
-    </p>
+    <%= render partial: "admin/paiement_recus/paiement_recu", locals: { paiement_recu: paiement_recu } %>
   <% end %>
 </div>
 
-<%= link_to "New paiement recu", new_paiement_recu_path %>
+<%= link_to "Nouveau paiement reçu", new_admin_paiement_recu_path %>

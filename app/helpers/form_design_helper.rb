@@ -3,13 +3,13 @@ module FormDesignHelper
   # verify other form are not broken
 
   def custom_form_elements(form, *fields)
-    content_tag(:div, class: "p-1") do
+    content_tag(:div, class: "w-100") do
       fields.each do |field_data|
         field, field_type, label, options = field_data
         label = label.is_a?(String) ? label : nil
         options ||= {}
   
-        concat(content_tag(:div, class: "form-group input-group mb-1") do
+        concat(content_tag(:div, class: "form-group input-group mb-1 w-100") do
           # Label rendering (skip for check_box)
           if field_type != :check_box
             concat(content_tag(:div, class: "input-group-text") do
