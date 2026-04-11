@@ -60,23 +60,24 @@ class Admin::AdminParametersController < Admin::ApplicationController
     end
   end
 
-  def import_data_produits
-    uploaded_file = params[:csv_file]
-    start_row = params[:start_row].to_i
-    end_row = params[:end_row].to_i
-  
-    if uploaded_file.present?
-      service = ImportProduitsCsvService.new
-      service.import_data_from_file(uploaded_file.path, start_row, end_row)
-  
-      redirect_to admin_root_path, notice: 'Produits importés avec succès!'
-    else
-      redirect_to admin_root_path, alert: 'Aucun fichier sélectionné. Veuillez choisir un fichier CSV.'
-    end
-  rescue StandardError => e
-    redirect_to admin_root_path, alert: "Erreur lors de l'import: #{e.message}"
-  end
-  
+  # Import CSV produits — désactivé avec la carte dans admin_parameters/index (réactiver la route aussi).
+  # def import_data_produits
+  #   uploaded_file = params[:csv_file]
+  #   start_row = params[:start_row].to_i
+  #   end_row = params[:end_row].to_i
+  #
+  #   if uploaded_file.present?
+  #     service = ImportProduitsCsvService.new
+  #     service.import_data_from_file(uploaded_file.path, start_row, end_row)
+  #
+  #     redirect_to admin_root_path, notice: 'Produits importés avec succès!'
+  #   else
+  #     redirect_to admin_root_path, alert: 'Aucun fichier sélectionné. Veuillez choisir un fichier CSV.'
+  #   end
+  # rescue StandardError => e
+  #   redirect_to admin_root_path, alert: "Erreur lors de l'import: #{e.message}"
+  # end
+
   private
 
     def set_admin_parameter

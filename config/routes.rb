@@ -82,7 +82,7 @@ Rails.application.routes.draw do
 
       get 'analyses/index'
       
-      post 'admin_parameters/import_data_produits', to: 'admin_parameters#import_data_produits', as: 'import_data_produits'
+      # post 'admin_parameters/import_data_produits', to: 'admin_parameters#import_data_produits', as: 'import_data_produits'
 
       resources :admin_parameters do 
         member do

@@ -1,15 +1,16 @@
 <div id="<%= dom_id admin_parameter %>" class="my-2">
-  <div class="card mx-2 mb-3 p-2 light-beige-colored shadow-sm">
+  <div class="card mx-2 mb-3 light-beige-colored shadow-sm">
+    <div class="card-body p-2 d-flex flex-column gap-2">
+      <div class="d-flex flex-wrap align-items-center gap-1">
+        <%= custom_badge("fa-percent", "TVA :", "", "", "#{admin_parameter.tx_tva} %") if admin_parameter.tx_tva.present? %>
+        <%= custom_badge("", "Coef. achat / vente :", "", "", admin_parameter.coef_prix_achat_vente) if admin_parameter.coef_prix_achat_vente.present? %>
+        <%= custom_badge("fa-hourglass-half", "Coef. longue durée :", "", "", admin_parameter.coef_longue_duree) if admin_parameter.coef_longue_duree.present? %>
+        <%= custom_badge("fa-calendar", "Durée RDV :", "", "", admin_parameter.duree_rdv) if admin_parameter.duree_rdv.present? %>
+      </div>
 
-    <div class="d-flex flex-wrap gap-1 mb-1">
-      <%= field_with_label("tx_tva:", admin_parameter.tx_tva) %> 
-      <%= field_with_label("coef_prix_achat_vente:", admin_parameter.coef_prix_achat_vente) %> 
-      <%= field_with_label("coef_longue_duree:", admin_parameter.coef_longue_duree) %> 
-      <%= field_with_label("duree_rdv:", admin_parameter.duree_rdv) %> 
-      
+      <div class="d-flex flex-wrap justify-content-end align-items-center gap-1 pt-1">
+        <%= links_record(admin_parameter) %>
+      </div>
     </div>
-  
-    <%= links_record(admin_parameter) %>  
-
   </div>
 </div>

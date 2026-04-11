@@ -1,4 +1,7 @@
-<%= card_main_model("Catégorie produit", "layer-group") %>
+<%= card_main_model("Catégorie produit", "layers") %>
 
 <%= render @categorie_produit %>
 
+<hr>
+
+<%= return_model_index_button("Retour vers Catégories produits", admin_categorie_produits_path) %>
