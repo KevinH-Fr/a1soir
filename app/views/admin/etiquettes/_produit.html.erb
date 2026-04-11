@@ -35,7 +35,7 @@
           <% if session[:selection_etiquettes].count < 4 %>
             <%= form_with url: update_selection_admin_etiquettes_path, method: :post, local: true, data: { turbo: false } do |form| %>
               <%= form.hidden_field :new_product, value: produit.id %>
-              <button type="submit" class="btn btn-warning w-50">
+              <button type="submit" class="btn btn-warning">
                 <span class="fw-bold ms-2"> Sélection étiquette</span>
                 <i class="bi-tags"></i> 
               </button>

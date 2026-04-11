@@ -1,42 +1,70 @@
+<%= bandeau_entete("Stock", "boxes", "", "", "",
+                    card_class: "card mt-2 mx-2 mb-0 shadow-sm rounded-bottom-0 border-bottom-0") %>
 
-<%= bandeau_entete("Stock", "boxes", "", "", "") %>
+<div class="card mx-2 mb-3 mt-0 shadow-sm rounded-top-0 border-top-0 light-beige-colored">
+  <div class="card-body p-0">
 
-<div class="card mx-2 my-3 light-beige-colored shadow-sm">
-  <div class="card-header fw-bold"> 
-    général
-  </div>
-  <div class="card-body"> 
-    <p> Total produits : <span class="fw-bold"> <%= total_produits(@produits) %> </span> </p> 
-    <p> Total loués : <span class="fw-bold"> <%= total_loues(@produits) %> </span> </p> 
-    <p> Total vendus : <span class="fw-bold"> <%= total_vendus_boutique(@produits) + total_vendus_eshop(@produits) %> </span> </p> 
-    <p> dont eshop : <span class="fw-bold"> <%= total_vendus_eshop(@produits) %> </span> </p> 
+    <section class="border-bottom border-secondary-subtle px-3 py-4">
+      <h2 class="h6 text-body-secondary text-uppercase small fw-semibold pb-2 mb-4 border-bottom border-secondary-subtle">
+        Vue générale
+      </h2>
+      <div class="d-flex flex-wrap gap-3 gap-lg-4">
+        <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
+          <span class="small text-secondary text-uppercase fw-semibold">Total produits</span>
+          <span class="fs-5 fw-bold text-body"><%= total_produits(@produits) %></span>
+        </span>
+        <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
+          <span class="small text-secondary text-uppercase fw-semibold">Total loués</span>
+          <span class="fs-5 fw-bold text-body"><%= total_loues(@produits) %></span>
+        </span>
+        <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
+          <span class="small text-secondary text-uppercase fw-semibold">Total vendus</span>
+          <span class="fs-5 fw-bold text-body"><%= total_vendus_boutique(@produits) + total_vendus_eshop(@produits) %></span>
+        </span>
+        <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
+          <span class="small text-secondary text-uppercase fw-semibold">Dont e-shop</span>
+          <span class="fs-5 fw-bold text-body"><%= total_vendus_eshop(@produits) %></span>
+        </span>
+        <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
+          <span class="small text-secondary text-uppercase fw-semibold">Total services</span>
+          <span class="fs-5 fw-bold text-body"><%= total_services(@produits) %></span>
+        </span>
+        <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
+          <span class="small text-secondary text-uppercase fw-semibold">Services vendus</span>
+          <span class="fs-5 fw-bold text-body"><%= articles_services_in_commandes %></span>
+        </span>
+      </div>
 
-    <hr>
-    <p> Total services : <span class="fw-bold"> <%= total_services(@produits) %> </span> </p> 
-    <p> Total services vendus : <span class="fw-bold"> <%= articles_services_in_commandes %> </span> </p> 
-
-    <div class="d-flex gap-1">
-
-      <% current_year = Date.today.year %>
-      <% [0, 1, 2].each do |offset| %>
-        <% year = current_year - offset %>
-        <%= link_to "Charger inventaire - fin #{year}",
+      <div class="d-flex flex-wrap gap-2 mt-4 pt-4 border-top border-secondary-subtle">
+        <% current_year = Date.today.year %>
+        <% [0, 1, 2].each do |offset| %>
+          <% year = current_year - offset %>
+          <%= link_to "Charger inventaire — fin #{year}",
                       admin_export_products_csv_path(year: year),
-                      class: 'btn btn-sm btn-primary' %>
-      <% end %>
-    </div>
+                      class: "btn btn-sm btn-primary" %>
+        <% end %>
+      </div>
+    </section>
+
+    <section class="px-3 py-4">
+      <h2 class="h6 text-body-secondary text-uppercase small fw-semibold pb-2 mb-4 border-bottom border-secondary-subtle">
+        Statut des produits loués
+      </h2>
+      <div class="d-flex flex-wrap gap-3 gap-lg-4">
+        <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
+          <span class="small text-secondary text-uppercase fw-semibold">Non retirés</span>
+          <span class="fs-5 fw-bold text-body"><%= articles_loues_in_commandes_non_retires %></span>
+        </span>
+        <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
+          <span class="small text-secondary text-uppercase fw-semibold">Retirés</span>
+          <span class="fs-5 fw-bold text-body"><%= articles_loues_in_commandes_retires %></span>
+        </span>
+        <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
+          <span class="small text-secondary text-uppercase fw-semibold">Rendus</span>
+          <span class="fs-5 fw-bold text-body"><%= articles_loues_in_commandes_rendus %></span>
+        </span>
+      </div>
+    </section>
 
   </div>
-</div>
-
-<div class="card mx-2 my-3 light-beige-colored shadow-sm">
-  <div class="card-header fw-bold"> 
-    statut produits loués
-  </div>
-  <div class="card-body"> 
-    <p> loués non-retirés :  <span class="fw-bold"> <%= articles_loues_in_commandes_non_retires %> </span> </p> 
-    <p> loués retirés :   <span class="fw-bold"> <%= articles_loues_in_commandes_retires %> </span>  </p> 
-    <p> loués rendus :   <span class="fw-bold"> <%= articles_loues_in_commandes_rendus %> </span>  </p> 
-  </div>
-
 </div>
