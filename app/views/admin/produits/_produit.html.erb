@@ -21,7 +21,7 @@
         <!-- Text Column -->
         <div class="col-sm-8">
           <div class="card-body p-1 px-2">
-            <h5 class="card-title">
+            <h5 class="card-title ms-1">
               <%= produit.nom %>
             </h5>
             
@@ -38,26 +38,22 @@
                 <%= produit.description %>
               </div>
 
-              <div class="container-fluid p-0">
-                  <%= badge_prixlocation_produit(produit) %>
-                  <%= badge_prixvente_produit(produit) %>
-                  <%= badge_couleur_produit(produit) %> 
-                  <%= badge_taille_produit(produit) %> 
+              <div class="container-fluid mt-2 p-1 d-flex flex-wrap align-items-center">
+                <%= badge_prixlocation_produit(produit) %>
+                <%= badge_prixvente_produit(produit) %>
+                <%= badge_couleur_produit(produit) %>
+                <%= badge_taille_produit(produit) %>
+                <%= badge_eshop(produit) %>
 
-                  <%= badge_eshop(produit) %>
+                <% unless controller_name == "selection_produit" %>
+                  <% statut = produit.statut_disponibilite(Date.today.to_date, Date.today.to_date) %>
+                  <% disponibles = statut[:disponibles] %>
+                  <span class="badge fs-6 fw-normal p-1 me-1 mb-1 <%= disponibles > 0 ? 'bg-success' : 'bg-danger' %>">
+                    Disponibles: <%= disponibles %>
+                  </span>
+                <% end %>
 
-                  <% unless controller_name == "selection_produit" %>
-                    <% statut = produit.statut_disponibilite(Date.today.to_date, Date.today.to_date) %>
-                    <% disponibles = statut[:disponibles] %>
-                    <p class="m-1">
-                      <span class="badge <%= disponibles > 0 ? 'bg-success' : 'bg-danger' %>">
-                        Disponibles: <%= disponibles %>
-                      </span>
-                    </p>
-                    
-                  <% end %>
-
-                  <%= is_archived(produit) %> 
+                <%= is_archived(produit) %>
               </div>
 
               <div class="mt-auto m-1">
@@ -75,18 +71,21 @@
                 <% end %>
 
     
-                  <div class="d-flex justify-content-between mt-2">
-
-                    <div>
-                      <div data-turbo="false">
-                        <%= link_to "", "#collapseProduit#{dom_id(produit)}", 
-                              class: "btn btn-sm btn-outline-primary bi bi-eye", "data-bs-toggle": "collapse", 
-                              role: "button", "aria-expanded": "false", "aria-controls": "collapseProduit#{dom_id(produit)}" %>
-                      </div> 
-                      
-                    </div>     
-
-                    <%= links_record(produit) if current_admin_user.admin? %>
+                  <% collapse_id = "collapseProduit#{dom_id(produit)}" %>
+                  <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-2">
+                    <a class="small text-muted text-decoration-none d-inline-flex align-items-center"
+                       data-bs-toggle="collapse"
+                       href="#<%= collapse_id %>"
+                       role="button"
+                       aria-expanded="false"
+                       aria-controls="<%= collapse_id %>">
+                      <%= admin_collapse_details_button_content %>
+                    </a>
+                    <% if current_admin_user.admin? %>
+                      <div class="ms-auto">
+                        <%= links_record(produit) %>
+                      </div>
+                    <% end %>
                   </div>
 
               </div>
@@ -96,7 +95,7 @@
         </div>
       </div>
 
-      <div class="collapse px-2" id="collapseProduit<%= dom_id(produit) %>">
+      <div class="collapse px-2" id="<%= collapse_id %>">
         <hr>
 
         <div class="row g-0">

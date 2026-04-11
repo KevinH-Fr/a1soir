@@ -4,7 +4,17 @@ module ProduitsFiltersHelper
     id_eq
   ].freeze
 
-  def filter_dropdown(label:, icon:, param_key:, collection: nil, model: nil, current_params: {}, all_label: nil, columns: nil)
+  FILTER_PARAM_KEYS = %i[
+    filter_taille filter_couleur filter_categorie filter_type_produit
+    filter_statut filter_fournisseur filter_mode filter_prix
+  ].freeze
+
+  def produits_active_filters_count
+    FILTER_PARAM_KEYS.count { |k| params[k].present? }
+  end
+
+  def filter_dropdown(label:, icon:, param_key:, collection: nil, model: nil, current_params: {}, all_label: nil, columns: nil,
+                      always_show_label: false, id_suffix: nil)
     selected_value = params[param_key]
     selected_label =
     if selected_value.present? && model
@@ -26,31 +36,32 @@ module ProduitsFiltersHelper
         "< #{custom_currency_no_decimals_format(selected_value)}"
       end
     end
-  
-  
+
+    toggle_id = id_suffix.present? ? "#{param_key}Dropdown_#{id_suffix}" : "#{param_key}Dropdown"
+
     content_tag(:div, class: "dropdown") do
       # Button
       concat(
         content_tag(:button,
           class: "btn btn-sm btn-outline-secondary dropdown-toggle",
           type: "button",
-          id: "#{param_key}Dropdown",
+          id: toggle_id,
           data: { bs_toggle: "dropdown" },
           aria: { expanded: false }) do
-  
           button_parts = []
           button_parts << tag.i(class: icon, aria: { hidden: true })
-  
+
           if selected_label.present?
             button_parts << content_tag(:span, selected_label, class: "ms-1")
           else
-            button_parts << content_tag(:span, label, class: "ms-1 d-none d-md-inline")
+            label_span_class = always_show_label ? "ms-1" : "ms-1 d-none d-md-inline"
+            button_parts << content_tag(:span, label, class: label_span_class)
           end
-  
+
           safe_join(button_parts)
         end
       )
-  
+
       # Dropdown menu
       menu_classes = ["dropdown-menu"]
       if columns.present? && columns.to_i > 1
@@ -58,7 +69,7 @@ module ProduitsFiltersHelper
       end
 
       concat(
-        content_tag(:ul, class: menu_classes.join(" "), aria: { labelledby: "#{param_key}Dropdown" }) do
+        content_tag(:ul, class: menu_classes.join(" "), aria: { labelledby: toggle_id }) do
   
         if param_key == :filter_mode
             [
@@ -71,7 +82,7 @@ module ProduitsFiltersHelper
                   link_to(
                     option[:label],
                     url_for(current_params.merge(param_key => option[:value])),
-                    class: "dropdown-item #{'fw-bold' if active}"
+                    class: produits_filter_dropdown_item_class(active)
                   )
                 end
               )
@@ -84,7 +95,7 @@ module ProduitsFiltersHelper
                 link_to(
                   "Tous",
                   url_for(current_params.merge(param_key => nil)),
-                  class: "dropdown-item #{'fw-bold' if selected_value.blank?}"
+                  class: produits_filter_dropdown_item_class(selected_value.blank?)
                 )
               end
             )
@@ -94,7 +105,7 @@ module ProduitsFiltersHelper
                 link_to(
                   "NA",
                   url_for(current_params.merge(param_key => "na")),
-                  class: "dropdown-item #{'fw-bold' if selected_value == "na"}"
+                  class: produits_filter_dropdown_item_class(selected_value == "na")
                 )
               end
             )
@@ -107,7 +118,7 @@ module ProduitsFiltersHelper
                   link_to(
                     label.html_safe,
                     url_for(current_params.merge(param_key => prix)),
-                    class: "dropdown-item #{'fw-bold' if active}"
+                    class: produits_filter_dropdown_item_class(active)
                   )
                 end
               )
@@ -119,7 +130,7 @@ module ProduitsFiltersHelper
                 link_to(
                   all_label || "Tous",
                   url_for(current_params.merge(param_key => nil)),
-                  class: "dropdown-item #{'fw-bold' if selected_value.blank?}"
+                  class: produits_filter_dropdown_item_class(selected_value.blank?)
                 )
               end
             )
@@ -130,7 +141,7 @@ module ProduitsFiltersHelper
                   link_to(
                     "NA",
                     url_for(current_params.merge(param_key => "na")),
-                    class: "dropdown-item #{'fw-bold' if selected_value == "na"}"
+                    class: produits_filter_dropdown_item_class(selected_value == "na")
                   )
                 end
               )
@@ -144,7 +155,7 @@ module ProduitsFiltersHelper
                   link_to(
                     item.nom,
                     url_for(current_params.merge(param_key => item)),
-                    class: "dropdown-item #{'fw-bold' if active}"
+                    class: produits_filter_dropdown_item_class(active)
                   )
                 end
               )
@@ -161,7 +172,7 @@ module ProduitsFiltersHelper
                   link_to(
                     option[:label],
                     url_for(current_params.merge(param_key => option[:value])),
-                    class: "dropdown-item #{'fw-bold' if active}"
+                    class: produits_filter_dropdown_item_class(active)
                   )
                 end
               )
@@ -237,7 +248,7 @@ module ProduitsFiltersHelper
               link_to(
                 "Par défaut",
                 url_for(current_params.merge(sort: nil)),
-                class: "dropdown-item #{'fw-bold' if params[:sort].blank?}"
+                class: produits_filter_dropdown_item_class(params[:sort].blank?)
               )
             end
           )
@@ -249,7 +260,7 @@ module ProduitsFiltersHelper
                 link_to(
                   label,
                   url_for(current_params.merge(sort: value)),
-                  class: "dropdown-item #{'fw-bold' if active}"
+                  class: produits_filter_dropdown_item_class(active)
                 )
               end
             )
@@ -257,5 +268,11 @@ module ProduitsFiltersHelper
         end
       )
     end
+  end
+
+  private
+
+  def produits_filter_dropdown_item_class(active)
+    ["dropdown-item", "small", ("fw-bold" if active)].compact.join(" ")
   end
 end

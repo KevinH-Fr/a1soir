@@ -1,97 +1,49 @@
-<div class="container-fluid d-flex flex-wrap gap-1">
-    <div>
-        <%= filter_dropdown(
-            label: "Catégorie",
-            icon: "bi bi-layers",
-            param_key: :filter_categorie,
-            collection: @categorie_produits,
-            model: CategorieProduit,
-            current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_mode, :filter_prix)),
-            all_label: "Toutes les catégories",
-            columns: 2
-        ) %>
-    </div>
+<% sort_reset_params = listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_mode, :filter_prix)) %>
 
-    <div>
-        <%= filter_dropdown(
-            label: "Type",
-            icon: "bi bi-tag",
-            param_key: :filter_type_produit,
-            collection: @type_produits,
-            model: TypeProduit,
-            current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_fournisseur, :filter_mode, :filter_prix)),
-            all_label: "Tous les types",
-            columns: 2
-        ) %>
-    </div>
-
-    <div>
-        <%= filter_dropdown(
-            label: "Taille",
-            icon: "bi bi-rulers",
-            param_key: :filter_taille,
-            collection: @tailles,
-            model: Taille,
-            current_params: listing_params_with_search(params.permit(:filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_mode, :filter_prix)),
-            all_label: "Toutes les tailles",
-            columns: 2
-        ) %>
-    </div>
-    <div>
-        <%= filter_dropdown(
-            label: "Couleur",
-            icon: "bi bi-palette",
-            param_key: :filter_couleur,
-            collection: @couleurs,
-            model: Couleur,
-            current_params: listing_params_with_search(params.permit(:filter_taille, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_mode, :filter_prix)),
-            all_label: "Toutes les couleurs",
-            columns: 2
-        ) %>
-    </div>
-    <div>
-        <%= filter_dropdown(
-            label: "Statut",
-            icon: "bi bi-bookmark-check",
-            param_key: :filter_statut,
-            current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_fournisseur, :filter_mode, :filter_prix))
-        ) %>
-    </div>
-    <div>
-        <%= filter_dropdown(
-            label: "Fournisseur",
-            icon: "bi bi-buildings",
-            param_key: :filter_fournisseur,
-            collection: @fournisseurs,
-            model: Fournisseur,
-            current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_mode, :filter_prix)),
-            columns: 2
-        ) %>
-    </div>
-    <div>
-        <%= filter_dropdown(
-          label: "Prix",
-          icon: "bi bi-currency-euro",
-          param_key: :filter_prix,
-          current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_mode))
-        ) %>
-    </div>
-    <div>
-        <%= filter_dropdown(
-          label: "Mode",
-          icon: "bi bi-zoom-in",
-          param_key: :filter_mode,
-          current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_prix))
-        ) %>
-    </div>
-
-    <div class="ms-auto">
-        <%= sort_dropdown(listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_mode, :filter_prix))) %>
-    </div>
-    <div>
-        <%= link_to admin_produits_path, class: 'btn btn-sm btn-outline-danger rounded' do %>
-            <i class="bi bi-xl bi-x-circle"></i>
+<div class="container-fluid produits-filtres-wrapper mb-2">
+  <div class="d-flex flex-wrap align-items-center gap-2 gap-lg-1">
+    <%# Petit écran : bouton Filtres + tri / reset sur une ligne %>
+    <div class="d-lg-none flex-shrink-0">
+      <button type="button"
+              class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#produitsFiltresOffcanvas"
+              aria-controls="produitsFiltresOffcanvas">
+        <i class="bi bi-sliders" aria-hidden="true"></i>
+        <span>Filtres</span>
+        <% n = produits_active_filters_count %>
+        <% if n > 0 %>
+          <span class="badge bg-secondary rounded-pill"><%= n %></span>
         <% end %>
+      </button>
     </div>
 
+    <%# lg+ : barre de filtres habituelle %>
+    <div class="d-none d-lg-flex flex-wrap gap-1 align-items-center flex-grow-1 min-w-0">
+      <%= render "filtres_dropdowns", id_suffix: nil, always_show_label: false %>
+    </div>
+
+    <div class="d-lg-none flex-grow-1" aria-hidden="true"></div>
+
+    <div class="d-flex gap-1 flex-shrink-0 ms-lg-auto align-items-center">
+      <%= sort_dropdown(sort_reset_params) %>
+      <%= link_to admin_produits_path, class: "btn btn-sm btn-outline-danger rounded flex-shrink-0", title: "Réinitialiser les filtres" do %>
+        <i class="bi bi-xl bi-x-circle" aria-hidden="true"></i>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%# Panneau latéral : mêmes filtres, IDs distincts (suffixe Offcanvas) %>
+<div class="offcanvas offcanvas-end produits-filtres-offcanvas d-lg-none" tabindex="-1" id="produitsFiltresOffcanvas"
+     aria-labelledby="produitsFiltresOffcanvasLabel">
+  <div class="offcanvas-header border-bottom">
+    <h5 class="offcanvas-title mb-0" id="produitsFiltresOffcanvasLabel">Filtrer les produits</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="vstack gap-2">
+      <%= render "filtres_dropdowns", id_suffix: "Offcanvas", always_show_label: true %>
+    </div>
+  </div>
 </div>

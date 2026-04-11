@@ -37,7 +37,7 @@ module ProduitsHelper
 
     def badge_prixvente_produit(produit)
         if produit.prixvente
-            content_tag(:span, class: "badge fs-6 border border-secondary text-secondary m-1 p-1") do
+            content_tag(:span, class: "badge fs-6 fw-normal border border-secondary text-secondary me-1 mb-1 p-1") do
                 concat content_tag(:span, "vente : #{custom_currency_no_decimals_format(produit.prixvente)}")
             end
         end
@@ -45,7 +45,7 @@ module ProduitsHelper
 
     def badge_prixlocation_produit(produit)
         if produit.prixlocation 
-            content_tag(:span, class: "badge fs-6 border border-secondary text-secondary m-1 p-1") do
+            content_tag(:span, class: "badge fs-6 fw-normal border border-secondary text-secondary me-1 mb-1 p-1") do
                 concat content_tag(:span, "location : #{custom_currency_no_decimals_format(produit.prixlocation)}")
             end
         end
@@ -53,7 +53,7 @@ module ProduitsHelper
 
     def badge_taille_produit(produit)
         if produit.taille
-            content_tag(:span, class: "badge fs-6 border border-secondary text-secondary text-uppercase m-1 p-1") do
+            content_tag(:span, class: "badge fs-6 fw-normal border border-secondary text-secondary text-uppercase me-1 mb-1 p-1") do
                 concat content_tag(:i, "", class: "bi bi-rulers me-1")
                 concat content_tag(:span, produit.taille.nom, class: "")
             end
@@ -62,7 +62,7 @@ module ProduitsHelper
       
     def badge_couleur_produit(produit)
         if produit.couleur
-            content_tag(:span, class: "badge fs-6 border border-secondary text-secondary m-1 p-1") do
+            content_tag(:span, class: "badge fs-6 fw-normal border border-secondary text-secondary me-1 mb-1 p-1") do
                 concat color_icon(produit.couleur) if produit.couleur.couleur_code
                 concat content_tag(:span, produit.couleur.nom, class: "")
             end
@@ -71,7 +71,7 @@ module ProduitsHelper
 
     def is_archived(produit)
         unless produit.actif 
-            content_tag(:span, class: "badge fs-6 border border-secondary text-secondary m-1 p-1") do
+            content_tag(:span, class: "badge fs-6 fw-normal border border-secondary text-secondary me-1 mb-1 p-1") do
                 concat content_tag(:i, nil, class: "bi bi-archive me-1")
                 concat content_tag(:span, "archivé", class: "ms-1" )
             end
@@ -80,8 +80,8 @@ module ProduitsHelper
     
     def badge_eshop(produit)
         color_status = produit.eshop? ? "text-success" : "text-danger"
-        content_tag(:span, class: "badge fs-6 border border-secondary m-1 #{color_status} p-1") do
-            concat content_tag(:i, nil, class: "bi bi-house me-1")
+        content_tag(:span, class: "badge fs-6 fw-normal border border-secondary me-1 mb-1 #{color_status} p-1") do
+            concat content_tag(:i, nil, class: "bi bi-shop")
             concat content_tag(:span, "eshop", class: "ms-1" )
         end
     end

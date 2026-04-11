@@ -64,9 +64,24 @@ module ApplicationHelper
         end
     end
 
-    def field_with_label(text, value)
+    # Contenu (icône + texte) du lien « Détails » pour panneaux collapse — le <a> reste dans la vue.
+    def admin_collapse_details_button_content(label: "Détails")
+      safe_join([
+        tag.i(class: "bi bi-chevron-down me-1", style: "font-size: 0.7rem;"),
+        label
+      ])
+    end
+
+    def field_with_label(text, value, icon_class: nil)
       if value.present?
-        content_tag(:div, class: "badge lighter-beige-colored text-dark fw-normal fs-6") do
+        classes = %w[badge lighter-beige-colored text-dark fw-normal fs-6 mb-1]
+        classes += %w[d-inline-flex align-items-center] if icon_class.present?
+
+        content_tag(:div, class: classes.join(" ")) do
+          if icon_class.present?
+            icon_full = icon_class.to_s.start_with?("bi-") ? "bi #{icon_class}" : "bi bi-#{icon_class}"
+            concat tag.i(class: "#{icon_full} me-1 opacity-75 flex-shrink-0", aria: { hidden: true })
+          end
           concat " #{text}"
           concat " #{value}"
         end
