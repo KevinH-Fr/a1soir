@@ -316,7 +316,8 @@ class Admin::ProduitsController < Admin::ApplicationController
           render turbo_stream: [
             turbo_stream.replace(
               "coups_de_coeur_section",
-              partial: "admin/textes/coups_de_coeur"
+              partial: "admin/textes/coups_de_coeur",
+              locals: { coups_de_coeur_list_open: true }
             ),
             turbo_stream.replace(
               "produit_#{@produit.id}_coup_de_coeur",
@@ -362,14 +363,18 @@ class Admin::ProduitsController < Admin::ApplicationController
       respond_to do |format|
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.replace("coups_de_coeur_section", partial: "admin/textes/coups_de_coeur"),
+            turbo_stream.replace(
+              "coups_de_coeur_section",
+              partial: "admin/textes/coups_de_coeur",
+              locals: { coups_de_coeur_list_open: true }
+            ),
             turbo_stream.replace("flash", partial: "layouts/flash")
           ]
         end
-        format.html { redirect_to admin_textes_path }
+        format.html { redirect_to admin_textes_path(cdc_list: 1) }
       end
     else
-      redirect_to admin_textes_path, alert: "Produit non trouvé"
+      redirect_to admin_textes_path(cdc_list: 1), alert: "Produit non trouvé"
     end
   end
 
@@ -396,14 +401,18 @@ class Admin::ProduitsController < Admin::ApplicationController
       respond_to do |format|
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.replace("coups_de_coeur_section", partial: "admin/textes/coups_de_coeur"),
+            turbo_stream.replace(
+              "coups_de_coeur_section",
+              partial: "admin/textes/coups_de_coeur",
+              locals: { coups_de_coeur_list_open: true }
+            ),
             turbo_stream.replace("flash", partial: "layouts/flash")
           ]
         end
-        format.html { redirect_to admin_textes_path }
+        format.html { redirect_to admin_textes_path(cdc_list: 1) }
       end
     else
-      redirect_to admin_textes_path, alert: "Produit non trouvé"
+      redirect_to admin_textes_path(cdc_list: 1), alert: "Produit non trouvé"
     end
   end
 

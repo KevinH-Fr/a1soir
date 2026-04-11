@@ -1,81 +1,84 @@
 <div id="<%= dom_id texte %>">
-  <div class="mb-4">
-    <h4 class="text-primary"><%= texte.titre %></h4>
-  </div>
-
-  <div class="row g-3">
-    <!-- Boutique -->
-    <div class="col-md-12">
-      <div class="card h-100">
-        <div class="card-header bg-secondary text-white">
-          <h6 class="mb-0">Boutique</h6>
-        </div>
-        <div class="card-body">
+  <% acc_id = "accordion-marketing-#{texte.id}" %>
+  <div class="accordion accordion-flush" id="<%= acc_id %>">
+    <div class="accordion-item border rounded mb-2 overflow-hidden">
+      <h3 class="accordion-header m-0">
+        <button class="accordion-button collapsed py-2 px-3 small fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#<%= dom_id texte, :boutique %>" aria-expanded="false" aria-controls="<%= dom_id texte, :boutique %>" data-bs-parent="#<%= acc_id %>">
+          Boutique
+        </button>
+      </h3>
+      <div id="<%= dom_id texte, :boutique %>" class="accordion-collapse collapse" data-bs-parent="#<%= acc_id %>">
+        <div class="accordion-body py-2">
           <div class="trix-content"><%= texte.boutique %></div>
         </div>
       </div>
     </div>
 
-    <!-- Equipe -->
-    <div class="col-md-12">
-      <div class="card h-100">
-        <div class="card-header bg-secondary text-white">
-          <h6 class="mb-0">Equipe</h6>
-        </div>
-        <div class="card-body">
+    <div class="accordion-item border rounded mb-2 overflow-hidden">
+      <h3 class="accordion-header m-0">
+        <button class="accordion-button collapsed py-2 px-3 small fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#<%= dom_id texte, :equipe %>" aria-expanded="false" aria-controls="<%= dom_id texte, :equipe %>" data-bs-parent="#<%= acc_id %>">
+          Équipe
+        </button>
+      </h3>
+      <div id="<%= dom_id texte, :equipe %>" class="accordion-collapse collapse" data-bs-parent="#<%= acc_id %>">
+        <div class="accordion-body py-2">
           <div class="trix-content"><%= texte.equipe %></div>
         </div>
       </div>
     </div>
 
-    <!-- Contact -->
-    <div class="col-md-4">
-      <div class="card h-100">
-        <div class="card-header bg-secondary text-white">
-          <h6 class="mb-0">Contact</h6>
-        </div>
-        <div class="card-body">
+    <div class="accordion-item border rounded mb-2 overflow-hidden">
+      <h3 class="accordion-header m-0">
+        <button class="accordion-button collapsed py-2 px-3 small fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#<%= dom_id texte, :contact %>" aria-expanded="false" aria-controls="<%= dom_id texte, :contact %>" data-bs-parent="#<%= acc_id %>">
+          Contact
+        </button>
+      </h3>
+      <div id="<%= dom_id texte, :contact %>" class="accordion-collapse collapse" data-bs-parent="#<%= acc_id %>">
+        <div class="accordion-body py-2">
           <div class="trix-content"><%= texte.contact %></div>
         </div>
       </div>
     </div>
 
-    <!-- Horaire -->
-    <div class="col-md-4">
-      <div class="card h-100">
-        <div class="card-header bg-secondary text-white">
-          <h6 class="mb-0">Horaire</h6>
-        </div>
-        <div class="card-body">
+    <div class="accordion-item border rounded mb-2 overflow-hidden">
+      <h3 class="accordion-header m-0">
+        <button class="accordion-button collapsed py-2 px-3 small fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#<%= dom_id texte, :horaire %>" aria-expanded="false" aria-controls="<%= dom_id texte, :horaire %>" data-bs-parent="#<%= acc_id %>">
+          Horaire
+        </button>
+      </h3>
+      <div id="<%= dom_id texte, :horaire %>" class="accordion-collapse collapse" data-bs-parent="#<%= acc_id %>">
+        <div class="accordion-body py-2">
           <div class="trix-content"><%= texte.horaire %></div>
         </div>
       </div>
     </div>
 
-    <!-- Adresse -->
-    <div class="col-md-4">
-      <div class="card h-100">
-        <div class="card-header bg-secondary text-white">
-          <h6 class="mb-0">Adresse</h6>
-        </div>
-        <div class="card-body">
+    <div class="accordion-item border rounded mb-2 overflow-hidden">
+      <h3 class="accordion-header m-0">
+        <button class="accordion-button collapsed py-2 px-3 small fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#<%= dom_id texte, :adresse %>" aria-expanded="false" aria-controls="<%= dom_id texte, :adresse %>" data-bs-parent="#<%= acc_id %>">
+          Adresse
+        </button>
+      </h3>
+      <div id="<%= dom_id texte, :adresse %>" class="accordion-collapse collapse" data-bs-parent="#<%= acc_id %>">
+        <div class="accordion-body py-2">
           <div class="trix-content"><%= texte.adresse %></div>
         </div>
       </div>
     </div>
 
-    <!-- Images du carousel -->
     <% if texte.carousel_images.present? %>
-      <div class="col-12">
-        <div class="card">
-          <div class="card-header bg-secondary text-white">
-            <h6 class="mb-0">Images du carousel</h6>
-          </div>
-          <div class="card-body">
+      <div class="accordion-item border rounded mb-0 overflow-hidden">
+        <h3 class="accordion-header m-0">
+          <button class="accordion-button collapsed py-2 px-3 small fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#<%= dom_id texte, :carousel %>" aria-expanded="false" aria-controls="<%= dom_id texte, :carousel %>" data-bs-parent="#<%= acc_id %>">
+            Images du carousel
+          </button>
+        </h3>
+        <div id="<%= dom_id texte, :carousel %>" class="accordion-collapse collapse" data-bs-parent="#<%= acc_id %>">
+          <div class="accordion-body py-2">
             <div class="d-flex flex-wrap gap-2">
               <% texte.carousel_images.each do |image| %>
                 <%= image_tag(image, class: "rounded shadow-sm admin-carousel-image") %>
-              <% end %> 
+              <% end %>
             </div>
           </div>
         </div>

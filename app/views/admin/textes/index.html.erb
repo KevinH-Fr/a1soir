@@ -1,29 +1,42 @@
-<div class="container-fluid py-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h1 class="mb-2">Marketing</h1>
-      <p class="text-muted">Définissez les éléments marketing de la boutique</p>
-    </div>
-    <% unless @textes.any? %>
-      <%= link_to "Nouveau texte", new_admin_texte_path, class: "btn btn-primary" %>
+<%= bandeau_entete("Marketing", "file-earmark-text", (@textes.size if @textes.any?).to_s, "", "",
+                    card_class: "card mt-2 mx-2 mb-0 shadow-sm rounded-bottom-0 border-bottom-0") %>
+
+<div class="card mx-2 mb-3 mt-0 shadow-sm rounded-top-0 border-top-0 light-beige-colored">
+  <div class="card-header py-2 d-flex flex-wrap align-items-center justify-content-between gap-2 bg-transparent border-bottom">
+    <span class="fw-bold mb-0">Textes de la boutique</span>
+    <% if @textes.empty? %>
+      <%= link_to "Nouveau texte", new_admin_texte_path, class: "btn btn-primary btn-sm flex-shrink-0" %>
+    <% elsif @textes.one? %>
+      <%= button_to edit_admin_texte_path(@textes.first), method: :post, class: "btn btn-sm btn-outline-secondary flex-shrink-0" do %>
+        <i class="bi bi-pencil-square me-1"></i>
+        Modifier
+      <% end %>
     <% end %>
   </div>
-
-  <div id="textes">
-    <% @textes.each do |texte| %>
-      <div class="card mb-4 shadow-sm">
-        <div class="card-body">
+  <div class="card-body py-3">
+    <div id="textes">
+      <% if @textes.many? %>
+        <% @textes.each do |texte| %>
+          <div class="card border shadow-sm mb-3">
+            <div class="card-header bg-white py-2 d-flex flex-nowrap align-items-center justify-content-between gap-2 border-bottom">
+              <span class="fw-semibold text-primary text-truncate min-w-0 mb-0"><%= texte.titre %></span>
+              <%= button_to edit_admin_texte_path(texte), method: :post, class: "btn btn-sm btn-outline-secondary flex-shrink-0" do %>
+                <i class="bi bi-pencil-square me-1"></i>
+                Modifier
+              <% end %>
+            </div>
+            <div class="card-body">
+              <%= render texte %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <% @textes.each do |texte| %>
           <%= render texte %>
-        </div>
-        <div class="card-footer bg-white border-top">
-          <%= button_to edit_admin_texte_path(texte), method: :post, class: "btn btn-sm btn-outline-secondary" do %>
-            <i class="bi bi-pencil-square me-1"></i>
-            Modifier
-          <% end %>
-        </div>
-      </div>
-    <% end %>
+        <% end %>
+      <% end %>
+    </div>
   </div>
-
-  <%= render "admin/textes/coups_de_coeur" %>
 </div>
+
+<%= render "admin/textes/coups_de_coeur" %>
