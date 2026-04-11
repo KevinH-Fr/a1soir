@@ -129,7 +129,7 @@ class Admin::SelectionProduitController < Admin::ApplicationController
     end
 
     @couleurs = Couleur.joins(produits: :categorie_produits)
-      .where(produits: { categorie_produits: { id: selected_categorie_produits_ids }, taille: @tailles }).distinct
+      .where(produits: { categorie_produits: { id: @categorie_produits }, taille: @tailles }).distinct
 
     respond_to do |format|
       format.turbo_stream do

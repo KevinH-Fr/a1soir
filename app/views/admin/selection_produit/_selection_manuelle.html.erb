@@ -1,26 +1,16 @@
-<div class="text-center fw-bold">catégories</div> <hr>
-
-<div class="d-flex flex-wrap justify-content-center align-items-center mb-3">
-
-  <%= button_to display_categorie_selected_admin_selection_produit_index_path(
-      categorie_produit: "all"), 
-      class: "btn btn-sm btn-outline-primary m-1 btn-topic",
-      data: { controller: "button-color", action: "click->button-color#handleClick" },
-      "data-original-color": "text-primary" do %>
-      <span class="fw-bold">Tout</span>
+<%= selection_filter_section(title: "Catégories", icon: "bi-grid-3x3-gap", heading_id: "selection-filter-categories", compact: true) do %>
+  <%= form_with url: display_categorie_selected_admin_selection_produit_index_path, method: :post, class: "m-0 w-100", data: { turbo: true } do %>
+    <%= select_tag :categorie_produit,
+          options_for_select(
+            [["Toutes les catégories", "all"]] + @categorie_produits.map { |c| [c.nom, c.id] }
+          ),
+          include_blank: "…",
+          class: "form-select form-select-sm w-100",
+          aria: { labelledby: "selection-filter-categories" },
+          onchange: "if (this.value !== '') this.form.requestSubmit()" %>
   <% end %>
-
-  <% @categorie_produits.each do |categorie_produit| %>
-    <%= button_to display_categorie_selected_admin_selection_produit_index_path(
-        categorie_produit: categorie_produit), class: "btn btn-sm btn-outline-primary m-1 btn-topic",
-        data: { controller: "button-color", action: "click->button-color#handleClick" },
-        "data-original-color": "text-primary" do %>
-      <span class="fw-bold"><%= categorie_produit.nom %></span>
-    <% end %>
-  <% end %>
-</div>
+<% end %>
 
 <div id="partial-categorie-selected" class="">
   <%# recoit le turbo stream avec elements cliqués %>
 </div>
-

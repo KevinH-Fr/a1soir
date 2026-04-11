@@ -1,34 +1,17 @@
-<div class="text-center fw-bold">tailles</div> <hr>
-
-<div class="d-flex flex-wrap justify-content-center align-items-center mb-3">
-
-  <%# if @tailles.any? %>
-
-      <%= button_to display_taille_selected_admin_selection_produit_index_path(
-          categorie_produit: @categorie_produits, taille: "all"), 
-          class: "btn btn-sm btn-outline-primary m-1 btn-topic",
-          data: { controller: "button-color", action: "click->button-color#handleClick" },
-          "data-original-color": "text-primary" do %>
-          <span class="fw-bold">Tout</span>
-      <% end %>
-      
-
-    <% @tailles.each do |taille| %>
-      <%= button_to display_taille_selected_admin_selection_produit_index_path(categorie_produit: @categorie_produits, taille: taille), 
-          class: "btn btn-sm btn-outline-primary m-1 btn-topic",
-          data: { controller: "button-color", action: "click->button-color#handleClick" },
-          "data-original-color": "text-primary" do %>
-          <span class="fw-bold"><%= taille.nom %></span>
-      <% end %>
-    <% end %>
-
-  <%# end %>
-  
-</div>
-
+<%= selection_filter_section(title: "Tailles", icon: "bi-arrows-angle-expand", heading_id: "selection-filter-sizes", compact: true) do %>
+  <%= form_with url: display_taille_selected_admin_selection_produit_index_path, method: :post, class: "m-0 w-100", data: { turbo: true } do %>
+    <%= selection_hidden_categorie_produit_ids(@categorie_produits) %>
+    <%= select_tag :taille,
+          options_for_select(
+            [["Toutes les tailles", "all"]] + @tailles.map { |t| [t.nom, t.id] }
+          ),
+          include_blank: "…",
+          class: "form-select form-select-sm w-100",
+          aria: { labelledby: "selection-filter-sizes" },
+          onchange: "if (this.value !== '') this.form.requestSubmit()" %>
+  <% end %>
+<% end %>
 
 <div id="partial-taille-selected" class="">
   <%# recoit le turbo stream avec elements cliqués %>
 </div>
-
-

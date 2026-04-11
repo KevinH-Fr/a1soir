@@ -1,17 +1,13 @@
-<div class="container-fluid p-2">
-
-    <% if @produits.any? %>
-        <% @produits.each do |produit| %>
-
-            <%= produit_selection(produit, @commande) %>
-
-            <%# if statut_disponibilite(produit, @commande&.date_retenue.to_date, @commande.finloc.to_date ) %>   
-                <%#= link_to selection_produit_path(produit: produit, article: @article), class: "text-decoration-none" do %>
-                <%# end %>
-            <%# else %>
-                <%#= produit_selection(produit, @commande ) %>
-            <%# end %>
-        <% end %>
-
+<%# Pas de padding horizontal : même bande que la barre de recherche (index) ou #partial-container (filtres). %>
+<div class="w-100 pb-2 mt-2">
+  <% if @produits.any? %>
+    <% @produits.each do |produit| %>
+      <%= produit_selection(produit, @commande) %>
     <% end %>
+  <% else %>
+    <div class="text-center text-body-secondary py-4 px-2" role="status">
+      <i class="bi bi-inbox d-block fs-2 mb-2 opacity-50" aria-hidden="true"></i>
+      <p class="mb-0 small">Aucun produit ne correspond à ces critères.</p>
+    </div>
+  <% end %>
 </div>
