@@ -2,54 +2,109 @@
 <div class="card mx-2 mb-3 light-beige-colored shadow-sm p-2">
 
     <div class="card-header fw-bold">
-        analyse
+        Analyse
     </div>
 
     <div class="card-body">
 
-        <%= form_tag url_for, method: :get do %>
+        <div class="rounded-2 border border-secondary-subtle bg-white bg-opacity-50 px-2 py-2 mb-2">
+          <div class="d-flex align-items-center gap-1 mb-2 pb-1 border-bottom border-secondary-subtle">
+            <i class="bi bi-calendar-range text-secondary small" aria-hidden="true"></i>
+            <span class="small text-uppercase fw-semibold text-secondary lh-sm">Période produits</span>
+          </div>
 
-            <div class="input-group mb-1">
-                <%= label_tag :début, "début", class:"input-group-text label-with-format centered" %>
-                <%= date_field_tag :debut, params[:debut], class:"form-control field-with-format" %>
-
-                <%= label_tag :fin, "fin", class:"input-group-text label-with-format centered" %>
-                <%= date_field_tag :fin, params[:fin], class:"form-control field-with-format" %>
-
-                <%= link_to "Effacer", url_for(), class:"btn btn-outline-danger rounded mx-1" %> 
-
-                <%= submit_tag "Go", class:"btn btn-success fw-bold rounded" %>
-
+          <%= form_tag url_for, method: :get, class: "mb-0" do %>
+            <div class="row g-2 align-items-stretch">
+              <div class="col-12 col-md">
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text text-body-secondary small fw-semibold">Du</span>
+                  <%= date_field_tag :debut, params[:debut],
+                                      class: "form-control",
+                                      aria: { label: "Date de début" } %>
+                  <span class="input-group-text text-body-secondary small fw-semibold">au</span>
+                  <%= date_field_tag :fin, params[:fin],
+                                      class: "form-control",
+                                      aria: { label: "Date de fin" } %>
+                </div>
+              </div>
+              <div class="col-12 col-md-auto d-flex flex-wrap gap-1 align-items-stretch">
+                <%= submit_tag "Go", class: "btn btn-success btn-sm py-1 px-2 fw-semibold" %>
+                <%= link_to "Effacer", url_for(), class: "btn btn-outline-danger btn-sm py-1 px-2 d-inline-flex align-items-center" %>
+              </div>
             </div>
+          <% end %>
 
-        <% end %>
+          <% if @datedebut.present? && @datefin.present? %>
+            <div class="mt-2 pt-1 border-top border-secondary-subtle small text-body-secondary lh-sm">
+              <i class="bi bi-funnel me-1" aria-hidden="true"></i>
+              Actif :
+              <span class="fw-semibold text-body">
+                <%= @datedebut.strftime("%d/%m/%Y") %>
+                <span class="mx-1">→</span>
+                <%= @datefin.strftime("%d/%m/%Y") %>
+              </span>
+            </div>
+          <% end %>
+        </div>
 
         <div class="my-2">
-            <% if @datedebut.present? && @datefin.present? %>
-                <div class="fw-bold">
-                    filtre de dates sur produits: <%= @datedebut.strftime("%d/%m/%y")  %> - <%= @datefin.strftime("%d/%m/%y") %>
-                </div>
-            <% end %>    
 
-            <div class="d-flex flex-wrap justify-content-evenly">
-                <div class="card flex-fill p-2 m-1">
-                    <span class="fw-bold">  achats </span>  <br>
-                    nb:  <%= @produitsFiltres.count %> 
-                    quantité: <%= @produitsFiltres.sum(:quantite) %> 
-                    total prix:  <%= @total_prixachat_sum %>
+            <div class="row row-cols-1 row-cols-lg-3 g-2 mt-1">
+              <div class="col">
+                <div class="card h-100 border border-secondary-subtle shadow-sm rounded-2 bg-white bg-opacity-75">
+                  <div class="card-body p-2">
+                    <h3 class="h6 text-uppercase text-secondary fw-semibold small mb-2 pb-1 border-bottom border-secondary-subtle">Achats</h3>
+                    <ul class="list-unstyled small mb-0 lh-sm">
+                      <li class="d-flex justify-content-between align-items-baseline py-1 border-bottom border-secondary-subtle">
+                        <span class="text-body-secondary">Produits</span>
+                        <span class="fw-bold text-body"><%= @produitsFiltres.count %></span>
+                      </li>
+                      <li class="d-flex justify-content-between align-items-baseline py-1 border-bottom border-secondary-subtle">
+                        <span class="text-body-secondary">Quantité</span>
+                        <span class="fw-bold text-body"><%= @produitsFiltres.sum(:quantite) %></span>
+                      </li>
+                      <li class="d-flex justify-content-between align-items-baseline py-1">
+                        <span class="text-body-secondary">Total prix achat</span>
+                        <span class="fw-bold text-body"><%= number_to_currency(@total_prixachat_sum.to_f.round, unit: "€", format: "%n %u", delimiter: " ", precision: 0) %></span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-                
-                <div class="card flex-fill p-2 m-1">
-                    <span class="fw-bold"> ventes </span>  <br>
-                    nb:  <%= @vente_produits.count %> 
-                    total prix:  <%= @vente_produits.sum(:prix) %>
+              </div>
+              <div class="col">
+                <div class="card h-100 border border-secondary-subtle shadow-sm rounded-2 bg-white bg-opacity-75">
+                  <div class="card-body p-2">
+                    <h3 class="h6 text-uppercase text-secondary fw-semibold small mb-2 pb-1 border-bottom border-secondary-subtle">Ventes</h3>
+                    <ul class="list-unstyled small mb-0 lh-sm">
+                      <li class="d-flex justify-content-between align-items-baseline py-1 border-bottom border-secondary-subtle">
+                        <span class="text-body-secondary">Quantité</span>
+                        <span class="fw-bold text-body"><%= @vente_produits.sum(:quantite) %></span>
+                      </li>
+                      <li class="d-flex justify-content-between align-items-baseline py-1">
+                        <span class="text-body-secondary">Total prix</span>
+                        <span class="fw-bold text-body"><%= number_to_currency(@vente_produits.sum(:prix).to_f.round, unit: "€", format: "%n %u", delimiter: " ", precision: 0) %></span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-                
-                <div class="card flex-fill p-2 m-1">
-                    <span class="fw-bold"> locations </span>  <br>
-                    nb:  <%= @location_produits.count %> 
-                    total prix:  <%= @location_produits.sum(:prix) %>
+              </div>
+              <div class="col">
+                <div class="card h-100 border border-secondary-subtle shadow-sm rounded-2 bg-white bg-opacity-75">
+                  <div class="card-body p-2">
+                    <h3 class="h6 text-uppercase text-secondary fw-semibold small mb-2 pb-1 border-bottom border-secondary-subtle">Locations</h3>
+                    <ul class="list-unstyled small mb-0 lh-sm">
+                      <li class="d-flex justify-content-between align-items-baseline py-1 border-bottom border-secondary-subtle">
+                        <span class="text-body-secondary">Quantité</span>
+                        <span class="fw-bold text-body"><%= @location_produits.sum(:quantite) %></span>
+                      </li>
+                      <li class="d-flex justify-content-between align-items-baseline py-1">
+                        <span class="text-body-secondary">Total prix</span>
+                        <span class="fw-bold text-body"><%= number_to_currency(@location_produits.sum(:prix).to_f.round, unit: "€", format: "%n %u", delimiter: " ", precision: 0) %></span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
+              </div>
             </div>
 
         </div>

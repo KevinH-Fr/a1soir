@@ -4,13 +4,12 @@ class Admin::FournisseursController < Admin::ApplicationController
   before_action :set_fournisseur, only: %i[ show edit update destroy ]
 
   def index
-
-   search_params = params.permit(:format, :page, 
-      q:[:nom_or_tel_or_mail_cont])
-   @q = Fournisseur.ransack(search_params[:q])
-   fournisseurs = @q.result(distinct: true).order(created_at: :desc)
-   @pagy, @fournisseurs = pagy_countless(fournisseurs, items: 2)
-
+    search_params = params.permit(:format, :page,
+                                  q: [:nom_or_tel_or_mail_cont])
+    @q = Fournisseur.ransack(search_params[:q])
+    fournisseurs_scope = @q.result(distinct: true)
+    @fournisseurs_count = fournisseurs_scope.count
+    @pagy, @fournisseurs = pagy_countless(fournisseurs_scope.order(created_at: :desc), items: 2)
   end
 
   def show

@@ -1,5 +1,5 @@
-<%= bandeau_entete("Fournisseurs", "buildings", @fournisseurs.count, 
-:nom_or_tel_or_mail_cont, admin_fournisseurs_path) %>
+<%= bandeau_entete("Fournisseurs", "buildings", @fournisseurs_count.to_s,
+                   :nom_or_tel_or_mail_cont, admin_fournisseurs_path) %>
 
 <%= bloc_nouveau(Fournisseur) %>
 
