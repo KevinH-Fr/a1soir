@@ -20,34 +20,59 @@ module AnalysesHelper
     end
   end
 
-    def date_range_filter_buttons(base_params:)
-      today = Date.today
-      selected_range = [
-        parse_date(params[:debut]),
-        parse_date(params[:fin])
-      ]
-  
-      buttons = [
-        { label: "Aujourd'hui", range: [today, today] },
-        { label: "30 jours", range: [today - 29, today] },
-        { label: "Mois courant", range: [today.beginning_of_month, today.end_of_month] }
-      ]
-  
-      safe_join(buttons.map do |btn|
-        debut, fin = btn[:range]
-        is_active = selected_range == [debut, fin]
-        css_class = is_active ? "btn-primary" : "btn-outline-primary"
-  
-        link_to btn[:label],
-                url_for(params: base_params.merge(debut: debut, fin: fin)),
-                class: "btn btn-sm #{css_class} rounded"
-      end, " ")
-    end
-  
-    private
-  
-    def parse_date(value)
-      Date.parse(value.to_s) rescue nil
-    end
+  # True when the current URL dates are not exactly one of the quick presets (custom range).
+  def custom_period_filter_open?
+    selected = [parse_date(params[:debut]), parse_date(params[:fin])]
+    return false if selected.any?(&:nil?)
+
+    quick_period_ranges.none? { |range| range == selected }
+  end
+
+  def date_range_filter_today_button(base_params:)
+    selected_range = [parse_date(params[:debut]), parse_date(params[:fin])]
+    label, range = quick_period_definitions.first
+    debut, fin = range
+    preset_button_link(label, debut, fin, selected_range, base_params)
+  end
+
+  def date_range_filter_range_presets_buttons(base_params:)
+    selected_range = [parse_date(params[:debut]), parse_date(params[:fin])]
+    safe_join(
+      quick_period_definitions.drop(1).map do |label, range|
+        debut, fin = range
+        preset_button_link(label, debut, fin, selected_range, base_params)
+      end,
+      ""
+    )
+  end
+
+  private
+
+  def preset_button_link(label, debut, fin, selected_range, base_params)
+    is_active = selected_range == [debut, fin]
+    variant = is_active ? "primary" : "outline-secondary"
+    link_to label,
+            url_for(params: base_params.merge(debut: debut, fin: fin)),
+            class: "btn btn-sm btn-#{variant}"
+  end
+
+  def quick_period_definitions
+    today = Date.today
+    prev_month = today.prev_month
+    [
+      ["Aujourd'hui", [today, today]],
+      ["30 jours", [today - 29, today]],
+      ["Mois courant", [today.beginning_of_month, today.end_of_month]],
+      ["Mois précédent", [prev_month.beginning_of_month, prev_month.end_of_month]]
+    ]
+  end
+
+  def quick_period_ranges
+    quick_period_definitions.map(&:last)
+  end
+
+  def parse_date(value)
+    Date.parse(value.to_s) rescue nil
+  end
 end
   

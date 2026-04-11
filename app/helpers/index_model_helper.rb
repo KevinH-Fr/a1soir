@@ -11,8 +11,8 @@ module IndexModelHelper
     end
   end
 
-  def bandeau_entete(title, icon, counter, champs_recherche, search_path)
-    content_tag(:div, class: "card m-2 shadow-sm") do
+  def bandeau_entete(title, icon, counter, champs_recherche, search_path, card_class: "card m-2 shadow-sm")
+    content_tag(:div, class: card_class) do
       concat(content_tag(:div, class: "card-header bg-dark text-light d-flex justify-content-between align-items-center py-2") do
         concat(content_tag(:div, class: "d-flex align-items-center") do
           concat(content_tag(:i, nil, class: "bi bi-xl brand-colored bi-#{icon} ms-1 me-3"))
