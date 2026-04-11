@@ -1,0 +1,54 @@
+<% p = stripe_payment %>
+<% c = p.commande %>
+<% s = p.status.to_s.downcase %>
+<% status_klass =
+     if %w[paid succeeded].include?(s)
+       "text-bg-success-subtle text-success-emphasis border border-success-subtle"
+     elsif %w[pending processing requires_payment_method requires_action requires_confirmation].include?(s)
+       "text-bg-warning-subtle text-warning-emphasis border border-warning-subtle"
+     elsif %w[failed canceled cancelled unpaid].include?(s)
+       "text-bg-danger-subtle text-danger-emphasis border border-danger-subtle"
+     else
+       "text-bg-secondary-subtle text-secondary-emphasis border border-secondary-subtle"
+     end %>
+<tr class="border-bottom border-secondary-subtle">
+  <td class="py-3 px-3 text-nowrap small"><%= l(p.created_at, format: :short) %></td>
+  <td class="py-3 px-3 text-end text-nowrap fw-semibold">
+    <%= number_to_currency(p.amount.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %>
+  </td>
+  <td class="py-3 px-3">
+    <span class="badge rounded-pill px-3 py-2 fw-normal <%= status_klass %>">
+      <%= p.status %>
+    </span>
+  </td>
+  <td class="py-3 px-3 small text-break">
+    <%= p.customer_email.presence || content_tag(:span, "—", class: "text-muted") %>
+  </td>
+  <td class="py-3 px-3">
+    <% if c.nil? %>
+      <span class="text-muted small">—</span>
+    <% elsif c.expedie_le.present? %>
+      <span class="badge bg-success d-inline-flex align-items-center gap-1 fw-semibold shadow-sm"
+            title="Expédié le <%= l(c.expedie_le, format: :short) %>">
+        <i class="bi bi-truck" aria-hidden="true"></i>
+        Expédié
+      </span>
+    <% else %>
+      <span class="badge border border-warning text-dark fw-semibold shadow-sm d-inline-flex align-items-center gap-1"
+            title="Commande liée, pas encore marquée expédiée">
+        <i class="bi bi-truck" aria-hidden="true"></i>
+        À expédier
+      </span>
+    <% end %>
+  </td>
+  <td class="py-3 px-3">
+    <% if c %>
+      <%= link_to admin_commande_path(c), class: "btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1" do %>
+        <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
+        <%= c.ref_commande %>
+      <% end %>
+    <% else %>
+      <span class="text-muted small">—</span>
+    <% end %>
+  </td>
+</tr>
