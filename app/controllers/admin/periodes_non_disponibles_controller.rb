@@ -26,11 +26,10 @@ class Admin::PeriodesNonDisponiblesController < Admin::ApplicationController
             turbo_stream.append("periodes_table_body",
               partial: "admin/periodes_non_disponibles/periode_non_disponible",
               locals: { periode_non_disponible: @periode_non_disponible }),
-              turbo_stream.replace('new_periode_non_disponible',
+            turbo_stream.update("new_periode_non_disponible",
               partial: "admin/periodes_non_disponibles/form",
               locals: { periode_non_disponible: PeriodeNonDisponible.new }),
-      
-            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: { success: "Période non disponible créée avec succès" } })
+            turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: { success: "Période non disponible créée avec succès" } })
           ]
         end
         format.html { redirect_to dashboard_admin_parametre_rdvs_path(anchor: "periodes"), notice: "Période non disponible créée avec succès" }

@@ -1,63 +1,70 @@
-<div id="<%= dom_id parametre_rdv %>" class="p-2">
+<div id="<%= dom_id parametre_rdv %>" class="card border border-secondary-subtle shadow-sm rounded-3">
   <% if parametre_rdv.persisted? %>
-    <div class="row mb-2">
-      <div class="col-md-12 mb-2">
-        <strong>Créneaux horaires par jour:</strong>
-        <ul class="list-unstyled mb-0">
-          <% jours = [
-            [:lundi, "Lundi"],
-            [:mardi, "Mardi"],
-            [:mercredi, "Mercredi"],
-            [:jeudi, "Jeudi"],
-            [:vendredi, "Vendredi"],
-            [:samedi, "Samedi"],
-            [:dimanche, "Dimanche"]
-          ] %>
-
-          <% jours.each do |day_sym, day_label| %>
+    <div class="card-body p-3 p-md-4 vstack gap-4">
+      <section aria-labelledby="heading-creneaux-<%= dom_id parametre_rdv %>">
+        <h3 id="heading-creneaux-<%= dom_id parametre_rdv %>" class="h6 text-uppercase text-secondary fw-semibold small mb-2 pb-1 border-bottom border-secondary-subtle d-flex align-items-center gap-2">
+          <i class="bi bi-clock-history" aria-hidden="true"></i>
+          Créneaux horaires par jour
+        </h3>
+        <div class="vstack gap-1">
+          <% ParametreRdv::DAY_LABELS.each do |day_sym, day_label| %>
             <% liste = parametre_rdv.creneaux_for(day_sym) %>
-            <li class="mb-1">
-              <strong class="me-2"><%= day_label %> :</strong>
-              <% if liste.any? %>
-                <% liste.each do |creneau| %>
-                  <span class="badge rounded-pill bg-primary text-light me-1 mb-1">
-                    <%= creneau %>
-                  </span>
-                <% end %>
-              <% else %>
-                <span class="text-muted">-</span>
-              <% end %>
-            </li>
+            <div class="row g-1 align-items-center py-1 px-2 rounded-2 bg-body-secondary bg-opacity-10 border border-secondary-subtle mx-0 mb-1">
+              <div class="col-auto col-md-2 fw-semibold small text-nowrap pe-2"><%= day_label %></div>
+              <div class="col col-md">
+                <div class="d-flex flex-wrap gap-1">
+                  <% if liste.any? %>
+                    <% liste.each do |creneau| %>
+                      <span class="badge rounded-pill bg-primary-subtle text-primary-emphasis border border-primary-subtle fw-normal py-0 px-2 small lh-sm">
+                        <%= creneau %>
+                      </span>
+                    <% end %>
+                  <% else %>
+                    <span class="text-muted small fst-italic lh-sm">—</span>
+                  <% end %>
+                </div>
+              </div>
+            </div>
           <% end %>
-        </ul>
-      </div>
-    </div>
+        </div>
+      </section>
 
-    <div class="row mb-2">
-      <div class="col-md-12 mb-2">
-        <strong>Minutes par personne supplémentaire:</strong> <%= parametre_rdv.minutes_par_personne_supp || 0 %>
-      </div>
-    </div>
+      <section aria-labelledby="heading-minutes-<%= dom_id parametre_rdv %>">
+        <h3 id="heading-minutes-<%= dom_id parametre_rdv %>" class="h6 text-uppercase text-secondary fw-semibold small mb-2 pb-2 border-bottom border-secondary-subtle d-flex align-items-center gap-2">
+          <i class="bi bi-person-plus" aria-hidden="true"></i>
+          Minutes par personne supplémentaire
+        </h3>
+        <p class="mb-0 fs-6 fw-semibold text-body lh-sm">
+          <%= parametre_rdv.minutes_par_personne_supp || 0 %>
+        </p>
+      </section>
 
-    <div class="row mb-2">
-      <div class="col-12">
-        <strong>Capacité par jour:</strong>
-        <ul class="list-inline mb-0">
-          <li class="list-inline-item">Lundi: <%= parametre_rdv.nb_rdv_simultanes_lundi || 0 %></li>
-          <li class="list-inline-item">Mardi: <%= parametre_rdv.nb_rdv_simultanes_mardi || 0 %></li>
-          <li class="list-inline-item">Mercredi: <%= parametre_rdv.nb_rdv_simultanes_mercredi || 0 %></li>
-          <li class="list-inline-item">Jeudi: <%= parametre_rdv.nb_rdv_simultanes_jeudi || 0 %></li>
-          <li class="list-inline-item">Vendredi: <%= parametre_rdv.nb_rdv_simultanes_vendredi || 0 %></li>
-          <li class="list-inline-item">Samedi: <%= parametre_rdv.nb_rdv_simultanes_samedi || 0 %></li>
-          <li class="list-inline-item">Dimanche: <%= parametre_rdv.nb_rdv_simultanes_dimanche || 0 %></li>
-        </ul>
+      <section aria-labelledby="heading-capacite-<%= dom_id parametre_rdv %>">
+        <h3 id="heading-capacite-<%= dom_id parametre_rdv %>" class="h6 text-uppercase text-secondary fw-semibold small mb-2 pb-2 border-bottom border-secondary-subtle d-flex align-items-center gap-2">
+          <i class="bi bi-people" aria-hidden="true"></i>
+          Capacité par jour (RDV simultanés)
+        </h3>
+        <div class="row row-cols-3 row-cols-sm-4 row-cols-lg-7 g-1">
+          <% ParametreRdv::DAY_LABELS.each do |day_sym, day_label| %>
+            <% val = parametre_rdv.public_send(:"nb_rdv_simultanes_#{day_sym}") || 0 %>
+            <div class="col">
+              <div class="text-center py-1 px-1 rounded-2 border border-secondary-subtle bg-white bg-opacity-50 h-100 d-flex flex-column justify-content-center lh-sm">
+                <div class="small text-muted text-uppercase lh-1"><%= day_label %></div>
+                <div class="fs-6 fw-semibold text-body lh-1 mt-0"><%= val %></div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </section>
+
+      <div class="d-flex flex-wrap justify-content-end gap-2 pt-2 border-top border-secondary-subtle">
+        <%= links_record(parametre_rdv) %>
       </div>
-    </div>
-    <div class="row mb-2">
-      <%= links_record(parametre_rdv) %>
     </div>
   <% else %>
-    <p class="text-muted text-center">Aucune configuration paramétrée. Utilisez le bouton ci-dessus pour créer une configuration.</p>
+    <div class="card-body p-4 text-center text-muted">
+      <i class="bi bi-sliders d-block fs-2 mb-2 opacity-50" aria-hidden="true"></i>
+      <p class="mb-0 small">Aucune configuration paramétrée. Utilisez le bouton ci-dessus pour créer une configuration.</p>
+    </div>
   <% end %>
 </div>
-

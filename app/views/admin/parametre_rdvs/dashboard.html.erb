@@ -1,40 +1,77 @@
 <%= bandeau_entete_simple("Configuration des rendez-vous", "sliders") %>
 
-<div class="card m-2 shadow-sm">
-  <div class="card-body p-0">
-    <nav>
-      <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <button class="nav-link active text-dark" id="parametres-tab" data-bs-toggle="tab" data-bs-target="#parametres" type="button" role="tab" aria-controls="parametres" aria-selected="true">
-          <i class="bi bi-sliders me-1"></i>Paramètres
-        </button>
-        <button class="nav-link text-dark" id="types-tab" data-bs-toggle="tab" data-bs-target="#types" type="button" role="tab" aria-controls="types" aria-selected="false">
-          <i class="bi bi-ui-checks-grid me-1"></i>Types de RDV
-        </button>
-        <button class="nav-link text-dark" id="periodes-tab" data-bs-toggle="tab" data-bs-target="#periodes" type="button" role="tab" aria-controls="periodes" aria-selected="false">
-          <i class="bi bi-calendar-x me-1"></i>Périodes non disponibles
-        </button>
-      </div>
-    </nav>
+<div class="card mx-2 mb-3 light-beige-colored shadow-sm rounded-3 overflow-hidden border border-secondary-subtle">
+  <div class="card-header lighter-beige-colored border-secondary-subtle py-3 pb-0 px-0 rounded-0">
+    <p class="mb-0 small text-body-secondary px-3 pb-2">
+      Créneaux, capacité par jour, types de rendez-vous et périodes d’indisponibilité.
+    </p>
 
-    <div class="tab-content p-2" id="nav-tabContent">
-      <div class="tab-pane fade show active" id="parametres" role="tabpanel" aria-labelledby="parametres-tab" tabindex="0">
-        <%= render "admin/parametre_rdvs/parametres_tab" %>
-      </div>
+    <ul class="nav nav-tabs card-header-tabs flex-wrap border-bottom-0 px-2 px-sm-3 gap-1 mb-0"
+        id="parametreRdvTabs"
+        role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active text-body-secondary d-inline-flex align-items-center gap-1 rounded-top"
+                  id="parametres-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#parametres"
+                  type="button"
+                  role="tab"
+                  aria-controls="parametres"
+                  aria-selected="true">
+            <i class="bi bi-sliders" aria-hidden="true"></i>
+            <span class="d-none d-sm-inline">Paramètres</span>
+            <span class="d-sm-none">Config.</span>
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link text-body-secondary d-inline-flex align-items-center gap-1 rounded-top"
+                  id="types-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#types"
+                  type="button"
+                  role="tab"
+                  aria-controls="types"
+                  aria-selected="false">
+            <i class="bi bi-ui-checks-grid" aria-hidden="true"></i>
+            <span class="d-none d-md-inline">Types de RDV</span>
+            <span class="d-md-none">Types</span>
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link text-body-secondary d-inline-flex align-items-center gap-1 rounded-top"
+                  id="periodes-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#periodes"
+                  type="button"
+                  role="tab"
+                  aria-controls="periodes"
+                  aria-selected="false">
+            <i class="bi bi-calendar-x" aria-hidden="true"></i>
+            <span class="d-none d-lg-inline">Périodes non disponibles</span>
+            <span class="d-lg-none">Indispo.</span>
+          </button>
+        </li>
+    </ul>
+  </div>
 
-      <div class="tab-pane fade" id="types" role="tabpanel" aria-labelledby="types-tab" tabindex="0">
-        <%= render "admin/parametre_rdvs/types_tab" %>
-      </div>
+  <div class="card-body tab-content p-3 p-md-4 border-0" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="parametres" role="tabpanel" aria-labelledby="parametres-tab" tabindex="0">
+      <%= render "admin/parametre_rdvs/parametres_tab" %>
+    </div>
 
-      <div class="tab-pane fade" id="periodes" role="tabpanel" aria-labelledby="periodes-tab" tabindex="0">
-        <%= render "admin/parametre_rdvs/periodes_tab" %>
-      </div>
+    <div class="tab-pane fade" id="types" role="tabpanel" aria-labelledby="types-tab" tabindex="0">
+      <%= render "admin/parametre_rdvs/types_tab" %>
+    </div>
+
+    <div class="tab-pane fade" id="periodes" role="tabpanel" aria-labelledby="periodes-tab" tabindex="0">
+      <%= render "admin/parametre_rdvs/periodes_tab" %>
     </div>
   </div>
 </div>
 
-<div class="m-2">
-  <%= link_to admin_root_path, class: "btn btn-outline-secondary" do %>
-    <i class="bi bi-arrow-left me-1"></i>Retour
+<div class="mx-2 mb-4">
+  <%= link_to admin_root_path, class: "btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1" do %>
+    <i class="bi bi-arrow-left" aria-hidden="true"></i>
+    Retour
   <% end %>
 </div>
-

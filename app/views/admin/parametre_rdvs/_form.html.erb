@@ -1,86 +1,99 @@
 <% parametre_rdv = local_assigns[:parametre_rdv] || @parametre_rdv %>
-<%= form_with model: [:admin, parametre_rdv], url: parametre_rdv.persisted? ? admin_parametre_rdv_path(parametre_rdv) : admin_parametre_rdvs_path, method: parametre_rdv.persisted? ? :patch : :post, class: "" do |f| %>
-  <div class="p-2">
-    <% if parametre_rdv.errors.any? %>
-      <div class="alert alert-danger">
-        <ul class="mb-0">
-          <% parametre_rdv.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+<%= form_with model: [:admin, parametre_rdv],
+              url: parametre_rdv.persisted? ? admin_parametre_rdv_path(parametre_rdv) : admin_parametre_rdvs_path,
+              method: parametre_rdv.persisted? ? :patch : :post,
+              class: "vstack gap-4" do |f| %>
+  <% if parametre_rdv.errors.any? %>
+    <div class="alert alert-danger mb-0" role="alert">
+      <ul class="mb-0 small">
+        <% parametre_rdv.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
-    <div class="form-floating mb-3">
+  <section aria-labelledby="form-minutes-heading">
+    <h3 id="form-minutes-heading" class="h6 fw-semibold text-secondary mb-3 d-flex align-items-center gap-2 pb-2 border-bottom border-secondary-subtle">
+      <i class="bi bi-person-plus" aria-hidden="true"></i>
+      Durée supplémentaire
+    </h3>
+    <div class="form-floating">
       <%= f.number_field :minutes_par_personne_supp, class: "form-control", min: 0, placeholder: "Minutes supplémentaires par personne" %>
       <%= f.label :minutes_par_personne_supp, "Minutes supplémentaires par personne" %>
     </div>
+  </section>
 
-    <div class="mb-3">
-      <h6 class="fw-bold mb-2">Nombre maximum de RDV simultanés par jour</h6>
-      <div class="row">
-        <% ParametreRdv::DAY_LABELS.each do |day_sym, day_label| %>
-          <% field = :"nb_rdv_simultanes_#{day_sym}" %>
-          <div class="col-md-3 mb-2">
-            <div class="form-floating">
-              <%= f.number_field field, class: "form-control", min: 0, placeholder: day_label %>
-              <%= f.label field, day_label %>
-            </div>
+  <section aria-labelledby="form-capacite-heading">
+    <h3 id="form-capacite-heading" class="h6 fw-semibold text-secondary mb-2 d-flex align-items-center gap-2 pb-2 border-bottom border-secondary-subtle">
+      <i class="bi bi-people" aria-hidden="true"></i>
+      Nombre maximum de RDV simultanés par jour
+    </h3>
+    <p class="small text-muted mb-3">Indiquez combien de rendez-vous peuvent avoir lieu en parallèle chaque jour.</p>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+      <% ParametreRdv::DAY_LABELS.each do |day_sym, day_label| %>
+        <% field = :"nb_rdv_simultanes_#{day_sym}" %>
+        <div class="col">
+          <div class="form-floating">
+            <%= f.number_field field, class: "form-control", min: 0, placeholder: day_label %>
+            <%= f.label field, day_label %>
           </div>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
     </div>
+  </section>
 
-    <div class="mb-3">
-      <h6 class="fw-bold mb-2">Créneaux horaires par jour</h6>
-      <p class="small text-muted mb-2">
-        Cochez les créneaux disponibles pour chaque jour.
-      </p>
+  <section aria-labelledby="form-creneaux-heading">
+    <h3 id="form-creneaux-heading" class="h6 fw-semibold text-secondary mb-2 d-flex align-items-center gap-2 pb-2 border-bottom border-secondary-subtle">
+      <i class="bi bi-clock-history" aria-hidden="true"></i>
+      Créneaux horaires par jour
+    </h3>
+    <p class="small text-muted mb-2">
+      Cochez les créneaux disponibles pour chaque jour (défilement horizontal sur petit écran).
+    </p>
 
-      <div class="table-responsive">
-        <table class="table table-sm table-bordered align-middle mb-0" style="font-size: 0.78rem;">
-          <thead class="table-light">
+    <div class="table-responsive rounded-2 border border-secondary-subtle shadow-sm">
+      <table class="table table-sm table-bordered align-middle mb-0 caption-top small lh-sm">
+        <caption class="px-2 py-1 mb-0 text-muted">Grille des créneaux</caption>
+        <thead class="table-light">
+          <tr>
+            <th scope="col" class="text-nowrap bg-light py-1 ps-2 pe-1 small">Jour</th>
+            <% ParametreRdv::DEFAULT_CRENEAUX.each do |heure| %>
+              <th scope="col" class="text-center text-nowrap py-1 px-0 small fw-normal"><%= heure %></th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <% ParametreRdv::DAY_LABELS.each do |day_sym, day_label| %>
+            <% column = :"creneaux_#{day_sym}" %>
+            <% valeurs_existantes = parametre_rdv.public_send(column) %>
+            <% selection =
+                 if valeurs_existantes.present?
+                   valeurs_existantes.to_s.tr('[]"', "").split(",").map(&:strip)
+                 else
+                   []
+                 end %>
             <tr>
-              <th scope="col" class="text-nowrap" style="width: 80px;">Jour</th>
+              <th scope="row" class="text-nowrap bg-body-secondary bg-opacity-25 py-1 ps-2 pe-1 small fw-semibold"><%= day_label %></th>
               <% ParametreRdv::DEFAULT_CRENEAUX.each do |heure| %>
-                <th scope="col" class="text-center px-1"><%= heure %></th>
+                <% field_name = :"creneaux_#{day_sym}" %>
+                <% input_id = "parametre_rdv_#{field_name}_#{heure.tr(':', '_')}" %>
+                <td class="text-center p-0 align-middle">
+                  <%= check_box_tag "parametre_rdv[#{field_name}][]",
+                                    heure,
+                                    selection.include?(heure),
+                                    id: input_id,
+                                    class: "form-check-input m-0 align-middle" %>
+                </td>
               <% end %>
             </tr>
-          </thead>
-          <tbody>
-            <% ParametreRdv::DAY_LABELS.each do |day_sym, day_label| %>
-              <% column = :"creneaux_#{day_sym}" %>
-              <% valeurs_existantes = parametre_rdv.public_send(column) %>
-              <% selection =
-                   if valeurs_existantes.present?
-                     valeurs_existantes.to_s.tr('[]"', "").split(",").map(&:strip)
-                   else
-                     []
-                   end %>
-              <tr>
-                <th scope="row" class="text-nowrap"><%= day_label %></th>
-                <% ParametreRdv::DEFAULT_CRENEAUX.each do |heure| %>
-                  <% field_name = :"creneaux_#{day_sym}" %>
-                  <% input_id = "parametre_rdv_#{field_name}_#{heure.tr(':', '_')}" %>
-                  <td class="text-center px-1">
-                    <%= check_box_tag "parametre_rdv[#{field_name}][]",
-                                      heure,
-                                      selection.include?(heure),
-                                      id: input_id,
-                                      class: "form-check-input" %>
-                  </td>
-                <% end %>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-
+          <% end %>
+        </tbody>
+      </table>
     </div>
-  </div>
+  </section>
 
-  <div class="d-flex justify-content-end">
-    <%= f.submit "Enregistrer", class: "btn btn-primary" %>
+  <div class="d-flex flex-column flex-sm-row justify-content-sm-end gap-2 pt-2 border-top border-secondary-subtle">
+    <%= f.submit "Enregistrer", class: "btn btn-primary d-inline-flex align-items-center justify-content-center gap-2" %>
   </div>
 <% end %>
-

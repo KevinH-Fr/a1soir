@@ -287,6 +287,22 @@
   background-color: var(--light-beige-color);
 }
 
+/* Dashboard paramètres RDV : onglets alignés sur la palette beige admin */
+.card.light-beige-colored > .card-header .nav-tabs.card-header-tabs .nav-link {
+  border-color: transparent;
+  color: var(--bs-secondary-color);
+}
+.card.light-beige-colored > .card-header .nav-tabs.card-header-tabs .nav-link:hover {
+  border-color: rgba(0, 0, 0, 0.06);
+  color: var(--bs-body-color);
+}
+.card.light-beige-colored > .card-header .nav-tabs.card-header-tabs .nav-link.active {
+  background-color: var(--light-beige-color);
+  color: var(--bs-body-color);
+  border-color: rgba(0, 0, 0, 0.1);
+  border-bottom-color: var(--light-beige-color);
+}
+
 /* Admin home quick links — léger relief au survol (complète les hovers Bootstrap des .btn) */
 .admin-quick-action-btn {
   transition: transform 0.2s ease, box-shadow 0.2s ease;

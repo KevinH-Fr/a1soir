@@ -41,7 +41,7 @@ class Admin::TypeRdvsController < Admin::ApplicationController
       else
         format.html { render :new, status: :unprocessable_entity }
         format.turbo_stream do
-          render turbo_stream: turbo_stream.update("new",
+          render turbo_stream: turbo_stream.update("new_type_rdv",
             partial: "admin/type_rdvs/form",
             locals: { type_rdv: @type_rdv }),
             status: :unprocessable_entity

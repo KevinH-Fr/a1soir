@@ -1,10 +1,18 @@
-<div class="card p-2" id="<%= dom_id(periode_non_disponible) %>">
-  <% periode_non_disponible_local = local_assigns[:periode_non_disponible] || @periode_non_disponible %>
-  <%= form_with model: [:admin, periode_non_disponible_local], url: periode_non_disponible_local.persisted? ? admin_periodes_non_disponible_path(periode_non_disponible_local) : admin_periodes_non_disponibles_path, class: "" do |f| %>
-    <div class="">
+<% periode_non_disponible_local = local_assigns[:periode_non_disponible] || @periode_non_disponible %>
+<div<% if periode_non_disponible_local.persisted? %> id="<%= dom_id(periode_non_disponible_local) %>"<% end %> class="card border border-secondary-subtle shadow-sm rounded-3 mb-0">
+  <% if periode_non_disponible_local.new_record? %>
+    <div class="card-header py-2 px-3 bg-transparent border-bottom border-secondary-subtle small fw-semibold text-secondary d-flex align-items-center gap-2">
+      <i class="bi bi-calendar-x" aria-hidden="true"></i>
+      Nouvelle période non disponible
+    </div>
+  <% end %>
+  <%= form_with model: [:admin, periode_non_disponible_local],
+                url: periode_non_disponible_local.persisted? ? admin_periodes_non_disponible_path(periode_non_disponible_local) : admin_periodes_non_disponibles_path,
+                class: "d-flex flex-column" do |f| %>
+    <div class="card-body p-3">
       <% if periode_non_disponible_local.errors.any? %>
-        <div class="alert alert-danger">
-          <ul class="mb-0">
+        <div class="alert alert-danger py-2 px-3 mb-3">
+          <ul class="mb-0 small">
             <% periode_non_disponible_local.errors.full_messages.each do |message| %>
               <li><%= message %></li>
             <% end %>
@@ -12,30 +20,35 @@
         </div>
       <% end %>
 
-      <div class="row">
-        <div class="col-md-4 mb-3">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-4">
           <div class="form-floating">
             <%= f.date_field :date_debut, class: "form-control", placeholder: "Date de début" %>
             <%= f.label :date_debut, "Date de début" %>
           </div>
         </div>
-        <div class="col-md-4 mb-3">
+        <div class="col-md-4">
           <div class="form-floating">
             <%= f.date_field :date_fin, class: "form-control", placeholder: "Date de fin" %>
             <%= f.label :date_fin, "Date de fin" %>
           </div>
         </div>
-        <div class="col-md-4 mb-3 d-flex align-items-center">
-          <div class="form-check mt-4">
-            <%= f.check_box :recurrence, class: "form-check-input", id: "periode_recurrence" %>
-            <%= f.label :recurrence, "Période récurrente (chaque année)", class: "form-check-label fw-bold" %>
+        <div class="col-md-4">
+          <div class="form-check mb-0 pb-1">
+            <%= f.check_box :recurrence,
+                            class: "form-check-input",
+                            id: dom_id(periode_non_disponible_local, :recurrence) %>
+            <%= f.label :recurrence,
+                        "Période récurrente (chaque année)",
+                        class: "form-check-label small fw-semibold",
+                        for: dom_id(periode_non_disponible_local, :recurrence) %>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="d-flex justify-content-end p-2">
-      <%= f.submit class: "btn btn-primary" %>
+      <div class="d-flex justify-content-end pt-3 mt-2 mt-md-3 border-top border-secondary-subtle">
+        <%= f.submit class: "btn btn-primary btn-sm" %>
+      </div>
     </div>
   <% end %>
 </div>
