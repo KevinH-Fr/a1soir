@@ -1,57 +1,25 @@
-
-
 <div id="<%= dom_id ensemble %>" class="my-2">
+  <div class="card mx-2 mb-3 light-beige-colored shadow-sm">
+    <div class="card-body p-2 d-flex flex-column gap-2">
+      <% enfants = [
+           ensemble.type_produit1, ensemble.type_produit2, ensemble.type_produit3,
+           ensemble.type_produit4, ensemble.type_produit5, ensemble.type_produit6
+         ].compact %>
 
-  <div class="card mx-2 my-3 p-3 light-beige-colored shadow-sm">
+      <div class="d-flex flex-wrap align-items-center gap-1">
+        <div data-turbo="false">
+          <%= link_to admin_ensemble_path(ensemble), class: "text-decoration-none text-dark" do %>
+            <%= custom_badge("fa-sitemap", "Parent :", "", "fw-bold", ensemble.produit.nom) %>
+          <% end %>
+        </div>
+        <% enfants.each_with_index do |tp, idx| %>
+          <%= custom_badge("fa-cube", "Enfant #{idx + 1} :", "", "", tp.nom) %>
+        <% end %>
+      </div>
 
-      <p>
-        <strong>Parent:</strong>
-        <%= ensemble.produit.nom %>
-      </p>
-    
-    <% if ensemble.type_produit1 %>
-      <p>
-        <strong>Enfant1:</strong>
-        <%= ensemble.type_produit1.nom %>
-      </p>
-    <% end %>
-
-    <% if ensemble.type_produit2 %>
-      <p>
-        <strong>Enfant2:</strong>
-        <%= ensemble.type_produit2.nom %>
-      </p>
-    <% end %>
-
-    <% if ensemble.type_produit3 %>
-      <p>
-        <strong>Enfant3:</strong>
-        <%= ensemble.type_produit3.nom %>
-      </p>
-    <% end %>
-
-    <% if ensemble.type_produit4 %>
-      <p>
-        <strong>Enfant4:</strong>
-        <%= ensemble.type_produit4.nom %>
-      </p>
-    <% end %>
-
-    <% if ensemble.type_produit5 %>
-      <p>
-        <strong>Enfant5:</strong>
-        <%= ensemble.type_produit5.nom %>
-      </p>
-    <% end %>
-
-    <% if ensemble.type_produit6 %>
-      <p>
-        <strong>Enfant6:</strong>
-        <%= ensemble.type_produit6.nom %>
-      </p>
-    <% end %>
-
-    <%= links_record(ensemble) %>  
-
+      <div class="d-flex flex-wrap justify-content-end align-items-center gap-1 pt-1">
+        <%= links_record(ensemble) %>
+      </div>
+    </div>
   </div>
 </div>
