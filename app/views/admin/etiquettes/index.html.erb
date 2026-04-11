@@ -1,41 +1,43 @@
-<%= bandeau_entete("Etiquettes", "tags", "", "", "") %>
+<%= bandeau_entete(
+      "Etiquettes",
+      "tags",
+      "",
+      :nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont,
+      admin_etiquettes_path,
+      show_new_record_button: false
+    ) %>
 
-<div class="p-2">
-  <%= index_search_form(@q, admin_etiquettes_path, :nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont ) %>
-
-  <% if session[:selection_etiquettes].present? %>
-    <div class="d-flex flex-wrap align-items-center m-2">
-      <strong> Sélection active :  </strong>
-
-        <% session[:selection_etiquettes].each do |produit| %>
-          <%= custom_badge("", "", "", "", Produit.find(produit).full_name_and_taille) %>
-
-      <% end %>
-
-      <%= form_with url: reset_selection_admin_etiquettes_path, method: :post, data: { turbo: false } do |form| %>
-        <button type="submit" class="btn text-danger">
-          <i class="bi bi-x-circle"></i> 
+<% if session[:selection_etiquettes].present? %>
+  <div class="card mx-2 mb-3 light-beige-colored shadow-sm">
+    <div class="card-header py-2 px-3 d-flex flex-wrap align-items-center justify-content-between gap-2 bg-transparent border-bottom">
+      <span class="fw-semibold mb-0">Sélection active</span>
+      <%= form_with url: reset_selection_admin_etiquettes_path, method: :post, data: { turbo: false }, class: "d-inline" do %>
+        <button type="submit" class="btn btn-sm btn-outline-danger" title="Réinitialiser la sélection">
+          <i class="bi bi-x-circle me-1"></i>
+          Réinitialiser
         </button>
       <% end %>
-      
     </div>
-
-    <div class="text-end">
-      <%= link_to generate_pdf_admin_etiquettes_path, target: '_blank', class: "btn btn-danger" do %>
-        <span class="fw-bold ms-2"> Edition étiquette</span>
-        <i class="bi bi-file-earmark-pdf-fill"></i> 
-      <% end %>
+    <div class="card-body py-3 px-3">
+      <div class="d-flex flex-wrap align-items-center gap-1 mb-3">
+        <% session[:selection_etiquettes].each do |produit_id| %>
+          <%= custom_badge("", "", "", "", Produit.find(produit_id).full_name_and_taille) %>
+        <% end %>
+      </div>
+      <div class="d-flex justify-content-end">
+        <%= link_to generate_pdf_admin_etiquettes_path, target: "_blank", rel: "noopener", class: "btn btn-danger btn-sm" do %>
+          <span class="fw-bold">Edition étiquette</span>
+          <i class="bi bi-file-earmark-pdf-fill ms-1"></i>
+        <% end %>
+      </div>
     </div>
+  </div>
+<% end %>
 
-  <% end %>
+<%= turbo_frame_tag :results, data: { turbo_action: "advance" } do %>
+  <div id="etiquettes"></div>
 
-</div>
-
-<%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
-
-<div id="etiquettes"> </div> 
-
-<%= turbo_frame_tag :pagination, loading: :lazy, 
+  <%= turbo_frame_tag :pagination, loading: :lazy,
                         src: admin_etiquettes_path(format: :turbo_stream,
-                        q: params[:q]&.to_unsafe_h) %>
+                                                   q: params[:q]&.to_unsafe_h) %>
 <% end %>

@@ -5,12 +5,12 @@ class Admin::ProfilesController < Admin::ApplicationController
   before_action :set_profile, only: %i[ show edit update destroy ]
 
   def index
-    search_params = params.permit(:format, :page, 
-      q:[:nom_or_prenom_cont])
-   @q = Profile.ransack(search_params[:q])
-   profiles = @q.result(distinct: true).order(created_at: :desc)
-   @pagy, @profiles = pagy_countless(profiles, items: 2)
-
+    search_params = params.permit(:format, :page,
+                                  q: [:nom_or_prenom_cont])
+    @q = Profile.ransack(search_params[:q])
+    profiles_scope = @q.result(distinct: true)
+    @profiles_count = profiles_scope.count
+    @pagy, @profiles = pagy_countless(profiles_scope.order(created_at: :desc), items: 2)
   end
 
   def show

@@ -11,7 +11,7 @@ module IndexModelHelper
     end
   end
 
-  def bandeau_entete(title, icon, counter, champs_recherche, search_path, card_class: "card m-2 shadow-sm")
+  def bandeau_entete(title, icon, counter, champs_recherche, search_path, card_class: "card m-2 shadow-sm", show_new_record_button: true)
     content_tag(:div, class: card_class) do
       concat(content_tag(:div, class: "card-header bg-dark text-light d-flex justify-content-between align-items-center py-2") do
         concat(content_tag(:div, class: "d-flex align-items-center") do
@@ -25,25 +25,19 @@ module IndexModelHelper
       if champs_recherche.present?
         concat(content_tag(:div, class: "card-body p-1 light-beige-colored") do
           concat(content_tag(:div, class: "d-flex align-items-center") do
+            concat(index_search_form(@q, search_path, champs_recherche))
 
-          #  concat(index_search_form(@q, champs_recherche )) # Call the client_search_form helper method
-        
-           concat(index_search_form(@q, search_path, champs_recherche)) # Call the client_search_form helper method
-
-            # New button with collapse attributes
-            concat(content_tag(:button, class: "btn btn-sm btn-warning", type: "button", 
-                data: { bs_toggle: "collapse", bs_target: "#collapseNew", aria_expanded: "false" },
-                aria: { controls: "collapseNew" }) do
+            if show_new_record_button
+              concat(content_tag(:button, class: "btn btn-sm btn-warning", type: "button",
+                  data: { bs_toggle: "collapse", bs_target: "#collapseNew", aria_expanded: "false" },
+                  aria: { controls: "collapseNew" }) do
                 concat(content_tag(:i, nil, class: "bi bi-plus-lg fa-xl"))
-            end)
-
+              end)
+            end
           end)
-            
-        end)    
+        end)
       end
-
     end
-
   end
   
   def index_search_form(q, chemin_recherche, champs_recherche)
