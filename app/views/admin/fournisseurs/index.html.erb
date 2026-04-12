@@ -3,10 +3,10 @@
 
 <%= bloc_nouveau(Fournisseur) %>
 
-<%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
-    <div id="fournisseurs"> </div> 
+<%= turbo_frame_tag :results, data: { turbo_action: "advance" } do %>
+  <div id="fournisseurs" class="<%= admin_list_stack_classes %>"> </div>
 
-    <%= turbo_frame_tag :pagination, loading: :lazy, 
+  <%= turbo_frame_tag :pagination, loading: :lazy,
                         src: admin_fournisseurs_path(format: :turbo_stream,
                         q: params[:q]&.to_unsafe_h) %>
 <% end %>

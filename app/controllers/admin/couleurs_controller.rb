@@ -25,10 +25,12 @@ class Admin::CouleursController < Admin::ApplicationController
 
     respond_to do |format|
       format.html 
-      format.turbo_stream do  
-        render turbo_stream: turbo_stream.update(@couleur, 
-          partial: "admin/couleurs/form", 
-          locals: {couleur: @couleur})
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update(
+          @couleur,
+          partial: "admin/couleurs/form",
+          locals: { couleur: @couleur, admin_form_row_embedded: true }
+        )
       end
     end
   end
@@ -43,9 +45,9 @@ class Admin::CouleursController < Admin::ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update('new',
+            turbo_stream.update("new",
                                 partial: "admin/couleurs/form",
-                                locals: { couleur: Couleur.new }),
+                                locals: { couleur: Couleur.new, index_collapse: true }),
   
             turbo_stream.prepend('couleurs',
                                   partial: "admin/couleurs/couleur",
@@ -83,9 +85,11 @@ class Admin::CouleursController < Admin::ApplicationController
       else
 
         format.turbo_stream do
-          render turbo_stream: turbo_stream.update(@couleur, 
-                    partial: 'admin/couleurs/form', 
-                    locals: { couleur: @couleur })
+          render turbo_stream: turbo_stream.update(
+            @couleur,
+            partial: "admin/couleurs/form",
+            locals: { couleur: @couleur, admin_form_row_embedded: true }
+          )
         end
 
         format.html { render :edit, status: :unprocessable_entity }

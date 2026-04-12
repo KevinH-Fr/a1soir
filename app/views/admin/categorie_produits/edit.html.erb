@@ -1,10 +1,7 @@
-<h1>Editing categorie produit</h1>
+<%= bandeau_entete_simple("Modifier catégorie produit", "layers") %>
 
 <%= render "form", categorie_produit: @categorie_produit %>
 
 <br>
 
-<div>
-  <%= link_to "Show this categorie produit", @categorie_produit %> |
-  <%= link_to "Back to categorie produits", categorie_produits_path %>
-</div>
+<%= return_model_index_button("Catégories produits", admin_categorie_produits_path) %>

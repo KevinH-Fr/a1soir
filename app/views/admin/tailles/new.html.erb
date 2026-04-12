@@ -1,5 +1,7 @@
-<h1>Nouvelle taille</h1>
+<%= bandeau_entete_simple("Nouvelle taille", "rulers") %>
 
 <%= render "form", taille: @taille %>
 
 <br>
+
+<%= return_model_index_button("Tailles", admin_tailles_path) %>

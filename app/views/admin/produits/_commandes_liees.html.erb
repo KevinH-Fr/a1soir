@@ -1,32 +1,41 @@
-<div class="card mx-2 my-3 light-beige-colored shadow-sm">
+<div class="card mx-2 mb-3 shadow-sm light-beige-colored">
+  <div class="card-header py-2 px-3 bg-transparent border-bottom border-secondary-subtle">
+    <span class="fw-semibold text-body d-inline-flex align-items-center gap-2">
+      <i class="bi bi-file-earmark-post" aria-hidden="true"></i>
+      Commandes liées
+    </span>
+    <span class="small text-body-secondary ms-1">— les plus récentes en premier</span>
+  </div>
 
-    <div class="card-header bg-secondary text-light fw-bold">
-        <i class="bi bi-file-earmark-post mx-1"></i>
-        <span>Commandes liées</span>
-    </div>
-
-    <div class="card-body">  
-        <% if @commandes_liees.present? %>
-          
-            <% @commandes_liees.each do |commande|  %>
-
-                <%= link_to admin_commande_path(commande), class: "text-decoration-none" do %>
-                    <div class="mx-2 mb-3 p-2 bg-light shadow-sm">
-                        <%= custom_badge("", "", "", "fw-bold", commande.client.full_name ) %>
-                        <%= custom_badge("", "", "", "", commande.full_name ) %>
-                        <%= custom_badge("fa-hourglass-half", "devis", "", "", "") if commande.devis? %>
-                        <%= custom_badge("", "", "", "", commande.type_locvente ) %>
-                        <%= custom_badge("", "", "", "", format_date_in_french(commande.debutloc))  if commande.debutloc.present? %>
-                        <%= custom_badge("", "", "", "", format_date_in_french(commande.finloc)) if commande.finloc.present? %>
-                        <%= commande_eshop_badge(commande) %>
-                    </div>
-                <% end %>
-                
+  <div class="card-body p-0">
+    <% if @commandes_liees.present? %>
+      <ul class="list-unstyled mb-0">
+        <% @commandes_liees.each_with_index do |commande, i| %>
+          <% last = i == @commandes_liees.size - 1 %>
+          <li class="px-3 py-3 d-flex flex-wrap align-items-center justify-content-between gap-3 <%= "border-bottom border-secondary-subtle" unless last %>">
+            <div class="d-flex flex-wrap align-items-center gap-1 min-w-0 flex-grow-1">
+              <%= custom_badge("", "", "", "fw-bold", commande.client.full_name) %>
+              <%= custom_badge("", "", "", "", commande.full_name) %>
+              <%= custom_badge("fa-hourglass-half", "devis", "", "", "") if commande.devis? %>
+              <%= custom_badge("", "", "", "", commande.type_locvente) %>
+              <%= custom_badge("", "", "", "", format_date_in_french(commande.debutloc)) if commande.debutloc.present? %>
+              <%= custom_badge("", "", "", "", format_date_in_french(commande.finloc)) if commande.finloc.present? %>
+              <%= commande_eshop_badge(commande) %>
+            </div>
+            <%= link_to admin_commande_path(commande),
+                        class: "btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 flex-shrink-0",
+                        data: { turbo: false } do %>
+              <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
+              <%= commande.ref_commande %>
             <% end %>
-        <% else %>
-            <span>Aucune commande</span>
+          </li>
         <% end %>
-
-
-    </div>
+      </ul>
+    <% else %>
+      <div class="text-center text-muted py-5 px-3 m-3 rounded-3 border border-dashed border-secondary-subtle bg-body-secondary bg-opacity-10">
+        <i class="bi bi-file-earmark-post d-block fs-2 mb-2 opacity-50" aria-hidden="true"></i>
+        <p class="mb-0 small">Aucune commande liée à ce produit.</p>
+      </div>
+    <% end %>
+  </div>
 </div>

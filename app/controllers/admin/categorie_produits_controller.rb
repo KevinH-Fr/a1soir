@@ -25,10 +25,12 @@ class Admin::CategorieProduitsController < Admin::ApplicationController
   def edit
     respond_to do |format|
       format.html 
-      format.turbo_stream do  
-        render turbo_stream: turbo_stream.update(@categorie_produit, 
-          partial: "admin/categorie_produits/form", 
-          locals: {categorie_produit: @categorie_produit})
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update(
+          @categorie_produit,
+          partial: "admin/categorie_produits/form",
+          locals: { categorie_produit: @categorie_produit, admin_form_row_embedded: true }
+        )
       end
     end
   end
@@ -43,9 +45,9 @@ class Admin::CategorieProduitsController < Admin::ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update('new',
+            turbo_stream.update("new",
                                 partial: "admin/categorie_produits/form",
-                                locals: { categorie_produit: CategorieProduit.new }),
+                                locals: { categorie_produit: CategorieProduit.new, index_collapse: true }),
   
             turbo_stream.prepend('categorie_produits',
                                   partial: "admin/categorie_produits/categorie_produit",
@@ -85,9 +87,11 @@ class Admin::CategorieProduitsController < Admin::ApplicationController
       else
 
         format.turbo_stream do
-          render turbo_stream: turbo_stream.update(@categorie_produit, 
-                    partial: 'admin/categorie_produits/form', 
-                    locals: { categorie_produit: @categorie_produit })
+          render turbo_stream: turbo_stream.update(
+            @categorie_produit,
+            partial: "admin/categorie_produits/form",
+            locals: { categorie_produit: @categorie_produit, admin_form_row_embedded: true }
+          )
         end
 
         format.html { render :edit, status: :unprocessable_entity }

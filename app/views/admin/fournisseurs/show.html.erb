@@ -1,6 +1,8 @@
 <%= card_main_model("Fournisseur", "buildings") %>
 
-<%= render @fournisseur %>
+<div class="<%= admin_list_stack_classes %>">
+  <%= render @fournisseur %>
+</div>
 
 <%= render 'analyse' %>
 

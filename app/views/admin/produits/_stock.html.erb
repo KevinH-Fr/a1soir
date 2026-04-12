@@ -1,38 +1,48 @@
-<div class="card mx-2 my-3 light-beige-colored shadow-sm">
+<% ids = extract_ids(@produit) %>
+<% statut = @produit.statut_disponibilite(Date.today.to_date, Date.today.to_date) %>
+<% ensemble = Produit.is_ensemble.exists?(id: @produit.id) %>
 
-    <div class="card-header bg-secondary text-light fw-bold">
-        <i class="bi bi-boxes mx-1"></i>
-        <span>Stock</span>
-    </div>
+<div class="card mx-2 mb-0 shadow-sm light-beige-colored">
+  <div class="card-header py-2 px-3 bg-transparent border-bottom border-secondary-subtle">
+    <span class="fw-semibold text-body d-inline-flex align-items-center gap-2">
+      <i class="bi bi-boxes" aria-hidden="true"></i>
+      Stock
+    </span>
+    <% if ensemble %>
+      <span class="small text-body-secondary ms-2">— ensemble (stock illimité)</span>
+    <% end %>
+  </div>
 
-    <div class="card-body">         
-        <p> 
-            Stock initial : <span class="fw-bold"> <%= @produit.quantite %> </span> 
-            <% if Produit.is_ensemble.exists?(id: @produit.id) %>
-                Stock illimité pour ensemble
-            <% end %>
-         </p> 
-
-        <hr>
-
-        <p> Total loués : <span class="fw-bold"> <%= total_loues(extract_ids(@produit)) %> </span> </p> 
-        <p> 
-            Total vendus : 
-            <span class="fw-bold"> 
-                <%= total_vendus_boutique(extract_ids(@produit)) + total_vendus_eshop(extract_ids(@produit)) %>        
-            </span> 
-            <% if total_vendus_eshop(extract_ids(@produit)) > 0 %>
-                <span class="small">
-                    dont <%= total_vendus_eshop(extract_ids(@produit)) %> sur Eshop
-                </span>
-            <% end %>
-        </p> 
-
-        <% statut = @produit.statut_disponibilite(Date.today.to_date, Date.today.to_date) %>
-
-        <p> Loués en ce moment : <span class="fw-bold"> <%= statut[:loues_a_date] %> </span> </p> 
-
-        <p> Disponibles : <span class="fw-bold"> <%= statut[:disponibles] %> </span> </p> 
-
-    </div>
+  <div class="card-body p-0">
+    <section class="border-bottom border-secondary-subtle px-3 py-4">
+      <div class="d-flex flex-wrap gap-3 gap-lg-4">
+        <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
+          <span class="small text-secondary text-uppercase fw-semibold">Stock initial</span>
+          <span class="fs-5 fw-bold text-body"><%= @produit.quantite %></span>
+        </span>
+        <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
+          <span class="small text-secondary text-uppercase fw-semibold">Total loués</span>
+          <span class="fs-5 fw-bold text-body"><%= total_loues(ids) %></span>
+        </span>
+        <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
+          <span class="small text-secondary text-uppercase fw-semibold">Total vendus</span>
+          <span class="fs-5 fw-bold text-body"><%= total_vendus_boutique(ids) + total_vendus_eshop(ids) %></span>
+        </span>
+        <% if total_vendus_eshop(ids).positive? %>
+          <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
+            <span class="small text-secondary text-uppercase fw-semibold">Dont e-shop</span>
+            <span class="fs-5 fw-bold text-body"><%= total_vendus_eshop(ids) %></span>
+          </span>
+        <% end %>
+        <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
+          <span class="small text-secondary text-uppercase fw-semibold">Loués en ce moment</span>
+          <span class="fs-5 fw-bold text-body"><%= statut[:loues_a_date] %></span>
+        </span>
+        <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
+          <span class="small text-secondary text-uppercase fw-semibold">Disponibles</span>
+          <span class="fs-5 fw-bold text-body"><%= statut[:disponibles] %></span>
+        </span>
+      </div>
+    </section>
+  </div>
 </div>

@@ -1,5 +1,7 @@
-<h1>Nouvelle couleur</h1>
+<%= bandeau_entete_simple("Nouvelle couleur", "palette") %>
 
 <%= render "form", couleur: @couleur %>
 
 <br>
+
+<%= return_model_index_button("Couleurs", admin_couleurs_path) %>

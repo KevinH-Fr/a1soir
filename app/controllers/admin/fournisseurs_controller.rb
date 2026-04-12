@@ -51,10 +51,12 @@ class Admin::FournisseursController < Admin::ApplicationController
 
     respond_to do |format|
       format.html  
-      format.turbo_stream do  
-        render turbo_stream: turbo_stream.update(@fournisseur, 
-          partial: "admin/fournisseurs/form", 
-          locals: {fournisseur: @fournisseur})
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update(
+          @fournisseur,
+          partial: "admin/fournisseurs/form",
+          locals: { fournisseur: @fournisseur, admin_form_row_embedded: true }
+        )
       end
     end
   end
@@ -116,9 +118,11 @@ class Admin::FournisseursController < Admin::ApplicationController
       else
 
         format.turbo_stream do
-          render turbo_stream: turbo_stream.update(@fournisseur, 
-                    partial: 'admin/fournisseurs/form', 
-                    locals: { fournisseur: @fournisseur })
+          render turbo_stream: turbo_stream.update(
+            @fournisseur,
+            partial: "admin/fournisseurs/form",
+            locals: { fournisseur: @fournisseur, admin_form_row_embedded: true }
+          )
         end
 
         format.html { render :edit, status: :unprocessable_entity }

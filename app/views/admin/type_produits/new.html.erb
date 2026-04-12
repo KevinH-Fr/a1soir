@@ -1,9 +1,7 @@
-<h1>New type produit</h1>
+<%= bandeau_entete_simple("Nouveau type produit", "list-ul") %>
 
 <%= render "form", type_produit: @type_produit %>
 
 <br>
 
-<div>
-  <%= link_to "Back to type produits", type_produits_path %>
-</div>
+<%= return_model_index_button("Types produits", admin_type_produits_path) %>

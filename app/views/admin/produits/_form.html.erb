@@ -1,9 +1,10 @@
 <%#= turbo_frame_tag "produit_form" do %>
 <% produit_compact_collapse = local_assigns[:index_collapse] && !produit.persisted? %>
+<% produit_embedded = local_assigns.fetch(:admin_form_row_embedded, false) %>
 <%= render layout: "admin/shared/form_card_shell",
            locals: {
              compact: produit_compact_collapse,
-             embedded: local_assigns.fetch(:admin_form_row_embedded, false)
+             embedded: produit_embedded
            } do %>
   <%= form_with(model: produit, url: produit.persisted? ? admin_produit_path(produit) : admin_produits_path, method: produit.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
 
@@ -18,21 +19,23 @@
       </div>
     <% end %>
 
-    <div class="row g-0">
+    <%# Même grille que _produit : en embedded, annule le p-2 horizontal du form_card_shell pour aligner image / texte %>
+    <div class="row g-0<%= " mx-n2" if produit_embedded %>">
 
-      <!-- Image Column -->
+      <!-- Image Column (identique à _produit : col p-1 + img-produit) -->
       <div class="col-sm-4 p-1 text-center">
-
         <% if produit.persisted? && produit.save %>
-          <div class="container text-center p-2">
-            <%= image_tag(produit.default_image, class: "img-fluid rounded") %>
+          <div data-turbo="false">
+            <%= image_tag(produit.default_image, class: "img-fluid img-produit") %>
           </div>
         <% end %>
-
       </div>
-      
-      <!-- Text Column -->
+
+      <!-- Text Column (même card-body p-1 px-2 que _produit quand ligne liste / embedded) -->
       <div class="col-sm-8">
+        <% if produit_embedded %>
+        <div class="card-body p-1 px-2">
+        <% end %>
 
         <%= custom_form_elements(form,
           [:nom, :text_field],
@@ -182,10 +185,12 @@
           </div>
         </div>
 
+        <%= custom_submit_button(form) %>
+
+        <% if produit_embedded %>
+        </div>
+        <% end %>
       </div>
-
-
-      <%= custom_submit_button(form) %>
 
     </div>
   

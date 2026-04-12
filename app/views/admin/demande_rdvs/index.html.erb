@@ -1,12 +1,11 @@
 <%= bandeau_entete("Demandes de rendez-vous", "calendar-check", @count_demandes, 
       :nom_or_email_or_telephone_cont, admin_demande_rdvs_path) %>
 
-<%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
+<%= turbo_frame_tag :results, data: { turbo_action: "advance" } do %>
+  <div id="demande_rdvs" class="<%= admin_list_stack_classes %>"> </div>
 
-<div id="demande_rdvs"> </div> 
-
-<%= turbo_frame_tag :pagination, loading: :lazy, 
-                    src: admin_demande_rdvs_path(format: :turbo_stream,
-                    q: params[:q]&.to_unsafe_h) %>
+  <%= turbo_frame_tag :pagination, loading: :lazy,
+                      src: admin_demande_rdvs_path(format: :turbo_stream,
+                      q: params[:q]&.to_unsafe_h) %>
 <% end %>
 

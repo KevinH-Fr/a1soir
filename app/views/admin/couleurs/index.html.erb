@@ -3,10 +3,10 @@
 
 <%= bloc_nouveau(Couleur) %>
 
-<%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
-    <div id="couleurs"> </div> 
+<%= turbo_frame_tag :results, data: { turbo_action: "advance" } do %>
+  <div id="couleurs" class="<%= admin_list_stack_classes %>"> </div>
 
-    <%= turbo_frame_tag :pagination, loading: :lazy, 
+  <%= turbo_frame_tag :pagination, loading: :lazy,
                         src: admin_couleurs_path(format: :turbo_stream,
                         q: params[:q]&.to_unsafe_h) %>
 <% end %>

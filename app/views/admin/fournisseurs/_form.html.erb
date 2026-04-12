@@ -1,14 +1,15 @@
-
-<%= turbo_frame_tag "fournisseur_form" do %>
-
-  <div class="card mx-2 p-2 light-beige-colored shadow-sm">
-
+<% fournisseur_compact_collapse = local_assigns.fetch(:index_collapse, false) && !fournisseur.persisted? %>
+<% form_html = capture do %>
+  <%= render layout: "admin/shared/form_card_shell",
+             locals: {
+               compact: fournisseur_compact_collapse,
+               embedded: local_assigns.fetch(:admin_form_row_embedded, false)
+             } do %>
     <%= form_with(model: fournisseur, url: fournisseur.persisted? ? admin_fournisseur_path(fournisseur) : admin_fournisseurs_path, method: fournisseur.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
       <% if fournisseur.errors.any? %>
-        <div style="color: red">
-          <h2><%= pluralize(fournisseur.errors.count, "error") %> prohibited this fournisseur from being saved:</h2>
-
-          <ul>
+        <div class="alert alert-danger py-2 mb-3" role="alert">
+          <h2 class="h6 mb-2"><%= pluralize(fournisseur.errors.count, "error") %> prohibited this fournisseur from being saved:</h2>
+          <ul class="mb-0 small">
             <% fournisseur.errors.each do |error| %>
               <li><%= error.full_message %></li>
             <% end %>
@@ -16,14 +17,19 @@
         </div>
       <% end %>
 
-      <%= custom_form_elements(form, 
-        [:nom, :text_field], [:tel, :text_field], [:mail, :text_field], 
+      <%= custom_form_elements(form,
+        [:nom, :text_field], [:tel, :text_field], [:mail, :text_field],
         [:contact, :text_field], [:site, :text_field], [:notes, :text_area]) %>
 
       <%= custom_submit_button(form) %>
-
     <% end %>
-  
-  </div>
+  <% end %>
+<% end %>
 
+<% if fournisseur_compact_collapse %>
+  <%= turbo_frame_tag "fournisseur_form" do %>
+    <%= form_html %>
+  <% end %>
+<% else %>
+  <%= form_html %>
 <% end %>

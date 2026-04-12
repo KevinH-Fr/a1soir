@@ -1,9 +1,13 @@
 
 <%= card_main_model("Produit", "person-standing-dress") %>
 
-<%= render @produit %>
+<div class="<%= admin_list_stack_classes %>">
+    <%= render @produit %>
 
-<%= render 'stock' %>
+
+<div class="<%= admin_list_stack_classes %>">
+    <%= render 'stock' %>
+</div>
 
 <%# afficher les commandes avec cet article triées par date %>
 

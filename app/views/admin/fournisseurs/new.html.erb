@@ -1,9 +1,7 @@
-<h1>New fournisseur</h1>
+<%= bandeau_entete_simple("Nouveau fournisseur", "buildings") %>
 
 <%= render "form", fournisseur: @fournisseur %>
 
 <br>
 
-<div>
-  <%= link_to "Back to fournisseurs", fournisseurs_path %>
-</div>
+<%= return_model_index_button("Fournisseurs", admin_fournisseurs_path) %>

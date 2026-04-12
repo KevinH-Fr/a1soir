@@ -4,10 +4,10 @@
 
 <%= bloc_nouveau(TypeProduit) %>
 
-<%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
-    <div id="type_produits"> </div> 
+<%= turbo_frame_tag :results, data: { turbo_action: "advance" } do %>
+  <div id="type_produits" class="<%= admin_list_stack_classes %>"> </div>
 
-    <%= turbo_frame_tag :pagination, loading: :lazy, 
+  <%= turbo_frame_tag :pagination, loading: :lazy,
                         src: admin_type_produits_path(format: :turbo_stream,
                         q: params[:q]&.to_unsafe_h) %>
 <% end %>

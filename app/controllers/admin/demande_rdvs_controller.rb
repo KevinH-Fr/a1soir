@@ -16,10 +16,12 @@ class Admin::DemandeRdvsController < Admin::ApplicationController
   def edit
     respond_to do |format|
       format.html 
-      format.turbo_stream do  
-        render turbo_stream: turbo_stream.update(@demande_rdv, 
-          partial: "admin/demande_rdvs/form", 
-          locals: {demande_rdv: @demande_rdv})
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update(
+          @demande_rdv,
+          partial: "admin/demande_rdvs/form",
+          locals: { demande_rdv: @demande_rdv, admin_form_row_embedded: true }
+        )
       end
     end
   end
@@ -41,6 +43,14 @@ class Admin::DemandeRdvsController < Admin::ApplicationController
         format.html { redirect_to admin_demande_rdv_url(@demande_rdv), notice: "Mise à jour réussie" }
         format.json { render :show, status: :ok, location: @demande_rdv }
       else
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(
+            @demande_rdv,
+            partial: "admin/demande_rdvs/form",
+            locals: { demande_rdv: @demande_rdv, admin_form_row_embedded: true }
+          )
+        end
+
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @demande_rdv.errors, status: :unprocessable_entity }
       end
