@@ -26,9 +26,9 @@ class Admin::TypeProduitsController < Admin::ApplicationController
     respond_to do |format|
       format.html 
       format.turbo_stream do  
-        render turbo_stream: turbo_stream.update(@type_produit, 
-          partial: "admin/type_produits/form", 
-          locals: {type_produit: @type_produit})
+        render turbo_stream: turbo_stream.update(@type_produit,
+          partial: "admin/type_produits/form",
+          locals: { type_produit: @type_produit, admin_form_row_embedded: true })
       end
     end
   end
@@ -45,7 +45,7 @@ class Admin::TypeProduitsController < Admin::ApplicationController
           render turbo_stream: [
             turbo_stream.update('new',
                                partial: "admin/type_produits/form",
-                                locals: { type_produit: TypeProduit.new }),
+                                locals: { type_produit: TypeProduit.new, index_collapse: true }),
   
             turbo_stream.prepend('type_produits',
                                   partial: "admin/type_produits/type_produit",
@@ -53,7 +53,7 @@ class Admin::TypeProduitsController < Admin::ApplicationController
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
             
         ]
-      end
+        end
 
         format.html { redirect_to type_produit_url(@type_produit), notice:  "Création à jour réussie"}
         format.json { render :show, status: :created, location: @type_produit }
@@ -80,6 +80,12 @@ class Admin::TypeProduitsController < Admin::ApplicationController
         format.html { redirect_to type_produit_url(@type_produit), notice:  "Mise à jour réussie" }
         format.json { render :show, status: :ok, location: @type_produit }
       else
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(@type_produit,
+                    partial: 'admin/type_produits/form',
+                    locals: { type_produit: @type_produit, admin_form_row_embedded: true })
+        end
+
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @type_produit.errors, status: :unprocessable_entity }
       end

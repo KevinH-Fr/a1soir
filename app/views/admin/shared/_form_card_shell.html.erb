@@ -1,0 +1,25 @@
+<%#
+  Enveloppe carte unique pour les formulaires admin (Rails : render layout + bloc).
+
+  locals :
+  - compact  : true = formulaire « Nouveau » dans le collapse index (bloc_nouveau)
+  - embedded : true = contenu injecté dans une ligne liste (turbo_stream.update dom_id) ;
+               le parent a déjà la classe my-2 — ne pas dupliquer l’enveloppe externe.
+
+  Page new/edit : compact et embedded sont false → une seule carte my-2 (évite le double my-2 + my-3
+  sous un h1 ; l’index garde my-2 + carte my-3 sur les partials _record).
+%>
+<% card = "card mx-2 light-beige-colored shadow-sm p-3" %>
+<% if compact %>
+<div class="<%= card %> mb-0">
+  <%= yield %>
+</div>
+<% elsif embedded %>
+<div class="<%= card %> my-3">
+  <%= yield %>
+</div>
+<% else %>
+<div class="<%= card %> my-2">
+  <%= yield %>
+</div>
+<% end %>

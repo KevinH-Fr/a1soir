@@ -46,7 +46,7 @@ module FormDesignHelper
   
 
   def custom_submit_button(form)
-    content_tag(:div, class: "container-fluid p-2 p-0 text-end") do
+    content_tag(:div, class: "container-fluid px-0 pt-2 pb-0 text-end") do
       button_tag(type: "submit", class: "btn w-25 bg-success text-light fw-bold") do
         concat content_tag(:i, "", class: "bi-check-circle")
       end

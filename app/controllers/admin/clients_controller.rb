@@ -30,7 +30,7 @@ class Admin::ClientsController < Admin::ApplicationController
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@client, 
           partial: "admin/clients/form", 
-          locals: {client: @client})
+          locals: { client: @client, admin_form_row_embedded: true })
       end
     end
   end
@@ -66,6 +66,12 @@ class Admin::ClientsController < Admin::ApplicationController
         format.html { redirect_to client_url(@client), notice: "Client was successfully updated." }
         format.json { render :show, status: :ok, location: @client }
       else
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(@client,
+            partial: "admin/clients/form",
+            locals: { client: @client, admin_form_row_embedded: true })
+        end
+
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @client.errors, status: :unprocessable_entity }
       end

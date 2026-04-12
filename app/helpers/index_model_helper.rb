@@ -44,6 +44,8 @@ module IndexModelHelper
     render partial: 'admin/shared/search_form', locals: {chemin_recherche: chemin_recherche, champs_recherche: champs_recherche }
   end
 
+  # Ne pas mettre de padding sur l’élément .collapse (twbs/bootstrap#12093). Espacement vertical
+  # et containment des marges des champs : voir .collapse-nouveau-admin > #new dans application.css.
   def bloc_nouveau(model_class, model_instance = nil, collapse_id = "collapseNew")
       # Gérer les cas spéciaux de noms de dossiers
       partial_path = case model_class.to_s
@@ -55,11 +57,16 @@ module IndexModelHelper
         "admin/#{model_class.to_s.underscore.pluralize}/form"
       end
 
-      content_tag(:div, class: "collapse", id: collapse_id) do
-          concat(content_tag(:div, id: "new") do
-              render partial: partial_path, 
-              locals: { model_class.to_s.underscore.to_sym => (model_instance || model_class.new) }
-          end)
+      model_sym = model_class.to_s.underscore.to_sym
+
+      content_tag(:div, class: "collapse collapse-nouveau-admin", id: collapse_id) do
+        concat(content_tag(:div, id: "new") do
+          render partial: partial_path,
+            locals: {
+              model_sym => (model_instance || model_class.new),
+              index_collapse: true
+            }
+        end)
       end
   end
 

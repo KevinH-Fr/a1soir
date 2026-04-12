@@ -25,9 +25,9 @@ class Admin::ProfilesController < Admin::ApplicationController
     respond_to do |format|
       format.html 
       format.turbo_stream do  
-        render turbo_stream: turbo_stream.update(@profile, 
-          partial: "admin/profiles/form", 
-          locals: {profile: @profile})
+        render turbo_stream: turbo_stream.update(@profile,
+          partial: "admin/profiles/form",
+          locals: { profile: @profile, admin_form_row_embedded: true })
       end
     end
   end
@@ -44,7 +44,7 @@ class Admin::ProfilesController < Admin::ApplicationController
           render turbo_stream: [
             turbo_stream.update('new',
                                 partial: "admin/profiles/form",
-                                locals: { profile: Profile.new }),
+                                locals: { profile: Profile.new, index_collapse: true }),
   
             turbo_stream.prepend('profiles',
                                   partial: "admin/profiles/profile",
@@ -57,6 +57,12 @@ class Admin::ProfilesController < Admin::ApplicationController
         format.html { redirect_to profile_url(@profile), notice:  "Création à jour réussie" }
         format.json { render :show, status: :created, location: @profile }
       else
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("new",
+            partial: "admin/profiles/form",
+            locals: { profile: @profile, index_collapse: true })
+        end
+
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @profile.errors, status: :unprocessable_entity }
       end
@@ -82,9 +88,9 @@ class Admin::ProfilesController < Admin::ApplicationController
       else
 
         format.turbo_stream do
-          render turbo_stream: turbo_stream.update(@profile, 
-                    partial: 'admin/profiles/form', 
-                    locals: { profile: @profile })
+          render turbo_stream: turbo_stream.update(@profile,
+                    partial: 'admin/profiles/form',
+                    locals: { profile: @profile, admin_form_row_embedded: true })
         end
 
         format.html { render :edit, status: :unprocessable_entity }

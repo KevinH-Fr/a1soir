@@ -10,10 +10,10 @@ class Admin::CommandesController < Admin::ApplicationController
       @count_commandes = Commande.count
     
       search_params = params.permit(:format, :page,
-        q: [:nom_or_type_locvente_or_typeevent_or_ref_commande_or_client_nom_or_client_prenom_cont]
+        q: [:nom_or_type_locvente_or_typeevent_or_ref_commande_or_client_nom_or_client_prenom_or_profile_nom_or_profile_prenom_cont]
       )
-    
-      @q = Commande.joins(:client).ransack(search_params[:q])
+
+      @q = Commande.joins(:client, :profile).ransack(search_params[:q])
     
       commandes = @q.result(distinct: true)
                     .select("commandes.*")
@@ -59,7 +59,7 @@ class Admin::CommandesController < Admin::ApplicationController
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@commande, 
           partial: "admin/commandes/form", 
-          locals: {commande: @commande})
+          locals: { commande: @commande, admin_form_row_embedded: true })
       end
     end
 
@@ -83,7 +83,8 @@ class Admin::CommandesController < Admin::ApplicationController
 
   def update
     @clients = Client.all
-    @profiles = Profile.all 
+    @profiles = Profile.all
+    @client = @commande.client
 
     respond_to do |format|
       if @commande.update(commande_params)
@@ -105,7 +106,7 @@ class Admin::CommandesController < Admin::ApplicationController
         format.turbo_stream do
           render turbo_stream: turbo_stream.update(@commande, 
                     partial: 'admin/commandes/form', 
-                    locals: { commande: @commande })
+                    locals: { commande: @commande, admin_form_row_embedded: true })
         end
 
         format.html { render :edit, status: :unprocessable_entity }

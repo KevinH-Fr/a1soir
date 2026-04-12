@@ -111,7 +111,7 @@ class Admin::ProduitsController < Admin::ApplicationController
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@produit, 
           partial: "admin/produits/form", 
-          locals: {produit: @produit})
+          locals: { produit: @produit, admin_form_row_embedded: true })
       end
     end
   end
@@ -209,7 +209,7 @@ class Admin::ProduitsController < Admin::ApplicationController
         format.turbo_stream do
           render turbo_stream: turbo_stream.update(@produit, 
                     partial: 'admin/produits/form', 
-                    locals: { produit: @produit })
+                    locals: { produit: @produit, admin_form_row_embedded: true })
         end
 
         format.html { render :edit, status: :unprocessable_entity }

@@ -1,4 +1,5 @@
-<div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
+<% admin_parameter_index_collapse = local_assigns[:index_collapse] && !admin_parameter.persisted? %>
+<div class="card mx-2 p-2 light-beige-colored shadow-sm <%= admin_parameter_index_collapse ? 'mb-0' : 'mt-3' %>">
 
   <%= form_with(model: admin_parameter, url: admin_parameter.persisted? ? admin_admin_parameter_path(admin_parameter) : admin_admin_parameters_path, method: admin_parameter.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
     <% if admin_parameter.errors.any? %>

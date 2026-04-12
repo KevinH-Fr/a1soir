@@ -1,4 +1,5 @@
-<div class="card mx-2 mb-3 light-beige-colored shadow-sm">
+<% meeting_index_collapse = local_assigns[:index_collapse] && !meeting.persisted? %>
+<div class="card mx-2 <%= meeting_index_collapse ? 'mb-0' : 'my-3' %> light-beige-colored shadow-sm">
   <div class="card-body p-2 d-flex flex-column">
 
   <%= form_with(model: [:admin, meeting], data: { turbo: true }) do |form| %>

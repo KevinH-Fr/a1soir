@@ -25,7 +25,7 @@
 
 <%# Import CSV produits — désactivé : réactiver la route dans routes.rb, l’action import_data_produits dans AdminParametersController, puis retirer le « if false » ci-dessous. %>
 <% if false %>
-<div class="card mx-2 mb-3 p-2 light-beige-colored shadow-sm">
+<div class="card mx-2 my-3 p-2 light-beige-colored shadow-sm">
   <%= form_with url: admin_import_data_produits_path, method: :post, local: true, multipart: true, class: "row align-items-center" do |form| %>
 
     <div class="form-group input-group align-items-center justify-content-center gap-2 mb-2">

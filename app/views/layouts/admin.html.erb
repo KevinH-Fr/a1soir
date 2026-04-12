@@ -27,7 +27,8 @@
     <%= render "admin/shared/navbar_admin" %>
 
     <div class="admin-scroll flex-grow-1 overflow-auto">
-      <div class="admin-content d-flex justify-content-center align-items-center mb-3">
+      <%# align-items-start : évite un recentrage vertical si le flex a plus de hauteur que le contenu (micro-saut quand un collapse change la hauteur). %>
+      <div class="admin-content d-flex justify-content-center align-items-start mb-3">
         <div class="page-max-widthed">
           <main class="p-2">
             <div id="flash" class="mt-4" style="z-index: 10;">

@@ -1,5 +1,9 @@
-<div class="card mx-2 mt-3 p-2 light-beige-colored shadow-sm">
-
+<% ensemble_compact_collapse = local_assigns[:index_collapse] && !ensemble.persisted? %>
+<%= render layout: "admin/shared/form_card_shell",
+           locals: {
+             compact: ensemble_compact_collapse,
+             embedded: local_assigns.fetch(:admin_form_row_embedded, false)
+           } do %>
   <%= form_with(model: ensemble, url: ensemble.persisted? ? admin_ensemble_path(ensemble) : admin_ensembles_path, method: ensemble.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
     <% if ensemble.errors.any? %>
       <div style="color: red">
@@ -13,11 +17,10 @@
       </div>
     <% end %>
 
-
     <div class="mx-1 mb-1 px-2">
       <div class="input-group input-group">
         <%= form.label :parent, class: "input-group-text" %>
-        <%= form.collection_select :produit_id, Produit.is_ensemble.order(:nom), :id, :nom, 
+        <%= form.collection_select :produit_id, Produit.is_ensemble.order(:nom), :id, :nom,
         { include_blank: 'Sélectionner' }, class: "form-select" %>
       </div>
     </div>
@@ -25,7 +28,7 @@
     <div class="mx-1 mb-1 px-2">
       <div class="input-group input-group">
         <%= form.label :enfant1, class: "input-group-text" %>
-        <%= form.collection_select :type_produit1_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom, 
+        <%= form.collection_select :type_produit1_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom,
         { include_blank: 'Sélectionner' }, class: "form-select" %>
       </div>
     </div>
@@ -33,7 +36,7 @@
     <div class="mx-1 mb-1 px-2">
       <div class="input-group input-group">
         <%= form.label :enfant2, class: "input-group-text" %>
-        <%= form.collection_select :type_produit2_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom, 
+        <%= form.collection_select :type_produit2_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom,
         { include_blank: 'Sélectionner' }, class: "form-select" %>
       </div>
     </div>
@@ -41,7 +44,7 @@
     <div class="mx-1 mb-1 px-2">
       <div class="input-group input-group">
         <%= form.label :enfant3, class: "input-group-text" %>
-        <%= form.collection_select :type_produit3_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom, 
+        <%= form.collection_select :type_produit3_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom,
         { include_blank: 'Sélectionner' }, class: "form-select" %>
       </div>
     </div>
@@ -49,7 +52,7 @@
     <div class="mx-1 mb-1 px-2">
       <div class="input-group input-group">
         <%= form.label :enfant4, class: "input-group-text" %>
-        <%= form.collection_select :type_produit4_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom, 
+        <%= form.collection_select :type_produit4_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom,
         { include_blank: 'Sélectionner' }, class: "form-select" %>
       </div>
     </div>
@@ -57,7 +60,7 @@
     <div class="mx-1 mb-1 px-2">
       <div class="input-group input-group">
         <%= form.label :enfant5, class: "input-group-text" %>
-        <%= form.collection_select :type_produit5_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom, 
+        <%= form.collection_select :type_produit5_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom,
         { include_blank: 'Sélectionner' }, class: "form-select" %>
       </div>
     </div>
@@ -65,14 +68,12 @@
     <div class="mx-1 mb-1 px-2">
       <div class="input-group input-group">
         <%= form.label :enfant6, class: "input-group-text" %>
-        <%= form.collection_select :type_produit6_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom, 
+        <%= form.collection_select :type_produit6_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom,
         { include_blank: 'Sélectionner' }, class: "form-select" %>
       </div>
     </div>
 
-
     <%= custom_submit_button(form) %>
 
   <% end %>
-
-</div>
+<% end %>

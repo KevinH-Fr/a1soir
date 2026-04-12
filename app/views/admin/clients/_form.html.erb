@@ -1,7 +1,10 @@
 <%#= turbo_frame_tag "client_form" do %>
-
-  <div class="card mx-2 mb-3 p-2 light-beige-colored shadow-sm">
-
+<% client_compact_collapse = local_assigns[:index_collapse] && !client.persisted? %>
+<%= render layout: "admin/shared/form_card_shell",
+           locals: {
+             compact: client_compact_collapse,
+             embedded: local_assigns.fetch(:admin_form_row_embedded, false)
+           } do %>
     <%= form_with(model: client, url: client.persisted? ? admin_client_path(client) : admin_clients_path, method: client.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
       <% if client.errors.any? %>
         <div style="color: red">
@@ -47,7 +50,6 @@
       <%= custom_submit_button(form) %>
 
     <% end %>
-
-  </div>
+<% end %>
 
 <%# end %>

@@ -28,9 +28,9 @@ class Admin::TaillesController < Admin::ApplicationController
     respond_to do |format|
       format.html 
       format.turbo_stream do  
-        render turbo_stream: turbo_stream.update(@taille, 
-          partial: "admin/tailles/form", 
-          locals: {taille: @taille})
+        render turbo_stream: turbo_stream.update(@taille,
+          partial: "admin/tailles/form",
+          locals: { taille: @taille, admin_form_row_embedded: true })
       end
     end
   end
@@ -47,7 +47,7 @@ class Admin::TaillesController < Admin::ApplicationController
           render turbo_stream: [
             turbo_stream.update('new',
                                 partial: "admin/tailles/form",
-                                locals: { taille: Taille.new }),
+                                locals: { taille: Taille.new, index_collapse: true }),
   
             turbo_stream.prepend('tailles',
                                   partial: "admin/tailles/taille",
@@ -85,9 +85,9 @@ class Admin::TaillesController < Admin::ApplicationController
       else
 
         format.turbo_stream do
-          render turbo_stream: turbo_stream.update(@taille, 
-                    partial: 'admin/tailles/form', 
-                    locals: { taille: @taille })
+          render turbo_stream: turbo_stream.update(@taille,
+                    partial: 'admin/tailles/form',
+                    locals: { taille: @taille, admin_form_row_embedded: true })
         end
 
         format.html { render :edit, status: :unprocessable_entity }

@@ -8,7 +8,7 @@
     ) %>
 
 <% if session[:selection_etiquettes].present? %>
-  <div class="card mx-2 mb-3 light-beige-colored shadow-sm">
+  <div class="card mx-2 my-3 light-beige-colored shadow-sm">
     <div class="card-header py-2 px-3 d-flex flex-wrap align-items-center justify-content-between gap-2 bg-transparent border-bottom">
       <span class="fw-semibold mb-0">Sélection active</span>
       <%= form_with url: reset_selection_admin_etiquettes_path, method: :post, data: { turbo: false }, class: "d-inline" do %>

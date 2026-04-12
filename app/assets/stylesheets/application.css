@@ -65,6 +65,53 @@
   opacity: 0.7;
 }
 
+/* Bloc « Nouveau » (index admin, bloc_nouveau) */
+.collapse-nouveau-admin,
+.collapse-nouveau-admin > #new {
+  overflow-anchor: none;
+}
+
+/* flow-root : les marges des champs (.mb-1, dernier bloc submit, etc.) restent dans la boîte
+   dont Bootstrap anime la hauteur ; sinon elles « fuient » et la fin de transition sursaute. */
+.collapse-nouveau-admin > #new {
+  display: flow-root;
+  margin: 0;
+  box-sizing: border-box;
+  /* Air au-dessus (bandeau) ; pas de padding-bas : la carte a déjà p-3 et la 1re ligne liste a my-2 → évite le double espace sous « Nouveau ». */
+  padding-top: 0.5rem;
+  padding-bottom: 0;
+}
+
+.collapse-nouveau-admin > #new turbo-frame {
+  display: block;
+  margin: 0;
+}
+
+.collapse-nouveau-admin > #new > .card,
+.collapse-nouveau-admin > #new > turbo-frame .card {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.collapse-nouveau-admin > #new form {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Le scroll admin est dans .admin-scroll : l’ancrage peut encore recaler au repli du collapse. */
+.admin-scroll {
+  overflow-anchor: none;
+}
+
+/* Fin de courbe « ease » de Bootstrap : petit rebond visuel ; linéaire + ombre coupée pendant le repli. */
+.collapse-nouveau-admin.collapsing {
+  transition: height 0.22s linear !important;
+}
+
+.collapse-nouveau-admin.collapsing #new .card.shadow-sm {
+  box-shadow: none !important;
+}
+
 /* Override Bootstrap blue focus for dark inputs */
 .form-control.bg-dark:focus {
   border-color: rgba(255, 255, 255, 0.5) !important;

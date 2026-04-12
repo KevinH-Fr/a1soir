@@ -1,5 +1,9 @@
-<div class="card mx-2 my-3 p-2 light-beige-colored shadow-sm">
-
+<% categorie_produit_compact_collapse = local_assigns[:index_collapse] && !categorie_produit.persisted? %>
+<%= render layout: "admin/shared/form_card_shell",
+           locals: {
+             compact: categorie_produit_compact_collapse,
+             embedded: local_assigns.fetch(:admin_form_row_embedded, false)
+           } do %>
   <%= form_with(model: categorie_produit, url: categorie_produit.persisted? ? admin_categorie_produit_path(categorie_produit) : admin_categorie_produits_path, method: categorie_produit.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
     <% if categorie_produit.errors.any? %>
       <div style="color: red">
@@ -13,7 +17,7 @@
       </div>
     <% end %>
 
-    <%= custom_form_elements(form, 
+    <%= custom_form_elements(form,
       [:nom, :text_field], [:texte_annonce, :text_area], [:label, :text_field],  [:service, :check_box]) %>
 
     <div class="p-2">
@@ -27,9 +31,8 @@
         </div>
       </div>
     </div>
-    
+
     <%= custom_submit_button(form) %>
 
   <% end %>
-
-</div>
+<% end %>
