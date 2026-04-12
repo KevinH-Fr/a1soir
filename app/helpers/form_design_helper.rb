@@ -45,10 +45,22 @@ module FormDesignHelper
   end  
   
 
-  def custom_submit_button(form)
-    content_tag(:div, class: "container-fluid px-0 pt-2 pb-0 text-end") do
-      button_tag(type: "submit", class: "btn w-25 bg-success text-light fw-bold") do
-        concat content_tag(:i, "", class: "bi-check-circle")
+  def custom_submit_button(form, label: nil)
+    caption =
+      if label.present?
+        label
+      elsif form.object&.respond_to?(:new_record?)
+        form.object.new_record? ? "Créer" : "Modifier"
+      end
+
+    content_tag(:div, class: "container-fluid px-0 pt-3 pb-0 text-end") do
+      button_tag(
+        type: "submit",
+        class: "btn btn-success px-4 py-2 fw-semibold shadow-sm " \
+               "d-inline-flex align-items-center justify-content-center gap-1 border-0"
+      ) do
+        concat content_tag(:i, "", class: "bi bi-check-lg", "aria-hidden": "true")
+        concat caption if caption.present?
       end
     end
   end

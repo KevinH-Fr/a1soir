@@ -122,8 +122,8 @@
         <% tlv_base = dom_id(commande, :type_locvente) %>
         <% tlv_ids = { location: "#{tlv_base}_location", vente: "#{tlv_base}_vente", mixte: "#{tlv_base}_mixte" } %>
         <% tlv_lbl = "#{tlv_base}_heading" %>
+        <span id="<%= tlv_lbl %>" class="visually-hidden">Type de commande</span>
         <div class="btn-group" role="group" aria-labelledby="<%= tlv_lbl %>">
-          <span id="<%= tlv_lbl %>" class="visually-hidden">Type de commande</span>
           <%= form.radio_button :type_locvente, "location", class: "btn-check", id: tlv_ids[:location], autocomplete: "off" %>
           <%= form.label :type_locvente, "Location", class: "btn btn-outline-primary mb-0", for: tlv_ids[:location] %>
 

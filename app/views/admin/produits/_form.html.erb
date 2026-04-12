@@ -9,9 +9,9 @@
   <%= form_with(model: produit, url: produit.persisted? ? admin_produit_path(produit) : admin_produits_path, method: produit.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
 
     <% if produit.errors.any? %>
-      <div style="color: red">
-        <h2><%= pluralize(produit.errors.count, "error") %> prohibited this produit from being saved:</h2>
-        <ul>
+      <div class="alert alert-danger py-2 mb-3" role="alert">
+        <h2 class="h6 mb-2"><%= pluralize(produit.errors.count, "error") %> prohibited this produit from being saved:</h2>
+        <ul class="mb-0 small">
           <% produit.errors.each do |error| %>
             <li><%= error.full_message %></li>
           <% end %>
@@ -37,152 +37,179 @@
         <div class="card-body p-1 px-2">
         <% end %>
 
-        <%= custom_form_elements(form,
-          [:nom, :text_field],
-          [:type_produit_id, :collection_select, nil, {
-            collection: @type_produits.all.order(:nom),
-            value_method: :id,
-            label_method: :nom,
-            select_options: { include_blank: '' }}],
-          [:prixvente, :number_field, "Prix vente TTC", { step: "any" }],
-          [:prixlocation, :number_field, "Prix location TTC", { step: "any" }],
-          [:caution, :number_field, "Caution", { step: "any" }],
-          [:poids, :number_field, "Poids (grammes)", { step: "any" }],
-          [:description, :text_area], 
-          [:quantite, :number_field],
-          [:dateachat, :date_field, "date d'achat"],
-          [:reffrs, :text_field],
-          [:fournisseur_id, :collection_select, nil, {
-            collection: @fournisseurs.all.order(:nom),
-            value_method: :id,
-            label_method: :nom,
-            select_options: { include_blank: '' }
-          }],
-          # file fields rendered below (better UX than input-group labels)
+        <div class="produit-form-sections vstack gap-3">
 
-        ) %>
+          <section aria-labelledby="produit-sec-general">
+            <h2 id="produit-sec-general" class="h6 small fw-semibold text-secondary text-uppercase border-bottom pb-2 mb-2 mb-lg-3 d-flex align-items-center gap-2">
+              <i class="bi bi-box-seam flex-shrink-0 opacity-75" aria-hidden="true"></i>
+              <span>Général</span>
+            </h2>
+            <%= custom_form_elements(form,
+              [:nom, :text_field],
+              [:type_produit_id, :collection_select, nil, {
+                collection: @type_produits.all.order(:nom),
+                value_method: :id,
+                label_method: :nom,
+                select_options: { include_blank: '' }}],
+              [:description, :text_area]
+            ) %>
+          </section>
 
-        <%# Media section is rendered below Categories (same style, no visible card) %>
-
-      
-      <div class="mx-1">
-
-        <% if current_admin_user.admin? %>
-          <div class="input-group mb-1">
-            <%= form.label :prixachat, "Prix achat HT", class: "input-group-text" %>
-            <%= form.number_field :prixachat, step: "any", class: "form-control" %>
-          </div>
-        <% end %>
-
-
-
-
-        <div class="input-group mb-1">
-          <%= form.label :couleur_id, class: "input-group-text" %>
-          <%= form.collection_select :couleur_id, @couleurs.all.order(:nom), :id, :nom, 
-          { include_blank: '' }, class: "form-select" %>
-        </div>
-
-        <div class="input-group mb-1">
-          <%= form.label :taille_id, class: "input-group-text" %>
-          <%= form.collection_select :taille_id, @tailles.all.order(:nom), :id, :nom, 
-          { include_blank: '' }, class: "form-select text-uppercase" %>
-        </div>
-      </div>
-      
-        <%= custom_form_elements(form, 
-          [:actif, :check_box], 
-          [:eshop, :check_box]    
-        ) %>
-
-        <div class="input-group mb-1">
-          <%= form.label :categorie_produit_ids, "Catégories", class: "form-label fw-bold" %>
-          <div class="form-check">
-            <%= form.collection_check_boxes :categorie_produit_ids, @categorie_produits.order(:nom), :id, :nom do |b| %>
-              <div class="form-check form-check-inline">
-                <%= b.check_box class: "form-check-input" %>
-                <%= b.label class: "form-check-label" %>
+          <section aria-labelledby="produit-sec-tarifs">
+            <h2 id="produit-sec-tarifs" class="h6 small fw-semibold text-secondary text-uppercase border-bottom pb-2 mb-2 mb-lg-3 d-flex align-items-center gap-2">
+              <i class="bi bi-currency-euro flex-shrink-0 opacity-75" aria-hidden="true"></i>
+              <span>Tarifs</span>
+            </h2>
+            <%= custom_form_elements(form,
+              [:prixvente, :number_field, "Prix vente TTC", { step: "any" }],
+              [:prixlocation, :number_field, "Prix location TTC", { step: "any" }],
+              [:caution, :number_field, "Caution", { step: "any" }]
+            ) %>
+            <% if current_admin_user.admin? %>
+              <div class="input-group mb-1">
+                <%= form.label :prixachat, "Prix achat HT", class: "input-group-text" %>
+                <%= form.number_field :prixachat, step: "any", class: "form-control" %>
               </div>
             <% end %>
-          </div>
-        </div>
+          </section>
 
+          <section aria-labelledby="produit-sec-stock">
+            <h2 id="produit-sec-stock" class="h6 small fw-semibold text-secondary text-uppercase border-bottom pb-2 mb-2 mb-lg-3 d-flex align-items-center gap-2">
+              <i class="bi bi-boxes flex-shrink-0 opacity-75" aria-hidden="true"></i>
+              <span>Stock &amp; référence</span>
+            </h2>
+            <%= custom_form_elements(form,
+              [:quantite, :number_field],
+              [:dateachat, :date_field, "date d'achat"],
+              [:poids, :number_field, "Poids (grammes)", { step: "any" }],
+              [:reffrs, :text_field],
+              [:fournisseur_id, :collection_select, nil, {
+                collection: @fournisseurs.all.order(:nom),
+                value_method: :id,
+                label_method: :nom,
+                select_options: { include_blank: '' }
+              }]
+            ) %>
+          </section>
 
-        <% if produit.persisted? && produit.save %>
-          <% if produit.images.any? || produit.video1.attached? %>
-            <div class="fw-bold"> Médias actuels</div>
-          <% end %>
+          <section aria-labelledby="produit-sec-variantes">
+            <h2 id="produit-sec-variantes" class="h6 small fw-semibold text-secondary text-uppercase border-bottom pb-2 mb-2 mb-lg-3 d-flex align-items-center gap-2">
+              <i class="bi bi-palette flex-shrink-0 opacity-75" aria-hidden="true"></i>
+              <span>Couleur &amp; taille</span>
+            </h2>
+            <div class="input-group mb-1">
+              <%= form.label :couleur_id, class: "input-group-text" %>
+              <%= form.collection_select :couleur_id, @couleurs.all.order(:nom), :id, :nom,
+                    { include_blank: '' }, class: "form-select" %>
+            </div>
+            <div class="input-group mb-1">
+              <%= form.label :taille_id, class: "input-group-text" %>
+              <%= form.collection_select :taille_id, @tailles.all.order(:nom), :id, :nom,
+                    { include_blank: '' }, class: "form-select text-uppercase" %>
+            </div>
+          </section>
 
-          <% if produit.images.any? || produit.video1.attached? %>
-            <div class="mb-2 d-flex flex-wrap gap-2 align-items-start">
-              <% if produit.images.any? %>
-                <% produit.images.each do |image| %>
-                  <% next unless image.present? %>
-                  <div class="d-flex flex-column align-items-center">
-                    <%= image_tag image, class: "rounded border", style: "object-fit: cover; width: 150px; height: 150px;" %>
-                    <%= button_to '', delete_image_attachment_admin_produit_path(produit, image_id: image.id),
-                          method: :delete,
-                          onclick: "return confirm('Supprimer cette image ?');",
-                          class: 'btn btn-outline-danger bi bi-trash mt-1' %>
+          <section aria-labelledby="produit-sec-publication">
+            <h2 id="produit-sec-publication" class="h6 small fw-semibold text-secondary text-uppercase border-bottom pb-2 mb-2 mb-lg-3 d-flex align-items-center gap-2">
+              <i class="bi bi-shop-window flex-shrink-0 opacity-75" aria-hidden="true"></i>
+              <span>Publication</span>
+            </h2>
+            <%= custom_form_elements(form,
+              [:actif, :check_box],
+              [:eshop, :check_box]
+            ) %>
+            <div class="input-group mb-1">
+              <%= form.label :categorie_produit_ids, "Catégories", class: "form-label fw-bold" %>
+              <div class="form-check">
+                <%= form.collection_check_boxes :categorie_produit_ids, @categorie_produits.order(:nom), :id, :nom do |b| %>
+                  <div class="form-check form-check-inline">
+                    <%= b.check_box class: "form-check-input" %>
+                    <%= b.label class: "form-check-label" %>
                   </div>
                 <% end %>
-              <% end %>
+              </div>
+            </div>
+          </section>
 
-              <% if produit.video1.attached? %>
-                <div class="d-flex flex-column align-items-center">
-                  <div class="d-flex align-items-center justify-content-center rounded border bg-light"
-                       style="width: 150px; height: 150px;">
-                    <i class="bi bi-file-earmark-play text-secondary" style="font-size: 3rem;"></i>
-                  </div>
-                  <div class="d-flex gap-1 mt-1">
-                    <%= link_to '', rails_blob_path(produit.video1, disposition: "inline"),
-                          target: "_blank",
-                          rel: "noopener",
-                          class: "btn btn-outline-secondary bi bi-box-arrow-up-right" %>
-                    <%= button_to '', delete_video_attachment_admin_produit_path(produit),
-                          method: :delete,
-                          onclick: "return confirm('Supprimer la vidéo actuelle ?');",
-                          class: "btn btn-outline-danger bi bi-trash" %>
-                  </div>
+          <section aria-labelledby="produit-sec-medias">
+            <h2 id="produit-sec-medias" class="h6 small fw-semibold text-secondary text-uppercase border-bottom pb-2 mb-2 mb-lg-3 d-flex align-items-center gap-2">
+              <i class="bi bi-images flex-shrink-0 opacity-75" aria-hidden="true"></i>
+              <span>Médias</span>
+            </h2>
+
+            <% if produit.persisted? && produit.save %>
+              <% if produit.images.any? || produit.video1.attached? %>
+                <div class="fw-bold mb-1">Médias actuels</div>
+                <div class="mb-2 d-flex flex-wrap gap-2 align-items-start">
+                  <% if produit.images.any? %>
+                    <% produit.images.each do |image| %>
+                      <% next unless image.present? %>
+                      <div class="d-flex flex-column align-items-center">
+                        <%= image_tag image, class: "rounded border", style: "object-fit: cover; width: 150px; height: 150px;" %>
+                        <%= button_to '', delete_image_attachment_admin_produit_path(produit, image_id: image.id),
+                              method: :delete,
+                              onclick: "return confirm('Supprimer cette image ?');",
+                              class: 'btn btn-outline-danger bi bi-trash mt-1' %>
+                      </div>
+                    <% end %>
+                  <% end %>
+
+                  <% if produit.video1.attached? %>
+                    <div class="d-flex flex-column align-items-center">
+                      <div class="d-flex align-items-center justify-content-center rounded border bg-light"
+                           style="width: 150px; height: 150px;">
+                        <i class="bi bi-file-earmark-play text-secondary" style="font-size: 3rem;"></i>
+                      </div>
+                      <div class="d-flex gap-1 mt-1">
+                        <%= link_to '', rails_blob_path(produit.video1, disposition: "inline"),
+                              target: "_blank",
+                              rel: "noopener",
+                              class: "btn btn-outline-secondary bi bi-box-arrow-up-right" %>
+                        <%= button_to '', delete_video_attachment_admin_produit_path(produit),
+                              method: :delete,
+                              onclick: "return confirm('Supprimer la vidéo actuelle ?');",
+                              class: "btn btn-outline-danger bi bi-trash" %>
+                      </div>
+                    </div>
+                  <% end %>
                 </div>
               <% end %>
-            </div>
-          <% end %>
-        <% end %>
-        
-        <div class="mt-2">
-          <div class="row g-2">
-            <div class="col-12">
-              <%= form.label :image1, "Image principale", class: "form-label fw-semibold mb-1" %>
-              <%= form.file_field :image1,
-                    class: "form-control form-control-sm",
-                    accept: "image/jpeg,image/png,image/gif,image/jpg,image/webp,.jpg,.jpeg,.png,.webp,.gif" %>
-              <div class="form-text">
-                Formats : JPG/JPEG, PNG, WEBP, GIF — Taille max : 5&nbsp;MB
-              </div>
-            </div>
+            <% end %>
 
-            <div class="col-12">
-              <%= form.label :images, "Images (multiples)", class: "form-label fw-semibold mb-1" %>
-              <%= form.file_field :images,
-                    multiple: true,
-                    class: "form-control form-control-sm",
-                    accept: "image/jpeg,image/png,image/gif,image/jpg,image/webp,.jpg,.jpeg,.png,.webp,.gif" %>
-              <div class="form-text">
-                Formats : JPG/JPEG, PNG, WEBP, GIF — Taille max : 5&nbsp;MB / image
+            <div class="row g-2">
+              <div class="col-12">
+                <%= form.label :image1, "Image principale", class: "form-label fw-semibold mb-1" %>
+                <%= form.file_field :image1,
+                      class: "form-control form-control-sm",
+                      accept: "image/jpeg,image/png,image/gif,image/jpg,image/webp,.jpg,.jpeg,.png,.webp,.gif" %>
+                <div class="form-text">
+                  Formats : JPG/JPEG, PNG, WEBP, GIF — Taille max : 5&nbsp;MB
+                </div>
               </div>
-            </div>
 
-            <div class="col-12">
-              <%= form.label :video1, "Vidéo", class: "form-label fw-semibold mb-1" %>
-              <%= form.file_field :video1,
-                    class: "form-control form-control-sm",
-                    accept: "video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov" %>
-              <div class="form-text">
-                Formats : MP4, WebM, MOV — Taille max : 50&nbsp;MB
+              <div class="col-12">
+                <%= form.label :images, "Images (multiples)", class: "form-label fw-semibold mb-1" %>
+                <%= form.file_field :images,
+                      multiple: true,
+                      class: "form-control form-control-sm",
+                      accept: "image/jpeg,image/png,image/gif,image/jpg,image/webp,.jpg,.jpeg,.png,.webp,.gif" %>
+                <div class="form-text">
+                  Formats : JPG/JPEG, PNG, WEBP, GIF — Taille max : 5&nbsp;MB / image
+                </div>
+              </div>
+
+              <div class="col-12">
+                <%= form.label :video1, "Vidéo", class: "form-label fw-semibold mb-1" %>
+                <%= form.file_field :video1,
+                      class: "form-control form-control-sm",
+                      accept: "video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov" %>
+                <div class="form-text">
+                  Formats : MP4, WebM, MOV — Taille max : 50&nbsp;MB
+                </div>
               </div>
             </div>
-          </div>
+          </section>
+
         </div>
 
         <%= custom_submit_button(form) %>
@@ -193,7 +220,7 @@
       </div>
 
     </div>
-  
+
   <% end %>
 <% end %>
 

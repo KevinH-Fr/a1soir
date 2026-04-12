@@ -20,9 +20,11 @@ module IndexModelHelper
           concat(content_tag(:div, title, class: "fw-bold text-light fs-6"))
         end)
 
-        concat(content_tag(:div, class: "mx-1 d-flex align-items-center flex-shrink-0") do
-          concat(content_tag(:span, counter, class: "badge rounded-pill bg-primary fs-6"))
-        end)
+        if counter.present?
+          concat(content_tag(:div, class: "mx-1 d-flex align-items-center flex-shrink-0") do
+            concat(content_tag(:span, counter, class: "badge rounded-pill bg-primary fs-6"))
+          end)
+        end
       end)
 
       if champs_recherche.present?
@@ -31,10 +33,11 @@ module IndexModelHelper
             concat(index_search_form(@q, search_path, champs_recherche))
 
             if show_new_record_button
-              concat(content_tag(:button, class: "btn btn-sm btn-warning", type: "button",
+              concat(content_tag(:button, class: "btn btn-sm btn-warning d-inline-flex align-items-center gap-1", type: "button",
                   data: { bs_toggle: "collapse", bs_target: "#collapseNew", aria_expanded: "false" },
-                  aria: { controls: "collapseNew" }) do
-                concat(content_tag(:i, nil, class: "bi bi-plus-lg fa-xl"))
+                  aria: { controls: "collapseNew", label: "Nouveau" }) do
+                concat(content_tag(:i, nil, class: "bi bi-plus-lg fa-xl", "aria-hidden": "true"))
+                concat(content_tag(:span, "Nouveau", class: "d-none d-sm-inline"))
               end)
             end
           end)
