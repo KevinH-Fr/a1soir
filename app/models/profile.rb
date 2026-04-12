@@ -1,20 +1,20 @@
 class Profile < ApplicationRecord
-    
-    ESHOP_LAST_NAME = "eshop"
+    # Profil technique e-shop : identifié par le prénom uniquement ; `nom` laissé vide.
+    ESHOP_PROFILE_PRENOM = "Eshop"
 
     has_one_attached :profile_pic
     has_many :commandes
 
     # Profil vendeur pour les commandes créées depuis Stripe (peu de lignes en base : filtre Ruby, pas de LOWER SQL).
     def self.for_eshop_commandes
-        row = pluck(:id, :nom).find { |_id, nom| nom.to_s.casecmp?(ESHOP_LAST_NAME) }
+        row = pluck(:id, :prenom).find { |_id, p| p.to_s.casecmp?(ESHOP_PROFILE_PRENOM) }
         return find(row.first) if row
 
-        create!(prenom: "E-shop", nom: ESHOP_LAST_NAME)
+        create!(prenom: ESHOP_PROFILE_PRENOM, nom: nil)
     end
 
     def full_name
-        prenom + " " + nom
+        [prenom, nom].map(&:to_s).reject(&:blank?).join(" ").presence || ""
     end
 
     def default_image

@@ -21,34 +21,27 @@
       <%#= custom_form_elements(form, 
         [:nom, :text_field] ) %>
 
-      <div class="m-1">
-        <div class="input-group">
-        
-          <% if @client %>
-            <%= form.hidden_field :client_id, value: @client.id %>
-          <% else %>
-            <%= form.label :client_id, class: "input-group-text" %>
-            <%= form.select :client_id, 
-              options_for_select(Client.all.order(:nom).pluck(:nom, :id)),
-              { include_blank: '' },
-              { class: "form-select" } %>
-          <% end %>
-
+      <% if @client %>
+        <%= form.hidden_field :client_id, value: @client.id %>
+      <% else %>
+        <div class="form-group input-group mb-1 w-100">
+          <%= form.label :client_id, class: "input-group-text" %>
+          <%= form.select :client_id,
+                options_for_select(Client.all.order(:nom).pluck(:nom, :id)),
+                { include_blank: "" },
+                { class: "form-select" } %>
         </div>
+      <% end %>
+
+      <div class="form-group input-group mb-1 w-100">
+        <%= form.label :profile_id, class: "input-group-text" %>
+        <%= form.collection_select :profile_id, @profiles.all.order(:nom), :id, :full_name,
+              { include_blank: "Select" }, class: "form-select" %>
       </div>
 
-      <div class="mx-1">
-        <div class="input-group mb-1">
-          <%= form.label :profile_id, class: "input-group-text" %>
-          <%= form.collection_select :profile_id, @profiles.all.order(:nom), :id, :full_name, 
-          { include_blank: 'Select' }, class: "form-select" %>
-        </div>
-
-        <div class="input-group">
-          <%= form.label :typeevent, "Evénement", class: "input-group-text" %>
-          <%= form.select :typeevent, Commande::EVENEMENTS_OPTIONS, { include_blank: '' }, class: "form-select" %>
-        </div>
-        
+      <div class="form-group input-group mb-1 w-100">
+        <%= form.label :typeevent, "Evénement", class: "input-group-text" %>
+        <%= form.select :typeevent, Commande::EVENEMENTS_OPTIONS, { include_blank: "" }, class: "form-select" %>
       </div>
 
       <%= custom_form_elements(form, 
@@ -58,15 +51,15 @@
 
       <%# nouveau date fields debut et fin %>
     
-      <div data-controller="date-fields-commande" class="mx-1">
-        <div class="input-group mb-1">
+      <div data-controller="date-fields-commande" class="w-100">
+        <div class="form-group input-group mb-1 w-100">
           <%= form.label :debutloc, "Début location", class: "input-group-text label-with-format" %>
           <%= form.date_field :debutloc,
                 class: "form-control",
                 data: { action: "change->date-fields-commande#updateDateFin", date_fields_commande_target: "debutloc" } %>
         </div>
 
-        <div class="input-group mb-1">
+        <div class="form-group input-group mb-1 w-100">
           <%= form.label :finloc, "Fin location", class: "input-group-text label-with-format" %>
           <%= form.date_field :finloc,
                 class: "form-control",
@@ -83,28 +76,24 @@
         [:commentaires, :text_area], [:devis, :check_box]
       ) %>
 
-      <div class="container-fluid d-flex">
-        <div class="form-check mx-2">
-          <%= form.radio_button :type_locvente, "location", class: "form-check-input", id: "flexRadioDefault1", autocomplete: "off" %>
-          <%= form.label :type_locvente_location, "Location", class: "form-check-label", for: "flexRadioDefault1" %>
-        </div>
+      <% tlv_base = dom_id(commande, :type_locvente) %>
+      <% tlv_ids = { location: "#{tlv_base}_location", vente: "#{tlv_base}_vente", mixte: "#{tlv_base}_mixte" } %>
+      <% tlv_lbl = "#{tlv_base}_heading" %>
+      <div class="mb-3">
+        <div id="<%= tlv_lbl %>" class="form-label small text-secondary mb-1">Type de commande</div>
+        <div class="btn-group" role="group" aria-labelledby="<%= tlv_lbl %>">
+          <%= form.radio_button :type_locvente, "location", class: "btn-check", id: tlv_ids[:location], autocomplete: "off" %>
+          <%= form.label :type_locvente, "Location", class: "btn btn-outline-primary mb-0", for: tlv_ids[:location] %>
 
-        <div class="form-check mx-2">
-          <%= form.radio_button :type_locvente, "vente", class: "form-check-input", id: "flexRadioDefault2", autocomplete: "off" %>
-          <%= form.label :type_locvente_vente, "Vente", class: "form-check-label", for: "flexRadioDefault2" %>
-        </div>
+          <%= form.radio_button :type_locvente, "vente", class: "btn-check", id: tlv_ids[:vente], autocomplete: "off" %>
+          <%= form.label :type_locvente, "Vente", class: "btn btn-outline-primary mb-0", for: tlv_ids[:vente] %>
 
-        <div class="form-check mx-2">
-          <%= form.radio_button :type_locvente, "mixte", class: "form-check-input", id: "flexRadioDefault3", autocomplete: "off" %>
-          <%= form.label :type_locvente_mixte, "Mixte", class: "form-check-label", for: "flexRadioDefault3" %>
+          <%= form.radio_button :type_locvente, "mixte", class: "btn-check", id: tlv_ids[:mixte], autocomplete: "off" %>
+          <%= form.label :type_locvente, "Mixte", class: "btn btn-outline-primary mb-0", for: tlv_ids[:mixte] %>
         </div>
-
       </div>
 
       <%= custom_submit_button(form) %>
-
-
-
 
     <% end %>
 <% end %>

@@ -5,51 +5,134 @@
              compact: client_compact_collapse,
              embedded: local_assigns.fetch(:admin_form_row_embedded, false)
            } do %>
-    <%= form_with(model: client, url: client.persisted? ? admin_client_path(client) : admin_clients_path, method: client.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
-      <% if client.errors.any? %>
-        <div style="color: red">
-          <h2><%= pluralize(client.errors.count, "error") %> prohibited this client from being saved:</h2>
-
-          <ul>
-            <% client.errors.each do |error| %>
-              <li><%= error.full_message %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
-
-      <div class="input-group px-1 mb-1">
-        <%= form.label :language, "Language", class: "input-group-text" %>
-        <%= form.select :language, 
-          [['Français', 'fr'], ['Anglais', 'en']], 
-          { include_blank: '', selected: form.object.language || 'fr' }, 
-          class: "form-select" %>
+  <%= form_with(model: client, url: client.persisted? ? admin_client_path(client) : admin_clients_path, method: client.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
+    <% if client.errors.any? %>
+      <div class="alert alert-danger py-2 mb-3" role="alert">
+        <h2 class="h6 mb-2"><%= pluralize(client.errors.count, "error") %> prohibited this client from being saved:</h2>
+        <ul class="mb-0 small">
+          <% client.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
       </div>
-
-      <%= custom_form_elements(form, 
-        [:prenom, :text_field], [:nom, :text_field, "Nom / Société"]
-      ) %>
-
-      <div class="input-group px-1 mb-1">
-        <%= form.label :propart, "Pro / Particulier", class: "input-group-text" %>
-        <%= form.select :propart, Client::PROPART_OPTIONS, { include_blank: '' }, class: "form-select" %>
-      </div>
-
-      <div class="input-group px-1 mb-1">
-        <%= form.label :intitule, class: "input-group-text" %>
-        <%= form.select :intitule, Client::INTITULE_OPTIONS, { include_blank: '' }, class: "form-select" %>
-      </div>
-
-      <%= custom_form_elements(form, 
-        [:commentaires, :text_area],
-        [:tel, :number_field], [:tel2, :number_field],
-        [:mail, :text_field], [:mail2, :text_field], [:adresse, :text_field],
-        [:cp, :text_field], [:ville, :text_field], [:pays, :text_field], [:contact, :text_field]
-      ) %>
-
-      <%= custom_submit_button(form) %>
-
     <% end %>
+
+    <%# Sections : grille homogène (g-2), pas de px-1 sur les groupes — aligné sur custom_form_elements %>
+    <div class="client-form-sections vstack gap-3">
+
+      <section aria-labelledby="client-sec-identity">
+        <h2 id="client-sec-identity" class="h6 small fw-semibold text-secondary text-uppercase border-bottom pb-2 mb-2 mb-lg-3 d-flex align-items-center gap-2">
+          <i class="bi bi-person-vcard flex-shrink-0 opacity-75" aria-hidden="true"></i>
+          <span>Identité</span>
+        </h2>
+        <div class="row g-2">
+          <div class="col-12 col-lg-3">
+            <div class="form-group input-group mb-1 w-100">
+              <div class="input-group-text">
+                <%= form.label :language, "Language", class: "" %>
+              </div>
+              <%= form.select :language,
+                    [["Français", "fr"], ["Anglais", "en"]],
+                    { include_blank: "", selected: form.object.language || "fr" },
+                    class: "form-select" %>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <%= custom_form_elements(form, [:prenom, :text_field]) %>
+          </div>
+          <div class="col-12 col-md-6 col-lg-5">
+            <%= custom_form_elements(form, [:nom, :text_field, "Nom / Société"]) %>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="client-sec-profile">
+        <h2 id="client-sec-profile" class="h6 small fw-semibold text-secondary text-uppercase border-bottom pb-2 mb-2 mb-lg-3 d-flex align-items-center gap-2">
+          <i class="bi bi-briefcase flex-shrink-0 opacity-75" aria-hidden="true"></i>
+          <span>Profil</span>
+        </h2>
+        <div class="row g-2">
+          <div class="col-12 col-md-6">
+            <div class="form-group input-group mb-1 w-100">
+              <div class="input-group-text">
+                <%= form.label :propart, "Pro / Particulier", class: "" %>
+              </div>
+              <%= form.select :propart, Client::PROPART_OPTIONS, { include_blank: "" }, class: "form-select" %>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="form-group input-group mb-1 w-100">
+              <div class="input-group-text">
+                <%= form.label :intitule, class: "" %>
+              </div>
+              <%= form.select :intitule, Client::INTITULE_OPTIONS, { include_blank: "" }, class: "form-select" %>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="client-sec-reach">
+        <h2 id="client-sec-reach" class="h6 small fw-semibold text-secondary text-uppercase border-bottom pb-2 mb-2 mb-lg-3 d-flex align-items-center gap-2">
+          <i class="bi bi-person-lines-fill flex-shrink-0 opacity-75" aria-hidden="true"></i>
+          <span>Coordonnées</span>
+        </h2>
+        <div class="row g-2">
+          <div class="col-12 col-md-6">
+            <%= custom_form_elements(form, [:tel, :number_field]) %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= custom_form_elements(form, [:tel2, :number_field]) %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= custom_form_elements(form, [:mail, :text_field]) %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= custom_form_elements(form, [:mail2, :text_field]) %>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="client-sec-address">
+        <h2 id="client-sec-address" class="h6 small fw-semibold text-secondary text-uppercase border-bottom pb-2 mb-2 mb-lg-3 d-flex align-items-center gap-2">
+          <i class="bi bi-geo-alt flex-shrink-0 opacity-75" aria-hidden="true"></i>
+          <span>Adresse</span>
+        </h2>
+        <div class="row g-2">
+          <div class="col-12">
+            <%= custom_form_elements(form, [:adresse, :text_field]) %>
+          </div>
+          <div class="col-12 col-sm-4 col-lg-3">
+            <%= custom_form_elements(form, [:cp, :text_field]) %>
+          </div>
+          <div class="col-12 col-sm-8 col-lg-5">
+            <%= custom_form_elements(form, [:ville, :text_field]) %>
+          </div>
+          <div class="col-12 col-lg-4">
+            <%= custom_form_elements(form, [:pays, :text_field]) %>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="client-sec-notes">
+        <h2 id="client-sec-notes" class="h6 small fw-semibold text-secondary text-uppercase border-bottom pb-2 mb-2 mb-lg-3 d-flex align-items-center gap-2">
+          <i class="bi bi-journal-text flex-shrink-0 opacity-75" aria-hidden="true"></i>
+          <span>Notes</span>
+        </h2>
+        <div class="row g-2">
+          <div class="col-12">
+            <%= custom_form_elements(form, [:commentaires, :text_area]) %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= custom_form_elements(form, [:contact, :text_field]) %>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <%= custom_submit_button(form) %>
+
+  <% end %>
 <% end %>
 
 <%# end %>

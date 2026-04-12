@@ -4,7 +4,7 @@ require "rails_helper"
 require "ostruct"
 
 RSpec.describe StripeEshopCommandeService do
-  let!(:profile) { Profile.create!(prenom: "Vendeur", nom: "Eshop") }
+  let!(:profile) { Profile.create!(prenom: "Vendeur", nom: "Boutique") }
 
   let!(:es_example_uid) { SecureRandom.hex(8) }
   let(:es_checkout_session_id) { "cs_es_#{es_example_uid}" }
@@ -82,10 +82,11 @@ RSpec.describe StripeEshopCommandeService do
       expect(client.intitule).to eq(Client::ESHOP_DEFAULT_INTITULE)
     end
 
-    it "attaches the Commande to a profile whose nom matches eshop (case-insensitive)" do
+    it "attaches the Commande to the eshop profile (prénom E-shop, nom vide)" do
       service.attach_commande_if_possible!
       p = payment.reload.commande.profile
-      expect(p.nom.downcase).to eq(Profile::ESHOP_LAST_NAME)
+      expect(p.prenom).to eq(Profile::ESHOP_PROFILE_PRENOM)
+      expect(p.nom).to be_blank
     end
 
     it "reuses an existing Client when normalized mail and family name match (case-insensitive)" do
@@ -203,7 +204,7 @@ RSpec.describe StripeEshopCommandeService do
 
     context "when no eshop profile exists yet" do
       before do
-        eshop_ids = Profile.where("LOWER(nom) = ?", Profile::ESHOP_LAST_NAME).pluck(:id)
+        eshop_ids = Profile.where("LOWER(prenom) = ?", Profile::ESHOP_PROFILE_PRENOM.downcase).pluck(:id)
         if eshop_ids.any?
           Commande.where(profile_id: eshop_ids).destroy_all
           Profile.where(id: eshop_ids).destroy_all
@@ -212,9 +213,9 @@ RSpec.describe StripeEshopCommandeService do
 
       it "creates an eshop Profile and the Commande" do
         expect { service.attach_commande_if_possible! }.to change(Profile, :count).by(1).and change(Commande, :count).by(1)
-        eshop = Profile.where("LOWER(nom) = ?", Profile::ESHOP_LAST_NAME).first
-        expect(eshop.prenom).to eq("E-shop")
-        expect(eshop.nom).to eq(Profile::ESHOP_LAST_NAME)
+        eshop = Profile.where("LOWER(prenom) = ?", Profile::ESHOP_PROFILE_PRENOM.downcase).first
+        expect(eshop.prenom).to eq(Profile::ESHOP_PROFILE_PRENOM)
+        expect(eshop.nom).to be_blank
         expect(payment.reload.commande.profile_id).to eq(eshop.id)
       end
     end

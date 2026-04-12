@@ -73,7 +73,7 @@ class Admin::AnalysesController < Admin::ApplicationController
     groupedByDateCaPaiements = @paiementsFiltres.group("DATE(created_at)").order("DATE(paiement_recus.created_at)").sum(:montant)
     @groupedByDateCa = merge_grouped_by_day(groupedByDateCaPaiements, grouped_stripe_jour_eur)
 
-    # Une ligne par profil : le profil technique eshop (nom insensible à la casse) agrège commandes e-shop + CA Stripe.
+    # Une ligne par profil : CA = paiements boutique (PaiementRecu) + Stripe rattachés aux commandes du profil.
     base_r, base_g, base_b = 208, 77, 123
     target_r, target_g, target_b = 245, 190, 210
 
@@ -87,39 +87,31 @@ class Admin::AnalysesController < Admin::ApplicationController
     end
 
     @stats_par_profile = profiles.map.with_index do |profile, index|
-      if profile.nom.to_s.casecmp?(Profile::ESHOP_LAST_NAME)
-        eshop_commandes = @commandesFiltres.merge(Commande.eshop_sales)
-        {
-          profile: profile.prenom.presence || "E-shop",
-          commandes: eshop_commandes.count,
-          devis: 0,
-          ca: @total_stripe_eur,
-          couleur: "rgb(226, 120, 160)"
-        }
-      else
-        commandes = @commandesFiltres.where(profile_id: profile.id).where(eshop: [false, nil])
-        commandes_ids = commandes.pluck(:id)
-        paiements = @paiementsFiltres.only_prix.where(commande_id: commandes_ids)
-        ca = paiements.sum(:montant).to_d
+      commandes = @commandesFiltres.where(profile_id: profile.id)
+      commandes_ids = commandes.pluck(:id)
+      ca_paiements = @paiementsFiltres.only_prix.where(commande_id: commandes_ids).sum(:montant).to_d
+      ca_stripe = stripe_amount_eur(@stripePaymentsPaidFiltres.where(commande_id: commandes_ids))
+      ca = ca_paiements + ca_stripe
 
-        devis_count = commandesDevis.where(profile_id: profile.id).count
+      devis_count = commandesDevis.where(profile_id: profile.id).count
 
-        ratio = index.to_f / [total - 1, 1].max
+      ratio = index.to_f / [total - 1, 1].max
 
-        r = (base_r + (target_r - base_r) * ratio).round
-        g = (base_g + (target_g - base_g) * ratio).round
-        b = (base_b + (target_b - base_b) * ratio).round
+      r = (base_r + (target_r - base_r) * ratio).round
+      g = (base_g + (target_g - base_g) * ratio).round
+      b = (base_b + (target_b - base_b) * ratio).round
 
-        couleur = "rgb(#{r}, #{g}, #{b})"
+      couleur = "rgb(#{r}, #{g}, #{b})"
 
-        {
-          profile: profile.prenom,
-          commandes: commandes.size,
-          devis: devis_count,
-          ca: ca,
-          couleur: couleur
-        }
-      end
+      label = profile.full_name.presence || profile.prenom.presence || "Profil ##{profile.id}"
+
+      {
+        profile: label,
+        commandes: commandes.count,
+        devis: devis_count,
+        ca: ca,
+        couleur: couleur
+      }
     end
   end
 
