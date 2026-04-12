@@ -64,6 +64,18 @@ module ApplicationHelper
         end
     end
 
+    # Pastilles KPI compactes (bandeau sombre fiche commande) — utilitaires Bootstrap uniquement.
+    def synthese_kpi_chip(label, value)
+      content_tag(:span,
+        class: "d-inline-flex align-items-baseline gap-2 px-2 py-1 rounded-2 border border-light border-opacity-25 bg-white bg-opacity-10 text-light",
+        title: "#{label} : #{value}") do
+        safe_join([
+          tag.span(label, class: "text-uppercase small text-white-50 fw-semibold lh-1 text-nowrap"),
+          tag.span(value.to_s, class: "fw-semibold text-white lh-sm font-monospace small")
+        ])
+      end
+    end
+
     # Contenu (icône + texte) du lien « Détails » pour panneaux collapse — le <a> reste dans la vue.
     def admin_collapse_details_button_content(label: "Détails")
       safe_join([

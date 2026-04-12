@@ -9,7 +9,7 @@
   <% city_line = [stripe_payment.shipping_postal_code, stripe_payment.shipping_city].map(&:presence).compact.join(" ") %>
   <% collapse_id = "stripePaymentDetail#{stripe_payment.id}" %>
 
-  <%= card_main_model("Paiement Stripe", "cart-check", nil) %>
+  <%= card_main_model("Paiement Stripe", "cart-check", nil, totals_inline: render("admin/commandes/stripe_synthese")) %>
 
   <div class="<%= admin_list_stack_classes %>">
     <div class="card mx-2 light-beige-colored shadow-sm">
@@ -179,8 +179,4 @@
     </div>
   </div>
 
-  <%# Synthèse : identique à admin/paiement_recus/_synthese (badges_paiements_synthese) %>
-  <div class="card mx-2 rounded bg-secondary mb-3">
-    <%= render "admin/commandes/stripe_synthese" %>
-  </div>
 <% end %>

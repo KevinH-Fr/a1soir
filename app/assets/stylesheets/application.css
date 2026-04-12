@@ -75,6 +75,11 @@
   overflow-anchor: none;
 }
 
+/* Bandeaux de section : fiche (`card_main_model`) et index (`bandeau_entete` / `bandeau_entete_simple`) — même hauteur de barre titre. */
+.card.card-main-model-section > .card-header {
+  min-height: 3rem;
+}
+
 /* Override Bootstrap blue focus for dark inputs */
 .form-control.bg-dark:focus {
   border-color: rgba(255, 255, 255, 0.5) !important;

@@ -3,14 +3,11 @@
         class: "bi bi-plus-lg btn btn-sm btn-warning fw-bold",
         title: "Sélection produit" %>
 <% end %>
-<%= card_main_model("Articles", "person-standing-dress", articles_header_actions) %>
+<%= card_main_model("Articles", "person-standing-dress", articles_header_actions,
+      totals_inline: render("admin/articles/synthese")) %>
 
 <div id="articles" class="<%= admin_list_stack_classes %>">
   <% @articles.includes(:sousarticles).each do |article| %>
     <%= render partial: 'admin/articles/article', locals: { article: article } %>
   <% end %>
-</div>
-
-<div class="card mx-2 rounded bg-secondary mb-3">
-  <%= render 'admin/articles/synthese' %>
 </div>

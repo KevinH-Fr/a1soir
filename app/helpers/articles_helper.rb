@@ -1,23 +1,20 @@
 module ArticlesHelper
   def badges_articles_synthese(articles)
+    commande = articles.try(:proxy_association)&.owner
+    commande ||= articles.first&.commande
+    return "".html_safe unless commande
 
-    commande = articles.first.commande if articles.first
-    content_tag(:div, class: "container-fluid text-center") do
-      concat(content_tag(:span, class: "badge fs-6 bg-secondary mx-1") do
-        concat("Articles: ")
-        concat(content_tag(:span,  compte_articles(commande).to_i, class: ""))
-      end)
+    qty = compte_articles(commande).to_i
+    prix = du_prix(commande).to_d
+    caution = du_caution(commande).to_d
 
-      concat(content_tag(:span, class: "badge fs-6 bg-secondary mx-1") do
-        concat("Prix: ")
-        concat(content_tag(:span, custom_currency_format(du_prix(commande)), class: ""))
-      end)
+    chips = []
+    chips << synthese_kpi_chip("Articles", qty) if qty.positive?
+    chips << synthese_kpi_chip("Prix", custom_currency_format(prix)) unless prix.zero?
+    chips << synthese_kpi_chip("Caution", custom_currency_no_decimals_format(caution)) unless caution.zero?
 
-      concat(content_tag(:span, class: "badge fs-6 bg-secondary mx-1") do
-          concat("Caution: ")
-          concat(content_tag(:span, custom_currency_no_decimals_format(du_caution(commande)), class: ""))
-      end)
-
+    content_tag(:div, class: "d-flex flex-wrap gap-2 align-items-center justify-content-end mw-100") do
+      safe_join(chips)
     end
   end
 
