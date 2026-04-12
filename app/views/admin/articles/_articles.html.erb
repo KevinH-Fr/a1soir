@@ -1,22 +1,15 @@
-<%= card_main_model(
-  "Articles", 
-  "person-standing-dress", 
-  link_to("", admin_selection_produit_path(commande: @commande), 
-  class: "bi bi-plus-lg btn btn-sm btn-warning fw-bold"
-)) %>
+<% articles_header_actions = capture do %>
+  <%= link_to "", admin_selection_produit_path(commande: @commande),
+        class: "bi bi-plus-lg btn btn-sm btn-warning fw-bold",
+        title: "Sélection produit" %>
+<% end %>
+<%= card_main_model("Articles", "person-standing-dress", articles_header_actions) %>
 
-<div class="collapse collapse-nouveau-admin" id="collapseNewArticle">
-  <div id="new_article" class="m-0 pt-1 pb-0">
-    <%= render partial: "admin/articles/form", locals: { commande_id: @commande.id, article: Article.new } %>
-  </div>
-</div>
-
-<div id="articles">
+<div id="articles" class="<%= admin_list_stack_classes %>">
   <% @articles.includes(:sousarticles).each do |article| %>
     <%= render partial: 'admin/articles/article', locals: { article: article } %>
   <% end %>
 </div>
-
 
 <div class="card mx-2 rounded bg-secondary mb-3">
   <%= render 'admin/articles/synthese' %>

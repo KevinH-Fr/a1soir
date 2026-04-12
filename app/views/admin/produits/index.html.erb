@@ -20,8 +20,6 @@
       admin_produits_path(listing_shared_params)
     ) %>
 
-<%= bloc_nouveau(Produit) %>
-
 <%= render "filtres" %>
 
 <% if @analysis_mode %>
@@ -47,9 +45,11 @@
       </div>
 <% end %>
 
+<%= bloc_nouveau(Produit) %>
+
 <%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
 
-      <div id="produits"> </div> 
+      <div id="produits" class="<%= admin_list_stack_classes %>"></div>
 
       <%= turbo_frame_tag :pagination, loading: :lazy, 
             src: admin_produits_path(format: :turbo_stream,

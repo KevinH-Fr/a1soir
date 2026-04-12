@@ -1,13 +1,14 @@
-<% card_my = meeting.new_record? ? "mt-2 mb-0" : "my-3" %>
-<div class="card mx-2 <%= card_my %> light-beige-colored shadow-sm">
-  <div class="card-body p-2 d-flex flex-column">
-
+<% meeting_compact = local_assigns.fetch(:index_collapse, false) && !meeting.persisted? %>
+<%= render layout: "admin/shared/form_card_shell",
+           locals: {
+             compact: meeting_compact,
+             embedded: local_assigns.fetch(:admin_form_row_embedded, false)
+           } do %>
   <%= form_with(model: [:admin, meeting], data: { turbo: true }) do |form| %>
     <% if meeting.errors.any? %>
-      <div style="color: red">
-        <h2><%= pluralize(meeting.errors.count, "error") %> prohibited this meeting from being saved:</h2>
-
-        <ul>
+      <div class="alert alert-danger py-2 mb-3" role="alert">
+        <h2 class="h6 mb-2"><%= pluralize(meeting.errors.count, "error") %> prohibited this meeting from being saved:</h2>
+        <ul class="mb-0 small">
           <% meeting.errors.each do |error| %>
             <li><%= error.full_message %></li>
           <% end %>
@@ -65,6 +66,4 @@
     </div>
 
   <% end %>
-
-  </div>
-</div>
+<% end %>

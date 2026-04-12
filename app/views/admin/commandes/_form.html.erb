@@ -5,83 +5,125 @@
              compact: commande_compact_collapse,
              embedded: local_assigns.fetch(:admin_form_row_embedded, false)
            } do %>
-    <%= form_with(model: commande, url: commande.persisted? ? admin_commande_path(commande) : admin_commandes_path, method: commande.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
-      <% if commande.errors.any? %>
-        <div style="color: red">
-          <h2><%= pluralize(commande.errors.count, "error") %> prohibited this commande from being saved:</h2>
-
-          <ul>
-            <% commande.errors.each do |error| %>
-              <li><%= error.full_message %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
-
-      <%#= custom_form_elements(form, 
-        [:nom, :text_field] ) %>
-
-      <% if @client %>
-        <%= form.hidden_field :client_id, value: @client.id %>
-      <% else %>
-        <div class="form-group input-group mb-1 w-100">
-          <%= form.label :client_id, class: "input-group-text" %>
-          <%= form.select :client_id,
-                options_for_select(Client.all.order(:nom).pluck(:nom, :id)),
-                { include_blank: "" },
-                { class: "form-select" } %>
-        </div>
-      <% end %>
-
-      <div class="form-group input-group mb-1 w-100">
-        <%= form.label :profile_id, class: "input-group-text" %>
-        <%= form.collection_select :profile_id, @profiles.all.order(:nom), :id, :full_name,
-              { include_blank: "Select" }, class: "form-select" %>
+  <%= form_with(model: commande, url: commande.persisted? ? admin_commande_path(commande) : admin_commandes_path, method: commande.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
+    <% if commande.errors.any? %>
+      <div class="alert alert-danger py-2 mb-3" role="alert">
+        <h2 class="h6 mb-2"><%= pluralize(commande.errors.count, "error") %> prohibited this commande from being saved:</h2>
+        <ul class="mb-0 small">
+          <% commande.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
       </div>
+    <% end %>
 
-      <div class="form-group input-group mb-1 w-100">
-        <%= form.label :typeevent, "Evénement", class: "input-group-text" %>
-        <%= form.select :typeevent, Commande::EVENEMENTS_OPTIONS, { include_blank: "" }, class: "form-select" %>
-      </div>
+    <%# Sections : vstack gap-3 + row g-2 — aligné sur admin/clients/_form %>
+    <div class="commande-form-sections vstack gap-3">
 
-      <%= custom_form_elements(form, 
-        [:dateevent, :date_field, "Date événement"]
-      ) %>
-
-
-      <%# nouveau date fields debut et fin %>
-    
-      <div data-controller="date-fields-commande" class="w-100">
-        <div class="form-group input-group mb-1 w-100">
-          <%= form.label :debutloc, "Début location", class: "input-group-text label-with-format" %>
-          <%= form.date_field :debutloc,
-                class: "form-control",
-                data: { action: "change->date-fields-commande#updateDateFin", date_fields_commande_target: "debutloc" } %>
+      <section aria-labelledby="commande-sec-refs">
+        <h2 id="commande-sec-refs" class="h6 small fw-semibold text-secondary text-uppercase border-bottom pb-2 mb-2 mb-lg-3 d-flex align-items-center gap-2">
+          <i class="bi bi-link-45deg flex-shrink-0 opacity-75" aria-hidden="true"></i>
+          <span>Références</span>
+        </h2>
+        <div class="row g-2">
+          <% unless @client %>
+            <div class="col-12 col-md-6">
+              <div class="form-group input-group mb-1 w-100">
+                <div class="input-group-text">
+                  <%= form.label :client_id, class: "" %>
+                </div>
+                <%= form.select :client_id,
+                      options_for_select(Client.all.order(:nom).pluck(:nom, :id)),
+                      { include_blank: "" },
+                      { class: "form-select" } %>
+              </div>
+            </div>
+          <% else %>
+            <%= form.hidden_field :client_id, value: @client.id %>
+          <% end %>
+          <div class="col-12 col-md-6">
+            <div class="form-group input-group mb-1 w-100">
+              <div class="input-group-text">
+                <%= form.label :profile_id, class: "" %>
+              </div>
+              <%= form.collection_select :profile_id, @profiles.all.order(:nom), :id, :full_name,
+                    { include_blank: "Select" }, class: "form-select" %>
+            </div>
+          </div>
         </div>
+      </section>
 
-        <div class="form-group input-group mb-1 w-100">
-          <%= form.label :finloc, "Fin location", class: "input-group-text label-with-format" %>
-          <%= form.date_field :finloc,
-                class: "form-control",
-                data: { date_fields_commande_target: "finloc" } %>
+      <section aria-labelledby="commande-sec-event">
+        <h2 id="commande-sec-event" class="h6 small fw-semibold text-secondary text-uppercase border-bottom pb-2 mb-2 mb-lg-3 d-flex align-items-center gap-2">
+          <i class="bi bi-calendar-event flex-shrink-0 opacity-75" aria-hidden="true"></i>
+          <span>Événement</span>
+        </h2>
+        <div class="row g-2">
+          <div class="col-12 col-md-6">
+            <div class="form-group input-group mb-1 w-100">
+              <div class="input-group-text">
+                <%= form.label :typeevent, "Evénement", class: "" %>
+              </div>
+              <%= form.select :typeevent, Commande::EVENEMENTS_OPTIONS, { include_blank: "" }, class: "form-select" %>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= custom_form_elements(form,
+              [:dateevent, :date_field, "Date événement"]
+            ) %>
+          </div>
         </div>
-      </div>
+      </section>
 
+      <section aria-labelledby="commande-sec-loc">
+        <h2 id="commande-sec-loc" class="h6 small fw-semibold text-secondary text-uppercase border-bottom pb-2 mb-2 mb-lg-3 d-flex align-items-center gap-2">
+          <i class="bi bi-calendar-range flex-shrink-0 opacity-75" aria-hidden="true"></i>
+          <span>Période de location</span>
+        </h2>
+        <div data-controller="date-fields-commande" class="w-100">
+          <div class="row g-2">
+            <div class="col-12 col-md-6">
+              <div class="form-group input-group mb-1 w-100">
+                <%= form.label :debutloc, "Début location", class: "input-group-text label-with-format" %>
+                <%= form.date_field :debutloc,
+                      class: "form-control",
+                      data: { action: "change->date-fields-commande#updateDateFin", date_fields_commande_target: "debutloc" } %>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="form-group input-group mb-1 w-100">
+                <%= form.label :finloc, "Fin location", class: "input-group-text label-with-format" %>
+                <%= form.date_field :finloc,
+                      class: "form-control",
+                      data: { date_fields_commande_target: "finloc" } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
+      <section aria-labelledby="commande-sec-details">
+        <h2 id="commande-sec-details" class="h6 small fw-semibold text-secondary text-uppercase border-bottom pb-2 mb-2 mb-lg-3 d-flex align-items-center gap-2">
+          <i class="bi bi-card-text flex-shrink-0 opacity-75" aria-hidden="true"></i>
+          <span>Détails</span>
+        </h2>
+        <%= custom_form_elements(form,
+          [:description, :text_area],
+          [:commentaires, :text_area],
+          [:devis, :check_box]
+        ) %>
+      </section>
 
-      <%= custom_form_elements(form, 
-      #  [:debutloc, :date_field, "Début location"], [:finloc, :date_field, "Fin location"], 
-      #  [:dateevent, :date_field, "Date événement"],
-        [:description, :text_area], 
-        [:commentaires, :text_area], [:devis, :check_box]
-      ) %>
-
-      <% tlv_base = dom_id(commande, :type_locvente) %>
-      <% tlv_ids = { location: "#{tlv_base}_location", vente: "#{tlv_base}_vente", mixte: "#{tlv_base}_mixte" } %>
-      <% tlv_lbl = "#{tlv_base}_heading" %>
-      <div class="mb-3">
-        <div id="<%= tlv_lbl %>" class="form-label small text-secondary mb-1">Type de commande</div>
+      <section aria-labelledby="commande-sec-type">
+        <h2 id="commande-sec-type" class="h6 small fw-semibold text-secondary text-uppercase border-bottom pb-2 mb-2 mb-lg-3 d-flex align-items-center gap-2">
+          <i class="bi bi-tag flex-shrink-0 opacity-75" aria-hidden="true"></i>
+          <span>Type de commande</span>
+        </h2>
+        <% tlv_base = dom_id(commande, :type_locvente) %>
+        <% tlv_ids = { location: "#{tlv_base}_location", vente: "#{tlv_base}_vente", mixte: "#{tlv_base}_mixte" } %>
+        <% tlv_lbl = "#{tlv_base}_heading" %>
         <div class="btn-group" role="group" aria-labelledby="<%= tlv_lbl %>">
+          <span id="<%= tlv_lbl %>" class="visually-hidden">Type de commande</span>
           <%= form.radio_button :type_locvente, "location", class: "btn-check", id: tlv_ids[:location], autocomplete: "off" %>
           <%= form.label :type_locvente, "Location", class: "btn btn-outline-primary mb-0", for: tlv_ids[:location] %>
 
@@ -91,11 +133,13 @@
           <%= form.radio_button :type_locvente, "mixte", class: "btn-check", id: tlv_ids[:mixte], autocomplete: "off" %>
           <%= form.label :type_locvente, "Mixte", class: "btn btn-outline-primary mb-0", for: tlv_ids[:mixte] %>
         </div>
-      </div>
+      </section>
 
-      <%= custom_submit_button(form) %>
+    </div>
 
-    <% end %>
+    <%= custom_submit_button(form) %>
+
+  <% end %>
 <% end %>
 
 <%# end %>

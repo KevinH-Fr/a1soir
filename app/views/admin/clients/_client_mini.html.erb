@@ -1,6 +1,6 @@
-<div class="my-2">
-  <%= card_main_model("Client", "person-fill") %>
+<%= card_main_model("Client", "person-fill", nil) %>
 
+<div class="<%= admin_list_stack_classes %>">
   <div id="<%= dom_id client %>">
     <%= render "admin/clients/client", client: client, variant: :mini, client_inner_only: true %>
   </div>

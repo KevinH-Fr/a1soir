@@ -2,7 +2,7 @@
 
 <h1>Paiement recus</h1>
 
-<div id="paiement_recus">
+<div id="paiement_recus" class="<%= admin_list_stack_classes %>">
   <% @paiement_recus.each do |paiement_recu| %>
     <%= render partial: "admin/paiement_recus/paiement_recu", locals: { paiement_recu: paiement_recu } %>
   <% end %>

@@ -1,0 +1,17 @@
+<%#
+  Bloc repliable « Nouveau » (fiche commande, etc.) — même logique que `bloc_nouveau`.
+  Ne pas mettre de padding sur le div.collapse parent (twbs/bootstrap#12093).
+  Espacement : `ApplicationHelper#admin_collapse_nouveau_inner_classes` (Bootstrap pt / marge).
+
+  Locals :
+    - collapse_id   (String, requis)  id du div.collapse (ex. "collapseNewPaiement")
+    - target_id     (String, requis)  id cible Turbo (ex. "new_paiement")
+    - inner_partial (String, requis)  chemin du partial formulaire
+    - inner_locals  (Hash)            locals passés au partial interne (défaut {})
+%>
+<% inner_locals = local_assigns.fetch(:inner_locals, {}) %>
+<div class="collapse collapse-nouveau-admin" id="<%= collapse_id %>">
+  <div id="<%= target_id %>" class="<%= admin_collapse_nouveau_inner_classes %>">
+    <%= render partial: inner_partial, locals: inner_locals %>
+  </div>
+</div>

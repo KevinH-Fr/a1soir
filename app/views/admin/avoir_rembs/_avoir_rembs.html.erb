@@ -1,19 +1,21 @@
 <%= card_main_model(
-  "Avoir-Remb.", 
+  "Avoir-Remb.",
   "cash-stack",
-  link_to("", 
-  "#collapseNewAAvoirremb", 
-  class: "bi bi-plus-lg btn btn-sm btn-warning fw-bold", 
-  data: { bs_toggle: "collapse" }, 
-  role: "button", aria: { expanded: "false", controls: "collapseNewAAvoirremb" })) %>
+  link_to("",
+          "#collapseNewAvoirremb",
+          class: "bi bi-plus-lg btn btn-sm btn-warning fw-bold",
+          data: { bs_toggle: "collapse" },
+          role: "button",
+          aria: { expanded: "false", controls: "collapseNewAvoirremb" })) %>
 
-<div class="collapse collapse-nouveau-admin" id="collapseNewAAvoirremb">
-  <div id="new_avoir_remb" class="m-0 pt-1 pb-0">
-    <%= render partial: "admin/avoir_rembs/form", locals: { commande_id: @commande.id, avoir_remb: AvoirRemb.new } %>
-  </div>
-</div>
+<%= admin_collapse_nouveau collapse_id: "collapseNewAvoirremb",
+      target_id: "new_avoir_remb",
+      inner_partial: "admin/avoir_rembs/form",
+      commande_id: @commande.id,
+      avoir_remb: AvoirRemb.new,
+      admin_form_row_embedded: true %>
 
-<div id="avoir_rembs">
+<div id="avoir_rembs" class="<%= admin_list_stack_classes %>">
   <% @commande.avoir_rembs.each do |avoir_remb| %>
     <%= render partial: 'admin/avoir_rembs/avoir_remb', locals: { avoir_remb: avoir_remb } %>
   <% end %>

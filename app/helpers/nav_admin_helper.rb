@@ -6,7 +6,7 @@ module NavAdminHelper
     extra_class = html_options.delete(:class)
     link_classes = %w[
       nav-link d-inline-flex align-items-center justify-content-start justify-content-xxl-center
-      gap-2 rounded-3 p-2 text-decoration-none w-100 w-xxl-auto
+      gap-2 rounded-3 px-3 py-2 text-decoration-none w-100 w-xxl-auto
     ]
     link_classes << "active" if active
     link_classes << extra_class if extra_class.present?
@@ -17,7 +17,7 @@ module NavAdminHelper
     content_tag :li, class: "nav-item text-start text-xxl-center" do
       link_to path, opts do
         safe_join([
-          tag.i(class: "bi #{icon_class} fs-5"),
+          tag.i(class: "bi #{icon_class} fs-5 lh-1 flex-shrink-0", aria: { hidden: true }),
           tag.span(name, class: "nav-admin-link-label")
         ])
       end

@@ -61,7 +61,7 @@ class Admin::MeetingsController < Admin::ApplicationController
       format.turbo_stream do
         render turbo_stream: turbo_stream.update(@meeting,
           partial: "admin/meetings/form",
-          locals: { meeting: @meeting })
+          locals: { meeting: @meeting, admin_form_row_embedded: true })
       end
     end
   end
@@ -82,7 +82,12 @@ class Admin::MeetingsController < Admin::ApplicationController
             render turbo_stream: [
               turbo_stream.update('new_meeting',
                 partial: "admin/meetings/form",
-                  locals: { meeting: Meeting.new, commande_id: @meeting.commande_id, client_id: @meeting.client_id}),
+                locals: {
+                  meeting: Meeting.new,
+                  commande_id: @meeting.commande_id,
+                  client_id: @meeting.client_id,
+                  admin_form_row_embedded: true
+                }),
                   
               turbo_stream.prepend('meetings',
                 partial: "admin/meetings/meeting",
@@ -98,9 +103,13 @@ class Admin::MeetingsController < Admin::ApplicationController
         format.turbo_stream do
           render turbo_stream: 
             turbo_stream.update(@meeting,
-              partial: "admin/meetings/form", 
-              locals: {meeting: @meeting, commande_id: @meeting.commande_id, client_id: @meeting.client_id}
-            )
+              partial: "admin/meetings/form",
+              locals: {
+                meeting: @meeting,
+                commande_id: @meeting.commande_id,
+                client_id: @meeting.client_id,
+                admin_form_row_embedded: true
+              })
         end
 
         format.html { render :new, status: :unprocessable_entity }
@@ -129,7 +138,12 @@ class Admin::MeetingsController < Admin::ApplicationController
           render turbo_stream:
             turbo_stream.update(@meeting,
               partial: "admin/meetings/form",
-              locals: { meeting: @meeting, commande_id: @meeting.commande_id, client_id: @meeting.client_id })
+              locals: {
+                meeting: @meeting,
+                commande_id: @meeting.commande_id,
+                client_id: @meeting.client_id,
+                admin_form_row_embedded: true
+              })
         end
 
         format.html { render :edit, status: :unprocessable_entity }

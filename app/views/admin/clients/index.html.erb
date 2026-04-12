@@ -5,7 +5,7 @@
 
 <%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
 
-<div id="clients"> </div> 
+<div id="clients" class="<%= admin_list_stack_classes %>"> </div> 
 
 <%= turbo_frame_tag :pagination, loading: :lazy, 
                         src: admin_clients_path(format: :turbo_stream,

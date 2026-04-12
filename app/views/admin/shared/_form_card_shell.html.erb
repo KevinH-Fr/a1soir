@@ -3,23 +3,25 @@
 
   locals :
   - compact  : true = formulaire « Nouveau » dans le collapse index (bloc_nouveau)
-  - embedded : true = contenu injecté dans une ligne liste (turbo_stream.update dom_id) ;
-               le parent a déjà la classe my-2 — ne pas dupliquer l’enveloppe externe.
+  - embedded : true = turbo_stream.update(dom_id) sur fiche commande / liste admin ;
+               même gabarit que admin/paiement_recus/_form : card my-0 + card-body p-2
+               (admin_list_stack_classes apporte déjà gap-2 entre les lignes — pas de my-3).
 
-  Page new/edit : compact et embedded sont false → une seule carte my-2 (évite le double my-2 + my-3
-  sous un h1 ; l’index garde my-2 + carte my-3 sur les partials _record).
+  Page new/edit : compact et embedded false → carte pleine page p-3 my-2 (sous h1).
 %>
-<% card = "card mx-2 light-beige-colored shadow-sm p-3" %>
+<% card_base = "card mx-2 light-beige-colored shadow-sm" %>
 <% if compact %>
-<div class="<%= card %> mb-0">
+<div class="<%= card_base %> p-3 my-0">
   <%= yield %>
 </div>
 <% elsif embedded %>
-<div class="<%= card %> my-3">
-  <%= yield %>
+<div class="<%= card_base %> my-0">
+  <div class="card-body p-2 d-flex flex-column">
+    <%= yield %>
+  </div>
 </div>
 <% else %>
-<div class="<%= card %> my-2">
+<div class="<%= card_base %> p-3 my-2">
   <%= yield %>
 </div>
 <% end %>

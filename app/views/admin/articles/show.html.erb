@@ -1,6 +1,8 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @article %>
+<div class="<%= admin_list_stack_classes %>">
+  <%= render @article %>
+</div>
 
 <div>
   <%= link_to "Edit this article", edit_article_path(@article) %> |

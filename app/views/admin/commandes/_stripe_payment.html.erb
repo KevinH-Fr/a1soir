@@ -11,30 +11,31 @@
 
   <%= card_main_model("Paiement Stripe", "cart-check", nil) %>
 
-  <div class="card mx-2 my-3 light-beige-colored shadow-sm">
-    <div class="px-3 py-2">
-      <%# Résumé : montants + statut %>
-      <div class="d-flex flex-wrap align-items-center gap-2 column-gap-3">
-        <div class="d-flex align-items-baseline flex-wrap gap-2">
-          <% if stripe_payment.frais_livraison_centimes.present? %>
-            <% sous_total_cents = stripe_payment.amount.to_i - stripe_payment.frais_livraison_centimes.to_i %>
-            <span class="fw-bold"><%= custom_currency_format(stripe_payment.amount.to_f / 100) %> </span>
-            <span class="small text-muted">
-              (<%= custom_currency_format(sous_total_cents.to_f / 100) %> + <%= custom_currency_format(stripe_payment.frais_livraison_centimes.to_f / 100) %> livr.)
-            </span>
-          <% else %>
-            <span class="fw-bold"><%= custom_currency_format(stripe_payment.amount.to_f / 100) %> <%= stripe_payment.currency&.upcase %></span>
+  <div class="<%= admin_list_stack_classes %>">
+    <div class="card mx-2 light-beige-colored shadow-sm">
+      <div class="px-3 py-2">
+        <%# Résumé : montants + statut %>
+        <div class="d-flex flex-wrap align-items-center gap-2 column-gap-3">
+          <div class="d-flex align-items-baseline flex-wrap gap-2">
+            <% if stripe_payment.frais_livraison_centimes.present? %>
+              <% sous_total_cents = stripe_payment.amount.to_i - stripe_payment.frais_livraison_centimes.to_i %>
+              <span class="fw-bold"><%= custom_currency_format(stripe_payment.amount.to_f / 100) %> </span>
+              <span class="small text-muted">
+                (<%= custom_currency_format(sous_total_cents.to_f / 100) %> + <%= custom_currency_format(stripe_payment.frais_livraison_centimes.to_f / 100) %> livr.)
+              </span>
+            <% else %>
+              <span class="fw-bold"><%= custom_currency_format(stripe_payment.amount.to_f / 100) %> <%= stripe_payment.currency&.upcase %></span>
+            <% end %>
+          </div>
+          <span class="badge <%= stripe_payment.status == "paid" ? "bg-success" : "bg-secondary" %>"><%= stripe_payment.status %></span>
+          <% if stripe_payment.payment_method.present? %>
+            <span class="small text-muted text-nowrap"><i class="bi bi-credit-card me-1"></i><%= stripe_payment.payment_method.titleize %></span>
           <% end %>
+          <span class="small text-muted ms-md-auto"><%= l(stripe_payment.created_at, format: :short) %></span>
         </div>
-        <span class="badge <%= stripe_payment.status == "paid" ? "bg-success" : "bg-secondary" %>"><%= stripe_payment.status %></span>
-        <% if stripe_payment.payment_method.present? %>
-          <span class="small text-muted text-nowrap"><i class="bi bi-credit-card me-1"></i><%= stripe_payment.payment_method.titleize %></span>
-        <% end %>
-        <span class="small text-muted ms-md-auto"><%= l(stripe_payment.created_at, format: :short) %></span>
-      </div>
 
-      <%# Client / livraison / Stripe : trois mini-cartes dans le collapse %>
-      <div class="mt-2 pt-2 border-top">
+        <%# Client / livraison / Stripe : trois mini-cartes dans le collapse %>
+        <div class="mt-2 pt-2 border-top">
         <a class="small text-muted text-decoration-none d-inline-flex align-items-center"
            data-bs-toggle="collapse"
            href="#<%= collapse_id %>"
@@ -175,21 +176,11 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 
-  <%# Synthèse : même format que badges_paiements_synthese — compte inclut Stripe ; Prix = total encaissé (articles + livraison) %>
-  <% nb_paiements = @commande.paiement_recus.count + 1 %>
+  <%# Synthèse : identique à admin/paiement_recus/_synthese (badges_paiements_synthese) %>
   <div class="card mx-2 rounded bg-secondary mb-3">
-    <div class="container-fluid text-center py-1">
-      <span class="badge fs-6 bg-secondary mx-1">
-        Paiements: <span><%= nb_paiements %></span>
-      </span>
-      <span class="badge fs-6 bg-secondary mx-1">
-        Prix: <span><%= custom_currency_format(stripe_payment.amount.to_f / 100) %></span>
-      </span>
-      <span class="badge fs-6 bg-secondary mx-1">
-        Caution: <span><%= custom_currency_no_decimals_format(0) %></span>
-      </span>
-    </div>
+    <%= render "admin/commandes/stripe_synthese" %>
   </div>
 <% end %>

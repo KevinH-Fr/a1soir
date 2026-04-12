@@ -1,13 +1,14 @@
-<% card_my = avoir_remb.new_record? ? "mt-2 mb-0" : "my-3" %>
-<div class="card mx-2 <%= card_my %> light-beige-colored shadow-sm">
-  <div class="card-body p-2 d-flex flex-column">
-
+<% avoir_compact = local_assigns.fetch(:index_collapse, false) && !avoir_remb.persisted? %>
+<%= render layout: "admin/shared/form_card_shell",
+           locals: {
+             compact: avoir_compact,
+             embedded: local_assigns.fetch(:admin_form_row_embedded, false)
+           } do %>
   <%= form_with(model: avoir_remb, url: avoir_remb.persisted? ? admin_avoir_remb_path(avoir_remb) : admin_avoir_rembs_path, method: avoir_remb.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
     <% if avoir_remb.errors.any? %>
-      <div style="color: red">
-        <h2><%= pluralize(avoir_remb.errors.count, "error") %> prohibited this avoir_remb from being saved:</h2>
-
-        <ul>
+      <div class="alert alert-danger py-2 mb-3" role="alert">
+        <h2 class="h6 mb-2"><%= pluralize(avoir_remb.errors.count, "error") %> prohibited this avoir_remb from being saved:</h2>
+        <ul class="mb-0 small">
           <% avoir_remb.errors.each do |error| %>
             <li><%= error.full_message %></li>
           <% end %>
@@ -19,7 +20,8 @@
       <div class="input-group w-100">
         <%= form.label :type_avoir_remb, class: "input-group-text" %>
         <%= form.select :type_avoir_remb, AvoirRemb::TYPE_AVOIRREMB,
-          { include_blank: "Sélectionner" }, class: "form-select" %>
+          { include_blank: "Sélectionner" },
+          class: "form-select", required: true %>
       </div>
 
       <%= custom_form_elements(form,
@@ -37,6 +39,4 @@
     </div>
 
   <% end %>
-
-  </div>
-</div>
+<% end %>

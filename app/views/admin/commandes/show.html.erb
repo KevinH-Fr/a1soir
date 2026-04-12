@@ -1,7 +1,9 @@
 
 <%= card_main_model("Commande", "file-earmark-fill", "") %>
 
-<%= render @commande %>
+<div class="<%= admin_list_stack_classes %>">
+  <%= render @commande %>
+</div>
 <%= render partial: 'admin/clients/client_mini', locals: { client: @commande.client } %>
 <%= render 'admin/articles/articles' %>
 <%= render "admin/commandes/stripe_payment" %>

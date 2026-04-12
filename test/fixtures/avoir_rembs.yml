@@ -1,13 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  type_avoir_remb: MyString
+  type_avoir_remb: avoir
   montant: 9.99
   nature: MyString
   commande: one
 
 two:
-  type_avoir_remb: MyString
+  type_avoir_remb: remboursement
   montant: 9.99
   nature: MyString
   commande: two

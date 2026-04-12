@@ -1,4 +1,5 @@
 module IndexModelHelper
+  include ApplicationHelper
 
   def bandeau_entete_simple(title, icon)
     content_tag(:div, class: "card m-2 shadow-sm") do
@@ -44,7 +45,7 @@ module IndexModelHelper
     render partial: 'admin/shared/search_form', locals: {chemin_recherche: chemin_recherche, champs_recherche: champs_recherche }
   end
 
-  # Ne pas mettre de padding sur l’élément .collapse (twbs/bootstrap#12093). Espacement : classes sur #new.
+  # Ne pas mettre de padding sur l’élément .collapse (twbs/bootstrap#12093). Espacement : `admin_collapse_nouveau_inner_classes`.
   def bloc_nouveau(model_class, model_instance = nil, collapse_id = "collapseNew")
       # Gérer les cas spéciaux de noms de dossiers
       partial_path = case model_class.to_s
@@ -59,7 +60,7 @@ module IndexModelHelper
       model_sym = model_class.to_s.underscore.to_sym
 
       content_tag(:div, class: "collapse collapse-nouveau-admin", id: collapse_id) do
-        concat(content_tag(:div, id: "new", class: "m-0 pt-2 pb-0") do
+        concat(content_tag(:div, id: "new", class: admin_collapse_nouveau_inner_classes) do
           render partial: partial_path,
             locals: {
               model_sym => (model_instance || model_class.new),

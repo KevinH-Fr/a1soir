@@ -193,4 +193,23 @@ module ApplicationHelper
       end
     end
 
+  # Classes Bootstrap partagées : contenu du collapse « Nouveau » (padding sur l’intérieur, pas sur .collapse — twbs/bootstrap#12093).
+  def admin_collapse_nouveau_inner_classes
+    "py-1 m-0"
+  end
+
+  # Pile de cartes sous bandeau ou sous collapse replié : reprend pt-1 + m-0 du bloc inner pour le même rythme que les sections type Paiements.
+  def admin_list_stack_classes
+    "#{admin_collapse_nouveau_inner_classes} d-flex flex-column gap-2 pb-2".squish
+  end
+
+  # Bloc repliable « Nouveau » (partial `admin/shared/collapse_nouveau`, même logique que `bloc_nouveau`).
+  def admin_collapse_nouveau(collapse_id:, target_id:, inner_partial:, **inner_locals)
+    render "admin/shared/collapse_nouveau",
+           collapse_id: collapse_id,
+           target_id: target_id,
+           inner_partial: inner_partial,
+           inner_locals: inner_locals
+  end
+
 end

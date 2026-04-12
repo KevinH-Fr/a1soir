@@ -21,7 +21,11 @@ class Admin::AvoirRembsController < Admin::ApplicationController
       format.turbo_stream do
         render turbo_stream: turbo_stream.update(@avoir_remb,
           partial: "admin/avoir_rembs/form",
-          locals: { commande_id: @avoir_remb.commande_id, avoir_remb: @avoir_remb })
+          locals: {
+            commande_id: @avoir_remb.commande_id,
+            avoir_remb: @avoir_remb,
+            admin_form_row_embedded: true
+          })
       end
     end
   end
@@ -41,7 +45,11 @@ class Admin::AvoirRembsController < Admin::ApplicationController
           render turbo_stream: [
             turbo_stream.update("new_avoir_remb",
               partial: "admin/avoir_rembs/form",
-              locals: { commande_id: @avoir_remb.commande.id, avoir_remb: AvoirRemb.new }),
+              locals: {
+                commande_id: @avoir_remb.commande.id,
+                avoir_remb: AvoirRemb.new,
+                admin_form_row_embedded: true
+              }),
 
             turbo_stream.append("avoir_rembs",
               partial: "admin/avoir_rembs/avoir_remb",
@@ -66,7 +74,11 @@ class Admin::AvoirRembsController < Admin::ApplicationController
           render turbo_stream:
             turbo_stream.update("new_avoir_remb",
               partial: "admin/avoir_rembs/form",
-              locals: { commande_id: @avoir_remb.commande_id, avoir_remb: @avoir_remb })
+              locals: {
+                commande_id: @avoir_remb.commande_id,
+                avoir_remb: @avoir_remb,
+                admin_form_row_embedded: true
+              })
         end
 
         format.html { render :new, status: :unprocessable_entity }
@@ -112,7 +124,11 @@ class Admin::AvoirRembsController < Admin::ApplicationController
           render turbo_stream:
             turbo_stream.update(@avoir_remb,
               partial: "admin/avoir_rembs/form",
-              locals: { commande_id: @avoir_remb.commande_id, avoir_remb: @avoir_remb })
+              locals: {
+                commande_id: @avoir_remb.commande_id,
+                avoir_remb: @avoir_remb,
+                admin_form_row_embedded: true
+              })
         end
 
         format.html { render :edit, status: :unprocessable_entity }

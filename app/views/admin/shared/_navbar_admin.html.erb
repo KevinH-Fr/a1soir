@@ -1,12 +1,12 @@
 
 <nav class="navbar navbar-admin navbar-light bg-light navbar-expand-xxl navbar-fixed-height py-0">
-  <div class="container-fluid px-3 py-0 d-flex align-items-center justify-content-between">
-    <%= link_to image_tag('/images/logo_courant_public.png', class: 'navbar-brand mb-0', width: "180"), admin_root_path %>
+  <div class="container-fluid px-3 px-sm-4 py-0 d-flex align-items-center justify-content-between">
+    <%= link_to image_tag('/images/logo_courant_public.png', class: 'navbar-brand mb-0 me-2 me-xxl-3', width: "180"), admin_root_path %>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar" aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse justify-content-start justify-content-xxl-end" id="adminNavbar">
-      <ul class="navbar-nav mb-0 d-flex flex-column flex-xxl-row align-items-start align-items-xxl-center gap-2 gap-xxl-3 flex-wrap w-100 w-xxl-auto ms-xxl-auto">
+    <div class="collapse navbar-collapse justify-content-start justify-content-xxl-end ms-xxl-3" id="adminNavbar">
+      <ul class="navbar-nav mb-0 d-flex flex-column flex-xxl-row align-items-stretch align-items-xxl-center gap-2 gap-xxl-3 flex-wrap w-100 w-xxl-auto ms-xxl-auto">
         <%= nav_link admin_home_admin_path, "Accueil", "bi-house", nav_controller: "admin/home_admin" %>
         <%= nav_link admin_clients_path, "Clients", "bi-person", nav_controller: "admin/clients" %>
         <%= nav_link admin_produits_path, "Produits", "bi-person-standing-dress", nav_controller: "admin/produits" %>

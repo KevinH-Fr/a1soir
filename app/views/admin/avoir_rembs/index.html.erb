@@ -2,7 +2,7 @@
 
 <h1>Avoir rembs</h1>
 
-<div id="avoir_rembs">
+<div id="avoir_rembs" class="<%= admin_list_stack_classes %>">
   <% @avoir_rembs.each do |avoir_remb| %>
     <%= render partial: "admin/avoir_rembs/avoir_remb", locals: { avoir_remb: avoir_remb } %>
   <% end %>
