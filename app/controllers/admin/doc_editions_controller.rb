@@ -52,7 +52,7 @@ class Admin::DocEditionsController < Admin::ApplicationController
     respond_to do |format|
       if @doc_edition.update(doc_edition_params)
 
-        flash.now[:success] = "doc_edition was successfully updated"
+        admin_push_domain_toast!(flash.now, :doc_edition, :updated)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -61,7 +61,10 @@ class Admin::DocEditionsController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to doc_edition_url(@doc_edition), notice: "doc_edition was successfully updated." }
+        format.html do
+          admin_push_domain_toast!(flash, :doc_edition, :updated)
+          redirect_to doc_edition_url(@doc_edition)
+        end
         format.json { render :show, status: :ok, location: @doc_edition }
       else
 
@@ -85,7 +88,7 @@ class Admin::DocEditionsController < Admin::ApplicationController
 
         @commande = @doc_edition.commande
         
-        flash.now[:success] =  "Création réussie"
+        admin_push_domain_toast!(flash.now, :doc_edition, :created)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -104,7 +107,10 @@ class Admin::DocEditionsController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to doc_edition_url(@doc_edition), notice: "doc_edition was successfully created." }
+        format.html do
+          admin_push_domain_toast!(flash, :doc_edition, :created)
+          redirect_to doc_edition_url(@doc_edition)
+        end
         format.json { render :show, status: :created, location: @doc_edition }
 
       end
@@ -132,8 +138,10 @@ class Admin::DocEditionsController < Admin::ApplicationController
     CommandeMailer.email_commande(@doc_edition, pdf_data).deliver_now
 
     respond_to do |format|
-      flash.now[:success] = "Email was successfully created"
-      format.html { redirect_to admin_commande_path(@doc_edition.commande), notice: "email was successfully sended." }
+      format.html do
+        admin_push_domain_toast!(flash, :doc_edition, :email_sent)
+        redirect_to admin_commande_path(@doc_edition.commande)
+      end
     end
 
     # If email is successfully sent, update mail_sent field to true

@@ -38,7 +38,7 @@ class Admin::ProfilesController < Admin::ApplicationController
     respond_to do |format|
       if @profile.save
 
-        flash.now[:success] = "profile was successfully created"
+        admin_push_domain_toast!(flash.now, :profile, :created)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -54,7 +54,10 @@ class Admin::ProfilesController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to profile_url(@profile), notice:  "Création à jour réussie" }
+        format.html do
+          admin_push_domain_toast!(flash, :profile, :created)
+          redirect_to profile_url(@profile)
+        end
         format.json { render :show, status: :created, location: @profile }
       else
         format.turbo_stream do
@@ -74,7 +77,7 @@ class Admin::ProfilesController < Admin::ApplicationController
     respond_to do |format|
       if @profile.update(profile_params)
 
-        flash.now[:success] = "profile was successfully updated"
+        admin_push_domain_toast!(flash.now, :profile, :updated)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -83,7 +86,10 @@ class Admin::ProfilesController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to profile_url(@profile), notice: "Mise à jour réussie" }
+        format.html do
+          admin_push_domain_toast!(flash, :profile, :updated)
+          redirect_to profile_url(@profile)
+        end
         format.json { render :show, status: :ok, location: @profile }
       else
 
@@ -103,7 +109,10 @@ class Admin::ProfilesController < Admin::ApplicationController
     @profile.destroy!
 
     respond_to do |format|
-      format.html { redirect_to profiles_url, notice:  "Suppression réussie" }
+      format.html do
+        admin_push_domain_toast!(flash, :profile, :destroyed)
+        redirect_to profiles_url
+      end
       format.json { head :no_content }
     end
   end

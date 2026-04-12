@@ -39,7 +39,7 @@ class Admin::AvoirRembsController < Admin::ApplicationController
 
         @commande = @avoir_remb.commande
 
-        flash.now[:success] = "Création réussie"
+        admin_push_domain_toast!(flash.now, :avoir_remb, :created)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -67,7 +67,10 @@ class Admin::AvoirRembsController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to admin_commande_path(@avoir_remb.commande), notice: "Avoir remb was successfully created." }
+        format.html do
+          admin_push_domain_toast!(flash, :avoir_remb, :created)
+          redirect_to admin_commande_path(@avoir_remb.commande)
+        end
         format.json { render json: @avoir_remb, status: :created, location: polymorphic_url([:admin, @avoir_remb]) }
       else
         format.turbo_stream do
@@ -95,7 +98,7 @@ class Admin::AvoirRembsController < Admin::ApplicationController
     respond_to do |format|
       if @avoir_remb.update(avoir_remb_params)
 
-        flash.now[:success] = "Mise à jour réussie"
+        admin_push_domain_toast!(flash.now, :avoir_remb, :updated)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -117,7 +120,10 @@ class Admin::AvoirRembsController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to admin_commande_path(@avoir_remb.commande), notice: "Avoir remb was successfully updated." }
+        format.html do
+          admin_push_domain_toast!(flash, :avoir_remb, :updated)
+          redirect_to admin_commande_path(@avoir_remb.commande)
+        end
         format.json { render json: @avoir_remb, status: :ok, location: polymorphic_url([:admin, @avoir_remb]) }
       else
         format.turbo_stream do
@@ -143,6 +149,7 @@ class Admin::AvoirRembsController < Admin::ApplicationController
     @avoir_remb.destroy!
 
     respond_to do |format|
+      admin_push_domain_toast!(flash.now, :avoir_remb, :destroyed)
 
       format.turbo_stream do
         render turbo_stream: [
@@ -153,12 +160,16 @@ class Admin::AvoirRembsController < Admin::ApplicationController
             locals: { avoir_rembs: @commande.avoir_rembs }),
 
           turbo_stream.update("synthese-commande",
-            partial: "admin/commandes/synthese")
+            partial: "admin/commandes/synthese"),
 
+          turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
         ]
       end
 
-      format.html { redirect_to admin_commande_path(@commande), notice: "Suppression réussie" }
+      format.html do
+        admin_push_domain_toast!(flash, :avoir_remb, :destroyed)
+        redirect_to admin_commande_path(@commande)
+      end
       format.json { head :no_content }
     end
   end

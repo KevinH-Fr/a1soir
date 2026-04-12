@@ -43,7 +43,10 @@ class Admin::ArticlesController < Admin::ApplicationController
 
         @commande = @article.commande
 
-        format.html { redirect_to admin_selection_produit_path(commande: @commande.id), notice:  "Création à jour réussie" }
+        format.html do
+          admin_push_domain_toast!(flash, :article, :created)
+          redirect_to admin_selection_produit_path(commande: @commande.id)
+        end
         format.json { render :show, status: :created, location: @article }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -61,7 +64,7 @@ class Admin::ArticlesController < Admin::ApplicationController
     respond_to do |format|
       if @article.update(article_params)
 
-        flash.now[:success] =  "Mise à jour réussie"
+        admin_push_domain_toast!(flash.now, :article, :updated)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -81,7 +84,10 @@ class Admin::ArticlesController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to article_url(@article), notice: "Article was successfully updated." }
+        format.html do
+          admin_push_domain_toast!(flash, :article, :updated)
+          redirect_to article_url(@article)
+        end
         format.json { render :show, status: :ok, location: @article }
       else
         format.turbo_stream do
@@ -104,21 +110,26 @@ class Admin::ArticlesController < Admin::ApplicationController
     @article.destroy!
 
     respond_to do |format|
+      admin_push_domain_toast!(flash.now, :article, :destroyed)
 
       format.turbo_stream do
         render turbo_stream: [
-          turbo_stream.remove(@article),     
-          turbo_stream.update('synthese-articles', 
-            partial: "admin/articles/synthese", 
+          turbo_stream.remove(@article),
+          turbo_stream.update('synthese-articles',
+            partial: "admin/articles/synthese",
             locals: { articles: @commande.articles }),
 
-          turbo_stream.update('synthese-commande', 
-            partial: "admin/commandes/synthese") 
-  
-          ]
+          turbo_stream.update('synthese-commande',
+            partial: "admin/commandes/synthese"),
+
+          turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+        ]
       end
 
-      format.html { redirect_to articles_url, notice:  "Suppression réussie" }
+      format.html do
+        admin_push_domain_toast!(flash, :article, :destroyed)
+        redirect_to articles_url
+      end
       format.json { head :no_content }
     end
   end

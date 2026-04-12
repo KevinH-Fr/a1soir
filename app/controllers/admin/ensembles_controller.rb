@@ -38,7 +38,7 @@ class Admin::EnsemblesController < Admin::ApplicationController
     respond_to do |format|
       if @ensemble.save
 
-        flash.now[:success] =  "Création réussie"
+        admin_push_domain_toast!(flash.now, :ensemble, :created)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -54,7 +54,10 @@ class Admin::EnsemblesController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to ensemble_url(@ensemble), notice: "Ensemble was successfully created." }
+        format.html do
+          admin_push_domain_toast!(flash, :ensemble, :created)
+          redirect_to ensemble_url(@ensemble)
+        end
         format.json { render :show, status: :created, location: @ensemble }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -67,7 +70,7 @@ class Admin::EnsemblesController < Admin::ApplicationController
     respond_to do |format|
       if @ensemble.update(ensemble_params)
 
-        flash.now[:success] = "Mise à jour réussie"
+        admin_push_domain_toast!(flash.now, :ensemble, :updated)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -76,7 +79,10 @@ class Admin::EnsemblesController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to ensemble_url(@ensemble), notice: "Ensemble was successfully updated." }
+        format.html do
+          admin_push_domain_toast!(flash, :ensemble, :updated)
+          redirect_to ensemble_url(@ensemble)
+        end
         format.json { render :show, status: :ok, location: @ensemble }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -89,7 +95,10 @@ class Admin::EnsemblesController < Admin::ApplicationController
     @ensemble.destroy!
 
     respond_to do |format|
-      format.html { redirect_to admin_ensembles_url, notice:  "Suppression réussie"  }
+      format.html do
+        admin_push_domain_toast!(flash, :ensemble, :destroyed)
+        redirect_to admin_ensembles_url
+      end
       format.json { head :no_content }
     end
   end

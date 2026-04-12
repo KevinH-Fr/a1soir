@@ -200,14 +200,16 @@ class Admin::SelectionProduitController < Admin::ApplicationController
   
     # Ensure results are present
     if results.blank?
-      return redirect_to commande_path(@commande), alert: "Aucun ensemble correspondant trouvé."
+      admin_push_domain_toast!(flash, :selection_produit, :ensemble_introuvable)
+      return redirect_to commande_path(@commande)
     end
   
     # Select the ensemble chosen by user
     selected_result = results.find { |res| res[:ensemble].id == ensemble_id.to_i }
 
     if selected_result.blank?
-      return redirect_to commande_path(@commande), alert: "Ensemble sélectionné introuvable."
+      admin_push_domain_toast!(flash, :selection_produit, :selection_ensemble_introuvable)
+      return redirect_to commande_path(@commande)
     end
     
     # Extract ensemble and matching articles
@@ -216,7 +218,8 @@ class Admin::SelectionProduitController < Admin::ApplicationController
   
     # Ensure matching articles exist
     if matching_articles.blank?
-      return redirect_to commande_path(@commande), alert: "Aucun article correspondant trouvé pour l'ensemble."
+      admin_push_domain_toast!(flash, :selection_produit, :article_introuvable)
+      return redirect_to commande_path(@commande)
     end
   
     # Determine the locvente type and corresponding pricing
@@ -228,7 +231,8 @@ class Admin::SelectionProduitController < Admin::ApplicationController
       prix = ensemble.produit.prixvente
       caution = 0
     else
-      return redirect_to commande_path(@commande), alert: "Type locvente non défini pour la transformation."
+      admin_push_domain_toast!(flash, :selection_produit, :locvente_manquant)
+      return redirect_to commande_path(@commande)
     end
   
     # Create a new article for the ensemble
@@ -254,9 +258,8 @@ class Admin::SelectionProduitController < Admin::ApplicationController
     # Delete the original articles after transformation
     matching_articles.each(&:destroy)
   
-    # Redirect with a success notice
-    redirect_to admin_commande_path(@commande),
-                notice: "Transformation en ensemble effectuée avec succès."
+    admin_push_domain_toast!(flash, :selection_produit, :transform_ok)
+    redirect_to admin_commande_path(@commande)
   end
   
 end

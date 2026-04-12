@@ -67,7 +67,7 @@ class Admin::FournisseursController < Admin::ApplicationController
     respond_to do |format|
       if @fournisseur.save
 
-        flash.now[:success] =  "Création réussie"
+        admin_push_domain_toast!(flash.now, :fournisseur, :created)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -83,7 +83,10 @@ class Admin::FournisseursController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to fournisseur_url(@fournisseur), notice: "Fournisseur was successfully created." }
+        format.html do
+          admin_push_domain_toast!(flash, :fournisseur, :created)
+          redirect_to fournisseur_url(@fournisseur)
+        end
         format.json { render :show, status: :created, location: @fournisseur }
       else
 
@@ -104,7 +107,7 @@ class Admin::FournisseursController < Admin::ApplicationController
     respond_to do |format|
       if @fournisseur.update(fournisseur_params)
 
-        flash.now[:success] = "Mise à jour réussie"
+        admin_push_domain_toast!(flash.now, :fournisseur, :updated)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -113,7 +116,10 @@ class Admin::FournisseursController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to fournisseur_url(@fournisseur), notice: "Fournisseur was successfully updated." }
+        format.html do
+          admin_push_domain_toast!(flash, :fournisseur, :updated)
+          redirect_to fournisseur_url(@fournisseur)
+        end
         format.json { render :show, status: :ok, location: @fournisseur }
       else
 
@@ -135,7 +141,10 @@ class Admin::FournisseursController < Admin::ApplicationController
     @fournisseur.destroy!
 
     respond_to do |format|
-      format.html { redirect_to fournisseurs_url, notice:  "Suppression réussie"  }
+      format.html do
+        admin_push_domain_toast!(flash, :fournisseur, :destroyed)
+        redirect_to fournisseurs_url
+      end
       format.json { head :no_content }
     end
   end

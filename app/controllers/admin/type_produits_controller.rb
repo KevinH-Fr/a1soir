@@ -39,7 +39,7 @@ class Admin::TypeProduitsController < Admin::ApplicationController
     respond_to do |format|
       if @type_produit.save
 
-        flash.now[:success] = "type_produit was successfully created"
+        admin_push_domain_toast!(flash.now, :type_produit, :created)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -55,7 +55,10 @@ class Admin::TypeProduitsController < Admin::ApplicationController
         ]
         end
 
-        format.html { redirect_to type_produit_url(@type_produit), notice:  "Création à jour réussie"}
+        format.html do
+          admin_push_domain_toast!(flash, :type_produit, :created)
+          redirect_to type_produit_url(@type_produit)
+        end
         format.json { render :show, status: :created, location: @type_produit }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -68,7 +71,7 @@ class Admin::TypeProduitsController < Admin::ApplicationController
     respond_to do |format|
       if @type_produit.update(type_produit_params)
 
-        flash.now[:success] =  "Mise à jour réussie"
+        admin_push_domain_toast!(flash.now, :type_produit, :updated)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -77,7 +80,10 @@ class Admin::TypeProduitsController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to type_produit_url(@type_produit), notice:  "Mise à jour réussie" }
+        format.html do
+          admin_push_domain_toast!(flash, :type_produit, :updated)
+          redirect_to type_produit_url(@type_produit)
+        end
         format.json { render :show, status: :ok, location: @type_produit }
       else
         format.turbo_stream do
@@ -96,7 +102,10 @@ class Admin::TypeProduitsController < Admin::ApplicationController
     @type_produit.destroy!
 
     respond_to do |format|
-      format.html { redirect_to type_produits_url, notice:  "Suppression réussie"  }
+      format.html do
+        admin_push_domain_toast!(flash, :type_produit, :destroyed)
+        redirect_to type_produits_url
+      end
       format.json { head :no_content }
     end
   end

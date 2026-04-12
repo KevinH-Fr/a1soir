@@ -2,6 +2,114 @@ fr:
 
   admin:
     toasts:
+      defaults:
+        created: "Création réussie"
+        updated: "Mise à jour réussie"
+        destroyed: "Suppression réussie"
+      meeting:
+        created: "Rendez-vous créé"
+        updated: "Rendez-vous mis à jour"
+        destroyed: "Rendez-vous supprimé"
+        email_sent: "E-mail de rappel envoyé"
+        reminder_enqueued: "Tâche de rappel mise en file"
+      rdv:
+        periode_created: "Période non disponible créée"
+        periode_updated: "Période non disponible mise à jour"
+        periode_destroyed: "Période non disponible supprimée"
+        type_created: "Type de RDV créé"
+        type_updated: "Type de RDV mis à jour"
+        type_destroyed: "Type de RDV supprimé"
+        parametre_created: "Paramètres RDV créés"
+        parametre_updated: "Paramètres RDV mis à jour"
+        parametre_destroyed: "Paramètres RDV supprimés"
+      doc_edition:
+        created: "Édition de document créée"
+        updated: "Édition de document mise à jour"
+        email_sent: "E-mail envoyé"
+      sousarticle:
+        created: "Sous-article créé"
+        updated: "Sous-article mis à jour"
+        destroyed: "Sous-article supprimé"
+      commande:
+        created: "Commande créée"
+        updated: "Commande mise à jour"
+        destroyed: "Commande supprimée"
+        statut_retire: "Commande marquée comme retirée par le client"
+        statut_non_retire: "Commande marquée comme non retirée"
+        rendu_avec_email: "Commande rendue — e-mail de confirmation envoyé au client"
+        rendu_sans_email: "Commande rendue (sans envoi d'e-mail)"
+        expedie_avec_email: "Commande expédiée — e-mail envoyé au client"
+        expedie_sans_email: "Commande expédiée (sans e-mail)"
+      selection_produit:
+        ensemble_introuvable: "Aucun ensemble correspondant trouvé."
+        selection_ensemble_introuvable: "Ensemble sélectionné introuvable."
+        article_introuvable: "Aucun article correspondant trouvé pour l'ensemble."
+        locvente_manquant: "Type location / vente non défini pour la transformation."
+        transform_ok: "Transformation en ensemble effectuée."
+      user:
+        role_updated: "Rôle modifié"
+      etiquette:
+        selection_supprimee: "Sélection supprimée"
+      texte:
+        created: "Contenu marketing créé"
+        updated: "Contenu marketing mis à jour"
+        destroyed: "Contenu marketing supprimé"
+        media_deleted: "Média supprimé"
+      admin_parameter:
+        created: "Paramètre créé"
+        updated: "Paramètre mis à jour"
+        destroyed: "Paramètre supprimé"
+      message:
+        created: "Message créé"
+        updated: "Message mis à jour"
+        destroyed: "Message supprimé"
+      demande_rdv:
+        updated: "Demande de rendez-vous mise à jour"
+        destroyed: "Demande de rendez-vous supprimée"
+      demande_cabine:
+        created: "Demande cabine créée"
+        updated: "Demande cabine mise à jour"
+        destroyed: "Demande cabine supprimée"
+      profile:
+        created: "Profil créé"
+        updated: "Profil mis à jour"
+        destroyed: "Profil supprimé"
+      type_produit:
+        created: "Type de produit créé"
+        updated: "Type de produit mis à jour"
+        destroyed: "Type de produit supprimé"
+      categorie_produit:
+        created: "Catégorie créée"
+        updated: "Catégorie mise à jour"
+        destroyed: "Catégorie supprimée"
+      couleur:
+        created: "Couleur créée"
+        updated: "Couleur mise à jour"
+        destroyed: "Couleur supprimée"
+      taille:
+        created: "Taille créée"
+        updated: "Taille mise à jour"
+        destroyed: "Taille supprimée"
+      fournisseur:
+        created: "Fournisseur créé"
+        updated: "Fournisseur mis à jour"
+        destroyed: "Fournisseur supprimé"
+      ensemble:
+        created: "Ensemble créé"
+        updated: "Ensemble mis à jour"
+        destroyed: "Ensemble supprimé"
+      client:
+        created: "Client créé"
+        updated: "Client mis à jour"
+        destroyed: "Client supprimé"
+      article:
+        created: "Article créé"
+        updated: "Article mis à jour"
+        destroyed: "Article supprimé"
+      avoir_remb:
+        created: "Avoir / remboursement créé"
+        updated: "Avoir / remboursement mis à jour"
+        destroyed: "Avoir / remboursement supprimé"
       paiement_recu:
         created: "Paiement enregistré"
         updated: "Paiement mis à jour"
@@ -20,7 +128,7 @@ fr:
         created: "Produit créé"
         updated: "Produit mis à jour"
         destroyed: "Produit supprimé"
-        destroy_blocked: "Impossible de supprimer ce produit : des enregistrements y sont encore liés (cabine d'essayage, commandes, contenus marketing, etc.)."
+        destroy_blocked: "Impossible de supprimer ce produit : des enregistrements y sont encore liés (cabine d'essayage, commandes, etc.)."
         image_deleted: "Image supprimée"
         video_deleted: "Vidéo supprimée"
         duplicated: "Duplication du produit effectuée"

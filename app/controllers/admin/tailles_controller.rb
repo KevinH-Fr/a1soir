@@ -41,7 +41,7 @@ class Admin::TaillesController < Admin::ApplicationController
     respond_to do |format|
       if @taille.save
 
-        flash.now[:success] =  "Création réussie"
+        admin_push_domain_toast!(flash.now, :taille, :created)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -57,7 +57,10 @@ class Admin::TaillesController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to taille_url(@taille), notice: "taille was successfully created." }
+        format.html do
+          admin_push_domain_toast!(flash, :taille, :created)
+          redirect_to taille_url(@taille)
+        end
         format.json { render :show, status: :created, location: @taille }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -71,7 +74,7 @@ class Admin::TaillesController < Admin::ApplicationController
     respond_to do |format|
       if @taille.update(taille_params)
 
-        flash.now[:success] = "Mise à jour réussie"
+        admin_push_domain_toast!(flash.now, :taille, :updated)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -80,7 +83,10 @@ class Admin::TaillesController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to taille_url(@taille), notice: "taille was successfully updated." }
+        format.html do
+          admin_push_domain_toast!(flash, :taille, :updated)
+          redirect_to taille_url(@taille)
+        end
         format.json { render :show, status: :ok, location: @taille }
       else
 
@@ -101,7 +107,10 @@ class Admin::TaillesController < Admin::ApplicationController
     @taille.destroy!
 
     respond_to do |format|
-      format.html { redirect_to admin_tailles_url, notice:  "Suppression réussie"  }
+      format.html do
+        admin_push_domain_toast!(flash, :taille, :destroyed)
+        redirect_to admin_tailles_url
+      end
       format.json { head :no_content }
     end
   end

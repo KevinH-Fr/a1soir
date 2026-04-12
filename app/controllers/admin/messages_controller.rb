@@ -23,7 +23,10 @@ class Admin::MessagesController < Admin::ApplicationController
 
     respond_to do |format|
       if @message.save
-        format.html { redirect_to message_url(@message), notice: "Création réussie" }
+        format.html do
+          admin_push_domain_toast!(flash, :message, :created)
+          redirect_to message_url(@message)
+        end
         format.json { render :show, status: :created, location: @message }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -36,7 +39,10 @@ class Admin::MessagesController < Admin::ApplicationController
   def update
     respond_to do |format|
       if @message.update(message_params)
-        format.html { redirect_to message_url(@message), notice:  "Mise à jour réussie" }
+        format.html do
+          admin_push_domain_toast!(flash, :message, :updated)
+          redirect_to message_url(@message)
+        end
         format.json { render :show, status: :ok, location: @message }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -50,7 +56,10 @@ class Admin::MessagesController < Admin::ApplicationController
     @message.destroy!
 
     respond_to do |format|
-      format.html { redirect_to messages_url, notice:  "Suppression réussie"  }
+      format.html do
+        admin_push_domain_toast!(flash, :message, :destroyed)
+        redirect_to messages_url
+      end
       format.json { head :no_content }
     end
   end

@@ -12,17 +12,20 @@ class Admin::UsersController < Admin::ApplicationController
 
   def toggle_status_user
     @user.update(role: 'user')
-    redirect_to admin_users_url, notice: "le rôle a bien été modifié"
+    admin_push_domain_toast!(flash, :user, :role_updated)
+    redirect_to admin_users_url
   end
 
   def toggle_status_vendeur
     @user.update(role: 'vendeur')
-    redirect_to admin_users_url, notice: "le rôle a bien été modifié"
+    admin_push_domain_toast!(flash, :user, :role_updated)
+    redirect_to admin_users_url
   end
 
   def toggle_status_admin
     @user.update(role: 'admin')
-    redirect_to admin_users_url, notice: "le rôle a bien été modifié"
+    admin_push_domain_toast!(flash, :user, :role_updated)
+    redirect_to admin_users_url
   end
 
   private

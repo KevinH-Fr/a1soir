@@ -72,7 +72,10 @@ class Admin::CommandesController < Admin::ApplicationController
 
     respond_to do |format|
       if @commande.save
-        format.html { redirect_to admin_commande_url(@commande), notice:  "Création réussie" }
+        format.html do
+          admin_push_domain_toast!(flash, :commande, :created)
+          redirect_to admin_commande_url(@commande)
+        end
         format.json { render :show, status: :created, location: @commande }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -89,7 +92,7 @@ class Admin::CommandesController < Admin::ApplicationController
     respond_to do |format|
       if @commande.update(commande_params)
 
-        flash.now[:success] =  "Mise à jour réussie"
+        admin_push_domain_toast!(flash.now, :commande, :updated)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -98,7 +101,10 @@ class Admin::CommandesController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to commande_url(@commande), notice: "Commande was successfully updated." }
+        format.html do
+          admin_push_domain_toast!(flash, :commande, :updated)
+          redirect_to commande_url(@commande)
+        end
         format.json { render :show, status: :ok, location: @commande }
       else
 
@@ -126,7 +132,10 @@ class Admin::CommandesController < Admin::ApplicationController
       #   render turbo_stream: turbo_stream.remove(@commande)
       # end
 
-      format.html { redirect_to admin_root_url, notice:  "Suppression réussie" }
+      format.html do
+        admin_push_domain_toast!(flash, :commande, :destroyed)
+        redirect_to admin_root_url
+      end
       format.json { head :no_content }
     end
   end
@@ -134,40 +143,40 @@ class Admin::CommandesController < Admin::ApplicationController
 
   def toggle_statut_retire
     @commande.update(statutarticles: "retiré" )
-    redirect_to admin_commande_url(@commande),
-      notice: "commande retirée par client" 
+    admin_push_domain_toast!(flash, :commande, :statut_retire)
+    redirect_to admin_commande_url(@commande)
   end
 
   def toggle_statut_non_retire
     @commande.update(statutarticles: "non-retiré" )
-    redirect_to admin_commande_url(@commande),
-      notice: "commande non-retirée par client" 
+    admin_push_domain_toast!(flash, :commande, :statut_non_retire)
+    redirect_to admin_commande_url(@commande)
   end
 
   def toggle_statut_rendu_with_email
     @commande.update(statutarticles: "rendu")
     CommandeMailer.confirmation_restitution(@commande).deliver_later
-    redirect_to admin_commande_url(@commande),
-      notice: "Commande rendue - Email de confirmation envoyé au client"
+    admin_push_domain_toast!(flash, :commande, :rendu_avec_email)
+    redirect_to admin_commande_url(@commande)
   end
 
   def toggle_statut_rendu_without_email
     @commande.update(statutarticles: "rendu")
-    redirect_to admin_commande_url(@commande),
-      notice: "Commande rendue (sans envoi d'email)"
+    admin_push_domain_toast!(flash, :commande, :rendu_sans_email)
+    redirect_to admin_commande_url(@commande)
   end
 
   def marquer_expedie_with_email
     @commande.update!(numero_suivi: params[:numero_suivi].presence, expedie_le: Time.current)
     StripePaymentMailer.expedition(@commande).deliver_later
-    redirect_to admin_commande_url(@commande),
-      notice: "Commande expédiée — email envoyé au client"
+    admin_push_domain_toast!(flash, :commande, :expedie_avec_email)
+    redirect_to admin_commande_url(@commande)
   end
 
   def marquer_expedie_without_email
     @commande.update!(numero_suivi: params[:numero_suivi].presence, expedie_le: Time.current)
-    redirect_to admin_commande_url(@commande),
-      notice: "Commande expédiée (sans email)"
+    admin_push_domain_toast!(flash, :commande, :expedie_sans_email)
+    redirect_to admin_commande_url(@commande)
   end
 
   private

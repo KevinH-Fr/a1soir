@@ -30,7 +30,10 @@ class Admin::AdminParametersController < Admin::ApplicationController
 
     respond_to do |format|
       if @admin_parameter.save
-        format.html { redirect_to admin_parameter_url(@admin_parameter), notice:  "Création à jour réussie" }
+        format.html do
+          admin_push_domain_toast!(flash, :admin_parameter, :created)
+          redirect_to admin_parameter_url(@admin_parameter)
+        end
         format.json { render :show, status: :created, location: @admin_parameter }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -42,7 +45,10 @@ class Admin::AdminParametersController < Admin::ApplicationController
   def update
     respond_to do |format|
       if @admin_parameter.update(admin_parameter_params)
-        format.html { redirect_to admin_admin_parameter_url(@admin_parameter), notice:  "Mise à jour réussie" }
+        format.html do
+          admin_push_domain_toast!(flash, :admin_parameter, :updated)
+          redirect_to admin_admin_parameter_url(@admin_parameter)
+        end
         format.json { render :show, status: :ok, location: @admin_parameter }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -55,7 +61,10 @@ class Admin::AdminParametersController < Admin::ApplicationController
     @admin_parameter.destroy!
 
     respond_to do |format|
-      format.html { redirect_to admin_parameters_url, notice:  "Suppression réussie"  }
+      format.html do
+        admin_push_domain_toast!(flash, :admin_parameter, :destroyed)
+        redirect_to admin_parameters_url
+      end
       format.json { head :no_content }
     end
   end

@@ -24,6 +24,7 @@ class Admin::TypeRdvsController < Admin::ApplicationController
 
     respond_to do |format|
       if @type_rdv.save
+        admin_push_domain_toast!(flash.now, :rdv, :type_created)
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.append("types_table_body",
@@ -33,11 +34,14 @@ class Admin::TypeRdvsController < Admin::ApplicationController
             turbo_stream.update('new_type_rdv',
               partial: "admin/type_rdvs/form",
               locals: { type_rdv: TypeRdv.new }),
-      
-            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: { success: "Type de RDV créé avec succès" } })
+
+            turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
           ]
         end
-        format.html { redirect_to dashboard_admin_parametre_rdvs_path(anchor: "types"), notice: "Type de RDV créé avec succès" }
+        format.html do
+          admin_push_domain_toast!(flash, :rdv, :type_created)
+          redirect_to dashboard_admin_parametre_rdvs_path(anchor: "types")
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
         format.turbo_stream do
@@ -53,8 +57,8 @@ class Admin::TypeRdvsController < Admin::ApplicationController
   def update
     respond_to do |format|
       if @type_rdv.update(type_rdv_params)
-        flash.now[:success] = "Type de RDV mis à jour avec succès"
-        
+        admin_push_domain_toast!(flash.now, :rdv, :type_updated)
+
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.replace(@type_rdv,
@@ -64,7 +68,10 @@ class Admin::TypeRdvsController < Admin::ApplicationController
           ]
         end
         
-        format.html { redirect_to dashboard_admin_parametre_rdvs_path(anchor: "types"), notice: "Type de RDV mis à jour avec succès" }
+        format.html do
+          admin_push_domain_toast!(flash, :rdv, :type_updated)
+          redirect_to dashboard_admin_parametre_rdvs_path(anchor: "types")
+        end
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.turbo_stream do
@@ -81,13 +88,17 @@ class Admin::TypeRdvsController < Admin::ApplicationController
     @type_rdv.destroy
     
     respond_to do |format|
+      admin_push_domain_toast!(flash.now, :rdv, :type_destroyed)
       format.turbo_stream do
         render turbo_stream: [
           turbo_stream.remove(@type_rdv),
-          turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: { success: "Type de RDV supprimé avec succès" } })
+          turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
         ]
       end
-      format.html { redirect_to dashboard_admin_parametre_rdvs_path(anchor: "types"), notice: "Type de RDV supprimé avec succès" }
+      format.html do
+        admin_push_domain_toast!(flash, :rdv, :type_destroyed)
+        redirect_to dashboard_admin_parametre_rdvs_path(anchor: "types")
+      end
     end
   end
 

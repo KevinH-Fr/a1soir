@@ -5,6 +5,474 @@ module AdminFlashToast
   extend ActiveSupport::Concern
 
   TOAST_REGISTRY = {
+    defaults: {
+      created: {
+        variant: :success,
+        icon: "check-circle-fill",
+        message_key: "admin.toasts.defaults.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.defaults.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.defaults.destroyed",
+      },
+    },
+    meeting: {
+      created: {
+        variant: :success,
+        icon: "calendar-plus",
+        message_key: "admin.toasts.meeting.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "calendar-check",
+        message_key: "admin.toasts.meeting.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.meeting.destroyed",
+      },
+      email_sent: {
+        variant: :success,
+        icon: "envelope-check-fill",
+        message_key: "admin.toasts.meeting.email_sent",
+      },
+      reminder_enqueued: {
+        variant: :info,
+        icon: "clock-history",
+        message_key: "admin.toasts.meeting.reminder_enqueued",
+      },
+    },
+    rdv: {
+      periode_created: {
+        variant: :success,
+        icon: "calendar-x-fill",
+        message_key: "admin.toasts.rdv.periode_created",
+      },
+      periode_updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.rdv.periode_updated",
+      },
+      periode_destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.rdv.periode_destroyed",
+      },
+      type_created: {
+        variant: :success,
+        icon: "calendar-event-fill",
+        message_key: "admin.toasts.rdv.type_created",
+      },
+      type_updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.rdv.type_updated",
+      },
+      type_destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.rdv.type_destroyed",
+      },
+      parametre_created: {
+        variant: :success,
+        icon: "gear-fill",
+        message_key: "admin.toasts.rdv.parametre_created",
+      },
+      parametre_updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.rdv.parametre_updated",
+      },
+      parametre_destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.rdv.parametre_destroyed",
+      },
+    },
+    doc_edition: {
+      created: {
+        variant: :success,
+        icon: "file-earmark-plus-fill",
+        message_key: "admin.toasts.doc_edition.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.doc_edition.updated",
+      },
+      email_sent: {
+        variant: :success,
+        icon: "envelope-check-fill",
+        message_key: "admin.toasts.doc_edition.email_sent",
+      },
+    },
+    sousarticle: {
+      created: {
+        variant: :success,
+        icon: "plus-circle-fill",
+        message_key: "admin.toasts.sousarticle.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.sousarticle.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.sousarticle.destroyed",
+      },
+    },
+    commande: {
+      created: {
+        variant: :success,
+        icon: "bag-check-fill",
+        message_key: "admin.toasts.commande.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.commande.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.commande.destroyed",
+      },
+      statut_retire: {
+        variant: :success,
+        icon: "box-arrow-up",
+        message_key: "admin.toasts.commande.statut_retire",
+      },
+      statut_non_retire: {
+        variant: :info,
+        icon: "box-arrow-in-down",
+        message_key: "admin.toasts.commande.statut_non_retire",
+      },
+      rendu_avec_email: {
+        variant: :success,
+        icon: "envelope-check-fill",
+        message_key: "admin.toasts.commande.rendu_avec_email",
+      },
+      rendu_sans_email: {
+        variant: :info,
+        icon: "check2-circle",
+        message_key: "admin.toasts.commande.rendu_sans_email",
+      },
+      expedie_avec_email: {
+        variant: :success,
+        icon: "truck",
+        message_key: "admin.toasts.commande.expedie_avec_email",
+      },
+      expedie_sans_email: {
+        variant: :info,
+        icon: "truck",
+        message_key: "admin.toasts.commande.expedie_sans_email",
+      },
+    },
+    selection_produit: {
+      ensemble_introuvable: {
+        variant: :warning,
+        icon: "exclamation-triangle-fill",
+        message_key: "admin.toasts.selection_produit.ensemble_introuvable",
+      },
+      selection_ensemble_introuvable: {
+        variant: :warning,
+        icon: "exclamation-triangle-fill",
+        message_key: "admin.toasts.selection_produit.selection_ensemble_introuvable",
+      },
+      article_introuvable: {
+        variant: :warning,
+        icon: "exclamation-triangle-fill",
+        message_key: "admin.toasts.selection_produit.article_introuvable",
+      },
+      locvente_manquant: {
+        variant: :danger,
+        icon: "exclamation-triangle-fill",
+        message_key: "admin.toasts.selection_produit.locvente_manquant",
+      },
+      transform_ok: {
+        variant: :success,
+        icon: "shuffle",
+        message_key: "admin.toasts.selection_produit.transform_ok",
+      },
+    },
+    user: {
+      role_updated: {
+        variant: :success,
+        icon: "person-check-fill",
+        message_key: "admin.toasts.user.role_updated",
+      },
+    },
+    etiquette: {
+      selection_supprimee: {
+        variant: :info,
+        icon: "trash",
+        message_key: "admin.toasts.etiquette.selection_supprimee",
+      },
+    },
+    texte: {
+      created: {
+        variant: :success,
+        icon: "megaphone-fill",
+        message_key: "admin.toasts.texte.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.texte.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.texte.destroyed",
+      },
+      media_deleted: {
+        variant: :success,
+        icon: "image",
+        message_key: "admin.toasts.texte.media_deleted",
+      },
+    },
+    admin_parameter: {
+      created: {
+        variant: :success,
+        icon: "sliders",
+        message_key: "admin.toasts.admin_parameter.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.admin_parameter.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.admin_parameter.destroyed",
+      },
+    },
+    message: {
+      created: {
+        variant: :success,
+        icon: "chat-dots-fill",
+        message_key: "admin.toasts.message.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.message.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.message.destroyed",
+      },
+    },
+    demande_rdv: {
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.demande_rdv.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.demande_rdv.destroyed",
+      },
+    },
+    demande_cabine: {
+      created: {
+        variant: :success,
+        icon: "check-circle-fill",
+        message_key: "admin.toasts.demande_cabine.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.demande_cabine.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.demande_cabine.destroyed",
+      },
+    },
+    profile: {
+      created: {
+        variant: :success,
+        icon: "person-plus-fill",
+        message_key: "admin.toasts.profile.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.profile.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.profile.destroyed",
+      },
+    },
+    type_produit: {
+      created: {
+        variant: :success,
+        icon: "tags",
+        message_key: "admin.toasts.type_produit.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.type_produit.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.type_produit.destroyed",
+      },
+    },
+    categorie_produit: {
+      created: {
+        variant: :success,
+        icon: "folder-plus",
+        message_key: "admin.toasts.categorie_produit.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.categorie_produit.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.categorie_produit.destroyed",
+      },
+    },
+    couleur: {
+      created: {
+        variant: :success,
+        icon: "palette-fill",
+        message_key: "admin.toasts.couleur.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.couleur.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.couleur.destroyed",
+      },
+    },
+    taille: {
+      created: {
+        variant: :success,
+        icon: "rulers",
+        message_key: "admin.toasts.taille.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.taille.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.taille.destroyed",
+      },
+    },
+    fournisseur: {
+      created: {
+        variant: :success,
+        icon: "building-add",
+        message_key: "admin.toasts.fournisseur.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.fournisseur.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.fournisseur.destroyed",
+      },
+    },
+    ensemble: {
+      created: {
+        variant: :success,
+        icon: "boxes",
+        message_key: "admin.toasts.ensemble.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.ensemble.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.ensemble.destroyed",
+      },
+    },
+    client: {
+      created: {
+        variant: :success,
+        icon: "person-plus-fill",
+        message_key: "admin.toasts.client.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.client.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.client.destroyed",
+      },
+    },
+    article: {
+      created: {
+        variant: :success,
+        icon: "journal-plus",
+        message_key: "admin.toasts.article.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.article.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.article.destroyed",
+      },
+    },
+    avoir_remb: {
+      created: {
+        variant: :success,
+        icon: "receipt",
+        message_key: "admin.toasts.avoir_remb.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.avoir_remb.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.avoir_remb.destroyed",
+      },
+    },
     paiement_recu: {
       created: {
         variant: :success,

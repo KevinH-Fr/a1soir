@@ -76,8 +76,8 @@ class Admin::MeetingsController < Admin::ApplicationController
     respond_to do |format|
       if @meeting.save
 
-          flash.now[:success] =  "Meeting was created"
-          
+          admin_push_domain_toast!(flash.now, :meeting, :created)
+
           format.turbo_stream do
             render turbo_stream: [
               turbo_stream.update('new_meeting',
@@ -96,7 +96,10 @@ class Admin::MeetingsController < Admin::ApplicationController
               ]
           end
         
-        format.html { redirect_to meeting_url(@meeting), notice: "Meeting was created" }
+        format.html do
+          admin_push_domain_toast!(flash, :meeting, :created)
+          redirect_to meeting_url(@meeting)
+        end
         format.json { render :show, status: :created, location: @meeting }
       else
 
@@ -122,7 +125,7 @@ class Admin::MeetingsController < Admin::ApplicationController
     respond_to do |format|
       if @meeting.update(meeting_params)
 
-        flash.now[:success] = "Meeting was updated"
+        admin_push_domain_toast!(flash.now, :meeting, :updated)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -131,7 +134,10 @@ class Admin::MeetingsController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to meeting_url(@meeting), notice: "Meeting was updated" }
+        format.html do
+          admin_push_domain_toast!(flash, :meeting, :updated)
+          redirect_to meeting_url(@meeting)
+        end
         format.json { render :show, status: :ok, location: @meeting }
       else
         format.turbo_stream do
@@ -156,7 +162,10 @@ class Admin::MeetingsController < Admin::ApplicationController
     @meeting.destroy!
 
     respond_to do |format|
-      format.html { redirect_to admin_meetings_url, notice: "Meeting was destroyed" }
+      format.html do
+        admin_push_domain_toast!(flash, :meeting, :destroyed)
+        redirect_to admin_meetings_url
+      end
       format.json { head :no_content }
     end
   end
@@ -168,10 +177,10 @@ class Admin::MeetingsController < Admin::ApplicationController
     MeetingMailer.reminder_email(@meeting).deliver_now
 
     respond_to do |format|
-      flash.now[:success] = "Email was successfully created"
-
-      format.html { redirect_to admin_meeting_path(@meeting), notice: "email was successfully sended." }
-
+      format.html do
+        admin_push_domain_toast!(flash, :meeting, :email_sent)
+        redirect_to admin_meeting_path(@meeting)
+      end
     end
   end
 
@@ -182,7 +191,8 @@ class Admin::MeetingsController < Admin::ApplicationController
     MeetingReminderJob.perform_now
 
     # Redirect with a notice
-    redirect_to @meeting, notice: 'Reminder job has been enqueued.'
+    admin_push_domain_toast!(flash, :meeting, :reminder_enqueued)
+    redirect_to @meeting
   end
 
 

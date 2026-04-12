@@ -41,7 +41,7 @@ class Admin::CouleursController < Admin::ApplicationController
     respond_to do |format|
       if @couleur.save
 
-        flash.now[:success] =  "Création réussie"
+        admin_push_domain_toast!(flash.now, :couleur, :created)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -57,7 +57,10 @@ class Admin::CouleursController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to couleur_url(@couleur), notice: "couleur was successfully created." }
+        format.html do
+          admin_push_domain_toast!(flash, :couleur, :created)
+          redirect_to couleur_url(@couleur)
+        end
         format.json { render :show, status: :created, location: @couleur }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -71,7 +74,7 @@ class Admin::CouleursController < Admin::ApplicationController
     respond_to do |format|
       if @couleur.update(couleur_params)
 
-        flash.now[:success] = "Mise à jour réussie"
+        admin_push_domain_toast!(flash.now, :couleur, :updated)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -80,7 +83,10 @@ class Admin::CouleursController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to couleur_url(@couleur), notice: "couleur was successfully updated." }
+        format.html do
+          admin_push_domain_toast!(flash, :couleur, :updated)
+          redirect_to couleur_url(@couleur)
+        end
         format.json { render :show, status: :ok, location: @couleur }
       else
 
@@ -102,7 +108,10 @@ class Admin::CouleursController < Admin::ApplicationController
     @couleur.destroy!
 
     respond_to do |format|
-      format.html { redirect_to couleurs_url, notice:  "Suppression réussie"  }
+      format.html do
+        admin_push_domain_toast!(flash, :couleur, :destroyed)
+        redirect_to couleurs_url
+      end
       format.json { head :no_content }
     end
   end

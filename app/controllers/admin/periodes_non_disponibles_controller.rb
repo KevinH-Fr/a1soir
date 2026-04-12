@@ -21,6 +21,7 @@ class Admin::PeriodesNonDisponiblesController < Admin::ApplicationController
 
     respond_to do |format|
       if @periode_non_disponible.save
+        admin_push_domain_toast!(flash.now, :rdv, :periode_created)
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.append("periodes_table_body",
@@ -29,10 +30,13 @@ class Admin::PeriodesNonDisponiblesController < Admin::ApplicationController
             turbo_stream.update("new_periode_non_disponible",
               partial: "admin/periodes_non_disponibles/form",
               locals: { periode_non_disponible: PeriodeNonDisponible.new }),
-            turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: { success: "Période non disponible créée avec succès" } })
+            turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
           ]
         end
-        format.html { redirect_to dashboard_admin_parametre_rdvs_path(anchor: "periodes"), notice: "Période non disponible créée avec succès" }
+        format.html do
+          admin_push_domain_toast!(flash, :rdv, :periode_created)
+          redirect_to dashboard_admin_parametre_rdvs_path(anchor: "periodes")
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
         format.turbo_stream do
@@ -48,8 +52,8 @@ class Admin::PeriodesNonDisponiblesController < Admin::ApplicationController
   def update
     respond_to do |format|
       if @periode_non_disponible.update(periode_non_disponible_params)
-        flash.now[:success] = "Période non disponible mise à jour avec succès"
-        
+        admin_push_domain_toast!(flash.now, :rdv, :periode_updated)
+
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.replace(@periode_non_disponible,
@@ -59,7 +63,10 @@ class Admin::PeriodesNonDisponiblesController < Admin::ApplicationController
           ]
         end
         
-        format.html { redirect_to dashboard_admin_parametre_rdvs_path(anchor: "periodes"), notice: "Période non disponible mise à jour avec succès" }
+        format.html do
+          admin_push_domain_toast!(flash, :rdv, :periode_updated)
+          redirect_to dashboard_admin_parametre_rdvs_path(anchor: "periodes")
+        end
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.turbo_stream do
@@ -76,13 +83,17 @@ class Admin::PeriodesNonDisponiblesController < Admin::ApplicationController
     @periode_non_disponible.destroy
     
     respond_to do |format|
+      admin_push_domain_toast!(flash.now, :rdv, :periode_destroyed)
       format.turbo_stream do
         render turbo_stream: [
           turbo_stream.remove(@periode_non_disponible),
-          turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: { success: "Période non disponible supprimée avec succès" } })
+          turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
         ]
       end
-      format.html { redirect_to dashboard_admin_parametre_rdvs_path(anchor: "periodes"), notice: "Période non disponible supprimée avec succès" }
+      format.html do
+        admin_push_domain_toast!(flash, :rdv, :periode_destroyed)
+        redirect_to dashboard_admin_parametre_rdvs_path(anchor: "periodes")
+      end
     end
   end
 

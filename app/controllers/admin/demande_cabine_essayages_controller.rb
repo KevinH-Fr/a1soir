@@ -35,7 +35,10 @@ class Admin::DemandeCabineEssayagesController < Admin::ApplicationController
 
     respond_to do |format|
       if @demande_cabine_essayage.save
-        format.html { redirect_to admin_demande_cabine_essayage_url(@demande_cabine_essayage), notice: "Création réussie" }
+        format.html do
+          admin_push_domain_toast!(flash, :demande_cabine, :created)
+          redirect_to admin_demande_cabine_essayage_url(@demande_cabine_essayage)
+        end
         format.json { render :show, status: :created, location: @demande_cabine_essayage }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -47,7 +50,7 @@ class Admin::DemandeCabineEssayagesController < Admin::ApplicationController
   def update
     respond_to do |format|
       if @demande_cabine_essayage.update(demande_cabine_essayage_params)
-        flash.now[:success] = "Mise à jour réussie"
+        admin_push_domain_toast!(flash.now, :demande_cabine, :updated)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -58,7 +61,10 @@ class Admin::DemandeCabineEssayagesController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to admin_demande_cabine_essayage_url(@demande_cabine_essayage), notice: "Mise à jour réussie" }
+        format.html do
+          admin_push_domain_toast!(flash, :demande_cabine, :updated)
+          redirect_to admin_demande_cabine_essayage_url(@demande_cabine_essayage)
+        end
         format.json { render :show, status: :ok, location: @demande_cabine_essayage }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -71,7 +77,10 @@ class Admin::DemandeCabineEssayagesController < Admin::ApplicationController
     @demande_cabine_essayage.destroy!
 
     respond_to do |format|
-      format.html { redirect_to admin_demande_cabine_essayages_url, notice: "Suppression réussie" }
+      format.html do
+        admin_push_domain_toast!(flash, :demande_cabine, :destroyed)
+        redirect_to admin_demande_cabine_essayages_url
+      end
       format.json { head :no_content }
     end
   end

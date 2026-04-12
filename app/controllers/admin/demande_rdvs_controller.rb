@@ -29,7 +29,7 @@ class Admin::DemandeRdvsController < Admin::ApplicationController
   def update
     respond_to do |format|
       if @demande_rdv.update(demande_rdv_params)
-        flash.now[:success] = "Mise à jour réussie"
+        admin_push_domain_toast!(flash.now, :demande_rdv, :updated)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -40,7 +40,10 @@ class Admin::DemandeRdvsController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to admin_demande_rdv_url(@demande_rdv), notice: "Mise à jour réussie" }
+        format.html do
+          admin_push_domain_toast!(flash, :demande_rdv, :updated)
+          redirect_to admin_demande_rdv_url(@demande_rdv)
+        end
         format.json { render :show, status: :ok, location: @demande_rdv }
       else
         format.turbo_stream do
@@ -61,7 +64,10 @@ class Admin::DemandeRdvsController < Admin::ApplicationController
     @demande_rdv.destroy!
 
     respond_to do |format|
-      format.html { redirect_to admin_demande_rdvs_path, notice: "Suppression réussie" }
+      format.html do
+        admin_push_domain_toast!(flash, :demande_rdv, :destroyed)
+        redirect_to admin_demande_rdvs_path
+      end
       format.json { head :no_content }
     end
   end

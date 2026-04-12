@@ -31,7 +31,10 @@ class Admin::TextesController < Admin::ApplicationController
 
     respond_to do |format|
       if @texte.save
-        format.html { redirect_to admin_textes_url, notice:  "Création à jour réussie" }
+        format.html do
+          admin_push_domain_toast!(flash, :texte, :created)
+          redirect_to admin_textes_url
+        end
         format.json { render :show, status: :created, location: @texte }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -51,7 +54,10 @@ class Admin::TextesController < Admin::ApplicationController
 
     respond_to do |format|
       if @texte.update(texte_params)
-        format.html { redirect_to admin_textes_url, notice:  "Mise à jour réussie" }
+        format.html do
+          admin_push_domain_toast!(flash, :texte, :updated)
+          redirect_to admin_textes_url
+        end
         format.json { render :show, status: :ok, location: @texte }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -64,14 +70,18 @@ class Admin::TextesController < Admin::ApplicationController
     @media = @texte.carousel_images.find(params[:image_id])
     @media.purge
   
-    redirect_to admin_texte_path(@texte), notice: "Media has been deleted successfully."
+    admin_push_domain_toast!(flash, :texte, :media_deleted)
+    redirect_to admin_texte_path(@texte)
   end
 
   def destroy
     @texte.destroy!
 
     respond_to do |format|
-      format.html { redirect_to admin_textes_url, notice:  "Suppression réussie"  }
+      format.html do
+        admin_push_domain_toast!(flash, :texte, :destroyed)
+        redirect_to admin_textes_url
+      end
       format.json { head :no_content }
     end
   end

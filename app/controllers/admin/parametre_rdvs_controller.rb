@@ -13,8 +13,8 @@ class Admin::ParametreRdvsController < Admin::ApplicationController
 
     respond_to do |format|
       if @parametre_rdv.save
-        flash.now[:success] = "Paramètres RDV créés avec succès"
-        
+        admin_push_domain_toast!(flash.now, :rdv, :parametre_created)
+
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update("parametres_content",
@@ -24,7 +24,10 @@ class Admin::ParametreRdvsController < Admin::ApplicationController
           ]
         end
         
-        format.html { redirect_to dashboard_admin_parametre_rdvs_path(anchor: "parametres"), notice: "Paramètres RDV créés avec succès" }
+        format.html do
+          admin_push_domain_toast!(flash, :rdv, :parametre_created)
+          redirect_to dashboard_admin_parametre_rdvs_path(anchor: "parametres")
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
         format.turbo_stream do
@@ -51,8 +54,8 @@ class Admin::ParametreRdvsController < Admin::ApplicationController
   def update
     respond_to do |format|
       if @parametre_rdv.update(parametre_rdv_params)
-        flash.now[:success] = "Paramètres RDV mis à jour avec succès"
-        
+        admin_push_domain_toast!(flash.now, :rdv, :parametre_updated)
+
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update("parametres_content",
@@ -62,7 +65,10 @@ class Admin::ParametreRdvsController < Admin::ApplicationController
           ]
         end
         
-        format.html { redirect_to dashboard_admin_parametre_rdvs_path(anchor: "parametres"), notice: "Paramètres RDV mis à jour avec succès" }
+        format.html do
+          admin_push_domain_toast!(flash, :rdv, :parametre_updated)
+          redirect_to dashboard_admin_parametre_rdvs_path(anchor: "parametres")
+        end
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.turbo_stream do
@@ -79,13 +85,17 @@ class Admin::ParametreRdvsController < Admin::ApplicationController
     @parametre_rdv.destroy
     
     respond_to do |format|
+      admin_push_domain_toast!(flash.now, :rdv, :parametre_destroyed)
       format.turbo_stream do
         render turbo_stream: [
           turbo_stream.update("parametres_content", ""),
-          turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: { success: "Paramètres RDV supprimés avec succès" } })
+          turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
         ]
       end
-      format.html { redirect_to dashboard_admin_parametre_rdvs_path(anchor: "parametres"), notice: "Paramètres RDV supprimés avec succès" }
+      format.html do
+        admin_push_domain_toast!(flash, :rdv, :parametre_destroyed)
+        redirect_to dashboard_admin_parametre_rdvs_path(anchor: "parametres")
+      end
     end
   end
 

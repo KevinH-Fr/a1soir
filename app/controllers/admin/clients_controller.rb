@@ -45,7 +45,10 @@ class Admin::ClientsController < Admin::ApplicationController
     respond_to do |format|
       if @client.save
 
-        format.html { redirect_to admin_client_url(@client), notice:  "Création à jour réussie"}
+        format.html do
+          admin_push_domain_toast!(flash, :client, :created)
+          redirect_to admin_client_url(@client)
+        end
         format.json { render :show, status: :created, location: @client }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -58,7 +61,7 @@ class Admin::ClientsController < Admin::ApplicationController
     respond_to do |format|
       if @client.update(client_params)
 
-        flash.now[:success] =  "Mise à jour réussie"
+        admin_push_domain_toast!(flash.now, :client, :updated)
 
         format.turbo_stream do
           variant = params[:client_display_variant] == "mini" ? :mini : :full
@@ -70,7 +73,10 @@ class Admin::ClientsController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to client_url(@client), notice: "Client was successfully updated." }
+        format.html do
+          admin_push_domain_toast!(flash, :client, :updated)
+          redirect_to client_url(@client)
+        end
         format.json { render :show, status: :ok, location: @client }
       else
         format.turbo_stream do
@@ -93,7 +99,10 @@ class Admin::ClientsController < Admin::ApplicationController
     @client.destroy!
 
     respond_to do |format|
-      format.html { redirect_to admin_clients_url, notice:  "Suppression réussie" }
+      format.html do
+        admin_push_domain_toast!(flash, :client, :destroyed)
+        redirect_to admin_clients_url
+      end
       format.json { head :no_content }
     end
   end

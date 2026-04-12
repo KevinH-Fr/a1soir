@@ -41,7 +41,7 @@ class Admin::CategorieProduitsController < Admin::ApplicationController
     respond_to do |format|
       if @categorie_produit.save
 
-        flash.now[:success] =  "Création réussie"
+        admin_push_domain_toast!(flash.now, :categorie_produit, :created)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -58,7 +58,10 @@ class Admin::CategorieProduitsController < Admin::ApplicationController
         end
           
 
-        format.html { redirect_to categorie_produit_url(@categorie_produit), notice: "Categorie produit was successfully created." }
+        format.html do
+          admin_push_domain_toast!(flash, :categorie_produit, :created)
+          redirect_to categorie_produit_url(@categorie_produit)
+        end
         format.json { render :show, status: :created, location: @categorie_produit }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -71,7 +74,7 @@ class Admin::CategorieProduitsController < Admin::ApplicationController
   def update
     respond_to do |format|
       if @categorie_produit.update(categorie_produit_params)
-        flash.now[:success] =  "Mise à jour réussie"
+        admin_push_domain_toast!(flash.now, :categorie_produit, :updated)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -82,7 +85,10 @@ class Admin::CategorieProduitsController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to categorie_produit_url(@categorie_produit), notice: "categorie_produit was successfully updated." }
+        format.html do
+          admin_push_domain_toast!(flash, :categorie_produit, :updated)
+          redirect_to categorie_produit_url(@categorie_produit)
+        end
         format.json { render :show, status: :ok, location: @categorie_produit }
       else
 
@@ -104,7 +110,10 @@ class Admin::CategorieProduitsController < Admin::ApplicationController
     @categorie_produit.destroy!
 
     respond_to do |format|
-      format.html { redirect_to categorie_produits_url, notice:  "Suppression réussie"  }
+      format.html do
+        admin_push_domain_toast!(flash, :categorie_produit, :destroyed)
+        redirect_to categorie_produits_url
+      end
       format.json { head :no_content }
     end
   end
