@@ -44,8 +44,7 @@ module IndexModelHelper
     render partial: 'admin/shared/search_form', locals: {chemin_recherche: chemin_recherche, champs_recherche: champs_recherche }
   end
 
-  # Ne pas mettre de padding sur l’élément .collapse (twbs/bootstrap#12093). Espacement vertical
-  # et containment des marges des champs : voir .collapse-nouveau-admin > #new dans application.css.
+  # Ne pas mettre de padding sur l’élément .collapse (twbs/bootstrap#12093). Espacement : classes sur #new.
   def bloc_nouveau(model_class, model_instance = nil, collapse_id = "collapseNew")
       # Gérer les cas spéciaux de noms de dossiers
       partial_path = case model_class.to_s
@@ -60,7 +59,7 @@ module IndexModelHelper
       model_sym = model_class.to_s.underscore.to_sym
 
       content_tag(:div, class: "collapse collapse-nouveau-admin", id: collapse_id) do
-        concat(content_tag(:div, id: "new") do
+        concat(content_tag(:div, id: "new", class: "m-0 pt-2 pb-0") do
           render partial: partial_path,
             locals: {
               model_sym => (model_instance || model_class.new),
@@ -70,7 +69,7 @@ module IndexModelHelper
       end
   end
 
-  def links_record(model, turbo_delete: true, show: true)
+  def links_record(model, turbo_delete: true, show: true, edit_params: nil)
     # Gérer le cas spécial de PeriodeNonDisponible où la route est periodes_non_disponibles (pluriel)
     edit_path = if model.class.name == "PeriodeNonDisponible"
       edit_admin_periodes_non_disponible_path(model)
@@ -93,9 +92,12 @@ module IndexModelHelper
     # Masquer le bouton show pour ParametreRdv, TypeRdv, PeriodeNonDisponible et PaiementRecu
     hide_show = !show || ["ParametreRdv", "TypeRdv", "PeriodeNonDisponible", "PaiementRecu", "AvoirRemb"].include?(model.class.name)
     
+    edit_button_opts = { method: :post, class: "btn btn-sm btn-secondary bi bi-pencil-square" }
+    edit_button_opts[:params] = edit_params if edit_params.present?
+
     content_tag(:div, class: "d-flex justify-content-end gap-1") do
       concat(link_to("", show_path, class: "btn btn-sm btn-primary bi bi-arrow-up-right-square", data: { turbo: false })) unless hide_show
-      concat(button_to("", edit_path, method: :post, class: "btn btn-sm btn-secondary bi bi-pencil-square"))
+      concat(button_to("", edit_path, edit_button_opts))
       concat(button_to("", destroy_path, method: :delete, data: { turbo: turbo_delete }, 
         onclick: "return confirm('Êtes-vous certain de vouloir supprimer cet élément et tous les éléments liés ?')",
         class: "btn btn-sm btn-danger bi bi-trash"))

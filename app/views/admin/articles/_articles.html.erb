@@ -5,8 +5,8 @@
   class: "bi bi-plus-lg btn btn-sm btn-warning fw-bold"
 )) %>
 
-<div class="collapse pt-1" id="collapseNewArticle">
-  <div id="new_article">
+<div class="collapse collapse-nouveau-admin" id="collapseNewArticle">
+  <div id="new_article" class="m-0 pt-1 pb-0">
     <%= render partial: "admin/articles/form", locals: { commande_id: @commande.id, article: Article.new } %>
   </div>
 </div>

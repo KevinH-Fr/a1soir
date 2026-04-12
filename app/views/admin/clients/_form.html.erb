@@ -6,6 +6,9 @@
              embedded: local_assigns.fetch(:admin_form_row_embedded, false)
            } do %>
   <%= form_with(model: client, url: client.persisted? ? admin_client_path(client) : admin_clients_path, method: client.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
+    <% if local_assigns[:client_display_variant].present? %>
+      <%= hidden_field_tag :client_display_variant, client_display_variant %>
+    <% end %>
     <% if client.errors.any? %>
       <div class="alert alert-danger py-2 mb-3" role="alert">
         <h2 class="h6 mb-2"><%= pluralize(client.errors.count, "error") %> prohibited this client from being saved:</h2>

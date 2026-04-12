@@ -1,17 +1,36 @@
+<% inner_only = local_assigns.fetch(:client_inner_only, false) %>
+<% variant = local_assigns.fetch(:variant, :full) %>
+<% mini = variant.to_sym == :mini %>
+<% collapse_id = mini ? "collapseClientMini#{dom_id(client)}" : "collapseClient#{dom_id(client)}" %>
+
+<% unless inner_only %>
 <div id="<%= dom_id client %>" class="my-2">
+<% end %>
+
   <div class="card mx-2 my-3 light-beige-colored shadow-sm">
     <div class="card-body p-2 d-flex flex-column">
 
-      <div class="card-title d-flex align-items-center flex-wrap gap-1">
-        <div data-turbo="false">
-          <%= link_to admin_client_path(client), class: "text-decoration-none text-dark" do %>
-            <%= custom_badge("", "", "", "fw-bold", client.full_name) %>
-          <% end %>
+      <% if mini %>
+        <div class="d-flex align-items-center flex-wrap gap-1">
+          <div data-turbo="false">
+            <%= link_to admin_client_path(client), class: "text-decoration-none text-dark" do %>
+              <%= custom_badge("", "", "", "fw-bold", client.full_name) %>
+            <% end %>
+          </div>
+          <%= custom_badge("fa-phone", "", "", "", client.tel) if client.tel.present? %>
+          <%= custom_badge("fa-at", "", "", "", client.mail) if client.mail.present? %>
         </div>
-        <%= custom_badge("", "", "", "", client.propart) if client.propart.present? %>
-      </div>
+      <% else %>
+        <div class="card-title d-flex align-items-center flex-wrap gap-1">
+          <div data-turbo="false">
+            <%= link_to admin_client_path(client), class: "text-decoration-none text-dark" do %>
+              <%= custom_badge("", "", "", "fw-bold", client.full_name) %>
+            <% end %>
+          </div>
+          <%= custom_badge("", "", "", "", client.propart) if client.propart.present? %>
+        </div>
+      <% end %>
 
-      <% collapse_id = "collapseClient#{dom_id(client)}" %>
       <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-1">
         <a class="small text-muted text-decoration-none d-inline-flex align-items-center"
            data-bs-toggle="collapse"
@@ -22,31 +41,32 @@
           <%= admin_collapse_details_button_content %>
         </a>
         <div class="ms-auto">
-          <%= links_record(client) %>
+          <%= links_record(client, edit_params: mini ? { client_display_variant: "mini" } : nil) %>
         </div>
       </div>
 
-      <div class="">
-        <div class="collapse" id="<%= collapse_id %>">
-          <hr class="mt-2 mb-2 border-0 border-top border-secondary opacity-25">
-          <div class="d-flex flex-wrap gap-2 px-2">
-            <%= field_with_label("type: ", client.propart, icon_class: "bi-tag") %>
-            <%= field_with_label("commentaires: ", client.commentaires, icon_class: "bi-chat-left-text") %>
-            <%= field_with_label("intitule: ", client.intitule, icon_class: "bi-card-heading") %>
-            <%= field_with_label("tel: ", client.tel, icon_class: "bi-telephone") %>
-            <%= field_with_label("tel2: ", client.tel2, icon_class: "bi-telephone-fill") %>
-            <%= field_with_label("mail: ", client.mail, icon_class: "bi-envelope") %>
-            <%= field_with_label("mail2: ", client.mail2, icon_class: "bi-envelope-fill") %>
-            <%= field_with_label("adresse: ", client.adresse, icon_class: "bi-geo-alt") %>
-            <%= field_with_label("cp: ", client.cp, icon_class: "bi-mailbox") %>
-            <%= field_with_label("ville: ", client.ville, icon_class: "bi-building") %>
-            <%= field_with_label("pays: ", client.pays, icon_class: "bi-globe2") %>
-            <%= field_with_label("contact: ", client.contact, icon_class: "bi-person") %>
-            <%= field_with_label("langue: ", client.language_label, icon_class: "bi-translate") %>
-          </div>
+      <div class="collapse" id="<%= collapse_id %>">
+        <hr class="mt-2 mb-2 border-0 border-top border-secondary opacity-25">
+        <div class="d-flex flex-wrap gap-2 px-2">
+          <%= field_with_label("type: ", client.propart, icon_class: "bi-tag") %>
+          <%= field_with_label("commentaires: ", client.commentaires, icon_class: "bi-chat-left-text") %>
+          <%= field_with_label("intitule: ", client.intitule, icon_class: "bi-card-heading") %>
+          <%= field_with_label("tel: ", client.tel, icon_class: "bi-telephone") %>
+          <%= field_with_label("tel2: ", client.tel2, icon_class: "bi-telephone-fill") %>
+          <%= field_with_label("mail: ", client.mail, icon_class: "bi-envelope") %>
+          <%= field_with_label("mail2: ", client.mail2, icon_class: "bi-envelope-fill") %>
+          <%= field_with_label("adresse: ", client.adresse, icon_class: "bi-geo-alt") %>
+          <%= field_with_label("cp: ", client.cp, icon_class: "bi-mailbox") %>
+          <%= field_with_label("ville: ", client.ville, icon_class: "bi-building") %>
+          <%= field_with_label("pays: ", client.pays, icon_class: "bi-globe2") %>
+          <%= field_with_label("contact: ", client.contact, icon_class: "bi-person") %>
+          <%= field_with_label("langue: ", client.language_label, icon_class: "bi-translate") %>
         </div>
       </div>
 
     </div>
   </div>
+
+<% unless inner_only %>
 </div>
+<% end %>

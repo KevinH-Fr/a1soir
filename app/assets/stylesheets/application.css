@@ -65,37 +65,33 @@
   opacity: 0.7;
 }
 
-/* Bloc « Nouveau » (index admin, bloc_nouveau) */
+/* Bloc « Nouveau » : index (bloc_nouveau, #new) + fiche commande (#new_paiement, …).
+   Ne pas mettre de padding sur .collapse (twbs/bootstrap#12093). */
 .collapse-nouveau-admin,
-.collapse-nouveau-admin > #new {
+.collapse-nouveau-admin > #new,
+.collapse-nouveau-admin > #new_paiement,
+.collapse-nouveau-admin > #new_avoir_remb,
+.collapse-nouveau-admin > #new_article,
+.collapse-nouveau-admin > #new_meeting {
   overflow-anchor: none;
 }
 
-/* flow-root : les marges des champs (.mb-1, dernier bloc submit, etc.) restent dans la boîte
-   dont Bootstrap anime la hauteur ; sinon elles « fuient » et la fin de transition sursaute. */
-.collapse-nouveau-admin > #new {
+/* flow-root : containment pour l’animation collapse (padding / marges : utilitaires BS sur les div #new, #new_paiement, …). */
+.collapse-nouveau-admin > #new,
+.collapse-nouveau-admin > #new_paiement,
+.collapse-nouveau-admin > #new_avoir_remb,
+.collapse-nouveau-admin > #new_article,
+.collapse-nouveau-admin > #new_meeting {
   display: flow-root;
-  margin: 0;
   box-sizing: border-box;
-  /* Air au-dessus (bandeau) ; pas de padding-bas : la carte a déjà p-3 et la 1re ligne liste a my-2 → évite le double espace sous « Nouveau ». */
-  padding-top: 0.5rem;
-  padding-bottom: 0;
 }
 
-.collapse-nouveau-admin > #new turbo-frame {
+.collapse-nouveau-admin > #new turbo-frame,
+.collapse-nouveau-admin > #new_paiement turbo-frame,
+.collapse-nouveau-admin > #new_avoir_remb turbo-frame,
+.collapse-nouveau-admin > #new_article turbo-frame,
+.collapse-nouveau-admin > #new_meeting turbo-frame {
   display: block;
-  margin: 0;
-}
-
-.collapse-nouveau-admin > #new > .card,
-.collapse-nouveau-admin > #new > turbo-frame .card {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.collapse-nouveau-admin > #new form {
-  margin-top: 0;
-  margin-bottom: 0;
 }
 
 /* Le scroll admin est dans .admin-scroll : l’ancrage peut encore recaler au repli du collapse. */
@@ -108,7 +104,11 @@
   transition: height 0.22s linear !important;
 }
 
-.collapse-nouveau-admin.collapsing #new .card.shadow-sm {
+.collapse-nouveau-admin.collapsing #new .card.shadow-sm,
+.collapse-nouveau-admin.collapsing #new_paiement .card.shadow-sm,
+.collapse-nouveau-admin.collapsing #new_avoir_remb .card.shadow-sm,
+.collapse-nouveau-admin.collapsing #new_article .card.shadow-sm,
+.collapse-nouveau-admin.collapsing #new_meeting .card.shadow-sm {
   box-shadow: none !important;
 }
 

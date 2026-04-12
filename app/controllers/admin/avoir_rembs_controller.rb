@@ -39,7 +39,7 @@ class Admin::AvoirRembsController < Admin::ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update("new",
+            turbo_stream.update("new_avoir_remb",
               partial: "admin/avoir_rembs/form",
               locals: { commande_id: @avoir_remb.commande.id, avoir_remb: AvoirRemb.new }),
 
@@ -64,7 +64,7 @@ class Admin::AvoirRembsController < Admin::ApplicationController
       else
         format.turbo_stream do
           render turbo_stream:
-            turbo_stream.update("new",
+            turbo_stream.update("new_avoir_remb",
               partial: "admin/avoir_rembs/form",
               locals: { commande_id: @avoir_remb.commande_id, avoir_remb: @avoir_remb })
         end

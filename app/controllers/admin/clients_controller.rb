@@ -30,7 +30,11 @@ class Admin::ClientsController < Admin::ApplicationController
       format.turbo_stream do  
         render turbo_stream: turbo_stream.update(@client, 
           partial: "admin/clients/form", 
-          locals: { client: @client, admin_form_row_embedded: true })
+          locals: {
+            client: @client,
+            admin_form_row_embedded: true,
+            client_display_variant: params[:client_display_variant]
+          })
       end
     end
   end
@@ -57,8 +61,11 @@ class Admin::ClientsController < Admin::ApplicationController
         flash.now[:success] =  "Mise à jour réussie"
 
         format.turbo_stream do
+          variant = params[:client_display_variant] == "mini" ? :mini : :full
           render turbo_stream: [
-            turbo_stream.update(@client, partial: "admin/clients/client", locals: {client: @client}),
+            turbo_stream.update(@client,
+              partial: "admin/clients/client",
+              locals: { client: @client, variant: variant, client_inner_only: true }),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
           ]
         end
@@ -69,7 +76,11 @@ class Admin::ClientsController < Admin::ApplicationController
         format.turbo_stream do
           render turbo_stream: turbo_stream.update(@client,
             partial: "admin/clients/form",
-            locals: { client: @client, admin_form_row_embedded: true })
+            locals: {
+              client: @client,
+              admin_form_row_embedded: true,
+              client_display_variant: params[:client_display_variant]
+            })
         end
 
         format.html { render :edit, status: :unprocessable_entity }
