@@ -30,7 +30,7 @@ class Admin::PaiementRecusController < Admin::ApplicationController
         
         @commande = @paiement_recu.commande
 
-        flash.now[:success] = "Création réussie"
+        admin_push_domain_toast!(flash.now, :paiement_recu, :created)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -53,7 +53,10 @@ class Admin::PaiementRecusController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to admin_commande_path(@paiement_recu.commande), notice: "Paiement recu was successfully created." }
+        format.html do
+          admin_push_domain_toast!(flash, :paiement_recu, :created)
+          redirect_to admin_commande_path(@paiement_recu.commande)
+        end
         format.json { render json: @paiement_recu, status: :created, location: polymorphic_url([:admin, @paiement_recu]) }
       else
 
@@ -78,7 +81,7 @@ class Admin::PaiementRecusController < Admin::ApplicationController
     respond_to do |format|
       if @paiement_recu.update(paiement_recu_params)
 
-        flash.now[:success] = "Mise à jour réussie"
+        admin_push_domain_toast!(flash.now, :paiement_recu, :updated)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -98,7 +101,10 @@ class Admin::PaiementRecusController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to admin_commande_path(@paiement_recu.commande), notice: "Paiement recu was successfully updated." }
+        format.html do
+          admin_push_domain_toast!(flash, :paiement_recu, :updated)
+          redirect_to admin_commande_path(@paiement_recu.commande)
+        end
         format.json { render json: @paiement_recu, status: :ok, location: polymorphic_url([:admin, @paiement_recu]) }
       else
 
@@ -123,6 +129,7 @@ class Admin::PaiementRecusController < Admin::ApplicationController
     respond_to do |format|
 
       format.turbo_stream do
+        admin_push_domain_toast!(flash.now, :paiement_recu, :destroyed)
         render turbo_stream: [
           turbo_stream.remove(@paiement_recu),
           turbo_stream.update('synthese-paiements', 
@@ -130,12 +137,16 @@ class Admin::PaiementRecusController < Admin::ApplicationController
             locals: { paiement_recus: @commande.paiement_recus }),
 
           turbo_stream.update('synthese-commande', 
-            partial: "admin/commandes/synthese") 
+            partial: "admin/commandes/synthese"),
 
+          turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash }),
         ]
       end 
       
-      format.html { redirect_to admin_commande_path(@commande), notice: "Suppression réussie" }
+      format.html do
+        admin_push_domain_toast!(flash, :paiement_recu, :destroyed)
+        redirect_to admin_commande_path(@commande)
+      end
       format.json { head :no_content }
     end
   end

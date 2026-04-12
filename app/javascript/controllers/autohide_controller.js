@@ -2,8 +2,11 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="autohide"
 export default class extends Controller {
-  static values = { delay: { type: Number, default: 4000 } }
-  
+  static values = {
+    delay: { type: Number, default: 4000 },
+    fadeOut: { type: Boolean, default: false },
+  }
+
   connect() {
     // Supprimer les anciennes alertes s'il y en a plusieurs
     const allAlerts = document.querySelectorAll('[data-controller="autohide"]')
@@ -32,6 +35,19 @@ export default class extends Controller {
   }
   
   dismiss() {
-    this.element.remove()
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId)
+      this.timeoutId = null
+    }
+
+    const el = this.element
+    if (this.fadeOutValue && el.classList.contains("alert") && el.classList.contains("fade")) {
+      el.classList.remove("show")
+      const finish = () => el.remove()
+      el.addEventListener("transitionend", finish, { once: true })
+      window.setTimeout(finish, 400)
+    } else {
+      el.remove()
+    }
   }
 }

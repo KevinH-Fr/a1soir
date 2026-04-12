@@ -1,13 +1,8 @@
-<div data-controller="autohide" style="position: fixed; z-index: 5;">
-  <% flash.each do |key, value| %>
-    <% if key == "error" %>
-      <div class="alert alert-danger">
-        <%= value %>
-      </div>
-    <% else%>
-      <div class="alert alert-success">
-        <%= value %>
-      </div>
-    <% end %>
-  <% end %>
+<% wrap = local_assigns.fetch(:flash_wrap, false) %>
+<% if wrap %>
+<div id="flash" class="admin-flash-stack" aria-live="polite" aria-atomic="false">
+<% end %>
+<%= render partial: "layouts/admin_flash_alerts", locals: { flash: flash } %>
+<% if wrap %>
 </div>
+<% end %>

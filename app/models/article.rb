@@ -56,7 +56,11 @@ class Article < ApplicationRecord
   # car cela affecte directement la disponibilité (location ou vente)
   def update_produit_availability
     # Mettre à jour la disponibilité du produit à la date du jour
-    produit&.update_today_availability
+    # (le produit peut déjà être détruit en cascade, ex. suppression admin du produit)
+    p = produit
+    return if p.nil? || p.destroyed?
+
+    p.update_today_availability
   end
 
 end

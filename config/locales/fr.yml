@@ -1,5 +1,43 @@
 fr:
 
+  admin:
+    toasts:
+      paiement_recu:
+        created: "Paiement enregistré"
+        updated: "Paiement mis à jour"
+        destroyed: "Paiement supprimé"
+        labels:
+          typepaiement:
+            prix: "Prix"
+            caution: "Caution"
+          moyen:
+            carte_bleue: "Carte bleue"
+            especes: "Espèces"
+            cheque: "Chèque"
+            virement: "Virement"
+      produit:
+        duplicate_exists: "Un produit avec la même référence existe déjà."
+        created: "Produit créé"
+        updated: "Produit mis à jour"
+        destroyed: "Produit supprimé"
+        destroy_blocked: "Impossible de supprimer ce produit : des enregistrements y sont encore liés (cabine d'essayage, commandes, contenus marketing, etc.)."
+        image_deleted: "Image supprimée"
+        video_deleted: "Vidéo supprimée"
+        duplicated: "Duplication du produit effectuée"
+        duplicate_no_base: "Aucun produit de base spécifié"
+        coup_de_coeur_added: "Produit ajouté aux coups de cœur"
+        coup_de_coeur_removed: "Produit retiré des coups de cœur"
+        save_error: "Erreur lors de la mise à jour"
+        coup_de_coeur_position_updated: "Position mise à jour"
+        coup_de_coeur_not_found: "Produit non trouvé"
+        promotion_price_invalid: "Le nouveau prix doit être supérieur à 0"
+        promotion_requires_sale_price: "Le produit doit avoir un prix de vente pour appliquer une promotion"
+        promotion_applied: "Promotion appliquée"
+        promotion_apply_error: "Erreur lors de l'application de la promotion"
+        promotion_not_active: "Ce produit n'est pas en promotion"
+        promotion_removed: "Promotion retirée"
+        promotion_remove_error: "Erreur lors du retrait de la promotion"
+
   notices:
     successfully_created: "Création réussie."
     successfully_updated: "Mise à jour réussie."

@@ -1,0 +1,57 @@
+<%# Toasts déclaratifs (flash[:admin_toasts]) puis flash Rails classique (hors admin_toasts). %>
+<% admin_toast_autohide_ms = 6000 %>
+<% raw_admin_toasts = flash[:admin_toasts] %>
+<% admin_toasts = case raw_admin_toasts
+   when nil then []
+   when Array then raw_admin_toasts
+   else [raw_admin_toasts]
+   end %>
+<% admin_toasts = admin_toasts.compact_blank %>
+<% admin_toasts.each do |toast| %>
+  <% toast = toast.stringify_keys %>
+  <% variant = toast["variant"].presence_in(%w[success info warning danger]) || "info" %>
+  <% icon = toast["icon"].presence || "info-circle-fill" %>
+  <% message = toast["message"] %>
+  <% next if message.blank? %>
+  <% unique_id = "flash_#{variant}_#{Time.current.to_f.to_s.tr(".", "")}_#{icon.parameterize}" %>
+  <div id="<%= unique_id %>"
+       class="alert alert-<%= variant %> alert-admin-toast alert-dismissible fade show d-flex align-items-center shadow-sm"
+       role="alert"
+       data-controller="autohide"
+       data-autohide-delay-value="<%= admin_toast_autohide_ms %>"
+       data-autohide-fade-out-value="true">
+    <i class="bi bi-<%= icon %> flex-shrink-0 me-2 fs-5" aria-hidden="true"></i>
+    <span class="flex-grow-1"><%= message %></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+  </div>
+<% end %>
+
+<% flash.each do |key, value| %>
+  <% next if value.blank? %>
+  <% key_str = key.to_s %>
+  <% next if key_str == "admin_toasts" %>
+  <% unique_id = "flash_#{key_str}_#{Time.current.to_f.to_s.tr(".", "")}" %>
+  <% if %w[error alert].include?(key_str) %>
+    <% alert_class = "danger" %>
+    <% icon = "exclamation-triangle-fill" %>
+  <% elsif %w[success notice].include?(key_str) %>
+    <% alert_class = "success" %>
+    <% icon = "check-circle-fill" %>
+  <% elsif key_str == "warning" %>
+    <% alert_class = "warning" %>
+    <% icon = "exclamation-triangle-fill" %>
+  <% else %>
+    <% alert_class = "info" %>
+    <% icon = "info-circle-fill" %>
+  <% end %>
+  <div id="<%= unique_id %>"
+       class="alert alert-<%= alert_class %> alert-admin-toast alert-dismissible fade show d-flex align-items-center shadow-sm"
+       role="alert"
+       data-controller="autohide"
+       data-autohide-delay-value="<%= admin_toast_autohide_ms %>"
+       data-autohide-fade-out-value="true">
+    <i class="bi bi-<%= icon %> flex-shrink-0 me-2 fs-5" aria-hidden="true"></i>
+    <span class="flex-grow-1"><%= value %></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+  </div>
+<% end %>

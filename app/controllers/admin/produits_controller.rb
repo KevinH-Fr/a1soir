@@ -142,14 +142,20 @@ class Admin::ProduitsController < Admin::ApplicationController
 
       if same_existing_produit
 
-        format.html { redirect_to new_admin_produit_path, notice: "Un produit avec la même référence existe déjà"}
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :duplicate_exists)
+          redirect_to new_admin_produit_path
+        end
       
       elsif @produit.save
         if OnlineSales.available?
           StripeProductService.new(@produit).create_product_and_price
         end
         
-        format.html { redirect_to admin_produit_url(@produit), notice: "Création réussie" }
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :created)
+          redirect_to admin_produit_url(@produit)
+        end
         format.json { render :show, status: :created, location: @produit }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -186,14 +192,17 @@ class Admin::ProduitsController < Admin::ApplicationController
 
       if same_existing_produit
 
-        format.html { redirect_to admin_produit_path(@produit), notice: "Un produit avec la même référence existe déjà"}
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :duplicate_exists)
+          redirect_to admin_produit_path(@produit)
+        end
       
       elsif @produit.update(produit_params)
         if OnlineSales.available?
           StripeProductService.new(@produit).update_product_and_price
         end
         
-        flash.now[:success] =  "Mise à jour réussie"
+        admin_push_domain_toast!(flash.now, :produit, :updated)
 
         format.turbo_stream do
           render turbo_stream: [
@@ -202,7 +211,10 @@ class Admin::ProduitsController < Admin::ApplicationController
           ]
         end
 
-        format.html { redirect_to produit_url(@produit), notice: "Produit was successfully updated." }
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :updated)
+          redirect_to produit_url(@produit)
+        end
         format.json { render :show, status: :ok, location: @produit }
       else
 
@@ -222,33 +234,38 @@ class Admin::ProduitsController < Admin::ApplicationController
     @media = @produit.images.find(params[:image_id])
     @media.purge
   
-    redirect_to admin_produit_path(@produit), notice: "Media has been deleted successfully."
+    admin_push_domain_toast!(flash, :produit, :image_deleted)
+    redirect_to admin_produit_path(@produit)
   end
 
   def delete_video_attachment
     @produit.video1.purge if @produit.video1.attached?
-    redirect_to admin_produit_path(@produit), notice: "Vidéo supprimée avec succès."
+    admin_push_domain_toast!(flash, :produit, :video_deleted)
+    redirect_to admin_produit_path(@produit)
   end
 
   def destroy
-    @produit.destroy
-
     if @produit.destroy
       respond_to do |format|
-
-        flash.now[:success] = "Destruction réussie"
+        admin_push_domain_toast!(flash.now, :produit, :destroyed)
 
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.remove(@produit),
-            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
+            turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
           ]
         end
 
-        format.html { redirect_to produits_path, notice:  "Suppression réussie" }
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :destroyed)
+          redirect_to produits_path
+        end
       end
+    else
+      respond_with_produit_destroy_blocked
     end
-
+  rescue ActiveRecord::DeleteRestrictionError, ActiveRecord::InvalidForeignKey
+    respond_with_produit_destroy_blocked
   end
 
 
@@ -287,9 +304,11 @@ class Admin::ProduitsController < Admin::ApplicationController
         StripeProductService.new(copy).create_product_and_price 
       end
 
-      redirect_to admin_produit_path(copy), notice: "Duplication du produit effectuée !"
+      admin_push_domain_toast!(flash, :produit, :duplicated)
+      redirect_to admin_produit_path(copy)
     else
-      redirect_to admin_produit_path(@produit), notice: "Aucun produit de base spécifié."
+      admin_push_domain_toast!(flash, :produit, :duplicate_no_base)
+      redirect_to admin_produit_path(@produit)
     end
   end
 
@@ -300,14 +319,18 @@ class Admin::ProduitsController < Admin::ApplicationController
       # Attribuer une position si le produit devient un coup de cœur
       max_position = Produit.where(coup_de_coeur: true).maximum(:coup_de_coeur_position) || -1
       @produit.coup_de_coeur_position = max_position + 1
-      flash.now[:notice] = "Produit ajouté aux coups de cœur"
     else
       # Retirer la position si le produit n'est plus un coup de cœur
       @produit.coup_de_coeur_position = nil
-      flash.now[:notice] = "Produit retiré des coups de cœur"
     end
     
     if @produit.save
+      if @produit.coup_de_coeur
+        admin_push_domain_toast!(flash.now, :produit, :coup_de_coeur_added)
+      else
+        admin_push_domain_toast!(flash.now, :produit, :coup_de_coeur_removed)
+      end
+
       # Recharger la liste des coups de cœur
       @coups_de_coeur = Produit.coups_de_coeur.includes(:image1_attachment, :categorie_produits)
       
@@ -324,18 +347,25 @@ class Admin::ProduitsController < Admin::ApplicationController
               partial: "admin/produits/coup_de_coeur_toggle",
               locals: { produit: @produit }
             ),
-            turbo_stream.replace("flash", partial: "layouts/flash")
+            turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash, flash_wrap: true })
           ]
         end
-        format.html { redirect_to admin_produits_path, notice: flash.now[:notice] }
+        format.html do
+          toast_event = @produit.coup_de_coeur ? :coup_de_coeur_added : :coup_de_coeur_removed
+          admin_push_domain_toast!(flash, :produit, toast_event)
+          redirect_to admin_produits_path
+        end
       end
     else
-      flash.now[:alert] = "Erreur lors de la mise à jour"
+      admin_push_domain_toast!(flash.now, :produit, :save_error)
       respond_to do |format|
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash")
+          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash, flash_wrap: true })
         end
-        format.html { redirect_to admin_produits_path, alert: "Erreur lors de la mise à jour" }
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :save_error)
+          redirect_to admin_produits_path
+        end
       end
     end
   end
@@ -354,7 +384,7 @@ class Admin::ProduitsController < Admin::ApplicationController
         @produit.update_column(:coup_de_coeur_position, produit_au_dessus.coup_de_coeur_position)
         produit_au_dessus.update_column(:coup_de_coeur_position, position_temp)
         
-        flash.now[:notice] = "Position mise à jour"
+        admin_push_domain_toast!(flash.now, :produit, :coup_de_coeur_position_updated)
       end
       
       # Recharger la liste des coups de cœur
@@ -368,13 +398,17 @@ class Admin::ProduitsController < Admin::ApplicationController
               partial: "admin/textes/coups_de_coeur",
               locals: { coups_de_coeur_list_open: true }
             ),
-            turbo_stream.replace("flash", partial: "layouts/flash")
+            turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash, flash_wrap: true })
           ]
         end
-        format.html { redirect_to admin_textes_path(cdc_list: 1) }
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :coup_de_coeur_position_updated) if produit_au_dessus
+          redirect_to admin_textes_path(cdc_list: 1)
+        end
       end
     else
-      redirect_to admin_textes_path(cdc_list: 1), alert: "Produit non trouvé"
+      admin_push_domain_toast!(flash, :produit, :coup_de_coeur_not_found)
+      redirect_to admin_textes_path(cdc_list: 1)
     end
   end
 
@@ -392,7 +426,7 @@ class Admin::ProduitsController < Admin::ApplicationController
         @produit.update_column(:coup_de_coeur_position, produit_en_dessous.coup_de_coeur_position)
         produit_en_dessous.update_column(:coup_de_coeur_position, position_temp)
         
-        flash.now[:notice] = "Position mise à jour"
+        admin_push_domain_toast!(flash.now, :produit, :coup_de_coeur_position_updated)
       end
       
       # Recharger la liste des coups de cœur
@@ -406,13 +440,17 @@ class Admin::ProduitsController < Admin::ApplicationController
               partial: "admin/textes/coups_de_coeur",
               locals: { coups_de_coeur_list_open: true }
             ),
-            turbo_stream.replace("flash", partial: "layouts/flash")
+            turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash, flash_wrap: true })
           ]
         end
-        format.html { redirect_to admin_textes_path(cdc_list: 1) }
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :coup_de_coeur_position_updated) if produit_en_dessous
+          redirect_to admin_textes_path(cdc_list: 1)
+        end
       end
     else
-      redirect_to admin_textes_path(cdc_list: 1), alert: "Produit non trouvé"
+      admin_push_domain_toast!(flash, :produit, :coup_de_coeur_not_found)
+      redirect_to admin_textes_path(cdc_list: 1)
     end
   end
 
@@ -420,23 +458,29 @@ class Admin::ProduitsController < Admin::ApplicationController
     nouveau_prix = params[:nouveau_prix].to_f
     
     if nouveau_prix <= 0
-      flash.now[:alert] = "Le nouveau prix doit être supérieur à 0"
+      admin_push_domain_toast!(flash.now, :produit, :promotion_price_invalid)
       respond_to do |format|
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash })
+          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash, flash_wrap: true })
         end
-        format.html { redirect_to admin_produit_path(@produit), alert: "Le nouveau prix doit être supérieur à 0" }
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :promotion_price_invalid)
+          redirect_to admin_produit_path(@produit)
+        end
       end
       return
     end
 
     if @produit.prixvente.nil? || @produit.prixvente <= 0
-      flash.now[:alert] = "Le produit doit avoir un prix de vente pour appliquer une promotion"
+      admin_push_domain_toast!(flash.now, :produit, :promotion_requires_sale_price)
       respond_to do |format|
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash })
+          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash, flash_wrap: true })
         end
-        format.html { redirect_to admin_produit_path(@produit), alert: "Le produit doit avoir un prix de vente pour appliquer une promotion" }
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :promotion_requires_sale_price)
+          redirect_to admin_produit_path(@produit)
+        end
       end
       return
     end
@@ -449,36 +493,45 @@ class Admin::ProduitsController < Admin::ApplicationController
         StripeProductService.new(@produit).update_product_and_price
       end
       
-      flash.now[:success] = "Promotion appliquée avec succès"
+      admin_push_domain_toast!(flash.now, :produit, :promotion_applied)
       
       respond_to do |format|
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update(@produit, partial: "admin/produits/produit", locals: {produit: @produit}),
-            turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash })
+            turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash, flash_wrap: true })
           ]
         end
-        format.html { redirect_to admin_produit_path(@produit), notice: "Promotion appliquée avec succès" }
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :promotion_applied)
+          redirect_to admin_produit_path(@produit)
+        end
       end
     else
-      flash.now[:alert] = "Erreur lors de l'application de la promotion"
+      admin_push_domain_toast!(flash.now, :produit, :promotion_apply_error)
       respond_to do |format|
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash })
+          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash, flash_wrap: true })
         end
-        format.html { redirect_to admin_produit_path(@produit), alert: "Erreur lors de l'application de la promotion" }
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :promotion_apply_error)
+          redirect_to admin_produit_path(@produit)
+        end
       end
     end
   end
 
   def remove_promotion
     unless @produit.en_promotion?
-      flash.now[:alert] = "Ce produit n'est pas en promotion"
+      admin_push_domain_toast!(flash.now, :produit, :promotion_not_active)
       respond_to do |format|
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash })
+          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash, flash_wrap: true })
         end
-        format.html { redirect_to admin_produit_path(@produit), alert: "Ce produit n'est pas en promotion" }
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :promotion_not_active)
+          redirect_to admin_produit_path(@produit)
+        end
       end
       return
     end
@@ -491,29 +544,49 @@ class Admin::ProduitsController < Admin::ApplicationController
         StripeProductService.new(@produit).update_product_and_price
       end
       
-      flash.now[:success] = "Promotion retirée avec succès"
+      admin_push_domain_toast!(flash.now, :produit, :promotion_removed)
       
       respond_to do |format|
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update(@produit, partial: "admin/produits/produit", locals: {produit: @produit}),
-            turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash })
+            turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash, flash_wrap: true })
           ]
         end
-        format.html { redirect_to admin_produit_path(@produit), notice: "Promotion retirée avec succès" }
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :promotion_removed)
+          redirect_to admin_produit_path(@produit)
+        end
       end
     else
-      flash.now[:alert] = "Erreur lors du retrait de la promotion"
+      admin_push_domain_toast!(flash.now, :produit, :promotion_remove_error)
       respond_to do |format|
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash })
+          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { flash: flash, flash_wrap: true })
         end
-        format.html { redirect_to admin_produit_path(@produit), alert: "Erreur lors du retrait de la promotion" }
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :promotion_remove_error)
+          redirect_to admin_produit_path(@produit)
+        end
       end
     end
   end
   
   private
+
+    def respond_with_produit_destroy_blocked
+      admin_push_domain_toast!(flash.now, :produit, :destroy_blocked)
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+        end
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :destroy_blocked)
+          redirect_back fallback_location: admin_produit_path(@produit)
+        end
+      end
+    end
+
     def set_produit
       @produit = Produit.find(params[:id])
     end

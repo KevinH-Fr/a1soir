@@ -4,6 +4,7 @@ class Admin::ApplicationController < ActionController::Base
    layout 'admin' 
  
    include Pagy::Backend
+   include AdminFlashToast
 
   private
 

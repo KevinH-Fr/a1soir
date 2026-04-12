@@ -21,8 +21,10 @@ class Sousarticle < ApplicationRecord
   # Met à jour la disponibilité du produit concerné
   # Appelé après chaque création, modification ou suppression d'un sousarticle
   def update_produit_availability
-    # Mettre à jour la disponibilité du produit à la date du jour
-    produit&.update_today_availability
+    p = produit
+    return if p.nil? || p.destroyed?
+
+    p.update_today_availability
   end
   
 end

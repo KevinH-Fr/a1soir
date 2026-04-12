@@ -257,6 +257,8 @@ class Produit < ApplicationRecord
   # Utilisée par le job quotidien et les callbacks
   # Calcule la disponibilité à la date du jour et met à jour le champ today_availability
   def update_today_availability(datedebut = Time.current, datefin = Time.current)
+    return if destroyed?
+
     statut = statut_disponibilite(datedebut, datefin)
     disponible = statut[:disponibles] > 0
     
