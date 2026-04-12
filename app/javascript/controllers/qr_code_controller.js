@@ -7,7 +7,6 @@ export default class extends Controller {
 
     this.codeReader = new BrowserQRCodeReader();
     this.selectedDeviceId = null;
-    this.resultsDiv = this.element.querySelector("#results");
     this.sourceSelect = this.element.querySelector("#sourceSelect");
 
     this.populateSources();
@@ -67,8 +66,23 @@ export default class extends Controller {
     }
   }
 
+  showCameraVideoPanel() {
+    const panel = this.element.querySelector("#cameraVideoPanel");
+    if (panel) panel.classList.remove("d-none");
+  }
+
+  hideCameraVideoPanel() {
+    const panel = this.element.querySelector("#cameraVideoPanel");
+    if (panel) panel.classList.add("d-none");
+  }
+
   startScan() {
     console.log("[QR Code] Début du scan");
+
+    if (!this.selectedDeviceId) {
+      console.error("[QR Code] Aucune caméra sélectionnée");
+      return;
+    }
 
     const btnStart = this.element.querySelector("#startButton");
     btnStart.style.display = "none";
@@ -76,10 +90,7 @@ export default class extends Controller {
     const btnReset = this.element.querySelector("#resetButton");
     btnReset.style.display = "inline";
 
-    if (!this.selectedDeviceId) {
-      console.error("[QR Code] Aucune caméra sélectionnée");
-      return;
-    }
+    this.showCameraVideoPanel();
 
     this.codeReader.decodeFromInputVideoDevice(this.selectedDeviceId, "video").then((result) => {
       if (result) {
@@ -94,7 +105,7 @@ export default class extends Controller {
     console.log("[QR Code] Scan arrêté");
 
     this.codeReader.reset();
-    this.resultsDiv.textContent = "";
+    this.hideCameraVideoPanel();
 
     const btnStart = this.element.querySelector("#startButton");
     btnStart.style.display = "inline";
@@ -115,11 +126,6 @@ export default class extends Controller {
 
   handleScanResult(value, source = "inconnu") {
     console.log(`[QR Code] Résultat du scan (${source}) :`, value);
-
-    // Affichage dans la page
-    const resultElement = document.createElement("p");
-    resultElement.textContent = `Code (${source}) : ${value}`;
-    this.resultsDiv.appendChild(resultElement);
 
     // Redirection si c’est une URL valide
     try {

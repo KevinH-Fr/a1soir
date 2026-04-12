@@ -17,7 +17,12 @@ class Admin::SelectionProduitController < Admin::ApplicationController
     @titre_complet = "#{@titre}" " pour commande #{ @commande.ref_commande }"
     
     @produit = Produit.find(params[:produit]) if params[:produit]
-   
+
+    # Mode QR actif par défaut sur cet écran (bouton + partial), tant qu’on n’a pas de produit ni recherche.
+    if @produit.blank? && params[:q].blank?
+      session[:display_qr_activated] = true
+    end
+
     produits = Produit.actif
 
     # Traitement de la recherche multi-mots

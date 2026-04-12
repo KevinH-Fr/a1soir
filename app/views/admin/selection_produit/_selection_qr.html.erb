@@ -1,36 +1,60 @@
-<div data-controller="qr-code-ajout-article">
-  <div class="container-fluid p-2"> 
+<div data-controller="qr-code-ajout-article" class="selection-produit-qr">
+  <div class="container-fluid px-0 pt-2 pb-1 w-100">
 
-    <!-- 🔍 Ajout du champ pour la douchette -->
-    <div class="text-center mt-3">
-      <input
-        type="text"
-        id="scannerInput"
-        class="form-control text-center"
-        style="max-width: 400px; margin: 0 auto;"
-        placeholder="Scannez un QR code avec la douchette"
-        data-action="change->qr-code-ajout-article#handleScannerInput"
-        autofocus
-      />
-    </div>
+    <p class="text-body-secondary small text-center text-md-start mb-3 mb-md-4">
+      Scannez d’abord avec la douchette si besoin, ou utilisez la caméra après avoir cliqué sur Démarrer.
+    </p>
 
-    <div class="container d-flex justify-content-center align-items-center">
-      <div class="m-2" id="sourceSelectPanel">
-        <select id="sourceSelect" class="form-select m-2" style="max-width:400px;"></select>
+    <div class="card selection-produit-qr-section border border-secondary-subtle shadow-none mb-3">
+      <div class="card-body p-3 p-md-4">
+        <h2 class="h6 fw-semibold text-body mb-0 pb-3 d-flex align-items-center gap-2 border-bottom border-secondary-subtle">
+          <i class="bi bi-upc-scan text-primary" aria-hidden="true"></i>
+          Douchette
+        </h2>
+        <label for="scannerInput" class="form-label small text-body-secondary mb-1 d-block pt-4">Saisie code-barres / QR</label>
+        <input
+          type="text"
+          id="scannerInput"
+          class="form-control form-control-lg text-center font-monospace"
+          placeholder="Scannez avec la douchette"
+          autocomplete="off"
+          data-action="change->qr-code-ajout-article#handleScannerInput"
+          autofocus
+        />
       </div>
-
-      <a class="button btn btn-primary m-2" id="startButton" data-action="click->qr-code-ajout-article#startScan">Démarrer</a>
-      <a class="button btn btn-danger m-2" id="resetButton" data-action="click->qr-code-ajout-article#stopScan" style="display: none;">Arrêter</a>
     </div>
 
-    <div class="text-center mt-2">
-      <video id="video" style="width: 100%; max-width: 600px; height: auto;"></video>
+    <div class="card selection-produit-qr-section border border-secondary-subtle shadow-none mb-3">
+      <div class="card-body p-3 p-md-4">
+        <h2 class="h6 fw-semibold text-body mb-0 pb-3 d-flex align-items-center gap-2 border-bottom border-secondary-subtle">
+          <i class="bi bi-camera-video text-primary" aria-hidden="true"></i>
+          Caméra
+        </h2>
+
+        <div class="d-flex flex-column flex-md-row flex-wrap align-items-stretch align-items-md-end gap-2 gap-md-3 pt-4 mb-0 w-100">
+          <div class="flex-grow-1 min-w-0" style="min-width: min(100%, 10rem);" id="sourceSelectPanel">
+            <label for="sourceSelect" class="form-label small text-body-secondary mb-1 d-block">Source vidéo</label>
+            <select id="sourceSelect" class="form-select w-100"></select>
+          </div>
+          <div class="d-flex flex-wrap gap-2 flex-shrink-0 align-self-stretch align-self-md-end">
+            <a class="btn btn-primary px-4" id="startButton" role="button" data-action="click->qr-code-ajout-article#startScan">
+              <i class="bi bi-play-fill me-1" aria-hidden="true"></i>
+              Démarrer
+            </a>
+            <a class="btn btn-outline-danger px-4" id="resetButton" role="button" data-action="click->qr-code-ajout-article#stopScan" style="display: none;">
+              <i class="bi bi-stop-fill me-1" aria-hidden="true"></i>
+              Arrêter
+            </a>
+          </div>
+        </div>
+
+        <div id="cameraVideoPanel" class="d-none mt-3 w-100">
+          <div class="rounded-3 overflow-hidden selection-produit-qr-video-wrap border border-secondary-subtle w-100">
+            <video id="video" class="d-block w-100" style="max-height: min(55vh, 380px); object-fit: contain;" playsinline muted></video>
+          </div>
+        </div>
+      </div>
     </div>
-
-
-    <div id="count"></div>
-    <br>
-    <div id="results"></div>
 
     <form data-action="submit@submit->rails#create">
       <input type="hidden" id="produit" name="produit">

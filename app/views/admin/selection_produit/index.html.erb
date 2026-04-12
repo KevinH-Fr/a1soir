@@ -1,7 +1,7 @@
 <div class="pb-5">
   <div class="card mx-2 mb-3 light-beige-colored shadow-sm rounded-3 overflow-hidden border border-secondary-subtle">
 
-    <div class="card-header lighter-beige-colored border-bottom border-secondary-subtle py-3 px-3 px-md-4 rounded-0">
+    <div class="card-header light-beige-colored border-bottom border-secondary-subtle py-3 px-3 px-md-4 rounded-0">
       <h1 class="h5 mb-0 fw-semibold text-body text-center text-md-start"><%= @titre_complet %></h1>
     </div>
 
@@ -36,17 +36,18 @@
 
       <% unless @produit.present? || params[:q] %>
         <% button_configs = [
-          { path: display_qr_admin_selection_produit_index_path, icon: "bi-qr-code-scan", text: "QR code", color: "text-secondary" },
-          { path: display_manuelle_admin_selection_produit_index_path(article: @article), icon: "bi-hand-index", text: "Manuelle", color: "text-secondary" }
+          { path: display_qr_admin_selection_produit_index_path, icon: "bi-qr-code-scan", text: "QR code", color: "text-secondary", mode: :qr },
+          { path: display_manuelle_admin_selection_produit_index_path(article: @article), icon: "bi-hand-index", text: "Manuelle", color: "text-secondary", mode: :manuelle }
         ] %>
 
-        <div class="selection-produit-mode-panel px-3 px-md-4 py-3 border-top border-secondary-subtle bg-body-tertiary bg-opacity-50">
+        <div class="selection-produit-mode-panel px-3 px-md-4 py-3 border-top border-secondary-subtle light-beige-colored">
           <p class="text-center small fw-semibold text-body-secondary text-uppercase mb-3 mb-md-2">Mode de sélection</p>
           <%# .d-flex requis : button-color Stimulus utilise closest(".d-flex") %>
           <div class="d-flex flex-wrap justify-content-center align-items-center gap-2 gap-md-3">
             <% button_configs.each do |config| %>
+              <% btn_active = (config[:mode] == :qr && session[:display_qr_activated] == true) || (config[:mode] == :manuelle && session[:display_qr_activated] == false) %>
               <%= button_to config[:path],
-                    class: "btn btn-outline-secondary border-secondary-subtle btn-topic rounded-pill px-4 py-2 d-inline-flex align-items-center justify-content-center gap-2 shadow-sm fw-semibold text-body",
+                    class: "btn btn-outline-secondary border-secondary-subtle btn-topic rounded-pill px-4 py-2 d-inline-flex align-items-center justify-content-center gap-2 shadow-sm fw-semibold text-body#{' active' if btn_active}",
                     data: { controller: "button-color", action: "click->button-color#handleClick" },
                     "data-original-color": config[:color] do %>
                 <i class="bi bi-xl <%= config[:icon] %> <%= config[:color] %> <%= config[:text].downcase.parameterize %> <%= config[:color] %>" data-target="button-color.icon" aria-hidden="true"></i>

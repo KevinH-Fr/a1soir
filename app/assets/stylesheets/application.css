@@ -353,10 +353,54 @@
   box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.22);
 }
 
+/* Mode actif (QR / Manuelle) : bleu primaire au lieu du gris Bootstrap */
+.selection-produit-mode-panel .btn-topic.btn-outline-secondary.active,
+.selection-produit-mode-panel .btn-topic.btn-outline-secondary.active:focus-visible {
+  color: var(--bs-white);
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  box-shadow: 0 0.125rem 0.35rem rgba(var(--bs-primary-rgb), 0.35);
+}
+
+.selection-produit-mode-panel .btn-topic.btn-outline-secondary.active:hover {
+  color: var(--bs-white);
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  filter: brightness(0.92);
+}
+
+.selection-produit-mode-panel .btn-topic.btn-outline-secondary.active .bi {
+  color: var(--bs-white) !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .selection-produit-mode-panel .btn-topic.btn-outline-secondary {
     transition: none;
   }
+}
+
+/* Sélection produit — sous-cartes QR : même tonalité que la carte beige parente */
+.light-beige-colored .selection-produit-qr .selection-produit-qr-section.card {
+  background-color: rgba(255, 255, 255, 0.42);
+  --bs-card-bg: transparent;
+}
+
+.light-beige-colored .selection-produit-qr .selection-produit-qr-video-wrap {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Scan QR page admin (home_admin_scan_qr) — même rendu carte / vidéo que sélection produit */
+.qr-scan-admin.selection-produit-qr .selection-produit-qr-section.card {
+  background-color: rgba(0, 0, 0, 0.025);
+  --bs-card-bg: transparent;
+}
+
+.qr-scan-admin.selection-produit-qr .selection-produit-qr-video-wrap {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.qr-scan-admin .qr-scan-title-band {
+  background-color: rgba(0, 0, 0, 0.03);
 }
 
 .page-max-widthed {

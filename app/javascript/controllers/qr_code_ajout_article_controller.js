@@ -7,7 +7,6 @@ export default class extends Controller {
 
     this.codeReader = new BrowserQRCodeReader();
     this.selectedDeviceId = null;
-    this.resultsDiv = document.getElementById("results");
     this.sourceSelect = this.element.querySelector("#sourceSelect");
 
     this.populateSources();
@@ -84,16 +83,18 @@ export default class extends Controller {
   startScan() {
     console.log("[Stimulus] Démarrage du scan...");
 
+    if (!this.selectedDeviceId) {
+      console.error("[Stimulus] Aucune caméra sélectionnée");
+      return;
+    }
+
     const btnStart = this.element.querySelector("#startButton");
     btnStart.style.display = "none";
 
     const btnReset = this.element.querySelector("#resetButton");
     btnReset.style.display = "inline";
 
-    if (!this.selectedDeviceId) {
-      console.error("[Stimulus] Aucune caméra sélectionnée");
-      return;
-    }
+    this.showCameraVideoPanel();
 
     this.codeReader.decodeFromInputVideoDevice(this.selectedDeviceId, "video").then((result) => {
       if (result) {
@@ -106,7 +107,7 @@ export default class extends Controller {
   stopScan() {
     console.log("[Stimulus] Arrêt du scan");
     this.codeReader.reset();
-    this.resultsDiv.textContent = "";
+    this.hideCameraVideoPanel();
 
     const btnStart = this.element.querySelector("#startButton");
     btnStart.style.display = "inline";
@@ -117,6 +118,16 @@ export default class extends Controller {
     sessionStorage.removeItem("scanning");
   }
 
+  showCameraVideoPanel() {
+    const panel = this.element.querySelector("#cameraVideoPanel");
+    if (panel) panel.classList.remove("d-none");
+  }
+
+  hideCameraVideoPanel() {
+    const panel = this.element.querySelector("#cameraVideoPanel");
+    if (panel) panel.classList.add("d-none");
+  }
+
   handleResult(result) {
     const raw = result.toString();
     console.log("[Stimulus] Traitement du QR code (caméra) :", raw);
@@ -125,8 +136,8 @@ export default class extends Controller {
       const resultTransforme = raw.split("produits/")[1];
       const resultTransforme2 = resultTransforme.split("?")[0];
 
-      this.resultsDiv.innerHTML += `<p>Product ID (caméra) : ${resultTransforme2}</p>`;
-      this.element.querySelector("#produit").value = resultTransforme2;
+      const produitInput = this.element.querySelector("#produit");
+      if (produitInput) produitInput.value = resultTransforme2;
 
       this.codeReader.stopStreams();
       const btnReset = this.element.querySelector("#resetButton");
@@ -149,8 +160,8 @@ export default class extends Controller {
       const resultTransforme = value.split("produits/")[1];
       const resultTransforme2 = resultTransforme.split("?")[0];
 
-      this.resultsDiv.innerHTML += `<p>Product ID (douchette) : ${resultTransforme2}</p>`;
-      this.element.querySelector("#produit").value = resultTransforme2;
+      const produitInput = this.element.querySelector("#produit");
+      if (produitInput) produitInput.value = resultTransforme2;
 
       this.refreshWithParam(resultTransforme2);
     } catch (e) {
