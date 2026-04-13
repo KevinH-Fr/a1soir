@@ -19,12 +19,13 @@ class Admin::SousarticlesController < Admin::ApplicationController
     respond_to do |format|
       format.html 
       format.turbo_stream do  
-        render turbo_stream: turbo_stream.update(@sousarticle, 
-          partial: "admin/sousarticles/form", 
-          locals: { commande_id: @sousarticle.article.commande_id, 
-                    produit_id: @sousarticle.produit_id, 
+        render turbo_stream: turbo_stream.update(@sousarticle,
+          partial: "admin/sousarticles/form",
+          locals: { commande_id: @sousarticle.article.commande_id,
+                    produit_id: @sousarticle.produit_id,
                     article: @sousarticle.article,
-                    sousarticle: @sousarticle})
+                    sousarticle: @sousarticle,
+                    sousarticle_form_layout: :commande })
       end
     end
   end
