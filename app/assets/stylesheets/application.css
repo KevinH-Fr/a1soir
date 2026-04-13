@@ -80,6 +80,14 @@
   min-height: 3rem;
 }
 
+/* Fiche admin (`card_main_model`) : icône du titre un peu plus grande à partir de md */
+@media (min-width: 768px) {
+  .card-main-model-header-icon.bi-xl {
+    font-size: 1.3rem;
+    line-height: 1;
+  }
+}
+
 /* Bandeau section admin : une ligne compacte sur mobile (fiche commande, etc.) */
 @media (max-width: 767.98px) {
   .card.card-main-model-section > .card-header {

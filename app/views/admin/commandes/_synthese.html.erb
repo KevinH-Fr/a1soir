@@ -1,4 +1,6 @@
-<div id="synthese-commande">
-  <%= custom_badge_boolean("prix", solde_prix(@commande)) %>
-  <%= custom_badge_boolean("caution", solde_caution(@commande)) %>
+<div id="synthese-commande" class="d-flex flex-nowrap align-items-center justify-content-center gap-1 gap-md-2 overflow-x-auto overflow-y-hidden">
+  <% solde_p = solde_prix(@commande) %>
+  <%= synthese_kpi_chip("Prix", custom_currency_format(solde_p), icon: "currency-euro", accent: solde_p != 0 ? :danger : :success) %>
+  <% solde_c = solde_caution(@commande) %>
+  <%= synthese_kpi_chip("Caution", custom_currency_format(solde_c), icon: "shield-lock", accent: solde_c != 0 ? :danger : :success) %>
 </div>

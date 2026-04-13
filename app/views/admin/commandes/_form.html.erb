@@ -17,7 +17,7 @@
       </div>
     <% end %>
 
-    <%# Sections : vstack gap-3 + row g-2 — aligné sur admin/clients/_form %>
+    <%# Sections : vstack gap-3 + row g-1 — aligné sur admin/clients/_form %>
     <div class="commande-form-sections vstack gap-3">
 
       <section aria-labelledby="commande-sec-refs">
@@ -25,7 +25,7 @@
           <i class="bi bi-link-45deg flex-shrink-0 opacity-75" aria-hidden="true"></i>
           <span>Références</span>
         </h2>
-        <div class="row g-2">
+        <div class="row g-1">
           <% unless @client %>
             <div class="col-12 col-md-6">
               <div class="form-group input-group mb-1 w-100">
@@ -58,7 +58,7 @@
           <i class="bi bi-calendar-event flex-shrink-0 opacity-75" aria-hidden="true"></i>
           <span>Événement</span>
         </h2>
-        <div class="row g-2">
+        <div class="row g-1">
           <div class="col-12 col-md-6">
             <div class="form-group input-group mb-1 w-100">
               <div class="input-group-text">
@@ -81,7 +81,7 @@
           <span>Période de location</span>
         </h2>
         <div data-controller="date-fields-commande" class="w-100">
-          <div class="row g-2">
+          <div class="row g-1">
             <div class="col-12 col-md-6">
               <div class="form-group input-group mb-1 w-100">
                 <%= form.label :debutloc, "Début location", class: "input-group-text label-with-format" %>

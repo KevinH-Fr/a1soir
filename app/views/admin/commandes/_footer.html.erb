@@ -1,16 +1,30 @@
-<div class="container-fluid m-0 p-0 d-flex align-items-center justify-content-between gap-1 p-2">
+<div class="container-fluid px-2 px-md-3 py-2">
+  <div class="d-flex flex-nowrap align-items-center gap-2 gap-md-3 w-100 min-w-0">
+    <div class="flex-shrink-0 d-flex align-items-center min-w-0" style="max-width: min(18rem, 46vw);">
+      <span class="badge rounded-pill text-bg-secondary fw-semibold px-2 px-md-3 py-2 shadow-sm text-center mw-100 min-w-0 d-inline-flex align-items-center justify-content-center gap-1 gap-md-2 text-nowrap"
+            title="Référence commande"
+            aria-label="Référence commande <%= @commande.ref_commande %>">
+        <i class="bi bi-file-earmark-fill flex-shrink-0 opacity-75" aria-hidden="true"></i>
+        <span class="text-start lh-sm text-truncate min-w-0"><%= @commande.ref_commande %></span>
+      </span>
+    </div>
 
-    <span class="badge bg-secondary fw-bold m-1 small shadow-sm text-light">
-        <%= @commande.ref_commande %>        
-    </span>
+    <div class="flex-grow-1 flex-shrink-1 min-w-0 d-flex align-items-center justify-content-center">
+      <%= render 'synthese' %>
+    </div>
 
-    <%= render 'synthese' %>
-
-    <button class="btn btn-sm btn-primary fa fa-bounce" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
-        <i class="bi bi-file-earmark-text"></i>
-        <span class="d-none d-md-inline ms-1">Editer</span>
-    </button>
-
+    <div class="flex-shrink-0 d-flex align-items-center">
+      <button class="btn btn-sm btn-primary fa fa-bounce rounded-pill px-2 px-md-3 d-inline-flex align-items-center gap-0 gap-md-1 flex-shrink-0"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasWithBothOptions"
+              aria-controls="offcanvasWithBothOptions"
+              aria-label="Editer">
+        <i class="bi bi-file-earmark-text" aria-hidden="true"></i>
+        <span class="d-none d-md-inline">Editer</span>
+      </button>
+    </div>
+  </div>
 </div>
 
 <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">

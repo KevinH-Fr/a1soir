@@ -20,7 +20,7 @@
       </div>
     <% end %>
 
-    <%# Sections : grille homogène (g-2), pas de px-1 sur les groupes — aligné sur custom_form_elements %>
+    <%# Sections : grille homogène (g-1), pas de px-1 sur les groupes — aligné sur custom_form_elements %>
     <div class="client-form-sections vstack gap-3">
 
       <section aria-labelledby="client-sec-identity">
@@ -28,7 +28,7 @@
           <i class="bi bi-person-vcard flex-shrink-0 opacity-75" aria-hidden="true"></i>
           <span>Identité</span>
         </h2>
-        <div class="row g-2">
+        <div class="row g-1">
           <div class="col-12 col-lg-3">
             <div class="form-group input-group mb-1 w-100">
               <div class="input-group-text">
@@ -54,7 +54,7 @@
           <i class="bi bi-briefcase flex-shrink-0 opacity-75" aria-hidden="true"></i>
           <span>Profil</span>
         </h2>
-        <div class="row g-2">
+        <div class="row g-1">
           <div class="col-12 col-md-6">
             <div class="form-group input-group mb-1 w-100">
               <div class="input-group-text">
@@ -79,7 +79,7 @@
           <i class="bi bi-person-lines-fill flex-shrink-0 opacity-75" aria-hidden="true"></i>
           <span>Coordonnées</span>
         </h2>
-        <div class="row g-2">
+        <div class="row g-1">
           <div class="col-12 col-md-6">
             <%= custom_form_elements(form, [:tel, :number_field]) %>
           </div>
@@ -100,7 +100,7 @@
           <i class="bi bi-geo-alt flex-shrink-0 opacity-75" aria-hidden="true"></i>
           <span>Adresse</span>
         </h2>
-        <div class="row g-2">
+        <div class="row g-1">
           <div class="col-12">
             <%= custom_form_elements(form, [:adresse, :text_field]) %>
           </div>
@@ -121,7 +121,7 @@
           <i class="bi bi-journal-text flex-shrink-0 opacity-75" aria-hidden="true"></i>
           <span>Notes</span>
         </h2>
-        <div class="row g-2">
+        <div class="row g-1">
           <div class="col-12">
             <%= custom_form_elements(form, [:commentaires, :text_area]) %>
           </div>

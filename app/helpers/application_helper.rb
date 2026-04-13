@@ -56,30 +56,41 @@ module ApplicationHelper
     end
   end
   
-    def custom_badge_boolean(text, value)
-        color = (value != 0) ? "danger" : "success"
-        content_tag(:div, class: "badge bg-#{color} me-1 small") do
-          concat " #{text}"
-          concat " #{custom_currency_format(value)}"
-        end
-    end
-
     # Pastilles KPI compactes (bandeau sombre fiche commande) — utilitaires Bootstrap uniquement.
     # icon: nom Bootstrap Icons sans préfixe (ex. "currency-euro") — sur mobile (< md), l’icône remplace le libellé.
-    def synthese_kpi_chip(label, value, icon: nil)
-      title = "#{label} : #{value}"
+    # value: texte affiché (souvent déjà formaté, ex. custom_currency_format).
+    # accent: :success / :danger pour bordure teintée (ex. solde nul / solde restant dû).
+    def synthese_kpi_chip(label, value, icon: nil, accent: nil)
+      display = value.to_s
+      title = "#{label} : #{display}"
       label_classes = ["text-uppercase", "small", "text-white-50", "fw-semibold", "lh-1", "text-nowrap"]
       label_classes += %w[d-none d-md-inline] if icon.present?
 
+      chip_surface = case accent
+                     when :success
+                       "border border-2 border-success bg-success bg-opacity-35 shadow-sm"
+                     when :danger
+                       "border border-2 border-danger bg-danger bg-opacity-35 shadow-sm"
+                     else
+                       "border border-light border-opacity-25 bg-white bg-opacity-10"
+                     end
+
+      value_classes = ["fw-bold lh-sm font-monospace small text-nowrap text-white"]
+
       parts = []
       if icon.present?
-        parts << tag.i(class: "bi bi-#{icon} flex-shrink-0 d-md-none opacity-90", aria: { hidden: true })
+        icon_tone = accent.in?(%i[success danger]) ? "text-white " : ""
+        parts << tag.i(class: "bi bi-#{icon} #{icon_tone}flex-shrink-0 d-md-none opacity-90", aria: { hidden: true })
       end
       parts << tag.span(label, class: label_classes.join(" "))
-      parts << tag.span(value.to_s, class: "fw-semibold text-white lh-sm font-monospace small")
+      parts << tag.span(display, class: value_classes.join(" "))
 
       content_tag(:span,
-        class: "admin-synthese-kpi-chip d-inline-flex align-items-center gap-1 gap-md-2 px-1 px-md-2 py-0 py-md-1 rounded-2 border border-light border-opacity-25 bg-white bg-opacity-10 text-light",
+        class: [
+          "admin-synthese-kpi-chip d-inline-flex align-items-center gap-1 gap-md-2 flex-shrink-0",
+          "px-2 py-1 rounded-2 text-light",
+          chip_surface
+        ].join(" "),
         title: title,
         aria: { label: title }) do
         safe_join(parts)
