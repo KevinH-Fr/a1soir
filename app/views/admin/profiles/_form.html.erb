@@ -1,11 +1,14 @@
-<div class="card mx-2 p-2 light-beige-colored shadow-sm">
-
+<% profile_compact_collapse = local_assigns[:index_collapse] && !profile.persisted? %>
+<%= render layout: "admin/shared/form_card_shell",
+           locals: {
+             compact: profile_compact_collapse,
+             embedded: local_assigns.fetch(:admin_form_row_embedded, false)
+           } do %>
   <%= form_with(model: profile, url: profile.persisted? ? admin_profile_path(profile) : admin_profiles_path, method: profile.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
     <% if profile.errors.any? %>
-      <div style="color: red">
-        <h2><%= pluralize(profile.errors.count, "error") %> prohibited this profile from being saved:</h2>
-
-        <ul>
+      <div class="alert alert-danger py-2 mb-3" role="alert">
+        <h2 class="h6 mb-2"><%= pluralize(profile.errors.count, "error") %> prohibited this profile from being saved:</h2>
+        <ul class="mb-0 small">
           <% profile.errors.each do |error| %>
             <li><%= error.full_message %></li>
           <% end %>
@@ -16,20 +19,17 @@
     <%= custom_form_elements(form,
        [:prenom, :text_field], [:nom, :text_field]) %>
 
-    <div class="p-2">
-      <div class="row g-1">
-        <div class="col-12">
-          <%= form.label :profile_pic, "Photo de profil", class: "form-label mb-1" %>
-          <%= form.file_field :profile_pic,
-                class: "form-control form-control-sm",
-                accept: "image/jpeg,image/png,image/gif,image/jpg,image/webp,.jpg,.jpeg,.png,.webp,.gif" %>
-          <div class="form-text">Formats : JPG/JPEG, PNG, WEBP, GIF</div>
-        </div>
+    <div class="row g-1 mt-2">
+      <div class="col-12">
+        <%= form.label :profile_pic, "Photo de profil", class: "form-label mb-1" %>
+        <%= form.file_field :profile_pic,
+              class: "form-control form-control-sm",
+              accept: "image/jpeg,image/png,image/gif,image/jpg,image/webp,.jpg,.jpeg,.png,.webp,.gif" %>
+        <div class="form-text">Formats : JPG/JPEG, PNG, WEBP, GIF</div>
       </div>
     </div>
 
     <%= custom_submit_button(form) %>
 
   <% end %>
-
-</div>
+<% end %>

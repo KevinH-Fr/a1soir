@@ -24,10 +24,10 @@ class Admin::EnsemblesController < Admin::ApplicationController
   def edit
     respond_to do |format|
       format.html 
-      format.turbo_stream do  
-        render turbo_stream: turbo_stream.update(@ensemble, 
-          partial: "admin/ensembles/form", 
-          locals: {ensemble: @ensemble})
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update(@ensemble,
+          partial: "admin/ensembles/form",
+          locals: { ensemble: @ensemble, admin_form_row_embedded: true })
       end
     end
   end
@@ -44,7 +44,7 @@ class Admin::EnsemblesController < Admin::ApplicationController
           render turbo_stream: [
             turbo_stream.update('new',
                                 partial: "admin/ensembles/form",
-                                locals: { ensemble: Ensemble.new }),
+                                locals: { ensemble: Ensemble.new, index_collapse: true }),
   
             turbo_stream.prepend('ensembles',
                                   partial: "admin/ensembles/ensemble",
@@ -60,6 +60,12 @@ class Admin::EnsemblesController < Admin::ApplicationController
         end
         format.json { render :show, status: :created, location: @ensemble }
       else
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("new",
+            partial: "admin/ensembles/form",
+            locals: { ensemble: @ensemble, index_collapse: true })
+        end
+
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @ensemble.errors, status: :unprocessable_entity }
       end
@@ -85,6 +91,12 @@ class Admin::EnsemblesController < Admin::ApplicationController
         end
         format.json { render :show, status: :ok, location: @ensemble }
       else
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update(@ensemble,
+            partial: "admin/ensembles/form",
+            locals: { ensemble: @ensemble, admin_form_row_embedded: true })
+        end
+
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @ensemble.errors, status: :unprocessable_entity }
       end

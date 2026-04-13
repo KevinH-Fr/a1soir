@@ -6,10 +6,9 @@
            } do %>
   <%= form_with(model: ensemble, url: ensemble.persisted? ? admin_ensemble_path(ensemble) : admin_ensembles_path, method: ensemble.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
     <% if ensemble.errors.any? %>
-      <div style="color: red">
-        <h2><%= pluralize(ensemble.errors.count, "error") %> prohibited this ensemble from being saved:</h2>
-
-        <ul>
+      <div class="alert alert-danger py-2 mb-3" role="alert">
+        <h2 class="h6 mb-2"><%= pluralize(ensemble.errors.count, "error") %> prohibited this ensemble from being saved:</h2>
+        <ul class="mb-0 small">
           <% ensemble.errors.each do |error| %>
             <li><%= error.full_message %></li>
           <% end %>
@@ -17,7 +16,7 @@
       </div>
     <% end %>
 
-    <div class="mx-1 mb-1 px-2">
+    <div class="mb-2">
       <div class="input-group input-group">
         <%= form.label :parent, class: "input-group-text" %>
         <%= form.collection_select :produit_id, Produit.is_ensemble.order(:nom), :id, :nom,
@@ -25,7 +24,7 @@
       </div>
     </div>
 
-    <div class="mx-1 mb-1 px-2">
+    <div class="mb-2">
       <div class="input-group input-group">
         <%= form.label :enfant1, class: "input-group-text" %>
         <%= form.collection_select :type_produit1_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom,
@@ -33,7 +32,7 @@
       </div>
     </div>
 
-    <div class="mx-1 mb-1 px-2">
+    <div class="mb-2">
       <div class="input-group input-group">
         <%= form.label :enfant2, class: "input-group-text" %>
         <%= form.collection_select :type_produit2_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom,
@@ -41,7 +40,7 @@
       </div>
     </div>
 
-    <div class="mx-1 mb-1 px-2">
+    <div class="mb-2">
       <div class="input-group input-group">
         <%= form.label :enfant3, class: "input-group-text" %>
         <%= form.collection_select :type_produit3_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom,
@@ -49,7 +48,7 @@
       </div>
     </div>
 
-    <div class="mx-1 mb-1 px-2">
+    <div class="mb-2">
       <div class="input-group input-group">
         <%= form.label :enfant4, class: "input-group-text" %>
         <%= form.collection_select :type_produit4_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom,
@@ -57,7 +56,7 @@
       </div>
     </div>
 
-    <div class="mx-1 mb-1 px-2">
+    <div class="mb-2">
       <div class="input-group input-group">
         <%= form.label :enfant5, class: "input-group-text" %>
         <%= form.collection_select :type_produit5_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom,
@@ -65,7 +64,7 @@
       </div>
     </div>
 
-    <div class="mx-1 mb-1 px-2">
+    <div class="mb-2">
       <div class="input-group input-group">
         <%= form.label :enfant6, class: "input-group-text" %>
         <%= form.collection_select :type_produit6_id, TypeProduit.types_enfants_unique.order(:nom), :id, :nom,
