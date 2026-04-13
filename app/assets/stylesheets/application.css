@@ -175,23 +175,23 @@
   cursor: pointer;
 }
 
-/* Dropdown dark theme */
-.dropdown-menu {
+/* Dropdown dark theme — site public uniquement (body.bg-black) */
+body.bg-black .dropdown-menu {
   background-color: #343a40 !important;
   border: 1px solid #6c757d !important;
 }
 
-.dropdown-item {
+body.bg-black .dropdown-item {
   color: #f8f9fa !important;
 }
 
-.dropdown-item:hover,
-.dropdown-item:focus {
+body.bg-black .dropdown-item:hover,
+body.bg-black .dropdown-item:focus {
   background-color: #495057 !important;
   color: #ffffff !important;
 }
 
-.dropdown-item.fw-bold {
+body.bg-black .dropdown-item.fw-bold {
   background-color: #495057 !important;
   color: #ffffff !important;
 }

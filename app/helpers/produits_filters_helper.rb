@@ -9,6 +9,8 @@ module ProduitsFiltersHelper
     filter_statut filter_fournisseur filter_mode filter_prix
   ].freeze
 
+  FILTER_DROPDOWN_ITEM_NAME_LENGTH = 40
+
   def produits_active_filters_count
     FILTER_PARAM_KEYS.count { |k| params[k].present? }
   end
@@ -43,18 +45,21 @@ module ProduitsFiltersHelper
       # Button
       concat(
         content_tag(:button,
-          class: "btn btn-sm btn-outline-secondary dropdown-toggle",
+          class: "btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center gap-1 min-w-0",
           type: "button",
           id: toggle_id,
           data: { bs_toggle: "dropdown" },
-          aria: { expanded: false }) do
+          aria: { expanded: false },
+          title: (selected_label.present? ? selected_label.to_s : nil)) do
           button_parts = []
-          button_parts << tag.i(class: icon, aria: { hidden: true })
+          button_parts << tag.i(class: "#{icon} flex-shrink-0", aria: { hidden: true })
 
           if selected_label.present?
-            button_parts << content_tag(:span, selected_label, class: "ms-1")
+            button_parts << content_tag(:span, selected_label,
+              class: "text-truncate text-start",
+              style: "max-width: 11rem")
           else
-            label_span_class = always_show_label ? "ms-1" : "ms-1 d-none d-md-inline"
+            label_span_class = always_show_label ? "text-start" : "text-start d-none d-md-inline"
             button_parts << content_tag(:span, label, class: label_span_class)
           end
 
@@ -63,7 +68,7 @@ module ProduitsFiltersHelper
       )
 
       # Dropdown menu
-      menu_classes = ["dropdown-menu"]
+      menu_classes = %w[dropdown-menu shadow-sm]
       if columns.present? && columns.to_i > 1
         menu_classes << "multi-column" << "columns-#{columns.to_i}"
       end
@@ -150,12 +155,15 @@ module ProduitsFiltersHelper
           
             collection.each do |item|
               active = selected_value.to_s == item.id.to_s
+              nom = item.nom.to_s
+              display = truncate(nom, length: FILTER_DROPDOWN_ITEM_NAME_LENGTH, omission: "…")
               concat(
                 content_tag(:li) do
                   link_to(
-                    item.nom,
+                    display,
                     url_for(current_params.merge(param_key => item)),
-                    class: produits_filter_dropdown_item_class(active)
+                    class: produits_filter_dropdown_item_class(active),
+                    title: nom
                   )
                 end
               )
@@ -222,19 +230,22 @@ module ProduitsFiltersHelper
     content_tag(:div, class: "dropdown") do
       concat(
         button_tag(
-          class: "btn btn-sm btn-outline-primary dropdown-toggle",
+          class: "btn btn-sm btn-outline-primary dropdown-toggle d-inline-flex align-items-center gap-1 min-w-0",
           type: "button",
           id: "sortDropdown",
           data: { bs_toggle: "dropdown" },
-          aria: { expanded: false }
+          aria: { expanded: false },
+          title: (current_label.presence)
         ) do
           parts = []
-          parts << tag.i(class: "bi bi-sort-up-alt", aria: { hidden: true })
+          parts << tag.i(class: "bi bi-sort-up-alt flex-shrink-0", aria: { hidden: true })
 
           if current_label
-            parts << content_tag(:span, current_label, class: "ms-1")
+            parts << content_tag(:span, current_label,
+              class: "text-truncate text-start",
+              style: "max-width: 11rem")
           else
-            parts << content_tag(:span, "Trier", class: "ms-1 d-none d-md-inline")
+            parts << content_tag(:span, "Trier", class: "text-start d-none d-md-inline")
           end
 
           safe_join(parts)
@@ -242,7 +253,7 @@ module ProduitsFiltersHelper
       )
 
       concat(
-        content_tag(:ul, class: "dropdown-menu", aria: { labelledby: "sortDropdown" }) do
+        content_tag(:ul, class: "dropdown-menu shadow-sm", aria: { labelledby: "sortDropdown" }) do
           concat(
             content_tag(:li) do
               link_to(
@@ -273,6 +284,6 @@ module ProduitsFiltersHelper
   private
 
   def produits_filter_dropdown_item_class(active)
-    ["dropdown-item", "small", ("fw-bold" if active)].compact.join(" ")
+    ["dropdown-item", "small", ("active" if active)].compact.join(" ")
   end
 end
