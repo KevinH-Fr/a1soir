@@ -9,11 +9,11 @@ module ArticlesHelper
     caution = du_caution(commande).to_d
 
     chips = []
-    chips << synthese_kpi_chip("Articles", qty) if qty.positive?
-    chips << synthese_kpi_chip("Prix", custom_currency_format(prix)) unless prix.zero?
-    chips << synthese_kpi_chip("Caution", custom_currency_no_decimals_format(caution)) unless caution.zero?
+    chips << synthese_kpi_chip("Articles", qty, icon: "box-seam") if qty.positive?
+    chips << synthese_kpi_chip("Prix", custom_currency_format(prix), icon: "currency-euro") unless prix.zero?
+    chips << synthese_kpi_chip("Caution", custom_currency_no_decimals_format(caution), icon: "shield-lock") unless caution.zero?
 
-    content_tag(:div, class: "d-flex flex-wrap gap-2 align-items-center justify-content-end mw-100") do
+    admin_synthese_kpi_strip do
       safe_join(chips)
     end
   end

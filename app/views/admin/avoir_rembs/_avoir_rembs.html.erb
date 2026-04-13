@@ -1,9 +1,7 @@
 <%= card_main_model(
   "Avoir-Remb.",
   "cash-stack",
-  link_to("",
-          "#collapseNewAvoirremb",
-          class: "bi bi-plus-lg btn btn-sm btn-warning fw-bold",
+  admin_bandeau_nouveau_cta("#collapseNewAvoirremb",
           data: { bs_toggle: "collapse" },
           role: "button",
           aria: { expanded: "false", controls: "collapseNewAvoirremb" }),

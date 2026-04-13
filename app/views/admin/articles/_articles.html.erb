@@ -1,7 +1,5 @@
 <% articles_header_actions = capture do %>
-  <%= link_to "", admin_selection_produit_path(commande: @commande),
-        class: "bi bi-plus-lg btn btn-sm btn-warning fw-bold",
-        title: "Sélection produit" %>
+  <%= admin_bandeau_nouveau_cta admin_selection_produit_path(commande: @commande), title: "Sélection produit" %>
 <% end %>
 <%= card_main_model("Articles", "person-standing-dress", articles_header_actions,
       totals_inline: render("admin/articles/synthese")) %>

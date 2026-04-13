@@ -611,6 +611,18 @@ module AdminFlashToast
     )
   end
 
+  # Erreurs ActiveModel / ActiveRecord (ex. validation) — un toast danger avec les messages joints.
+  def admin_push_model_errors_toast!(flash_target, record)
+    return if record.errors.empty?
+
+    append_admin_toast_payload!(
+      flash_target,
+      variant: :danger,
+      icon: "exclamation-triangle-fill",
+      message: record.errors.full_messages.join(" · "),
+    )
+  end
+
   # Options supplémentaires pour I18n.t (ex. interpolation). :record est réservé au domaine.
   def admin_toast_i18n_opts(domain, options)
     options.except(:record)

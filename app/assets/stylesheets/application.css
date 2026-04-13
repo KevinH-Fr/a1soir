@@ -80,6 +80,63 @@
   min-height: 3rem;
 }
 
+/* Bandeau section admin : une ligne compacte sur mobile (fiche commande, etc.) */
+@media (max-width: 767.98px) {
+  .card.card-main-model-section > .card-header {
+    min-height: 2.35rem;
+  }
+
+  .card-main-model-header-icon.bi-xl {
+    font-size: 1.05rem;
+    line-height: 1;
+  }
+
+  .card-main-model-title {
+    font-size: 0.8125rem;
+    letter-spacing: -0.02em;
+  }
+
+  .card-main-model-header-actions .btn.btn-sm {
+    padding: 0.15rem 0.35rem;
+    line-height: 1.1;
+  }
+
+  /* Une seule ligne : défilement horizontal discret si besoin (titre tronqué à gauche). */
+  .card-main-model-header-row {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .card-main-model-header-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .admin-synthese-kpi-strip {
+    flex-wrap: nowrap !important;
+    gap: 0.2rem !important;
+  }
+
+  .admin-synthese-kpi-chip {
+    flex-shrink: 0;
+    padding: 0.1rem 0.3rem !important;
+    font-size: 0.68rem;
+    line-height: 1.15;
+    border-radius: 0.2rem !important;
+    gap: 0.2rem !important;
+  }
+
+  .admin-synthese-kpi-chip .fw-semibold,
+  .admin-synthese-kpi-chip .small {
+    font-size: inherit !important;
+  }
+
+  .admin-synthese-kpi-chip .bi {
+    font-size: 0.95em;
+  }
+}
+
 /* Override Bootstrap blue focus for dark inputs */
 .form-control.bg-dark:focus {
   border-color: rgba(255, 255, 255, 0.5) !important;

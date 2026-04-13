@@ -2,18 +2,6 @@
   <div class="card-body p-2 d-flex flex-column">
 
   <%= form_with(model: paiement_recu, url: paiement_recu.persisted? ? admin_paiement_recu_path(paiement_recu) : admin_paiement_recus_path, method: paiement_recu.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
-    <% if paiement_recu.errors.any? %>
-      <div style="color: red">
-        <h2><%= pluralize(paiement_recu.errors.count, "error") %> prohibited this paiement_recu from being saved:</h2>
-
-        <ul>
-          <% paiement_recu.errors.each do |error| %>
-            <li><%= error.full_message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-
     <div class="d-flex flex-column gap-1 w-100">
       <div class="input-group w-100">
         <%= form.label :typepaiement, "Type paiement", class: "input-group-text" %>

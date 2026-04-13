@@ -59,14 +59,17 @@ class Admin::PaiementRecusController < Admin::ApplicationController
         end
         format.json { render json: @paiement_recu, status: :created, location: polymorphic_url([:admin, @paiement_recu]) }
       else
+        admin_push_model_errors_toast!(flash.now, @paiement_recu)
 
         format.turbo_stream do
-          render turbo_stream: 
+          render turbo_stream: [
             turbo_stream.update('new_paiement',
               partial: "admin/paiement_recus/form",
-              locals: {commande_id: @paiement_recu.commande.id, paiement_recu: @paiement_recu })
+              locals: { commande_id: @paiement_recu.commande.id, paiement_recu: @paiement_recu }),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash }),
+          ]
         end
-        
+
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @paiement_recu.errors, status: :unprocessable_entity }
       end
@@ -107,12 +110,15 @@ class Admin::PaiementRecusController < Admin::ApplicationController
         end
         format.json { render json: @paiement_recu, status: :ok, location: polymorphic_url([:admin, @paiement_recu]) }
       else
+        admin_push_model_errors_toast!(flash.now, @paiement_recu)
 
         format.turbo_stream do
-          render turbo_stream: 
+          render turbo_stream: [
             turbo_stream.update(@paiement_recu,
-                                partial: "admin/paiement_recus/form",
-                                locals: {commande_id: @paiement_recu.commande.id, paiement_recu: @paiement_recu })
+              partial: "admin/paiement_recus/form",
+              locals: { commande_id: @paiement_recu.commande.id, paiement_recu: @paiement_recu }),
+            turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash }),
+          ]
         end
 
         format.html { render :edit, status: :unprocessable_entity }

@@ -37,7 +37,7 @@ module IndexModelHelper
                   data: { bs_toggle: "collapse", bs_target: "#collapseNew", aria_expanded: "false" },
                   aria: { controls: "collapseNew", label: "Nouveau" }) do
                 concat(content_tag(:i, nil, class: "bi bi-plus-lg fa-xl", "aria-hidden": "true"))
-                concat(content_tag(:span, "Nouveau", class: "d-none d-sm-inline"))
+                concat(content_tag(:span, "Nouveau", class: "d-none d-md-inline"))
               end)
             end
           end)

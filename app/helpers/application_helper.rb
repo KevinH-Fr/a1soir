@@ -65,13 +65,45 @@ module ApplicationHelper
     end
 
     # Pastilles KPI compactes (bandeau sombre fiche commande) — utilitaires Bootstrap uniquement.
-    def synthese_kpi_chip(label, value)
+    # icon: nom Bootstrap Icons sans préfixe (ex. "currency-euro") — sur mobile (< md), l’icône remplace le libellé.
+    def synthese_kpi_chip(label, value, icon: nil)
+      title = "#{label} : #{value}"
+      label_classes = ["text-uppercase", "small", "text-white-50", "fw-semibold", "lh-1", "text-nowrap"]
+      label_classes += %w[d-none d-md-inline] if icon.present?
+
+      parts = []
+      if icon.present?
+        parts << tag.i(class: "bi bi-#{icon} flex-shrink-0 d-md-none opacity-90", aria: { hidden: true })
+      end
+      parts << tag.span(label, class: label_classes.join(" "))
+      parts << tag.span(value.to_s, class: "fw-semibold text-white lh-sm font-monospace small")
+
       content_tag(:span,
-        class: "d-inline-flex align-items-baseline gap-2 px-2 py-1 rounded-2 border border-light border-opacity-25 bg-white bg-opacity-10 text-light",
-        title: "#{label} : #{value}") do
+        class: "admin-synthese-kpi-chip d-inline-flex align-items-center gap-1 gap-md-2 px-1 px-md-2 py-0 py-md-1 rounded-2 border border-light border-opacity-25 bg-white bg-opacity-10 text-light",
+        title: title,
+        aria: { label: title }) do
+        safe_join(parts)
+      end
+    end
+
+    # Conteneur des pastilles KPI (bandeau section) — une ligne sur mobile, wrap à partir de md.
+    def admin_synthese_kpi_strip(&block)
+      content_tag(:div,
+        class: "admin-synthese-kpi-strip d-flex flex-nowrap flex-md-wrap gap-1 gap-md-2 align-items-center justify-content-end mw-100 min-w-0 flex-shrink-0") do
+        yield
+      end
+    end
+
+    # CTA jaune « + Nouveau » (bandeaux `card_main_model`). Texte masqué sous md — aligné au mobile admin (768px).
+    def admin_bandeau_nouveau_cta(url, **options)
+      aria = { label: "Nouveau" }.merge(options.delete(:aria) || {})
+      extra = options.delete(:class)
+      css = %w[btn btn-sm btn-warning fw-bold d-inline-flex align-items-center gap-1 flex-shrink-0]
+      css << extra if extra.present?
+      link_to url, **options.merge(class: css.join(" "), aria: aria) do
         safe_join([
-          tag.span(label, class: "text-uppercase small text-white-50 fw-semibold lh-1 text-nowrap"),
-          tag.span(value.to_s, class: "fw-semibold text-white lh-sm font-monospace small")
+          tag.i(class: "bi bi-plus-lg", aria: { hidden: true }),
+          tag.span("Nouveau", class: "d-none d-md-inline small fw-bold"),
         ])
       end
     end

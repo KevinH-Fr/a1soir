@@ -1,8 +1,7 @@
 <%= card_main_model(
   "Paiements",
   "cash",
-  link_to("", "#collapseNewPaiement",
-          class: "bi bi-plus-lg btn btn-sm btn-warning fw-bold",
+  admin_bandeau_nouveau_cta("#collapseNewPaiement",
           data: { bs_toggle: "collapse" },
           role: "button", aria: { expanded: "false", controls: "collapseNewPaiement" }),
   totals_inline: render("admin/paiement_recus/synthese")) %>

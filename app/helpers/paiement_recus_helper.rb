@@ -5,10 +5,10 @@ module PaiementRecusHelper
       caution = paiements.only_caution.sum(:montant).to_d
 
       chips = []
-      chips << synthese_kpi_chip("Prix", custom_currency_format(prix)) unless prix.zero?
-      chips << synthese_kpi_chip("Caution", custom_currency_no_decimals_format(caution)) unless caution.zero?
+      chips << synthese_kpi_chip("Prix", custom_currency_format(prix), icon: "currency-euro") unless prix.zero?
+      chips << synthese_kpi_chip("Caution", custom_currency_no_decimals_format(caution), icon: "shield-lock") unless caution.zero?
 
-      content_tag(:div, class: "d-flex flex-wrap gap-2 align-items-center justify-content-end mw-100") do
+      admin_synthese_kpi_strip do
         safe_join(chips)
       end
     end
@@ -20,9 +20,9 @@ module PaiementRecusHelper
 
       total = stripe_payment.amount.to_d / 100
       chips = []
-      chips << synthese_kpi_chip("Prix", custom_currency_format(total)) unless total.zero?
+      chips << synthese_kpi_chip("Prix", custom_currency_format(total), icon: "currency-euro") unless total.zero?
 
-      content_tag(:div, class: "d-flex flex-wrap gap-2 align-items-center justify-content-end mw-100") do
+      admin_synthese_kpi_strip do
         safe_join(chips)
       end
     end
