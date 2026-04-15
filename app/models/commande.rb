@@ -97,9 +97,22 @@ class Commande < ApplicationRecord
   ransacker :ref_commande, formatter: proc { |v| v } do |_parent|
     Arel.sql("CONCAT('C', 1000 + commandes.id)")
   end
-  
+
+  # Table legacy `paiements` (FK vers commandes) sans association ActiveRecord sur Commande :
+  # la suppression échouerait en base si des lignes existent encore.
+  def hard_destroy_allowed?
+    !legacy_paiements_linked?
+  end
 
   private
+
+  def legacy_paiements_linked?
+    return false unless connection.data_source_exists?("paiements")
+
+    connection.select_value(
+      self.class.sanitize_sql_array(["SELECT 1 FROM paiements WHERE commande_id = ? LIMIT 1", id])
+    ).present?
+  end
 
   def after_commande_create
     self.update(statutarticles: "non-retiré")

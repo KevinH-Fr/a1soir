@@ -46,6 +46,13 @@ class Client < ApplicationRecord
       end
     end
 
+  def hard_destroy_allowed?
+    return false if commandes.exists?
+    return false if meetings.exists?
+
+    true
+  end
+
   def self.create_from_demande(demande)
     # Retourne un client correspondant à la demande.
     # Si un client existe déjà, on le renvoie tel quel (les données client restent sous contrôle de l'admin).

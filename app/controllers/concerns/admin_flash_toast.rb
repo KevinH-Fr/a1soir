@@ -146,6 +146,11 @@ module AdminFlashToast
         icon: "trash",
         message_key: "admin.toasts.commande.destroyed",
       },
+      destroy_blocked: {
+        variant: :warning,
+        icon: "link-45deg",
+        message_key: "admin.toasts.commande.destroy_blocked",
+      },
       statut_retire: {
         variant: :success,
         icon: "box-arrow-up",
@@ -319,6 +324,11 @@ module AdminFlashToast
         icon: "trash",
         message_key: "admin.toasts.profile.destroyed",
       },
+      destroy_blocked: {
+        variant: :warning,
+        icon: "link-45deg",
+        message_key: "admin.toasts.profile.destroy_blocked",
+      },
     },
     type_produit: {
       created: {
@@ -335,6 +345,11 @@ module AdminFlashToast
         variant: :danger,
         icon: "trash",
         message_key: "admin.toasts.type_produit.destroyed",
+      },
+      destroy_blocked: {
+        variant: :warning,
+        icon: "link-45deg",
+        message_key: "admin.toasts.type_produit.destroy_blocked",
       },
     },
     categorie_produit: {
@@ -353,6 +368,11 @@ module AdminFlashToast
         icon: "trash",
         message_key: "admin.toasts.categorie_produit.destroyed",
       },
+      destroy_blocked: {
+        variant: :warning,
+        icon: "link-45deg",
+        message_key: "admin.toasts.categorie_produit.destroy_blocked",
+      },
     },
     couleur: {
       created: {
@@ -370,6 +390,11 @@ module AdminFlashToast
         icon: "trash",
         message_key: "admin.toasts.couleur.destroyed",
       },
+      destroy_blocked: {
+        variant: :warning,
+        icon: "link-45deg",
+        message_key: "admin.toasts.couleur.destroy_blocked",
+      },
     },
     taille: {
       created: {
@@ -386,6 +411,11 @@ module AdminFlashToast
         variant: :danger,
         icon: "trash",
         message_key: "admin.toasts.taille.destroyed",
+      },
+      destroy_blocked: {
+        variant: :warning,
+        icon: "link-45deg",
+        message_key: "admin.toasts.taille.destroy_blocked",
       },
     },
     fournisseur: {
@@ -420,6 +450,11 @@ module AdminFlashToast
         variant: :danger,
         icon: "trash",
         message_key: "admin.toasts.ensemble.destroyed",
+      },
+      destroy_blocked: {
+        variant: :warning,
+        icon: "link-45deg",
+        message_key: "admin.toasts.ensemble.destroy_blocked",
       },
     },
     client: {

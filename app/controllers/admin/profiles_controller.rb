@@ -106,6 +106,12 @@ class Admin::ProfilesController < Admin::ApplicationController
   end
 
   def destroy
+    unless @profile.hard_destroy_allowed?
+      admin_push_domain_toast!(flash, :profile, :destroy_blocked)
+      redirect_back fallback_location: admin_profiles_url
+      return
+    end
+
     @profile.destroy!
 
     respond_to do |format|
@@ -115,6 +121,9 @@ class Admin::ProfilesController < Admin::ApplicationController
       end
       format.json { head :no_content }
     end
+  rescue ActiveRecord::DeleteRestrictionError, ActiveRecord::InvalidForeignKey
+    admin_push_domain_toast!(flash, :profile, :destroy_blocked)
+    redirect_back fallback_location: admin_profiles_url
   end
 
   private

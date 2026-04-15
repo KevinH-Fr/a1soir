@@ -3,7 +3,7 @@
   <div class="card mx-2 p-1 light-beige-colored shadow-sm">
 
     <div class="row">
-      <div data-turbo="false" class="col-10">
+      <div data-turbo="false" class="col">
         <%= link_to admin_commande_path(commande), class: "text-decoration-none text-dark" do %>
 
           <%#= custom_badge("", "", "", commande.ref_commande) %>
@@ -52,25 +52,41 @@
         </div>
 
       </div>
-      <div class="col-2 text-end">
-        <%= links_record(commande, turbo_delete: true) %>
+      <div class="col-auto text-end">
+        <%= links_record(commande, turbo_delete: true, show_destroy: false) %>
       </div>
 
       <div class="">
         <div class="collapse" id="<%= collapse_id %>">
           <hr class="mt-2 mb-2 border-0 border-top border-secondary opacity-25">
-          <div class="d-flex flex-wrap align-items-start gap-2 px-2">
-            <%= image_tag(commande.qr_code, class: "rounded-start") if commande.qr_code.attached? %>
+          <div class="px-2">
+            <div class="d-flex flex-wrap align-items-start gap-2">
+              <%= image_tag(commande.qr_code, class: "rounded-start") if commande.qr_code.attached? %>
 
-            <%= field_with_label("nom: ", commande.nom) %>
-            <%= field_with_label("description: ", commande.description) %>
-            <%= field_with_label("debut location: ", commande.debutloc) %>
-            <%= field_with_label("fin location: ", commande.finloc) %>
-            <%#= field_with_label("dateevent: ", commande.dateevent) %>
-            <%# E-shop : commentaires = récap Stripe (livraison, PI…) — déjà sur la section Paiement Stripe, pas dans ce collapse %>
-            <% unless commande.eshop? %>
-              <%= field_with_label("commentaires: ", commande.commentaires) %>
-            <% end %>
+              <%= field_with_label("nom: ", commande.nom) %>
+              <%= field_with_label("description: ", commande.description) %>
+              <%= field_with_label("debut location: ", commande.debutloc) %>
+              <%= field_with_label("fin location: ", commande.finloc) %>
+              <%#= field_with_label("dateevent: ", commande.dateevent) %>
+              <%# E-shop : commentaires = récap Stripe (livraison, PI…) — déjà sur la section Paiement Stripe, pas dans ce collapse %>
+              <% unless commande.eshop? %>
+                <%= field_with_label("commentaires: ", commande.commentaires) %>
+              <% end %>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-end align-items-center gap-2 mt-2 pt-2 border-top border-secondary border-opacity-25">
+              <% if commande.hard_destroy_allowed? %>
+                <%= button_to admin_commande_path(commande),
+                      method: :delete,
+                      class: "btn btn-sm btn-danger d-inline-flex align-items-center",
+                      form: { data: { turbo_confirm: "Êtes-vous certain de vouloir supprimer cette commande et les éléments liés ?" } } do %>
+                  <i class="bi bi-trash me-1"></i>
+                  <span>Supprimer</span>
+                <% end %>
+              <% else %>
+                <span class="small text-muted">Suppression impossible (données liées, ex. paiements historiques).</span>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>

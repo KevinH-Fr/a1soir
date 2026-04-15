@@ -104,6 +104,12 @@ class Admin::TaillesController < Admin::ApplicationController
 
   # DELETE /tailles/1 or /tailles/1.json
   def destroy
+    unless @taille.hard_destroy_allowed?
+      admin_push_domain_toast!(flash, :taille, :destroy_blocked)
+      redirect_back fallback_location: admin_tailles_url
+      return
+    end
+
     @taille.destroy!
 
     respond_to do |format|
@@ -113,6 +119,9 @@ class Admin::TaillesController < Admin::ApplicationController
       end
       format.json { head :no_content }
     end
+  rescue ActiveRecord::DeleteRestrictionError, ActiveRecord::InvalidForeignKey
+    admin_push_domain_toast!(flash, :taille, :destroy_blocked)
+    redirect_back fallback_location: admin_tailles_url
   end
 
   private

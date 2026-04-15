@@ -15,10 +15,17 @@ class CategorieProduit < ApplicationRecord
 
     def default_image
         if image1.attached?
-          image1
+            image1
         else
-          '/images/no_photo.png'
+            '/images/no_photo.png'
         end
+    end
+
+    def hard_destroy_allowed?
+      return false if produits.exists?
+      return false if Produit.exists?(categorie_produit_id: id)
+
+      true
     end
 
     def is_service?

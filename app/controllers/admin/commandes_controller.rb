@@ -122,22 +122,24 @@ class Admin::CommandesController < Admin::ApplicationController
   end
 
   def destroy
-    #@commande.qr_code.purge if @commande.qr_code.attached?
+    unless @commande.hard_destroy_allowed?
+      admin_push_domain_toast!(flash, :commande, :destroy_blocked)
+      redirect_back fallback_location: admin_root_url
+      return
+    end
+
     @commande.destroy!
 
-    
     respond_to do |format|
-              
-      # format.turbo_stream do
-      #   render turbo_stream: turbo_stream.remove(@commande)
-      # end
-
       format.html do
         admin_push_domain_toast!(flash, :commande, :destroyed)
         redirect_to admin_root_url
       end
       format.json { head :no_content }
     end
+  rescue ActiveRecord::DeleteRestrictionError, ActiveRecord::InvalidForeignKey
+    admin_push_domain_toast!(flash, :commande, :destroy_blocked)
+    redirect_back fallback_location: admin_root_url
   end
 
 

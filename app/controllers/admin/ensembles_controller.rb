@@ -104,6 +104,12 @@ class Admin::EnsemblesController < Admin::ApplicationController
   end
 
   def destroy
+    unless @ensemble.hard_destroy_allowed?
+      admin_push_domain_toast!(flash, :ensemble, :destroy_blocked)
+      redirect_back fallback_location: admin_ensembles_url
+      return
+    end
+
     @ensemble.destroy!
 
     respond_to do |format|
@@ -113,6 +119,9 @@ class Admin::EnsemblesController < Admin::ApplicationController
       end
       format.json { head :no_content }
     end
+  rescue ActiveRecord::DeleteRestrictionError, ActiveRecord::InvalidForeignKey
+    admin_push_domain_toast!(flash, :ensemble, :destroy_blocked)
+    redirect_back fallback_location: admin_ensembles_url
   end
 
   private

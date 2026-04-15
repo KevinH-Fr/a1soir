@@ -34,6 +34,7 @@ fr:
         created: "Commande créée"
         updated: "Commande mise à jour"
         destroyed: "Commande supprimée"
+        destroy_blocked: "Impossible de supprimer cette commande : des enregistrements y sont encore liés (paiements historiques, etc.)."
         statut_retire: "Commande marquée comme retirée par le client"
         statut_non_retire: "Commande marquée comme non retirée"
         rendu_avec_email: "Commande rendue — e-mail de confirmation envoyé au client"
@@ -74,34 +75,42 @@ fr:
         created: "Profil créé"
         updated: "Profil mis à jour"
         destroyed: "Profil supprimé"
+        destroy_blocked: "Impossible de supprimer ce profil : des commandes y sont encore liées, ou il s'agit du profil technique e-shop."
       type_produit:
         created: "Type de produit créé"
         updated: "Type de produit mis à jour"
         destroyed: "Type de produit supprimé"
+        destroy_blocked: "Impossible de supprimer ce type : des produits ou ensembles l'utilisent encore."
       categorie_produit:
         created: "Catégorie créée"
         updated: "Catégorie mise à jour"
         destroyed: "Catégorie supprimée"
+        destroy_blocked: "Impossible de supprimer cette catégorie : des produits y sont encore liés."
       couleur:
         created: "Couleur créée"
         updated: "Couleur mise à jour"
         destroyed: "Couleur supprimée"
+        destroy_blocked: "Impossible de supprimer cette couleur : des produits l'utilisent encore."
       taille:
         created: "Taille créée"
         updated: "Taille mise à jour"
         destroyed: "Taille supprimée"
+        destroy_blocked: "Impossible de supprimer cette taille : des produits l'utilisent encore."
       fournisseur:
         created: "Fournisseur créé"
         updated: "Fournisseur mis à jour"
         destroyed: "Fournisseur supprimé"
+        destroy_blocked: "Impossible de supprimer ce fournisseur : des produits y sont encore liés."
       ensemble:
         created: "Ensemble créé"
         updated: "Ensemble mis à jour"
         destroyed: "Ensemble supprimé"
+        destroy_blocked: "Impossible de supprimer cet ensemble : des enregistrements y sont encore liés."
       client:
         created: "Client créé"
         updated: "Client mis à jour"
         destroyed: "Client supprimé"
+        destroy_blocked: "Impossible de supprimer ce client : des commandes ou des rendez-vous y sont encore liés."
       article:
         created: "Article créé"
         updated: "Article mis à jour"

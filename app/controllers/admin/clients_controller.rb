@@ -96,18 +96,50 @@ class Admin::ClientsController < Admin::ApplicationController
   end
 
   def destroy
-    @client.destroy!
-
-    respond_to do |format|
-      format.html do
-        admin_push_domain_toast!(flash, :client, :destroyed)
-        redirect_to admin_clients_url
-      end
-      format.json { head :no_content }
+    unless @client.hard_destroy_allowed?
+      respond_with_client_destroy_blocked
+      return
     end
+
+    if @client.destroy
+      respond_to do |format|
+        admin_push_domain_toast!(flash.now, :client, :destroyed)
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.remove(@client),
+            turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+          ]
+        end
+
+        format.html do
+          admin_push_domain_toast!(flash, :client, :destroyed)
+          redirect_to admin_clients_url
+        end
+        format.json { head :no_content }
+      end
+    else
+      respond_with_client_destroy_blocked
+    end
+  rescue ActiveRecord::DeleteRestrictionError, ActiveRecord::InvalidForeignKey
+    respond_with_client_destroy_blocked
   end
 
   private
+
+    def respond_with_client_destroy_blocked
+      admin_push_domain_toast!(flash.now, :client, :destroy_blocked)
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+        end
+        format.html do
+          admin_push_domain_toast!(flash, :client, :destroy_blocked)
+          redirect_back fallback_location: admin_client_path(@client)
+        end
+      end
+    end
+
     def set_client
       @client = Client.find(params[:id])
     end

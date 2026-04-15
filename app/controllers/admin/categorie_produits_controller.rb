@@ -107,6 +107,12 @@ class Admin::CategorieProduitsController < Admin::ApplicationController
   end
 
   def destroy
+    unless @categorie_produit.hard_destroy_allowed?
+      admin_push_domain_toast!(flash, :categorie_produit, :destroy_blocked)
+      redirect_back fallback_location: admin_categorie_produits_url
+      return
+    end
+
     @categorie_produit.destroy!
 
     respond_to do |format|
@@ -116,6 +122,9 @@ class Admin::CategorieProduitsController < Admin::ApplicationController
       end
       format.json { head :no_content }
     end
+  rescue ActiveRecord::DeleteRestrictionError, ActiveRecord::InvalidForeignKey
+    admin_push_domain_toast!(flash, :categorie_produit, :destroy_blocked)
+    redirect_back fallback_location: admin_categorie_produits_url
   end
 
   private

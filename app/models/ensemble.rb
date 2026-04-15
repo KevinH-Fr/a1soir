@@ -16,6 +16,10 @@ class Ensemble < ApplicationRecord
     def self.ransackable_associations(auth_object = nil)
       ["produit", "type_produit1", "type_produit2", "type_produit3", "type_produit4", "type_produit5", "type_produit6"]
     end
+
+    def hard_destroy_allowed?
+      true
+    end
     
 end
   

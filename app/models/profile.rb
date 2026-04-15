@@ -33,4 +33,11 @@ class Profile < ApplicationRecord
         ["commandes", "profile_pic_attachment", "profile_pic_blob"]
     end
 
+    def hard_destroy_allowed?
+      return false if prenom.to_s.casecmp?(ESHOP_PROFILE_PRENOM)
+      return false if commandes.exists?
+
+      true
+    end
+
 end

@@ -98,16 +98,35 @@ module IndexModelHelper
     # Masquer le bouton show pour ParametreRdv, TypeRdv, PeriodeNonDisponible et PaiementRecu
     hide_show = !show || ["ParametreRdv", "TypeRdv", "PeriodeNonDisponible", "PaiementRecu", "AvoirRemb"].include?(model.class.name)
     
-    edit_button_opts = { method: :post, class: "btn btn-sm btn-secondary bi bi-pencil-square" }
+    edit_button_opts = { method: :post, class: "btn btn-sm btn-secondary" }
     edit_button_opts[:params] = edit_params if edit_params.present?
 
-    content_tag(:div, class: "d-flex justify-content-end gap-1") do
-      concat(link_to("", show_path, class: "btn btn-sm btn-primary bi bi-arrow-up-right-square", data: { turbo: false })) unless hide_show
-      concat(button_to("", edit_path, edit_button_opts))
+    content_tag(:div, class: "d-flex justify-content-end gap-1 flex-nowrap") do
+      unless hide_show
+        concat(
+          link_to(show_path, class: "btn btn-sm btn-primary d-inline-flex align-items-center", data: { turbo: false }) do
+            content_tag(:i, "", class: "bi bi-arrow-up-right-square") +
+              content_tag(:span, "Ouvrir", class: "d-none d-lg-inline ms-1")
+          end
+        )
+      end
+
+      concat(
+        button_to(edit_path, edit_button_opts) do
+          content_tag(:i, "", class: "bi bi-pencil-square") +
+            content_tag(:span, "Modifier", class: "d-none d-lg-inline ms-1")
+        end
+      )
+
       if show_destroy
-        concat(button_to("", destroy_path, method: :delete, data: { turbo: turbo_delete }, 
-          onclick: "return confirm('Êtes-vous certain de vouloir supprimer cet élément et tous les éléments liés ?')",
-          class: "btn btn-sm btn-danger bi bi-trash"))
+        concat(
+          button_to(destroy_path, method: :delete, data: { turbo: turbo_delete },
+            onclick: "return confirm('Êtes-vous certain de vouloir supprimer cet élément et tous les éléments liés ?')",
+            class: "btn btn-sm btn-danger d-inline-flex align-items-center") do
+              content_tag(:i, "", class: "bi bi-trash") +
+                content_tag(:span, "Supprimer", class: "d-none d-lg-inline ms-1")
+          end
+        )
       end
     end
   end

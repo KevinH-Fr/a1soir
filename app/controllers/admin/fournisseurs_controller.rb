@@ -138,18 +138,50 @@ class Admin::FournisseursController < Admin::ApplicationController
   end
 
   def destroy
-    @fournisseur.destroy!
-
-    respond_to do |format|
-      format.html do
-        admin_push_domain_toast!(flash, :fournisseur, :destroyed)
-        redirect_to fournisseurs_url
-      end
-      format.json { head :no_content }
+    unless @fournisseur.hard_destroy_allowed?
+      respond_with_fournisseur_destroy_blocked
+      return
     end
+
+    if @fournisseur.destroy
+      respond_to do |format|
+        admin_push_domain_toast!(flash.now, :fournisseur, :destroyed)
+
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.remove(@fournisseur),
+            turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+          ]
+        end
+
+        format.html do
+          admin_push_domain_toast!(flash, :fournisseur, :destroyed)
+          redirect_to fournisseurs_url
+        end
+        format.json { head :no_content }
+      end
+    else
+      respond_with_fournisseur_destroy_blocked
+    end
+  rescue ActiveRecord::DeleteRestrictionError, ActiveRecord::InvalidForeignKey
+    respond_with_fournisseur_destroy_blocked
   end
 
   private
+
+    def respond_with_fournisseur_destroy_blocked
+      admin_push_domain_toast!(flash.now, :fournisseur, :destroy_blocked)
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+        end
+        format.html do
+          admin_push_domain_toast!(flash, :fournisseur, :destroy_blocked)
+          redirect_back fallback_location: admin_fournisseur_path(@fournisseur)
+        end
+      end
+    end
+
     def set_fournisseur
       @fournisseur = Fournisseur.find(params[:id])
     end

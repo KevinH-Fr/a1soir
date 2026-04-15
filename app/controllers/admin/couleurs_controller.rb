@@ -105,6 +105,12 @@ class Admin::CouleursController < Admin::ApplicationController
   end
 
   def destroy
+    unless @couleur.hard_destroy_allowed?
+      admin_push_domain_toast!(flash, :couleur, :destroy_blocked)
+      redirect_back fallback_location: admin_couleurs_url
+      return
+    end
+
     @couleur.destroy!
 
     respond_to do |format|
@@ -114,6 +120,9 @@ class Admin::CouleursController < Admin::ApplicationController
       end
       format.json { head :no_content }
     end
+  rescue ActiveRecord::DeleteRestrictionError, ActiveRecord::InvalidForeignKey
+    admin_push_domain_toast!(flash, :couleur, :destroy_blocked)
+    redirect_back fallback_location: admin_couleurs_url
   end
 
   private
