@@ -75,7 +75,7 @@ module IndexModelHelper
       end
   end
 
-  def links_record(model, turbo_delete: true, show: true, edit_params: nil)
+  def links_record(model, turbo_delete: true, show: true, show_destroy: true, edit_params: nil)
     # Gérer le cas spécial de PeriodeNonDisponible où la route est periodes_non_disponibles (pluriel)
     edit_path = if model.class.name == "PeriodeNonDisponible"
       edit_admin_periodes_non_disponible_path(model)
@@ -104,9 +104,11 @@ module IndexModelHelper
     content_tag(:div, class: "d-flex justify-content-end gap-1") do
       concat(link_to("", show_path, class: "btn btn-sm btn-primary bi bi-arrow-up-right-square", data: { turbo: false })) unless hide_show
       concat(button_to("", edit_path, edit_button_opts))
-      concat(button_to("", destroy_path, method: :delete, data: { turbo: turbo_delete }, 
-        onclick: "return confirm('Êtes-vous certain de vouloir supprimer cet élément et tous les éléments liés ?')",
-        class: "btn btn-sm btn-danger bi bi-trash"))
+      if show_destroy
+        concat(button_to("", destroy_path, method: :delete, data: { turbo: turbo_delete }, 
+          onclick: "return confirm('Êtes-vous certain de vouloir supprimer cet élément et tous les éléments liés ?')",
+          class: "btn btn-sm btn-danger bi bi-trash"))
+      end
     end
   end
   

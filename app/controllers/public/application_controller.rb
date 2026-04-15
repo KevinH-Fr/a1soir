@@ -36,12 +36,15 @@ module Public
       end
    
       def load_cart
+        # Normalize cart IDs and drop inactive/missing products from session.
         ids = Array(session[:cart]).map(&:to_i).reject(&:zero?).uniq
         @cart = if ids.empty?
                   []
                 else
-                  by_id = Produit.where(id: ids).index_by(&:id)
-                  ids.filter_map { |id| by_id[id] }
+                  by_id = Produit.where(id: ids).actif.index_by(&:id)
+                  filtered_cart = ids.filter_map { |id| by_id[id] }
+                  session[:cart] = filtered_cart.map(&:id) if filtered_cart.size != ids.size
+                  filtered_cart
                 end
       end
 

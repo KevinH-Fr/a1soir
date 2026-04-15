@@ -28,7 +28,12 @@ module ProduitsFiltersHelper
       end
     
     elsif selected_value.present? && param_key == :filter_statut
-      selected_value == "true" ? "actif" : "archivé"
+      case selected_value
+      when "true" then "actif"
+      when "false" then "archivé"
+      when "na" then "sans statut"
+      else selected_value.to_s
+      end
     elsif selected_value.present? && param_key == :filter_mode
       selected_value == "analyse" ? "analyse" : "défaut"
     elsif selected_value.present? && param_key == :filter_prix

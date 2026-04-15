@@ -132,6 +132,7 @@ Rails.application.routes.draw do
       resources :produits do 
         member do
           post :edit
+          patch :toggle_active
           get :dupliquer
           delete :delete_image_attachment
           delete :delete_video_attachment

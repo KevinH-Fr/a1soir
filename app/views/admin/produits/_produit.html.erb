@@ -38,39 +38,37 @@
                 <%= produit.description %>
               </div>
 
-              <div class="container-fluid mt-2 p-1 d-flex flex-wrap align-items-center">
-                <%= badge_prixlocation_produit(produit) %>
-                <%= badge_prixvente_produit(produit) %>
-                <%= badge_couleur_produit(produit) %>
-                <%= badge_taille_produit(produit) %>
-                <%= badge_eshop(produit) %>
+              <div class="container-fluid mt-2 p-1 d-flex flex-wrap align-items-center gap-2">
+
+                <div class="d-inline-flex flex-wrap align-items-center gap-1"> 
+                  <%= badge_prixlocation_produit(produit) %>
+                  <%= badge_prixvente_produit(produit) %>
+                </div>
+
+                <div class="d-inline-flex flex-wrap align-items-center gap-1">
+                  <%= badge_couleur_produit(produit) %>
+                  <%= badge_taille_produit(produit) %>
+                </div>
+  
+                <div class="d-inline-flex flex-wrap align-items-center gap-1">
+                  <%= is_archived(produit) %>
+                  <%= badge_eshop(produit) %>
+                </div>
 
                 <% unless controller_name == "selection_produit" %>
-                  <% statut = produit.statut_disponibilite(Date.today.to_date, Date.today.to_date) %>
-                  <% disponibles = statut[:disponibles] %>
-                  <span class="badge fs-6 fw-normal p-1 me-1 mb-1 <%= disponibles > 0 ? 'bg-success' : 'bg-danger' %>">
-                    Disponibles: <%= disponibles %>
-                  </span>
+                  <div class="d-inline-flex flex-wrap align-items-center gap-1">
+                    <% statut = produit.statut_disponibilite(Date.today.to_date, Date.today.to_date) %>
+                      <% disponibles = statut[:disponibles] %>
+                      <span class="badge border fs-6 fw-normal p-1 me-1 mb-1 <%= disponibles > 0 ? ' border-success text-success' : 'border-danger text-danger' %>">
+                        Disponibles: <%= disponibles %>
+                      </span>
+                    </div>
                 <% end %>
 
-                <%= is_archived(produit) %>
               </div>
 
               <div class="mt-auto m-1">
 
-                <% if controller_name == "produits" && action_name == "show" %>    <%# || controller_name == "selection_produit"%>
-                  <% if current_admin_user.admin? %>
-                    <%= link_to dupliquer_admin_produit_path(produitbase: produit.id),
-                          class: "btn btn-sm btn-dark",
-                          :onclick => "return confirm('Etes-vous certain de vouloir dupliquer ce produit ?')",
-                          title: 'Dupliquer' do %>
-                      <i class="bi-copy me-1"></i>
-                      <span class="">Dupliquer</span>
-                    <% end %>
-                  <% end %>  
-                <% end %>
-
-    
                   <% collapse_id = "collapseProduit#{dom_id(produit)}" %>
                   <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-2">
                     <a class="small text-muted text-decoration-none d-inline-flex align-items-center"
@@ -83,9 +81,10 @@
                     </a>
                     <% if current_admin_user.admin? %>
                       <div class="ms-auto">
-                        <%= links_record(produit) %>
+                        <%= links_record(produit, show_destroy: false) %>
                       </div>
                     <% end %>
+
                   </div>
 
               </div>
@@ -134,12 +133,44 @@
             </div>
 
             <% if current_admin_user.admin? %>
-              <div id="produit_<%= produit.id %>_coup_de_coeur" class="px-2 mt-2">
-                <%= render "admin/produits/coup_de_coeur_toggle", produit: produit %>
-              </div>
-              
-              <div class="px-2 mt-2">
-                <%= render "admin/produits/promotion_buttons", produit: produit %>
+              <div class="px-2 mt-3">
+                <div class="d-flex flex-wrap align-items-center gap-2">
+
+                  <% if controller_name == "produits" && action_name == "show" %>    <%# || controller_name == "selection_produit"%>
+                    <%= link_to dupliquer_admin_produit_path(produitbase: produit.id),
+                          class: "btn btn-sm btn-dark",
+                          :onclick => "return confirm('Etes-vous certain de vouloir dupliquer ce produit ?')",
+                          title: 'Dupliquer' do %>
+                      <i class="bi-copy me-1"></i>
+                      <span class="">Dupliquer</span>
+                    <% end %>
+                  <% end %>  
+
+                  <%= button_to toggle_active_admin_produit_path(produit),
+                        method: :patch,
+                        class: "btn btn-sm #{produit.actif? ? 'btn-warning text-dark' : 'btn-success'}",
+                        form: { data: { turbo_confirm: (produit.actif? ? "Archiver ce produit ? Il sera retiré des sélections actives et de l'e-shop." : nil) } } do %>
+                    <i class="bi <%= produit.actif? ? 'bi-archive' : 'bi-arrow-clockwise' %> me-1"></i>
+                    <span><%= produit.actif? ? "Archiver" : "Réactiver" %></span>
+                  <% end %>
+
+                  <%= button_to admin_produit_path(produit),
+                        method: :delete,
+                        class: "btn btn-sm btn-danger",
+                        form: { data: { turbo_confirm: "Êtes-vous certain de vouloir supprimer ce produit définitivement ?" } } do %>
+                    <i class="bi bi-trash me-1"></i>
+                    <span>Supprimer</span>
+                  <% end %>
+                </div>
+
+                <div class="mt-2 d-flex flex-wrap align-items-center gap-2">
+                  <div id="produit_<%= produit.id %>_coup_de_coeur" class="d-inline-flex">
+                    <%= render "admin/produits/coup_de_coeur_toggle", produit: produit %>
+                  </div>
+                  <div class="d-inline-flex">
+                    <%= render "admin/produits/promotion_buttons", produit: produit %>
+                  </div>
+                </div>
               </div>
             <% end %>
             

@@ -1,8 +1,8 @@
 class Admin::ProduitsController < Admin::ApplicationController
 
-  before_action :authenticate_admin!, only: %i[ edit update toggle_coup_de_coeur move_up_coup_de_coeur move_down_coup_de_coeur apply_promotion remove_promotion ]
+  before_action :authenticate_admin!, only: %i[ destroy edit update toggle_coup_de_coeur move_up_coup_de_coeur move_down_coup_de_coeur apply_promotion remove_promotion ]
 
-  before_action :set_produit, only: %i[ show edit update destroy delete_image_attachment delete_video_attachment toggle_coup_de_coeur move_up_coup_de_coeur move_down_coup_de_coeur apply_promotion remove_promotion ]
+  before_action :set_produit, only: %i[ show edit update destroy toggle_active delete_image_attachment delete_video_attachment toggle_coup_de_coeur move_up_coup_de_coeur move_down_coup_de_coeur apply_promotion remove_promotion ]
 
   def index
 
@@ -245,6 +245,11 @@ class Admin::ProduitsController < Admin::ApplicationController
   end
 
   def destroy
+    unless @produit.hard_destroy_allowed?
+      respond_with_produit_destroy_blocked
+      return
+    end
+
     if @produit.destroy
       respond_to do |format|
         admin_push_domain_toast!(flash.now, :produit, :destroyed)
@@ -266,6 +271,46 @@ class Admin::ProduitsController < Admin::ApplicationController
     end
   rescue ActiveRecord::DeleteRestrictionError, ActiveRecord::InvalidForeignKey
     respond_with_produit_destroy_blocked
+  end
+
+  def toggle_active
+    # Archive or restore product
+    archive_mode = @produit.actif?
+    # Archive => also stop e-shop diffusion
+    attrs = archive_mode ? { actif: false, eshop: false } : { actif: true }
+
+    if @produit.update(attrs)
+      if archive_mode && OnlineSales.available?
+        # Best-effort Stripe deactivation
+        StripeProductService.new(@produit).archive_product_and_price
+      end
+
+      admin_push_domain_toast!(flash.now, :produit, :updated)
+
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update(@produit, partial: "admin/produits/produit", locals: { produit: @produit }),
+            turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+          ]
+        end
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :updated)
+          redirect_back fallback_location: admin_produit_path(@produit)
+        end
+      end
+    else
+      admin_push_domain_toast!(flash.now, :produit, :save_error)
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+        end
+        format.html do
+          admin_push_domain_toast!(flash, :produit, :save_error)
+          redirect_back fallback_location: admin_produit_path(@produit)
+        end
+      end
+    end
   end
 
 

@@ -51,7 +51,7 @@ module Public
       id = params[:id].to_i
       @produit = Produit.find(id)
 
-      unless @produit.eshop? && @produit.stripe_price_id.present?
+      unless @produit.actif? && @produit.eshop? && @produit.stripe_price_id.present?
         respond_to do |format|
           flash.now[:alert] = t("public.stripe_payments.flash.product_not_available")
           format.turbo_stream do
@@ -75,7 +75,7 @@ module Public
         end
 
         ids = session[:cart]
-        by_id = Produit.where(id: ids).index_by(&:id)
+        by_id = Produit.where(id: ids).actif.index_by(&:id)
         @cart = ids.filter_map { |cid| by_id[cid] }
 
         format.turbo_stream do
@@ -100,7 +100,7 @@ module Public
       session[:cart].delete(id)
       flash.now[:info] = t("public.stripe_payments.flash.removed_from_cart", name: @produit.nom)
 
-      by_id = Produit.where(id: session[:cart]).index_by(&:id)
+      by_id = Produit.where(id: session[:cart]).actif.index_by(&:id)
       @cart = session[:cart].filter_map { |cid| by_id[cid] }
 
       respond_to do |format|
@@ -189,7 +189,7 @@ module Public
         redirect_to cart_path, alert: t("public.stripe_payments.flash.cart_empty")
         return false
       end
-      unless @cart.all? { |p| p.eshop? && p.stripe_price_id.present? && p.today_availability? }
+      unless @cart.all? { |p| p.actif? && p.eshop? && p.stripe_price_id.present? && p.today_availability? }
         redirect_to cart_path, alert: t("public.stripe_payments.flash.cart_items_unavailable")
         return false
       end

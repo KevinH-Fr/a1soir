@@ -253,6 +253,15 @@ class Produit < ApplicationRecord
       }
   end
 
+  def hard_destroy_allowed?
+    return false if actif?
+    return false if articles.exists?
+    return false if sousarticles.exists?
+    return false if StripePaymentItem.where(produit_id: id).exists?
+
+    true
+  end
+
   # Méthode publique pour calculer et mettre à jour today_availability
   # Utilisée par le job quotidien et les callbacks
   # Calcule la disponibilité à la date du jour et met à jour le champ today_availability

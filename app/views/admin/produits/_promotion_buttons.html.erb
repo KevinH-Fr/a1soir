@@ -6,12 +6,12 @@
         Ancien prix: <%= custom_currency_no_decimals_format(produit.ancien_prixvente) %>
       </span>
       <%= form_with url: remove_promotion_admin_produit_path(produit), method: :post, data: { turbo: true }, class: "d-inline" do |form| %>
-        <%= form.submit "Retirer la promotion", class: "btn btn-sm btn-outline-secondary", 
+        <%= form.submit "Retirer la promotion", class: "btn btn-sm btn-secondary", 
             onclick: "return confirm('Êtes-vous sûr de vouloir retirer la promotion ? Le prix sera restauré à #{custom_currency_no_decimals_format(produit.ancien_prixvente)}')" %>
       <% end %>
     </div>
   <% else %>
-    <button type="button" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#promotionModal<%= produit.id %>">
+    <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#promotionModal<%= produit.id %>">
       <i class="bi bi-tag me-1"></i>Appliquer une promotion
     </button>
   <% end %>

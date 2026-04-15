@@ -23,7 +23,7 @@ class FiltersProduitsService
 
 
   def call
-    produits = Produit.all.includes([:couleur]).eshop_diffusion
+    produits = Produit.actif.includes([:couleur]).eshop_diffusion
 
     produits = produits.by_categories(@categories_ids) if @categories_ids.present?
     
