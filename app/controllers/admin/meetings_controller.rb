@@ -162,9 +162,18 @@ class Admin::MeetingsController < Admin::ApplicationController
     @meeting.destroy!
 
     respond_to do |format|
+      admin_push_domain_toast!(flash.now, :meeting, :destroyed)
+
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.remove(@meeting),
+          turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+        ]
+      end
+
       format.html do
         admin_push_domain_toast!(flash, :meeting, :destroyed)
-        redirect_to admin_meetings_url
+        redirect_back fallback_location: admin_meetings_url
       end
       format.json { head :no_content }
     end

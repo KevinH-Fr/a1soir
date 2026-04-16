@@ -36,35 +36,6 @@ RSpec.describe Admin::CommandesController, type: :controller do
   end
 
   describe "DELETE #destroy" do
-    it "redirects back with destroy_blocked when legacy paiements exist" do
-      skip "pas de table paiements" unless Commande.connection.data_source_exists?("paiements")
-
-      Commande.connection.execute(
-        Commande.sanitize_sql_array([
-          "INSERT INTO paiements (typepaiement, montant, commande_id, moyen, commentaires, created_at, updated_at) " \
-          "VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now'))",
-          "prix",
-          10,
-          commande.id,
-          "cb",
-          nil
-        ])
-      )
-
-      referer = "http://admin.lvh.me/previous"
-      request.env["HTTP_REFERER"] = referer
-
-      expect { delete :destroy, params: { id: commande.id } }.not_to change(Commande, :count)
-
-      expect(response).to redirect_to(referer)
-      expect(flash[:admin_toasts]).to include(
-        a_hash_including(
-          "variant" => "warning",
-          "message" => I18n.t("admin.toasts.commande.destroy_blocked")
-        )
-      )
-    end
-
     it "destroys the commande and sets destroyed toast when allowed" do
       expect { delete :destroy, params: { id: commande.id } }.to change(Commande, :count).by(-1)
 

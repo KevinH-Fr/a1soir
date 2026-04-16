@@ -434,6 +434,11 @@ module AdminFlashToast
         icon: "trash",
         message_key: "admin.toasts.fournisseur.destroyed",
       },
+      destroy_blocked: {
+        variant: :warning,
+        icon: "link-45deg",
+        message_key: "admin.toasts.fournisseur.destroy_blocked",
+      },
     },
     ensemble: {
       created: {
@@ -472,6 +477,11 @@ module AdminFlashToast
         variant: :danger,
         icon: "trash",
         message_key: "admin.toasts.client.destroyed",
+      },
+      destroy_blocked: {
+        variant: :warning,
+        icon: "link-45deg",
+        message_key: "admin.toasts.client.destroy_blocked",
       },
     },
     article: {

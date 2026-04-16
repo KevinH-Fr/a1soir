@@ -48,6 +48,9 @@ class GoogleCalendarService
     return unless event_id
 
     @service.delete_event(@calendar_id, event_id)
+  rescue Google::Apis::ClientError => e
+    # Déjà supprimé côté agenda, mauvais calendrier, ou id obsolète — on ne bloque pas la suppression en base.
+    raise unless e.status_code.to_i == 404
   end
 
   private

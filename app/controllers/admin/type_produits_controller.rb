@@ -100,26 +100,49 @@ class Admin::TypeProduitsController < Admin::ApplicationController
 
   def destroy
     unless @type_produit.hard_destroy_allowed?
-      admin_push_domain_toast!(flash, :type_produit, :destroy_blocked)
-      redirect_back fallback_location: admin_type_produits_url
+      respond_with_type_produit_destroy_blocked
       return
     end
 
-    @type_produit.destroy!
+    if @type_produit.destroy
+      respond_to do |format|
+        admin_push_domain_toast!(flash.now, :type_produit, :destroyed)
 
-    respond_to do |format|
-      format.html do
-        admin_push_domain_toast!(flash, :type_produit, :destroyed)
-        redirect_to type_produits_url
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.remove(@type_produit),
+            turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+          ]
+        end
+
+        format.html do
+          admin_push_domain_toast!(flash, :type_produit, :destroyed)
+          redirect_to type_produits_url
+        end
+        format.json { head :no_content }
       end
-      format.json { head :no_content }
+    else
+      respond_with_type_produit_destroy_blocked
     end
   rescue ActiveRecord::DeleteRestrictionError, ActiveRecord::InvalidForeignKey
-    admin_push_domain_toast!(flash, :type_produit, :destroy_blocked)
-    redirect_back fallback_location: admin_type_produits_url
+    respond_with_type_produit_destroy_blocked
   end
 
   private
+
+    def respond_with_type_produit_destroy_blocked
+      admin_push_domain_toast!(flash.now, :type_produit, :destroy_blocked)
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+        end
+        format.html do
+          admin_push_domain_toast!(flash, :type_produit, :destroy_blocked)
+          redirect_back fallback_location: admin_type_produits_url
+        end
+      end
+    end
+
     def set_type_produit
       @type_produit = TypeProduit.find(params[:id])
     end

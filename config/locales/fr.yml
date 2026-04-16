@@ -34,7 +34,7 @@ fr:
         created: "Commande créée"
         updated: "Commande mise à jour"
         destroyed: "Commande supprimée"
-        destroy_blocked: "Impossible de supprimer cette commande : des enregistrements y sont encore liés (paiements historiques, etc.)."
+        destroy_blocked: "Impossible de supprimer cette commande :  des enregistrements y sont encore liés en base."
         statut_retire: "Commande marquée comme retirée par le client"
         statut_non_retire: "Commande marquée comme non retirée"
         rendu_avec_email: "Commande rendue — e-mail de confirmation envoyé au client"

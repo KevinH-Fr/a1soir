@@ -108,26 +108,49 @@ class Admin::CategorieProduitsController < Admin::ApplicationController
 
   def destroy
     unless @categorie_produit.hard_destroy_allowed?
-      admin_push_domain_toast!(flash, :categorie_produit, :destroy_blocked)
-      redirect_back fallback_location: admin_categorie_produits_url
+      respond_with_categorie_produit_destroy_blocked
       return
     end
 
-    @categorie_produit.destroy!
+    if @categorie_produit.destroy
+      respond_to do |format|
+        admin_push_domain_toast!(flash.now, :categorie_produit, :destroyed)
 
-    respond_to do |format|
-      format.html do
-        admin_push_domain_toast!(flash, :categorie_produit, :destroyed)
-        redirect_to categorie_produits_url
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.remove(@categorie_produit),
+            turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+          ]
+        end
+
+        format.html do
+          admin_push_domain_toast!(flash, :categorie_produit, :destroyed)
+          redirect_to categorie_produits_url
+        end
+        format.json { head :no_content }
       end
-      format.json { head :no_content }
+    else
+      respond_with_categorie_produit_destroy_blocked
     end
   rescue ActiveRecord::DeleteRestrictionError, ActiveRecord::InvalidForeignKey
-    admin_push_domain_toast!(flash, :categorie_produit, :destroy_blocked)
-    redirect_back fallback_location: admin_categorie_produits_url
+    respond_with_categorie_produit_destroy_blocked
   end
 
   private
+
+    def respond_with_categorie_produit_destroy_blocked
+      admin_push_domain_toast!(flash.now, :categorie_produit, :destroy_blocked)
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+        end
+        format.html do
+          admin_push_domain_toast!(flash, :categorie_produit, :destroy_blocked)
+          redirect_back fallback_location: admin_categorie_produits_url
+        end
+      end
+    end
+
     def set_categorie_produit
       @categorie_produit = CategorieProduit.find(params[:id])
     end

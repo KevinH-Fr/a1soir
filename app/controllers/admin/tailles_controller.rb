@@ -105,27 +105,49 @@ class Admin::TaillesController < Admin::ApplicationController
   # DELETE /tailles/1 or /tailles/1.json
   def destroy
     unless @taille.hard_destroy_allowed?
-      admin_push_domain_toast!(flash, :taille, :destroy_blocked)
-      redirect_back fallback_location: admin_tailles_url
+      respond_with_taille_destroy_blocked
       return
     end
 
-    @taille.destroy!
+    if @taille.destroy
+      respond_to do |format|
+        admin_push_domain_toast!(flash.now, :taille, :destroyed)
 
-    respond_to do |format|
-      format.html do
-        admin_push_domain_toast!(flash, :taille, :destroyed)
-        redirect_to admin_tailles_url
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.remove(@taille),
+            turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+          ]
+        end
+
+        format.html do
+          admin_push_domain_toast!(flash, :taille, :destroyed)
+          redirect_to admin_tailles_url
+        end
+        format.json { head :no_content }
       end
-      format.json { head :no_content }
+    else
+      respond_with_taille_destroy_blocked
     end
   rescue ActiveRecord::DeleteRestrictionError, ActiveRecord::InvalidForeignKey
-    admin_push_domain_toast!(flash, :taille, :destroy_blocked)
-    redirect_back fallback_location: admin_tailles_url
+    respond_with_taille_destroy_blocked
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
+    def respond_with_taille_destroy_blocked
+      admin_push_domain_toast!(flash.now, :taille, :destroy_blocked)
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+        end
+        format.html do
+          admin_push_domain_toast!(flash, :taille, :destroy_blocked)
+          redirect_back fallback_location: admin_tailles_url
+        end
+      end
+    end
+
     def set_taille
       @taille = Taille.find(params[:id])
     end

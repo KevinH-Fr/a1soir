@@ -2,11 +2,11 @@ class Commande < ApplicationRecord
   belongs_to :client
   belongs_to :profile
 
-  has_many :articles, dependent: :destroy
-  has_one :stripe_payment, dependent: :nullify
-  has_many :paiement_recus, dependent: :destroy
-  has_many :avoir_rembs, dependent: :destroy
-  has_many :meetings, dependent: :destroy
+  has_many :articles, dependent: :restrict_with_exception
+  has_one :stripe_payment, dependent: :restrict_with_exception
+  has_many :paiement_recus, dependent: :restrict_with_exception
+  has_many :avoir_rembs, dependent: :restrict_with_exception
+  has_many :meetings, dependent: :restrict_with_exception
 
   has_one_attached :qr_code, dependent: :destroy
   has_many :doc_editions, dependent: :destroy
@@ -91,28 +91,26 @@ class Commande < ApplicationRecord
   
 
   def self.ransackable_associations(auth_object = nil)
-    ["articles", "avoir_rembs", "client", "meetings", "paiement_recus", "profile"]
+    ["articles", "avoir_rembs", "client", "meetings", "paiement_recus", "profile", "stripe_payment"]
   end
 
   ransacker :ref_commande, formatter: proc { |v| v } do |_parent|
     Arel.sql("CONCAT('C', 1000 + commandes.id)")
   end
 
-  # Table legacy `paiements` (FK vers commandes) sans association ActiveRecord sur Commande :
-  # la suppression échouerait en base si des lignes existent encore.
+  # Blocage si la commande a encore des lignes ou de la vie métier liée (articles → sous-articles inclus).
   def hard_destroy_allowed?
-    !legacy_paiements_linked?
+    return false if articles.exists?
+    return false if paiement_recus.exists?
+    return false if stripe_payment.present?
+    return false if avoir_rembs.exists?
+    return false if meetings.exists?
+   # return false if doc_editions.exists?
+
+    true
   end
 
   private
-
-  def legacy_paiements_linked?
-    return false unless connection.data_source_exists?("paiements")
-
-    connection.select_value(
-      self.class.sanitize_sql_array(["SELECT 1 FROM paiements WHERE commande_id = ? LIMIT 1", id])
-    ).present?
-  end
 
   def after_commande_create
     self.update(statutarticles: "non-retiré")

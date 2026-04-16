@@ -121,7 +121,7 @@ module IndexModelHelper
       if show_destroy
         concat(
           button_to(destroy_path, method: :delete, data: { turbo: turbo_delete },
-            onclick: "return confirm('Êtes-vous certain de vouloir supprimer cet élément et tous les éléments liés ?')",
+            onclick: "return confirm('Êtes-vous certain de vouloir supprimer cet élément ?')",
             class: "btn btn-sm btn-danger d-inline-flex align-items-center") do
               content_tag(:i, "", class: "bi bi-trash") +
                 content_tag(:span, "Supprimer", class: "d-none d-lg-inline ms-1")

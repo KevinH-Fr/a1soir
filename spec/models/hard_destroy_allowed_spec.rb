@@ -28,26 +28,55 @@ RSpec.describe "hard_destroy_allowed?" do
   end
 
   describe Commande do
-    it "returns true when no legacy paiements row exists" do
+    let(:produit) { Produit.create!(nom: "Produit-commande-guard-#{SecureRandom.hex(3)}") }
+
+    it "allows when no lignes ni données métier liées" do
       expect(commande.hard_destroy_allowed?).to be(true)
     end
 
-    it "returns false when a legacy paiements row exists" do
-      skip "pas de table paiements" unless described_class.connection.data_source_exists?("paiements")
-
-      commande
-      described_class.connection.execute(
-        described_class.sanitize_sql_array([
-          "INSERT INTO paiements (typepaiement, montant, commande_id, moyen, commentaires, created_at, updated_at) " \
-          "VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now'))",
-          "prix",
-          10,
-          commande.id,
-          "cb",
-          nil
-        ])
+    it "blocks when articles exist" do
+      Article.create!(
+        commande: commande,
+        produit: produit,
+        quantite: 1,
+        prix: 1,
+        total: 1,
+        locvente: "vente",
+        caution: 0,
+        totalcaution: 0,
+        longueduree: false
       )
+      expect(commande.reload.hard_destroy_allowed?).to be(false)
+    end
 
+    it "blocks when paiement_recus exist" do
+      PaiementRecu.create!(commande: commande, typepaiement: "prix", montant: 10, moyen: "espèces")
+      expect(commande.reload.hard_destroy_allowed?).to be(false)
+    end
+
+    it "blocks when stripe_payment exists" do
+      StripePayment.create!(
+        commande: commande,
+        stripe_payment_id: "pi_guard_#{SecureRandom.hex(6)}",
+        amount: 1000,
+        currency: "eur",
+        status: "paid"
+      )
+      expect(commande.reload.hard_destroy_allowed?).to be(false)
+    end
+
+    it "blocks when avoir_rembs exist" do
+      AvoirRemb.create!(commande: commande, type_avoir_remb: "avoir", montant: 5)
+      expect(commande.reload.hard_destroy_allowed?).to be(false)
+    end
+
+    it "blocks when meetings exist" do
+      Meeting.create!(commande: commande, nom: "RDV", datedebut: 1.day.from_now)
+      expect(commande.reload.hard_destroy_allowed?).to be(false)
+    end
+
+    it "blocks when doc_editions exist" do
+      DocEdition.create!(commande: commande, doc_type: "commande", edition_type: "pdf")
       expect(commande.reload.hard_destroy_allowed?).to be(false)
     end
   end

@@ -106,26 +106,49 @@ class Admin::CouleursController < Admin::ApplicationController
 
   def destroy
     unless @couleur.hard_destroy_allowed?
-      admin_push_domain_toast!(flash, :couleur, :destroy_blocked)
-      redirect_back fallback_location: admin_couleurs_url
+      respond_with_couleur_destroy_blocked
       return
     end
 
-    @couleur.destroy!
+    if @couleur.destroy
+      respond_to do |format|
+        admin_push_domain_toast!(flash.now, :couleur, :destroyed)
 
-    respond_to do |format|
-      format.html do
-        admin_push_domain_toast!(flash, :couleur, :destroyed)
-        redirect_to couleurs_url
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.remove(@couleur),
+            turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+          ]
+        end
+
+        format.html do
+          admin_push_domain_toast!(flash, :couleur, :destroyed)
+          redirect_to couleurs_url
+        end
+        format.json { head :no_content }
       end
-      format.json { head :no_content }
+    else
+      respond_with_couleur_destroy_blocked
     end
   rescue ActiveRecord::DeleteRestrictionError, ActiveRecord::InvalidForeignKey
-    admin_push_domain_toast!(flash, :couleur, :destroy_blocked)
-    redirect_back fallback_location: admin_couleurs_url
+    respond_with_couleur_destroy_blocked
   end
 
   private
+
+    def respond_with_couleur_destroy_blocked
+      admin_push_domain_toast!(flash.now, :couleur, :destroy_blocked)
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+        end
+        format.html do
+          admin_push_domain_toast!(flash, :couleur, :destroy_blocked)
+          redirect_back fallback_location: admin_couleurs_url
+        end
+      end
+    end
+
     def set_couleur
       @couleur = Couleur.find(params[:id])
     end

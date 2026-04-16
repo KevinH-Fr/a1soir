@@ -107,26 +107,49 @@ class Admin::ProfilesController < Admin::ApplicationController
 
   def destroy
     unless @profile.hard_destroy_allowed?
-      admin_push_domain_toast!(flash, :profile, :destroy_blocked)
-      redirect_back fallback_location: admin_profiles_url
+      respond_with_profile_destroy_blocked
       return
     end
 
-    @profile.destroy!
+    if @profile.destroy
+      respond_to do |format|
+        admin_push_domain_toast!(flash.now, :profile, :destroyed)
 
-    respond_to do |format|
-      format.html do
-        admin_push_domain_toast!(flash, :profile, :destroyed)
-        redirect_to profiles_url
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.remove(@profile),
+            turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+          ]
+        end
+
+        format.html do
+          admin_push_domain_toast!(flash, :profile, :destroyed)
+          redirect_to profiles_url
+        end
+        format.json { head :no_content }
       end
-      format.json { head :no_content }
+    else
+      respond_with_profile_destroy_blocked
     end
   rescue ActiveRecord::DeleteRestrictionError, ActiveRecord::InvalidForeignKey
-    admin_push_domain_toast!(flash, :profile, :destroy_blocked)
-    redirect_back fallback_location: admin_profiles_url
+    respond_with_profile_destroy_blocked
   end
 
   private
+
+    def respond_with_profile_destroy_blocked
+      admin_push_domain_toast!(flash.now, :profile, :destroy_blocked)
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash })
+        end
+        format.html do
+          admin_push_domain_toast!(flash, :profile, :destroy_blocked)
+          redirect_back fallback_location: admin_profiles_url
+        end
+      end
+    end
+
     def set_profile
       @profile = Profile.find(params[:id])
     end

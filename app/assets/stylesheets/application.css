@@ -353,7 +353,7 @@ body.bg-black .dropdown-item.fw-bold {
 .admin-flash-stack {
   position: fixed;
   top: calc(60px + 0.75rem);
-  right: 0.75rem;
+  right: 1.25rem;
   z-index: 1080;
   display: flex;
   flex-direction: column;
@@ -367,7 +367,7 @@ body.bg-black .dropdown-item.fw-bold {
 .admin-flash-stack > .alert {
   pointer-events: auto;
   min-width: min(100%, 17.5rem);
-  max-width: min(26rem, calc(100vw - 1.5rem));
+  max-width: min(26rem, calc(100vw - 2.25rem));
   margin-bottom: 0;
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 0.5rem;

@@ -75,17 +75,13 @@
             </div>
 
             <div class="d-flex flex-wrap justify-content-end align-items-center gap-2 mt-2 pt-2 border-top border-secondary border-opacity-25">
-              <% if commande.hard_destroy_allowed? %>
                 <%= button_to admin_commande_path(commande),
                       method: :delete,
                       class: "btn btn-sm btn-danger d-inline-flex align-items-center",
-                      form: { data: { turbo_confirm: "Êtes-vous certain de vouloir supprimer cette commande et les éléments liés ?" } } do %>
+                      form: { data: { turbo_confirm: "Supprimer définitivement cette commande ?" } } do %>
                   <i class="bi bi-trash me-1"></i>
                   <span>Supprimer</span>
                 <% end %>
-              <% else %>
-                <span class="small text-muted">Suppression impossible (données liées, ex. paiements historiques).</span>
-              <% end %>
             </div>
           </div>
         </div>
