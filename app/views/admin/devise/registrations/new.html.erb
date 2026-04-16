@@ -1,38 +1,60 @@
-<div class="d-flex justify-content-center">
+<div class="container admin-centered-page d-flex align-items-center py-1">
+  <div class="row justify-content-center w-100">
+    <div class="col-12 col-md-9 col-lg-6">
+      <div class="card light-beige-colored shadow-sm border-0">
+        <div class="card-header bg-dark text-light py-2 px-3">
+          <i class="bi bi-person-add me-2" aria-hidden="true"></i>
+          <strong>Inscription Admin</strong>
+        </div>
+        <div class="card-body p-4 p-md-5">
+          <div class="text-center mb-4">
+            <p class="text-muted mb-0">Création d'un compte administrateur</p>
+          </div>
 
-  <div class="card card-connexion m-2 p-4 text-center light-beige-colored shadow-lg">
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+            <%= render "devise/shared/error_messages", resource: resource %>
 
-    <h2 class="my-4 fs-1">Inscription</h2>
+            <div class="mb-3 text-start">
+              <%= f.label :email, "Email", class: "form-label fw-semibold" %>
+              <%= f.email_field :email,
+                    autofocus: true,
+                    autocomplete: "email",
+                    placeholder: "email...",
+                    class: "form-control" %>
+            </div>
 
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
+            <div class="mb-3 text-start">
+              <%= f.label :password, "Mot de passe", class: "form-label fw-semibold" %>
+              <% if @minimum_password_length %>
+                <div class="small text-muted mb-1">
+                  <%= @minimum_password_length %> caractères minimum
+                </div>
+              <% end %>
+              <%= f.password_field :password,
+                    autocomplete: "new-password",
+                    placeholder: "mot de passe...",
+                    class: "form-control" %>
+            </div>
 
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "email ...",
-              class:"form-control my-2" %>
+            <div class="mb-4 text-start">
+              <%= f.label :password_confirmation, "Confirmation", class: "form-label fw-semibold" %>
+              <%= f.password_field :password_confirmation,
+                    autocomplete: "new-password",
+                    placeholder: "confirmation...",
+                    class: "form-control" %>
+            </div>
 
-        <% if @minimum_password_length %>
-        <em>(<%= @minimum_password_length %> characters minimum)</em>
-        <% end %><br />
+            <button type="submit" class="btn btn-primary w-100 py-2">
+              <i class="fa-solid fa-square-check me-2"></i>
+              <span class="fw-bold">Inscription</span>
+            </button>
+          <% end %>
 
-        <%= f.password_field :password, autocomplete: "new-password", placeholder: "mot de passe ...",
-              class:"form-control my-2" %>
-        <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "confirmation ...",
-              class:"form-control my-2" %>
-
-      <button type="submit" class="btn btn-lg btn-primary container-fluid my-4">
-        <i class="fa-solid fa-xl fa-square-check"></i> 
-        <span class="fw-bold ms-2"> Inscription</span>
-      </button>
-
-    <% end %>
-    
-    <div class="my-4">
-      <%= render "admin/devise/shared/links" %>
+          <div class="mt-4 text-center">
+            <%= render "admin/devise/shared/links" %>
+          </div>
+        </div>
+      </div>
     </div>
-
-
-
   </div>
-
-
 </div>

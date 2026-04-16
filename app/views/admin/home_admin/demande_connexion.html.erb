@@ -1,33 +1,41 @@
 
-<div class="card">
-  <div class="card-header bg-dark text-light p-1 text-center">
-    <strong>Demande de connexion</strong> 
+<div class="container admin-centered-page d-flex align-items-center justify-content-center py-1">
+  <div class="row justify-content-center w-100">
+    <div class="col-12 col-md-10 col-lg-7 col-xl-6">
+      <div class="card light-beige-colored shadow-sm border-0">
+        <div class="card-header bg-dark text-light py-2 px-3">
+          <i class="bi bi-person-lock me-2" aria-hidden="true"></i>
+          <strong>Demande de connexion</strong>
+        </div>
 
-  </div>
-  <div class="card-body light-beige-colored text-center">
+        <div class="card-body p-3 text-center">
+          <% unless current_admin_user.present? %>
+            <p class="text-muted mb-3">Accès réservé à l'administration.</p>
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+              <%= link_to new_admin_user_session_url(subdomain: "admin"), class: "btn btn-warning px-3 rounded-pill" do %>
+                <i class="bi bi-person-lock me-1"></i>
+                <span class="fw-bold">Connexion</span>
+              <% end %>
 
-    <% unless current_admin_user.present? %>
+              <%= link_to new_admin_user_registration_url(subdomain: "admin"), class: "btn btn-primary px-3 rounded-pill" do %>
+                <i class="bi bi-person-add me-1"></i>
+                <span class="fw-bold">Nouveau</span>
+              <% end %>
+            </div>
+          <% end %>
 
-      <%= link_to new_admin_user_session_url(subdomain: "admin"), class: "btn btn-warning m-1 p-2 rounded-pill" do %>
-          <i class="bi bi-person-lock"></i>
-          <span class="ms-1 fw-bold">Connexion</span>
-      <% end %>
+          <% if admin_user_signed_in? && (current_admin_user.user? || current_admin_user.vendeur?) %>
+            <div class="alert alert-warning py-2 mb-2" role="alert">
+              Reconnectez-vous en tant qu'administrateur pour acceder aux informations.
+            </div>
 
-
-      <%= link_to new_admin_user_registration_url(subdomain: "admin"), class: "btn btn-primary m-1 p-2 rounded-pill" do %>
-        <i class="bi bi-person-add"></i>
-        <span class="ms-1 fw-bold">Nouveau</span>
-      <% end %>
-
-    <% end %>
-
-    <% if admin_user_signed_in? %>
-      <% if current_admin_user.user? || current_admin_user.vendeur? %>
-       <span class="text-dark fs-6"> Reconnectez-vous en tant qu'administrateur pour accéder aux informations</span> <br>
-        <%= button_to "", destroy_admin_user_session_path, method: :delete, 
-                    class:"btn btn-sm btn-danger fa-solid fa-right-from-bracket" %>
-      <% end %>
-    <% end %>
-
+            <%= button_to destroy_admin_user_session_path, method: :delete, class: "btn btn-sm btn-danger" do %>
+              <i class="fa-solid fa-right-from-bracket me-1"></i>
+              Deconnexion
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

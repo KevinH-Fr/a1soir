@@ -6,10 +6,10 @@ Rails.application.routes.draw do
 
   scope '(:locale)', locale: /fr|en/ do
     scope module: :public do
-      devise_for :users, path: '', path_names: { sign_in: 'login', sign_out: 'logout' }, controllers: {
-        sessions: 'public/sessions',  # Optional if you need custom behavior for public login/logout
-        registrations: 'public/registrations'  # Add custom registrations controller
-      }
+      #devise_for :users, path: '', path_names: { sign_in: 'login', sign_out: 'logout' }, controllers: {
+      #  sessions: 'public/sessions',  # Optional if you need custom behavior for public login/logout
+      #  registrations: 'public/registrations'  # Add custom registrations controller
+      #}
       
       get 'home', to: 'pages#home'
       get 'la_boutique', to: 'pages#la_boutique'

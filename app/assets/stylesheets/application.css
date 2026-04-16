@@ -421,6 +421,11 @@ body.bg-black .dropdown-item.fw-bold {
   overflow-y: auto;*/
 }
 
+/* Pages admin "single card" centrees: compense navbar + marges layout */
+.admin-centered-page {
+  min-height: calc(100dvh - 60px - 2rem);
+}
+
 :root {
   --light-beige-color: rgb(236, 236, 236);
 }

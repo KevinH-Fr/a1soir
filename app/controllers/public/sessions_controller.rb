@@ -2,17 +2,12 @@
 
 class Public::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
+  before_action :disable_public_auth!
 
   layout 'public'  
 
-  # GET /resource/sign_in
-  def new
-    self.resource = resource_class.new   # Initializes the resource (User)
-    @resource_name = resource_name       # Ensures resource_name is set
-    
-    render template: "public/devise/sessions/new" # Specifies the custom template
-
-  end
+  # Public auth is disabled; keep controller as defensive fallback.
+  def new; end
 
   # POST /resource/sign_in
   # def create
@@ -24,7 +19,11 @@ class Public::SessionsController < Devise::SessionsController
   #   super
   # end
 
-  # protected
+  private
+
+  def disable_public_auth!
+    redirect_to localized_root_path(locale: I18n.locale)
+  end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_sign_in_params

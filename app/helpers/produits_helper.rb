@@ -71,7 +71,7 @@ module ProduitsHelper
 
     def is_archived(produit)
         unless produit.actif 
-            content_tag(:span, class: "badge fs-6 fw-normal border border-secondary text-secondary me-1 mb-1 p-1") do
+            content_tag(:span, class: "badge fs-6 fw-normal border border-danger text-danger me-1 mb-1 p-1") do
                 concat content_tag(:i, nil, class: "bi bi-archive me-1")
                 concat content_tag(:span, "archivé", class: "ms-1" )
             end

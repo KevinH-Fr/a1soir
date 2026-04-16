@@ -3,19 +3,12 @@
 class Public::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
+  before_action :disable_public_auth!
 
   layout 'public'  
 
-  # GET /resource/sign_up
-  def new
-   # super
-
-    self.resource = resource_class.new   # Initializes the resource (User)
-    @resource_name = resource_name       # Ensures resource_name is set
-    
-    render template: "public/devise/registrations/new" # Specifies the custom template
-
-  end
+  # Public auth is disabled; keep controller as defensive fallback.
+  def new; end
 
   # POST /resource
   # def create
@@ -46,7 +39,11 @@ class Public::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  private
+
+  def disable_public_auth!
+    redirect_to localized_root_path(locale: I18n.locale)
+  end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_sign_up_params
