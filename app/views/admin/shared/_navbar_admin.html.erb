@@ -14,6 +14,7 @@
         <%= nav_link admin_meetings_path, "Calendrier", "bi-calendar-date", nav_controller: "admin/meetings" %>
         <%= nav_link admin_analyses_index_path, "Analyses", "bi-graph-up-arrow", nav_controller: "admin/analyses" %>
         <%= nav_link(admin_textes_path, "Marketing", "bi-flag", nav_controller: "admin/textes") if current_admin_user&.admin? %>
+        <%= render "admin/shared/session_controls" %>
       </ul>
     </div>
   </div>

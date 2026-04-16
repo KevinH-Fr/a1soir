@@ -1,5 +1,5 @@
 
-<div class="container-fluid m-0 p-0">
+<div class="container-fluid m-0 p-0 admin-centered-page d-flex flex-column justify-content-center">
   <div class="row m-0 p-0">
     <div class="col-md-6 m-0 p-0">
       <%= dashboard_card("Clients", admin_clients_path, new_admin_client_path, 'person',
@@ -32,14 +32,5 @@
       <%= render "blocLarge" %>
     </div>
   </div>
-
-  <% if current_admin_user %>
-      <div class="container-fluid mt-4 d-flex justify-content-end">
-          <%= button_to destroy_admin_user_session_path, method: :delete, data: { turbo_method: :delete }, class: "btn btn-sm btn-danger d-flex align-items-center" do %>
-              <i class="bi bi-box-arrow-left me-1"></i>
-              <span class="fw-bold"><%= current_admin_user.role %> </span>
-          <% end %>
-      </div>
-  <% end %>
 
 </div>

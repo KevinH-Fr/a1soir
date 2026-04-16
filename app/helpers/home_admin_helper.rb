@@ -18,7 +18,7 @@ module HomeAdminHelper
       end)
 
       concat(content_tag(:div, class: "card-body p-0 light-beige-colored") do
-        concat(content_tag(:table, class: "table table-primary table-striped table-hover m-0 p-0", style: "table-layout: fixed;") do
+        concat(content_tag(:table, class: "table table-sm table-primary table-striped table-hover m-0 p-0", style: "table-layout: fixed;") do
           concat(content_tag(:tbody, class: "table-light") do
             items.each do |item|
               concat(content_tag(:tr) do

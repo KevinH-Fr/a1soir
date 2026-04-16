@@ -1,0 +1,11 @@
+<% if current_admin_user %>
+  <li class="nav-item ms-3">
+    <%= button_to destroy_admin_user_session_path,
+                  method: :delete,
+                  data: { turbo_method: :delete },
+                  class: "btn btn-sm btn-outline-danger d-inline-flex align-items-center" do %>
+      <i class="bi bi-box-arrow-left me-1"></i>
+      <span class="fw-bold"><%= current_admin_user.role %></span>
+    <% end %>
+  </li>
+<% end %>
