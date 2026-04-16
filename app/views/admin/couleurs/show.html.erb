@@ -3,3 +3,16 @@
 <div class="<%= admin_list_stack_classes %>">
   <%= render @couleur %>
 </div>
+
+<div id="produits" class="<%= admin_list_stack_classes %>">
+  <%= render 'produits' %>
+</div>
+
+<% if @pagy.next.present? %>
+  <%= turbo_frame_tag :pagination, loading: :lazy,
+                      src: admin_couleur_path(@couleur, format: :turbo_stream, page: @pagy.next) %>
+<% end %>
+
+<hr>
+
+<%= return_model_index_button("Retour vers couleurs", admin_couleurs_path) %>

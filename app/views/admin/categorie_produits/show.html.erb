@@ -4,6 +4,15 @@
   <%= render @categorie_produit %>
 </div>
 
+<div id="produits" class="<%= admin_list_stack_classes %>">
+  <%= render "produits" %>
+</div>
+
+<% if @pagy.next.present? %>
+  <%= turbo_frame_tag :pagination, loading: :lazy,
+                      src: admin_categorie_produit_path(@categorie_produit, format: :turbo_stream, page: @pagy.next) %>
+<% end %>
+
 <hr>
 
 <%= return_model_index_button("Retour vers Catégories produits", admin_categorie_produits_path) %>

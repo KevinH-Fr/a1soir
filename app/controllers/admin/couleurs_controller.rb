@@ -9,12 +9,14 @@ class Admin::CouleursController < Admin::ApplicationController
     search_params = params.permit(:format, :page, 
       q:[:nom_cont])
     @q = Couleur.ransack(search_params[:q])
-    couleurs = @q.result(distinct: true).order(created_at: :desc)
+    couleurs = @q.result(distinct: true).order(:nom)
     @pagy, @couleurs = pagy_countless(couleurs, items: 2)
 
   end
 
   def show
+    produits_scope = @couleur.produits.order(updated_at: :desc)
+    @pagy, @produits = pagy_countless(produits_scope, items: 4)
   end
 
   def new

@@ -13,7 +13,11 @@
         <div class="col-sm-10 d-flex flex-column ps-sm-2">
 
           <div class="d-flex flex-wrap gap-1 text-truncate">
-            <%= field_with_label("Nom:", categorie_produit.nom) %>
+            <div data-turbo="false">
+              <%= link_to admin_categorie_produit_path(categorie_produit), class: "text-decoration-none text-dark" do %>
+                <%= custom_badge("", "", "", "fw-bold", categorie_produit.nom) %>
+              <% end %>
+            </div>
             <%= icon_true_field_with_label("service", categorie_produit.service) %>
             <%= field_with_label("Texte:", categorie_produit.texte_annonce) %>
             <%= field_with_label("Label:", categorie_produit.label) %>

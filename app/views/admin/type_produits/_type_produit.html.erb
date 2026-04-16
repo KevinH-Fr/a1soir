@@ -2,7 +2,9 @@
   <div class="card mx-2 light-beige-colored shadow-sm">
     <div class="card-body p-2 d-flex flex-row flex-wrap align-items-center justify-content-between gap-2">
       <div data-turbo="false">
-        <%= link_to type_produit.nom, admin_type_produit_path(type_produit), class: "text-dark text-decoration-none fw-semibold" %>
+        <%= link_to admin_type_produit_path(type_produit), class: "text-decoration-none text-dark" do %>
+          <%= custom_badge("", "", "", "fw-bold", type_produit.nom) %>
+        <% end %>
       </div>
       <%= links_record(type_produit) %>
     </div>

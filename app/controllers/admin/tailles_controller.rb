@@ -10,13 +10,15 @@ class Admin::TaillesController < Admin::ApplicationController
     search_params = params.permit(:format, :page, 
       q:[:nom_cont])
     @q = Taille.ransack(search_params[:q])
-    tailles = @q.result(distinct: true).order(created_at: :desc)
+    tailles = @q.result(distinct: true).order(:nom)
     @pagy, @tailles = pagy_countless(tailles, items: 2)
 
 
   end
 
   def show
+    produits_scope = @taille.produits.order(updated_at: :desc)
+    @pagy, @produits = pagy_countless(produits_scope, items: 4)
   end
 
   def new

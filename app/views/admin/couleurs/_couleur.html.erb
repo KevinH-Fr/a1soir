@@ -2,8 +2,14 @@
   <div class="card mx-2 light-beige-colored shadow-sm">
     <div class="card-body p-2 d-flex flex-column">
       <div class="d-flex flex-wrap align-items-center gap-2">
-        <strong><%= couleur.nom %></strong>
-        <%= color_icon(couleur) if couleur.couleur_code %>
+        <div data-turbo="false">
+          <%= link_to admin_couleur_path(couleur), class: "text-decoration-none text-dark" do %>
+            <span class="badge lighter-beige-colored fw-normal fw-bold m-1 fs-6 shadow-sm text-dark text-break d-inline-flex align-items-center" style="white-space: normal;">
+              <%= color_icon(couleur) if couleur.couleur_code %>
+              <span><%= couleur.nom %></span>
+            </span>
+          <% end %>
+        </div>
       </div>
       <%= links_record(couleur) %>
     </div>
