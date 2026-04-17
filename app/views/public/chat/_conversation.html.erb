@@ -3,6 +3,7 @@
   data-controller="chat"
   data-chat-user-label-value="<%= t("public.chat.role_user") %>"
   data-chat-assistant-label-value="<%= t("public.chat.role_assistant") %>"
+  data-chat-reset-success-value="<%= t("public.chat.reset_success") %>"
 >
   <div id="chatbot-toggle-wrapper">
     <button
@@ -30,6 +31,25 @@
         <%= image_tag("/images/logo_courant_public.png", class: "chatbox-header__logo", alt: "") %>
       </div>
       <p class="chatbox-header__tagline"><%= t("public.chat.tagline") %></p>
+      <div class="chatbox-header__actions">
+        <a
+          href="/fr/contact#message-form"
+          class="chatbox-header__action-btn"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i class="bi bi-envelope-at" aria-hidden="true"></i>
+          <span><%= t("public.chat.contact_team") %></span>
+        </a>
+        <button
+          type="button"
+          class="chatbox-header__action-btn chatbox-header__action-btn--ghost"
+          data-action="click->chat#resetConversation"
+        >
+          <i class="bi bi-arrow-clockwise" aria-hidden="true"></i>
+          <span><%= t("public.chat.reset_label") %></span>
+        </button>
+      </div>
     </header>
 
     <div

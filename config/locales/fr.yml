@@ -581,6 +581,9 @@ fr:
       send_aria: "Envoyer le message"
       role_user: "Vous"
       role_assistant: "Assistant"
+      contact_team: "Contacter l'équipe"
+      reset_label: "Réinitialiser"
+      reset_success: "Conversation réinitialisée. Comment puis-je vous aider ?"
     helpers:
       quick_nav_links:
         title: "Navigation rapide"

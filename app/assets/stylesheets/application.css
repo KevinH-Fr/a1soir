@@ -803,6 +803,43 @@ body.bg-black .dropdown-item.fw-bold {
     color: rgba(255, 255, 255, 0.88);
   }
 
+  .chatbox-header__actions {
+    margin-top: 0.15rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .chatbox-header__action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.34rem 0.58rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    background: rgba(255, 255, 255, 0.13);
+    color: #ffffff;
+    text-decoration: none;
+    font-family: "Montserrat", "Segoe UI", sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.18s ease;
+    cursor: pointer;
+  }
+
+  .chatbox-header__action-btn:hover {
+    background: rgba(255, 255, 255, 0.24);
+    border-color: rgba(255, 255, 255, 0.75);
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  .chatbox-header__action-btn--ghost {
+    background: rgba(0, 0, 0, 0.12);
+  }
+
   .chatbox-messages {
     flex: 1 1 auto;
     min-height: 0;
@@ -860,6 +897,18 @@ body.bg-black .dropdown-item.fw-bold {
   .chatbox-msg__text {
     white-space: pre-wrap;
     word-break: break-word;
+  }
+
+  .chatbox-link {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+    font-weight: 600;
+  }
+
+  .chatbox-msg--assistant .chatbox-link {
+    color: #2c415e;
   }
 
   .chatbox-footer {
@@ -2887,6 +2936,7 @@ section {
 .public-cart-page .cart-desc-truncate {
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

@@ -6,8 +6,10 @@ module Chatbot
   class GenerateReply
     MAX_TOOL_ITERATIONS = 5
 
-    def initialize(chat_session:)
+    def initialize(chat_session:, base_url:, locale:)
       @chat_session = chat_session
+      @base_url = base_url
+      @locale = locale
     end
 
     def history
@@ -181,7 +183,12 @@ module Chatbot
     end
 
     def safely_execute_tool(call)
-      ToolDispatcher.call(name: call["name"], arguments: call["arguments"])
+      ToolDispatcher.call(
+        name: call["name"],
+        arguments: call["arguments"],
+        base_url: @base_url,
+        locale: @locale
+      )
     rescue StandardError => error
       {
         error: "Tool call failed.",
@@ -238,8 +245,12 @@ module Chatbot
         store: Rails.application.config.x.openai_chat_store,
         tools: ToolDispatcher.definitions
       }
-      parameters[:previous_response_id] = previous_response_id if previous_response_id.present?
-      parameters[:conversation] = @chat_session.openai_conversation_id if @chat_session.openai_conversation_id.present?
+      if @chat_session.openai_conversation_id.present?
+        # OpenAI Responses rejects requests containing both conversation and previous_response_id.
+        parameters[:conversation] = @chat_session.openai_conversation_id
+      elsif previous_response_id.present?
+        parameters[:previous_response_id] = previous_response_id
+      end
       parameters
     end
 

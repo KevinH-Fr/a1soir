@@ -30,6 +30,8 @@ This app uses OpenAI `responses` with a persistent conversation id saved per loc
   - `app/services/chatbot/tool_dispatcher.rb`
   - `app/services/chatbot/generate_reply.rb`
 - Business logic must stay in Rails services/models, not only in prompt text.
+- Service URLs are generated dynamically from Rails route helpers + request host
+  (not hardcoded in the prompt).
 
 ## Removed legacy variable
 

@@ -4,7 +4,8 @@ export default class extends Controller {
   static targets = ["input", "messages", "box"]
   static values = {
     userLabel: { type: String, default: "Vous" },
-    assistantLabel: { type: String, default: "Assistant" }
+    assistantLabel: { type: String, default: "Assistant" },
+    resetSuccess: { type: String, default: "Conversation reinitialisee. Comment puis-je vous aider ?" }
   }
 
   connect() {
@@ -13,6 +14,65 @@ export default class extends Controller {
 
   scrollToBottom() {
     this.messagesTarget.scrollTop = this.messagesTarget.scrollHeight
+  }
+
+  renderMessageText(target, text) {
+    const source = text || ""
+    target.replaceChildren()
+
+    const markdownLinkRegex = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g
+    let cursor = 0
+    let markdownMatch
+
+    while ((markdownMatch = markdownLinkRegex.exec(source)) !== null) {
+      const [fullMatch, label, href] = markdownMatch
+      const start = markdownMatch.index
+      const end = start + fullMatch.length
+
+      if (start > cursor) {
+        this.appendPlainTextWithUrls(target, source.slice(cursor, start))
+      }
+
+      target.appendChild(this.buildSafeAnchor(href, label))
+      cursor = end
+    }
+
+    if (cursor < source.length) {
+      this.appendPlainTextWithUrls(target, source.slice(cursor))
+    }
+  }
+
+  appendPlainTextWithUrls(target, text) {
+    const urlRegex = /(https?:\/\/[^\s]+)/g
+    let cursor = 0
+    let urlMatch
+
+    while ((urlMatch = urlRegex.exec(text)) !== null) {
+      const [url] = urlMatch
+      const start = urlMatch.index
+      const end = start + url.length
+
+      if (start > cursor) {
+        target.appendChild(document.createTextNode(text.slice(cursor, start)))
+      }
+
+      target.appendChild(this.buildSafeAnchor(url, url))
+      cursor = end
+    }
+
+    if (cursor < text.length) {
+      target.appendChild(document.createTextNode(text.slice(cursor)))
+    }
+  }
+
+  buildSafeAnchor(href, label) {
+    const a = document.createElement("a")
+    a.href = href
+    a.textContent = label
+    a.target = "_blank"
+    a.rel = "noopener noreferrer"
+    a.className = "chatbox-link"
+    return a
   }
 
   appendMessage(role, text) {
@@ -28,12 +88,13 @@ export default class extends Controller {
 
     const body = document.createElement("div")
     body.className = "chatbox-msg__text"
-    body.textContent = text
+    this.renderMessageText(body, text)
 
     row.appendChild(label)
     row.appendChild(body)
     this.messagesTarget.appendChild(row)
     this.scrollToBottom()
+    return body
   }
 
   async loadHistory() {
@@ -53,6 +114,26 @@ export default class extends Controller {
 
   toggle() {
     this.boxTarget.classList.toggle("visible")
+  }
+
+  async resetConversation() {
+    try {
+      const response = await fetch("/chat/reset", {
+        method: "DELETE",
+        headers: {
+          "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
+        }
+      })
+
+      if (!response.ok) {
+        return
+      }
+
+      this.messagesTarget.replaceChildren()
+      this.appendMessage("assistant", this.resetSuccessValue)
+    } catch (_error) {
+      // silent fail to keep UX stable
+    }
   }
 
   async send(event) {
@@ -96,6 +177,8 @@ export default class extends Controller {
     this.messagesTarget.appendChild(row)
     this.scrollToBottom()
 
+    let assistantRawText = ""
+
     const reader = response.body.getReader()
     const decoder = new TextDecoder("utf-8")
 
@@ -105,7 +188,8 @@ export default class extends Controller {
         break
       }
       const chunk = decoder.decode(value, { stream: true })
-      body.textContent += chunk
+      assistantRawText += chunk
+      this.renderMessageText(body, assistantRawText)
       this.scrollToBottom()
     }
   }

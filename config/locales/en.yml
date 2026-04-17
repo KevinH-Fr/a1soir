@@ -204,6 +204,9 @@ en:
       send_aria: "Send message"
       role_user: "You"
       role_assistant: "Assistant"
+      contact_team: "Contact team"
+      reset_label: "Reset"
+      reset_success: "Conversation reset. How can I help you?"
     helpers:
       quick_nav_links:
         title: "Quick navigation"

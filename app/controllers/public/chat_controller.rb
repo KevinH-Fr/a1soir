@@ -28,10 +28,24 @@ module Public
       end
     end
 
+    def reset
+      session_to_reset = current_chat_session
+      session_to_reset.chat_messages.delete_all
+      session_to_reset.update!(
+        openai_conversation_id: nil,
+        last_openai_response_id: nil
+      )
+      render json: { ok: true }
+    end
+
     private
 
     def chat_service
-      @chat_service ||= Chatbot::GenerateReply.new(chat_session: current_chat_session)
+      @chat_service ||= Chatbot::GenerateReply.new(
+        chat_session: current_chat_session,
+        base_url: request.base_url,
+        locale: I18n.locale
+      )
     end
 
     def current_chat_session

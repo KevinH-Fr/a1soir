@@ -67,6 +67,7 @@ Rails.application.routes.draw do
         # assistant ia
         get "chat/history", to: "chat#history"
         post "chat", to: "chat#chat"
+        delete "chat/reset", to: "chat#reset"
       end
 
     end
