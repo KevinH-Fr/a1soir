@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_10_113752) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_17_123000) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -101,6 +101,31 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_10_113752) do
     t.integer "categorie_produit_id", null: false
     t.index ["categorie_produit_id"], name: "index_categorie_produits_produits_on_categorie_produit_id"
     t.index ["produit_id"], name: "index_categorie_produits_produits_on_produit_id"
+  end
+
+  create_table "chat_messages", force: :cascade do |t|
+    t.integer "chat_session_id", null: false
+    t.string "role", null: false
+    t.text "content", null: false
+    t.string "openai_response_id"
+    t.string "tool_name"
+    t.text "metadata"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_session_id", "created_at"], name: "index_chat_messages_on_chat_session_id_and_created_at"
+    t.index ["chat_session_id"], name: "index_chat_messages_on_chat_session_id"
+    t.index ["openai_response_id"], name: "index_chat_messages_on_openai_response_id"
+  end
+
+  create_table "chat_sessions", force: :cascade do |t|
+    t.string "visitor_token", null: false
+    t.string "openai_conversation_id"
+    t.string "last_openai_response_id"
+    t.text "metadata"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["openai_conversation_id"], name: "index_chat_sessions_on_openai_conversation_id"
+    t.index ["visitor_token"], name: "index_chat_sessions_on_visitor_token", unique: true
   end
 
   create_table "clients", force: :cascade do |t|
@@ -494,6 +519,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_10_113752) do
   add_foreign_key "articles", "commandes"
   add_foreign_key "articles", "produits"
   add_foreign_key "avoir_rembs", "commandes"
+  add_foreign_key "chat_messages", "chat_sessions"
   add_foreign_key "commandes", "clients"
   add_foreign_key "commandes", "profiles"
   add_foreign_key "demande_cabine_essayage_items", "demande_cabine_essayages"

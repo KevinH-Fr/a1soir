@@ -3,15 +3,7 @@ module Public
     include ActionController::Live
 
     def history
-      thread_id = session[:openai_thread_id]
-      if thread_id.blank?
-        render json: { messages: [] }
-        return
-      end
-
-      assistant = OpenaiAssistantService.new(thread_id)
-      messages = assistant.get_messages
-
+      messages = chat_service.history
       render json: { messages: messages }
     end
 
@@ -19,30 +11,44 @@ module Public
     def chat
       response.headers["Content-Type"] = "text/event-stream"
       response.headers["Cache-Control"] = "no-cache"
+      response.headers["X-Accel-Buffering"] = "no"
 
       user_message = params[:message] || "salut"
-      thread_id = session[:openai_thread_id]
-
-     # puts "💡 Thread ID dans session (avant) : #{thread_id || 'aucun'}"
-
-      assistant_service = OpenaiAssistantService.new(thread_id)
-
-      session[:openai_thread_id] = assistant_service.thread_id
-      # puts "✅ Thread ID utilisé : #{assistant_service.thread_id}"
-      # puts "📦 Thread ID enregistré en session."
-
-      response.headers["X-Chatbot-Thread-Id"] = assistant_service.thread_id
+      response.headers["X-Chatbot-Context-Id"] = current_chat_session.openai_conversation_id.to_s
 
       begin
-        assistant_service.call_assistant(user_message) do |chunk|
+        chat_service.call(user_message) do |chunk|
           response.stream.write(chunk)
+          response.stream.flush if response.stream.respond_to?(:flush)
         end
       rescue => e
-       # puts "❌ Erreur : #{e.message}"
         response.stream.write("Error: #{e.message}")
       ensure
         response.stream.close
       end
+    end
+
+    private
+
+    def chat_service
+      @chat_service ||= Chatbot::GenerateReply.new(chat_session: current_chat_session)
+    end
+
+    def current_chat_session
+      return @current_chat_session if defined?(@current_chat_session)
+
+      if session[:chat_session_id].present?
+        found = ChatSession.find_by(id: session[:chat_session_id])
+        return @current_chat_session = found if found.present?
+      end
+
+      visitor_token = session[:chat_visitor_token].presence || SecureRandom.uuid
+      session[:chat_visitor_token] = visitor_token
+
+      chat_session = ChatSession.find_or_create_by!(visitor_token: visitor_token)
+
+      session[:chat_session_id] = chat_session.id
+      @current_chat_session = chat_session
     end
   end
 end

@@ -11,6 +11,10 @@ export default class extends Controller {
     this.loadHistory()
   }
 
+  scrollToBottom() {
+    this.messagesTarget.scrollTop = this.messagesTarget.scrollHeight
+  }
+
   appendMessage(role, text) {
     const row = document.createElement("div")
     row.classList.add(
@@ -29,6 +33,7 @@ export default class extends Controller {
     row.appendChild(label)
     row.appendChild(body)
     this.messagesTarget.appendChild(row)
+    this.scrollToBottom()
   }
 
   async loadHistory() {
@@ -40,7 +45,7 @@ export default class extends Controller {
         this.appendMessage(msg.role, msg.text)
       })
 
-      this.messagesTarget.scrollTop = this.messagesTarget.scrollHeight
+      this.scrollToBottom()
     } catch (error) {
       console.error("❌ Erreur chargement historique :", error)
     }
@@ -89,6 +94,7 @@ export default class extends Controller {
     row.appendChild(label)
     row.appendChild(body)
     this.messagesTarget.appendChild(row)
+    this.scrollToBottom()
 
     const reader = response.body.getReader()
     const decoder = new TextDecoder("utf-8")
@@ -100,7 +106,7 @@ export default class extends Controller {
       }
       const chunk = decoder.decode(value, { stream: true })
       body.textContent += chunk
-      this.messagesTarget.scrollTop = this.messagesTarget.scrollHeight
+      this.scrollToBottom()
     }
   }
 }
