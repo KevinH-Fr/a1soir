@@ -2,9 +2,33 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["input", "messages", "box"]
+  static values = {
+    userLabel: { type: String, default: "Vous" },
+    assistantLabel: { type: String, default: "Assistant" }
+  }
 
   connect() {
     this.loadHistory()
+  }
+
+  appendMessage(role, text) {
+    const row = document.createElement("div")
+    row.classList.add(
+      "chatbox-msg",
+      role === "user" ? "chatbox-msg--user" : "chatbox-msg--assistant"
+    )
+
+    const label = document.createElement("span")
+    label.className = "chatbox-msg__label"
+    label.textContent = role === "user" ? this.userLabelValue : this.assistantLabelValue
+
+    const body = document.createElement("div")
+    body.className = "chatbox-msg__text"
+    body.textContent = text
+
+    row.appendChild(label)
+    row.appendChild(body)
+    this.messagesTarget.appendChild(row)
   }
 
   async loadHistory() {
@@ -13,11 +37,7 @@ export default class extends Controller {
       const data = await response.json()
 
       data.messages.forEach((msg) => {
-        const msgEl = document.createElement("div")
-        msgEl.classList.add("mb-1")
-        msgEl.classList.add(msg.role === "user" ? "text-end" : "text-start")
-        msgEl.innerText = `${msg.role === "user" ? "Vous" : "Assistant"} : ${msg.text}`
-        this.messagesTarget.appendChild(msgEl)
+        this.appendMessage(msg.role, msg.text)
       })
 
       this.messagesTarget.scrollTop = this.messagesTarget.scrollHeight
@@ -26,28 +46,19 @@ export default class extends Controller {
     }
   }
 
-
   toggle() {
     this.boxTarget.classList.toggle("visible")
   }
 
   async send(event) {
     event.preventDefault()
-   // console.log("📨 Formulaire soumis.")
 
     const message = this.inputTarget.value.trim()
     if (!message) {
-   //   console.log("⚠️ Message vide.")
       return
     }
 
-    console.log("📝 Message : ", message)
-
-    const userMessage = document.createElement("div")
-    userMessage.classList.add("text-end", "mb-1")
-    userMessage.innerText = `Vous : ${message}`
-    this.messagesTarget.appendChild(userMessage)
-
+    this.appendMessage("user", message)
     this.inputTarget.value = ""
 
     let response
@@ -58,32 +69,37 @@ export default class extends Controller {
           "Content-Type": "application/json",
           "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
         },
-        body: JSON.stringify({ message: message }) // ✅ plus de thread_id ici
+        body: JSON.stringify({ message: message })
       })
     } catch (error) {
-   //   console.error("❌ Erreur lors de la requête :", error)
       return
     }
+
+    const row = document.createElement("div")
+    row.classList.add("chatbox-msg", "chatbox-msg--assistant")
+
+    const label = document.createElement("span")
+    label.className = "chatbox-msg__label"
+    label.textContent = this.assistantLabelValue
+
+    const body = document.createElement("div")
+    body.className = "chatbox-msg__text"
+    body.textContent = ""
+
+    row.appendChild(label)
+    row.appendChild(body)
+    this.messagesTarget.appendChild(row)
 
     const reader = response.body.getReader()
     const decoder = new TextDecoder("utf-8")
 
-    let aiMessage = document.createElement("div")
-    aiMessage.classList.add("text-start", "mb-1")
-    aiMessage.innerText = "Assistant : "
-    this.messagesTarget.appendChild(aiMessage)
-
-    console.log("📡 Réception en cours...")
-
     while (true) {
       const { done, value } = await reader.read()
       if (done) {
-        console.log("✅ Fin du stream.")
         break
       }
       const chunk = decoder.decode(value, { stream: true })
-  //    console.log("🧩 Chunk :", chunk)
-      aiMessage.innerText += chunk
+      body.textContent += chunk
       this.messagesTarget.scrollTop = this.messagesTarget.scrollHeight
     }
   }

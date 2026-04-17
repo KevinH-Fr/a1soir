@@ -572,6 +572,15 @@ fr:
       write_aria: "Nous écrire via le formulaire de contact"
       call_title: "Nous appeler"
       call_aria: "Nous appeler au +33 4 93 45 17 17"
+      chatbot_title: "Assistant en ligne"
+      chatbot_aria: "Ouvrir le chat avec l’assistant"
+      chatbot_hover_label: "Parler à l’assistant"
+    chat:
+      tagline: "Une question ? Nous vous répondons ici."
+      input_placeholder: "Écrivez votre message…"
+      send_aria: "Envoyer le message"
+      role_user: "Vous"
+      role_assistant: "Assistant"
     helpers:
       quick_nav_links:
         title: "Navigation rapide"

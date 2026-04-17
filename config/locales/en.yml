@@ -195,6 +195,15 @@ en:
       write_aria: "Write to us via the contact form"
       call_title: "Call us"
       call_aria: "Call us at +33 4 93 45 17 17"
+      chatbot_title: "Online assistant"
+      chatbot_aria: "Open chat with the assistant"
+      chatbot_hover_label: "Talk to the assistant"
+    chat:
+      tagline: "Questions? We're happy to help here."
+      input_placeholder: "Type your message…"
+      send_aria: "Send message"
+      role_user: "You"
+      role_assistant: "Assistant"
     helpers:
       quick_nav_links:
         title: "Quick navigation"

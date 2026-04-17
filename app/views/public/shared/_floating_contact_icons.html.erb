@@ -32,4 +32,10 @@
     <i class="bi bi-telephone"></i>
     <span class="floating-phone-tooltip">+33 4 93 45 17 17</span>
   <% end %>
+
+  <% if Chatbot.enabled? %>
+    <div class="floating-chatbot-slot">
+      <%= render "public/chat/conversation" %>
+    </div>
+  <% end %>
 </div>

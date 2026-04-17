@@ -1,50 +1,61 @@
-
-
-<div class="position-fixed bottom-0 end-0 m-3" style="z-index: 1050;" data-controller="chat">
-  <!-- Bouton -->
+<div
+  class="floating-chatbot"
+  data-controller="chat"
+  data-chat-user-label-value="<%= t("public.chat.role_user") %>"
+  data-chat-assistant-label-value="<%= t("public.chat.role_assistant") %>"
+>
   <div id="chatbot-toggle-wrapper">
     <button
       id="chatbot-toggle"
       type="button"
+      class="floating-icon-btn floating-icon-btn--chatbot"
       data-action="click->chat#toggle"
-      style=""
+      title="<%= t("public.floating_contact_icons.chatbot_title") %>"
+      aria-label="<%= t("public.floating_contact_icons.chatbot_aria") %>"
     >
-      <i class="bi bi-chat-dots-fill text-white fs-2"></i>
+      <i class="bi bi-chat-dots-fill" aria-hidden="true"></i>
+      <span class="floating-chatbot-tooltip"><%= t("public.floating_contact_icons.chatbot_hover_label") %></span>
     </button>
   </div>
 
-  <!-- Conteneur du chatbot -->
   <div
     id="chatBox"
-    class="chatbox bg-white rounded shadow d-flex flex-column"
+    class="chatbox chatbox--floating chatbox-panel d-flex flex-column"
     data-chat-target="box"
-    style="position: absolute; width: 24rem; height: 80vh; bottom: 100px; right: 0;"
+    role="region"
+    aria-label="<%= t("public.floating_contact_icons.chatbot_title") %>"
   >
-
-    <div id="chatbot-header">
-        <%= image_tag('/images/logo_courant_public.png', class: '', width: "200") %>
-        <span>Discutez avec notre assistant 👋</span>
-    </div>
-
+    <header class="chatbox-header">
+      <div class="chatbox-header__brand">
+        <%= image_tag("/images/logo_courant_public.png", class: "chatbox-header__logo", alt: "") %>
+      </div>
+      <p class="chatbox-header__tagline"><%= t("public.chat.tagline") %></p>
+    </header>
 
     <div
+      class="chatbox-messages"
       data-chat-target="messages"
-      class="flex-grow-1 overflow-auto p-2 rounded"
+      role="log"
+      aria-live="polite"
     ></div>
 
-    <form data-action="submit->chat#send" class="p-2">
-      <div class="input-group">
-        <input
-          type="text"
-          data-chat-target="input"
-          class="form-control"
-          placeholder="Votre message..."
-        />
-        <button type="submit" class="btn btn-success">
-           <i class="bi bi-arrow-right-circle-fill"></i> 
-        </button>
-      </div>
-    </form>
+    <footer class="chatbox-footer">
+      <form class="chatbox-form" data-action="submit->chat#send">
+        <div class="chatbox-form__row">
+          <label class="visually-hidden" for="chatbot-message-input"><%= t("public.chat.input_placeholder") %></label>
+          <input
+            id="chatbot-message-input"
+            type="text"
+            autocomplete="off"
+            data-chat-target="input"
+            class="form-control chatbox-input"
+            placeholder="<%= t("public.chat.input_placeholder") %>"
+          />
+          <button type="submit" class="btn chatbox-send" aria-label="<%= t("public.chat.send_aria") %>">
+            <i class="bi bi-send-fill" aria-hidden="true"></i>
+          </button>
+        </div>
+      </form>
+    </footer>
   </div>
-
 </div>

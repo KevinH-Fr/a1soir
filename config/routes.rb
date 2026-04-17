@@ -63,9 +63,11 @@ Rails.application.routes.draw do
       # Demande cabine essayage
       resources :demande_cabine_essayages, only: [:new, :create], path: "cabine/reservation"
 
-      # assistant ia
-      get "chat/history", to: "chat#history"
-      post "chat", to: "chat#chat"
+      if Rails.application.config.x.chatbot_enabled
+        # assistant ia
+        get "chat/history", to: "chat#history"
+        post "chat", to: "chat#chat"
+      end
 
     end
 
