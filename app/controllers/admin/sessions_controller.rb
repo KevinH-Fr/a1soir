@@ -27,8 +27,24 @@ class Admin::SessionsController < Devise::SessionsController
   def after_sign_in_path_for(resource)
     admin_root_path  # Redirect to the admin root path
   end
-  
-  # protected
+
+  def after_sign_out_path_for(resource_or_scope)
+    if Rails.env.development?
+      root_url(host: "localhost", port: request.port, protocol: "http")
+    else
+      root_url(subdomain: nil)
+    end
+  end
+
+  protected
+
+  # Rails bloque les redirections inter-host par défaut.
+  # Ici c'est intentionnel (admin.* -> domaine public), donc on l'autorise.
+  def respond_to_on_destroy
+    redirect_to after_sign_out_path_for(resource_name),
+                allow_other_host: true,
+                status: Devise.responder.redirect_status
+  end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_sign_in_params

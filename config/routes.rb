@@ -80,7 +80,8 @@ Rails.application.routes.draw do
     namespace :admin do
 
       devise_for :users, path: '', path_names: { sign_in: 'login', sign_out: 'logout' }, controllers: {
-        sessions: 'admin/sessions'  # Optional: If you are overriding the sessions controller for admins
+        sessions: 'admin/sessions',
+        passwords: 'admin/passwords'
       }
 
       get 'analyses/index'

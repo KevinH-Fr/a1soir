@@ -31,7 +31,9 @@ This app uses OpenAI `responses` with a persistent conversation id saved per loc
   - `app/services/chatbot/generate_reply.rb`
 - Business logic must stay in Rails services/models, not only in prompt text.
 - Service URLs are generated dynamically from Rails route helpers + request host
-  (not hardcoded in the prompt).
+  (not hardcoded in the prompt). `get_service_links` topics include `concept`
+  (`le_concept`) and `autres_activites` (`nos_autres_activites`) in addition to
+  rdv, cabine, contact, faq, legal, eshop, boutique.
 
 ## Removed legacy variable
 

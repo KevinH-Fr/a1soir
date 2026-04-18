@@ -2,7 +2,7 @@
 
 # OpenAI chat runtime configuration for the public chatbot.
 Rails.application.config.x.openai_chat_prompt_path = Rails.root.join("config/prompts/chatbot_system.txt")
-Rails.application.config.x.openai_chat_model = "gpt-4.1-mini"
+Rails.application.config.x.openai_chat_model = "gpt-5.4-mini" #"gpt-4.1-mini"
 Rails.application.config.x.openai_chat_store = true
 
 default_prompt = if File.exist?(Rails.application.config.x.openai_chat_prompt_path)

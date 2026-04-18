@@ -63,15 +63,15 @@ module Chatbot
         {
           type: "function",
           name: "get_service_links",
-          description: "Return official URLs for appointment, fitting room, contact, FAQ, legal, and e-shop.",
+          description: "Return official URLs for appointment, fitting room, contact, FAQ, legal, e-shop, concept (rental/sale), other activities, and boutique.",
           strict: true,
           parameters: {
             type: "object",
             properties: {
               topic: {
                 type: "string",
-                description: "Topic key: all, rdv, cabine, cabine_reservation, contact, faq, legal, eshop, boutique",
-                enum: %w[all rdv cabine cabine_reservation contact faq legal eshop boutique]
+                description: "Topic key: all, rdv, cabine, cabine_reservation, contact, faq, legal, eshop, boutique, concept, autres_activites",
+                enum: %w[all rdv cabine cabine_reservation contact faq legal eshop boutique concept autres_activites]
               }
             },
             required: ["topic"],
@@ -99,7 +99,7 @@ module Chatbot
 
       case name
       when "search_products"
-        search_products(normalized)
+        search_products(normalized, base_url: base_url, locale: locale)
       when "get_store_info"
         get_store_info
       when "get_service_links"
@@ -118,7 +118,7 @@ module Chatbot
       }
     end
 
-    def self.search_products(arguments)
+    def self.search_products(arguments, base_url:, locale:)
       query = arguments["query"].to_s.strip
       return { error: "Missing query argument." } if query.blank?
 
@@ -139,7 +139,7 @@ module Chatbot
           quantite: produit.quantite,
           today_availability: produit.today_availability,
           eshop: produit.eshop,
-          url: "https://a1soir.com/fr/produit/#{produit.handle}-#{produit.id}"
+          url: build_product_url(produit, base_url: base_url, locale: locale)
         }
       end
 
@@ -157,7 +157,7 @@ module Chatbot
             quantite: produit.quantite,
             today_availability: produit.today_availability,
             eshop: produit.eshop,
-            url: "https://a1soir.com/fr/produit/#{produit.handle}-#{produit.id}"
+            url: build_product_url(produit, base_url: base_url, locale: locale)
           }
         end
 
@@ -209,7 +209,9 @@ module Chatbot
         faq: absolute_url(base_url, helpers.faq_path(locale: locale)),
         legal: absolute_url(base_url, helpers.legal_path(locale: locale)),
         eshop: absolute_url(base_url, helpers.produits_index_path(locale: locale)),
-        boutique: absolute_url(base_url, helpers.la_boutique_path(locale: locale))
+        boutique: absolute_url(base_url, helpers.la_boutique_path(locale: locale)),
+        concept: absolute_url(base_url, helpers.le_concept_path(locale: locale)),
+        autres_activites: absolute_url(base_url, helpers.nos_autres_activites_path(locale: locale))
       }
     end
 
@@ -219,6 +221,13 @@ module Chatbot
       uri = URI.join("#{normalized_base}/", path.sub(%r{\A/}, ""))
       uri.fragment = anchor if anchor.present?
       uri.to_s
+    end
+
+    def self.build_product_url(produit, base_url:, locale:)
+      helpers = Rails.application.routes.url_helpers
+      slug = produit.handle.presence || produit.nom.to_s.parameterize
+      path = helpers.produit_path(locale: locale, slug: slug, id: produit.id)
+      absolute_url(base_url, path)
     end
   end
 end
