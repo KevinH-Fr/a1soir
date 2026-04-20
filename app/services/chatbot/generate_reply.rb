@@ -1,7 +1,3 @@
-require "json"
-require "net/http"
-require "uri"
-
 module Chatbot
   class GenerateReply
     MAX_TOOL_ITERATIONS = 5
@@ -27,12 +23,13 @@ module Chatbot
       ensure_conversation_id!
       persist_message!("user", user_message)
 
-      streamed_text = +""
+      streamed_anything = false
+
       initial_response = stream_create_response(
         input: user_message,
         previous_response_id: @chat_session.last_openai_response_id
       ) do |delta|
-        streamed_text << delta
+        streamed_anything = true
         yield delta if block_given?
       end
 
@@ -42,16 +39,14 @@ module Chatbot
       )
 
       response = resolve_tool_calls(initial_response) do |delta|
-        streamed_text << delta
+        streamed_anything = true
         yield delta if block_given?
       end
 
       assistant_text = extract_output_text(response).to_s
       assistant_text = fallback_assistant_text if assistant_text.blank?
-      initial_response_id = initial_response["id"]
-      response_id = response["id"]
 
-      if streamed_text.blank? || response_id != initial_response_id
+      unless streamed_anything
         stream_text(assistant_text) { |chunk| yield chunk if block_given? }
       end
 
@@ -74,19 +69,15 @@ module Chatbot
       client.responses.create(parameters: parameters)
     end
 
-    def stream_create_response(input:, previous_response_id: nil)
+    def stream_create_response(input:, previous_response_id: nil, &on_delta)
       return nil unless block_given?
 
       parameters = base_response_parameters(input: input, previous_response_id: previous_response_id)
-      parameters[:stream] = true
-
-      stream_response_http(parameters) { |delta| yield delta }
+      run_streaming(parameters, &on_delta)
     rescue StandardError => error
       if parameters[:conversation].present?
         begin
-          retry_parameters = parameters.dup
-          retry_parameters.delete(:conversation)
-          return stream_response_http(retry_parameters) { |delta| yield delta }
+          return run_streaming(parameters.reject { |k, _| k == :conversation }, &on_delta)
         rescue StandardError => retry_error
           Rails.logger.warn("[Chatbot::GenerateReply] Streaming retry unavailable: #{retry_error.class} - #{retry_error.message}")
         end
@@ -94,6 +85,25 @@ module Chatbot
 
       Rails.logger.warn("[Chatbot::GenerateReply] Streaming unavailable: #{error.class} - #{error.message}")
       nil
+    end
+
+    def run_streaming(parameters, &on_delta)
+      completed_response = nil
+
+      params_with_stream = parameters.merge(
+        stream: proc do |chunk, _event|
+          case chunk["type"]
+          when "response.output_text.delta"
+            delta = chunk["delta"].to_s
+            on_delta.call(delta) if delta.present?
+          when "response.completed"
+            completed_response = chunk["response"] || chunk
+          end
+        end
+      )
+
+      client.responses.create(parameters: params_with_stream)
+      completed_response
     end
 
     def resolve_tool_calls(initial_response)
@@ -131,6 +141,7 @@ module Chatbot
           input: tool_outputs,
           previous_response_id: current_response["id"]
         )
+
         iterations += 1
       end
 
@@ -179,7 +190,7 @@ module Chatbot
     end
 
     def fallback_assistant_text
-      "Je suis desole, je n'ai pas pu formuler de reponse pour le moment."
+      I18n.t("public.chat.fallback_reply", locale: @locale)
     end
 
     def safely_execute_tool(call)
@@ -215,26 +226,15 @@ module Chatbot
     end
 
     def create_openai_conversation
-      uri = URI("https://api.openai.com/v1/conversations")
-      request = Net::HTTP::Post.new(uri)
-      request["Authorization"] = "Bearer #{ENV.fetch('OPENAI_API_KEY')}"
-      request["Content-Type"] = "application/json"
-      request.body = {}.to_json
-
-      response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
-        http.request(request)
-      end
-
-      return nil unless response.is_a?(Net::HTTPSuccess)
-
-      JSON.parse(response.body)["id"]
+      response = client.conversations.create(parameters: {})
+      response["id"]
     rescue StandardError => error
       Rails.logger.warn("[Chatbot::GenerateReply] Unable to create conversation: #{error.class} - #{error.message}")
       nil
     end
 
     def client
-      @client ||= OpenAI::Client.new(access_token: ENV.fetch("OPENAI_API_KEY"))
+      @client ||= OpenAI::Client.new
     end
 
     def base_response_parameters(input:, previous_response_id:)
@@ -245,77 +245,15 @@ module Chatbot
         store: Rails.application.config.x.openai_chat_store,
         tools: ToolDispatcher.definitions
       }
+
       if @chat_session.openai_conversation_id.present?
         # OpenAI Responses rejects requests containing both conversation and previous_response_id.
         parameters[:conversation] = @chat_session.openai_conversation_id
       elsif previous_response_id.present?
         parameters[:previous_response_id] = previous_response_id
       end
+
       parameters
-    end
-
-    def stream_response_http(parameters)
-      uri = URI("https://api.openai.com/v1/responses")
-      request = Net::HTTP::Post.new(uri)
-      request["Authorization"] = "Bearer #{ENV.fetch('OPENAI_API_KEY')}"
-      request["Content-Type"] = "application/json"
-      request["Accept"] = "text/event-stream"
-      request.body = parameters.to_json
-
-      completed_response = nil
-      buffer = +""
-
-      Net::HTTP.start(uri.hostname, uri.port, use_ssl: true, read_timeout: 120) do |http|
-        http.request(request) do |response|
-          unless response.is_a?(Net::HTTPSuccess)
-            error_body = response.body.to_s
-            raise "Streaming request failed with status #{response.code}: #{error_body}"
-          end
-
-          response.read_body do |chunk|
-            buffer << chunk
-            while (separator = buffer.match(/\r?\n\r?\n/))
-              event_block = buffer.slice!(0, separator.end(0))
-              event_name, raw_data = parse_sse_event_block(event_block)
-              next if raw_data.blank? || raw_data == "[DONE]"
-
-              payload = JSON.parse(raw_data)
-              event_type = event_name.presence || payload["type"].to_s
-
-              case event_type
-              when "response.output_text.delta"
-                delta = payload["delta"].to_s
-                yield delta if delta.present?
-              when "response.completed"
-                completed_response = payload["response"] || payload
-              when "error"
-                message = payload.dig("error", "message") || payload["message"] || "Unknown streaming error"
-                raise "Streaming error: #{message}"
-              end
-            end
-          end
-        end
-      end
-
-      completed_response
-    end
-
-    def parse_sse_event_block(block)
-      event_name = nil
-      data_lines = []
-
-      block.to_s.each_line do |line|
-        stripped = line.strip
-        next if stripped.blank?
-
-        if stripped.start_with?("event:")
-          event_name = stripped.split(":", 2).last.to_s.strip
-        elsif stripped.start_with?("data:")
-          data_lines << stripped.split(":", 2).last.to_s.lstrip
-        end
-      end
-
-      [event_name, data_lines.join("\n")]
     end
   end
 end

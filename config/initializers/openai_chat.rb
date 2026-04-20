@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+# OpenAI client — global configuration for the ruby-openai gem.
+OpenAI.configure do |config|
+  config.access_token = ENV.fetch("OPENAI_API_KEY")
+  config.log_errors = Rails.env.development?
+end
+
 # OpenAI chat runtime configuration for the public chatbot.
 Rails.application.config.x.openai_chat_prompt_path = Rails.root.join("config/prompts/chatbot_system.txt")
 Rails.application.config.x.openai_chat_model = "gpt-5.4-mini" #"gpt-4.1-mini"

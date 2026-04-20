@@ -4,6 +4,7 @@
   data-chat-user-label-value="<%= t("public.chat.role_user") %>"
   data-chat-assistant-label-value="<%= t("public.chat.role_assistant") %>"
   data-chat-reset-success-value="<%= t("public.chat.reset_success") %>"
+  data-chat-send-error-value="<%= t("public.chat.send_error") %>"
 >
   <div id="chatbot-toggle-wrapper">
     <button
@@ -27,7 +28,15 @@
     aria-label="<%= t("public.floating_contact_icons.chatbot_title") %>"
   >
     <header class="chatbox-header">
-      <p class="chatbox-header__tagline"><%= t("public.chat.tagline") %></p>
+      <div class="chatbox-header__identity">
+        <div class="chatbox-header__bot">
+          <span class="chatbox-header__bot-avatar">
+            <i class="bi bi-stars" aria-hidden="true"></i>
+          </span>
+          <span class="chatbox-header__bot-status" aria-hidden="true"></span>
+        </div>
+        <p class="chatbox-header__tagline"><%= t("public.chat.tagline") %></p>
+      </div>
       <div class="chatbox-header__actions">
         <a
           href="<%= contact_path(locale: I18n.locale, anchor: "message-form") %>"

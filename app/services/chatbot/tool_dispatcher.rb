@@ -10,14 +10,15 @@ module Chatbot
       phone_display: "04 93 45 17 17",
       phone_link: "+33493451717",
       address: "27-29 Boulevard Carnot, 06400 Cannes",
-      parking: ["Parking Mozart", "Parking St Nicolas", "Parking Vauban"],
-      opening_hours: [
-        "Lundi: 10:00 - 17:00",
-        "Mardi-Vendredi: 10:00 - 12:00 / 15:00 - 19:00",
-        "Samedi: 10:00 - 17:00",
-        "Dimanche: Ferme"
-      ]
+      parking: ["Parking Mozart", "Parking St Nicolas", "Parking Vauban"]
     }.freeze
+
+    FALLBACK_OPENING_HOURS = [
+      "Lundi: 10:00 - 17:00",
+      "Mardi-Vendredi: 10:00 - 12:00 / 15:00 - 19:00",
+      "Samedi: 10:00 - 17:00",
+      "Dimanche: Ferme"
+    ].freeze
 
     FAQ_FACTS = {
       appointment: "Le rendez-vous est recommande (et necessaire pour essayages/retouches).",
@@ -122,44 +123,37 @@ module Chatbot
       query = arguments["query"].to_s.strip
       return { error: "Missing query argument." } if query.blank?
 
-      normalized_query = query.downcase
-      relation = Produit.left_joins(:type_produit, :categorie_produits)
-      relation = relation.where(
-        "LOWER(produits.nom) LIKE :q OR LOWER(COALESCE(produits.description, '')) LIKE :q OR LOWER(COALESCE(produits.handle, '')) LIKE :q OR LOWER(COALESCE(type_produits.nom, '')) LIKE :q OR LOWER(COALESCE(categorie_produits.nom, '')) LIKE :q",
-        q: "%#{normalized_query}%"
-      )
+      terms = query.downcase.split.uniq.first(4)
+      relation = Produit.left_joins(:type_produit, :categorie_produits, :couleur, :taille)
+                        .includes(:couleur, :taille, :type_produit, :categorie_produits)
+
+      terms.each do |term|
+        relation = relation.where(
+          "(LOWER(produits.nom) LIKE :q
+            OR LOWER(COALESCE(produits.description, '')) LIKE :q
+            OR LOWER(COALESCE(produits.handle, '')) LIKE :q
+            OR LOWER(COALESCE(type_produits.nom, '')) LIKE :q
+            OR LOWER(COALESCE(categorie_produits.nom, '')) LIKE :q
+            OR LOWER(COALESCE(couleurs.nom, '')) LIKE :q
+            OR LOWER(COALESCE(tailles.nom, '')) LIKE :q)",
+          q: "%#{term}%"
+        )
+      end
+
       relation = relation.where(actif: true) if Produit.column_names.include?("actif")
       relation = relation.distinct.order("produits.nom ASC").limit(8)
 
-      products = relation.map do |produit|
-        {
-          id: produit.id,
-          nom: produit.nom,
-          description: produit.description.to_s.truncate(140),
-          quantite: produit.quantite,
-          today_availability: produit.today_availability,
-          eshop: produit.eshop,
-          url: build_product_url(produit, base_url: base_url, locale: locale)
-        }
-      end
+      helpers = Rails.application.routes.url_helpers
+      products = relation.map { |p| format_product(p, base_url: base_url, locale: locale, helpers: helpers) }
 
       if products.empty?
         fallback = Produit
                    .where(actif: true, eshop: true)
                    .where(today_availability: true)
+                   .includes(:couleur, :taille, :type_produit, :categorie_produits)
                    .order(coup_de_coeur: :desc, updated_at: :desc)
                    .limit(5)
-                   .map do |produit|
-          {
-            id: produit.id,
-            nom: produit.nom,
-            description: produit.description.to_s.truncate(140),
-            quantite: produit.quantite,
-            today_availability: produit.today_availability,
-            eshop: produit.eshop,
-            url: build_product_url(produit, base_url: base_url, locale: locale)
-          }
-        end
+                   .map { |p| format_product(p, base_url: base_url, locale: locale, helpers: helpers) }
 
         return {
           query: query,
@@ -178,7 +172,14 @@ module Chatbot
     end
 
     def self.get_store_info
-      STORE_INFO
+      STORE_INFO.merge(opening_hours: fetch_opening_hours)
+    end
+
+    def self.fetch_opening_hours
+      lines = Texte.last&.horaire&.to_plain_text&.split("\n")&.reject(&:blank?)
+      lines.presence || FALLBACK_OPENING_HOURS
+    rescue StandardError
+      FALLBACK_OPENING_HOURS
     end
 
     def self.get_service_links(arguments, base_url:, locale:)
@@ -223,11 +224,26 @@ module Chatbot
       uri.to_s
     end
 
-    def self.build_product_url(produit, base_url:, locale:)
-      helpers = Rails.application.routes.url_helpers
+    def self.format_product(produit, base_url:, locale:, helpers:)
       slug = produit.handle.presence || produit.nom.to_s.parameterize
       path = helpers.produit_path(locale: locale, slug: slug, id: produit.id)
-      absolute_url(base_url, path)
+      {
+        id: produit.id,
+        nom: produit.nom,
+        description: produit.description.to_s.truncate(140),
+        today_availability: produit.today_availability,
+        eshop: produit.eshop,
+        prixvente: produit.prixvente,
+        prixlocation: produit.prixlocation,
+        caution: produit.caution,
+        ancien_prixvente: produit.ancien_prixvente,
+        couleur: produit.couleur&.nom,
+        taille: produit.taille&.nom,
+        type_produit: produit.type_produit&.nom,
+        categories: produit.categorie_produits.map(&:nom),
+        url: absolute_url(base_url, path)
+      }
     end
+    private_class_method :format_product
   end
 end

@@ -9,11 +9,12 @@ module Public
 
 
     def chat
+      user_message = params[:message].to_s.strip
+      return render json: { error: "Message required" }, status: :bad_request if user_message.blank?
+
       response.headers["Content-Type"] = "text/event-stream"
       response.headers["Cache-Control"] = "no-cache"
       response.headers["X-Accel-Buffering"] = "no"
-
-      user_message = params[:message] || "salut"
       response.headers["X-Chatbot-Context-Id"] = current_chat_session.openai_conversation_id.to_s
 
       begin
@@ -22,7 +23,8 @@ module Public
           response.stream.flush if response.stream.respond_to?(:flush)
         end
       rescue => e
-        response.stream.write("Error: #{e.message}")
+        Rails.logger.error("[ChatController] Streaming error: #{e.class} - #{e.message}")
+        response.stream.write(I18n.t("public.chat.error_generic"))
       ensure
         response.stream.close
       end

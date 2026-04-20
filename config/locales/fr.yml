@@ -576,7 +576,7 @@ fr:
       chatbot_aria: "Ouvrir le chat avec l’assistant"
       chatbot_hover_label: "Parler à l’assistant"
     chat:
-      tagline: "Une question ? Nous vous répondons ici."
+      tagline: "Une question sur les produits ou la boutique ? Je suis là pour vous aider."
       input_placeholder: "Écrivez votre message…"
       send_aria: "Envoyer le message"
       role_user: "Vous"
@@ -584,6 +584,9 @@ fr:
       contact_team: "Contacter l'équipe"
       reset_label: "Réinitialiser"
       reset_success: "Conversation réinitialisée. Comment puis-je vous aider ?"
+      send_error: "Une erreur est survenue. Veuillez réessayer."
+      fallback_reply: "Désolé, je n'ai pas pu formuler de réponse pour le moment."
+      error_generic: "Une erreur est survenue. Veuillez réessayer."
     helpers:
       quick_nav_links:
         title: "Navigation rapide"

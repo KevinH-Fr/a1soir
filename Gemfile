@@ -77,7 +77,7 @@ end
 
 gem "jsbundling-rails"
 
-gem 'ruby-openai'
+gem 'ruby-openai', '~> 8.3'
 
 gem 'sitemap_generator'
 

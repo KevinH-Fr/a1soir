@@ -5,11 +5,16 @@ export default class extends Controller {
   static values = {
     userLabel: { type: String, default: "Vous" },
     assistantLabel: { type: String, default: "Assistant" },
-    resetSuccess: { type: String, default: "Conversation reinitialisee. Comment puis-je vous aider ?" }
+    resetSuccess: { type: String, default: "Conversation réinitialisée. Comment puis-je vous aider ?" },
+    sendError: { type: String, default: "Une erreur est survenue. Veuillez reessayer." }
   }
 
   connect() {
     this.loadHistory()
+  }
+
+  get csrfToken() {
+    return document.querySelector("[name='csrf-token']").content
   }
 
   scrollToBottom() {
@@ -75,6 +80,34 @@ export default class extends Controller {
     return a
   }
 
+  showTypingIndicator() {
+    const row = document.createElement("div")
+    row.classList.add("chatbox-msg", "chatbox-msg--assistant", "chatbox-msg--typing")
+    row.dataset.typingIndicator = "true"
+
+    const label = document.createElement("span")
+    label.className = "chatbox-msg__label"
+    label.textContent = this.assistantLabelValue
+
+    const body = document.createElement("div")
+    body.className = "chatbox-msg__text"
+    ;[1, 2, 3].forEach(() => {
+      const dot = document.createElement("span")
+      dot.className = "chatbox-typing-dot"
+      body.appendChild(dot)
+    })
+
+    row.appendChild(label)
+    row.appendChild(body)
+    this.messagesTarget.appendChild(row)
+    this.scrollToBottom()
+  }
+
+  hideTypingIndicator() {
+    const el = this.messagesTarget.querySelector("[data-typing-indicator]")
+    if (el) el.remove()
+  }
+
   appendMessage(role, text) {
     const row = document.createElement("div")
     row.classList.add(
@@ -114,15 +147,16 @@ export default class extends Controller {
 
   toggle() {
     this.boxTarget.classList.toggle("visible")
+    if (this.boxTarget.classList.contains("visible")) {
+      requestAnimationFrame(() => this.inputTarget.focus())
+    }
   }
 
   async resetConversation() {
     try {
       const response = await fetch("/chat/reset", {
         method: "DELETE",
-        headers: {
-          "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
-        }
+        headers: { "X-CSRF-Token": this.csrfToken }
       })
 
       if (!response.ok) {
@@ -146,6 +180,7 @@ export default class extends Controller {
 
     this.appendMessage("user", message)
     this.inputTarget.value = ""
+    this.showTypingIndicator()
 
     let response
     try {
@@ -153,30 +188,24 @@ export default class extends Controller {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
+          "X-CSRF-Token": this.csrfToken
         },
         body: JSON.stringify({ message: message })
       })
     } catch (error) {
+      this.hideTypingIndicator()
+      this.appendMessage("assistant", this.sendErrorValue)
       return
     }
 
-    const row = document.createElement("div")
-    row.classList.add("chatbox-msg", "chatbox-msg--assistant")
+    this.hideTypingIndicator()
 
-    const label = document.createElement("span")
-    label.className = "chatbox-msg__label"
-    label.textContent = this.assistantLabelValue
+    if (!response.ok) {
+      this.appendMessage("assistant", this.sendErrorValue)
+      return
+    }
 
-    const body = document.createElement("div")
-    body.className = "chatbox-msg__text"
-    body.textContent = ""
-
-    row.appendChild(label)
-    row.appendChild(body)
-    this.messagesTarget.appendChild(row)
-    this.scrollToBottom()
-
+    const body = this.appendMessage("assistant", "")
     let assistantRawText = ""
 
     const reader = response.body.getReader()

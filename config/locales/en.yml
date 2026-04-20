@@ -199,7 +199,7 @@ en:
       chatbot_aria: "Open chat with the assistant"
       chatbot_hover_label: "Talk to the assistant"
     chat:
-      tagline: "Questions? We're happy to help here."
+      tagline: "A question about our products or store? I'm here to help."
       input_placeholder: "Type your message…"
       send_aria: "Send message"
       role_user: "You"
@@ -207,6 +207,9 @@ en:
       contact_team: "Contact team"
       reset_label: "Reset"
       reset_success: "Conversation reset. How can I help you?"
+      send_error: "An error occurred. Please try again."
+      fallback_reply: "Sorry, I was unable to formulate a response at this time."
+      error_generic: "An error occurred. Please try again."
     helpers:
       quick_nav_links:
         title: "Quick navigation"
