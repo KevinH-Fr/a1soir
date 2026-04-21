@@ -326,8 +326,10 @@ class Admin::ProduitsController < Admin::ApplicationController
         original = @produitBase
         copy = original.dup
         copy.nom = "#{original.nom}_new"
-        copy.stripe_product_id = nil
-        copy.stripe_price_id   = nil
+        copy.stripe_product_id      = nil
+        copy.stripe_price_id        = nil
+        copy.coup_de_coeur          = false
+        copy.coup_de_coeur_position = nil
 
         # Copy associated categories (if any)
         copy.categorie_produits = original.categorie_produits
