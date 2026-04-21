@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["input", "messages", "box"]
+  static targets = ["input", "messages", "box", "toggleBtn"]
   static values = {
     userLabel: { type: String, default: "Vous" },
     assistantLabel: { type: String, default: "Assistant" },
@@ -146,10 +146,19 @@ export default class extends Controller {
   }
 
   toggle() {
-    this.boxTarget.classList.toggle("visible")
-    if (this.boxTarget.classList.contains("visible")) {
-      requestAnimationFrame(() => this.inputTarget.focus())
+    const isOpen = this.boxTarget.classList.contains("visible")
+
+    if (isOpen) {
+      this.boxTarget.classList.add("is-closing")
+      this.boxTarget.addEventListener("animationend", () => {
+        this.boxTarget.classList.remove("visible", "is-closing")
+      }, { once: true })
+    } else {
+      this.boxTarget.classList.add("visible")
+      setTimeout(() => this.inputTarget.focus(), 50)
     }
+
+    this.toggleBtnTarget.classList.toggle("is-open", !isOpen)
   }
 
   async resetConversation() {

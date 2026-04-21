@@ -5,22 +5,31 @@
 @keyframes chatbotPulse {
   0%, 100% {
     box-shadow: 0 0 0 0 rgba(200, 175, 120, 0);
-    transform: scale(1);
   }
   50% {
-    box-shadow: 0 0 0 7px rgba(200, 175, 120, 0.18);
-    transform: scale(1.04);
+    box-shadow: 0 0 0 8px rgba(200, 175, 120, 0.22);
   }
 }
 
 @keyframes chatboxEnter {
   from {
     opacity: 0;
-    transform: translateY(14px) scale(0.97);
+    transform: translateY(18px) scale(0.88);
   }
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes chatboxLeave {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(14px) scale(0.92);
   }
 }
 
@@ -71,6 +80,7 @@
 
 #chatbot-toggle-wrapper {
   position: relative;
+  z-index: 1061;
   border-radius: 50%;
   animation: chatbotPulse 3s ease-in-out infinite;
 }
@@ -121,6 +131,65 @@
   transform: translateY(-50%) translateX(-2px);
 }
 
+/* Icon swap */
+.chat-icon--open {
+  display: none;
+}
+
+.floating-icon-btn--chatbot.is-open .chat-icon--closed {
+  display: none;
+}
+
+.floating-icon-btn--chatbot.is-open .chat-icon--open {
+  display: block;
+}
+
+/* Button open state */
+.floating-icon-btn--chatbot.is-open {
+  background: rgba(200, 175, 120, 0.15);
+  border-color: rgba(200, 175, 120, 0.8);
+  color: #c8af78;
+  opacity: 1;
+}
+
+.floating-icon-btn--chatbot.is-open:hover {
+  background: rgba(200, 175, 120, 0.25);
+  border-color: #c8af78;
+  color: #d4bc88;
+  transform: scale(1.06);
+}
+
+/* Stop pulse on wrapper when chat is open */
+#chatbot-toggle-wrapper:has(.floating-icon-btn--chatbot.is-open) {
+  animation: none;
+}
+
+/* Header close button */
+.chatbox-header__close-btn {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(245, 243, 240, 0.6);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  padding: 0;
+}
+
+.chatbox-header__close-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #f5f3f0;
+  transform: translateY(2px);
+}
+
 .floating-chatbot-slot .floating-icon-btn {
   animation-delay: 0.65s;
 }
@@ -147,12 +216,13 @@
 
 /* Header */
 .chatbox-header {
+  position: relative;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 0.85rem;
-  padding: 0.85rem 1rem 1.1rem;
+  padding: 0.85rem 2.5rem 1.1rem 1rem;
   background: linear-gradient(160deg, #242321 0%, #161514 60%, #111110 100%);
   color: #fff;
   border-bottom: 1px solid rgba(200, 175, 120, 0.22);
@@ -438,12 +508,17 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
+  transform-origin: bottom right;
 }
 
 .chatbox.visible {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  animation: chatboxEnter 0.35s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  animation: chatboxEnter 0.32s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.chatbox.is-closing {
+  pointer-events: none;
+  animation: chatboxLeave 0.22s cubic-bezier(0.4, 0, 1, 1) both;
 }

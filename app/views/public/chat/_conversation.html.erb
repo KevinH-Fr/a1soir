@@ -12,10 +12,12 @@
       type="button"
       class="floating-icon-btn floating-icon-btn--chatbot"
       data-action="click->chat#toggle"
+      data-chat-target="toggleBtn"
       title="<%= t("public.floating_contact_icons.chatbot_title") %>"
       aria-label="<%= t("public.floating_contact_icons.chatbot_aria") %>"
     >
-      <i class="bi bi-chat-dots-fill" aria-hidden="true"></i>
+      <i class="bi bi-chat-dots-fill chat-icon--closed" aria-hidden="true"></i>
+      <i class="bi bi-x-lg chat-icon--open" aria-hidden="true"></i>
       <span class="floating-chatbot-tooltip"><%= t("public.floating_contact_icons.chatbot_hover_label") %></span>
     </button>
   </div>
@@ -37,6 +39,14 @@
         </div>
         <p class="chatbox-header__tagline"><%= t("public.chat.tagline") %></p>
       </div>
+      <button
+        type="button"
+        class="chatbox-header__close-btn"
+        data-action="click->chat#toggle"
+        aria-label="<%= t("public.floating_contact_icons.chatbot_aria") %>"
+      >
+        <i class="bi bi-chevron-down" aria-hidden="true"></i>
+      </button>
       <div class="chatbox-header__actions">
         <a
           href="<%= contact_path(locale: I18n.locale, anchor: "message-form") %>"
