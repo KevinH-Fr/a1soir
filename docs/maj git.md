@@ -19,6 +19,7 @@ git add .
 git commit
 3. Pousser la branche d’intégration (optionnel mais recommandé)
 git push origin release/integration-prod
+
 4. Une fois validé (tests / staging), mettre à jour main
 git checkout main
 git pull origin main
