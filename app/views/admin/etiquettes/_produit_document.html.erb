@@ -15,7 +15,12 @@
             <h3 class="bolded text-dark"><%= produit.nom %></h3> 
 
             <% if produit.prixvente %>
-                <span>Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>                      
+              <% if produit.en_promotion? %>
+                <span style="text-decoration: line-through; color: grey;">Vente: <%= number_to_currency(produit.ancien_prixvente, locale: :fr, precision: 0) %></span>
+                <span style="margin-left: 4px;">Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>
+              <% else %>
+                <span>Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>
+              <% end %>
             <% end %>
             
             <% if produit.prixvente.present? && produit.prixlocation.present? %>

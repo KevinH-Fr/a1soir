@@ -9,6 +9,8 @@ class Article < ApplicationRecord
   scope :location_only, -> { where(locvente: 'location') }
   scope :vente_only, -> { where(locvente: 'vente') }
 
+  before_create :capture_promotion_info
+
   after_commit :after_article_save, on: [:create, :update, :destroy]
   
   # Callback pour mettre à jour la disponibilité du produit concerné
@@ -34,6 +36,12 @@ class Article < ApplicationRecord
   end
 
   private
+
+  def capture_promotion_info
+    return unless produit&.en_promotion?
+    note = "Promotion appliquée (ancien prix : #{produit.ancien_prixvente} €)"
+    self.commentaires = [note, commentaires.presence].compact.join(" | ")
+  end
 
   def after_article_save
     # Update the type_locvente field in the Commande based on the distinct locvente values

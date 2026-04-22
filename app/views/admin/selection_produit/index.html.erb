@@ -78,7 +78,7 @@
 
         <% else %>
 
-          <% if session[:display_qr_activated] == true %>
+          <% if session[:display_qr_activated] == true && params[:q].blank? %>
             <%= render "admin/selection_produit/selection_qr", display_qr_activated: nil %>
           <% end %>
 

@@ -94,103 +94,113 @@
         </div>
       </div>
 
-      <div class="collapse px-2" id="<%= collapse_id %>">
-        <hr>
+      <div class="collapse" id="<%= collapse_id %>">
+        <hr class="mx-2 mt-2 mb-3">
 
-        <div class="row g-0">
-        <!-- Image Column -->
-          <div class="col-sm-4 p-1">
-            <div data-turbo="false">
-              <%= image_tag(produit.qr_code, class:"img-fluid") if produit.qr_code.attached? %>
+        <div class="row g-3 px-2 pb-3">
+
+          <!-- QR Code -->
+          <% if produit.qr_code.attached? %>
+            <div class="col-auto text-center" data-turbo="false">
+              <%= image_tag(produit.qr_code, class: "img-fluid rounded", style: "max-width: 130px;") %>
             </div>
-          </div>
-          <!-- Text Column -->
-          <div class="col-sm-8">
-            Autres couleur(s) : 
-            <% same_produit_same_taille_others_couleurs(produit).each do |produit| %>
-              <%= produit.couleur.nom if produit.couleur %>
-            <% end %>
+            <div class="col">
+          <% else %>
+            <div class="col-12">
+          <% end %>
 
-            Autres taille(s) : 
-            <% same_produit_same_couleur_others_tailles(produit).each do |produit| %>
-              <%= produit.taille.nom if produit.taille %>
-            <% end %>
-
-            <br>
-
-            <div class="text-break">
-              <%= custom_badge("", "caution", "", "", custom_currency_no_decimals_format(produit.caution)) if produit.caution %>
-              <%= custom_badge("", "handle:", "", "", produit.handle ) if produit.handle %>
-              <%= custom_badge("", "ref. fournisseur:", "", "", produit.reffrs ) if produit.reffrs %>
-              <%#= custom_badge("", "quantité:", "", "", produit.quantite ) if produit.quantite %>
-              <%= custom_badge("", "poids (grammes):", "", "", produit.poids ) %>
-
-              <% if current_admin_user.admin? %>
-                <%= custom_badge("", "prixachat", "", "", produit.prixachat ) if produit.prixachat %>
-                <%= custom_badge("", "fournisseur:", "", "", produit.fournisseur&.nom ) if produit.fournisseur&.nom  %>
-                <%= custom_badge("", "date achat:", "", "", produit.dateachat ) if produit.dateachat %>
+              <!-- Variantes -->
+              <% autres_couleurs = same_produit_same_taille_others_couleurs(produit).select { |p| p.couleur } %>
+              <% autres_tailles  = same_produit_same_couleur_others_tailles(produit).select { |p| p.taille } %>
+              <% if autres_couleurs.any? || autres_tailles.any? %>
+                <div class="d-flex flex-wrap gap-1 align-items-center mb-2">
+                  <% if autres_couleurs.any? %>
+                    <span class="text-muted small me-1">Couleurs :</span>
+                    <% autres_couleurs.each do |p| %>
+                      <%= custom_badge("", "", "", "", p.couleur.nom) %>
+                    <% end %>
+                  <% end %>
+                  <% if autres_tailles.any? %>
+                    <span class="text-muted small ms-2 me-1">Tailles :</span>
+                    <% autres_tailles.each do |p| %>
+                      <%= custom_badge("", "", "", "", p.taille.nom) %>
+                    <% end %>
+                  <% end %>
+                </div>
               <% end %>
-            </div>
 
-            <% if current_admin_user.admin? %>
-              <div class="px-2 mt-3">
-                <div class="d-flex flex-wrap align-items-center gap-2">
+              <!-- Badges infos -->
+              <div class="d-flex flex-wrap gap-1 align-items-center">
+                <%= custom_badge("", "caution", "", "", custom_currency_no_decimals_format(produit.caution)) if produit.caution %>
+                <%= custom_badge("", "handle:", "", "", produit.handle) if produit.handle %>
+                <%= custom_badge("", "ref. fournisseur:", "", "", produit.reffrs) if produit.reffrs %>
+                <%= custom_badge("", "poids (g):", "", "", produit.poids) %>
+                <% if current_admin_user.admin? %>
+                  <%= custom_badge("", "prix achat", "", "", produit.prixachat) if produit.prixachat %>
+                  <%= custom_badge("", "fournisseur:", "", "", produit.fournisseur&.nom) if produit.fournisseur&.nom %>
+                  <%= custom_badge("", "date achat:", "", "", produit.dateachat) if produit.dateachat %>
+                <% end %>
+              </div>
 
-                  <% if controller_name == "produits" && action_name == "show" %>    <%# || controller_name == "selection_produit"%>
+              <!-- Actions admin -->
+              <% if current_admin_user.admin? %>
+                <div class="mt-3 d-flex flex-wrap align-items-center gap-2">
+
+                  <% if controller_name == "produits" && action_name == "show" %>
                     <%= link_to dupliquer_admin_produit_path(produitbase: produit.id),
                           class: "btn btn-sm btn-dark",
-                          :onclick => "return confirm('Etes-vous certain de vouloir dupliquer ce produit ?')",
-                          title: 'Dupliquer' do %>
-                      <i class="bi-copy me-1"></i>
-                      <span class="">Dupliquer</span>
+                          onclick: "return confirm('Etes-vous certain de vouloir dupliquer ce produit ?')",
+                          title: "Dupliquer" do %>
+                      <i class="bi-copy me-1"></i>Dupliquer
                     <% end %>
-                  <% end %>  
+                  <% end %>
 
                   <%= button_to toggle_active_admin_produit_path(produit),
                         method: :patch,
                         class: "btn btn-sm #{produit.actif? ? 'btn-warning text-dark' : 'btn-success'}",
                         form: { data: { turbo_confirm: (produit.actif? ? "Archiver ce produit ? Il sera retiré des sélections actives et de l'e-shop." : nil) } } do %>
                     <i class="bi <%= produit.actif? ? 'bi-archive' : 'bi-arrow-clockwise' %> me-1"></i>
-                    <span><%= produit.actif? ? "Archiver" : "Réactiver" %></span>
+                    <%= produit.actif? ? "Archiver" : "Réactiver" %>
                   <% end %>
 
                   <%= button_to admin_produit_path(produit),
                         method: :delete,
                         class: "btn btn-sm btn-danger",
                         form: { data: { turbo_confirm: "Êtes-vous certain de vouloir supprimer ce produit définitivement ?" } } do %>
-                    <i class="bi bi-trash me-1"></i>
-                    <span>Supprimer</span>
+                    <i class="bi bi-trash me-1"></i>Supprimer
                   <% end %>
                 </div>
 
                 <div class="mt-2 d-flex flex-wrap align-items-center gap-2">
-                  <div id="produit_<%= produit.id %>_coup_de_coeur" class="d-inline-flex">
+                  <div id="produit_<%= produit.id %>_coup_de_coeur">
                     <%= render "admin/produits/coup_de_coeur_toggle", produit: produit %>
                   </div>
-                  <div class="d-inline-flex">
+                  <div>
                     <%= render "admin/produits/promotion_buttons", produit: produit %>
                   </div>
                 </div>
+              <% end %>
+
+            </div>
+
+          <!-- Médias -->
+          <% if produit.images.any? || produit.video1.attached? %>
+            <div class="col-12">
+              <div class="d-flex flex-wrap gap-2">
+                <% produit.images.each do |image| %>
+                  <%= image_tag(image, class: "rounded border", style: "object-fit: cover; width: 120px; height: 120px;") %>
+                <% end %>
+                <% if produit.video1.attached? %>
+                  <div class="d-flex align-items-center justify-content-center rounded border bg-light"
+                       style="width: 120px; height: 120px;">
+                    <i class="bi bi-file-earmark-play text-secondary" style="font-size: 2.5rem;"></i>
+                  </div>
+                <% end %>
               </div>
-            <% end %>
-            
-          </div>
+            </div>
+          <% end %>
+
         </div>
-
-        <% if produit.images || produit.video1.attached? %>
-          <div class="container-fluid my-2 d-flex flex-wrap gap-2">
-            <% produit.images.each do |image| %>
-                <%= image_tag(image, class: "rounded border", style: "object-fit: cover; width: 150px; height: 150px;") %>
-            <% end %> 
-            <% if produit.video1.attached? %>
-              <div class="d-flex align-items-center justify-content-center rounded border bg-light"
-                    style="width: 150px; height: 150px;">
-                <i class="bi bi-file-earmark-play text-secondary" style="font-size: 3rem;"></i>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
-
       </div>
     </div>
   <% end %>

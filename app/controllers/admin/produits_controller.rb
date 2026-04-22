@@ -535,6 +535,11 @@ class Admin::ProduitsController < Admin::ApplicationController
     @produit.ancien_prixvente = @produit.prixvente
     @produit.prixvente = nouveau_prix
 
+    if @produit.prixlocation.to_f > 0
+      @produit.prixlocation = nil
+      @produit.caution = nil
+    end
+
     if @produit.save
       if OnlineSales.available?
         StripeProductService.new(@produit).update_product_and_price

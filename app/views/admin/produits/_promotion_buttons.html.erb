@@ -1,13 +1,17 @@
 <% if produit.prixvente.present? && produit.prixvente > 0 %>
   <% if produit.en_promotion? %>
     <div class="d-flex align-items-center gap-2 flex-wrap">
-      <span class="badge bg-warning">EN PROMOTION</span>
-      <span class="small text-muted text-decoration-line-through">
-        Ancien prix: <%= custom_currency_no_decimals_format(produit.ancien_prixvente) %>
+      <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle fw-normal px-2 py-1 rounded-pill small">
+        <i class="bi bi-tag-fill me-1"></i>
+        <span class="text-decoration-line-through text-muted me-1"><%= custom_currency_no_decimals_format(produit.ancien_prixvente) %></span>
+        <i class="bi bi-arrow-right me-1"></i>
+        <span class="fw-semibold"><%= custom_currency_no_decimals_format(produit.prixvente) %></span>
       </span>
       <%= form_with url: remove_promotion_admin_produit_path(produit), method: :post, data: { turbo: true }, class: "d-inline" do |form| %>
-        <%= form.submit "Retirer la promotion", class: "btn btn-sm btn-secondary", 
-            onclick: "return confirm('Êtes-vous sûr de vouloir retirer la promotion ? Le prix sera restauré à #{custom_currency_no_decimals_format(produit.ancien_prixvente)}')" %>
+        <button type="submit" class="btn btn-sm btn-outline-secondary"
+                onclick="return confirm('Êtes-vous sûr de vouloir retirer la promotion ? Le prix sera restauré à <%= custom_currency_no_decimals_format(produit.ancien_prixvente) %>')">
+          <i class="bi bi-x-circle me-1"></i>Retirer la promotion
+        </button>
       <% end %>
     </div>
   <% else %>
@@ -26,6 +30,16 @@
         </div>
         <%= form_with url: apply_promotion_admin_produit_path(produit), method: :post, data: { turbo: true } do |form| %>
           <div class="modal-body">
+            <% if produit.prixlocation.to_f > 0 %>
+              <div class="alert alert-warning d-flex align-items-start gap-2 mb-3">
+                <i class="bi bi-exclamation-triangle-fill flex-shrink-0 mt-1"></i>
+                <div>
+                  <strong>Attention :</strong> ce produit est disponible à la location
+                  (<%= custom_currency_no_decimals_format(produit.prixlocation) %>).
+                  En appliquant cette promotion, il sera <strong>retiré de la location</strong>.
+                </div>
+              </div>
+            <% end %>
             <div class="mb-3">
               <label class="form-label">Prix actuel</label>
               <input type="text" class="form-control" value="<%= custom_currency_no_decimals_format(produit.prixvente) %>" disabled>
