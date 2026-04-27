@@ -356,7 +356,7 @@ class Produit < ApplicationRecord
   end
 
   def set_default_poids
-    self.poids ||= 2000
+    self.poids ||= 1000
   end
 
   def set_default_caution
