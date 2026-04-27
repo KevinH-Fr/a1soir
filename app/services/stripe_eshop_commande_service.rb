@@ -30,7 +30,7 @@ class StripeEshopCommandeService
       commentaires: commande_comment,
       devis: false,
       type_locvente: "vente",
-      typeevent: Commande::EVENEMENTS_OPTIONS.first,
+      typeevent: "divers",
       eshop: true
     )
 
