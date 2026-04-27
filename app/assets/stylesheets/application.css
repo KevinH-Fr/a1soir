@@ -3063,6 +3063,7 @@ button[data-time]:disabled {
 
 /* En-tête mois + flèches */
 .flatpickr-months {
+  position: relative !important;
   margin-bottom: 8px !important;
   background: transparent !important;
   display: block !important;
@@ -3226,10 +3227,15 @@ button[data-time]:disabled {
 
 .flatpickr-prev-month:hover,
 .flatpickr-next-month:hover {
-  background: #000 !important;
-  color: #fff !important;
+  background: #fff !important;
+  color: #000 !important;
   transform: translateY(-50%) scale(1.1) !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+.flatpickr-prev-month:hover svg,
+.flatpickr-next-month:hover svg {
+  fill: #000 !important;
 }
 
 /* Responsive - Cellules adaptatives sur mobile */
@@ -3300,12 +3306,37 @@ button[data-time]:disabled {
     }
   }
 
+  .flatpickr-calendar {
+    padding: 10px 0 !important;
+  }
+
   .flatpickr-prev-month,
   .flatpickr-next-month {
     width: 32px !important;
     height: 32px !important;
   }
-  
+
+  .flatpickr-prev-month {
+    left: 4px !important;
+  }
+
+  .flatpickr-next-month {
+    right: 4px !important;
+  }
+
+  .flatpickr-months .flatpickr-month {
+    padding-left: 44px !important;
+    padding-right: 44px !important;
+  }
+
+  .flatpickr-days {
+    padding: 4px 8px !important;
+  }
+
+  .flatpickr-day {
+    max-width: calc((100% / 7) - 2px) !important;
+  }
+
   .calendar-container-large {
     min-height: 320px;
   }
