@@ -58,11 +58,25 @@
         </div>
       </div>
 
-      <div class="mt-2">
-        <%= link_to admin_selection_produit_path(commande: @commande, article: article),
+      <% commande_ref = @commande || article.commande %>
+      <% retouche_produit = retouche_service_produit %>
+      <div class="mt-2 d-flex flex-wrap gap-2">
+        <%= link_to admin_selection_produit_path(commande: commande_ref, article: article),
                     class: "btn btn-sm btn-warning fw-bold" do %>
           <i class="bi bi-plus-lg"></i>
           <span>Sous-article</span>
+        <% end %>
+
+        <% if retouche_produit.present? %>
+          <%= link_to admin_selection_produit_path(
+                        commande: commande_ref,
+                        article: article,
+                        produit: retouche_produit
+                      ),
+                      class: "btn btn-sm btn-outline-warning fw-bold" do %>
+            <i class="bi bi-scissors"></i>
+            <span>Retouche</span>
+          <% end %>
         <% end %>
       </div>
 

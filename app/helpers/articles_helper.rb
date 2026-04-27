@@ -1,4 +1,13 @@
 module ArticlesHelper
+  def retouche_service_produit
+    @retouche_service_produit ||= Produit
+      .joins(:categorie_produits)
+      .where("LOWER(produits.nom) = ?", "retouche")
+      .where(categorie_produits: { service: true })
+      .order(:id)
+      .first
+  end
+
   def badges_articles_synthese(articles)
     commande = articles.try(:proxy_association)&.owner
     commande ||= articles.first&.commande
