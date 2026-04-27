@@ -38,7 +38,7 @@ class Admin::StockController < Admin::ApplicationController
       format.html
       format.pdf do
         render pdf: "reporting_stock_#{@year}_#{Time.current.strftime('%Y%m%d_%H%M%S')}",
-               template: "admin/stock/report",
+               template: "admin/stock/report_pdf",
                formats: [:html],
                layout: "pdf",
                disposition: "inline"

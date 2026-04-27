@@ -88,8 +88,10 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Enable DNS rebinding protection and other `Host` header attacks.
-  #config.hosts << /\A(.+\.)?a1soir\.com\z/
-
+  config.hosts << "a1soir.com"
+  config.hosts << "www.a1soir.com"
+  config.hosts << "admin.a1soir.com"
+  
   # Devise admin routes are under subdomain `admin`, so reset links must target
   # the admin host (not the Heroku app domain).
   config.action_mailer.default_url_options = {
