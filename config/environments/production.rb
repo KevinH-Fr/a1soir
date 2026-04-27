@@ -95,7 +95,12 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
-  config.action_mailer.default_url_options = {host:'a1soir-2-2a03802389d6.herokuapp.com', protocol: "https"}
+  # Devise admin routes are under subdomain `admin`, so reset links must target
+  # the admin host (not the Heroku app domain).
+  config.action_mailer.default_url_options = {
+    host: ENV.fetch("ADMIN_MAILER_HOST", "admin.a1soir.com"),
+    protocol: "https"
+  }
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp
 
