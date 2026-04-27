@@ -280,6 +280,7 @@ Rails.application.routes.draw do
       
       get 'stock/index'
       get 'stock/export_csv', to: 'stock#export_csv', as: :export_products_csv
+      get 'stock/report', to: 'stock#report', as: :stock_report
       
       #pdf generation 
       

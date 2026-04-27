@@ -35,14 +35,32 @@
         </span>
       </div>
 
-      <div class="d-flex flex-wrap gap-2 mt-4 pt-4 border-top border-secondary-subtle">
+      <div class="mt-4 pt-4 border-top border-secondary-subtle">
         <% current_year = Date.today.year %>
-        <% [0, 1, 2].each do |offset| %>
-          <% year = current_year - offset %>
-          <%= link_to "Charger inventaire — fin #{year}",
-                      admin_export_products_csv_path(year: year),
-                      class: "btn btn-sm btn-primary" %>
-        <% end %>
+
+        <div class="mb-3">
+          <h3 class="h6 mb-2">Inventaires</h3>
+          <div class="d-flex flex-wrap gap-2">
+            <% [0, 1, 2].each do |offset| %>
+              <% year = current_year - offset %>
+              <%= link_to "Charger inventaire — fin #{year}",
+                          admin_export_products_csv_path(year: year),
+                          class: "btn btn-sm btn-primary" %>
+            <% end %>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="h6 mb-2">Reportings</h3>
+          <div class="d-flex flex-wrap gap-2">
+            <% [0, 1, 2].each do |offset| %>
+              <% year = current_year - offset %>
+              <%= link_to "Reporting annuel #{year}",
+                          admin_stock_report_path(year: year),
+                          class: "btn btn-sm btn-outline-primary" %>
+            <% end %>
+          </div>
+        </div>
       </div>
     </section>
 
