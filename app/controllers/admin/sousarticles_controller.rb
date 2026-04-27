@@ -40,7 +40,7 @@ class Admin::SousarticlesController < Admin::ApplicationController
 
         format.html do
           admin_push_domain_toast!(flash, :sousarticle, :created)
-          redirect_to admin_commande_url(@commande)
+          redirect_to admin_selection_produit_path(commande: @commande.id, article: @sousarticle.article_id)
         end
         format.json { render :show, status: :created, location: @sousarticle }
       else
