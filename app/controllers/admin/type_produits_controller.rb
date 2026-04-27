@@ -1,6 +1,6 @@
 class Admin::TypeProduitsController < Admin::ApplicationController
 
-  before_action :authenticate_admin!
+  before_action :authenticate_admin!, only: %i[ edit update destroy ]
   before_action :set_type_produit, only: %i[ show edit update destroy ]
 
   def index

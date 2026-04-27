@@ -97,6 +97,9 @@ module IndexModelHelper
     
     # Masquer le bouton show pour ParametreRdv, TypeRdv, PeriodeNonDisponible et PaiementRecu
     hide_show = !show || ["ParametreRdv", "TypeRdv", "PeriodeNonDisponible", "PaiementRecu", "AvoirRemb"].include?(model.class.name)
+    admin_only_manage_models = ["Couleur", "Taille", "CategorieProduit", "TypeProduit"]
+    manage_is_admin_only = admin_only_manage_models.include?(model.class.name)
+    can_manage = !manage_is_admin_only || current_admin_user&.admin?
     
     edit_button_opts = { method: :post, class: "btn btn-sm btn-secondary" }
     edit_button_opts[:params] = edit_params if edit_params.present?
@@ -111,14 +114,16 @@ module IndexModelHelper
         )
       end
 
-      concat(
-        button_to(edit_path, edit_button_opts) do
-          content_tag(:i, "", class: "bi bi-pencil-square") +
-            content_tag(:span, "Modifier", class: "d-none d-lg-inline ms-1")
-        end
-      )
+      if can_manage
+        concat(
+          button_to(edit_path, edit_button_opts) do
+            content_tag(:i, "", class: "bi bi-pencil-square") +
+              content_tag(:span, "Modifier", class: "d-none d-lg-inline ms-1")
+          end
+        )
+      end
 
-      if show_destroy
+      if can_manage && show_destroy
         concat(
           button_to(destroy_path, method: :delete, data: { turbo: turbo_delete },
             onclick: "return confirm('Êtes-vous certain de vouloir supprimer cet élément ?')",

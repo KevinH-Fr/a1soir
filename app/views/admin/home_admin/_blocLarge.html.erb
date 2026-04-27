@@ -26,10 +26,10 @@
         <%= options_supplementaires_link(admin_stock_index_path, "bi-boxes", "Stocks", "btn-outline-danger") if current_admin_user.admin? %>
         <%= options_supplementaires_link(admin_fournisseurs_path, "bi-buildings", "Fournisseurs", "btn-outline-dark") if current_admin_user.admin? %>
         <%= options_supplementaires_link(admin_ensembles_path, "bi-collection", "Ensembles", "btn-outline-primary") if current_admin_user.admin? %>
-        <%= options_supplementaires_link(admin_categorie_produits_path, "bi-layers", "Cat. produits", "btn-outline-dark") if current_admin_user.admin? %>
-        <%= options_supplementaires_link(admin_type_produits_path, "bi-list-ul", "Types produits", "btn-outline-primary") if current_admin_user.admin? %>
-        <%= options_supplementaires_link(admin_couleurs_path, "bi-palette", "Couleurs", "btn-outline-dark") if current_admin_user.admin? %>
-        <%= options_supplementaires_link(admin_tailles_path, "bi-rulers", "Tailles", "btn-outline-secondary") if current_admin_user.admin? %>
+        <%= options_supplementaires_link(admin_categorie_produits_path, "bi-layers", "Cat. produits", "btn-outline-dark") %>
+        <%= options_supplementaires_link(admin_type_produits_path, "bi-list-ul", "Types produits", "btn-outline-primary") %>
+        <%= options_supplementaires_link(admin_couleurs_path, "bi-palette", "Couleurs", "btn-outline-dark") %>
+        <%= options_supplementaires_link(admin_tailles_path, "bi-rulers", "Tailles", "btn-outline-secondary") %>
         <%= options_supplementaires_link(admin_admin_parameters_path, "bi-gear", "Parametres", "btn-outline-warning") if current_admin_user.admin? %>
         <%= options_supplementaires_link(admin_demande_rdvs_path, "bi-calendar-check", "Demandes RDV", "btn-outline-info", badge_count: DemandeRdv.where(statut: "soumis").count) %>
         <%= options_supplementaires_link(
