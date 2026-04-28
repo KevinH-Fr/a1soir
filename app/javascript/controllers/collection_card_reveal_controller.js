@@ -5,7 +5,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["title", "subtitle", "tags", "cta"]
   static values = {
-    baseDelay: { type: Number, default: 350 },
+    baseDelay: { type: Number, default: 600 },
     delay:     { type: Number, default: 150 },
     tagDelay:  { type: Number, default: 55 }
   }
