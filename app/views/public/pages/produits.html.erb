@@ -49,23 +49,9 @@
         <%= render partial: "public/pages/filtres/filtres_prix" %>
         <%= render partial: "public/pages/filtres/filtres_type" %>
 
-        <%= button_to update_filters_path(
-                slug: nil, 
-                id: nil, 
-                couleur: nil,
-                prixmax: nil,
-                taille: nil,
-                type: nil,
-                en_promotion: nil,
-                from_cabine: params[:from_cabine],
-                type_produit: nil
-            ),
-            class: "btn btn-sm btn-outline-light",
-            title: t("public.pages.produits.filters.clear_button_title") do %>
-          <i class="bi bi-x-circle"></i>
-        <% end %>
-   
     </div>
+
+    <%= render partial: "public/pages/filtres/filtres_actifs" %>
 
     <%= render "produits_filtres" %>
 

@@ -3,12 +3,18 @@ module ProduitsFilterable
 
   # Méthode pour charger toutes les données nécessaires aux filtres
   # Si produits_scope est fourni, calcule les options dynamiquement
-  # categories_scope permet de calculer les catégories disponibles sans le filtre de catégorie
-  # (pour afficher toutes les catégories possibles même quand une est déjà sélectionnée)
-  def load_data(produits_scope: nil, categories_scope: nil)
+  def load_data(produits_scope: nil, categories_scope: nil, tailles_scope: nil, couleurs_scope: nil, types_scope: nil, types_produits_scope: nil, prix_scope: nil)
     if produits_scope.present?
       # Calculer les options disponibles à partir des produits filtrés
-      load_dynamic_filter_options(produits_scope, categories_scope: categories_scope)
+      load_dynamic_filter_options(
+        produits_scope,
+        categories_scope: categories_scope,
+        tailles_scope: tailles_scope,
+        couleurs_scope: couleurs_scope,
+        types_scope: types_scope,
+        types_produits_scope: types_produits_scope,
+        prix_scope: prix_scope
+      )
     else
       # Charger toutes les options (comportement par défaut)
       @toutes_categories = CategorieProduit.all.order(nom: :asc)
@@ -37,20 +43,23 @@ module ProduitsFilterable
 
           turbo_stream.update("filtres-type-produit",
             partial: "public/pages/filtres/filtres_type_produit"),
-              
-          turbo_stream.update("filtres-taille", 
+
+          turbo_stream.update("filtres-taille",
             partial: "public/pages/filtres/filtres_taille"),
 
-          turbo_stream.update("filtres-couleur", 
+          turbo_stream.update("filtres-couleur",
             partial: "public/pages/filtres/filtres_couleur"),
 
-          turbo_stream.update("filtres-prix", 
+          turbo_stream.update("filtres-prix",
             partial: "public/pages/filtres/filtres_prix"),
 
-          turbo_stream.update("filtres-type", 
+          turbo_stream.update("filtres-type",
             partial: "public/pages/filtres/filtres_type"),
 
-          turbo_stream.update("produits-filtres", 
+          turbo_stream.update("filtres-actifs",
+            partial: "public/pages/filtres/filtres_actifs"),
+
+          turbo_stream.update("produits-filtres",
             partial: "public/pages/produits_filtres")
         ]
       end
@@ -63,20 +72,12 @@ module ProduitsFilterable
   # Méthode privée pour charger les produits filtrés et paginés
   # Utilisée par produits_with_filters et update_filters_turbo
   def load_filtered_and_paginated_produits
-    # Support both single ID and array of IDs for categories
-    categorie_param = params[:id].is_a?(Array) ? params[:id] : params[:id]
-  
-    produits_scope = FiltersProduitsService.new(
-      categorie_param, params[:taille], params[:couleur],
-      params[:prixmax], params[:type], 
-      params[:type_produit], params[:en_promotion]
-    ).call
-  
     search_params = params.permit(:format, :page,
       q: [:nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont],
       id: []
     )
-  
+
+    produits_scope = filtered_produits_scope
     @q = produits_scope.ransack(search_params[:q])
     searched_produits = @q.result
   
@@ -95,31 +96,26 @@ module ProduitsFilterable
     
     # Scope pour charger les données de filtres (sans ORDER BY pour éviter les conflits avec DISTINCT)
     available_produits_for_filters = Produit.where(id: available_produits_ids)
-    
-    # 🔍 Créer un scope spécifique pour calculer les catégories disponibles
-    # Ce scope applique TOUS les filtres SAUF le filtre de catégorie
-    # Cela permet d'afficher toutes les catégories possibles même quand une catégorie est sélectionnée
-    produits_scope_sans_categorie = FiltersProduitsService.new(
-      nil, # Pas de filtre de catégorie
-      params[:taille], params[:couleur],
-      params[:prixmax], params[:type], 
-      params[:type_produit], params[:en_promotion]
-    ).call
-    
-    # Appliquer la recherche et le filtre de disponibilité au scope sans catégorie
-    @q_sans_categorie = produits_scope_sans_categorie.ransack(search_params[:q])
-    searched_produits_sans_categorie = @q_sans_categorie.result
-    available_produits_ids_sans_categorie = searched_produits_sans_categorie
-                                            .where(today_availability: true)
-                                            .reorder(nil)
-                                            .pluck(:id)
-                                            .uniq
-    available_produits_for_categories = Produit.where(id: available_produits_ids_sans_categorie)
-    
+
+    # Calcul des options en facettes:
+    # pour chaque filtre, on applique tous les autres filtres sauf lui-même.
+    categories_scope = available_scope_for_filter(:categorie, search_params)
+    tailles_scope = available_scope_for_filter(:taille, search_params)
+    couleurs_scope = available_scope_for_filter(:couleur, search_params)
+    types_scope = available_scope_for_filter(:type, search_params)
+    types_produits_scope = available_scope_for_filter(:type_produit, search_params)
+    prix_scope = available_scope_for_filter(:prix, search_params)
+
     # 🔁 Charger les options de filtres dynamiquement à partir des produits disponibles
-    # On passe deux scopes : un pour les autres filtres, un spécifique pour les catégories
-    load_data(produits_scope: available_produits_for_filters, 
-              categories_scope: available_produits_for_categories)
+    load_data(
+      produits_scope: available_produits_for_filters,
+      categories_scope: categories_scope,
+      tailles_scope: tailles_scope,
+      couleurs_scope: couleurs_scope,
+      types_scope: types_scope,
+      types_produits_scope: types_produits_scope,
+      prix_scope: prix_scope
+    )
 
     # Scope pour la pagination avec ORDER BY (requête simple sans DISTINCT)
     available_produits_scope = Produit.where(id: available_produits_ids)
@@ -130,12 +126,10 @@ module ProduitsFilterable
   end
 
   # Calcule les options de filtres disponibles à partir d'un scope de produits
-  # categories_scope : scope optionnel utilisé uniquement pour calculer les catégories disponibles
-  # (sans le filtre de catégorie, pour afficher toutes les catégories possibles)
-  def load_dynamic_filter_options(produits_scope, categories_scope: nil)
+  # Chaque scope optionnel permet de calculer une facette avec tous les autres filtres actifs,
+  # sauf la facette en question.
+  def load_dynamic_filter_options(produits_scope, categories_scope: nil, tailles_scope: nil, couleurs_scope: nil, types_scope: nil, types_produits_scope: nil, prix_scope: nil)
     # Catégories disponibles
-    # Si categories_scope est fourni, l'utiliser pour afficher toutes les catégories possibles
-    # Sinon, utiliser le scope complet (comportement par défaut)
     scope_pour_categories = categories_scope || produits_scope
     categorie_ids = scope_pour_categories
                       .joins(:categorie_produits)
@@ -146,7 +140,8 @@ module ProduitsFilterable
                            .order(nom: :asc)
 
     # Tailles disponibles
-    taille_ids = produits_scope
+    scope_pour_tailles = tailles_scope || produits_scope
+    taille_ids = scope_pour_tailles
                    .where.not(taille_id: nil)
                    .distinct
                    .pluck(:taille_id)
@@ -155,7 +150,8 @@ module ProduitsFilterable
                         .order(:nom)
 
     # Couleurs disponibles
-    couleur_ids = produits_scope
+    scope_pour_couleurs = couleurs_scope || produits_scope
+    couleur_ids = scope_pour_couleurs
                     .where.not(couleur_id: nil)
                     .distinct
                     .pluck(:couleur_id)
@@ -164,7 +160,8 @@ module ProduitsFilterable
                          .order(:nom)
 
     # Types produits disponibles
-    type_produit_ids = produits_scope
+    scope_pour_types_produits = types_produits_scope || produits_scope
+    type_produit_ids = scope_pour_types_produits
                          .where.not(type_produit_id: nil)
                          .distinct
                          .pluck(:type_produit_id)
@@ -172,15 +169,50 @@ module ProduitsFilterable
                         .where(id: type_produit_ids)
                         .order(nom: :asc)
 
-    # Tranches de prix (on garde les tranches fixes pour l'instant)
-    @tranches_prix = [50, 100, 200, 500, 1000]
+    # Tranches de prix disponibles selon les autres filtres actifs.
+    scope_pour_prix = prix_scope || produits_scope
+    @tranches_prix = [50, 100, 200, 500, 1000].select do |max_price|
+      scope_pour_prix.by_prixmax(max_price).exists?
+    end
 
     # Types (Vente/Location) - vérifier lesquels existent
-    has_vente = produits_scope.where("prixvente > 0").exists?
-    has_location = produits_scope.where("prixlocation > 0").exists?
+    scope_pour_types = types_scope || produits_scope
+    has_vente = scope_pour_types.where("prixvente > 0").exists?
+    has_location = scope_pour_types.where("prixlocation > 0").exists?
     @types = []
     @types << "Vente" if has_vente
     @types << "Location" if has_location
+  end
+
+  def available_scope_for_filter(excluded_filter, search_params)
+    filtered_scope = filtered_produits_scope(excluded_filter: excluded_filter)
+    search_scope = filtered_scope.ransack(search_params[:q]).result
+    available_ids = search_scope.where(today_availability: true)
+                                .reorder(nil)
+                                .pluck(:id)
+                                .uniq
+
+    Produit.where(id: available_ids)
+  end
+
+  def filtered_produits_scope(excluded_filter: nil)
+    categorie_param = excluded_filter == :categorie ? nil : params[:id]
+    taille_param = excluded_filter == :taille ? nil : params[:taille]
+    couleur_param = excluded_filter == :couleur ? nil : params[:couleur]
+    prix_param = excluded_filter == :prix ? nil : params[:prixmax]
+    type_param = excluded_filter == :type ? nil : params[:type]
+    type_produit_param = excluded_filter == :type_produit ? nil : params[:type_produit]
+    en_promotion_param = excluded_filter == :prix ? nil : params[:en_promotion]
+
+    FiltersProduitsService.new(
+      categorie_param,
+      taille_param,
+      couleur_param,
+      prix_param,
+      type_param,
+      type_produit_param,
+      en_promotion_param
+    ).call
   end
 end
 

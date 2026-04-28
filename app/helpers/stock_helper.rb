@@ -61,25 +61,28 @@ module StockHelper
 
   # statut des articles
   def articles_loues_in_commandes_non_retires
-    Commande.non_retire.sum { |commande| commande.articles.location_only.sum(:quantite) }
+    Article.joins(:commande)
+           .merge(Commande.non_retire)
+           .location_only
+           .sum(:quantite)
   end
 
   def articles_loues_in_commandes_retires
-    Commande.retire.sum { |commande| commande.articles.location_only.sum(:quantite) }
+    Article.joins(:commande)
+           .merge(Commande.retire)
+           .location_only
+           .sum(:quantite)
   end
 
   def articles_loues_in_commandes_rendus
-    Commande.rendu.sum { |commande| commande.articles.location_only.sum(:quantite) }
+    Article.joins(:commande)
+           .merge(Commande.rendu)
+           .location_only
+           .sum(:quantite)
   end
 
   def articles_services_in_commandes
-    total_count = 0
-    Commande.all.each do |commande|
-      articles_count = commande.articles.service_only.count
-      sousarticles_count = commande.articles.map { |article| article.sousarticles.service_only.count }.sum
-      total_count += articles_count + sousarticles_count
-    end
-    total_count
+    Article.service_only.count + Sousarticle.service_only.count
   end
   
       

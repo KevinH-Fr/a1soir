@@ -793,6 +793,9 @@ fr:
           placeholder: "Rechercher"
         filters:
           clear_button_title: "Effacer les filtres"
+          active:
+            hint: "Des produits et options sont masqués selon votre sélection."
+            clear_all: "Réinitialiser les filtres"
           categorie:
             all_label: "Catégorie"
             all_button: "Toutes"

@@ -4,7 +4,6 @@ class Admin::StockController < Admin::ApplicationController
 
   def index
     @produits = Produit.all
-    @commandes = Commande.all.includes([:articles])
   end
 
   def export_csv

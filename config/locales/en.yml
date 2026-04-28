@@ -416,6 +416,9 @@ en:
           placeholder: "Search"
         filters:
           clear_button_title: "Clear filters"
+          active:
+            hint: "Some products and options are hidden based on your current selection."
+            clear_all: "Reset filters"
           categorie:
             all_label: "Category"
             all_button: "All"
