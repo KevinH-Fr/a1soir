@@ -2418,14 +2418,14 @@ section {
 .cc-subtitle,
 .cc-cta {
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(1.5rem);
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 /* Les .cc-tag individuels sont cachés/révélés par le controller JS */
 .cc-tag {
   opacity: 0;
-  transform: translateY(12px) scale(0.82);
+  transform: translateY(1.5rem) scale(0.82);
   transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -2449,6 +2449,8 @@ section {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
+  min-height: 3.5rem;
+  align-content: flex-start;
 }
 
 .cc-tag {
@@ -2487,12 +2489,15 @@ section {
   position: relative;
   display: inline-block;
   color: rgba(255, 255, 255, 0.85);
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
   padding-bottom: 4px;
 }
 
-.collection-card-link:hover .collection-card-title {
-  color: rgba(255, 255, 255, 1);
+@media (hover: hover) {
+  .collection-card-link:hover .collection-card-title {
+    color: rgba(255, 255, 255, 1);
+    transform: translateY(-1.2rem);
+  }
 }
 
 /* Fine ligne qui s'anime de gauche à droite au survol - légèrement plus épaisse et espacée */
@@ -3489,6 +3494,18 @@ button[data-time]:disabled {
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Section boutique – gradient overlay */
+.boutique-gradient-overlay {
+  background: linear-gradient(to top, white 20%, transparent 55%);
+  pointer-events: none;
+}
+
+@media (min-width: 992px) {
+  .boutique-gradient-overlay {
+    background: linear-gradient(to right, transparent 55%, white 85%);
   }
 }
 

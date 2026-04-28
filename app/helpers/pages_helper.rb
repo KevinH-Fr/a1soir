@@ -238,7 +238,7 @@ module PagesHelper
 
         cta = content_tag :span, class: "cc-cta",
                                   data: { collection_card_reveal_target: "cta" } do
-          content_tag(:span, "Explorer", class: "cc-cta-label") +
+          content_tag(:span, t("public.helpers.collection_card.discover"), class: "cc-cta-label") +
           content_tag(:span, " \u2192".html_safe, class: "cc-cta-arrow")
         end
 

@@ -77,9 +77,9 @@ export default class extends Controller {
 
   hideReveal() {
     this.clearTimers()
-    this.hide(this.hasSubtitleTarget ? this.subtitleTarget : null, "translateY(10px)")
+    this.hide(this.hasSubtitleTarget ? this.subtitleTarget : null, "translateY(1.5rem)")
     this.tagElements.forEach(tag => this.hideTag(tag))
-    this.hide(this.hasCtaTarget      ? this.ctaTarget      : null, "translateY(10px)")
+    this.hide(this.hasCtaTarget      ? this.ctaTarget      : null, "translateY(1.5rem)")
   }
 
   // ── Show groups ─────────────────────────────────────────────────────────────

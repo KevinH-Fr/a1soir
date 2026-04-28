@@ -220,6 +220,8 @@ en:
       prix_labels:
         sale: "Sale"
         rental: "Rental"
+      collection_card:
+        discover: "Discover"
       cart_buttons:
         remove_from_fitting_room: "Remove from fitting room"
         fitting_room_limit_reached: "Limit reached (10 products max)"
