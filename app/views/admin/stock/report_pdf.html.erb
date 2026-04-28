@@ -20,22 +20,22 @@
         <tr>
           <td class="td-doc-sm started bolded">Achats</td>
           <td class="td-doc-sm centered"><%= @achats_data[:rows].sum { |row| row[:quantite] } %></td>
-          <td class="td-doc-sm ended"><%= @achats_data[:total_montant_achats] %></td>
+          <td class="td-doc-sm ended"><%= number_to_currency(@achats_data[:total_montant_achats]) %></td>
         </tr>
         <tr class="td-doc-sm-alt">
           <td class="td-doc-sm started td-doc-sm-alt">Ventes boutique</td>
           <td class="td-doc-sm centered td-doc-sm-alt"><%= @ventes_data[:total_quantite_boutique] %></td>
-          <td class="td-doc-sm ended td-doc-sm-alt"><%= @ventes_data[:total_montant_boutique] %></td>
+          <td class="td-doc-sm ended td-doc-sm-alt"><%= number_to_currency(@ventes_data[:total_montant_boutique]) %></td>
         </tr>
         <tr>
           <td class="td-doc-sm started">Ventes e-shop</td>
           <td class="td-doc-sm centered"><%= @ventes_data[:total_quantite_eshop] %></td>
-          <td class="td-doc-sm ended"><%= @ventes_data[:total_montant_eshop] %></td>
+          <td class="td-doc-sm ended"><%= number_to_currency(@ventes_data[:total_montant_eshop]) %></td>
         </tr>
         <tr class="td-doc-sm-alt">
           <td class="td-doc-sm started td-doc-sm-alt bolded">Ventes globales</td>
           <td class="td-doc-sm centered td-doc-sm-alt bolded"><%= @ventes_data[:total_quantite_globale] %></td>
-          <td class="td-doc-sm ended td-doc-sm-alt bolded"><%= @ventes_data[:total_montant_global] %></td>
+          <td class="td-doc-sm ended td-doc-sm-alt bolded"><%= number_to_currency(@ventes_data[:total_montant_global]) %></td>
         </tr>
       </tbody>
     </table>
@@ -65,9 +65,9 @@
               <td class="td-doc-sm started <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= row[:produit_nom] %></td>
               <td class="td-doc-sm started <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= row[:fournisseur_nom].presence || "—" %></td>
               <td class="td-doc-sm centered <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= l(row[:dateachat]) %></td>
-              <td class="td-doc-sm ended <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= row[:prixachat] %></td>
+              <td class="td-doc-sm ended <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= number_to_currency(row[:prixachat]) %></td>
               <td class="td-doc-sm centered <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= row[:quantite] %></td>
-              <td class="td-doc-sm ended bolded <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= row[:montant_achat] %></td>
+              <td class="td-doc-sm ended bolded <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= number_to_currency(row[:montant_achat]) %></td>
             </tr>
           <% end %>
         <% end %>
@@ -76,7 +76,7 @@
         <tr>
           <td colspan="4" class="tfoot-doc-brand ended">Total achats</td>
           <td class="tfoot-doc-brand centered"><%= @achats_data[:rows].sum { |row| row[:quantite] } %></td>
-          <td class="tfoot-doc-brand ended"><%= @achats_data[:total_montant_achats] %></td>
+          <td class="tfoot-doc-brand ended"><%= number_to_currency(@achats_data[:total_montant_achats]) %></td>
         </tr>
       </tfoot>
     </table>
@@ -104,7 +104,7 @@
               <td class="td-doc-sm started bolded <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= row[:fournisseur_nom] %></td>
               <td class="td-doc-sm centered <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= row[:produits_count] %></td>
               <td class="td-doc-sm centered <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= row[:quantite_totale] %></td>
-              <td class="td-doc-sm ended bolded <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= row[:montant_total] %></td>
+              <td class="td-doc-sm ended bolded <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= number_to_currency(row[:montant_total]) %></td>
             </tr>
           <% end %>
         <% end %>
@@ -114,7 +114,7 @@
           <td class="tfoot-doc-brand started">Total</td>
           <td class="tfoot-doc-brand centered"><%= @achats_par_fournisseur_data[:rows].sum { |row| row[:produits_count] } %></td>
           <td class="tfoot-doc-brand centered"><%= @achats_par_fournisseur_data[:rows].sum { |row| row[:quantite_totale] } %></td>
-          <td class="tfoot-doc-brand ended"><%= @achats_par_fournisseur_data[:total_montant_achats] %></td>
+          <td class="tfoot-doc-brand ended"><%= number_to_currency(@achats_par_fournisseur_data[:total_montant_achats]) %></td>
         </tr>
       </tfoot>
     </table>
@@ -126,6 +126,7 @@
       <thead>
         <tr>
           <th class="th-doc-brand started">Produit</th>
+          <th class="th-doc-brand centered">Date vente</th>
           <th class="th-doc-brand centered">Qté boutique</th>
           <th class="th-doc-brand centered">Qté e-shop</th>
           <th class="th-doc-brand centered">Qté totale</th>
@@ -137,7 +138,7 @@
       <tbody>
         <% if @ventes_data[:rows].empty? %>
           <tr>
-            <td colspan="7" class="td-doc-sm centered">Aucune vente sur cette année.</td>
+            <td colspan="8" class="td-doc-sm centered">Aucune vente sur cette année.</td>
           </tr>
         <% else %>
           <% @ventes_data[:rows].each_with_index do |row, i| %>
@@ -145,12 +146,13 @@
               <td class="td-doc-sm started <%= i.odd? ? 'td-doc-sm-alt' : '' %>">
                 <span class="stock-report-pdf-produit-nom"><%= truncate(row[:produit_nom].to_s, length: 28) %></span>
               </td>
+              <td class="td-doc-sm centered <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= row[:date_vente].present? ? l(row[:date_vente].to_date) : "-" %></td>
               <td class="td-doc-sm centered <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= row[:quantite_boutique] %></td>
               <td class="td-doc-sm centered <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= row[:quantite_eshop] %></td>
               <td class="td-doc-sm centered bolded <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= row[:quantite_totale] %></td>
-              <td class="td-doc-sm ended <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= row[:montant_boutique] %></td>
-              <td class="td-doc-sm ended <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= row[:montant_eshop] %></td>
-              <td class="td-doc-sm ended bolded <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= row[:montant_total] %></td>
+              <td class="td-doc-sm ended <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= number_to_currency(row[:montant_boutique]) %></td>
+              <td class="td-doc-sm ended <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= number_to_currency(row[:montant_eshop]) %></td>
+              <td class="td-doc-sm ended bolded <%= i.odd? ? 'td-doc-sm-alt' : '' %>"><%= number_to_currency(row[:montant_total]) %></td>
             </tr>
           <% end %>
         <% end %>
@@ -158,12 +160,13 @@
       <tfoot>
         <tr>
           <td class="tfoot-doc-brand started">Total ventes</td>
+          <td class="tfoot-doc-brand centered"></td>
           <td class="tfoot-doc-brand centered"><%= @ventes_data[:total_quantite_boutique] %></td>
           <td class="tfoot-doc-brand centered"><%= @ventes_data[:total_quantite_eshop] %></td>
           <td class="tfoot-doc-brand centered"><%= @ventes_data[:total_quantite_globale] %></td>
-          <td class="tfoot-doc-brand ended"><%= @ventes_data[:total_montant_boutique] %></td>
-          <td class="tfoot-doc-brand ended"><%= @ventes_data[:total_montant_eshop] %></td>
-          <td class="tfoot-doc-brand ended"><%= @ventes_data[:total_montant_global] %></td>
+          <td class="tfoot-doc-brand ended"><%= number_to_currency(@ventes_data[:total_montant_boutique]) %></td>
+          <td class="tfoot-doc-brand ended"><%= number_to_currency(@ventes_data[:total_montant_eshop]) %></td>
+          <td class="tfoot-doc-brand ended"><%= number_to_currency(@ventes_data[:total_montant_global]) %></td>
         </tr>
       </tfoot>
     </table>

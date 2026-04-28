@@ -33,6 +33,7 @@ class StockVentesAnnuellesService < ApplicationService
     {
       produit_id: nil,
       produit_nom: nil,
+      date_vente: nil,
       quantite_boutique: 0,
       quantite_eshop: 0,
       quantite_totale: 0,
@@ -49,12 +50,13 @@ class StockVentesAnnuellesService < ApplicationService
       .where(commandes: { eshop: [false, nil] })
       .vente_only
       .where(created_at: @from..@to)
-      .pluck(:produit_id, :quantite, :prix)
-      .each do |produit_id, quantite, montant|
+      .pluck(:produit_id, :quantite, :prix, :created_at)
+      .each do |produit_id, quantite, montant, date_vente|
       row = ventes[produit_id]
       row[:produit_id] = produit_id
       row[:quantite_boutique] += quantite.to_i
       row[:montant_boutique] += montant.to_d
+      set_latest_sale_date!(row, date_vente)
     end
   end
 
@@ -65,12 +67,13 @@ class StockVentesAnnuellesService < ApplicationService
       .where(commandes: { eshop: [false, nil] })
       .vente_only
       .where(sousarticles: { created_at: @from..@to })
-      .pluck(:produit_id, :prix)
-      .each do |produit_id, montant|
+      .pluck(:produit_id, :prix, :created_at)
+      .each do |produit_id, montant, date_vente|
       row = ventes[produit_id]
       row[:produit_id] = produit_id
       row[:quantite_boutique] += 1
       row[:montant_boutique] += montant.to_d
+      set_latest_sale_date!(row, date_vente)
     end
   end
 
@@ -78,13 +81,14 @@ class StockVentesAnnuellesService < ApplicationService
     StripePaymentItem
       .joins(:stripe_payment)
       .where(stripe_payments: { status: "paid", created_at: @from..@to })
-      .pluck(:produit_id, :quantity, :unit_amount)
-      .each do |produit_id, quantity, unit_amount|
+      .pluck(:produit_id, :quantity, :unit_amount, "stripe_payments.created_at")
+      .each do |produit_id, quantity, unit_amount, date_vente|
       row = ventes[produit_id]
       row[:produit_id] = produit_id
       quantite = quantity.presence || 1
       row[:quantite_eshop] += quantite.to_i
       row[:montant_eshop] += ((quantite.to_i * unit_amount.to_i).to_d / 100)
+      set_latest_sale_date!(row, date_vente)
     end
 
     ventes.each_value do |row|
@@ -98,5 +102,11 @@ class StockVentesAnnuellesService < ApplicationService
     ventes.each do |produit_id, row|
       row[:produit_nom] = names_by_id[produit_id]
     end
+  end
+
+  def set_latest_sale_date!(row, date_vente)
+    return if date_vente.blank?
+
+    row[:date_vente] = date_vente if row[:date_vente].blank? || date_vente > row[:date_vente]
   end
 end

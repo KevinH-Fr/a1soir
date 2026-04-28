@@ -40,25 +40,25 @@
           <span class="small text-secondary text-uppercase fw-semibold">Achats</span>
           <span class="w-100 border-top border-secondary-subtle my-1"></span>
           <span class="text-body">Quantité : <%= @achats_data[:rows].sum { |row| row[:quantite] } %></span>
-          <span class="text-body">Montant : <%= number_to_currency(@achats_data[:total_montant_achats], unit: "€") %></span>
+          <span class="text-body">Montant : <%= number_to_currency(@achats_data[:total_montant_achats]) %></span>
         </span>
         <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
           <span class="small text-secondary text-uppercase fw-semibold">Ventes boutique</span>
           <span class="w-100 border-top border-secondary-subtle my-1"></span>
           <span class="text-body">Quantité : <%= @ventes_data[:total_quantite_boutique] %></span>
-          <span class="text-body">Montant : <%= number_to_currency(@ventes_data[:total_montant_boutique], unit: "€") %></span>
+          <span class="text-body">Montant : <%= number_to_currency(@ventes_data[:total_montant_boutique]) %></span>
         </span>
         <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
           <span class="small text-secondary text-uppercase fw-semibold">Ventes e-shop</span>
           <span class="w-100 border-top border-secondary-subtle my-1"></span>
           <span class="text-body">Quantité : <%= @ventes_data[:total_quantite_eshop] %></span>
-          <span class="text-body">Montant : <%= number_to_currency(@ventes_data[:total_montant_eshop], unit: "€") %></span>
+          <span class="text-body">Montant : <%= number_to_currency(@ventes_data[:total_montant_eshop]) %></span>
         </span>
         <span class="badge rounded-3 border border-secondary-subtle text-bg-white text-dark fw-normal text-start text-wrap p-3 lh-sm d-inline-flex flex-column align-items-start gap-1 shadow-sm">
           <span class="small text-secondary text-uppercase fw-semibold">Ventes globales</span>
           <span class="w-100 border-top border-secondary-subtle my-1"></span>
           <span class="text-body">Quantité : <%= @ventes_data[:total_quantite_globale] %></span>
-          <span class="text-body">Montant : <%= number_to_currency(@ventes_data[:total_montant_global], unit: "€") %></span>
+          <span class="text-body">Montant : <%= number_to_currency(@ventes_data[:total_montant_global]) %></span>
         </span>
       </div>
     </section>
@@ -91,9 +91,9 @@
                   <td><%= row[:produit_nom] %></td>
                   <td><%= row[:fournisseur_nom].presence || "Sans fournisseur" %></td>
                   <td><%= l(row[:dateachat]) %></td>
-                  <td class="text-end"><%= number_to_currency(row[:prixachat], unit: "€") %></td>
+                  <td class="text-end"><%= number_to_currency(row[:prixachat]) %></td>
                   <td class="text-end"><%= row[:quantite] %></td>
-                  <td class="text-end fw-semibold"><%= number_to_currency(row[:montant_achat], unit: "€") %></td>
+                  <td class="text-end fw-semibold"><%= number_to_currency(row[:montant_achat]) %></td>
                 </tr>
               <% end %>
             <% end %>
@@ -102,7 +102,7 @@
             <tr>
               <th colspan="4" class="text-end">Total achats</th>
               <th class="text-end"><%= @achats_data[:rows].sum { |row| row[:quantite] } %></th>
-              <th class="text-end"><%= number_to_currency(@achats_data[:total_montant_achats], unit: "€") %></th>
+              <th class="text-end"><%= number_to_currency(@achats_data[:total_montant_achats]) %></th>
             </tr>
           </tfoot>
         </table>
@@ -134,7 +134,7 @@
                   <td><%= row[:fournisseur_nom] %></td>
                   <td class="text-end"><%= row[:produits_count] %></td>
                   <td class="text-end"><%= row[:quantite_totale] %></td>
-                  <td class="text-end fw-semibold"><%= number_to_currency(row[:montant_total], unit: "€") %></td>
+                  <td class="text-end fw-semibold"><%= number_to_currency(row[:montant_total]) %></td>
                 </tr>
               <% end %>
             <% end %>
@@ -144,7 +144,7 @@
               <th>Total</th>
               <th class="text-end"><%= @achats_par_fournisseur_data[:rows].sum { |row| row[:produits_count] } %></th>
               <th class="text-end"><%= @achats_par_fournisseur_data[:rows].sum { |row| row[:quantite_totale] } %></th>
-              <th class="text-end"><%= number_to_currency(@achats_par_fournisseur_data[:total_montant_achats], unit: "€") %></th>
+              <th class="text-end"><%= number_to_currency(@achats_par_fournisseur_data[:total_montant_achats]) %></th>
             </tr>
           </tfoot>
         </table>
@@ -160,6 +160,7 @@
           <thead class="table-light">
             <tr>
               <th style="width: 18%;">Produit</th>
+              <th>Date vente</th>
               <th class="text-end">Qté boutique</th>
               <th class="text-end">Qté e-shop</th>
               <th class="text-end">Qté totale</th>
@@ -171,7 +172,7 @@
           <tbody class="small">
             <% if @ventes_data[:rows].empty? %>
               <tr>
-                <td colspan="7" class="text-center text-secondary py-3">Aucune vente sur cette année.</td>
+                <td colspan="8" class="text-center text-secondary py-3">Aucune vente sur cette année.</td>
               </tr>
             <% else %>
               <% @ventes_data[:rows].each do |row| %>
@@ -181,12 +182,13 @@
                       <%= truncate(row[:produit_nom].to_s, length: 28) %>
                     </span>
                   </td>
+                  <td><%= row[:date_vente].present? ? l(row[:date_vente].to_date) : "-" %></td>
                   <td class="text-end"><%= row[:quantite_boutique] %></td>
                   <td class="text-end"><%= row[:quantite_eshop] %></td>
                   <td class="text-end fw-semibold"><%= row[:quantite_totale] %></td>
-                  <td class="text-end"><%= number_to_currency(row[:montant_boutique], unit: "€") %></td>
-                  <td class="text-end"><%= number_to_currency(row[:montant_eshop], unit: "€") %></td>
-                  <td class="text-end fw-semibold"><%= number_to_currency(row[:montant_total], unit: "€") %></td>
+                  <td class="text-end"><%= number_to_currency(row[:montant_boutique]) %></td>
+                  <td class="text-end"><%= number_to_currency(row[:montant_eshop]) %></td>
+                  <td class="text-end fw-semibold"><%= number_to_currency(row[:montant_total]) %></td>
                 </tr>
               <% end %>
             <% end %>
@@ -194,12 +196,13 @@
           <tfoot class="table-light">
             <tr>
               <th>Total ventes</th>
+              <th></th>
               <th class="text-end"><%= @ventes_data[:total_quantite_boutique] %></th>
               <th class="text-end"><%= @ventes_data[:total_quantite_eshop] %></th>
               <th class="text-end"><%= @ventes_data[:total_quantite_globale] %></th>
-              <th class="text-end"><%= number_to_currency(@ventes_data[:total_montant_boutique], unit: "€") %></th>
-              <th class="text-end"><%= number_to_currency(@ventes_data[:total_montant_eshop], unit: "€") %></th>
-              <th class="text-end"><%= number_to_currency(@ventes_data[:total_montant_global], unit: "€") %></th>
+              <th class="text-end"><%= number_to_currency(@ventes_data[:total_montant_boutique]) %></th>
+              <th class="text-end"><%= number_to_currency(@ventes_data[:total_montant_eshop]) %></th>
+              <th class="text-end"><%= number_to_currency(@ventes_data[:total_montant_global]) %></th>
             </tr>
           </tfoot>
         </table>
