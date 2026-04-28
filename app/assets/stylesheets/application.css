@@ -2383,23 +2383,106 @@ section {
   border-radius: 1rem;
 }
 
-/* Collection Card - Style simplifié */
+/* Collection Card - Upgrade visuel & interactif */
 .collection-card-link {
   display: block;
   text-decoration: none;
 }
 
-/* Effet de zoom sur l'image au survol */
+.collection-card {
+  isolation: isolate;
+}
+
 .collection-card-image {
   transition: transform 0.6s ease;
   transform-origin: center center;
 }
 
 .collection-card-link:hover .collection-card-image {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
-/* Effet hover sur le titre de la collection card - exactement comme la navbar */
+.cc-overlay {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.85rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.55) 45%, rgba(0, 0, 0, 0) 100%);
+}
+
+.cc-default {
+  display: block;
+}
+
+.cc-subtitle,
+.cc-cta {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Les .cc-tag individuels sont cachés/révélés par le controller JS */
+.cc-tag {
+  opacity: 0;
+  transform: translateY(12px) scale(0.82);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Mobile touch : le controller JS gère les animations — on réinitialise */
+@media (pointer: coarse) {
+  .cc-subtitle,
+  .cc-cta,
+  .cc-tag {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.cc-subtitle {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.cc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.cc-tag {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: 0.02em;
+}
+
+.cc-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cc-cta-label {
+  display: inline-block;
+}
+
+.cc-cta-arrow {
+  transition: transform 0.35s ease;
+}
+
+.collection-card-link:hover .cc-cta-arrow {
+  transform: translateX(4px);
+}
+
 .collection-card-title {
   position: relative;
   display: inline-block;
@@ -2429,6 +2512,9 @@ section {
   width: 100%;
   opacity: 1;
 }
+
+/* Mobile/touch : collection-card-reveal controller gère les animations sur les
+   enfants individuels. On réinitialise les contraintes CSS du panneau. */
 
 
 .info-card:hover,

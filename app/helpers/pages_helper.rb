@@ -193,7 +193,8 @@ module PagesHelper
 
   def collection_card(title:, items:, url:, delay: 0, image: nil, subtitle: nil, image_position: "center")
     link_to url, class: "text-decoration-none collection-card-link" do
-      content_tag :div, class: "collection-card position-relative overflow-hidden", style: "height: 600px;" do
+      content_tag :div, class: "collection-card position-relative overflow-hidden", style: "height: 600px;",
+                        data: { controller: "collection-card-reveal" } do
         # Image de fond
         image_section = if image.present?
           image_tag(
@@ -211,9 +212,42 @@ module PagesHelper
           end
         end
 
-        # Overlay avec titre en bas à gauche
-        overlay = content_tag :div, class: "position-absolute bottom-0 start-0 p-5" do
-          content_tag :h3, title, class: "text-white mb-0 collection-card-title", style: "text-shadow: 0 2px 10px rgba(0,0,0,0.8);"
+        default_zone = content_tag :div, class: "cc-default" do
+          content_tag(:h3, title, class: "text-white mb-0 collection-card-title",
+                      style: "text-shadow: 0 2px 10px rgba(0,0,0,0.8);",
+                      data: { collection_card_reveal_target: "title" })
+        end
+
+        subtitle_tag = if subtitle.present?
+          content_tag(:p, subtitle, class: "text-white-50 mb-2 cc-subtitle",
+                      data: { collection_card_reveal_target: "subtitle" })
+        else
+          "".html_safe
+        end
+
+        tags = if items.present?
+          content_tag :div, class: "cc-tags mb-2",
+                            data: { collection_card_reveal_target: "tags" } do
+            items.map do |item|
+              content_tag(:span, item, class: "cc-tag")
+            end.join.html_safe
+          end
+        else
+          "".html_safe
+        end
+
+        cta = content_tag :span, class: "cc-cta",
+                                  data: { collection_card_reveal_target: "cta" } do
+          content_tag(:span, "Explorer", class: "cc-cta-label") +
+          content_tag(:span, " \u2192".html_safe, class: "cc-cta-arrow")
+        end
+
+        reveal_zone = content_tag :div, class: "cc-reveal" do
+          (subtitle_tag + tags + cta).html_safe
+        end
+
+        overlay = content_tag :div, class: "cc-overlay position-absolute bottom-0 start-0 end-0 p-4 p-md-5" do
+          (default_zone + reveal_zone).html_safe
         end
 
         image_section + overlay

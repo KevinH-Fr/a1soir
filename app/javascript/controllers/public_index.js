@@ -38,3 +38,6 @@ application.register("cookie-consent", CookieConsentController)
 
 import ShareListController from "./share_list_controller"
 application.register("share-list", ShareListController)
+
+import CollectionCardRevealController from "./collection_card_reveal_controller"
+application.register("collection-card-reveal", CollectionCardRevealController)
