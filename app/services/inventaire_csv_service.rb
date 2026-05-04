@@ -29,11 +29,14 @@ class InventaireCsvService
                          .group(:produit_id)
                          .count
 
-    CSV.generate(headers: true) do |csv|
+    CSV.generate(headers: true, col_sep: ';') do |csv|
       csv << [
         'Nom', 'Prix de vente', 'Prix achat HT', 'Date achat',
         'Fournisseur', 'Stock final (quantité)', 'Stock final (€)'
       ]
+
+      total_quantite = 0
+      total_euros    = 0.0
 
       Produit.includes(:categorie_produits, :type_produit, :fournisseur)
              .where('dateachat <= ? OR dateachat IS NULL', @end_of_year)
@@ -54,16 +57,28 @@ class InventaireCsvService
 
         stock_final_euros = (stock_final * produit.prixachat.to_f).round(2)
 
+        total_quantite += stock_final.to_i
+        total_euros    += stock_final_euros
+
         csv << [
           produit.nom,
-          produit.prixvente,
-          produit.prixachat,
+          fr_number(produit.prixvente),
+          fr_number(produit.prixachat),
           produit.dateachat,
           produit.fournisseur&.nom,
-          stock_final,
-          stock_final_euros
+          stock_final.to_i,
+          fr_number(stock_final_euros)
         ]
       end
+
+      csv << ['TOTAL', nil, nil, nil, nil, total_quantite, fr_number(total_euros.round(2))]
     end
+  end
+
+  private
+
+  def fr_number(value)
+    return nil if value.nil?
+    ("%.2f" % value.to_f).gsub('.', ',')
   end
 end
