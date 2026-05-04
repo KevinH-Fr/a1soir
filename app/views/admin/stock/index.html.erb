@@ -45,7 +45,8 @@
               <% year = current_year - offset %>
               <%= link_to "Charger inventaire — fin #{year}",
                           admin_export_products_csv_path(year: year),
-                          class: "btn btn-sm btn-primary" %>
+                          class: "btn btn-sm btn-primary",
+                          data: { turbo: false } %>
             <% end %>
           </div>
         </div>

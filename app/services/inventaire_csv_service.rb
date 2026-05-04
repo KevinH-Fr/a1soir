@@ -7,68 +7,61 @@ class InventaireCsvService
   end
 
   def call
-    puts "___________ génération inventaire pour l'année #{@year} ___________"
+
+    articles_vendus_map = Article.joins(:commande, :produit)
+                                 .merge(Commande.hors_devis)
+                                 .vente_only
+                                 .where('articles.created_at <= ?', @end_of_year)
+                                 .group(:produit_id)
+                                 .sum(:quantite)
+
+    sousarticles_vendus_map = Sousarticle.joins(article: [:commande, :produit])
+                                         .merge(Commande.hors_devis)
+                                         .vente_only
+                                         .where('sousarticles.created_at <= ?', @end_of_year)
+                                         .group(:produit_id)
+                                         .count
+
+    vendus_eshop_map = StripePaymentItem
+                         .joins(:stripe_payment)
+                         .where(stripe_payments: { status: 'paid' })
+                         .where('stripe_payment_items.created_at <= ?', @end_of_year)
+                         .group(:produit_id)
+                         .count
 
     CSV.generate(headers: true) do |csv|
       csv << [
-        'Nom', 'Prix de vente', 'Prix achat', 'Date achat', 'Taille', 'Couleur',
-        'Catégories',
-        'Quantité initiale', 'Vendus magasin', 'Vendus e-shop',
-        'Stock final', 'Est un ensemble', 'Est un service'
+        'Nom', 'Prix de vente', 'Prix achat HT', 'Date achat',
+        'Fournisseur', 'Stock final (quantité)', 'Stock final (€)'
       ]
 
-      Produit.includes(:categorie_produits, :type_produit, :taille, :couleur).order(:nom).each do |produit|
-        nom = produit.nom
-        prix = produit.prixvente
-        prixachat = produit.prixachat
-        taille_nom = produit.taille&.nom
-        couleur_nom = produit.couleur&.nom
-        categories = produit.categorie_produits.map(&:nom).join(', ')
-        dateachat = produit.dateachat
+      Produit.includes(:categorie_produits, :type_produit, :fournisseur)
+             .where('dateachat <= ? OR dateachat IS NULL', @end_of_year)
+             .order(:nom).each do |produit|
         quantite_initiale = produit.quantite.to_i
-
-        # Ventes magasin : Articles
-        articles_vendus = Article.joins(:commande, :produit)
-                                 .merge(Commande.hors_devis)
-                                 .vente_only
-                                 .where(produit_id: produit.id)
-                                 .where('articles.created_at <= ?', @end_of_year)
-                                 .sum(:quantite)
-
-        # Ventes magasin : Sousarticles
-        sousarticles_vendus = Sousarticle.joins(article: [:commande, :produit])
-                                         .merge(Commande.hors_devis)
-                                         .vente_only
-                                         .where(produit_id: produit.id)
-                                         .where('sousarticles.created_at <= ?', @end_of_year)
-                                         .count
-
-        vendus_magasin = articles_vendus + sousarticles_vendus
-
-        # Ventes e-shop
-        vendus_eshop = StripePaymentItem
-                         .joins(:stripe_payment)
-                         .where(stripe_payments: { status: 'paid' })
-                         .where(produit_id: produit.id)
-                         .where('stripe_payment_items.created_at <= ?', @end_of_year)
-                         .count
-
-        # Détection ensemble / service
         est_ensemble = produit.type_produit&.nom == 'ensemble'
         est_service = produit.categorie_produits.any? { |cat| cat.service == true }
 
-        # Calcul du stock final
+        vendus_magasin = articles_vendus_map.fetch(produit.id, 0) +
+                         sousarticles_vendus_map.fetch(produit.id, 0)
+        vendus_eshop   = vendus_eshop_map.fetch(produit.id, 0)
+
         stock_final = if est_ensemble || est_service
                         1
                       else
                         quantite_initiale - vendus_magasin - vendus_eshop
                       end
 
+        stock_final_euros = (stock_final * produit.prixachat.to_f).round(2)
+
         csv << [
-          nom, prix, prixachat, dateachat, taille_nom, couleur_nom,
-          categories,
-          quantite_initiale, vendus_magasin, vendus_eshop,
-          stock_final, est_ensemble, est_service
+          produit.nom,
+          produit.prixvente,
+          produit.prixachat,
+          produit.dateachat,
+          produit.fournisseur&.nom,
+          stock_final,
+          stock_final_euros
         ]
       end
     end

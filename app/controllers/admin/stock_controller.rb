@@ -11,7 +11,8 @@ class Admin::StockController < Admin::ApplicationController
 
     send_data csv_content,
               filename: "inventaire_produits_#{params[:year]}_#{Time.current.strftime('%Y%m%d_%H%M%S')}.csv",
-              type: 'text/csv; charset=utf-8'
+              type: 'text/csv; charset=utf-8',
+              disposition: 'attachment'
   end
 
   def report
