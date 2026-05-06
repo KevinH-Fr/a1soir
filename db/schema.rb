@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_17_123000) do
+ActiveRecord::Schema[7.1].define(version: 2026_05_06_141800) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -485,6 +485,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_17_123000) do
     t.text "horaire"
     t.text "boutique"
     t.text "equipe"
+    t.boolean "mode_periode_speciale", default: false, null: false
+    t.text "encart_periode_speciale_fr"
+    t.text "encart_periode_speciale_en"
   end
 
   create_table "type_produits", force: :cascade do |t|

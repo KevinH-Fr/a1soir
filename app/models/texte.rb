@@ -4,6 +4,7 @@ class Texte < ApplicationRecord
     has_rich_text :content
     has_rich_text :contact
     has_rich_text :horaire
+    has_rich_text :horaire_periode_speciale
     has_rich_text :adresse
 
     has_many_attached :carousel_images

@@ -77,10 +77,12 @@ module Public
       end
 
       def load_footer_textes
-        if Texte.last.present?
-          @footer_texte_adresse = Texte.last.adresse
-          @footer_texte_horaire = Texte.last.horaire
-          @footer_texte_contact = Texte.last.contact
+        texte = Texte.last
+        if texte.present?
+          @footer_texte_adresse           = texte.adresse
+          @footer_texte_contact           = texte.contact
+          @footer_mode_periode_speciale   = texte.mode_periode_speciale?
+          @footer_texte_horaire           = @footer_mode_periode_speciale ? texte.horaire_periode_speciale : texte.horaire
         end
       end
       

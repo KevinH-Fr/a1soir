@@ -6,19 +6,18 @@ module Public
     #layout 'public' 
 
     def home
-      #@categories = CategorieProduit.not_service
-      #@carousel_images = Texte&.first&.carousel_images
       @coups_de_coeur = Produit.where(today_availability: true).coups_de_coeur.eshop_diffusion.actif.limit(8)
-      #@produits_en_promotion = Produit.where(today_availability: true).en_promotion.eshop_diffusion.actif.limit(10)
+      load_periode_speciale_vars
     end
 
     def la_boutique
-      if Texte.last.present?
-        @texteContact = Texte.last.contact
-        @texteHoraire = Texte.last.horaire
-        @texteBoutique = Texte.last.boutique
-        @texteAdresse = Texte.last.adresse
-        @texteEquipe = Texte.last.equipe
+      texte = Texte.last
+      if texte.present?
+        @texteContact  = texte.contact
+        @texteHoraire  = texte.mode_periode_speciale? ? texte.horaire_periode_speciale : texte.horaire
+        @texteBoutique = texte.boutique
+        @texteAdresse  = texte.adresse
+        @texteEquipe   = texte.equipe
       end
       @google_data = GooglePlacesService.fetch
     end
@@ -45,9 +44,9 @@ module Public
 
     def cabine_essayage
       session[:from_cabine] = true
-      # Initialiser une demande de RDV avec le type "Essayage" pré-sélectionné
       @demande_rdv = DemandeRdv.new
       @demande_rdv.set_type_essayage
+      load_periode_speciale_vars
     end
 
     def produits
@@ -160,6 +159,7 @@ module Public
 
     def rdv
       @demande_rdv = DemandeRdv.new
+      load_periode_speciale_vars
     end
 
     def contact
@@ -169,6 +169,15 @@ module Public
         @texteHoraire = Texte.last.horaire
       end
       @contact_message = ContactMessage.new
+    end
+
+    private
+
+    def load_periode_speciale_vars
+      texte = Texte.last
+      return unless texte&.mode_periode_speciale?
+      @mode_periode_speciale   = true
+      @encart_periode_speciale = I18n.locale == :fr ? texte.encart_periode_speciale_fr : texte.encart_periode_speciale_en
     end
 
   end
