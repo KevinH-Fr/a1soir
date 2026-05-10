@@ -33,6 +33,39 @@ module Public
     def nos_autres_activites
     end
 
+    def festival_de_cannes
+      texte = Texte.last
+      if texte.present?
+        @texteContact = texte.contact
+        @texteHoraire = texte.mode_periode_speciale? ? texte.horaire_periode_speciale : texte.horaire
+        @texteAdresse = texte.adresse
+      end
+
+      offer_sheets =
+        if I18n.locale == :en
+          {
+            offer_sheet_1_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424806/WhatsApp_Image_2026-05-10_at_16.15.31_2_fifemk.jpg",
+            offer_sheet_2_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424806/WhatsApp_Image_2026-05-10_at_16.15.31_3_ubusx0.jpg"
+          }
+        else
+          {
+            offer_sheet_1_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.15.31_x7htic.jpg",
+            offer_sheet_2_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.15.31_1_vdv9ww.jpg"
+          }
+        end
+
+      @festival_media = offer_sheets.merge(
+        header_image_1_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.15.31_5_iy6io3.jpg",
+        header_image_2_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.16.35_xyakfo.jpg",
+        social_proof_image_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.15.31_5_iy6io3.jpg",
+        video_url: "https://res.cloudinary.com/dukne3lhz/video/upload/v1778424536/WhatsApp_Video_2026-05-10_at_16.19.18_mocdwk.mp4",
+        video_poster_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.16.35_xyakfo.jpg",
+        whatsapp_visual_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.16.01_2_osynga.jpg"
+      )
+
+      load_periode_speciale_vars
+    end
+
     def legal
     end
 

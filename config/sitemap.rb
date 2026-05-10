@@ -29,6 +29,7 @@ SitemapGenerator::Sitemap.create do
     ['/nos_collections', 'weekly', 0.9],
     ['/le_concept', 'monthly', 0.8],
     ['/nos_autres_activites', 'monthly', 0.8],
+    ['/festival-de-cannes', 'daily', 0.9],
     ['/cabine_essayage', 'weekly', 0.8],
     ['/contact', 'monthly', 0.7],
     ['/rdv', 'weekly', 0.8],

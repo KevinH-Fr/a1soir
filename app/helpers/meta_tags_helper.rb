@@ -61,6 +61,11 @@ module MetaTagsHelper
         description: "Découvrez toutes les activités d'Autour D'Un Soir au-delà des robes de mariée.",
         keywords: "activités Autour D'Un Soir, services, location, vente"
       },
+      festival_de_cannes: {
+        title: "Festival de Cannes - Location & vente tenues de soirée",
+        description: "Location et vente de robes de soirée, robes cocktail, costumes, smokings et accessoires à Cannes pendant le Festival.",
+        keywords: "festival de cannes tenue, location robe soiree cannes, robe cocktail cannes, location costume cannes, location smoking cannes, vente tenue soiree cannes"
+      },
       legal: {
         title: "Mentions légales & Conditions générales - Autour D'Un Soir",
         description: "Consultez les mentions légales, conditions générales de vente et politique de confidentialité d'Autour D'Un Soir.",
@@ -138,6 +143,8 @@ module MetaTagsHelper
       :produits
     when 'pages#nos_autres_activites'
       :nos_autres_activites
+    when 'pages#festival_de_cannes'
+      :festival_de_cannes
     when 'pages#legal'
       :legal
     when 'pages#faq'

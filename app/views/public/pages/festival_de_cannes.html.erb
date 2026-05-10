@@ -1,0 +1,155 @@
+<% content_for :structured_data do %>
+  <script type="application/ld+json">
+    <%= webpage_schema(
+          name: meta_title,
+          description: meta_description,
+          url: request.original_url
+        ).to_json.html_safe %>
+  </script>
+<% end %>
+
+<%= page_header(
+  t("public.pages.festival_de_cannes.header_title"),
+  t("public.pages.festival_de_cannes.header_subtitle"),
+  image1: @festival_media[:header_image_1_url],
+  image2: @festival_media[:header_image_2_url],
+  image2_position: "center top"
+) %>
+
+<%= render "public/shared/ticker_periode_speciale" %>
+
+<div class="public-main-content">
+  <div class="container-fluid">
+    <section class="my-5" data-scroll-reveal aria-labelledby="festival-intro-heading">
+      <div class="container">
+        <div class="row g-4 g-lg-4 align-items-lg-center">
+          <div class="col-12 col-lg-5 col-xl-5 d-flex justify-content-center justify-content-lg-start">
+            <% if @festival_media[:video_url].present? %>
+              <figure class="rounded-1 overflow-hidden shadow-sm bg-black w-100 mb-0" style="max-width: min(380px, 100%); aspect-ratio: 9 / 16;">
+                <video
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  poster="<%= @festival_media[:video_poster_url] %>"
+                  class="w-100 h-100 d-block"
+                  style="object-fit: contain; background: #000;"
+                  aria-label="<%= t("public.pages.festival_de_cannes.video.title") %>">
+                  <source src="<%= @festival_media[:video_url] %>" type="video/mp4">
+                  <%= t("public.pages.festival_de_cannes.video.not_supported") %>
+                </video>
+              </figure>
+            <% else %>
+              <figure class="rounded-1 overflow-hidden shadow-sm bg-black w-100 mb-0 d-flex align-items-center justify-content-center" style="max-width: min(380px, 100%); aspect-ratio: 9 / 16;">
+                <%= image_tag(
+                  @festival_media[:video_poster_url],
+                  class: "img-fluid",
+                  style: "width: 100%; height: 100%; object-fit: contain;",
+                  alt: t("public.pages.festival_de_cannes.video.placeholder_alt"),
+                  loading: "lazy",
+                  width: 1080,
+                  height: 1920
+                ) %>
+              </figure>
+            <% end %>
+          </div>
+
+          <div class="col-12 col-lg-7 col-xl-7 text-light text-center text-lg-start ps-lg-3">
+            <h2 id="festival-intro-heading" class="fw-bold mb-4"><%= t("public.pages.festival_de_cannes.intro.title") %></h2>
+            <p class="opacity-75 mb-4" style="font-size: 1.1rem; line-height: 1.8;">
+              <%= t("public.pages.festival_de_cannes.intro.description_1") %>
+            </p>
+            <p class="opacity-75 mb-0" style="font-size: 1.1rem; line-height: 1.8;">
+              <%= t("public.pages.festival_de_cannes.intro.description_2") %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-5 pt-4 pt-lg-5 pb-4 pb-lg-5" data-scroll-reveal>
+      <div class="container">
+        <h3 class="text-center text-light fw-bold mb-4"><%= t("public.pages.festival_de_cannes.offers.title") %></h3>
+        <div class="row gy-3 gx-3 gx-lg-2 justify-content-center">
+          <% [:offer_sheet_1_url, :offer_sheet_2_url].each_with_index do |key, index| %>
+            <div class="col-12 col-lg-6 d-flex justify-content-center">
+              <div class="rounded-1 overflow-hidden shadow-sm bg-black w-100" style="max-width: min(480px, 100%);">
+                <%= image_tag(
+                  @festival_media[key],
+                  class: "img-fluid d-block w-100",
+                  style: "height: auto; object-fit: contain;",
+                  alt: t("public.pages.festival_de_cannes.offers.alt", num: index + 1),
+                  loading: "lazy",
+                  width: 1080,
+                  height: 1920
+                ) %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </section>
+
+    <section class="my-5" data-scroll-reveal>
+      <div class="row g-4 align-items-stretch">
+        <div class="col-12 col-lg-7">
+          <div class="ratio ratio-16x9 rounded-1 overflow-hidden shadow" style="max-height: 450px;">
+            <iframe
+              src="https://maps.google.com/maps?q=autour%20d'un%20soir%2006400%20cannes&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-5">
+          <div class="concept-card h-100 text-light">
+            <h3 class="fw-bold mb-4"><%= t("public.pages.festival_de_cannes.cta.title") %></h3>
+            <p class="opacity-75"><%= t("public.pages.festival_de_cannes.cta.description") %></p>
+
+            <div class="d-grid gap-2 mt-4">
+              <%= link_to "tel:+33493451717", class: "btn btn-light public-btn-border-radius" do %>
+                <i class="bi bi-telephone me-2"></i><%= @texteContact.present? ? @texteContact.to_plain_text : "+33 4 93 45 17 17" %>
+              <% end %>
+              <%= link_to "#{contact_path}#message-form", class: "btn btn-outline-light public-btn-border-radius" do %>
+                <i class="bi bi-envelope me-2"></i><%= t("public.pages.festival_de_cannes.cta.contact") %>
+              <% end %>
+              <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape('autour d\'un soir 06400 cannes')}", target: "_blank", rel: "noopener noreferrer", class: "btn btn-outline-light public-btn-border-radius" do %>
+                <i class="bi bi-geo-alt me-2"></i><%= t("public.pages.festival_de_cannes.cta.maps") %>
+              <% end %>
+            </div>
+
+            <div class="mt-4">
+              <h4 class="h6 text-uppercase text-light"><%= t("public.pages.festival_de_cannes.hours_title") %></h4>
+              <% if @texteHoraire.present? %>
+                <div class="text-light opacity-75">
+                  <% @texteHoraire.to_plain_text.split("\n").reject(&:blank?).each do |line| %>
+                    <div><%= line %></div>
+                  <% end %>
+                </div>
+              <% else %>
+                <p class="text-light opacity-75 mb-0"><%= t("public.pages.festival_de_cannes.hours_fallback") %></p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+    <!-- Call to action final -->
+  <div class="text-center my-5 py-4" data-scroll-reveal>
+    <h3 class="mb-4 text-light"><%= t("public.pages.contact.cta.title") %></h3>
+    <p class="text-light opacity-75 mb-4">
+      <%= t("public.pages.contact.cta.description") %>
+    </p>
+    <div class="d-flex gap-3 justify-content-center flex-wrap">
+      <%= cta_button(type: "collections", url: nos_collections_url, variant: "light") %>
+      <%= cta_button(type: "boutique", url: la_boutique_url, variant: "light", outline: "light") %>
+    </div>
+  </div>
+
+</div>

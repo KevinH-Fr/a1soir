@@ -543,6 +543,9 @@ fr:
       nos_autres_activites:
         title: "Nos autres activités - Autour D'Un Soir"
         description: "Découvrez les autres activités et services de la boutique."
+      festival_de_cannes:
+        title: "Festival de Cannes - Location & vente tenues de soirée | Autour D'Un Soir"
+        description: "Pendant le Festival de Cannes, découvrez en boutique la location et la vente de robes de soirée, robes cocktail, costumes, smokings et accessoires."
       legal:
         title: "Mentions légales & Conditions générales - Autour D'Un Soir"
         description: "Consultez les mentions légales, CGV et politique de confidentialité."
@@ -685,6 +688,7 @@ fr:
       collections: "Collections"
       concept: "Le concept"
       other_activities: "Nos autres activites"
+      festival_de_cannes: "Festival de Cannes"
       services: "Services"
       products: "Produits"
       appointment: "Rendez-vous"
@@ -1387,3 +1391,26 @@ fr:
           title: "Avis clients"
           based_on: "Base sur %{count} avis Google"
           view_all: "Voir tous les avis sur Google"
+      festival_de_cannes:
+        header_title: "Spécial Festival de Cannes"
+        header_subtitle: "Location et vente de tenues de soirée à Cannes"
+        intro:
+          title: "Location et vente de robes, tenues de soirée et smokings pendant le Festival"
+          description_1: "Autour D'Un Soir vous accompagne pendant le Festival de Cannes avec une sélection premium de robes de soirée, robes cocktail, costumes, smokings et accessoires."
+          description_2: "Notre équipe vous conseille en boutique pour trouver la tenue idéale."
+        offers:
+          title: "Formules Festival — robes de soirée et smokings"
+          alt: "Visuel promotion Festival %{num}"
+        video:
+          title: "Découvrir la boutique en vidéo"
+          placeholder_alt: "Aperçu vidéo de la boutique Festival de Cannes"
+          placeholder_text: "La vidéo sera ajoutée dès réception de votre lien Cloudinary."
+          not_supported: "Votre navigateur ne prend pas en charge la lecture de vidéos."
+        cta:
+          title: "Pendant le Festival, venez directement en boutique sans rendez-vous"
+          description: "Appelez-nous, utilisez le formulaire de contact ou ouvrez l'itinéraire Maps pour nous rejoindre rapidement."
+          contact: "Nous écrire"
+          maps: "Itinéraire Google Maps"
+        whatsapp_message: "Bonjour, je souhaite des informations pour une tenue Festival de Cannes (location ou vente)."
+        hours_title: "Horaires pendant le Festival"
+        hours_fallback: "Contactez-nous pour confirmer les horaires d'ouverture pendant le Festival."

@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       get 'nos_collections', to: 'pages#nos_collections'
       get 'le_concept', to: 'pages#le_concept'
       get 'nos_autres_activites', to: 'pages#nos_autres_activites'
+      get 'festival-de-cannes', to: 'pages#festival_de_cannes', as: :festival_de_cannes
       get 'legal', to: 'pages#legal'
       get 'faq', to: 'pages#faq'
       get 'cabine_essayage', to: 'pages#cabine_essayage', as: 'cabine_essayage'

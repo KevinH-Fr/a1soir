@@ -166,6 +166,9 @@ en:
       nos_autres_activites:
         title: "Our other activities - Autour D'Un Soir"
         description: "Discover the other activities and services of the shop."
+      festival_de_cannes:
+        title: "Cannes Festival - Evening wear rental & sales | Autour D'Un Soir"
+        description: "During Cannes Festival, discover in-store rental and sales of evening dresses, cocktail dresses, suits, tuxedos and accessories."
       legal:
         title: "Legal notice & Terms - Autour D'Un Soir"
         description: "Read legal notice, terms and privacy policy."
@@ -308,6 +311,7 @@ en:
       collections: "Collections"
       concept: "Concept"
       other_activities: "Other activities"
+      festival_de_cannes: "Cannes Festival"
       services: "Services"
       products: "Products"
       appointment: "Appointment"
@@ -1010,3 +1014,26 @@ en:
           title: "Customer reviews"
           based_on: "Based on %{count} Google reviews"
           view_all: "View all reviews on Google"
+      festival_de_cannes:
+        header_title: "Cannes Festival Special"
+        header_subtitle: "Evening wear rental and sales in Cannes"
+        intro:
+          title: "Your fashion destination during the Festival"
+          description_1: "Autour D'Un Soir supports you during Cannes Festival with a premium selection of evening dresses, cocktail dresses, suits, tuxedos and accessories."
+          description_2: "Our team advises you in-store to find the ideal outfit."
+        offers:
+          title: "Festival packages — evening dresses and tuxedos"
+          alt: "Festival promotional visual %{num}"
+        video:
+          title: "Discover the boutique in video"
+          placeholder_alt: "Cannes Festival boutique video preview"
+          placeholder_text: "The video will be added as soon as your Cloudinary link is provided."
+          not_supported: "Your browser does not support video playback."
+        cta:
+          title: "Plan your boutique visit"
+          description: "Call us, use the contact form, or open Maps directions to reach us quickly."
+          contact: "Contact form"
+          maps: "Google Maps directions"
+        whatsapp_message: "Hello, I would like information for a Cannes Festival outfit (rental or purchase)."
+        hours_title: "Festival opening hours"
+        hours_fallback: "Contact us to confirm opening hours during Cannes Festival."
