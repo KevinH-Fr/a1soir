@@ -58,7 +58,7 @@ module Public
         header_image_1_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.15.31_5_iy6io3.jpg",
         header_image_2_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.16.35_xyakfo.jpg",
         social_proof_image_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.15.31_5_iy6io3.jpg",
-        video_url: "https://res.cloudinary.com/dukne3lhz/video/upload/v1778424536/WhatsApp_Video_2026-05-10_at_16.19.18_mocdwk.mp4",
+        video_url: "https://res.cloudinary.com/dukne3lhz/video/upload/v1778495070/Festival_2026_Reel_Instagram_xgmvwd.mp4",
         video_poster_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.16.35_xyakfo.jpg",
         whatsapp_visual_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.16.01_2_osynga.jpg"
       )
