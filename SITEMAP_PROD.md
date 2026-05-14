@@ -44,7 +44,24 @@ Sitemap: https://a1soir.com/sitemap.xml.gz
 - Verifier que Google detecte bien les URLs FR et EN.
 - Controler qu'il n'y a pas d'erreurs d'indexation ou d'URLs "dupliquees sans canonique selectionnee".
 
+## Google Merchant Center (feed produits)
 
+En production (Heroku), le feed **n'est pas** un fichier statique dans `public/` : le filesystem est ephemere et non partage entre dynos. L'URL publique reste :
 
+`https://a1soir.com/google_merchant_feed.xml`
+
+Rails sert ce chemin via `GoogleMerchantFeedsController` : le XML est mis en cache dans **Redis** (`REDIS_URL`, voir `config/environments/production.rb`), partage entre tous les dynos web.
+
+### Rafraichir le cache (Scheduler / manuel)
+
+```bash
 bin/rails runner "GenerateGoogleMerchantFeedJob.perform_now"
-bundle exec rails runner "GenerateGoogleMerchantFeedJob.perform_now"
+```
+
+A executer quotidiennement (ex. Heroku Scheduler) sur un one-off dyno, comme les autres jobs qui utilisent `perform_now`.
+
+### Verification
+
+- Confirmer que `REDIS_URL` est defini sur Heroku (add-on Redis ou URL externe).
+- Ouvrir l'URL du feed et verifier le `Content-Type` / le contenu XML.
+- Le fichier `public/google_merchant_feed.xml` est ignore par git ; une copie locale optionnelle peut etre generee avec `GoogleMerchant::StaticFeed.write!` uniquement pour le debug.

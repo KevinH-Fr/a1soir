@@ -2,9 +2,16 @@
 
 module GoogleMerchant
   # Builds the full Merchant Center XML (same output as the former dynamic endpoint).
-  # Used by `rake google_merchant:generate_feed` to write `public/google_merchant_feed.xml`.
+  #
+  # Production (Heroku): XML is stored in Redis under {CACHE_KEY} and served by
+  # {GoogleMerchantFeedsController}. {GenerateGoogleMerchantFeedJob} refreshes the cache.
+  #
+  # Local file: {#write!} may still write `public/google_merchant_feed.xml` for debugging;
+  # that path is gitignored and must not be relied on in production.
   class StaticFeed
     FEED_FILENAME = "google_merchant_feed.xml"
+    CACHE_KEY = "google_merchant_feed_xml"
+    CACHE_EXPIRES_IN = 24.hours
 
     class << self
       def to_xml
@@ -19,6 +26,7 @@ module GoogleMerchant
         ).to_xml
       end
 
+      # Writes XML to disk (development / one-off use only). Production uses Redis cache.
       def write!(path = Rails.root.join("public", FEED_FILENAME))
         File.write(path, to_xml, encoding: Encoding::UTF_8)
         path

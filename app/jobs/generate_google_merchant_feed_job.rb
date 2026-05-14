@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# Writes public/google_merchant_feed.xml via {GoogleMerchant::StaticFeed}.
+# Refreshes the Google Merchant XML in Redis ({GoogleMerchant::StaticFeed::CACHE_KEY})
+# so all web dynos serve the same feed via {GoogleMerchantFeedsController}.
 #
 # Local or Heroku Scheduler (same as other jobs — use +perform_now+ on the one-off dyno):
 #   bin/rails runner "GenerateGoogleMerchantFeedJob.perform_now"
@@ -10,8 +11,15 @@ class GenerateGoogleMerchantFeedJob < ApplicationJob
   queue_as :default
 
   def perform
-    path = GoogleMerchant::StaticFeed.write!
-    Rails.logger.info("[GenerateGoogleMerchantFeedJob] wrote #{path}")
-    path
+    xml = GoogleMerchant::StaticFeed.to_xml
+    Rails.cache.write(
+      GoogleMerchant::StaticFeed::CACHE_KEY,
+      xml,
+      expires_in: GoogleMerchant::StaticFeed::CACHE_EXPIRES_IN
+    )
+    Rails.logger.info(
+      "[GenerateGoogleMerchantFeedJob] cached #{GoogleMerchant::StaticFeed::CACHE_KEY} (#{xml.bytesize} bytes)"
+    )
+    xml.bytesize
   end
 end
