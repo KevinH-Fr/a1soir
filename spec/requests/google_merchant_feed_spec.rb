@@ -3,21 +3,16 @@
 require "rails_helper"
 
 RSpec.describe "Google Merchant feed", type: :request do
+  let(:feed_path) { Rails.root.join("public", GoogleMerchant::StaticFeed::FEED_FILENAME) }
+
   around do |example|
     old_merchant_host = ENV["MERCHANT_FEED_HOST"]
-    old_brand = ENV["MERCHANT_FEED_BRAND"]
     ENV["MERCHANT_FEED_HOST"] = "http://www.example.com"
-    ENV["MERCHANT_FEED_BRAND"] = "A1 Soir Test"
     example.run
     if old_merchant_host
       ENV["MERCHANT_FEED_HOST"] = old_merchant_host
     else
       ENV.delete("MERCHANT_FEED_HOST")
-    end
-    if old_brand
-      ENV["MERCHANT_FEED_BRAND"] = old_brand
-    else
-      ENV.delete("MERCHANT_FEED_BRAND")
     end
   end
 
@@ -59,13 +54,21 @@ RSpec.describe "Google Merchant feed", type: :request do
     )
   end
 
+  before do
+    GenerateGoogleMerchantFeedJob.perform_now
+  end
+
+  after do
+    FileUtils.rm_f(feed_path)
+  end
+
   it "returns 200 with application/xml" do
     get "/google_merchant_feed.xml"
     expect(response).to have_http_status(:ok)
     expect(response.content_type).to include("application/xml")
   end
 
-  it "outputs RSS 2.0 with Google namespace and the 13 g: fields for a qualifying product" do
+  it "outputs RSS 2.0 with Google namespace and the expected g: fields for a qualifying product" do
     get "/google_merchant_feed.xml"
     body = response.body
 
@@ -82,7 +85,7 @@ RSpec.describe "Google Merchant feed", type: :request do
     expect(body).to include("<g:availability>in_stock</g:availability>")
     expect(body).to include("<g:condition>new</g:condition>")
     expect(body).to include("<g:price>129.50 EUR</g:price>")
-    expect(body).to include("<g:brand>A1 Soir Test</g:brand>")
+    expect(body).to include("<g:brand>Autour D'Un Soir</g:brand>")
     expect(body).to include("<g:shipping_weight>0.5 kg</g:shipping_weight>")
     expect(body).to include("<g:item_group_id>robe-flux-merchant</g:item_group_id>")
     expect(body).to include("<g:size>m</g:size>")

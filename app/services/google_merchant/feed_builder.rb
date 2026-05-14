@@ -6,6 +6,7 @@ module GoogleMerchant
     GOOGLE_NS = "http://base.google.com/ns/1.0"
     CLOUDINARY_IMAGE_BASE = "https://res.cloudinary.com/dukne3lhz/image/upload".freeze
     IMAGE_TRANSFORM = "q_auto,f_auto,w_1200"
+    FEED_BRAND = "Autour D'Un Soir".freeze
 
     class << self
       def feed_scope
@@ -59,6 +60,7 @@ module GoogleMerchant
               xm.tag!("g:availability", availability_for(produit))
               xm.tag!("g:condition", "new")
               xm.tag!("g:price", format_price_eur(produit.prixvente))
+              xm.tag!("g:brand", FEED_BRAND)
               xm.tag!("g:shipping_weight", self.class.format_shipping_weight_kg(produit.poids.to_i))
               xm.tag!("g:item_group_id", produit.handle.presence || "group-#{produit.id}")
               xm.tag!("g:size", produit.taille.nom) if produit.taille&.nom.present?
@@ -99,21 +101,6 @@ module GoogleMerchant
     def format_price_eur(amount)
       value = amount.to_d
       format("%.2f EUR", value)
-    end
-
-    def brand_for(produit)
-      custom = ENV["MERCHANT_FEED_BRAND"].presence
-      return custom if custom.present?
-
-      if produit.fournisseur&.nom.present? && truthy?(ENV["MERCHANT_FEED_BRAND_FROM_FOURNISSEUR"])
-        produit.fournisseur.nom
-      else
-        ENV.fetch("MERCHANT_FEED_BRAND_DEFAULT", "A1 Soir")
-      end
-    end
-
-    def truthy?(val)
-      ActiveModel::Type::Boolean.new.cast(val)
     end
 
     def strip_description(html)

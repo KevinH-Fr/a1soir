@@ -45,3 +45,6 @@ Sitemap: https://a1soir.com/sitemap.xml.gz
 - Controler qu'il n'y a pas d'erreurs d'indexation ou d'URLs "dupliquees sans canonique selectionnee".
 
 
+
+bin/rails runner "GenerateGoogleMerchantFeedJob.perform_now"
+bundle exec rails runner "GenerateGoogleMerchantFeedJob.perform_now"

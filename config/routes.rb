@@ -2,8 +2,6 @@ Rails.application.routes.draw do
 
   post "/webhooks/stripe", to: "webhooks/stripe#create"
 
-  get "google_merchant_feed.xml", to: "google_merchant_feeds#show", defaults: { format: :xml }
-
   root to: redirect('/fr')
 
   scope '(:locale)', locale: /fr|en/ do
