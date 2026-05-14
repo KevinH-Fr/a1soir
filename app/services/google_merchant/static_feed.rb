@@ -10,7 +10,7 @@ module GoogleMerchant
   # that path is gitignored and must not be relied on in production.
   class StaticFeed
     FEED_FILENAME = "google_merchant_feed.xml"
-    CACHE_KEY = "google_merchant_feed_xml"
+    CACHE_KEY = "google_merchant_feed_xml_v2"
     CACHE_EXPIRES_IN = 24.hours
 
     class << self

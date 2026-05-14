@@ -12,14 +12,22 @@ class GenerateGoogleMerchantFeedJob < ApplicationJob
 
   def perform
     xml = GoogleMerchant::StaticFeed.to_xml
-    Rails.cache.write(
+    ok = Rails.cache.write(
       GoogleMerchant::StaticFeed::CACHE_KEY,
       xml,
-      expires_in: GoogleMerchant::StaticFeed::CACHE_EXPIRES_IN
+      expires_in: GoogleMerchant::StaticFeed::CACHE_EXPIRES_IN,
+      raw: true
     )
-    Rails.logger.info(
-      "[GenerateGoogleMerchantFeedJob] cached #{GoogleMerchant::StaticFeed::CACHE_KEY} (#{xml.bytesize} bytes)"
-    )
+    if ok
+      Rails.logger.info(
+        "[GenerateGoogleMerchantFeedJob] cached #{GoogleMerchant::StaticFeed::CACHE_KEY} (#{xml.bytesize} bytes)"
+      )
+    else
+      Rails.logger.error(
+        "[GenerateGoogleMerchantFeedJob] Rails.cache.write returned false for #{GoogleMerchant::StaticFeed::CACHE_KEY} " \
+        "(#{xml.bytesize} bytes). Check Heroku logs for \"RedisCacheStore:\" (Redis timeouts / connection)."
+      )
+    end
     xml.bytesize
   end
 end

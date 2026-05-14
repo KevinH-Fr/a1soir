@@ -65,3 +65,6 @@ A executer quotidiennement (ex. Heroku Scheduler) sur un one-off dyno, comme les
 - Confirmer que `REDIS_URL` est defini sur Heroku (add-on Redis ou URL externe).
 - Ouvrir l'URL du feed et verifier le `Content-Type` / le contenu XML.
 - Le fichier `public/google_merchant_feed.xml` est ignore par git ; une copie locale optionnelle peut etre generee avec `GoogleMerchant::StaticFeed.write!` uniquement pour le debug.
+
+en letat redis cache ne marche pas donc regeration
+compresser ou autre solution pour eviter le rebuild a chaqu fois ?
