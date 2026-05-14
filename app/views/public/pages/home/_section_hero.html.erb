@@ -37,8 +37,21 @@
         </p>
       <% end %>
       
-      <% if button_text.present? %>
-        <%= link_to button_text, button_url, class: "btn btn-light btn-lg px-5 public-btn-border-radius", style: "pointer-events: auto;" %>
+      <%
+        show_primary_cta = button_text.present?
+        show_festival_cta = Rails.application.config.x.hero_festival_cta_enabled
+      %>
+      <% if show_primary_cta || show_festival_cta %>
+        <div class="d-flex flex-wrap gap-3 align-items-center" style="pointer-events: auto;">
+          <% if show_primary_cta %>
+            <%= link_to button_text, button_url, class: "btn btn-light btn-lg px-5 public-btn-border-radius" %>
+          <% end %>
+          <% if show_festival_cta %>
+            <%= link_to t("public.pages.home.hero.festival_button_text"),
+                        festival_de_cannes_path,
+                        class: "btn btn-outline-light btn-lg px-4 px-sm-5 public-btn-border-radius" %>
+          <% end %>
+        </div>
       <% end %>
     </div>
   </div>

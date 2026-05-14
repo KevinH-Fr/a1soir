@@ -1,0 +1,145 @@
+/* Encart Festival — home (sous le hero) */
+.home-festival-encart__card {
+  position: relative;
+  border: 1px solid rgba(184, 134, 11, 0.4);
+  background: linear-gradient(
+    155deg,
+    rgba(28, 26, 22, 0.98) 0%,
+    rgba(8, 8, 10, 0.96) 45%,
+    rgba(18, 16, 14, 0.98) 100%
+  );
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 20px 50px -15px rgba(0, 0, 0, 0.65),
+    0 0 40px -20px rgba(184, 134, 11, 0.25);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.home-festival-encart__card:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 28px 60px -18px rgba(0, 0, 0, 0.7),
+    0 0 55px -15px rgba(184, 134, 11, 0.35);
+}
+
+.home-festival-encart__glow {
+  position: absolute;
+  inset: -40% -30% auto auto;
+  width: min(70vw, 28rem);
+  height: min(120%, 24rem);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(184, 134, 11, 0.22) 0%,
+    rgba(184, 134, 11, 0.06) 45%,
+    transparent 70%
+  );
+  pointer-events: none;
+  animation: homeFestivalEncartGlow 10s ease-in-out infinite;
+}
+
+@keyframes homeFestivalEncartGlow {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translate(-8%, 6%) scale(1.08);
+    opacity: 1;
+  }
+}
+
+.home-festival-encart__accent-line {
+  width: 4rem;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--public-brand-gradient);
+  animation: homeFestivalEncartLine 3.5s ease-in-out infinite;
+}
+
+@keyframes homeFestivalEncartLine {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scaleX(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1.15);
+  }
+}
+
+.home-festival-encart__heading {
+  font-family: "Cormorant Garamond", "Playfair Display", serif;
+  font-size: clamp(2.35rem, 7.5vw, 4.25rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  margin: 0;
+  background: linear-gradient(
+    110deg,
+    #f0d78c 0%,
+    #c9a227 22%,
+    #e8d48a 42%,
+    #b8860b 55%,
+    #d4af37 78%,
+    #f5e6b8 100%
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: homeFestivalEncartGoldShift 6s ease-in-out infinite;
+  text-shadow: 0 0 40px rgba(184, 134, 11, 0.15);
+}
+
+@keyframes homeFestivalEncartGoldShift {
+  0%,
+  100% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+}
+
+.home-festival-encart__icon {
+  font-size: clamp(1.75rem, 4.5vw, 2.5rem);
+  color: rgba(232, 197, 71, 0.95);
+  filter: drop-shadow(0 0 10px rgba(184, 134, 11, 0.5));
+  animation: homeFestivalEncartIconPulse 2.8s ease-in-out infinite;
+}
+
+@keyframes homeFestivalEncartIconPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-festival-encart__card {
+    transition: none;
+  }
+
+  .home-festival-encart__card:hover {
+    transform: none;
+  }
+
+  .home-festival-encart__glow,
+  .home-festival-encart__accent-line,
+  .home-festival-encart__heading,
+  .home-festival-encart__icon {
+    animation: none;
+  }
+
+  .home-festival-encart__heading {
+    background-position: 50% center;
+  }
+}

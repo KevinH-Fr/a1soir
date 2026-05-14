@@ -1,0 +1,44 @@
+<section class="home-festival-encart py-4 py-lg-5" data-scroll-reveal aria-labelledby="home-festival-encart-heading">
+  <div class="container">
+    <div class="home-festival-encart__card rounded-3 overflow-hidden p-4 p-lg-5">
+      <div class="home-festival-encart__glow" aria-hidden="true"></div>
+
+      <div class="position-relative">
+        <div class="d-flex flex-column flex-lg-row align-items-center align-items-lg-start gap-3 gap-lg-4 mb-3 mb-lg-4 text-center text-lg-start">
+          <i class="bi bi-film home-festival-encart__icon lh-1" aria-hidden="true"></i>
+          <div class="flex-grow-1 w-100">
+            <div class="d-flex justify-content-center justify-content-lg-start mb-2">
+              <span class="home-festival-encart__accent-line" aria-hidden="true"></span>
+            </div>
+            <h2 id="home-festival-encart-heading" class="home-festival-encart__heading text-break">
+              <%= t("public.pages.home.festival_encart.eyebrow") %>
+            </h2>
+          </div>
+        </div>
+
+        <p
+          class="text-light fw-semibold mb-3 mb-lg-4 text-center text-lg-start mx-auto mx-lg-0"
+          style="max-width: 44rem; font-size: clamp(1.05rem, 2.2vw, 1.25rem); line-height: 1.45;">
+          <%= t("public.pages.home.festival_encart.title") %>
+        </p>
+
+        <div
+          class="text-light opacity-80 mx-auto mx-lg-0"
+          style="max-width: 44rem; font-size: 1.05rem; line-height: 1.75;">
+          <p class="mb-3 mb-lg-3">
+            <%= t("public.pages.home.festival_encart.body_1") %>
+          </p>
+          <p class="mb-0 mb-lg-4">
+            <%= t("public.pages.home.festival_encart.body_2") %>
+          </p>
+        </div>
+
+        <div class="text-center text-lg-start mt-4 pt-1">
+          <%= link_to t("public.pages.home.festival_encart.cta_label"),
+                      festival_de_cannes_path,
+                      class: "btn btn-light btn-lg px-4 px-lg-5 public-btn-border-radius fw-bold shadow" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

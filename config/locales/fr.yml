@@ -680,6 +680,7 @@ fr:
       fitting_room: "Cabine d'essayage"
       concept: "Concept"
       other_activities: "Autres activités"
+      festival_de_cannes: "Festival de Cannes"
       cart: "Panier"
     footer:
       navigation: "Navigation"
@@ -723,6 +724,13 @@ fr:
           title: "Mariage et Tenues de Soirée"
           subtitle: "Des collections pour vous embellir"
           button_text: "Découvrir"
+          festival_button_text: "Festival de Cannes"
+        festival_encart:
+          eyebrow: "Festival de Cannes"
+          title: "Location et vente de robes, tenues de soirée et smokings pendant le Festival"
+          body_1: "Autour D'Un Soir vous accompagne pendant le Festival de Cannes avec une sélection premium de robes de soirée, robes cocktail, costumes, smokings et accessoires."
+          body_2: "Notre équipe vous conseille en boutique pour trouver la tenue idéale."
+          cta_label: "Nos offres pour le Festival"
       nos_collections:
         header_title: "Nos collections"
         header_subtitle: "Découvrez notre sélection de tenues d'exception"

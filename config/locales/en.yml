@@ -303,6 +303,7 @@ en:
       fitting_room: "Fitting room"
       concept: "Concept"
       other_activities: "Other activities"
+      festival_de_cannes: "Cannes Festival"
       cart: "Cart"
     footer:
       navigation: "Navigation"
@@ -346,6 +347,13 @@ en:
           title: "Wedding and Evening Wear"
           subtitle: "Collections designed to elevate your look"
           button_text: "Discover"
+          festival_button_text: "Cannes Festival"
+        festival_encart:
+          eyebrow: "Cannes Festival"
+          title: "Rental and sale of dresses, evening wear and tuxedos during the Festival"
+          body_1: "Autour D'Un Soir supports you during the Cannes Film Festival with a premium selection of evening gowns, cocktail dresses, suits, tuxedos and accessories."
+          body_2: "Our team advises you in store to find the perfect outfit."
+          cta_label: "Our Festival offers"
       nos_collections:
         header_title: "Our collections"
         header_subtitle: "Discover our selection of exceptional outfits"
