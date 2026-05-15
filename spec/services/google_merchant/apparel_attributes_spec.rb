@@ -41,9 +41,10 @@ RSpec.describe GoogleMerchant::ApparelAttributes do
       expect(described_class.gender_for(produit)).to eq("female")
     end
 
-    it "returns male for accessoires" do
+    it "returns male for accessoires (not confused with accessoires femmes token)" do
       produit = produit_with_categories("accessoires")
       expect(described_class.gender_for(produit)).to eq("male")
+      expect((["accessoires"] & described_class::FEMALE_CATEGORIES)).to be_empty
     end
 
     it "returns male for costume" do

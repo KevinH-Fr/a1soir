@@ -4,19 +4,20 @@ module GoogleMerchant
   # Maps produit categories (and description for chaussures) to Google Merchant
   # gender and age_group values.
   class ApparelAttributes
-    FEMALE_CATEGORIES = %w[
-      accessoires femmes
-      ensembles pantalons
-      robes courtes
-      robes longues
-      robes de mariée courtes
-      robes de mariée longues
+    # Full category names only (%w splits on spaces: "accessoires femmes" → two tokens).
+    FEMALE_CATEGORIES = [
+      "accessoires femmes",
+      "ensembles pantalons",
+      "robes courtes",
+      "robes longues",
+      "robes de mariée courtes",
+      "robes de mariée longues"
     ].freeze
 
-    MALE_CATEGORIES = %w[
-      accessoires
-      costume
-      enfants
+    MALE_CATEGORIES = [
+      "accessoires",
+      "costume",
+      "enfants"
     ].freeze
 
     KIDS_CATEGORY = "enfants"
