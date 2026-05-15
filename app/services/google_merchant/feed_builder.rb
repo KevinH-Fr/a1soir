@@ -14,7 +14,7 @@ module GoogleMerchant
           .eshop_diffusion
           .joins(:image1_attachment)
           .where("produits.prixvente > 0")
-          .includes(:image1_attachment, :taille, :couleur)
+          .includes(:image1_attachment, :taille, :couleur, :categorie_produits)
       end
 
       def format_shipping_weight_kg(grams)
@@ -65,6 +65,8 @@ module GoogleMerchant
               xm.tag!("g:item_group_id", produit.handle.presence || "group-#{produit.id}")
               xm.tag!("g:size", produit.taille.nom) if produit.taille&.nom.present?
               xm.tag!("g:color", produit.couleur.nom) if produit.couleur&.nom.present?
+              xm.tag!("g:gender", ApparelAttributes.gender_for(produit))
+              xm.tag!("g:age_group", ApparelAttributes.age_group_for(produit))
             end
           end
         end

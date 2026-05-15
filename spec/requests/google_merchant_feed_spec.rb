@@ -18,6 +18,7 @@ RSpec.describe "Google Merchant feed", type: :request do
 
   let!(:taille_m) { Taille.create!(nom: "m") }
   let!(:couleur_rouge) { Couleur.create!(nom: "rouge") }
+  let!(:categorie_robes_courtes) { CategorieProduit.create!(nom: "robes courtes") }
 
   let!(:produit_in_feed) do
     p = Produit.create!(
@@ -39,6 +40,7 @@ RSpec.describe "Google Merchant feed", type: :request do
       filename: "robe.jpg",
       content_type: "image/jpeg"
     )
+    p.categorie_produits << categorie_robes_courtes
     p
   end
 
@@ -86,6 +88,8 @@ RSpec.describe "Google Merchant feed", type: :request do
     expect(body).to include("<g:item_group_id>robe-flux-merchant</g:item_group_id>")
     expect(body).to include("<g:size>m</g:size>")
     expect(body).to include("<g:color>rouge</g:color>")
+    expect(body).to include("<g:gender>female</g:gender>")
+    expect(body).to include("<g:age_group>adult</g:age_group>")
   end
 
   it "does not include products without image1" do
