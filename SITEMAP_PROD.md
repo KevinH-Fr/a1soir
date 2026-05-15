@@ -50,21 +50,14 @@ En production (Heroku), le feed **n'est pas** un fichier statique dans `public/`
 
 `https://a1soir.com/google_merchant_feed.xml`
 
-Rails sert ce chemin via `GoogleMerchantFeedsController` : le XML est mis en cache dans **Redis** (`REDIS_URL`, voir `config/environments/production.rb`), partage entre tous les dynos web.
+Rails sert ce chemin via `GoogleMerchantFeedsController` : le XML est **genere a la demande** a chaque requete (`GoogleMerchant::StaticFeed.to_xml`). Pas de cache Redis dedie au feed ; pas de job Heroku Scheduler obligatoire.
 
-### Rafraichir le cache (Scheduler / manuel)
+### Planification des mises a jour
 
-```bash
-bin/rails runner "GenerateGoogleMerchantFeedJob.perform_now"
-```
-
-A executer quotidiennement (ex. Heroku Scheduler) sur un one-off dyno, comme les autres jobs qui utilisent `perform_now`.
+Configurer la **date et l'heure de recuperation du flux** dans Google Merchant Center (pas sur Heroku). Google appelle l'URL a ce moment-la ; une generation complete du XML a chaque fetch est attendue.
 
 ### Verification
 
-- Confirmer que `REDIS_URL` est defini sur Heroku (add-on Redis ou URL externe).
-- Ouvrir l'URL du feed et verifier le `Content-Type` / le contenu XML.
+- Ouvrir l'URL du feed et verifier le `Content-Type` / le contenu XML (`curl -sI` ou navigateur).
+- Dans Merchant Center, surveiller les erreurs de fetch au prochain creneau planifie.
 - Le fichier `public/google_merchant_feed.xml` est ignore par git ; une copie locale optionnelle peut etre generee avec `GoogleMerchant::StaticFeed.write!` uniquement pour le debug.
-
-en letat redis cache ne marche pas donc regeration
-compresser ou autre solution pour eviter le rebuild a chaqu fois ?

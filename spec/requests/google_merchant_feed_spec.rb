@@ -54,10 +54,6 @@ RSpec.describe "Google Merchant feed", type: :request do
     )
   end
 
-  before do
-    GenerateGoogleMerchantFeedJob.perform_now
-  end
-
   after do
     FileUtils.rm_f(feed_path)
   end

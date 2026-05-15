@@ -65,14 +65,7 @@ Rails.application.configure do
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
   # Use Redis cache store in production (recommended on Heroku).
-  # Default Redis client timeouts are 1s — too low for large values (e.g. Merchant XML ~MB);
-  # missed SET/GET surfaces as silent write failure / read miss (RedisCacheStore failsafe).
-  config.cache_store = :redis_cache_store, {
-    url: ENV["REDIS_URL"],
-    connect_timeout: 2,
-    read_timeout: 10,
-    write_timeout: 15,
-  }
+  config.cache_store = :redis_cache_store, { url: ENV["REDIS_URL"] }
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter = :resque
