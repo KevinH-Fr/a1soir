@@ -1,9 +1,27 @@
 ## Sitemap production FR/EN
 
-Le sitemap est genere en local, versionne dans le repo, puis deploye en production.
+Le sitemap est genere en local (avec acces a la base de donnees), versionne dans le repo (`public/sitemap*.gz`), puis deploye en production.
 Le host canonique doit rester `https://a1soir.com`.
 
-### 1) Regenerer le sitemap (avec host de prod)
+Google le decouvre via `public/robots.txt` (`Sitemap: https://a1soir.com/sitemap.xml.gz`). Ce fichier est **distinct** du feed Google Merchant Center (Shopping).
+
+### Contenu du sitemap (`config/sitemap.rb`)
+
+| Type d'URL | Exemple | Perimetre |
+|------------|---------|-----------|
+| Pages statiques | `/fr/home`, `/en/contact`, … | Liste fixe dans `config/sitemap.rb` |
+| Categories | `/fr/produits/robes-12`, `/en/produits/...` | `CategorieProduit.not_service` |
+| Fiches produit | `/fr/produit/robe-123`, `/en/produit/...` | `Produit.actif` + `eshop: true` + `today_availability: true` |
+
+Chaque URL catalogue est presente en **fr** et **en**. Aucune URL admin.
+
+**Quand regenerer :** apres deploiement du nouveau `config/sitemap.rb`, import catalogue massif, ou changements importants de disponibilite (`today_availability`).
+
+---
+
+### 1) Regenerer le sitemap (host de prod)
+
+La generation lit la base locale (ou celle pointee par `DATABASE_URL`). Utiliser une base a jour si possible.
 
 ```bash
 cd ~/ror/a1soir
@@ -13,36 +31,77 @@ SITEMAP_HOST=https://a1soir.com bundle exec rake sitemap:refresh
 ### 2) Verifier les fichiers generes
 
 ```bash
-cd ~/ror/a1soir
-ls public/sitemap*
+ls -la public/sitemap*
 ```
+
+Fichiers attendus : au minimum `public/sitemap.xml.gz` (et eventuellement un index si le volume depasse la limite d'un seul fichier).
 
 ### 3) Verifier le contenu FR/EN
 
-Le sitemap doit contenir:
-- des URLs absolues sur `https://a1soir.com`
+Controles manuels sur le XML decompressé :
+
+```bash
+gunzip -c public/sitemap.xml.gz | head -50
+gunzip -c public/sitemap.xml.gz | grep -c '<loc>'
+gunzip -c public/sitemap.xml.gz | grep '/fr/produit/' | head -5
+gunzip -c public/sitemap.xml.gz | grep '/en/produits/' | head -5
+```
+
+Le sitemap doit contenir :
+
+- des URLs **absolues** sur `https://a1soir.com`
 - les pages en `/fr/...` et `/en/...`
-- aucune URL publique sans locale
-- aucune URL admin
+- des URLs **categories** (`/fr/produits/...`, `/en/produits/...`)
+- des URLs **fiches produit** (`/fr/produit/...`, `/en/produit/...`)
+- **aucune** URL publique sans locale (`/produit/...` sans `/fr` ou `/en`)
+- **aucune** URL admin
 
-### 4) Mise en production
+### 4) Versionner et deployer
 
-Le sitemap utilise en production est celui present dans le repo deploye.
+```bash
+git add config/sitemap.rb public/sitemap.xml.gz
+git commit -m "Regenerer le sitemap (pages, categories, produits FR/EN)"
+git push
+# puis deploiement habituel (ex. Heroku)
+```
 
-### 5) robots.txt
+Le sitemap servi en production est celui **present dans le repo deploye** (fichier statique dans `public/`), pas regenere a chaque requete.
 
-Le fichier `public/robots.txt` doit declarer:
+### 5) Verifier en production
+
+Apres deploiement :
+
+- Ouvrir [https://a1soir.com/sitemap.xml.gz](https://a1soir.com/sitemap.xml.gz) (telechargement / decompression OK).
+- Verifier quelques URLs produit et categorie dans le fichier.
+- Confirmer que `https://a1soir.com/robots.txt` declare bien :
 
 ```txt
 Sitemap: https://a1soir.com/sitemap.xml.gz
 ```
 
-### 6) Validation SEO apres deploiement
+### 6) Soumettre / mettre a jour dans Google Search Console
 
-- Ouvrir `https://a1soir.com/sitemap.xml.gz` et verifier qu'il est accessible.
-- Re-soumettre le sitemap dans Google Search Console.
-- Verifier que Google detecte bien les URLs FR et EN.
-- Controler qu'il n'y a pas d'erreurs d'indexation ou d'URLs "dupliquees sans canonique selectionnee".
+1. Aller sur [Google Search Console](https://search.google.com/search-console) → propriete `a1soir.com`.
+2. Menu **Indexation** → **Sitemaps**.
+3. Si le sitemap `https://a1soir.com/sitemap.xml.gz` n'y est pas encore : l'ajouter dans « Ajouter un sitemap ».
+4. S'il existe deja : apres un nouveau deploiement, Google le re-crawl automatiquement ; on peut aussi **resoumettre** l'URL du sitemap pour accelerer la prise en compte.
+5. Surveiller pendant quelques jours :
+   - URLs decouvertes / indexees
+   - erreurs d'exploration sur les fiches `/fr/produit/...` et `/en/produit/...`
+   - avertissements « URL en double » ou canonique (hreflang deja en place sur le site public)
+
+**Note :** Search Console concerne l'**indexation organique**. Le feed Merchant Center (section ci-dessous) est un canal separe pour Google Shopping.
+
+### 7) Validation SEO (checklist)
+
+- [ ] `sitemap.xml.gz` accessible en prod
+- [ ] Presence d'URLs categories et produits FR + EN
+- [ ] Sitemap declare dans `robots.txt`
+- [ ] Sitemap soumis ou a jour dans Search Console
+- [ ] Pas d'erreurs d'indexation massives sur les nouvelles URLs
+- [ ] Regenerer le sitemap apres gros changements catalogue (puis re-deployer)
+
+---
 
 ## Google Merchant Center (feed produits)
 
@@ -51,6 +110,8 @@ En production (Heroku), le feed **n'est pas** un fichier statique dans `public/`
 `https://a1soir.com/google_merchant_feed.xml`
 
 Rails sert ce chemin via `GoogleMerchantFeedsController` : le XML est **genere a la demande** a chaque requete (`GoogleMerchant::StaticFeed.to_xml`). Pas de cache Redis dedie au feed ; pas de job Heroku Scheduler obligatoire.
+
+Perimetre du feed (plus strict que le sitemap) : produits actifs, `eshop`, image, `prixvente > 0`, etc. Voir `GoogleMerchant::FeedBuilder`.
 
 ### Planification des mises a jour
 

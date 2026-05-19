@@ -8,8 +8,8 @@
   </script>
 
   <% breadcrumbs = [
-       { name: "Accueil", url: root_url },
-       { name: "Catégories", url: categories_url }
+       { name: structured_breadcrumb_name(:home), url: root_url },
+       { name: structured_breadcrumb_name(:categories), url: categories_url }
      ] %>
   <script type="application/ld+json">
     <%= breadcrumb_schema(breadcrumbs).to_json.html_safe %>

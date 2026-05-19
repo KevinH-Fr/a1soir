@@ -305,6 +305,8 @@ en:
       other_activities: "Other activities"
       festival_de_cannes: "Cannes Festival"
       cart: "Cart"
+    breadcrumbs:
+      categories: "Categories"
     footer:
       navigation: "Navigation"
       home: "Home"

@@ -40,22 +40,34 @@ SitemapGenerator::Sitemap.create do
     end
   end
 
-  # Produits actifs
- # Produit.actif.find_each do |produit|
-  #  slug = produit.nom.parameterize
-  #  add "/produit/#{slug}-#{produit.id}",
-  #      changefreq: 'weekly',
-  #      priority: 0.4,
-  #      lastmod: produit.updated_at
-  #end
-
   # Catégories de produits (uniquement celles qui ne sont pas des services)
-  #CategorieProduit.not_service.find_each do |categorie|
-  #  slug = categorie.nom.parameterize
-  #  add "/produits/#{slug}-#{categorie.id}",
-  #      changefreq: 'weekly',
-  #      priority: 0.7,
-  #      lastmod: categorie.updated_at
-  #end
-  
+  CategorieProduit.not_service.find_each do |categorie|
+    [:fr, :en].each do |locale|
+      add produits_path(
+        slug: categorie.nom.parameterize,
+        id: categorie.id,
+        locale: locale
+      ),
+          changefreq: 'weekly',
+          priority: 0.7,
+          lastmod: categorie.updated_at
+    end
+  end
+
+  # Produits du catalogue public (actif, e-shop, disponible aujourd'hui)
+  Produit.actif
+       .eshop_diffusion
+       .where(today_availability: true)
+       .find_each do |produit|
+    [:fr, :en].each do |locale|
+      add produit_path(
+        slug: produit.nom.parameterize,
+        id: produit.id,
+        locale: locale
+      ),
+          changefreq: 'weekly',
+          priority: 0.5,
+          lastmod: produit.updated_at
+    end
+  end
 end

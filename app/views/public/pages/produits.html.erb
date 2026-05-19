@@ -8,7 +8,7 @@
   </script>
 
   <% breadcrumbs = [
-       { name: "Accueil", url: root_url }
+       { name: structured_breadcrumb_name(:home), url: root_url }
      ] %>
 
   <% if params[:id].present? && defined?(@toutes_categories) %>
@@ -16,10 +16,10 @@
   <% end %>
 
   <% if defined?(current_category) && current_category.present? %>
-    <% breadcrumbs << { name: "Catégories", url: categories_url } %>
+    <% breadcrumbs << { name: structured_breadcrumb_name(:categories), url: categories_url } %>
     <% breadcrumbs << { name: current_category.nom, url: request.original_url } %>
   <% else %>
-    <% breadcrumbs << { name: "Produits", url: request.original_url } %>
+    <% breadcrumbs << { name: structured_breadcrumb_name(:products), url: request.original_url } %>
   <% end %>
 
   <script type="application/ld+json">
