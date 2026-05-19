@@ -54,7 +54,7 @@ module Sitemap
     end
 
     def to_xml
-      xml = Builder::XmlMarkup.new(indent: 2)
+      xml = ::Builder::XmlMarkup.new(indent: 2)
       xml.instruct!(:xml, version: "1.0", encoding: "UTF-8")
       xml.urlset(xmlns: SITEMAP_XMLNS) do
         entries.each do |entry|
