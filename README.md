@@ -21,8 +21,7 @@ Things you may want to cover:
 
 * Deployment instructions
 
-maj sitemap:
-heroku run bundle exec rake sitemap:refresh -a a1soir-2
+Sitemap (SEO) : genere a la demande sur `/sitemap.xml.gz` — voir [SITEMAP_PROD.md](SITEMAP_PROD.md).
 
 * ...
 

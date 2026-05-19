@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   post "/webhooks/stripe", to: "webhooks/stripe#create"
 
   get "/google_merchant_feed.xml", to: "google_merchant_feeds#show", as: :google_merchant_feed
+  get "/sitemap.xml.gz", to: "sitemaps#show", as: :sitemap
 
   root to: redirect('/fr')
 
