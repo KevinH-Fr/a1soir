@@ -52,14 +52,14 @@ module GoogleMerchant
             next unless produit.image1.attached?
 
             xm.item do
-              xm.tag!("g:id", item_id(produit))
+              xm.tag!("g:id", FeedFormatting.item_id(produit))
               xm.tag!("g:title", truncate_plain(produit.nom, 150))
               xm.tag!("g:description", truncate_plain(strip_description(produit.description), 5000))
               xm.tag!("g:link", produit_url_for(produit))
               xm.tag!("g:image_link", image_url_for(produit))
               xm.tag!("g:availability", availability_for(produit))
               xm.tag!("g:condition", "new")
-              xm.tag!("g:price", format_price_eur(produit.prixvente))
+              xm.tag!("g:price", FeedFormatting.format_price_eur(produit.prixvente))
               xm.tag!("g:brand", FEED_BRAND)
               xm.tag!("g:shipping_weight", self.class.format_shipping_weight_kg(produit.poids.to_i))
               xm.tag!("g:item_group_id", produit.handle.presence || "group-#{produit.id}")
@@ -75,11 +75,6 @@ module GoogleMerchant
     end
 
     private
-
-    def item_id(produit)
-      prefix = ENV.fetch("MERCHANT_FEED_ID_PREFIX", "produit")
-      "#{prefix}-#{produit.id}"
-    end
 
     def produit_url_for(produit)
       Rails.application.routes.url_helpers.produit_url(
@@ -98,11 +93,6 @@ module GoogleMerchant
 
     def availability_for(produit)
       produit.today_availability ? "in_stock" : "out_of_stock"
-    end
-
-    def format_price_eur(amount)
-      value = amount.to_d
-      format("%.2f EUR", value)
     end
 
     def strip_description(html)

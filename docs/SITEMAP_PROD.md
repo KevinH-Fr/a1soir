@@ -66,8 +66,10 @@ Attendu apres deploy : **content-length ~45 Ko**, **~5500** `<loc>`, URLs `fr/pr
 Si `content-length: 523` et **1** `<loc>` : l'ancien fichier statique est encore dans le slug → verifier que `public/sitemap.xml.gz` n'est plus dans le repo deploye.
 
 3. **Google Search Console** → Indexation → Sitemaps : URL `https://a1soir.com/sitemap.xml.gz` (resoumettre une fois apres bascule).
+avant le 19/05 : 21 pages
+apres resoumission : 
 
-Le ping Google en fin de `rake sitemap:refresh` (`Sitemaps ping is deprecated`) est **sans effet** ; ne pas s'en servir.
+
 
 ---
 
@@ -102,21 +104,7 @@ Remplaces par le sitemap dynamique (filesystem Heroku ephemere + risque de fichi
 
 ---
 
-## Google Merchant Center (feed produits)
+## Google Merchant Center
 
-En production (Heroku), le feed **n'est pas** un fichier statique dans `public/` : l'URL publique reste :
-
-`https://a1soir.com/google_merchant_feed.xml`
-
-Rails sert ce chemin via `GoogleMerchantFeedsController` : XML **genere a la demande** (`GoogleMerchant::StaticFeed.to_xml`).
-
-Perimetre du feed (plus strict que le sitemap) : `actif`, `eshop`, image, `prixvente > 0`, etc. Voir `GoogleMerchant::FeedBuilder`.
-
-### Planification des mises a jour
-
-Configurer la date/heure de recuperation dans Google Merchant Center. Pas de job Heroku obligatoire pour le feed.
-
-### Verification
-
-- Ouvrir l'URL du feed (`curl -sI` ou navigateur).
-- Surveiller les erreurs de fetch dans Merchant Center au prochain creneau.
+Les informations relatives aux flux Google Merchant ont ete extraites dans
+[`docs/google_merchant_feeds.md`](docs/google_merchant_feeds.md).
