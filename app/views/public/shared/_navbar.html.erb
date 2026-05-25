@@ -77,7 +77,9 @@
         <%= render "public/shared/cabine_nav_link", badge_count: session[:cabine_cart]&.size %>
         <%= nav_link_public(le_concept_url, t("public.navbar.concept")) %>
         <%= nav_link_public(nos_autres_activites_url, t("public.navbar.other_activities")) %>
-        <%= nav_link_public(festival_de_cannes_path, t("public.navbar.festival_de_cannes")) %>
+        <% if Rails.application.config.x.festival_de_cannes_enabled %>
+          <%= nav_link_public(festival_de_cannes_path, t("public.navbar.festival_de_cannes")) %>
+        <% end %>
         <%= render partial: "public/shared/cart_nav_link" %>
         <%#= nav_link_public(legal_url, "Légal") %>
         <%#= nav_link_public(faq_url, "FAQ") %>

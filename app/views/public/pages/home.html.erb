@@ -10,7 +10,9 @@
 
 <%= render partial: "public/pages/home/section_hero" %>
 
-<%= render partial: "public/pages/home/festival_de_cannes_encart" %>
+<% if Rails.application.config.x.festival_de_cannes_enabled %>
+  <%= render partial: "public/pages/home/festival_de_cannes_encart" %>
+<% end %>
 
 <%= render "public/shared/ticker_periode_speciale" %>
 
