@@ -252,13 +252,41 @@ RSpec.describe "Public StripePayments", type: :request do
       expect(flash[:alert]).to be_present
     end
 
+    it "redirects to root with notice when checkout id is not bound to session" do
+      expect(StripeCheckoutFulfillmentService).not_to receive(:retrieve_session!)
+
+      get "/fr/purchase_success", params: { session_id: "cs_test_valid" }
+      expect(response).to redirect_to("/fr")
+      expect(flash[:notice]).to be_present
+    end
+
     it "redirects to cart when Stripe raises InvalidRequestError" do
       allow(StripeCheckoutFulfillmentService).to receive(:retrieve_session!)
         .and_raise(Stripe::InvalidRequestError.new("No such session", :session_id))
 
-      get "/fr/purchase_success", params: { session_id: "cs_bad" }
+      get "/fr/purchase_success",
+          params: { session_id: "cs_bad" },
+          session: { pending_stripe_checkout_id: "cs_bad" }
       expect(response).to redirect_to("/fr/cart")
       expect(flash[:alert]).to be_present
+    end
+
+    it "fulfills and redirects to status when checkout id matches session" do
+      stripe_session = double("Stripe::Checkout::Session", payment_status: "paid")
+      payment = double("StripePayment", id: 42)
+      result = double("StripeCheckoutFulfillmentResult", payment: payment)
+
+      allow(StripeCheckoutFulfillmentService).to receive(:retrieve_session!).with("cs_ok").and_return(stripe_session)
+      allow(StripeCheckoutFulfillmentService).to receive(:new).with(stripe_session).and_return(double(fulfill!: result))
+
+      get "/fr/purchase_success",
+          params: { session_id: "cs_ok" },
+          session: { pending_stripe_checkout_id: "cs_ok" }
+
+      expect(response).to redirect_to("/fr/status/42")
+      expect(flash[:notice]).to be_present
+      expect(session[:accessible_payment_ids]).to include(42)
+      expect(session[:pending_stripe_checkout_id]).to be_nil
     end
   end
 end

@@ -20,4 +20,6 @@
 <%= I18n.t("stripe_payment_mailer.confirmation.body.shipping_label") %> : <%= @payment.frais_livraison_centimes.to_i == 0 ? I18n.t("stripe_payment_mailer.confirmation.body.shipping_free") : number_to_currency(@payment.frais_livraison_centimes.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %>
 <%= I18n.t("stripe_payment_mailer.confirmation.body.total_label") %> : <%= number_to_currency(@payment.amount.to_f / 100, unit: "€", format: "%n %u", delimiter: " ") %> (<%= @payment.currency&.upcase %>)
 
+<%= I18n.t("stripe_payment_mailer.confirmation.body.delivery_follow_up") %>
+
 <%= I18n.t("stripe_payment_mailer.confirmation.body.thanks") %>

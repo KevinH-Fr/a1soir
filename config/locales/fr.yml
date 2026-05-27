@@ -474,6 +474,7 @@ fr:
         shipping_label: "Frais de livraison"
         shipping_free: "Offerts"
         total_label: "Total TTC"
+        delivery_follow_up: "Notre équipe reviendra vers vous prochainement avec les informations relatives à la livraison de votre commande."
         thanks: "Merci pour votre confiance."
     notification_admin:
       subject: "Nouvelle commande e-shop (paiement Stripe)"
@@ -621,6 +622,7 @@ fr:
         payment_confirmation_error: "Erreur lors de la confirmation du paiement."
         payment_fulfillment_error: "Erreur lors de l'enregistrement de la commande."
         payment_cancelled: "Paiement annulé ou interrompu. Votre panier est toujours disponible."
+        payment_confirmed_email: "Votre paiement est confirmé. Un email de confirmation vous a été envoyé."
         unauthorized: "Accès non autorisé."
         not_found: "Paiement introuvable."
         online_sales_unavailable: "Les ventes en ligne sont actuellement indisponibles."

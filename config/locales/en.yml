@@ -97,6 +97,7 @@ en:
         shipping_label: "Shipping"
         shipping_free: "Free"
         total_label: "Total (incl. VAT)"
+        delivery_follow_up: "Our team will get back to you shortly with the delivery details for your order."
         thanks: "Thank you for your trust."
     notification_admin:
       subject: "New e-shop order (Stripe payment)"
@@ -244,6 +245,7 @@ en:
         payment_confirmation_error: "An error occurred while confirming the payment."
         payment_fulfillment_error: "An error occurred while recording the order."
         payment_cancelled: "Payment cancelled or interrupted. Your cart is still available."
+        payment_confirmed_email: "Your payment is confirmed. A confirmation email has been sent."
         unauthorized: "Unauthorised access."
         not_found: "Payment not found."
         online_sales_unavailable: "Online sales are currently unavailable."

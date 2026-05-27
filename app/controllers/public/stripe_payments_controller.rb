@@ -44,6 +44,7 @@ module Public
         }
       )
 
+      session[:pending_stripe_checkout_id] = stripe_session.id
       redirect_to stripe_session.url, allow_other_host: true
     end
 
@@ -132,6 +133,12 @@ module Public
         return
       end
 
+      pending_checkout_id = session[:pending_stripe_checkout_id].to_s
+      if pending_checkout_id.blank? || pending_checkout_id != params[:session_id].to_s
+        redirect_to root_path, notice: t("public.stripe_payments.flash.payment_confirmed_email")
+        return
+      end
+
       stripe_session = StripeCheckoutFulfillmentService.retrieve_session!(params[:session_id])
 
       unless stripe_session.payment_status == "paid"
@@ -149,6 +156,7 @@ module Public
 
       session[:cart] = [] if stripe_session.payment_status == "paid"
       session[:accessible_payment_ids] = Array(session[:accessible_payment_ids]) | [payment.id]
+      session.delete(:pending_stripe_checkout_id)
       redirect_to status_payment_path(payment.id),
                   notice: t("public.stripe_payments.flash.payment_success")
     rescue Stripe::InvalidRequestError, ArgumentError => e

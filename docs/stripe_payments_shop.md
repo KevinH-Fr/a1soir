@@ -38,7 +38,7 @@ Sans `STRIPE_WEBHOOK_SECRET`, le endpoint `POST /webhooks/stripe` répond **503*
 4. **Page panier** : [`pages#cart`](../app/controllers/public/pages_controller.rb) + vue panier ; le bouton « Passer au paiement » envoie un **POST** vers `stripe_payments` (`create`).
 5. **Avant Checkout** : `create` vérifie que le panier n'est pas vide et que **chaque** ligne a `eshop`, `stripe_price_id` et `today_availability` à `true`. Sinon redirection vers le panier avec message d'alerte.
 6. **Session Checkout** : création d'une `Stripe::Checkout::Session` en mode `payment`, une ligne par article du panier, via [`Produit#to_builder`](../app/models/produit.rb) (`price` = `stripe_price_id`, `quantity` = 1). Les métadonnées incluent la locale et la liste des IDs produits du panier.
-7. **Après paiement réussi** : Stripe redirige vers `/{locale}/purchase_success?session_id=…` (URL construite avec `request.base_url` + `purchase_success_path(locale: …)` pour éviter de concaténer après `root_url`, qui peut contenir `?locale=…` et produire une URL invalide).
+7. **Après paiement réussi** : Stripe redirige vers `/{locale}/purchase_success?session_id=…` (URL construite avec `request.base_url` + `purchase_success_path(locale: …)` pour éviter de concaténer après `root_url`, qui peut contenir `?locale=…` et produire une URL invalide). Le contrôleur n'accepte ce retour détaillé que si l'ID Checkout correspond à celui stocké en session navigateur au moment de la création (`session[:pending_stripe_checkout_id]`).
 8. **Page de statut** : après traitement, redirection vers `status/:id` (récapitulatif local du paiement).
 
 Annulation côté utilisateur sur Checkout : redirection vers `purchase_error`, puis retour au panier.
@@ -56,7 +56,7 @@ La logique métier est centralisée dans [`StripeCheckoutFulfillmentService`](..
 
 Deux chemins peuvent appeler le même service :
 
-1. **GET `purchase_success`** : le navigateur revient de Stripe avec `session_id` ; le contrôleur récupère la session via l'API Stripe puis appelle `fulfill!`.
+1. **GET `purchase_success`** : le navigateur revient de Stripe avec `session_id` ; si l'ID ne correspond pas au checkout lié à la session navigateur, l'utilisateur est renvoyé vers l'accueil avec un message générique (sans accès au récap). En cas de correspondance, le contrôleur récupère la session via l'API Stripe puis appelle `fulfill!`.
 2. **Webhook** `POST /webhooks/stripe` : pour l'événement `checkout.session.completed`, le contrôleur recharge la session avec expansion des line items puis appelle `fulfill!` ([`Webhooks::StripeController`](../app/controllers/webhooks/stripe_controller.rb)).
 
 En production, le **webhook** assure l'enregistrement même si l'utilisateur ferme l'onglet avant le redirect.
@@ -140,6 +140,7 @@ Le controller [`Webhooks::StripeController`](../app/controllers/webhooks/stripe_
 
 - **Quantités** : le panier session est une liste d'IDs (un exemplaire par produit) ; `to_builder` envoie `quantity: 1` par ligne. Pas de multi-quantité par produit dans le panier actuel.
 - **Fiche produit** : l'URL directe d'un produit hors e-shop peut toujours être consultée ; seuls les produits éligibles affichent le bouton d'achat en ligne.
+- **Protection `purchase_success`** : l'accès au récapitulatif détaillé est limité au navigateur ayant lancé le Checkout (binding session). Sur un autre appareil, la commande reste traitée par webhook et l'utilisateur reçoit son email de confirmation.
 - **Commande auto** : dépend d'au moins un `Profile` en base et d'un email collecté par Stripe Checkout.
 - **`belongs_to :produit` sur `StripePayment`** : conservé pour compatibilité ascendante — à supprimer par migration lorsque la colonne ne sera plus utilisée.
 - **Tests** : une partie des specs Stripe vit sous `spec/services`, `spec/requests/webhooks`, etc. ; la suite RSpec complète du projet peut avoir d'autres fichiers en erreur indépendants de Stripe.
@@ -160,3 +161,80 @@ Le controller [`Webhooks::StripeController`](../app/controllers/webhooks/stripe_
 | Sync catalogue Stripe | `app/services/stripe_product_service.rb` |
 | Clés API | `config/initializers/stripe.rb` |
 | Flag e-shop | `config/initializers/online_sales.rb` |
+
+
+---'
+
+
+ToDo:
+
+tout faire en mode test, avec cha basculer ensuite en mode prod
+
+mode test:
+
+ok - modif du mail avec info livraison à venir par lequipe
+- quid webhook ? local et prod ? prod seulement avec le endpoint etc
+
+ok - quid protection purchase success ?
+
+reprendre : 
+
+- double auth stripe
+- autoriser mon ordi
+
+mode prod avec cha :
+- activer espace de prod avec toutes les infos
+- var env de prod et espace de prod dans stripe
+- webhook en prod
+- créer les produits et prices dans stripe pour la partie prod : script ci dessous
+- tester avec cha sur le site
+
+
+
+
+# bin/rails console
+# heroku run rails console -a <app>
+
+# :all = tous les produits eshop | :first = les N premiers (ordre id)
+MODE  = :all
+LIMIT = 10   # utilisé seulement si MODE = :first
+
+puts "Stripe key: #{Stripe.api_key.to_s[0, 12]}..."
+
+scope = Produit.where(eshop: true)
+               .where("prixvente IS NOT NULL AND prixvente > 0")
+               .order(:id)
+
+scope = scope.limit(LIMIT) if MODE == :first
+
+puts "Sync : #{scope.count} produit(s)"
+
+# Reset IDs Stripe du lot (nouvel env / nouveau compte)
+scope.update_all(stripe_product_id: nil, stripe_price_id: nil)
+
+ok = 0
+errors = []
+
+scope.find_each do |p|
+  StripeProductService.new(p.reload).create_product_and_price
+  p.reload
+  puts "OK ##{p.id} #{p.nom} → #{p.stripe_price_id}"
+  ok += 1
+rescue StandardError => e
+  puts "ERR ##{p.id} : #{e.message}"
+  errors << p.id
+end
+
+puts "Lot : #{ok}/#{scope.count} OK, #{errors.size} erreur(s)"
+
+# Rapport global : produits eshop encore incomplets
+missing = Produit.where(eshop: true)
+                 .where("prixvente IS NOT NULL AND prixvente > 0")
+                 .where("stripe_product_id IS NULL OR stripe_price_id IS NULL")
+
+if missing.none?
+  puts "OK — tous les produits eshop ont leurs IDs Stripe."
+else
+  puts "#{missing.count} produit(s) eshop sans IDs Stripe :"
+  missing.pluck(:id, :nom).each { |id, nom| puts "  ##{id} #{nom}" }
+end
