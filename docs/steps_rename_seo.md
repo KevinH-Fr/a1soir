@@ -1,5 +1,6 @@
 Oui, il faut surtout adapter la partie **prod** pour utiliser `STDIN`.
 
+manual backup heroku avant push prod des rakes et modifs de code pas de db le 27052026 (b375)
 ## Dev
 
 1. **Tester la redirection**
@@ -19,51 +20,48 @@ Oui, il faut surtout adapter la partie **prod** pour utiliser `STDIN`.
    tmp/produits_seo_export.csv
    ```
 
-4. **Générer les noms SEO hors app**
+4. **Générer les noms SEO (IA locale par batch)**
 
-    À partir de ce CSV produits, génère un nouveau CSV avec les colonnes :
-    id,handle,old_nom,new_nom,approved,notes
-
-    Règles :
-    - regrouper par handle ;
-    - générer un seul new_nom identique pour toutes les lignes d’un même handle ;
-    - construire new_nom à partir de la description produit ;
-    - utiliser un format court et naturel de type :
-    [type de produit] + [élément distinctif principal] + [nom modèle]
-    - utiliser le prénom/modèle à la fin pour différencier les produits ;
-    - éviter les titres trop génériques ;
-    - ne pas inclure couleur, taille, pointure ou référence technique ;
-    - ne pas inventer d’informations absentes de la description ;
-    - éviter le bourrage SEO ;
-    - approved=yes uniquement si le produit semble réel et exploitable ;
-    - laisser approved vide pour les produits tests, brouillons ou incohérents ;
-    - répondre uniquement avec le CSV final.
-
-   * sortie :
-
-   ```csv
-   id,handle,old_nom,new_nom,approved,notes
-   ```
-
-5. **Placer le CSV d’import**
+   **Test rapide (5 familles, ~1 appel API)** :
 
    ```bash
-   cp produits_seo_import.csv tmp/
+   # OPENAI_API_KEY dans .env
+   bin/rails products:seo_ai_dev_sample
+   # ou : LIMIT=10 bin/rails products:seo_ai_dev_sample
    ```
 
-6. **Dry-run dev**
+   **Catalogue dev complet** :
+
+   ```bash
+   bin/rails products:seo_export
+   bin/rails products:seo_ai_prepare
+   bin/rails products:seo_ai_generate
+   bin/rails products:seo_ai_build_import
+   bin/rails products:seo_ai_validate
+   ```
+
+   Fichiers dev par défaut :
+   - export : `tmp/produits_seo_export.csv`
+   - import  : `tmp/produits_seo_import.csv`
+   - batches : `tmp/seo_ai/batches/`
+
+   Reprise : `BATCH_FROM=2 bin/rails products:seo_ai_generate`  
+   Échantillon : `LIMIT=5 bin/rails products:seo_ai_generate`  
+   Modèle : `SEO_AI_MODEL=gpt-4.1-mini`
+
+5. **Dry-run dev**
 
    ```bash
    bin/rails products:seo_import[tmp/produits_seo_import.csv]
    ```
 
-7. **Import réel dev**
+6. **Import réel dev**
 
    ```bash
    DRY_RUN=false bin/rails products:seo_import[tmp/produits_seo_import.csv]
    ```
 
-8. **Vérifs dev**
+7. **Vérifs dev**
 
    * ancienne URL → `301`
    * nouvelle URL → `200`
@@ -88,14 +86,27 @@ Oui, il faut surtout adapter la partie **prod** pour utiliser `STDIN`.
    heroku run 'bin/rails products:seo_export' -a a1soir-2 > produits_seo_export_prod.csv
    ```
 
-4. **Générer les noms SEO hors app**
+4. **Générer les noms SEO (IA locale par batch — recommandé prod)**
 
-   * donner `produits_seo_export_prod.csv` à l’IA
-   * récupérer :
+   Génération **en local** à partir de `produits_seo_export_prod.csv` (données prod, pas la DB dev).
 
-   ```text
-   produits_seo_import_prod.csv
+   ```bash
+   rm -rf tmp/seo_ai/batches
+   bin/rails products:seo_ai_prepare[produits_seo_export_prod.csv]
+   BATCH_SIZE=30 bin/rails products:seo_ai_generate
+   SEO_AI_IMPORT_OUTPUT=produits_seo_import_prod.csv bin/rails products:seo_ai_build_import
+   bin/rails products:seo_ai_validate[produits_seo_import_prod.csv]
    ```
+
+   Sans `SEO_AI_IMPORT_OUTPUT`, `build_import` écrit par défaut `tmp/produits_seo_import.csv` — adapter la validation et l’import Heroku en conséquence.
+
+   Après `build_import`, vérifier **« handles sans résultat IA »** : viser 0 avant import prod (sinon ces SKU gardent l’ancien nom). Reprise : `FORCE=true bin/rails products:seo_ai_generate` puis `build_import` à nouveau.
+
+   Reprise d’un batch : `BATCH_FROM=12 bin/rails products:seo_ai_generate`  
+   Regénérer un batch : `FORCE=true BATCH_FROM=12 bin/rails products:seo_ai_generate`  
+   Modèle : `SEO_AI_MODEL=gpt-4.1-mini` (défaut). Nécessite `OPENAI_API_KEY` en local.
+
+   Alternative manuelle : donner `produits_seo_export_prod.csv` à l’IA → `produits_seo_import_prod.csv`
 
 5. **Dry-run prod via STDIN**
 
@@ -128,3 +139,5 @@ Oui, il faut surtout adapter la partie **prod** pour utiliser `STDIN`.
 
    * vérifier Merchant Center
    * surveiller 404 / indexation / checkout Stripe.
+
+supprimer les csv du repo local quand tirés depuis la prod

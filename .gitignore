@@ -41,3 +41,8 @@
 !/app/assets/builds/.keep
 
 /node_modules
+
+# SEO rename CSV (exports prod / imports générés — ne pas committer)
+/produits_seo_export_prod.csv
+/produits_seo_import_prod.csv
+/produits_seo_import_generated.csv
