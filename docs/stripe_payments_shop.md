@@ -168,13 +168,8 @@ Le controller [`Webhooks::StripeController`](../app/controllers/webhooks/stripe_
 
 ToDo:
 
-tout faire en mode test, avec cha basculer ensuite en mode prod
-
-mode test:
-
 ok - modif du mail avec info livraison à venir par lequipe
-- quid webhook ? local et prod ? prod seulement avec le endpoint etc
-
+ok - quid webhook ? local et prod ? prod seulement avec le endpoint etc
 ok - quid protection purchase success ?
 
 reprendre : 

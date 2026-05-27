@@ -62,7 +62,7 @@ module Public
               shop_cart_floating_footer_stream
             ]
           end
-          format.html { redirect_to produit_path(slug: @produit.nom.parameterize, id: @produit.id), alert: flash.now[:alert] }
+          format.html { redirect_to produit_path(slug: @produit.handle, id: @produit.id), alert: flash.now[:alert] }
         end
         return
       end
@@ -91,7 +91,7 @@ module Public
             shop_cart_floating_footer_stream
           ]
         end
-        format.html { redirect_to produit_path(slug: @produit.nom.parameterize, id: @produit.id) }
+        format.html { redirect_to produit_path(slug: @produit.handle, id: @produit.id) }
       end
     end
 
@@ -117,7 +117,7 @@ module Public
             shop_cart_floating_footer_stream
           ]
         end
-        format.html { redirect_to produit_path(slug: @produit.nom.parameterize, id: @produit.id) }
+        format.html { redirect_to produit_path(slug: @produit.handle, id: @produit.id) }
       end
     end
 

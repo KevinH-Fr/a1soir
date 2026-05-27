@@ -37,7 +37,7 @@ module StructuredDataHelper
       "@context" => "https://schema.org",
       "@type" => "Product",
       "name" => produit.nom,
-      "url" => produit_url(slug: produit.nom.parameterize, id: produit.id, locale: I18n.locale),
+      "url" => produit_url(slug: produit.handle, id: produit.id, locale: I18n.locale),
       "brand" => {
         "@type" => "Brand",
         "name" => "Autour D'Un Soir"
@@ -160,7 +160,7 @@ module StructuredDataHelper
         "price" => format("%.2f", produit.prixvente.to_d),
         "priceCurrency" => "EUR",
         "availability" => availability,
-        "url" => produit_url(slug: produit.nom.parameterize, id: produit.id, locale: I18n.locale)
+        "url" => produit_url(slug: produit.handle, id: produit.id, locale: I18n.locale)
       }
     end
 
@@ -171,7 +171,7 @@ module StructuredDataHelper
         "price" => format("%.2f", produit.prixlocation.to_d),
         "priceCurrency" => "EUR",
         "availability" => availability,
-        "url" => produit_url(slug: produit.nom.parameterize, id: produit.id, locale: I18n.locale)
+        "url" => produit_url(slug: produit.handle, id: produit.id, locale: I18n.locale)
       }
     end
 

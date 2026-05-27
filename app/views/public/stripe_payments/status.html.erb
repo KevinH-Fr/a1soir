@@ -58,7 +58,7 @@
 
               <% if paid %>
                 <% share_items = @payment.stripe_payment_items.map { |item|
-                     { name: item.produit.nom, url: produit_url(slug: item.produit.nom.parameterize, id: item.produit.id) }
+                     { name: item.produit.nom, url: produit_url(slug: item.produit.handle, id: item.produit.id) }
                    } %>
                 <%= render "public/shared/share_buttons",
                       items: share_items,

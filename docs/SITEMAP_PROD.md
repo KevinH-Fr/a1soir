@@ -108,3 +108,6 @@ Remplaces par le sitemap dynamique (filesystem Heroku ephemere + risque de fichi
 
 Les informations relatives aux flux Google Merchant ont ete extraites dans
 [`docs/google_merchant_feeds.md`](docs/google_merchant_feeds.md).
+
+
+---

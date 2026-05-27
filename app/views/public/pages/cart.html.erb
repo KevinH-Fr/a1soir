@@ -36,7 +36,7 @@
                   <div class="d-flex align-items-stretch">
 
                     <%# Thumbnail %>
-                    <%= link_to produit_path(slug: cart_item.nom.parameterize, id: cart_item.id),
+                    <%= link_to produit_path(slug: cart_item.handle, id: cart_item.id),
                         class: "cart-item-thumb-wrap flex-shrink-0" do %>
                       <%= image_tag(cart_item.default_image,
                           class: "cart-item-thumb",
@@ -69,7 +69,7 @@
                         </span>
 
                         <div class="d-flex gap-2 flex-shrink-0">
-                          <%= link_to produit_path(slug: cart_item.nom.parameterize, id: cart_item.id),
+                          <%= link_to produit_path(slug: cart_item.handle, id: cart_item.id),
                               class: "btn btn-sm btn-light text-dark fw-semibold public-btn-border-radius d-inline-flex align-items-center gap-1" do %>
                             <span><%= t("public.pages.cart.view_detail") %></span>
                             <i class="bi bi-arrow-right" aria-hidden="true"></i>
@@ -109,7 +109,7 @@
                           style="font-size: .7rem;">
                       <%= t("public.pages.cart.items_count", count: @cart.size) %>
                     </span>
-                    <% share_items = @cart.map { |p| { name: p.nom, price: custom_currency_no_decimals_format(p.prixvente), url: produit_url(slug: p.nom.parameterize, id: p.id) } } %>
+                    <% share_items = @cart.map { |p| { name: p.nom, price: custom_currency_no_decimals_format(p.prixvente), url: produit_url(slug: p.handle, id: p.id) } } %>
                     <%= render "public/shared/share_buttons",
                           items: share_items,
                           share_title: t("public.pages.cart.share_title"),

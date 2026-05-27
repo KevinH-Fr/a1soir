@@ -28,7 +28,7 @@
   <% @items.each do |item| %>
     <% produit = item.produit %>
     <% if produit.present? %>
-      <% product_page_url = produit_url(locale: I18n.locale, slug: produit.nom.to_s.parameterize, id: produit.id, **@public_site_url_options) %>
+      <% product_page_url = produit_url(locale: I18n.locale, slug: produit.handle, id: produit.id, **@public_site_url_options) %>
       <div style="margin-bottom: 24px; padding-bottom: 24px; display: table; width: 100%;">
         <div style="display: table-row;">
           <% if produit.image1.attached? %>

@@ -78,7 +78,7 @@ module GoogleMerchant
 
     def produit_url_for(produit)
       Rails.application.routes.url_helpers.produit_url(
-        slug: produit.nom.to_s.parameterize,
+        slug: produit.handle,
         id: produit.id,
         locale: I18n.default_locale,
         host: @host,

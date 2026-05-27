@@ -84,7 +84,7 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
                   <%= @cabine_cart.size %> / 10
                 </span>
                 <% if @cabine_cart.any? %>
-                  <% share_items_header = @cabine_cart.map { |p| { name: p.nom, url: produit_url(slug: p.nom.parameterize, id: p.id) } } %>
+                  <% share_items_header = @cabine_cart.map { |p| { name: p.nom, url: produit_url(slug: p.handle, id: p.id) } } %>
                   <%= render "public/shared/share_buttons",
                         items: share_items_header,
                         share_title: t("public.pages.cabine_essayage.share_title"),

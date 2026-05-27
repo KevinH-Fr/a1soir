@@ -112,7 +112,7 @@ module Sitemap
         [:fr, :en].each do |locale|
           items << entry(
             loc: produit_url(
-              slug: produit.nom.parameterize,
+              slug: produit.handle,
               id: produit.id,
               locale: locale
             ),

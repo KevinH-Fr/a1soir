@@ -90,6 +90,15 @@ module Public
     def produit
       @produit = Produit.find(params[:id])
       
+      expected_slug = @produit.handle.presence || @produit.nom.parameterize
+
+      if params[:slug] != expected_slug
+        return redirect_to(
+          produit_path(slug: expected_slug, id: @produit.id),
+          status: :moved_permanently
+        )
+      end
+
       # Stocker la back_url dans la session si elle est présente dans les params
       # Sinon, utiliser celle de la session pour préserver la navigation entre produits
       if params[:back_url].present?
