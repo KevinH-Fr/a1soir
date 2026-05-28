@@ -79,7 +79,8 @@ manual backup heroku avant push prod des rakes et modifs de code pas de db le 27
    ```bash
    heroku pg:backups:capture -a a1soir-2
    ```
-
+   backup le 2805 a 15h22 : b377 
+   
 3. **Exporter CSV prod**
 
    ```bash
@@ -93,10 +94,12 @@ manual backup heroku avant push prod des rakes et modifs de code pas de db le 27
    ```bash
    rm -rf tmp/seo_ai/batches
    bin/rails products:seo_ai_prepare[produits_seo_export_prod.csv]
-   BATCH_SIZE=30 bin/rails products:seo_ai_generate
+   BATCH_SIZE=10 SEO_AI_MAX_RETRIES=3 bin/rails products:seo_ai_generate
    SEO_AI_IMPORT_OUTPUT=produits_seo_import_prod.csv bin/rails products:seo_ai_build_import
    bin/rails products:seo_ai_validate[produits_seo_import_prod.csv]
    ```
+
+   verif amalia
 
    Sans `SEO_AI_IMPORT_OUTPUT`, `build_import` écrit par défaut `tmp/produits_seo_import.csv` — adapter la validation et l’import Heroku en conséquence.
 
@@ -140,4 +143,21 @@ manual backup heroku avant push prod des rakes et modifs de code pas de db le 27
    * vérifier Merchant Center
    * surveiller 404 / indexation / checkout Stripe.
 
-supprimer les csv du repo local quand tirés depuis la prod
+ok 
+
+
+
+adapter letiquette pour avoir espace sur deux lignes
+
+voir bug ajouter d'autres produits sur page show produit (cabine true alors que non)
+
+
+ancienne url à verif: 
+
+https://a1soir.com/fr/produit/eleonora-4120?back_url=%2Ffr%2Fproduits%3Fid%255B%255D%3D47%26id%255B%255D%3D45
+
+https://a1soir.com/fr/produit/olana-1853?back_url=%2Ffr%2Fproduits%2Feleonora-4120
+
+
+https://a1soir.com/fr/produit/veste-smoking-471201-32-chale-3505?back_url=%2Ffr%2Fproduits
+

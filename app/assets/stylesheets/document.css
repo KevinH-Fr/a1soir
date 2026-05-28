@@ -262,6 +262,36 @@
   color:#8f1f46
 }
 
+/* Étiquettes PDF : réserve 2 lignes tailles, compense sous couleurs */
+.etiquette-nom {
+  font-size: 16px;
+  line-height: 1.2;
+  margin: 0 0 4px 0;
+  font-weight: bold;
+  color: #212529;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+.etiquette-tailles-lignes {
+  min-height: 50px;
+  margin-top: 0;
+}
+
+.etiquette-couleurs-lignes {
+  min-height: 50px;
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+.etiquette-meta-bas {
+  height: 108px;
+  padding-bottom: 0;
+  vertical-align: top;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
 /* ─── PDF report stock (template admin/stock/report_pdf) ─── */
 .stock-report-pdf-doc{
   font-family: Arial, Helvetica, sans-serif;

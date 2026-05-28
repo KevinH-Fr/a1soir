@@ -1,8 +1,8 @@
 
-<table style="width: 100%; border-color: white; padding: 20px;">
+<table style="width: 100%; border-color: white; padding: 14px 20px 0 20px;">
     <tr>
-        <td colspan="2" style="height: 410px; 
-            background-image: url('<%= produit.image1.present? ? produit.image1.url : no_photo_url %>'); 
+        <td colspan="2" style="height: 410px;
+            background-image: url('<%= produit.image1.present? ? produit.image1.url : no_photo_url %>');
             background-size: contain; background-repeat: no-repeat; background-position: center;">
         </td>
     </tr>
@@ -11,8 +11,8 @@
         <td style="width: 80px;">
             <%= image_tag(produit.qr_code, width: 85) if produit.qr_code.present? %>        
         </td>
-        <td style="height: 100px; text-align: left;">
-            <h3 class="bolded text-dark"><%= produit.nom %></h3> 
+        <td style="height: 94px; text-align: left;">
+            <div class="etiquette-nom"><%= produit.nom %></div>
 
             <% if produit.prixvente %>
               <% if produit.en_promotion? %>
@@ -34,9 +34,9 @@
     </tr>
 
     <tr>
-        <td colspan="2" style="padding-left: 10px;">
-            <div class="mt-1">
-                Taille(s): 
+        <td colspan="2" class="etiquette-meta-bas" style="padding-left: 10px;">
+            <div class="etiquette-tailles-lignes">
+                Taille(s):
                 <% if produit.taille.present? %>
                     <span class="text-uppercase" style="border: 2px solid black; border-radius: 5px; margin-right: 2px; padding: 1px;">
                         <%= produit.taille&.nom %>
@@ -48,8 +48,8 @@
                     <% end %>
                 <% end %>
             </div>
-            <div class="mt-2">
-                Couleur(s): 
+            <div class="etiquette-couleurs-lignes">
+                Couleur(s):
                 <% if produit.couleur.present? %>
                     <span style="border: 1px solid black; border-radius: 5px; margin-right: 2px; padding: 2px;">
                         <%= produit.couleur&.nom %>
