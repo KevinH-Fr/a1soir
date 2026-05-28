@@ -258,6 +258,11 @@
   width: 100%;
 }
 
+/* Verso : espacement recalé pour cellules 552px (recto) au lieu de 632px */
+.etiquette-verso .hr-doted {
+  margin-top: 39px;
+}
+
 .test-color{
   color:#8f1f46
 }
@@ -275,7 +280,6 @@
 
 .etiquette-produit {
   width: 100%;
-  height: 100%;
   border-color: white;
   padding: 10px 20px 0 20px;
   table-layout: fixed;
@@ -283,15 +287,32 @@
 }
 
 .etiquette-image {
-  height: 338px;
+  height: 328px;
+  padding-bottom: 10px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  box-sizing: border-box;
+}
+
+.etiquette-infos-row td {
+  vertical-align: top;
+}
+
+.etiquette-qr {
+  width: 85px;
+  padding: 0;
+  line-height: 0;
+}
+
+.etiquette-qr img {
+  display: block;
 }
 
 .etiquette-infos {
-  height: 86px;
   vertical-align: top;
+  padding: 0;
+  text-align: left;
 }
 
 .etiquette-nom {
