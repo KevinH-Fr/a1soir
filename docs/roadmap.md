@@ -15,3 +15,4 @@ verifier en prod (produits cha etc)
 - mettre en place stripe eshop
 - remettre une campaign google ads
 - passer sur ferrer pour pdf et reconstruire les pdf a la plce de wicked pdf ?
+- passer sur last version of heroku

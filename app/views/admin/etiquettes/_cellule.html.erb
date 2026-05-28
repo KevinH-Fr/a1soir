@@ -43,7 +43,7 @@
     </td>
   </tr>
   <tr height="<%= l[:meta_h] %>" style="height:<%= l[:meta_h] %>px;max-height:<%= l[:meta_h] %>px;">
-    <td height="<%= l[:meta_h] %>" class="etiquette-meta" style="height:<%= l[:meta_h] %>px;max-height:<%= l[:meta_h] %>px;padding:<%= l[:meta_pad_y] %>px <%= l[:meta_pad_x] %>px 0;box-sizing:border-box;overflow:hidden;vertical-align:top;">
+    <td height="<%= l[:meta_h] %>" class="etiquette-meta" style="height:<%= l[:meta_h] %>px;max-height:<%= l[:meta_h] %>px;padding:<%= l[:meta_pad_top] %>px <%= l[:meta_pad_x] %>px <%= l[:meta_pad_bottom] %>px;box-sizing:border-box;overflow:hidden;vertical-align:top;">
       <div style="height:<%= l[:meta_block_h] %>px;max-height:<%= l[:meta_block_h] %>px;overflow:hidden;line-height:<%= l[:meta_line_h] %>px;">
         <span class="etiquette-meta-label">Taille(s):</span>
         <% if produit.taille.present? %>

@@ -11,7 +11,8 @@ module EtiquettesHelper
   ETIQUETTE_META_LINE_PX = 24
   ETIQUETTE_META_SECTION_GAP_PX = 4
   ETIQUETTE_META_PAD_X_PX = 8
-  ETIQUETTE_META_PAD_Y_PX = 2
+  ETIQUETTE_META_PAD_TOP_PX = 4
+  ETIQUETTE_META_PAD_BOTTOM_PX = 0
   ETIQUETTE_IMAGE_PADDING_PX = 8
   ETIQUETTE_QR_PX = 120
   ETIQUETTE_VERSO_LINES = 12
@@ -32,7 +33,7 @@ module EtiquettesHelper
     pad = ETIQUETTE_IMAGE_PADDING_PX
     body_h = ETIQUETTE_QR_PX + ETIQUETTE_BODY_PAD_PX + ETIQUETTE_BODY_SLACK_PX + ETIQUETTE_TITRE_PRIX_GAP_PX
     meta_block_h = ETIQUETTE_META_LINES * ETIQUETTE_META_LINE_PX
-    meta_h = (2 * meta_block_h) + ETIQUETTE_META_SECTION_GAP_PX + (2 * ETIQUETTE_META_PAD_Y_PX)
+    meta_h = (2 * meta_block_h) + ETIQUETTE_META_SECTION_GAP_PX + ETIQUETTE_META_PAD_TOP_PX + ETIQUETTE_META_PAD_BOTTOM_PX
     img_h = [cell_h - body_h - meta_h, 1].max
     {
       cell_h: cell_h,
@@ -43,7 +44,8 @@ module EtiquettesHelper
       meta_block_h: meta_block_h,
       meta_line_h: ETIQUETTE_META_LINE_PX,
       meta_pad_x: ETIQUETTE_META_PAD_X_PX,
-      meta_pad_y: ETIQUETTE_META_PAD_Y_PX,
+      meta_pad_top: ETIQUETTE_META_PAD_TOP_PX,
+      meta_pad_bottom: ETIQUETTE_META_PAD_BOTTOM_PX,
       meta_section_gap: ETIQUETTE_META_SECTION_GAP_PX,
       image_pad: pad,
       image_bg_h: [img_h - (2 * pad), 1].max,
