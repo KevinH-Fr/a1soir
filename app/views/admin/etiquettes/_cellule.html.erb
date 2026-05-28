@@ -57,16 +57,16 @@
       <div style="height:<%= l[:meta_block_h] %>px;max-height:<%= l[:meta_block_h] %>px;overflow:hidden;line-height:<%= l[:meta_line_h] %>px;">
         <span class="etiquette-meta-label">Couleur(s):</span>
         <% if produit.couleur.present? %>
-          <span class="etiquette-badge etiquette-badge--couleur-active">
-            <%= produit.couleur&.nom %>
-            <span class="etiquette-badge__swatch" style="background-color:<%= produit.couleur&.couleur_code %>"></span>
-          </span>
+          <%= render "admin/etiquettes/badge_couleur",
+                     nom: produit.couleur.nom,
+                     couleur_code: produit.couleur.couleur_code,
+                     variant: :active %>
           <% same_produit_same_taille_others_couleurs_with_statut_disponibilite(produit).each do |prod| %>
             <% if prod.couleur.present? %>
-              <span class="etiquette-badge etiquette-badge--couleur-alt">
-                <%= prod.couleur&.nom %>
-                <span class="etiquette-badge__swatch" style="background-color:<%= prod.couleur&.couleur_code %>"></span>
-              </span>
+              <%= render "admin/etiquettes/badge_couleur",
+                         nom: prod.couleur.nom,
+                         couleur_code: prod.couleur.couleur_code,
+                         variant: :alt %>
             <% end %>
           <% end %>
         <% end %>

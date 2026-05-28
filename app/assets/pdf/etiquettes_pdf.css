@@ -83,12 +83,9 @@ body.etiquettes-pdf-body {
   text-transform: uppercase;
 }
 
-/* inline-flex : alignement texte + pastille (wkhtmltopdf) */
+/* Alignement texte + pastille : table inline (compatible wkhtmltopdf prod) */
 .etiquette-badge--couleur-active,
 .etiquette-badge--couleur-alt {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
   white-space: nowrap;
   line-height: 1;
 }
@@ -102,18 +99,32 @@ body.etiquettes-pdf-body {
   color: grey;
 }
 
+.etiquette-badge__align {
+  display: inline-table;
+  border-collapse: collapse;
+  border-spacing: 0;
+  vertical-align: top;
+}
+
+.etiquette-badge__label,
+.etiquette-badge__swatch-cell {
+  vertical-align: middle;
+  padding: 0;
+  border: 0;
+  line-height: 1;
+}
+
+.etiquette-badge__swatch-cell {
+  padding-left: 2px;
+}
+
 .etiquette-badge__swatch {
-  flex: 0 0 9px;
+  display: block;
   width: 9px;
   height: 9px;
-  min-width: 9px;
-  min-height: 9px;
   border-radius: 50%;
-  margin: 0;
-  /* repli si inline-flex indisponible */
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 3px;
+  font-size: 0;
+  line-height: 0;
 }
 
 /* Verso — grille de lignes pointillées (hauteur px par slot) */
