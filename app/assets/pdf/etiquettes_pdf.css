@@ -83,9 +83,14 @@ body.etiquettes-pdf-body {
   text-transform: uppercase;
 }
 
+/* inline-flex : alignement texte + pastille (wkhtmltopdf) */
 .etiquette-badge--couleur-active,
 .etiquette-badge--couleur-alt {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
   white-space: nowrap;
+  line-height: 1;
 }
 
 .etiquette-badge--couleur-active {
@@ -98,12 +103,17 @@ body.etiquettes-pdf-body {
 }
 
 .etiquette-badge__swatch {
-  display: inline-block;
+  flex: 0 0 9px;
   width: 9px;
   height: 9px;
+  min-width: 9px;
+  min-height: 9px;
   border-radius: 50%;
+  margin: 0;
+  /* repli si inline-flex indisponible */
+  display: inline-block;
   vertical-align: middle;
-  margin-left: 2px;
+  margin-left: 3px;
 }
 
 /* Verso — grille de lignes pointillées (hauteur px par slot) */
