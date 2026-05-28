@@ -163,76 +163,6 @@
   color: red;
 }
 
-
-.table-etiquette-verso{
-  width: 400px;
-  height: 640px;
-  margin: 5px;
-  background-color: rgb(255, 255, 255);
-  border-style: solid;
-  border-color: rgb(182, 181, 181);
-}
-
-.th-titre-etiquette{
-  padding-top: 5px;
-  vertical-align: middle;
-  color:black
-}
-
-.th-etiquette{
-  padding: 10px;
-  font-family: Arial, Helvetica, sans-serif;
-  width: 400px;
-  height: 380px;
-}
-
-.td-etiquette{
-  font-size: large;
-  padding: 5px;
-  margin: 5px;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.td-etiquette-description{
-  font-size: large;
-  padding: 20px;
-  margin: 10px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: bold;
-}
-
-.img-etiquette{
-  /*width: 250px;*/
-  max-height: 90%;
-  max-width: 90%;
-  vertical-align: middle;
-  padding: 5px;
-}
-
-.img-qr-etiquette{
-  width: 150px;
-  padding: 5px;
-  vertical-align: middle;
-}
-
-.taille-active{
-  background-color: rgb(40, 170, 72);
-  color: white;
-  font-weight: bold;
-  padding: 4px;
-  margin: 5px;
-  border-radius: 10px;
-}
-
-.taille-alternative{
-  background-color: rgb(99, 99, 100);
-  color: white;
-  padding: 4px;
-  margin: 5px;
-  border-radius: 10px;
-  height: 200px;
-}
-
 .middled{
   vertical-align: middle;
 }
@@ -258,109 +188,14 @@
   width: 100%;
 }
 
-/* Verso : espacement recalé pour cellules 552px (recto) au lieu de 632px */
-.etiquette-verso .hr-doted {
-  margin-top: 40px;
+.img-qr-etiquette{
+  width: 150px;
+  padding: 5px;
+  vertical-align: middle;
 }
 
 .test-color{
   color:#8f1f46
-}
-
-/* Étiquettes PDF — 4 par page A4 */
-.etiquettes-edition {
-  margin: 0;
-  padding: 0;
-}
-
-.etiquettes-edition table {
-  margin: 0;
-  border-spacing: 0;
-}
-
-.etiquette-cell {
-  width: 450px;
-  height: 556px;
-  padding: 10px;
-  box-sizing: border-box;
-  overflow: hidden;
-  vertical-align: top;
-  border: 1px solid #ccc;
-}
-
-.etiquette-produit {
-  width: 100%;
-  border-color: white;
-  padding: 10px 16px 0 16px;
-  table-layout: fixed;
-  box-sizing: border-box;
-}
-
-.etiquette-col-qr {
-  width: 88px;
-}
-
-.etiquette-col-infos {
-  width: auto;
-}
-
-.etiquette-image {
-  height: 328px;
-  padding-bottom: 10px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  box-sizing: border-box;
-}
-
-.etiquette-infos-row td {
-  vertical-align: top;
-}
-
-.etiquette-qr {
-  width: 88px;
-  max-width: 88px;
-  padding: 0;
-  line-height: 0;
-}
-
-.etiquette-qr img {
-  display: block;
-}
-
-.etiquette-infos {
-  vertical-align: top;
-  padding: 0 0 0 6px;
-  text-align: left;
-}
-
-.etiquette-nom {
-  font-size: 15px;
-  line-height: 1.2;
-  margin: 0 0 4px 0;
-  font-weight: bold;
-  color: #212529;
-  word-wrap: break-word;
-  overflow-wrap: anywhere;
-}
-
-.etiquette-tailles-lignes {
-  min-height: 46px;
-  margin-top: 0;
-}
-
-.etiquette-couleurs-lignes {
-  min-height: 46px;
-  margin-top: 4px;
-  margin-bottom: 0;
-}
-
-.etiquette-meta-bas {
-  height: 100px;
-  padding-bottom: 0;
-  vertical-align: top;
-  overflow: hidden;
-  box-sizing: border-box;
 }
 
 /* ─── PDF report stock (template admin/stock/report_pdf) ─── */

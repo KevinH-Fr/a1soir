@@ -302,7 +302,7 @@ Rails.application.routes.draw do
         collection do
           post :reset_selection
           post :update_selection
-          get :generate_pdf, defaults: { format: :pdf }  # Force the format to PDF
+          get :generate_pdf, defaults: { format: :pdf }
         end
       end
       

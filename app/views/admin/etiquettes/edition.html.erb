@@ -1,32 +1,45 @@
-<div class="etiquettes-edition">
-<table>
-  <% @produits.each_slice(2).with_index do |produits_pair| %>
-    <tr>
-      <% produits_pair.each do |produit| %>
-        <% if produit.present? %>
-          <td class="etiquette-cell">
-            <%= render 'admin/etiquettes/produit_document', produit: produit %>
-          </td>
-        <% end %>
-      <% end %>
-    </tr>
-  <% end %>
-</table>
+<% pdf = etiquettes_pdf %>
+<% h = pdf[:grid_h] %>
+<% r = pdf[:grid_row_h] %>
+<% verso = etiquettes_verso_layout(r) %>
 
-<div class="page-break"></div>
-
-<!-- Back Side Section -->
-<table>
-  <% 2.times do %>
-    <tr>
-      <% 2.times do %>
-        <td class="etiquette-cell etiquette-verso">
-          <% 12.times do %>
-            <hr class="hr-doted">
+<table class="etiquettes-grid" width="100%" height="<%= h %>" cellspacing="0" cellpadding="0"
+       style="width:100%;height:<%= h %>px;border-collapse:collapse;table-layout:fixed;">
+  <% @etiquette_slots.each_slice(2) do |row| %>
+    <tr height="<%= r %>" style="height:<%= r %>px;max-height:<%= r %>px;">
+      <% row.each do |produit| %>
+        <td class="etiquette-cell" width="50%" height="<%= r %>"
+            style="width:50%;height:<%= r %>px;max-height:<%= r %>px;padding:0;vertical-align:top;overflow:hidden;">
+          <% if produit %>
+            <%= render "admin/etiquettes/cellule", produit: produit, pdf: pdf %>
           <% end %>
         </td>
       <% end %>
     </tr>
   <% end %>
 </table>
-</div>
+
+<div class="etiquettes-page-break"></div>
+
+<table class="etiquettes-grid" width="100%" height="<%= h %>" cellspacing="0" cellpadding="0"
+       style="width:100%;height:<%= h %>px;border-collapse:collapse;table-layout:fixed;">
+  <% 2.times do %>
+    <tr height="<%= r %>" style="height:<%= r %>px;max-height:<%= r %>px;">
+      <% 2.times do %>
+        <td class="etiquette-cell etiquette-verso-cell" width="50%" height="<%= r %>"
+            style="width:50%;height:<%= r %>px;max-height:<%= r %>px;padding:<%= verso[:pad_y] %>px <%= verso[:pad_x] %>px;vertical-align:top;box-sizing:border-box;overflow:hidden;">
+          <table class="etiquette-verso-lines" width="100%" height="<%= verso[:inner_h] %>" cellspacing="0" cellpadding="0"
+                 style="width:100%;height:<%= verso[:inner_h] %>px;border-collapse:collapse;table-layout:fixed;">
+            <% verso[:lines].times do %>
+              <tr height="<%= verso[:slot_h] %>" style="height:<%= verso[:slot_h] %>px;max-height:<%= verso[:slot_h] %>px;">
+                <td class="etiquette-verso-line" height="<%= verso[:slot_h] %>"
+                    style="height:<%= verso[:slot_h] %>px;border-top:1px dotted #dee2e6;font-size:0;line-height:0;">
+                </td>
+              </tr>
+            <% end %>
+          </table>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
