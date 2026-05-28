@@ -14,3 +14,4 @@ verifier en prod (produits cha etc)
 - mettre en place le flux merchant pour produits en boutique (code etablissement)
 - mettre en place stripe eshop
 - remettre une campaign google ads
+- passer sur ferrer pour pdf et reconstruire les pdf a la plce de wicked pdf ?
