@@ -3,6 +3,8 @@
 <% r = pdf[:grid_row_h] %>
 <% verso = etiquettes_verso_layout(r) %>
 
+<style><%= etiquettes_badge_styles %></style>
+
 <table class="etiquettes-grid" width="100%" height="<%= h %>" cellspacing="0" cellpadding="0"
        style="width:100%;height:<%= h %>px;border-collapse:collapse;table-layout:fixed;">
   <% @etiquette_slots.each_slice(2) do |row| %>

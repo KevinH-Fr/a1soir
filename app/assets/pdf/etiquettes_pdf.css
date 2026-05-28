@@ -62,23 +62,23 @@ body.etiquettes-pdf-body {
   font-weight: normal;
 }
 
+/* padding badge : EtiquettesHelper ETIQUETTE_BADGE_PAD_* via etiquettes_badge_styles */
 .etiquette-badge {
   display: inline-block;
   border-radius: 4px;
   margin-right: 2px;
   margin-bottom: 0;
-  padding: 0 2px;
-  vertical-align: middle;
+  border: 1px solid transparent;
   line-height: 1.15;
 }
 
 .etiquette-badge--taille-active {
-  border: 2px solid #000;
+  border-color: #000;
   text-transform: uppercase;
 }
 
 .etiquette-badge--taille-alt {
-  border: 2px solid grey;
+  border-color: grey;
   color: grey;
   text-transform: uppercase;
 }
@@ -89,14 +89,12 @@ body.etiquettes-pdf-body {
 }
 
 .etiquette-badge--couleur-active {
-  border: 1px solid #000;
-  padding: 0 3px;
+  border-color: #000;
 }
 
 .etiquette-badge--couleur-alt {
-  border: 1px solid grey;
+  border-color: grey;
   color: grey;
-  padding: 0 3px;
 }
 
 .etiquette-badge__swatch {

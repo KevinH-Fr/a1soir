@@ -5,13 +5,13 @@
        style="width:100%;height:<%= l[:cell_h] %>px;max-height:<%= l[:cell_h] %>px;border-collapse:collapse;table-layout:fixed;">
   <tr height="<%= l[:img_h] %>" style="height:<%= l[:img_h] %>px;max-height:<%= l[:img_h] %>px;">
     <td height="<%= l[:img_h] %>"
-        style="height:<%= l[:img_h] %>px;max-height:<%= l[:img_h] %>px;padding:<%= l[:image_pad] %>px;box-sizing:border-box;overflow:hidden;vertical-align:top;">
+        style="height:<%= l[:img_h] %>px;max-height:<%= l[:img_h] %>px;padding:<%= l[:image_pad_top] %>px <%= l[:image_pad_x] %>px <%= l[:image_pad_bottom] %>px;box-sizing:border-box;overflow:hidden;vertical-align:top;">
       <div style="width:100%;height:<%= l[:image_bg_h] %>px;max-height:<%= l[:image_bg_h] %>px;overflow:hidden;line-height:0;font-size:0;<%= etiquette_cell_background_style(produit, pdf, height: l[:image_bg_h]) %>">
       </div>
     </td>
   </tr>
   <tr height="<%= l[:body_h] %>" style="height:<%= l[:body_h] %>px;max-height:<%= l[:body_h] %>px;">
-    <td height="<%= l[:body_h] %>" style="height:<%= l[:body_h] %>px;max-height:<%= l[:body_h] %>px;padding:2px 6px 0;box-sizing:border-box;overflow:hidden;vertical-align:middle;">
+    <td height="<%= l[:body_h] %>" style="height:<%= l[:body_h] %>px;max-height:<%= l[:body_h] %>px;padding:0 6px;box-sizing:border-box;overflow:hidden;vertical-align:top;">
       <table width="100%" height="<%= l[:body_inner_h] %>" cellspacing="0" cellpadding="0"
              style="width:100%;height:<%= l[:body_inner_h] %>px;border-collapse:collapse;table-layout:fixed;">
         <tr>

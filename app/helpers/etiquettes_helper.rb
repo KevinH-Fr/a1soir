@@ -1,19 +1,27 @@
 module EtiquettesHelper
   # Grille 2×2 — hauteur calibrée wkhtmltopdf (défaut 1420 px ; ENV ETIQUETTE_PDF_PAGE_HEIGHT_PX).
-  ETIQUETTE_PDF_PAGE_HEIGHT_PX_DEFAULT = 1420
+  ETIQUETTE_PDF_PAGE_HEIGHT_PX_DEFAULT = 1415
   # Marge par <tr> de la grille (bordures + arrondis wkhtmltopdf).
   ETIQUETTE_PDF_ROW_SLACK_PX = 6
-  ETIQUETTE_BODY_PAD_PX = 8
-  ETIQUETTE_BODY_SLACK_PX = 16
+  # Espace image → bloc QR + textes (padding bas de l’image).
+  ETIQUETTE_BODY_GAP_PX = 4
+  # Marge interne basse du bloc corps (wkhtmltopdf / lignes prix).
+  ETIQUETTE_BODY_SLACK_PX = 4
   ETIQUETTE_TITRE_PRIX_GAP_PX = 8
   ETIQUETTE_META_LINES = 2
   # Hauteur par ligne (badges 11 pt + bordures) — sync avec .etiquette-meta line-height en CSS.
   ETIQUETTE_META_LINE_PX = 24
   ETIQUETTE_META_SECTION_GAP_PX = 4
   ETIQUETTE_META_PAD_X_PX = 8
-  ETIQUETTE_META_PAD_TOP_PX = 4
-  ETIQUETTE_META_PAD_BOTTOM_PX = 0
-  ETIQUETTE_IMAGE_PADDING_PX = 8
+  # Marge autour du bloc tailles/couleurs (ajuster top/bottom indépendamment si besoin).
+  ETIQUETTE_META_PAD_TOP_PX = 3
+  ETIQUETTE_META_PAD_BOTTOM_PX = 2
+  # Padding interne des badges (injecté dans edition.html.erb via etiquettes_badge_styles).
+  ETIQUETTE_BADGE_PAD_TOP_PX = 1
+  ETIQUETTE_BADGE_PAD_BOTTOM_PX = 1
+  ETIQUETTE_BADGE_PAD_X_PX = 3
+  ETIQUETTE_IMAGE_PAD_TOP_PX = 8
+  ETIQUETTE_IMAGE_PAD_X_PX = 8
   ETIQUETTE_QR_PX = 120
   ETIQUETTE_VERSO_LINES = 12
   ETIQUETTE_VERSO_PAD_X_PX = 10
@@ -30,8 +38,7 @@ module EtiquettesHelper
   # Cellule étiquette : image + QR/nom/prix + tailles/couleurs — somme = row_h.
   def etiquettes_cell_layout(pdf)
     cell_h = pdf[:grid_row_h]
-    pad = ETIQUETTE_IMAGE_PADDING_PX
-    body_h = ETIQUETTE_QR_PX + ETIQUETTE_BODY_PAD_PX + ETIQUETTE_BODY_SLACK_PX + ETIQUETTE_TITRE_PRIX_GAP_PX
+    body_h = ETIQUETTE_QR_PX + ETIQUETTE_BODY_SLACK_PX
     meta_block_h = ETIQUETTE_META_LINES * ETIQUETTE_META_LINE_PX
     meta_h = (2 * meta_block_h) + ETIQUETTE_META_SECTION_GAP_PX + ETIQUETTE_META_PAD_TOP_PX + ETIQUETTE_META_PAD_BOTTOM_PX
     img_h = [cell_h - body_h - meta_h, 1].max
@@ -39,7 +46,8 @@ module EtiquettesHelper
       cell_h: cell_h,
       img_h: img_h,
       body_h: body_h,
-      body_inner_h: body_h - ETIQUETTE_BODY_PAD_PX,
+      body_inner_h: body_h,
+      body_gap: ETIQUETTE_BODY_GAP_PX,
       meta_h: meta_h,
       meta_block_h: meta_block_h,
       meta_line_h: ETIQUETTE_META_LINE_PX,
@@ -47,8 +55,13 @@ module EtiquettesHelper
       meta_pad_top: ETIQUETTE_META_PAD_TOP_PX,
       meta_pad_bottom: ETIQUETTE_META_PAD_BOTTOM_PX,
       meta_section_gap: ETIQUETTE_META_SECTION_GAP_PX,
-      image_pad: pad,
-      image_bg_h: [img_h - (2 * pad), 1].max,
+      image_pad_top: ETIQUETTE_IMAGE_PAD_TOP_PX,
+      image_pad_x: ETIQUETTE_IMAGE_PAD_X_PX,
+      image_pad_bottom: ETIQUETTE_BODY_GAP_PX,
+      image_bg_h: [
+        img_h - ETIQUETTE_IMAGE_PAD_TOP_PX - ETIQUETTE_BODY_GAP_PX,
+        1
+      ].max,
       qr_w: ETIQUETTE_QR_PX,
       titre_prix_gap: ETIQUETTE_TITRE_PRIX_GAP_PX
     }
@@ -60,6 +73,19 @@ module EtiquettesHelper
     inner_h = grid_row_h - (2 * pad_y)
     slot_h = inner_h / ETIQUETTE_VERSO_LINES
     { inner_h: inner_h, slot_h: slot_h, lines: ETIQUETTE_VERSO_LINES, pad_x: pad_x, pad_y: pad_y }
+  end
+
+  # Styles PDF dérivés des constantes badge (une fois par page dans edition.html.erb).
+  def etiquettes_badge_styles
+    t = ETIQUETTE_BADGE_PAD_TOP_PX
+    b = ETIQUETTE_BADGE_PAD_BOTTOM_PX
+    x = ETIQUETTE_BADGE_PAD_X_PX
+    <<~CSS.strip
+      .etiquette-badge {
+        padding: #{t}px #{x}px #{b}px;
+        vertical-align: top;
+      }
+    CSS
   end
 
   def pad_etiquette_slots(produits, size = 4)
