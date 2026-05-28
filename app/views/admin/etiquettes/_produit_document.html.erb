@@ -1,71 +1,67 @@
 
-<table style="width: 100%; border-color: white; padding: 14px 20px 0 20px;">
-    <tr>
-        <td colspan="2" style="height: 410px;
-            background-image: url('<%= produit.image1.present? ? produit.image1.url : no_photo_url %>');
-            background-size: contain; background-repeat: no-repeat; background-position: center;">
-        </td>
-    </tr>
+<table class="etiquette-produit">
+  <tr>
+    <td colspan="2" class="etiquette-image" style="background-image: url('<%= produit.image1.present? ? produit.image1.url : no_photo_url %>');"></td>
+  </tr>
 
-    <tr>
-        <td style="width: 80px;">
-            <%= image_tag(produit.qr_code, width: 85) if produit.qr_code.present? %>        
-        </td>
-        <td style="height: 94px; text-align: left;">
-            <div class="etiquette-nom"><%= produit.nom %></div>
+  <tr class="etiquette-infos-row">
+    <td class="etiquette-qr" style="width: 80px;">
+      <%= image_tag(produit.qr_code, width: 85) if produit.qr_code.present? %>
+    </td>
+    <td class="etiquette-infos">
+      <div class="etiquette-nom"><%= produit.nom %></div>
 
-            <% if produit.prixvente %>
-              <% if produit.en_promotion? %>
-                <span style="text-decoration: line-through; color: grey;">Vente: <%= number_to_currency(produit.ancien_prixvente, locale: :fr, precision: 0) %></span>
-                <span style="margin-left: 4px;">Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>
-              <% else %>
-                <span>Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>
-              <% end %>
+      <% if produit.prixvente %>
+        <% if produit.en_promotion? %>
+          <span style="text-decoration: line-through; color: grey;">Vente: <%= number_to_currency(produit.ancien_prixvente, locale: :fr, precision: 0) %></span>
+          <span style="margin-left: 4px;">Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>
+        <% else %>
+          <span>Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>
+        <% end %>
+      <% end %>
+
+      <% if produit.prixvente.present? && produit.prixlocation.present? %>
+        <span class="px-1">-</span>
+      <% end %>
+
+      <% if produit.prixlocation %>
+        <span>Location: <%= number_to_currency(produit.prixlocation, locale: :fr, precision: 0) %></span>
+      <% end %>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2" class="etiquette-meta-bas" style="padding-left: 10px;">
+      <div class="etiquette-tailles-lignes">
+        Taille(s):
+        <% if produit.taille.present? %>
+          <span class="text-uppercase" style="border: 2px solid black; border-radius: 5px; margin-right: 2px; padding: 1px;">
+            <%= produit.taille&.nom %>
+          </span>
+          <% same_produit_same_couleur_others_tailles_with_statut_disponibilite(produit).sort_by { |p| p.taille&.nom.to_s }.each do |prod| %>
+            <span class="text-uppercase" style="border: 2px solid grey; border-radius: 5px; color: grey; margin-right: 2px; padding: 1px;">
+              <%= prod.taille&.nom %>
+            </span>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="etiquette-couleurs-lignes">
+        Couleur(s):
+        <% if produit.couleur.present? %>
+          <span style="border: 1px solid black; border-radius: 5px; margin-right: 2px; padding: 2px;">
+            <%= produit.couleur&.nom %>
+            <div style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: <%= produit.couleur&.couleur_code %>"></div>
+          </span>
+          <% same_produit_same_taille_others_couleurs_with_statut_disponibilite(produit).each do |prod| %>
+            <% if prod.couleur.present? %>
+              <span style="border: 1px solid grey; border-radius: 5px; color: grey; margin-right: 2px; padding: 2px;">
+                <%= prod.couleur&.nom %>
+                <div style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: <%= prod.couleur&.couleur_code %>"></div>
+              </span>
             <% end %>
-            
-            <% if produit.prixvente.present? && produit.prixlocation.present? %>
-                <span class="px-1">-</span>
-            <% end %>
-
-            <% if produit.prixlocation %>
-                <span>Location: <%= number_to_currency(produit.prixlocation, locale: :fr, precision: 0) %></span> 
-            <% end %>
-       </td>
-    </tr>
-
-    <tr>
-        <td colspan="2" class="etiquette-meta-bas" style="padding-left: 10px;">
-            <div class="etiquette-tailles-lignes">
-                Taille(s):
-                <% if produit.taille.present? %>
-                    <span class="text-uppercase" style="border: 2px solid black; border-radius: 5px; margin-right: 2px; padding: 1px;">
-                        <%= produit.taille&.nom %>
-                    </span>
-                    <% same_produit_same_couleur_others_tailles_with_statut_disponibilite(produit).sort_by { |p| p.taille&.nom.to_s }.each do |prod| %>
-                        <span class="text-uppercase" style="border: 2px solid grey; border-radius: 5px; color: grey; margin-right: 2px; padding: 1px;">
-                            <%= prod.taille&.nom %>
-                        </span>
-                    <% end %>
-                <% end %>
-            </div>
-            <div class="etiquette-couleurs-lignes">
-                Couleur(s):
-                <% if produit.couleur.present? %>
-                    <span style="border: 1px solid black; border-radius: 5px; margin-right: 2px; padding: 2px;">
-                        <%= produit.couleur&.nom %>
-                        <div style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: <%= produit.couleur&.couleur_code %>"></div>
-                    </span>
-                    <% same_produit_same_taille_others_couleurs_with_statut_disponibilite(produit).each do |prod| %>
-                        <% if prod.couleur.present? %>    
-                            <span style="border: 1px solid grey; border-radius: 5px; color: grey; margin-right: 2px; padding: 2px;">
-                                <%= prod.couleur&.nom %>
-                                <div style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: <%= prod.couleur&.couleur_code %>"></div>
-                            </span>
-                        <% end %>
-                    <% end %>
-                <% end %>
-            </div>
-        </td>
-    </tr>
-
+          <% end %>
+        <% end %>
+      </div>
+    </td>
+  </tr>
 </table>

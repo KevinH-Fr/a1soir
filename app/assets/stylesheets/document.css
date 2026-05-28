@@ -262,9 +262,40 @@
   color:#8f1f46
 }
 
-/* Étiquettes PDF : réserve 2 lignes tailles, compense sous couleurs */
+/* Étiquettes PDF — 4 par page A4 : 2 lignes × ~552px < hauteur page */
+.etiquette-cell {
+  width: 450px;
+  height: 552px;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+  vertical-align: top;
+  border: 1px solid #ccc;
+}
+
+.etiquette-produit {
+  width: 100%;
+  height: 100%;
+  border-color: white;
+  padding: 10px 20px 0 20px;
+  table-layout: fixed;
+  box-sizing: border-box;
+}
+
+.etiquette-image {
+  height: 338px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.etiquette-infos {
+  height: 86px;
+  vertical-align: top;
+}
+
 .etiquette-nom {
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.2;
   margin: 0 0 4px 0;
   font-weight: bold;
@@ -274,18 +305,18 @@
 }
 
 .etiquette-tailles-lignes {
-  min-height: 50px;
+  min-height: 46px;
   margin-top: 0;
 }
 
 .etiquette-couleurs-lignes {
-  min-height: 50px;
+  min-height: 46px;
   margin-top: 4px;
   margin-bottom: 0;
 }
 
 .etiquette-meta-bas {
-  height: 108px;
+  height: 100px;
   padding-bottom: 0;
   vertical-align: top;
   overflow: hidden;
