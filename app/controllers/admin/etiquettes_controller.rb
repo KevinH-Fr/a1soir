@@ -90,13 +90,12 @@ class Admin::EtiquettesController < Admin::ApplicationController
     
     respond_to do |format|
       format.pdf do
-          render pdf: "etiquette_#{Time.now.strftime('%Y%m%d_%H%M%S')}", # File name for the PDF
-          
-          :template => "admin/etiquettes/edition",            
+          render pdf: "etiquette_#{Time.now.strftime('%Y%m%d_%H%M%S')}",
+          template: "admin/etiquettes/edition",
           formats: [:html],
-          layout: 'pdf',
-
-          disposition: "inline" # Use "inline" to open in the browser
+          layout: "pdf",
+          disposition: "inline",
+          margin: { top: 2, bottom: 2, left: 2, right: 2 }
       end
     end
   end 

@@ -119,8 +119,10 @@
 <%= render partial: "product_gallery_modal", locals: { produit: @produit } %>
 <%= render partial: "public/pages/vous_aimerez_aussi", locals: { produits_similaires: @produits_similaires } %>
 
-<div class="text-center"> 
-  <%= link_to produits_index_path(from_cabine: true), class: "btn btn-dark btn-lg px-4 rounded-0" do %>
-    <i class="bi bi-plus-circle me-2"></i><%= t("public.pages.produit.add_other_products") %>
-  <% end %>
-</div>
+<% if session[:from_cabine] %>
+  <div class="text-center">
+    <%= link_to produits_index_path(from_cabine: true), class: "btn btn-dark btn-lg px-4 rounded-0" do %>
+      <i class="bi bi-plus-circle me-2"></i><%= t("public.pages.produit.add_other_products") %>
+    <% end %>
+  </div>
+<% end %>

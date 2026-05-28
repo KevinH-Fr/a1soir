@@ -147,11 +147,6 @@ ok
 
 
 
-adapter letiquette pour avoir espace sur deux lignes
-
-voir bug ajouter d'autres produits sur page show produit (cabine true alors que non)
-
-
 ancienne url à verif: 
 
 https://a1soir.com/fr/produit/eleonora-4120?back_url=%2Ffr%2Fproduits%3Fid%255B%255D%3D47%26id%255B%255D%3D45

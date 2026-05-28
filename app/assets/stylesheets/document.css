@@ -260,17 +260,27 @@
 
 /* Verso : espacement recalé pour cellules 552px (recto) au lieu de 632px */
 .etiquette-verso .hr-doted {
-  margin-top: 39px;
+  margin-top: 40px;
 }
 
 .test-color{
   color:#8f1f46
 }
 
-/* Étiquettes PDF — 4 par page A4 : 2 lignes × ~552px < hauteur page */
+/* Étiquettes PDF — 4 par page A4 */
+.etiquettes-edition {
+  margin: 0;
+  padding: 0;
+}
+
+.etiquettes-edition table {
+  margin: 0;
+  border-spacing: 0;
+}
+
 .etiquette-cell {
   width: 450px;
-  height: 552px;
+  height: 556px;
   padding: 10px;
   box-sizing: border-box;
   overflow: hidden;
@@ -281,9 +291,17 @@
 .etiquette-produit {
   width: 100%;
   border-color: white;
-  padding: 10px 20px 0 20px;
+  padding: 10px 16px 0 16px;
   table-layout: fixed;
   box-sizing: border-box;
+}
+
+.etiquette-col-qr {
+  width: 88px;
+}
+
+.etiquette-col-infos {
+  width: auto;
 }
 
 .etiquette-image {
@@ -300,7 +318,8 @@
 }
 
 .etiquette-qr {
-  width: 85px;
+  width: 88px;
+  max-width: 88px;
   padding: 0;
   line-height: 0;
 }
@@ -311,7 +330,7 @@
 
 .etiquette-infos {
   vertical-align: top;
-  padding: 0;
+  padding: 0 0 0 6px;
   text-align: left;
 }
 
