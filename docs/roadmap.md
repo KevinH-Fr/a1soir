@@ -1,6 +1,12 @@
 
 ok - fix ajouter d'autres produits from cabine qui apparait sur show 
+
 - fix etiquette
+verifier commande pdf ok en prod 
+verifier en prod (produits cha etc)
+
+
+
 - verifier sitemap ok suite au renommage
 - verifier flux merchant se met bien à jour aussi
 - verifier produits ajouter dans fiches
