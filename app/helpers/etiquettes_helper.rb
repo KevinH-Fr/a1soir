@@ -7,9 +7,9 @@ module EtiquettesHelper
   ETIQUETTE_BODY_SLACK_PX = 16
   ETIQUETTE_TITRE_PRIX_GAP_PX = 8
   ETIQUETTE_META_LINES = 2
-  # Hauteur par ligne (badges 11 pt) — sync avec .etiquette-meta line-height en CSS.
-  ETIQUETTE_META_LINE_PX = 22
-  ETIQUETTE_META_SECTION_GAP_PX = 4
+  # Hauteur par ligne (badges 11 pt + bordures) — sync avec .etiquette-meta line-height en CSS.
+  ETIQUETTE_META_LINE_PX = 28
+  ETIQUETTE_META_SECTION_GAP_PX = 8
   ETIQUETTE_META_PAD_X_PX = 12
   ETIQUETTE_META_PAD_Y_PX = 4
   ETIQUETTE_IMAGE_PADDING_PX = 16
