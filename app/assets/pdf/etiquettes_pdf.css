@@ -62,7 +62,7 @@ body.etiquettes-pdf-body {
   font-weight: normal;
 }
 
-/* padding badge : EtiquettesHelper ETIQUETTE_BADGE_PAD_* via etiquettes_badge_styles */
+/* padding badge : --etiquette-badge-pad-* sur body (EtiquettesHelper#etiquettes_badge_pad_body_style) */
 .etiquette-badge {
   display: inline-block;
   border-radius: 4px;
@@ -70,6 +70,8 @@ body.etiquettes-pdf-body {
   margin-bottom: 0;
   border: 1px solid transparent;
   line-height: 1.15;
+  padding: var(--etiquette-badge-pad-top) 3px var(--etiquette-badge-pad-bottom);
+  vertical-align: top;
 }
 
 .etiquette-badge--taille-active {

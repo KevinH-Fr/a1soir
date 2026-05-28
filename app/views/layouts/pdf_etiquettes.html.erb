@@ -6,7 +6,7 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <%= wicked_pdf_stylesheet_link_tag "etiquettes_pdf" %>
   </head>
-  <body class="etiquettes-pdf-body" style="width:100%;margin:0;padding:0;">
+  <body class="etiquettes-pdf-body" style="width:100%;margin:0;padding:0;<%= etiquettes_badge_pad_body_style %>">
     <%= yield %>
   </body>
 </html>

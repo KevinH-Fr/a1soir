@@ -16,9 +16,9 @@ module EtiquettesHelper
   # Marge autour du bloc tailles/couleurs (ajuster top/bottom indépendamment si besoin).
   ETIQUETTE_META_PAD_TOP_PX = 3
   ETIQUETTE_META_PAD_BOTTOM_PX = 2
-  # Padding interne des badges (injecté dans edition.html.erb via etiquettes_badge_styles).
-  ETIQUETTE_BADGE_PAD_TOP_PX = 1
-  ETIQUETTE_BADGE_PAD_BOTTOM_PX = 1
+  # Padding interne des badges — ENV top/bottom ; x fixe dans etiquettes_pdf.css.
+  ETIQUETTE_BADGE_PAD_TOP_PX_DEFAULT = 2
+  ETIQUETTE_BADGE_PAD_BOTTOM_PX_DEFAULT = 0
   ETIQUETTE_BADGE_PAD_X_PX = 3
   ETIQUETTE_IMAGE_PAD_TOP_PX = 8
   ETIQUETTE_IMAGE_PAD_X_PX = 8
@@ -75,17 +75,16 @@ module EtiquettesHelper
     { inner_h: inner_h, slot_h: slot_h, lines: ETIQUETTE_VERSO_LINES, pad_x: pad_x, pad_y: pad_y }
   end
 
-  # Styles PDF dérivés des constantes badge (une fois par page dans edition.html.erb).
-  def etiquettes_badge_styles
-    t = ETIQUETTE_BADGE_PAD_TOP_PX
-    b = ETIQUETTE_BADGE_PAD_BOTTOM_PX
-    x = ETIQUETTE_BADGE_PAD_X_PX
-    <<~CSS.strip
-      .etiquette-badge {
-        padding: #{t}px #{x}px #{b}px;
-        vertical-align: top;
-      }
-    CSS
+  def etiquettes_badge_pad_top
+    ENV.fetch("ETIQUETTE_BADGE_PAD_TOP_PX", ETIQUETTE_BADGE_PAD_TOP_PX_DEFAULT).to_i
+  end
+
+  def etiquettes_badge_pad_bottom
+    ENV.fetch("ETIQUETTE_BADGE_PAD_BOTTOM_PX", ETIQUETTE_BADGE_PAD_BOTTOM_PX_DEFAULT).to_i
+  end
+
+  def etiquettes_badge_pad_body_style
+    "--etiquette-badge-pad-top:#{etiquettes_badge_pad_top}px;--etiquette-badge-pad-bottom:#{etiquettes_badge_pad_bottom}px;"
   end
 
   def pad_etiquette_slots(produits, size = 4)
