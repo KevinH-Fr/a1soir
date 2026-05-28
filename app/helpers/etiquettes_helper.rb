@@ -83,10 +83,6 @@ module EtiquettesHelper
     ENV.fetch("ETIQUETTE_BADGE_PAD_BOTTOM_PX", ETIQUETTE_BADGE_PAD_BOTTOM_PX_DEFAULT).to_i
   end
 
-  def etiquettes_badge_pad_body_style
-    "--etiquette-badge-pad-top:#{etiquettes_badge_pad_top}px;--etiquette-badge-pad-bottom:#{etiquettes_badge_pad_bottom}px;"
-  end
-
   def pad_etiquette_slots(produits, size = 4)
     (produits.first(size) + Array.new(size, nil)).take(size)
   end

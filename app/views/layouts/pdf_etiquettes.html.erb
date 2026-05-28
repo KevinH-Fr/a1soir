@@ -5,8 +5,15 @@
     <title>Étiquettes A1soir</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <%= wicked_pdf_stylesheet_link_tag "etiquettes_pdf" %>
+    <%# wkhtmltopdf ne supporte pas var(--*) : padding badge en px littéraux %>
+    <style>
+      .etiquette-badge {
+        padding: <%= etiquettes_badge_pad_top %>px <%= EtiquettesHelper::ETIQUETTE_BADGE_PAD_X_PX %>px <%= etiquettes_badge_pad_bottom %>px;
+        vertical-align: top;
+      }
+    </style>
   </head>
-  <body class="etiquettes-pdf-body" style="width:100%;margin:0;padding:0;<%= etiquettes_badge_pad_body_style %>">
+  <body class="etiquettes-pdf-body" style="width:100%;margin:0;padding:0;">
     <%= yield %>
   </body>
 </html>
