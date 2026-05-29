@@ -144,8 +144,8 @@ module ApplicationHelper
     end
 
     def colored_value_format(amount)
-      css_style = amount.to_i > 0 ? 'color: red;' : 'color: green;'
-      content_tag(:span, custom_currency_format(amount), style: css_style)
+      css_class = amount.to_i.positive? ? "text-danger fw-bold" : "text-success fw-bold"
+      content_tag(:span, custom_currency_format(amount), class: css_class)
     end
     
 

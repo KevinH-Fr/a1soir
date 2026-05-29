@@ -1,17 +1,12 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Document</title>
-</head>
+<%= render "admin/pdf_commande/infos" %>
 
-<br> 
-
-<%= render "admin/pdf_commande/infos" %> <br>
+<%= render "admin/pdf_commande/annulation_eshop_encart" %>
 
 <% unless @doc_edition.doc_type == "facture simple" %>
-  <%= render "admin/pdf_commande/articles" %> 
-  <%= render "admin/pdf_commande/paiements" %> 
-  <%= render "admin/pdf_commande/avoirrembs" %> 
-  <%= render "admin/pdf_commande/synthese" %> 
+  <%= render "admin/pdf_commande/articles" %>
+  <%= render "admin/pdf_commande/paiements" %>
+  <%= render "admin/pdf_commande/avoirrembs" %>
+  <%= render "admin/pdf_commande/synthese" %>
 <% else %>
-  <%= render "admin/pdf_commande/facture_simple" %> 
+  <%= render "admin/pdf_commande/facture_simple" %>
 <% end %>

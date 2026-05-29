@@ -10,7 +10,7 @@ class CommandeMailer < ApplicationMailer
 
     attachments["#{doc_edition.doc_type}_#{doc_edition.commande.ref_commande}.pdf"] = pdf_data
 
-    attachments.inline['logo_a1soir_2025.png'] = File.read(Rails.root.join('app/assets/images/logo_a1soir_2025.png'))
+    attach_inline_logo
 
     mail(to: doc_edition.destinataire, subject: doc_edition.sujet, body: @message_full) do |format|
       format.html { render template: "admin/commande_mailer/email_commande", layout: "mailer" }
@@ -24,7 +24,7 @@ class CommandeMailer < ApplicationMailer
 
     I18n.locale = @client.language || :fr
 
-    attachments.inline['logo_a1soir_2025.png'] = File.read(Rails.root.join('app/assets/images/logo_a1soir_2025.png'))
+    attach_inline_logo
 
     subject = I18n.t('restitution_email.subject', ref_commande: @commande.ref_commande)
 
@@ -34,4 +34,3 @@ class CommandeMailer < ApplicationMailer
   end
 
 end
-  

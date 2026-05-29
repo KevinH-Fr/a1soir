@@ -1,6 +1,7 @@
 class Admin::StockController < Admin::ApplicationController
+  include PdfRenderable
 
- before_action :authenticate_admin!, only: %i[ index export_csv report ]
+  before_action :authenticate_admin!, only: %i[ index export_csv report ]
 
   def index
     @produits = Produit.all
@@ -37,13 +38,12 @@ class Admin::StockController < Admin::ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-        render pdf: "reporting_stock_#{@year}_#{Time.current.strftime('%Y%m%d_%H%M%S')}",
-               template: "admin/stock/report_pdf",
-               formats: [:html],
-               layout: "pdf",
-               disposition: "inline"
+        send_pdf(
+          template: "admin/stock/report_pdf",
+          layout: "pdf",
+          filename: "reporting_stock_#{@year}_#{Time.current.strftime('%Y%m%d_%H%M%S')}.pdf"
+        )
       end
     end
   end
-
 end

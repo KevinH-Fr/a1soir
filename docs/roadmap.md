@@ -12,7 +12,7 @@ ______________
 - verifier flux merchant se met bien à jour aussi - jours semaines
    ok - fix group item id
 - verifier produits ajoutés dans fiches
-
+- surveiller erreurs serveur depuis ferrum et chrome ajoutés
 
 ToDo short terme : 
 _____________________
@@ -21,9 +21,15 @@ sur nouvelle branch git
 
 - passer sur ferrer pour pdf et reconstruire les pdf a la plce de wicked pdf ?
     etiquettes, commandes, syntehse reporting admin
-- passer sur last version of heroku
 - supprimer les var env pour format pdf etiquettes
 - supprimer wkhtmltopdf de la prod (buildpack)
+
+verif pdf reporting stock bien protégé admin seul pas vendeur
+
+- supprimer les tests ferrum
+- passer sur last version of heroku
+- verif prise de rdv ok avec mail en prod
+- verif article sous article ok
 
 
 ToDo long terme :

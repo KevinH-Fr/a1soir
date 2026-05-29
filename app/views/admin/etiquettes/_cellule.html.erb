@@ -1,76 +1,61 @@
-<%# locals: produit, pdf %>
-<% l = etiquettes_cell_layout(pdf) %>
+<%# locals: produit %>
+<div class="d-flex flex-column h-100">
 
-<table class="etiquette-cell-inner" width="100%" height="<%= l[:cell_h] %>" cellspacing="0" cellpadding="0"
-       style="width:100%;height:<%= l[:cell_h] %>px;max-height:<%= l[:cell_h] %>px;border-collapse:collapse;table-layout:fixed;">
-  <tr height="<%= l[:img_h] %>" style="height:<%= l[:img_h] %>px;max-height:<%= l[:img_h] %>px;">
-    <td height="<%= l[:img_h] %>"
-        style="height:<%= l[:img_h] %>px;max-height:<%= l[:img_h] %>px;padding:<%= l[:image_pad_top] %>px <%= l[:image_pad_x] %>px <%= l[:image_pad_bottom] %>px;box-sizing:border-box;overflow:hidden;vertical-align:top;">
-      <div style="width:100%;height:<%= l[:image_bg_h] %>px;max-height:<%= l[:image_bg_h] %>px;overflow:hidden;line-height:0;font-size:0;<%= etiquette_cell_background_style(produit, pdf, height: l[:image_bg_h]) %>">
-      </div>
-    </td>
-  </tr>
-  <tr height="<%= l[:body_h] %>" style="height:<%= l[:body_h] %>px;max-height:<%= l[:body_h] %>px;">
-    <td height="<%= l[:body_h] %>" style="height:<%= l[:body_h] %>px;max-height:<%= l[:body_h] %>px;padding:0 6px;box-sizing:border-box;overflow:hidden;vertical-align:top;">
-      <table width="100%" height="<%= l[:body_inner_h] %>" cellspacing="0" cellpadding="0"
-             style="width:100%;height:<%= l[:body_inner_h] %>px;border-collapse:collapse;table-layout:fixed;">
-        <tr>
-          <% if produit.qr_code.attached? %>
-            <td width="<%= l[:qr_w] %>" style="width:<%= l[:qr_w] %>px;height:<%= l[:body_inner_h] %>px;vertical-align:middle;text-align:center;overflow:hidden;line-height:0;font-size:0;">
-              <div style="width:<%= l[:qr_w] %>px;height:<%= l[:qr_w] %>px;margin:0 auto;overflow:hidden;<%= etiquette_qr_background_style(produit) %>background-size:<%= l[:qr_w] %>px <%= l[:qr_w] %>px;">
-              </div>
-            </td>
-          <% end %>
-          <td style="padding-left:<%= produit.qr_code.attached? ? 6 : 0 %>px;overflow:hidden;vertical-align:middle;">
-            <div class="etiquette-nom" style="overflow:hidden;"><%= produit.nom %></div>
-            <div class="etiquette-prix" style="margin-top:<%= l[:titre_prix_gap] %>px;overflow:hidden;">
-              <% if produit.prixvente %>
-                <% if produit.en_promotion? %>
-                  <span style="text-decoration:line-through;color:grey;">Vente: <%= number_to_currency(produit.ancien_prixvente, locale: :fr, precision: 0) %></span>
-                  <span> Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>
-                <% else %>
-                  <span>Vente: <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>
-                <% end %>
-              <% end %>
-              <% if produit.prixvente.present? && produit.prixlocation.present? %> - <% end %>
-              <% if produit.prixlocation %>
-                <span>Location: <%= number_to_currency(produit.prixlocation, locale: :fr, precision: 0) %></span>
-              <% end %>
-            </div>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr height="<%= l[:meta_h] %>" style="height:<%= l[:meta_h] %>px;max-height:<%= l[:meta_h] %>px;">
-    <td height="<%= l[:meta_h] %>" class="etiquette-meta" style="height:<%= l[:meta_h] %>px;max-height:<%= l[:meta_h] %>px;padding:<%= l[:meta_pad_top] %>px <%= l[:meta_pad_x] %>px <%= l[:meta_pad_bottom] %>px;box-sizing:border-box;overflow:hidden;vertical-align:top;">
-      <div style="height:<%= l[:meta_block_h] %>px;max-height:<%= l[:meta_block_h] %>px;overflow:hidden;line-height:<%= l[:meta_line_h] %>px;">
-        <span class="etiquette-meta-label">Taille(s):</span>
-        <% if produit.taille.present? %>
-          <span class="etiquette-badge etiquette-badge--taille-active"><%= produit.taille&.nom %></span>
-          <% same_produit_same_couleur_others_tailles_with_statut_disponibilite(produit).sort_by { |p| p.taille&.nom.to_s }.each do |prod| %>
-            <span class="etiquette-badge etiquette-badge--taille-alt"><%= prod.taille&.nom %></span>
-          <% end %>
-        <% end %>
-      </div>
-      <div style="height:<%= l[:meta_section_gap] %>px;font-size:0;line-height:0;"></div>
-      <div style="height:<%= l[:meta_block_h] %>px;max-height:<%= l[:meta_block_h] %>px;overflow:hidden;line-height:<%= l[:meta_line_h] %>px;">
-        <span class="etiquette-meta-label">Couleur(s):</span>
-        <% if produit.couleur.present? %>
-          <%= render "admin/etiquettes/badge_couleur",
-                     nom: produit.couleur.nom,
-                     couleur_code: produit.couleur.couleur_code,
-                     variant: :active %>
-          <% same_produit_same_taille_others_couleurs_with_statut_disponibilite(produit).each do |prod| %>
-            <% if prod.couleur.present? %>
-              <%= render "admin/etiquettes/badge_couleur",
-                         nom: prod.couleur.nom,
-                         couleur_code: prod.couleur.couleur_code,
-                         variant: :alt %>
+  <%# Image produit (prend tout l'espace restant) %>
+  <div class="etiquette-image-area p-2 d-flex align-items-center justify-content-center">
+    <%= pdf_image_tag(produit.default_image, style: "width:100%;height:100%;object-fit:contain;") %>
+  </div>
+
+  <%# QR + nom + prix %>
+  <div class="flex-shrink-0 px-2 pb-1">
+    <div class="d-flex align-items-center gap-2">
+      <% if produit.qr_code.attached? %>
+        <div class="flex-shrink-0">
+          <%= pdf_image_tag(produit.qr_code, style: "width:100px;height:100px;object-fit:contain;") %>
+        </div>
+      <% end %>
+      <div class="flex-grow-1 overflow-hidden">
+        <div class="fw-semibold lh-sm" style="font-size:10pt;"><%= produit.nom %></div>
+        <div class="mt-1" style="font-size:10pt;line-height:1.3;">
+          <% if produit.prixvente %>
+            <% if produit.en_promotion? %>
+              <span class="text-decoration-line-through text-muted">Vente : <%= number_to_currency(produit.ancien_prixvente, locale: :fr, precision: 0) %></span>
+              <span class="ms-1 fw-bold">Vente : <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>
+            <% else %>
+              <span>Vente : <%= number_to_currency(produit.prixvente, locale: :fr, precision: 0) %></span>
             <% end %>
           <% end %>
+          <% if produit.prixvente.present? && produit.prixlocation.present? %> &nbsp;·&nbsp; <% end %>
+          <% if produit.prixlocation %>
+            <span>Location : <%= number_to_currency(produit.prixlocation, locale: :fr, precision: 0) %></span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%# Tailles + couleurs %>
+  <div class="flex-shrink-0 px-2 pb-2" style="font-size:10pt;line-height:1.5;">
+    <% if produit.taille.present? %>
+      <div class="mb-1">
+        <span class="text-muted">Taille(s) :</span>
+        <span class="border border-dark rounded px-1 text-uppercase small"><%= produit.taille.nom %></span>
+        <% same_produit_same_couleur_others_tailles_with_statut_disponibilite(produit).sort_by { |p| p.taille&.nom.to_s }.each do |prod| %>
+          <span class="border rounded px-1 text-uppercase small text-muted"><%= prod.taille.nom %></span>
         <% end %>
       </div>
-    </td>
-  </tr>
-</table>
+    <% end %>
+    <% if produit.couleur.present? %>
+      <div>
+        <span class="text-muted">Couleur(s) :</span>
+        <%= render "admin/etiquettes/badge_couleur", nom: produit.couleur.nom, couleur_code: produit.couleur.couleur_code, variant: :active %>
+        <% same_produit_same_taille_others_couleurs_with_statut_disponibilite(produit).each do |prod| %>
+          <% if prod.couleur.present? %>
+            <%= render "admin/etiquettes/badge_couleur", nom: prod.couleur.nom, couleur_code: prod.couleur.couleur_code, variant: :alt %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+</div>

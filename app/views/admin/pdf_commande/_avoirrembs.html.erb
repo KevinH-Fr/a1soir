@@ -1,37 +1,34 @@
+<% if @doc_edition.commande.avoir_rembs.present? %>
+  <div class="pdf-no-break mt-4">
 
-<div class="section-solidaire"> 
-  <% if @doc_edition.commande.avoir_rembs.present? %>
-    <h5 class="h5-doc"> AVOIRS REMBOURSEMENTS </h5>
+    <div class="pdf-section-header mb-2">Avoirs &amp; remboursements</div>
 
-    <table class="table table-doc table-bordered">
-          <thead class="table th-doc">
-            <tr>
-              <th class="">#</th>
-              <th class="th-doc">Type</th>
-              <th class="th-doc">Date</th>
-              <th class="th-doc">Montant</th>
-            </tr>
-          </thead>
-          <tbody>
+    <table class="table table-sm table-bordered mb-0">
+      <thead class="table-secondary">
+        <tr>
+          <th class="text-center" style="width:32px">#</th>
+          <th>Type</th>
+          <th class="text-center">Date</th>
+          <th class="text-end">Montant</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @doc_edition.commande.avoir_rembs.each_with_index do |avoirremb, i| %>
+          <tr>
+            <td class="text-center align-middle text-muted small"><%= i + 1 %></td>
+            <td class="align-middle small"><%= avoirremb.type_avoir_remb %></td>
+            <td class="text-center align-middle small"><%= avoirremb.custom_date.strftime("%d/%m/%y") if avoirremb.custom_date.present? %></td>
+            <td class="text-end align-middle"><%= custom_currency_format(avoirremb.montant) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot class="table-light fw-bold">
+        <tr>
+          <td colspan="3" class="text-end text-muted small">Total</td>
+          <td class="text-end"><%= custom_currency_format(avoir_deduit(@doc_edition.commande) - remb_deduit(@doc_edition.commande)) %></td>
+        </tr>
+      </tfoot>
+    </table>
 
-            <% @doc_edition.commande.avoir_rembs.each_with_index do | avoirremb, i | %>
-              <tr>
-                <td class="td-doc centered"> <%= i + 1 %> </td>
-                <td class="td-doc centered"> <%= avoirremb.type_avoir_remb %> </td>
-                <td class="td-doc centered"> <%= avoirremb.custom_date.strftime("%d/%m/%y") if avoirremb.custom_date.present? %> </td>
-                <td class="td-doc centered"> <%= custom_currency_format(avoirremb.montant) %> </td>
-              </tr> 
-            <% end %>
-          </tbody>
-
-          <tfoot>
-            <tr>
-              <td colspan=3 class="tfoot-doc">  TOTAUX  </td>
-              <td class="tfoot-doc centered"> 
-                <%= custom_currency_format(avoir_deduit(@doc_edition.commande) - remb_deduit(@doc_edition.commande)) %> 
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-  <% end %>
-</div>
+  </div>
+<% end %>

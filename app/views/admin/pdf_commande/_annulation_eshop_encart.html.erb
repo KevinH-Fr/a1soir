@@ -1,0 +1,9 @@
+<% if pdf_afficher_annulation_eshop?(@doc_edition.commande, @doc_edition) %>
+  <div class="alert alert-danger border-danger border-2 mt-3 mb-0 py-2 px-3" role="alert">
+    <div class="fw-bold mb-1"><%= t("pdf_commande.annulee.title") %></div>
+    <p class="mb-1 small"><%= t("pdf_commande.annulee.body") %></p>
+    <% if @doc_edition.commande.date_remboursement_eshop.present? %>
+      <p class="mb-0 small"><%= t("pdf_commande.annulee.date_label", date: @doc_edition.commande.date_remboursement_eshop.strftime("%d/%m/%Y")) %></p>
+    <% end %>
+  </div>
+<% end %>

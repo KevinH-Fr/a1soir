@@ -10,8 +10,7 @@ class ContactMailer < ApplicationMailer
 
     I18n.locale = :fr
 
-    logo_path = Rails.root.join('app/assets/images/logo_a1soir_2025.png')
-    attachments.inline['logo_a1soir_2025.png'] = File.read(logo_path) if File.exist?(logo_path)
+    attach_inline_logo
 
     subject = "Nouveau message de contact - #{@contact_message.sujet.presence || 'Sans sujet'}"
 
@@ -21,4 +20,3 @@ class ContactMailer < ApplicationMailer
     end
   end
 end
-

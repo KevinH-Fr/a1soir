@@ -1,37 +1,32 @@
-<%# reparametrer les articles avec le param local commande passé depuis commande mailer %>
-
 <% commande = @doc_edition.commande %>
 <% stripe_payment = commande.stripe_payment %>
 <% afficher_stripe = commande.eshop? && stripe_payment&.status == "paid" %>
 
 <% if pdf_afficher_paiements?(commande) %>
+  <div class="pdf-no-break mt-4">
 
-  <div class="section-solidaire">
+    <div class="pdf-section-header mb-2">Paiements reçus</div>
 
-    <h5 class="h5-doc"> PAIEMENTS </h5>
-
-    <table class="table table-doc">
-      <thead class="">
+    <table class="table table-sm table-bordered mb-0">
+      <thead class="table-secondary">
         <tr>
-          <th class="th-doc">#</th>
-          <th class="th-doc">type</th>
-          <th class="th-doc">date</th>
-          <th class="th-doc">prix</th>
-          <th class="th-doc">caution</th>
-
+          <th class="text-center" style="width:32px">#</th>
+          <th>Mode</th>
+          <th class="text-center">Date</th>
+          <th class="text-end">Prix</th>
+          <th class="text-end">Caution</th>
         </tr>
       </thead>
-
       <tbody>
         <% row_index = 0 %>
         <% commande.paiement_recus.each_with_index do |paiement, i| %>
           <% row_index = i + 1 %>
           <tr>
-            <td class="td-doc-valeurs centered"> <%= row_index %> </td>
-            <td class="td-doc centered"> <%= paiement.moyen %> </td>
-            <td class="td-doc centered"> <%= paiement.custom_date.strftime("%d/%m/%y") if paiement.custom_date.present? %> </td>
-            <td class="td-doc-valeurs ended">  <%= custom_currency_format(paiement.montant) if paiement.typepaiement == "prix" %> </td>
-            <td class="td-doc-valeurs ended">  <%= custom_currency_format(paiement.montant)  if paiement.typepaiement == "caution" %> </td>
+            <td class="text-center align-middle text-muted small"><%= row_index %></td>
+            <td class="align-middle small"><%= paiement.moyen %></td>
+            <td class="text-center align-middle small"><%= paiement.custom_date.strftime("%d/%m/%y") if paiement.custom_date.present? %></td>
+            <td class="text-end align-middle"><%= custom_currency_format(paiement.montant) if paiement.typepaiement == "prix" %></td>
+            <td class="text-end align-middle"><%= custom_currency_format(paiement.montant) if paiement.typepaiement == "caution" %></td>
           </tr>
         <% end %>
 
@@ -40,28 +35,22 @@
           <% stripe_label = t("pdf_commande.paiement_stripe.moyen") %>
           <% stripe_label = "#{stripe_label} (#{stripe_payment.payment_method.titleize})" if stripe_payment.payment_method.present? %>
           <tr>
-            <td class="td-doc-valeurs centered"><%= row_index %></td>
-            <td class="td-doc centered"><%= stripe_label %></td>
-            <td class="td-doc centered"><%= stripe_payment.created_at.strftime("%d/%m/%y") %></td>
-            <td class="td-doc-valeurs ended"><%= custom_currency_format(recu_prix_stripe_euros(commande)) %></td>
-            <td class="td-doc-valeurs ended"></td>
+            <td class="text-center align-middle text-muted small"><%= row_index %></td>
+            <td class="align-middle small"><%= stripe_label %></td>
+            <td class="text-center align-middle small"><%= stripe_payment.created_at.strftime("%d/%m/%y") %></td>
+            <td class="text-end align-middle"><%= custom_currency_format(recu_prix_stripe_euros(commande)) %></td>
+            <td class="text-end align-middle"></td>
           </tr>
         <% end %>
       </tbody>
-      
-      <tfoot>
+      <tfoot class="table-light fw-bold">
         <tr>
-          <td colspan=3 class="tfoot-doc centered">  TOTAUX  </td>
-          <td class="tfoot-doc ended"> 
-            <%= custom_currency_format(recu_prix(commande)) %> 
-          </td>
-          <td class="tfoot-doc ended"> 
-            <%= custom_currency_format(recu_caution(commande)) %> 
-          </td>
+          <td colspan="3" class="text-end text-muted small">Total reçu</td>
+          <td class="text-end"><%= custom_currency_format(recu_prix(commande)) %></td>
+          <td class="text-end"><%= custom_currency_format(recu_caution(commande)) %></td>
         </tr>
       </tfoot>
-
     </table>
-  </div>
 
+  </div>
 <% end %>

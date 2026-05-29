@@ -1,29 +1,23 @@
-<h5 class="h5-doc"> ARTICLES </h5>
+<div class="pdf-section-header mt-4 mb-2">Désignation</div>
 
-<table class="table table-doc">
-  <thead class="">
+<table class="table table-sm table-bordered mb-0">
+  <thead class="table-secondary">
     <tr>
-      <th class="th-doc">Désignation</th>
-      <th class="th-doc">Montants</th>
+      <th class="w-75">Article</th>
+      <th class="text-end">Montants</th>
     </tr>
   </thead>
-
   <tbody>
-      <tr>
-        <td style="vertical-align: center; width: 80%; padding: 5px;">
-          <%= @doc_edition.label_facture_simple %>
-        </td>
-
-        <td style="vertical-align: top; padding: 5px; text-align: right;">
-          <div>Total HT: <%= number_to_currency(du_prix_ht(@doc_edition.commande), unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></div>
-          <div>TVA: <%= number_to_currency(tva_sur_prix(@doc_edition.commande), unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></div>
-          <div>Total TTC: <%= number_to_currency(du_prix(@doc_edition.commande), unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></div>
-        </td>
-        
-      </tr>
+    <tr>
+      <td class="align-middle p-2"><%= @doc_edition.label_facture_simple %></td>
+      <td class="align-top text-end p-2 small">
+        <div><span class="text-muted">Total HT :</span> <%= number_to_currency(du_prix_ht(@doc_edition.commande), unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></div>
+        <div><span class="text-muted">TVA :</span> <%= number_to_currency(tva_sur_prix(@doc_edition.commande), unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></div>
+        <div class="fw-bold"><span class="text-muted">Total TTC :</span> <%= number_to_currency(du_prix(@doc_edition.commande), unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></div>
+      </td>
+    </tr>
   </tbody>
 </table>
 
-<%= render "admin/pdf_commande/paiements" %> 
-
-<%= render  "admin/pdf_commande/mentions" %>
+<%= render "admin/pdf_commande/paiements" %>
+<%= render "admin/pdf_commande/mentions" %>

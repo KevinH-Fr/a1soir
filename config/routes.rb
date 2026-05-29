@@ -281,17 +281,13 @@ Rails.application.routes.draw do
         end
       end
         
-      get 'pdf_generator/generate_pdf'
       get 'users/index'
-      
+
       get 'stock/index'
       get 'stock/export_csv', to: 'stock#export_csv', as: :export_products_csv
       get 'stock/report', to: 'stock#report', as: :stock_report
 
-      get "ferrum_pdf_test", to: "ferrum_pdf_tests#show", as: :ferrum_pdf_test
-      post "ferrum_pdf_test/send_email", to: "ferrum_pdf_tests#send_test_email", as: :ferrum_pdf_test_send_email
-
-      #pdf generation 
+      #pdf generation
       
       get '/generate_commande_doc_editions', to: 'doc_editions#generate_commande'
       post '/send_email', to: 'doc_editions#send_email'

@@ -35,11 +35,7 @@ group :production do
 end
 
 gem "devise", "~> 4.9"
-gem 'wicked_pdf'
 gem "ferrum"
-
-gem "wkhtmltopdf-binary", group: :development
-gem "wkhtmltopdf-heroku", group: :production
 
 
 gem "letter_opener", group: :development

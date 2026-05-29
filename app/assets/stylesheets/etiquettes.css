@@ -1,0 +1,64 @@
+/* Étiquettes PDF — uniquement ce que Bootstrap ne couvre pas */
+
+@page {
+  size: A4 portrait;
+  margin: 5mm;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/*
+  Grille CSS 2×2 pleine page.
+  Avec @page { margin: 5mm }, Chrome print calcule 100vh = zone de contenu
+  (297mm - 10mm = 287mm), donc la grille remplit exactement une page.
+*/
+.etiquettes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  width: 100%;
+  height: 100vh;
+  gap: 1px;
+}
+
+/* Coupure de page entre recto et verso */
+.etiquettes-page-break {
+  page-break-after: always;
+  break-after: always;
+  display: block;
+  height: 0;
+}
+
+/* Zone image flex : min-height:0 indispensable pour le shrink en flexbox */
+.etiquette-image-area {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Swatch couleur : cercle 9px — pas d'équivalent Bootstrap */
+.etiquette-swatch {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+/* Lignes verso espacées uniformément */
+.etiquette-verso-lines {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.etiquette-verso-line {
+  border-top: 1px dotted #dee2e6;
+  flex: 1 1 auto;
+}

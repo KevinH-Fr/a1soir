@@ -3,8 +3,6 @@
 class StripePaymentMailer < ApplicationMailer
   layout "mailer"
 
-  LOGO_FILENAME = "logo_a1soir_2025.png"
-
   def confirmation(stripe_payment)
     @payment = stripe_payment
     @items = stripe_payment.stripe_payment_items.includes(:produit)
@@ -14,7 +12,7 @@ class StripePaymentMailer < ApplicationMailer
 
     assign_public_url_helpers
 
-    attach_logo_if_present
+    attach_inline_logo
 
     subject = I18n.t("stripe_payment_mailer.confirmation.subject")
 
@@ -37,7 +35,7 @@ class StripePaymentMailer < ApplicationMailer
 
     assign_public_url_helpers
 
-    attach_logo_if_present
+    attach_inline_logo
 
     subject = I18n.t("stripe_payment_mailer.expedition.subject")
 
@@ -61,7 +59,7 @@ class StripePaymentMailer < ApplicationMailer
                             admin_commande_url(@payment.commande, **admin_mailer_url_options)
                           end
 
-    attach_logo_if_present
+    attach_inline_logo
 
     subject = I18n.t("stripe_payment_mailer.notification_admin.subject")
 
@@ -93,10 +91,5 @@ class StripePaymentMailer < ApplicationMailer
     else
       { host: ENV.fetch("ADMIN_MAILER_HOST", "admin.a1soir.com"), protocol: "https" }
     end
-  end
-
-  def attach_logo_if_present
-    logo_path = Rails.root.join("app/assets/images/#{LOGO_FILENAME}")
-    attachments.inline[LOGO_FILENAME] = File.read(logo_path) if File.exist?(logo_path)
   end
 end

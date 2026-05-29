@@ -1,4 +1,6 @@
 class Admin::EtiquettesController < Admin::ApplicationController
+  include PdfRenderable
+
   # before_action :authenticate_vendeur_or_admin!
 
   def index
@@ -63,16 +65,18 @@ class Admin::EtiquettesController < Admin::ApplicationController
     load_etiquette_selection!
     respond_to do |format|
       format.pdf do
-        render pdf: "etiquette_#{Time.current.strftime('%Y%m%d_%H%M%S')}",
-               template: "admin/etiquettes/edition",
-               formats: [:html],
-               layout: "pdf_etiquettes",
-               disposition: "inline",
-               page_size: "A4",
-               dpi: 96,
-               disable_smart_shrinking: true,
-               viewport_size: "794x1123",
-               margin: { top: "4mm", bottom: "4mm", left: "4mm", right: "4mm" }
+        send_pdf(
+          template: "admin/etiquettes/edition",
+          layout: "pdf_etiquettes",
+          filename: "etiquette_#{Time.current.strftime('%Y%m%d_%H%M%S')}.pdf",
+          pdf_options: {
+            format: :A4,
+            margin_top: 0,
+            margin_bottom: 0,
+            margin_left: 0,
+            margin_right: 0
+          }
+        )
       end
     end
   end
@@ -83,6 +87,5 @@ class Admin::EtiquettesController < Admin::ApplicationController
     ids = session[:selection_etiquettes] || []
     produits_by_id = Produit.where(id: ids).includes(:taille, :couleur, :image1_attachment, :qr_code_attachment).index_by(&:id)
     @produits = ids.map { |id| produits_by_id[id] }.compact
-    @etiquette_slots = helpers.pad_etiquette_slots(@produits, 4)
   end
 end

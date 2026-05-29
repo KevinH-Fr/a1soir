@@ -3,6 +3,7 @@ class Admin::DocEditionsController < Admin::ApplicationController
  # before_action :authenticate_vendeur_or_admin!
 
   include ApplicationHelper
+  include PdfRenderable
 
   before_action :set_doc_edition, only: %i[ show edit update ]
 
@@ -129,17 +130,20 @@ class Admin::DocEditionsController < Admin::ApplicationController
 
   def generate_commande
     @doc_edition = DocEdition.find(params[:doc_edition])
-    pdf_data = generate_pdf_data
-
-    send_pdf_data(pdf_data, "#{@doc_edition.doc_type}_#{@doc_edition.commande.ref_commande}.pdf")
+    send_pdf_with_header_footer(
+      template: "admin/pdf_commande/document",
+      layout: "pdf",
+      filename: "#{@doc_edition.doc_type}_#{@doc_edition.commande.ref_commande}.pdf"
+    )
   end
 
 
   def send_email
     @doc_edition = DocEdition.find(params[:doc_edition])
-    pdf_data = generate_pdf_data
 
-    CommandeMailer.email_commande(@doc_edition, pdf_data).deliver_now
+    deliver_pdf_with_header_footer_email(template: "admin/pdf_commande/document", layout: "pdf") do |pdf_data|
+      CommandeMailer.email_commande(@doc_edition, pdf_data)
+    end
 
     respond_to do |format|
       format.html do
@@ -148,36 +152,10 @@ class Admin::DocEditionsController < Admin::ApplicationController
       end
     end
 
-    # If email is successfully sent, update mail_sent field to true
     @doc_edition.update(mail_sent: true)
-  
   end
 
   private
-
-  def generate_pdf_data
-    pdf_html = render_to_string(template: 'admin/pdf_commande/document', layout: 'pdf')
-    pdf_options = {
-      header: {
-        content: render_to_string('admin/shared/doc_entete', layout: 'pdf'),
-        spacing: 10
-      },
-      footer: {
-        content: render_to_string('admin/shared/doc_footer', layout: 'pdf'),
-        spacing: 10
-      }
-    }
-    
-    pdf = WickedPdf.new.pdf_from_string(pdf_html, pdf_options)
-
-  end
-
-  def send_pdf_data(pdf_data, filename)
-    send_data pdf_data,
-              filename: filename,
-              type: 'application/pdf',
-              disposition: 'inline'
-  end
 
   def set_doc_edition
     @doc_edition = DocEdition.find(params[:id])

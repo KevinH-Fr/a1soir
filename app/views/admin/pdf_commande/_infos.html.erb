@@ -1,89 +1,80 @@
-<table width="100%" style="border-style: hidden;">
-  <tr>
-    <!-- Left Side: Existing Content -->
-    <td style="vertical-align: top; width: 80%; border-style: hidden;">
-      <span>Client </span> 
-      <span class="doc-important"> <%= @doc_edition.commande.client.full_name %> </span> <br>
+<div class="row g-3 mb-2">
 
-      <% if @doc_edition.commande.eshop? %>
-        <br>
-        <span class="doc-important">Vente e-shop</span> <span>(commande issue du site, paiement en ligne)</span><br>
+  <%# Bloc client : 2/3 gauche %>
+  <div class="col-8">
+    <div class="mb-3">
+      <div class="text-muted text-uppercase pdf-label">Client</div>
+      <div class="fw-bold fs-5"><%= @doc_edition.commande.client.full_name %></div>
+    </div>
+
+    <% if @doc_edition.commande.eshop? %>
+      <div class="mb-2">
+        <span class="badge bg-dark me-1">e-shop</span>
+        <span class="small text-muted">Commande issue du site, paiement en ligne</span>
+      </div>
+    <% end %>
+
+    <div class="small mb-1">
+      Langue : <strong><%= @doc_edition.commande.client.language_label %></strong>
+      <% if @doc_edition.commande.client.contact.present? %>
+        &nbsp;·&nbsp; Contact : <strong><%= @doc_edition.commande.client.contact %></strong>
       <% end %>
+    </div>
 
-      <% if pdf_afficher_annulation_eshop?(@doc_edition.commande, @doc_edition) %>
-        <br>
-        <div style="border: 2px solid #333; padding: 8px; margin: 8px 0;">
-          <div class="doc-important" style="font-size: 14px;"><%= t("pdf_commande.annulee.title") %></div>
-          <div style="margin-top: 4px;"><%= t("pdf_commande.annulee.body") %></div>
-          <% if @doc_edition.commande.date_remboursement_eshop.present? %>
-            <div style="margin-top: 4px;">
-              <%= t("pdf_commande.annulee.date_label", date: @doc_edition.commande.date_remboursement_eshop.strftime("%d/%m/%Y")) %>
-            </div>
-          <% end %>
+    <% if @doc_edition.commande.typeevent.present? %>
+      <div class="small mb-1">
+        Événement : <strong><%= @doc_edition.commande.full_event %></strong>
+      </div>
+    <% end %>
+
+    <% if @doc_edition.commande.debutloc %>
+      <div class="fw-bold small mb-1"><%= @doc_edition.commande.label_dates_location %></div>
+    <% end %>
+
+    <div class="small mt-2">
+      <div>Mail : <strong><%= @doc_edition.commande.client.mail %></strong></div>
+      <div>Tél : <strong><%= @doc_edition.commande.client.tel %></strong></div>
+      <% if @doc_edition.commande.client.adresse.present? %>
+        <div class="mt-1">
+          Adresse : <%= @doc_edition.commande.client.adresse %><br>
+          <%= @doc_edition.commande.client.cp %> <%= @doc_edition.commande.client.ville %>
         </div>
       <% end %>
+    </div>
+  </div>
 
-      <br>
-
-      <span>Langue : <%= @doc_edition.commande.client.language_label %>  </span> 
-
-      <% if @doc_edition.commande.client.contact.present? %>
-        <div>Contact : <%= @doc_edition.commande.client.contact %>  </div> 
-      <% end %>
-      <br>
-      
-      <% if @doc_edition.commande.typeevent.present? %>
-          <br>
-          <span>Evénement</span>
-          <span> <%= @doc_edition.commande.full_event %> </span> <br>
-      <% end %>
-
-      <% if @doc_edition.commande.debutloc %>
-          <span class="doc-important"> <%= @doc_edition.commande.label_dates_location %> </span> <br>
-      <% end %>
-
-      <br>
-      Mail : <span class="doc-important"> <%= @doc_edition.commande.client.mail %> </span> <br>
-      Téléphone : <span class="doc-important"> <%= @doc_edition.commande.client.tel %> </span> <br>
-
-      <% if @doc_edition.commande.client.adresse.present? %>
-        Adresse :
-        <%= @doc_edition.commande.client.adresse %> <br>
-        <%= @doc_edition.commande.client.cp %> 
-        <%= @doc_edition.commande.client.ville %>          
-      <% end %>
-
-    </td>
-
-    <td style="vertical-align: top; text-align: center; width: 20%; border-style: hidden;">
-
-      <div class="doc-important"><%= pdf_titre_document(@doc_edition.commande, @doc_edition) %></div>
+  <%# Bloc document : 1/3 droit %>
+  <div class="col-4">
+    <div class="border rounded p-2 bg-light text-center h-100">
+      <div class="fw-bold text-uppercase fs-5 mb-1"><%= pdf_titre_document(@doc_edition.commande, @doc_edition) %></div>
 
       <% if pdf_afficher_annulation_eshop?(@doc_edition.commande, @doc_edition) %>
-        <div class="doc-important" style="font-size: 13px; margin-top: 4px;"><%= t("pdf_commande.annulee.stamp") %></div>
+        <span class="badge bg-danger mb-1"><%= t("pdf_commande.annulee.stamp") %></span>
       <% end %>
 
-      <div class="doc-important"><%= @doc_edition.commande.ref_commande %></div>
-      <div class="doc-important"><%= @doc_edition.commande.created_at.strftime("%d/%m/%Y") %></div>
+      <hr class="my-1">
+
+      <div class="small">
+        <div><span class="text-muted">Réf.</span> <strong><%= @doc_edition.commande.ref_commande %></strong></div>
+        <div><span class="text-muted">Date</span> <strong><%= @doc_edition.commande.created_at.strftime("%d/%m/%Y") %></strong></div>
+      </div>
 
       <% if @doc_edition.commande.qr_code.present? %>
-        <div>
-          <%= image_tag(@doc_edition.commande.qr_code, class: "img-qr-etiquette") %>
+        <div class="mt-1">
+          <%= pdf_image_tag(@doc_edition.commande.qr_code, class: "pdf-qr") %>
         </div>
       <% end %>
 
       <% unless @doc_edition.commande.eshop? %>
-        <div>
-          Servi par
-          <span class="doc-important"> <%= @doc_edition.commande.profile.full_name %> </span>
-        </div>
-
-        <div>Statut
-          <span class="doc-important"> <%= @doc_edition.commande.statutarticles %> </span>
+        <hr class="my-1">
+        <div class="small">
+          <div><span class="text-muted">Servi par</span> <span class="fw-bold"><%= @doc_edition.commande.profile.full_name %></span></div>
+          <div><span class="text-muted">Statut</span> <span class="fw-bold"><%= @doc_edition.commande.statutarticles %></span></div>
         </div>
       <% end %>
+    </div>
+  </div>
 
-    </td>
+</div>
 
-  </tr>
-</table>
+<hr class="border-secondary mb-0">

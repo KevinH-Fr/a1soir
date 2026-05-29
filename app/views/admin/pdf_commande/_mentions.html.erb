@@ -1,27 +1,22 @@
 <% if @doc_edition.commentaires.present? %>
-    <div class="cadre my-2">
-    <span class="bolded">Commentaires </span> 
-    <span class=""> <%= @doc_edition.commentaires %> </span> <br>
-    <br>
-    </div>
+  <div class="border-start border-3 border-secondary bg-light rounded-end p-3 mt-4 small">
+    <div class="fw-bold text-secondary mb-1 text-uppercase pdf-label">Commentaires</div>
+    <%= @doc_edition.commentaires %>
+  </div>
 <% end %>
 
 <% if @doc_edition.commande.meetings.where('datedebut > ?', DateTime.now).exists? %>
-<br>
-    <div class="cadre my-2">
-        <span class="bolded">Prochain rendez-vous : </span> 
-        <span class=""> 
-            <%= @doc_edition.commande.meetings.first.start_time.strftime("%d/%m/%y" " à %H:%M") %> 
-        </span> <br>
-    </div>
+  <div class="border-start border-3 border-secondary bg-light rounded-end p-3 mt-2 small">
+    <div class="fw-bold text-secondary mb-1 text-uppercase pdf-label">Prochain rendez-vous</div>
+    <%= @doc_edition.commande.meetings.first.start_time.strftime("%d/%m/%Y à %H:%M") %>
+  </div>
 <% end %>
 
-<br>
-<div class="cadre my-2 bloc-mention mt-2">
+<div class="border rounded p-3 mt-4 small fst-italic text-muted text-center">
   <% locale = @doc_edition.commande.client&.language.presence || :fr %>
   <% I18n.with_locale(locale) do %>
     <% if @doc_edition.commande.eshop? %>
-      <span class="bolded"><%= t("pdf_commande.mentions.eshop_returns.title") %></span><br>
+      <span class="fw-bold d-block mb-1"><%= t("pdf_commande.mentions.eshop_returns.title") %></span>
       <%= t("pdf_commande.mentions.eshop_returns.body") %>
     <% else %>
       <%= t("pdf_commande.mentions.reservation") %><br>
