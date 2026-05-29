@@ -32,4 +32,7 @@ Home admin → **Test PDF Ferrum** / **Test mail Ferrum**, ou `/admin/ferrum_pdf
 Buildpack Chrome validé → migrer commandes / étiquettes / stock → retirer `wkhtmltopdf-heroku` et buildpack wkhtmltopdf.
 
 
+
+Pour une app Rails Heroku, je te conseille de lancer Ferrum dans un job worker, pas directement dans une requête web, surtout pour générer des PDF/screenshots.
+
 verif pdf reporting stock bien protégé admin seul pas vendeur
