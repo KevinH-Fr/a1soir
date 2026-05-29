@@ -36,6 +36,7 @@ end
 
 gem "devise", "~> 4.9"
 gem 'wicked_pdf'
+gem "ferrum"
 
 gem "wkhtmltopdf-binary", group: :development
 gem "wkhtmltopdf-heroku", group: :production

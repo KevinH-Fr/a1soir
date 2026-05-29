@@ -29,6 +29,7 @@ sur nouvelle branch git
 ToDo long terme :
 _________________
 
+- aumgenter le nb de produits chargés d'un coup dans produtis (turbo)
 - partie blog : ajouter des pages seo avec l'histoire d'une cateogire et les liens vers les produits, une video pour engagemnet plus long
 
 - mettre en place le flux merchant pour produits en boutique (code etablissement)

@@ -56,6 +56,23 @@
               "btn-outline-primary"
             ) %>
         <%= options_supplementaires_link(admin_home_admin_scan_qr_path, "bi-qr-code-scan", "Scan", "btn-primary") %>
+        
+        <% if current_admin_user.admin? %>
+          <%= link_to admin_ferrum_pdf_test_path(format: :pdf),
+                      class: "admin-quick-action-btn btn btn-sm btn-outline-danger rounded-3 px-2 d-inline-flex align-items-center justify-content-center gap-2 me-1 mb-2 text-nowrap",
+                      target: "_blank",
+                      rel: "noopener" do %>
+            <i class="bi bi-file-earmark-pdf flex-shrink-0"></i>
+            <span>Test PDF Ferrum</span>
+          <% end %>
+          <%= button_to admin_ferrum_pdf_test_send_email_path,
+                        method: :post,
+                        class: "admin-quick-action-btn btn btn-sm btn-outline-danger rounded-3 px-2 d-inline-flex align-items-center justify-content-center gap-2 me-1 mb-2 text-nowrap",
+                        form: { class: "d-inline" } do %>
+            <i class="bi bi-envelope-paper flex-shrink-0"></i>
+            <span>Test mail Ferrum</span>
+          <% end %>
+        <% end %>
 
     </div>
 

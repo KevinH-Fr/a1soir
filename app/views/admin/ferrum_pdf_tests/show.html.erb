@@ -1,0 +1,36 @@
+<div class="stock-report-pdf-doc">
+  <div class="stock-report-pdf-header mb-4">
+    <div class="stock-report-pdf-title-main doc-important">Test Ferrum — PDF A1soir</div>
+    <p class="text-muted mb-0">Généré le <%= l(@generated_at, format: :long) %></p>
+  </div>
+
+  <div class="stock-report-pdf-section-title">Exemple de tableau</div>
+  <div class="stock-report-pdf-table-wrap">
+    <table class="stock-report-pdf-table table table-bordered">
+      <thead>
+        <tr>
+          <th class="th-doc-brand" style="width: 50%;">Rubrique</th>
+          <th class="th-doc-brand text-center" style="width: 25%;">Quantité</th>
+          <th class="th-doc-brand text-end" style="width: 25%;">Montant</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-doc-sm started bolded">Ligne test A</td>
+          <td class="td-doc-sm text-center">12</td>
+          <td class="td-doc-sm text-end"><%= number_to_currency(1200) %></td>
+        </tr>
+        <tr class="td-doc-sm-alt">
+          <td class="td-doc-sm started td-doc-sm-alt">Ligne test B</td>
+          <td class="td-doc-sm text-center td-doc-sm-alt">8</td>
+          <td class="td-doc-sm text-end td-doc-sm-alt"><%= number_to_currency(640) %></td>
+        </tr>
+        <tr>
+          <td class="td-doc-sm started bolded">Total</td>
+          <td class="td-doc-sm text-center">20</td>
+          <td class="td-doc-sm text-end"><%= number_to_currency(1840) %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
