@@ -75,7 +75,7 @@ class StripePaymentMailer < ApplicationMailer
 
   def assign_public_url_helpers
     @public_site_url_options = public_site_url_options
-    @blob_rails_host = Rails.env.production? ? "a1soir-2-2a03802389d6.herokuapp.com" : "localhost:3000"
+    @blob_rails_host = Rails.env.production? ? "a1soir.com" : "localhost:3000"
     @blob_rails_protocol = Rails.env.production? ? "https" : "http"
   end
 

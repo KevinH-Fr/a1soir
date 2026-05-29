@@ -177,12 +177,16 @@ reprendre :
 
 mode prod avec cha :
 ok - activer espace de prod avec toutes les infos
-- var env de prod et espace de prod dans stripe
-- webhook en prod
+- var env de prod et espace de prod dans stripe : 
+
+ok - supprimer les cles existantes
+ok - créer des cles restreintes
+ok - webhook en prod
+
 - créer les produits et prices dans stripe pour la partie prod : script ci dessous
 - tester avec cha sur le site
 
-
+- faire un hard refresh pour maj les produits qui auraient été modifiés 
 
 
 # bin/rails console
