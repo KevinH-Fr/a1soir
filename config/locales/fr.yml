@@ -415,6 +415,14 @@ fr:
     facture: "Facture"
     facture simple: "Facture simple"
 
+  pdf_commande:
+    mentions:
+      reservation: "Toute réservation est définitive. En cas d'annulation, un avoir pourra être émis."
+      rental_late: "Pour tout retard de restitution de location, une somme forfaitaire de 15€/jour pourra être perçue."
+      eshop_returns:
+        title: "Conditions de retour — vente en ligne"
+        body: "Conformément à nos CGV (a1soir.com/legal) : vous disposez d'un droit de rétractation de 14 jours à compter de la réception de votre commande. Retour réservé aux achats effectués sur le site — utilisez l'étiquette de retour préimprimée ; les frais de retour sont pris en charge par Autour D'Un Soir pour tout renvoi conforme. Produits retournés dans leur état d'origine, avec étiquette, non portés (essayage excepté), emballage d'origine et accessoires, accompagnés de la présente facture. Remboursement du prix des produits et des frais de livraison initiaux sur le moyen de paiement initial, au plus tard sous 14 jours après réception du retour conforme. Retours non conformes refusés."
+
   email_footer:
     thank_you: "Toute l'équipe Autour D'Un Soir vous remercie pour votre confiance."
     availability: "Nous restons à votre disposition pour plus d'informations."
@@ -475,6 +483,7 @@ fr:
         shipping_free: "Offerts"
         total_label: "Total TTC"
         delivery_follow_up: "Notre équipe reviendra vers vous prochainement avec les informations relatives à la livraison de votre commande."
+        returns_notice: "Droit de rétractation de 14 jours à compter de la réception. Pour un retour, contactez-nous via le formulaire du site (a1soir.com) avant d'expédier votre colis : nous vous indiquerons la procédure et prendrons en charge les frais de retour. Remboursement du prix des articles et des frais de livraison initiaux sous 14 jours après réception d'un retour conforme (état d'origine, étiquette, non porté hors essayage). Détails : a1soir.com/legal."
         thanks: "Merci pour votre confiance."
     notification_admin:
       subject: "Nouvelle commande e-shop (paiement Stripe)"
@@ -908,7 +917,7 @@ fr:
               answer_html: "<p>Oui, nous proposons :</p><ul><li>Collections de créateurs</li><li>Tenues sur mesure</li><li>Accessoires assortis</li></ul><p class='mb-0'>Venez en boutique pour découvrir la sélection.</p>"
             q3:
               question: "Quel est le délai de rétractation ?"
-              answer_html: "<p>Vous disposez de <strong>14 jours</strong> pour exercer votre droit de rétractation.</p><p>Conditions :</p><ul><li>Tenue en état d'origine</li><li>Non portée avec étiquettes</li><li>Emballage d'origine</li><li>Tenue non retouchée</li></ul><p class='mb-0'>Remboursement sous 14 jours après réception du retour.</p>"
+              answer_html: "<p>Vous disposez de <strong>14 jours</strong> pour exercer votre droit de rétractation.</p><p>Conditions :</p><ul><li>Tenue en état d'origine</li><li>Non portée avec étiquettes</li><li>Emballage d'origine</li><li>Tenue non retouchée</li></ul><p>Contactez-nous avant d'expédier votre retour : <strong>les frais de retour sont pris en charge par Autour D'Un Soir</strong> pour un renvoi conforme.</p><p class='mb-0'>Remboursement des articles et des frais de livraison initiaux sous 14 jours après réception du retour.</p>"
           alterations:
             title: "Retouches et personnalisation"
             q1:
@@ -1089,9 +1098,9 @@ fr:
             a3: { title: "Validation de la carte", content: "Vous confirmez que la carte bancaire utilisée est la vôtre. Tous les détenteurs de cartes bancaires sont soumis à des contrôles de validation et à l'autorisation par l'émetteur de la carte. Si l'émetteur de votre carte refuse d'autoriser le paiement, nous serons en droit de refuser de procéder à la livraison de votre commande et ne serons pas responsables de tout retard ou de toute absence de livraison. Nous vous enverrons un courriel pour vous informer du refus." }
             a4: { title: "Sécurité des données bancaires", content: "Vos données bancaires seront traitées de manière sécurisée, conformément à notre Déclaration de Protection de la Vie Privée, que vous pouvez consulter plus haut dans ce document." }
           retractation:
-            a1: { title: "Retour des produits", content: "Vous pouvez nous retourner uniquement les produits qui ont été achetés directement sur le Site Web. Si vous achetez vos produits dans notre boutique de Cannes, les produits devront être retournés au magasin. Nous nous réservons le droit de refuser le retour de marchandises qui n'auront pas été retournées dans le respect des stipulations prévues ci-après et les frais de transport pour le renvoi de chaque marchandise au lieu de livraison indiqué seront à votre charge." }
+            a1: { title: "Retour des produits", content: "Vous pouvez nous retourner uniquement les produits qui ont été achetés directement sur le Site Web. Si vous achetez vos produits dans notre boutique de Cannes, les produits devront être retournés au magasin. Pour tout retour lié à une rétractation sur le Site Web, utilisez l'étiquette de retour préimprimée fournie avec votre commande. Autour D'Un Soir prend en charge les frais de retour pour tout renvoi conforme aux stipulations du présent article. Nous nous réservons le droit de refuser le retour de marchandises non conformes ; en cas de renvoi de ces marchandises vers votre adresse de livraison, les frais de ce renvoi restent à votre charge." }
             a2: { title: "Conditions de rétractation", content: "Si, pour quelque raison que ce soit, vous n'étiez pas satisfait de nos produits ou souhaitiez annuler votre commande, vous pouvez exercer votre droit de rétractation au plus tard dans les quatorze (14) jours suivants la réception de votre commande, et vous serez remboursé conformément aux dispositions de cet article, à condition : que les produits soient retournés leur conditionnement d'origine permettant leur transport à l'adresse mentionnée par le service client ; que les produits soient dans leur état initial avec l'étiquette attachée au produit, sans avoir été endommagés, tachés, lavés, modifiés ou portés (à l'exception de l'essayage), en y joignant l'emballage original et tous accessoires se rapportant aux produits, tels que les emballages ou notices d'utilisation, ainsi que la facture d'origine. Si le délai de rétractation de quatorze (14) jours expire un samedi, un dimanche ou un jour férié, ce délai est prolongé jusqu'au jour ouvré suivant. Pour tout achat réalisé sur notre Site Web, les demandes de rétractation, quel que soit le mode de livraison, devront toutes nous être adressées via l'adresse de contact sur notre site, ou par tout autre moyen de votre choix exprimant explicitement votre volonté de vous rétracter." }
-            a3: { title: "Remboursement", content: "Conformément aux dispositions de l'article L 221-24 du code de la consommation, nous rembourserons le prix des produits de votre commande ainsi que les frais de livraison en recréditant le moyen de paiement utilisé lors de votre commande initiale. Nous effectuerons ce remboursement dans les meilleurs délais et au plus tard dans les quatorze (14) jours suivants la réception des marchandises que vous nous aurez renvoyés. A défaut de remboursement sous ce délai, les sommes que nous vous devrions produiront intérêts aux conditions suivantes : 10 jours après l'expiration du délai : taux d'intérêt légal ; 10-20 jours de retard : taux d'intérêt de 5% ; 20-30 jours de retard : taux d'intérêt de 10% ; 30-60 jours de retard : taux d'intérêt de 20% ; 60-90 jours de retard : taux d'intérêt de 50% ; Au-delà de 90 jours : 5 points supplémentaires par nouveau mois de retard." }
+            a3: { title: "Remboursement", content: "Conformément aux dispositions de l'article L 221-24 du code de la consommation, nous rembourserons le prix des produits de votre commande ainsi que les frais de livraison initiaux en recréditant le moyen de paiement utilisé lors de votre commande initiale. Les frais de retour d'un renvoi conforme sont pris en charge par Autour D'Un Soir conformément à l'article « Retour des produits » ci-dessus. Nous effectuerons ce remboursement dans les meilleurs délais et au plus tard dans les quatorze (14) jours suivants la réception des marchandises que vous nous aurez renvoyés. A défaut de remboursement sous ce délai, les sommes que nous vous devrions produiront intérêts aux conditions suivantes : 10 jours après l'expiration du délai : taux d'intérêt légal ; 10-20 jours de retard : taux d'intérêt de 5% ; 20-30 jours de retard : taux d'intérêt de 10% ; 30-60 jours de retard : taux d'intérêt de 20% ; 60-90 jours de retard : taux d'intérêt de 50% ; Au-delà de 90 jours : 5 points supplémentaires par nouveau mois de retard." }
             a4: { title: "Soin des produits", content: "Nous vous demandons de prendre soin des produits pendant qu'ils sont en votre possession et de nous les retourner à l'adresse indiquée aux présentes, sans retard excessif et au plus tard dans les quatorze (14) jours suivants l'exercice de votre droit de rétractation. Veuillez prendre acte du fait que si vous ne prenez pas soin des produits, ou si vous ne nous les retournez pas en respectant les conditions prévues au présent article, vous ne pourrez pas réclamer le remboursement des produits." }
           garanties:
             a1: { title: "Champ d'application", content: "Vous bénéficiez des garanties énumérées au présent article 12 uniquement dans la mesure où les produits ont été achetés directement sur le Site Web." }
@@ -1099,7 +1108,7 @@ fr:
             a3: { title: "Preuve du défaut", content: "Vous êtes dispensés de rapporter la preuve de l'existence du défaut de conformité du produit durant les vingt-quatre (24) mois suivant la délivrance du bien." }
             a4: { title: "Indépendance des garanties", content: "Cette garantie légale de conformité s'applique indépendamment de toute garantie commerciale éventuellement souscrite et ainsi que de la nature du produit." }
             a5: { title: "Garantie contre les vices cachés", content: "La garantie légale contre les vices cachés (articles 1641 et suivants du Code civil). Si vous parvenez à prouver le vice caché d'un produit, nous sommes légalement tenus de réparer toutes les conséquences d'un tel vice caché (articles 1641 et suivants du Code civil). Vous pourrez alors choisir entre la résolution de la vente ou une réduction du prix (conformément à l'article 1644 du code civil)." }
-            a6: { title: "Coûts de renvoi", content: "En cas de remplacement des produits ou de remboursement, nous prenons en charge vos coûts de renvoi des produits." }
+            a6: { title: "Coûts de renvoi", content: "Pour tout retour conforme (rétractation, garantie légale ou remplacement), Autour D'Un Soir prend en charge les frais de renvoi des produits vers notre adresse, selon la procédure communiquée par le service client." }
           informations_personnelles:
             a1: { title: "Exactitude des informations", content: "En communiquant des informations sur le Site Web, vous garantissez que vous utilisez votre véritable identité et que toutes les informations fournies sont vraies, précises, à jour et complètes au moment où vous nous fournissez ces informations." }
             a2: { title: "Mise à jour des informations", content: "Si vous constatez qu'une ou plusieurs des informations transmises sont incorrectes ou ne sont plus valables, vous devrez les modifier. A défaut, nous ne pourrons être tenus pour responsables des conséquences qui pourraient en résulter." }
@@ -1279,6 +1288,10 @@ fr:
       cart:
         header_title: "Mon panier"
         header_subtitle: "Retrouvez vos sélections prêtes à être validées"
+        reassurance:
+          shipping: "Envoyé avec soin par notre équipe de Cannes"
+          tracking: "Suivi de votre livraison"
+          returns: "Retours gratuits sous 14 jours"
         intro_title: "Votre sélection"
         intro_text: "Vérifiez les articles choisis puis poursuivez vers un paiement sécurisé par carte. Vous pouvez retirer un article à tout moment avant de payer."
         summary_title: "Résumé"

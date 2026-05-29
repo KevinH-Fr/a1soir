@@ -2760,6 +2760,39 @@ section {
 
 /* Panier : encart essai boutique — survol uniquement sur le déclencheur du collapse,
    pas sur les CTA (sinon on écrase le hover Bootstrap de btn-light / btn-outline-light). */
+.public-cart-page .cart-reassurance-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.35rem;
+  padding: 0.75rem 0.875rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--cart-radius, 0);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.public-cart-page .cart-reassurance-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.public-cart-page .cart-reassurance-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.public-cart-page .cart-reassurance-text {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.65);
+  width: 16ch;
+}
+
 .public-cart-page .cart-instore-callout .cart-instore-callout-toggle:hover {
   background: transparent;
   color: #fff;

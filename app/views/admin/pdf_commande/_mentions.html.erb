@@ -18,6 +18,14 @@
 
 <br>
 <div class="cadre my-2 bloc-mention mt-2">
-    Toute réservation est définitive. En cas d'annulation, un avoir pourra être émis. <br>
-    Pour tout retard de restitution de location, une somme forfaitaire de 15€/jour pourra être perçue.
+  <% locale = @doc_edition.commande.client&.language.presence || :fr %>
+  <% I18n.with_locale(locale) do %>
+    <% if @doc_edition.commande.eshop? %>
+      <span class="bolded"><%= t("pdf_commande.mentions.eshop_returns.title") %></span><br>
+      <%= t("pdf_commande.mentions.eshop_returns.body") %>
+    <% else %>
+      <%= t("pdf_commande.mentions.reservation") %><br>
+      <%= t("pdf_commande.mentions.rental_late") %>
+    <% end %>
+  <% end %>
 </div>

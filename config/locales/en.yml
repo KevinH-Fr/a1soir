@@ -39,6 +39,14 @@ en:
     facture: "Invoice"
     facture simple: "Simple Invoice"
 
+  pdf_commande:
+    mentions:
+      reservation: "Any booking is final. In case of cancellation, a credit note may be issued."
+      rental_late: "For any late return of a rental, a flat fee of €15/day may be charged."
+      eshop_returns:
+        title: "Return conditions — online sale"
+        body: "In accordance with our Terms (a1soir.com/legal): you have a 14-day right of withdrawal from receipt of your order. Returns apply only to purchases made on the website — use the pre-printed return label; return shipping is covered by Autour D'Un Soir for any compliant return. Items must be returned in their original condition, with tags attached, unworn (except for fitting), in original packaging with accessories, together with this invoice. Refund of product price and initial delivery costs to the original payment method, no later than 14 days after we receive a compliant return. Non-compliant returns may be refused."
+
   email_footer:
     thank_you: "The entire Autour D'Un Soir team thanks you for your trust."
     availability: "We remain at your disposal for more information."
@@ -98,6 +106,7 @@ en:
         shipping_free: "Free"
         total_label: "Total (incl. VAT)"
         delivery_follow_up: "Our team will get back to you shortly with the delivery details for your order."
+        returns_notice: "You have a 14-day right of withdrawal from receipt. To return an item, contact us via the site contact form (a1soir.com) before sending your parcel: we will provide instructions and cover return shipping. Refund of items and initial delivery costs within 14 days of receiving a compliant return (original condition, tags, unworn except for fitting). Details: a1soir.com/legal."
         thanks: "Thank you for your trust."
     notification_admin:
       subject: "New e-shop order (Stripe payment)"
@@ -531,7 +540,7 @@ en:
               answer_html: "<p>Yes, including:</p><ul><li>Designer collections</li><li>Custom outfits</li><li>Matching accessories</li></ul><p class='mb-0'>Visit our boutique to discover them.</p>"
             q3:
               question: "What is the withdrawal period?"
-              answer_html: "<p>You have <strong>14 days</strong> to exercise your right of withdrawal.</p><p>Conditions:</p><ul><li>Original condition</li><li>Unworn with tags</li><li>Original packaging</li><li>Not altered</li></ul><p class='mb-0'>Refund within 14 days after receiving returned product.</p>"
+              answer_html: "<p>You have <strong>14 days</strong> to exercise your right of withdrawal.</p><p>Conditions:</p><ul><li>Original condition</li><li>Unworn with tags</li><li>Original packaging</li><li>Not altered</li></ul><p>Contact us before sending your return: <strong>return shipping is covered by Autour D'Un Soir</strong> for a compliant return.</p><p class='mb-0'>Refund of items and initial delivery costs within 14 days after we receive the return.</p>"
           alterations:
             title: "Alterations and customization"
             q1:
@@ -712,9 +721,9 @@ en:
             a3: { title: "Card validation", content: "You confirm that the bank card used is yours. Cardholders are subject to validation checks and issuer authorization. If your card issuer refuses authorization, we may refuse delivery and are not responsible for resulting delays or non-delivery. We will inform you by email." }
             a4: { title: "Bank data security", content: "Your banking data is processed securely, in accordance with our Privacy Policy available above in this document." }
           retractation:
-            a1: { title: "Return of products", content: "You may return only products purchased directly on the Website. Products bought in our Cannes boutique must be returned to the store. We reserve the right to refuse returns that do not meet the conditions below; return shipping costs are at your expense." }
+            a1: { title: "Return of products", content: "You may return only products purchased directly on the Website. Products bought in our Cannes boutique must be returned to the store. For any withdrawal return on the Website, use the pre-printed return label provided with your order. Autour D'Un Soir covers return shipping for any return that meets the conditions below. We reserve the right to refuse non-compliant returns; if such goods are sent back to your delivery address, those reshipment costs remain at your expense." }
             a2: { title: "Withdrawal conditions", content: "If for any reason you are not satisfied or wish to cancel, you may exercise your right of withdrawal no later than fourteen (14) days after receiving your order, subject to the conditions stated in this article and applicable law." }
-            a3: { title: "Refund", content: "In accordance with consumer law, we refund product prices and delivery costs to the original payment method. Refunds are made as soon as possible and no later than fourteen (14) days after receiving returned goods." }
+            a3: { title: "Refund", content: "In accordance with consumer law, we refund product prices and initial delivery costs to the original payment method. Return shipping for a compliant return is covered by Autour D'Un Soir as stated in « Return of products » above. Refunds are made as soon as possible and no later than fourteen (14) days after receiving returned goods." }
             a4: { title: "Care of products", content: "Please take care of products while in your possession and return them without undue delay, no later than fourteen (14) days after exercising withdrawal. If products are not properly cared for or returned under stated conditions, refund may be refused." }
           garanties:
             a1: { title: "Scope", content: "You benefit from the guarantees listed in this section only for products purchased directly on the Website." }
@@ -722,7 +731,7 @@ en:
             a3: { title: "Proof of defect", content: "You are exempt from proving the existence of a conformity defect during the first twenty-four (24) months after delivery." }
             a4: { title: "Independence of guarantees", content: "The legal conformity guarantee applies independently of any commercial guarantee and regardless of product nature." }
             a5: { title: "Hidden defects guarantee", content: "The legal guarantee against hidden defects applies. If a hidden defect is proven, we are legally required to remedy its consequences. You may choose rescission of sale or price reduction in accordance with civil law." }
-            a6: { title: "Return shipping costs", content: "In case of replacement or refund, we cover return shipping costs." }
+            a6: { title: "Return shipping costs", content: "For any compliant return (withdrawal, legal guarantee, or replacement), Autour D'Un Soir covers return shipping to our address, according to the procedure provided by customer service." }
           informations_personnelles:
             a1: { title: "Accuracy of information", content: "By providing information on the Website, you guarantee your true identity and that all information provided is true, accurate, up to date, and complete." }
             a2: { title: "Information updates", content: "If information provided is incorrect or no longer valid, you must update it. Otherwise, we cannot be held liable for resulting consequences." }
@@ -902,6 +911,10 @@ en:
       cart:
         header_title: "My cart"
         header_subtitle: "Review your selection before checkout"
+        reassurance:
+          shipping: "Carefully shipped by our Cannes team"
+          tracking: "Track your delivery"
+          returns: "Free returns within 14 days"
         intro_title: "Your selection"
         intro_text: "Check your items and continue to secure card payment. You can remove an item at any time before paying."
         summary_title: "Summary"
