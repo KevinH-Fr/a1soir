@@ -1,24 +1,26 @@
 <%# unless @messagemail.typedoc == "avoir" %> <%# cacher pour avoir%>
 
-    <div class="section-solidaire">
+    <% unless @doc_edition.commande.eshop? %>
+      <div class="section-solidaire">
 
-        <table class="table table-doc">
-        
-            <tbody>
-                <tr class="centered">
-                    <td colspan="5" class="td-doc started">Solde</td>
-                    <td class="td-doc-valeurs ended">
-                         <%= colored_value_format(solde_prix(@doc_edition.commande)) %>
-                     </td>
-                    <td class="td-doc-valeurs ended">
-                        <%= colored_value_format(solde_caution(@doc_edition.commande)) %>
-                    </td>
-                </tr>
+          <table class="table table-doc">
+          
+              <tbody>
+                  <tr class="centered">
+                      <td colspan="5" class="td-doc started">Solde</td>
+                      <td class="td-doc-valeurs ended">
+                           <%= colored_value_format(solde_prix(@doc_edition.commande)) %>
+                       </td>
+                      <td class="td-doc-valeurs ended">
+                          <%= colored_value_format(solde_caution(@doc_edition.commande)) %>
+                      </td>
+                  </tr>
 
-            </tbody>
-            
-        </table>
-    </div>
+              </tbody>
+              
+          </table>
+      </div>
+    <% end %>
 
     <%= render  "admin/pdf_commande/mentions" %>
 

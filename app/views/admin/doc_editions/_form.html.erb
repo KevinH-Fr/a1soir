@@ -30,11 +30,13 @@
 
       <hr>
 
+      <% commande_for_types = doc_edition.commande || Commande.find_by(id: session[:commande]) %>
+      <% allowed_doc_types = DocEdition.document_types_for(commande_for_types) %>
       <div class="d-flex justify-content-center">
         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-          <% DocEdition::DOCUMENT_TYPES.each do |doc_type| %>
-            <%= form.radio_button :doc_type, doc_type, id: "btnradio-#{doc_type}", class: "btn-check", data: { action: "change->form-element#remotesubmit" } %>
-            <label class="btn btn-sm btn-outline-primary" for="btnradio-<%= doc_type %>"><%= doc_type %></label>
+          <% allowed_doc_types.each do |doc_type| %>
+            <%= form.radio_button :doc_type, doc_type, id: "btnradio-#{doc_type.parameterize}", class: "btn-check", data: { action: "change->form-element#remotesubmit" } %>
+            <label class="btn btn-sm btn-outline-primary" for="btnradio-<%= doc_type.parameterize %>"><%= doc_type %></label>
           <% end %>
         </div>
       </div>

@@ -1,6 +1,14 @@
 en:
   hello: "Hello world"
 
+  activerecord:
+    errors:
+      models:
+        doc_edition:
+          attributes:
+            doc_type:
+              eshop_doc_type: "is not allowed for an e-shop order (invoice only)"
+
   date:
     formats:
       default: "%d/%m/%Y"
@@ -40,6 +48,11 @@ en:
     facture simple: "Simple Invoice"
 
   pdf_commande:
+    livraison:
+      label: "Delivery fee"
+      offert: "Free"
+    paiement_stripe:
+      moyen: "Stripe"
     mentions:
       reservation: "Any booking is final. In case of cancellation, a credit note may be issued."
       rental_late: "For any late return of a rental, a flat fee of €15/day may be charged."

@@ -9,6 +9,10 @@ class Admin::DocEditionsController < Admin::ApplicationController
   def new
     @doc_edition = DocEdition.new doc_edition_params
     @commande = Commande.find(session[:commande])
+
+    if @commande.eshop? && @doc_edition.doc_type.blank?
+      @doc_edition.doc_type = "facture"
+    end
   
     @next_meeting = @commande.next_upcoming_meeting&.start_time
   

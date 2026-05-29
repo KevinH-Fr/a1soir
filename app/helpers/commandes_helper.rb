@@ -60,6 +60,21 @@ module CommandesHelper
         sp.amount.to_d / 100
     end
 
+    def frais_livraison_stripe_euros(commande)
+        commande.stripe_payment&.frais_livraison_centimes.to_d / 100
+    end
+
+    def pdf_afficher_paiements?(commande)
+        return false unless commande
+
+        commande.paiement_recus.present? ||
+          (commande.eshop? && commande.stripe_payment&.status == "paid")
+    end
+
+    def pdf_afficher_livraison?(commande)
+        commande&.eshop? && commande.stripe_payment.present?
+    end
+
     def recu_caution(commande)
         commande.paiement_recus.only_caution.sum(:montant)
     end 

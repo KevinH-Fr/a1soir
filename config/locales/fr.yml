@@ -163,6 +163,11 @@ fr:
 
   activerecord:
     errors:
+      models:
+        doc_edition:
+          attributes:
+            doc_type:
+              eshop_doc_type: "n'est pas autorisé pour une commande e-shop (facture uniquement)"
       messages:
         record_invalid: 'La validation a échoué : %{errors}'
         restrict_dependent_destroy:
@@ -416,12 +421,17 @@ fr:
     facture simple: "Facture simple"
 
   pdf_commande:
+    livraison:
+      label: "Frais de livraison"
+      offert: "Offert"
+    paiement_stripe:
+      moyen: "Stripe"
     mentions:
       reservation: "Toute réservation est définitive. En cas d'annulation, un avoir pourra être émis."
       rental_late: "Pour tout retard de restitution de location, une somme forfaitaire de 15€/jour pourra être perçue."
       eshop_returns:
         title: "Conditions de retour — vente en ligne"
-        body: "Conformément à nos CGV (a1soir.com/legal) : vous disposez d'un droit de rétractation de 14 jours à compter de la réception de votre commande. Retour réservé aux achats effectués sur le site — utilisez l'étiquette de retour préimprimée ; les frais de retour sont pris en charge par Autour D'Un Soir pour tout renvoi conforme. Produits retournés dans leur état d'origine, avec étiquette, non portés (essayage excepté), emballage d'origine et accessoires, accompagnés de la présente facture. Remboursement du prix des produits et des frais de livraison initiaux sur le moyen de paiement initial, au plus tard sous 14 jours après réception du retour conforme. Retours non conformes refusés."
+        body: "Conformément à nos CGV (a1soir.com/legal) : vous disposez d'un droit de rétractation de 14 jours à compter de la réception de votre commande. Retour réservé aux achats effectués sur le site — utilisez l'étiquette de retour pré-imprimée ; les frais de retour sont pris en charge par Autour D'Un Soir pour tout renvoi conforme. Produits retournés dans leur état d'origine, avec étiquette, non portés (essayage excepté), emballage d'origine et accessoires, accompagnés de la présente facture. Remboursement du prix des produits et des frais de livraison sur le moyen de paiement initial, au plus tard sous 14 jours après réception du retour conforme. Retours non conformes refusés."
 
   email_footer:
     thank_you: "Toute l'équipe Autour D'Un Soir vous remercie pour votre confiance."

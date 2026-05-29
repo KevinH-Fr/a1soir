@@ -186,18 +186,7 @@ ok - webhook en prod
 - créer les produits et prices dans stripe pour la partie prod : script ci dessous
 - tester avec cha sur le site
 
-- faire un  refresh pour maj les tous produits qui auraient été modifiés, 
-update ou create product ou price
-
-
 test achat eshop : 4291
-
-
-- si facture eshop avoir un message qui indique la possibilité de retour
-
-- dans paage panier ajoutéer eptits picto qui disent livraison rapide, suivi de votre envoi, retours gratuits 
-
-- bouton remboursement la commande eshop : (ca la passe en devis, ca ajoute un remboursemetn du montant du paiement stripe, ajoute un badge qui commande remboursée et une alrte visible qui dit attention remboursement a faire depuis stripe)
 
 # bin/rails console
 # heroku run rails console -a <app>
@@ -245,3 +234,26 @@ else
   puts "#{missing.count} produit(s) eshop sans IDs Stripe :"
   missing.pluck(:id, :nom).each { |id, nom| puts "  ##{id} #{nom}" }
 end
+
+
+
+
+
+
+
+dans doc pdf commande eshop:
+- avoir une ligne dans les articles avec le cout de livraison (montant payé dans stripe)
+- avoir une ligne paiement recu stripe
+- ne pas avoir la ligne de solde
+- enlever servi par eshop et statut non retiré en haut à droite sur paiement eshop 
+
+ok
+
+todo:
+
+- bouton remboursement la commande eshop : (ca la passe en devis (verif stock bien corrigé), ca ajoute un remboursemetn du montant du paiement stripe, ajoute un badge qui commande remboursée et une alrte visible qui dit attention remboursement a faire depuis stripe)
+
+
+- faire un  refresh pour maj les tous produits qui auraient été modifiés, 
+update ou create product ou price
+

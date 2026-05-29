@@ -92,6 +92,32 @@
           </tr> 
 
         <% end %>
+
+        <% if pdf_afficher_livraison?(@doc_edition.commande) %>
+          <% livraison_euros = frais_livraison_stripe_euros(@doc_edition.commande) %>
+          <tr>
+            <td class="td-doc centered" style="width: 40px;"><%= @doc_edition.commande.articles.size + 1 %></td>
+            <td colspan="2" class="td-doc" style="vertical-align: middle;">
+              <div class="td-doc-main"><%= t("pdf_commande.livraison.label") %></div>
+            </td>
+            <td class="td-doc-valeurs centered">1</td>
+            <td class="td-doc-valeurs ended">
+              <% if livraison_euros.positive? %>
+                <%= custom_currency_format(livraison_euros) %>
+              <% else %>
+                <%= t("pdf_commande.livraison.offert") %>
+              <% end %>
+            </td>
+            <td class="td-doc-valeurs ended">
+              <% if livraison_euros.positive? %>
+                <%= custom_currency_format(livraison_euros) %>
+              <% else %>
+                <%= t("pdf_commande.livraison.offert") %>
+              <% end %>
+            </td>
+            <td class="td-doc-valeurs ended"></td>
+          </tr>
+        <% end %>
       
       </tbody>
 

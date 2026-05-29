@@ -60,14 +60,16 @@
         </div>
       <% end %>
 
-      <div>
-        Servi par 
-        <span class="doc-important"> <%= @doc_edition.commande.profile.full_name %> </span> 
-      </div>
+      <% unless @doc_edition.commande.eshop? %>
+        <div>
+          Servi par
+          <span class="doc-important"> <%= @doc_edition.commande.profile.full_name %> </span>
+        </div>
 
-      <div>Statut 
-        <span class="doc-important"> <%= @doc_edition.commande.statutarticles %> </span> 
-      </div>
+        <div>Statut
+          <span class="doc-important"> <%= @doc_edition.commande.statutarticles %> </span>
+        </div>
+      <% end %>
 
     </td>
 
