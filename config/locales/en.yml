@@ -1,6 +1,17 @@
 en:
   hello: "Hello world"
 
+  admin:
+    toasts:
+      commande:
+        remboursee_ok: "E-shop order cancelled — refund recorded (process the refund in Stripe)"
+        remboursee_deja: "This e-shop order is already marked as refunded"
+        remboursement_not_eshop: "Refunds are only available for e-shop orders"
+        remboursement_no_stripe_payment: "No Stripe payment linked to this order"
+        remboursement_stripe_not_paid: "Stripe payment is not in paid status"
+        remboursement_zero_amount: "Invalid Stripe amount for refund"
+        remboursement_record_invalid: "Unable to record the refund"
+
   activerecord:
     errors:
       models:
@@ -47,7 +58,22 @@ en:
     facture: "Invoice"
     facture simple: "Simple Invoice"
 
+  commandes:
+    eshop_remboursement:
+      button: "Cancel / refund"
+      confirm: "Cancel this e-shop order? Stock will be restored and a refund will be recorded. You must then process the refund in the Stripe Dashboard."
+      badge: "Refunded"
+      badge_title: "E-shop order cancelled (refund recorded)"
+      alert_title: "Refund to process in Stripe"
+      alert_body: "This order was cancelled in the app. Process the customer refund from the Stripe Dashboard (Payment Intent %{payment_intent})."
+      alert_body_no_pi: "This order was cancelled in the app. Process the customer refund from the Stripe Dashboard."
+
   pdf_commande:
+    annulee:
+      title: "ORDER CANCELLED"
+      stamp: "CANCELLED"
+      body: "This order has been cancelled. A refund has been recorded."
+      date_label: "Cancelled on %{date}"
     livraison:
       label: "Delivery fee"
       offert: "Free"

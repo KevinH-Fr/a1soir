@@ -48,6 +48,14 @@ class Commande < ApplicationRecord
     "C#{ 1000 + id }"
   end
 
+  def remboursee_eshop?
+    eshop? && devis? && avoir_rembs.remb_only.exists?
+  end
+
+  def date_remboursement_eshop
+    avoir_rembs.remb_only.order(custom_date: :desc, id: :desc).pick(:custom_date)
+  end
+
   def is_location
     type_locvente == "location" ? true : false
   end

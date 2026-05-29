@@ -181,6 +181,7 @@ Rails.application.routes.draw do
           post :toggle_statut_rendu_without_email
           post :marquer_expedie_with_email
           post :marquer_expedie_without_email
+          post :rembourser_eshop
         end
         
         collection do

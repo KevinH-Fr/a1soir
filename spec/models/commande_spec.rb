@@ -18,6 +18,51 @@ RSpec.describe 'Commande' do
         end
     end
 
+    describe '#remboursee_eshop?' do
+      let(:client) do
+        Client.create!(
+          nom: "Test",
+          prenom: "Remb",
+          propart: "particulier",
+          intitule: Client::INTITULE_OPTIONS.first,
+          mail: "remb-model-#{SecureRandom.hex(4)}@test.com"
+        )
+      end
+
+      let(:profile) { Profile.create!(prenom: "V", nom: "T") }
+
+      it "is true when eshop, devis, and remboursement exist" do
+        commande = Commande.create!(
+          client: client,
+          profile: profile,
+          nom: "x",
+          montant: 1,
+          devis: true,
+          eshop: true,
+          type_locvente: "vente"
+        )
+        AvoirRemb.create!(
+          commande: commande,
+          type_avoir_remb: "remboursement",
+          montant: 10
+        )
+        expect(commande.remboursee_eshop?).to be(true)
+      end
+
+      it "is false without remboursement" do
+        commande = Commande.create!(
+          client: client,
+          profile: profile,
+          nom: "x",
+          montant: 1,
+          devis: true,
+          eshop: true,
+          type_locvente: "vente"
+        )
+        expect(commande.remboursee_eshop?).to be(false)
+      end
+    end
+
     describe '#generate_qr' do
         it 'calls GenerateQr service with the commande instance' do
             commande = Commande.create(debutloc: Date.parse('2024-01-01'))

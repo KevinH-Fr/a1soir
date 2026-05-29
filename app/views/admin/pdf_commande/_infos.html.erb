@@ -10,6 +10,19 @@
         <span class="doc-important">Vente e-shop</span> <span>(commande issue du site, paiement en ligne)</span><br>
       <% end %>
 
+      <% if pdf_afficher_annulation_eshop?(@doc_edition.commande, @doc_edition) %>
+        <br>
+        <div style="border: 2px solid #333; padding: 8px; margin: 8px 0;">
+          <div class="doc-important" style="font-size: 14px;"><%= t("pdf_commande.annulee.title") %></div>
+          <div style="margin-top: 4px;"><%= t("pdf_commande.annulee.body") %></div>
+          <% if @doc_edition.commande.date_remboursement_eshop.present? %>
+            <div style="margin-top: 4px;">
+              <%= t("pdf_commande.annulee.date_label", date: @doc_edition.commande.date_remboursement_eshop.strftime("%d/%m/%Y")) %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
       <br>
 
       <span>Langue : <%= @doc_edition.commande.client.language_label %>  </span> 
@@ -44,13 +57,12 @@
 
     <td style="vertical-align: top; text-align: center; width: 20%; border-style: hidden;">
 
-      <% if @doc_edition.commande.devis? %>
-        <div class="doc-important">
-          Devis
-        </div>
-      <% else %>
-        <div class="doc-important"><%= @doc_edition.doc_type.capitalize %></div>
+      <div class="doc-important"><%= pdf_titre_document(@doc_edition.commande, @doc_edition) %></div>
+
+      <% if pdf_afficher_annulation_eshop?(@doc_edition.commande, @doc_edition) %>
+        <div class="doc-important" style="font-size: 13px; margin-top: 4px;"><%= t("pdf_commande.annulee.stamp") %></div>
       <% end %>
+
       <div class="doc-important"><%= @doc_edition.commande.ref_commande %></div>
       <div class="doc-important"><%= @doc_edition.commande.created_at.strftime("%d/%m/%Y") %></div>
 

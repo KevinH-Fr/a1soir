@@ -4,7 +4,8 @@ class Admin::CommandesController < Admin::ApplicationController
   before_action :set_commande, only: [:show, :edit, :update, :destroy,
     :toggle_statut_non_retire, :toggle_statut_retire,
     :toggle_statut_rendu_with_email, :toggle_statut_rendu_without_email,
-    :marquer_expedie_with_email, :marquer_expedie_without_email]
+    :marquer_expedie_with_email, :marquer_expedie_without_email,
+    :rembourser_eshop]
 
     def index
       @count_commandes = Commande.count
@@ -178,6 +179,19 @@ class Admin::CommandesController < Admin::ApplicationController
   def marquer_expedie_without_email
     @commande.update!(numero_suivi: params[:numero_suivi].presence, expedie_le: Time.current)
     admin_push_domain_toast!(flash, :commande, :expedie_sans_email)
+    redirect_to admin_commande_url(@commande)
+  end
+
+  def rembourser_eshop
+    result = EshopCommandeRemboursementService.new(@commande).call
+
+    if result.success?
+      toast_key = result.already_done ? :remboursee_deja : :remboursee_ok
+      admin_push_domain_toast!(flash, :commande, toast_key)
+    else
+      admin_push_domain_toast!(flash, :commande, :"remboursement_#{result.error_key}")
+    end
+
     redirect_to admin_commande_url(@commande)
   end
 

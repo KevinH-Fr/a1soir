@@ -64,6 +64,29 @@ RSpec.describe CommandesHelper, type: :helper do
     end
   end
 
+  describe "#pdf_afficher_annulation_eshop?" do
+    it "is true for facture on remboursee eshop commande" do
+      commande.update!(devis: true)
+      AvoirRemb.create!(
+        commande: commande,
+        type_avoir_remb: "remboursement",
+        montant: 60
+      )
+      doc = DocEdition.new(commande: commande, doc_type: "facture")
+
+      expect(helper.pdf_afficher_annulation_eshop?(commande.reload, doc)).to be(true)
+    end
+  end
+
+  describe "#pdf_titre_document" do
+    it "returns Facture for facture doc even when devis" do
+      commande.update!(devis: true)
+      doc = DocEdition.new(commande: commande, doc_type: "facture")
+
+      expect(helper.pdf_titre_document(commande, doc)).to eq(I18n.t("document_types.facture"))
+    end
+  end
+
   describe "#pdf_afficher_livraison?" do
     it "is true when e-shop has a stripe payment record" do
       StripePayment.create!(

@@ -11,6 +11,28 @@ module CommandesHelper
       end
     end
 
+    def commande_remboursee_badge(commande)
+      return "".html_safe unless commande&.remboursee_eshop?
+
+      content_tag(:span,
+                  class: "badge border border-danger text-danger fw-semibold m-1 shadow-sm",
+                  title: t("commandes.eshop_remboursement.badge_title")) do
+        concat content_tag(:i, nil, class: "bi bi-arrow-counterclockwise me-1")
+        concat t("commandes.eshop_remboursement.badge")
+      end
+    end
+
+    def pdf_afficher_annulation_eshop?(commande, doc_edition)
+      doc_edition.doc_type == "facture" && commande.remboursee_eshop?
+    end
+
+    def pdf_titre_document(commande, doc_edition)
+      return t("document_types.facture") if doc_edition.doc_type == "facture"
+      return "Devis" if commande.devis?
+
+      doc_edition.doc_type.to_s.capitalize
+    end
+
     def compte_articles(commande)
         if commande 
             commande.articles.sum(:quantite) 

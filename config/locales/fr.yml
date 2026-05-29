@@ -41,6 +41,13 @@ fr:
         rendu_sans_email: "Commande rendue (sans envoi d'e-mail)"
         expedie_avec_email: "Commande expédiée — e-mail envoyé au client"
         expedie_sans_email: "Commande expédiée (sans e-mail)"
+        remboursee_ok: "Commande e-shop annulée — remboursement enregistré (effectuer le remboursement dans Stripe)"
+        remboursee_deja: "Cette commande e-shop est déjà marquée comme remboursée"
+        remboursement_not_eshop: "Remboursement réservé aux commandes e-shop"
+        remboursement_no_stripe_payment: "Aucun paiement Stripe lié à cette commande"
+        remboursement_stripe_not_paid: "Le paiement Stripe n'est pas au statut payé"
+        remboursement_zero_amount: "Montant Stripe invalide pour le remboursement"
+        remboursement_record_invalid: "Impossible d'enregistrer le remboursement"
       selection_produit:
         ensemble_introuvable: "Aucun ensemble correspondant trouvé."
         selection_ensemble_introuvable: "Ensemble sélectionné introuvable."
@@ -420,7 +427,22 @@ fr:
     facture: "Facture"
     facture simple: "Facture simple"
 
+  commandes:
+    eshop_remboursement:
+      button: "Annuler / rembourser"
+      confirm: "Annuler cette commande e-shop ? Le stock sera rétabli et un remboursement sera enregistré. Vous devrez ensuite effectuer le remboursement dans le Dashboard Stripe."
+      badge: "Remboursée"
+      badge_title: "Commande e-shop annulée (remboursement enregistré)"
+      alert_title: "Remboursement à effectuer dans Stripe"
+      alert_body: "Cette commande a été annulée dans l'application. Effectuez le remboursement du client depuis le Dashboard Stripe (Payment Intent %{payment_intent})."
+      alert_body_no_pi: "Cette commande a été annulée dans l'application. Effectuez le remboursement du client depuis le Dashboard Stripe."
+
   pdf_commande:
+    annulee:
+      title: "COMMANDE ANNULÉE"
+      stamp: "ANNULÉE"
+      body: "Cette commande a été annulée. Un remboursement a été enregistré."
+      date_label: "Annulée le %{date}"
     livraison:
       label: "Frais de livraison"
       offert: "Offert"

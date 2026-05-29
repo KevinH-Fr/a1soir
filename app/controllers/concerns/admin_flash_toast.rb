@@ -181,6 +181,41 @@ module AdminFlashToast
         icon: "truck",
         message_key: "admin.toasts.commande.expedie_sans_email",
       },
+      remboursee_ok: {
+        variant: :success,
+        icon: "arrow-counterclockwise",
+        message_key: "admin.toasts.commande.remboursee_ok",
+      },
+      remboursee_deja: {
+        variant: :info,
+        icon: "arrow-counterclockwise",
+        message_key: "admin.toasts.commande.remboursee_deja",
+      },
+      remboursement_not_eshop: {
+        variant: :warning,
+        icon: "exclamation-triangle-fill",
+        message_key: "admin.toasts.commande.remboursement_not_eshop",
+      },
+      remboursement_no_stripe_payment: {
+        variant: :warning,
+        icon: "exclamation-triangle-fill",
+        message_key: "admin.toasts.commande.remboursement_no_stripe_payment",
+      },
+      remboursement_stripe_not_paid: {
+        variant: :warning,
+        icon: "exclamation-triangle-fill",
+        message_key: "admin.toasts.commande.remboursement_stripe_not_paid",
+      },
+      remboursement_zero_amount: {
+        variant: :warning,
+        icon: "exclamation-triangle-fill",
+        message_key: "admin.toasts.commande.remboursement_zero_amount",
+      },
+      remboursement_record_invalid: {
+        variant: :danger,
+        icon: "exclamation-triangle-fill",
+        message_key: "admin.toasts.commande.remboursement_record_invalid",
+      },
     },
     selection_produit: {
       ensemble_introuvable: {
