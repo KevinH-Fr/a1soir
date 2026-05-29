@@ -96,4 +96,37 @@ RSpec.describe "Google Merchant feed", type: :request do
     get "/google_merchant_feed.xml"
     expect(response.body).not_to include("Sans image")
   end
+
+  it "emits item_group_id of at most 50 characters for long handles" do
+    long_handle = "harper-robe-longue-fourreau-jersey-plisse-perles-fente"
+    produit_long = Produit.create!(
+      nom: "Harper — robe longue fourreau jersey plissé perles fente",
+      description: "<p>Robe longue</p>",
+      prixvente: 199.0,
+      poids: 400,
+      stripe_price_id: "price_merchant_feed_003",
+      eshop: true,
+      actif: true,
+      today_availability: true,
+      quantite: 1,
+      handle: long_handle,
+      taille: taille_m,
+      couleur: couleur_rouge
+    )
+    produit_long.image1.attach(
+      io: StringIO.new("fake-jpeg-bytes"),
+      filename: "harper.jpg",
+      content_type: "image/jpeg"
+    )
+    produit_long.categorie_produits << categorie_robes_courtes
+
+    expected = GoogleMerchant::FeedFormatting.item_group_id(produit_long)
+
+    get "/google_merchant_feed.xml"
+
+    expect(long_handle.length).to be > 50
+    expect(expected.length).to be <= 50
+    expect(response.body).to include("<g:item_group_id>#{expected}</g:item_group_id>")
+    expect(response.body).not_to include("<g:item_group_id>#{long_handle}</g:item_group_id>")
+  end
 end

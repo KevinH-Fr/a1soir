@@ -172,13 +172,11 @@ ok - modif du mail avec info livraison à venir par lequipe
 ok - quid webhook ? local et prod ? prod seulement avec le endpoint etc
 ok - quid protection purchase success ?
 
+
 reprendre : 
 
-- double auth stripe
-- autoriser mon ordi
-
 mode prod avec cha :
-- activer espace de prod avec toutes les infos
+ok - activer espace de prod avec toutes les infos
 - var env de prod et espace de prod dans stripe
 - webhook en prod
 - créer les produits et prices dans stripe pour la partie prod : script ci dessous

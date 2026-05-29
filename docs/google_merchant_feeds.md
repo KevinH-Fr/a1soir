@@ -28,6 +28,34 @@ L'identifiant produit actuel est de la forme :
 Cet identifiant doit rester strictement identique dans tous les flux Merchant
 lies au meme produit.
 
+### Regroupement variantes (`g:item_group_id`)
+
+Google impose **1 a 50 caracteres** (alphanumeriques, tirets, underscores) pour
+`item_group_id`. Le site utilise un `handle` derive du titre SEO (`nom.parameterize`),
+qui peut depasser cette limite apres renommage (ex. titres longs type Harper).
+
+Le flux normalise donc la valeur via `GoogleMerchant::FeedFormatting.item_group_id` :
+
+- handle <= 50 caracteres : valeur identique au `handle` en base ;
+- handle > 50 : forme raccourcie deterministe (`prefixe` + hash), **identique entre
+  toutes les variantes** d'une meme famille ;
+- les URLs du site (`/fr/produit/<handle>-<id>`) ne sont pas modifiees.
+
+Verification apres deploy :
+
+```bash
+curl -sL https://a1soir.com/google_merchant_feed.xml | grep -E 'item_group_id|harper'
+```
+
+Dans Merchant Center : recuperation manuelle du flux principal, puis controle des
+diagnostics (disparition de l'alerte « Texte trop long : item_group_id » sous 24-48 h).
+
+Audit console (familles concernees) :
+
+```ruby
+Produit.where("CHAR_LENGTH(handle) > 50").distinct.pluck(:handle, :nom)
+```
+
 ## Flux Inventaire Local
 
 URL publique :

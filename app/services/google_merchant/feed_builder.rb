@@ -62,7 +62,7 @@ module GoogleMerchant
               xm.tag!("g:price", FeedFormatting.format_price_eur(produit.prixvente))
               xm.tag!("g:brand", FEED_BRAND)
               xm.tag!("g:shipping_weight", self.class.format_shipping_weight_kg(produit.poids.to_i))
-              xm.tag!("g:item_group_id", produit.handle.presence || "group-#{produit.id}")
+              xm.tag!("g:item_group_id", FeedFormatting.item_group_id(produit))
               xm.tag!("g:size", produit.taille.nom) if produit.taille&.nom.present?
               xm.tag!("g:color", produit.couleur.nom) if produit.couleur&.nom.present?
               xm.tag!("g:gender", ApparelAttributes.gender_for(produit))
