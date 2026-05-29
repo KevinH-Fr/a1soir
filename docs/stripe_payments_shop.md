@@ -113,8 +113,264 @@ scope.find_each do |p|
   StripeProductService.new(p.reload).create_product_and_price
   puts "#{p.id} → #{p.reload.stripe_price_id}"
 end
+```
 
 Le service pose une métadonnée `produit_id` sur le Product Stripe et n’envoie la description que si elle est renseignée ([`StripeProductService`](../app/services/stripe_product_service.rb)).
+
+### Refresh incrémental (post-bulk)
+
+Après un **bulk** console (milliers de produits sur une plage horaire), des modifs admin peuvent ne pas avoir été poussées vers Stripe si `ONLINE_SALES_AVAILABLE` était `false` (les callbacks du [`Admin::ProduitsController`](../app/controllers/admin/produits_controller.rb) ne s’exécutent pas). Le bulk écrit les IDs via `update_columns` : **`updated_at` ne bouge pas** pendant le bulk ; seules les vraies sauvegardes admin ou les créations font monter `updated_at` / `created_at`.
+
+**Ne pas** réutiliser le script bulk (`update_all(stripe_product_id: nil, …)`). Utiliser `update_product_and_price` sur un périmètre restreint.
+
+**Prérequis** : `STRIPE_SECRET_KEY` sur le bon compte. `OnlineSales.available?` peut rester `false` en console (le service Stripe est appelé directement).
+
+#### Borne `SINCE`
+
+L’app est en **`Europe/Paris`** ([`config/application.rb`](../config/application.rb)) : `Time.zone.parse` = heure **France**, comme dans le Dashboard Stripe.
+
+Reculer **avant** la première création visible dans Stripe (le bulk peut avoir démarré avant l’heure du premier produit affiché, ex. premier `prod_` à 14h56 alors que le script a commencé plus tôt). Tous les produits modifiés ou créés en admin **depuis** `SINCE` sont candidats. Le bulk n’a pas touché `updated_at` (IDs écrits via `update_columns`), donc les ~3000 lignes déjà synchronisées ne remontent pas sauf si `stripe_*` manquant.
+
+```ruby
+# Jour J — heure France : 30 à 60 min avant le premier produit Stripe du bulk
+SINCE = Time.zone.parse("2026-05-29 14:00:00")
+
+# Ou l’heure exacte du tout premier create Stripe si vous la connaissez, moins une marge :
+# SINCE = Time.zone.parse("2026-05-29 13:30:00")
+```
+
+#### Étape 1 — Dry-run (lister les candidats)
+
+```ruby
+# bin/rails console
+# heroku run rails console -a <app>
+
+SINCE = Time.zone.parse("2026-05-29 12:00:00")  # heure France (Europe/Paris), avant le début réel du bulk
+
+puts "Stripe key: #{Stripe.api_key.to_s[0, 12]}..."
+puts "SINCE (Paris) : #{SINCE}"
+
+candidates = Produit.where(eshop: true)
+  .where("prixvente IS NOT NULL AND prixvente > 0")
+  .where(
+    "updated_at >= ? OR created_at >= ? OR stripe_product_id IS NULL OR stripe_price_id IS NULL",
+    SINCE, SINCE
+  )
+  .order(:id)
+
+puts "Candidats : #{candidates.count}"
+candidates.pluck(:id, :nom, :created_at, :updated_at, :stripe_price_id).each { |r| puts r.inspect }
+```
+
+- `stripe_*` NULL → créations ou oublis (sans filtre date).
+- `updated_at >= SINCE` → modifs admin post-bulk (nom, description, etc.).
+- `created_at >= SINCE` → nouveaux produits.
+
+`today_availability` utilise `update_column` → ne fausse pas `updated_at`.
+
+Un `updated_at` le jour du bulk peut venir d’une **migration / renommage** en masse (pas seulement d’une fiche admin) : le dry-run peut lister des dizaines de lignes déjà OK côté Stripe. D’où l’étape 1b avant de pousser.
+
+#### Étape 1b — Comparer app ↔ Stripe (lecture seule)
+
+Sur le même `candidates` que l’étape 1 (~64 lignes typiques) :
+
+```ruby
+gaps = []  # [id, nom, raison]
+
+candidates.find_each do |p|
+  if p.stripe_product_id.blank? || p.stripe_price_id.blank?
+    gaps << [p.id, p.nom, "ids_manquants_en_base"]
+    next
+  end
+
+  sp = Stripe::Product.retrieve(p.stripe_product_id)
+  unless sp.name == p.nom.to_s
+    gaps << [p.id, p.nom, "nom"]
+  end
+  expected_desc = p.description.present? ? p.description.to_s.truncate(4500) : nil
+  unless expected_desc.nil? || sp.description.to_s == expected_desc
+    gaps << [p.id, p.nom, "description"]
+  end
+rescue Stripe::InvalidRequestError
+  gaps << [p.id, p.nom, "absent_sur_stripe"]
+end
+
+ids_to_sync = gaps.map(&:first).uniq
+puts "Écarts : #{gaps.size} ligne(s), #{ids_to_sync.size} produit(s) à synchroniser"
+gaps.each { |r| puts r.inspect }
+
+# Déjà alignés (optionnel)
+aligned = candidates.where.not(id: ids_to_sync).pluck(:id, :nom)
+puts "Déjà OK (nom + description) : #{aligned.size}"
+```
+
+#### Étape 2 — Synchroniser (create ou update selon le besoin)
+
+**Option A — uniquement les écarts** (recommandé après 1b) :
+
+```ruby
+to_sync = Produit.where(id: ids_to_sync).order(:id)
+
+ok = 0
+errors = []
+
+to_sync.find_each do |p|
+  StripeProductService.new(p.reload).update_product_and_price
+  p.reload
+  puts "OK ##{p.id} #{p.nom} → #{p.stripe_price_id}"
+  ok += 1
+rescue StandardError => e
+  puts "ERR ##{p.id} : #{e.message}"
+  errors << p.id
+end
+
+puts "Refresh : #{ok}/#{to_sync.count} OK, #{errors.size} erreur(s)"
+```
+
+**Option B — tout le lot `candidates`** (si vous préférez forcer sans audit, ex. &lt; 100 lignes) :
+
+```ruby
+ok = 0
+errors = []
+
+candidates.find_each do |p|
+  StripeProductService.new(p.reload).update_product_and_price
+  p.reload
+  puts "OK ##{p.id} #{p.nom} → #{p.stripe_price_id}"
+  ok += 1
+rescue StandardError => e
+  puts "ERR ##{p.id} : #{e.message}"
+  errors << p.id
+end
+
+puts "Refresh : #{ok}/#{candidates.count} OK, #{errors.size} erreur(s)"
+```
+
+Par produit, [`StripeProductService#update_product_and_price`](../app/services/stripe_product_service.rb) :
+
+- IDs Stripe **absents** → `create_product_and_price`.
+- IDs **présents** → `Stripe::Product.update` (nom, description, images) ; le `Price` n’est recréé que si `prixvente` a changé sur le dernier `save` admin.
+- IDs **invalides** sur le compte courant → recréation automatique (rescue existant).
+
+**Attention** : en refresh massif, `images: []` peut effacer les images Stripe si le produit n’a pas d’`image1` attachée (même comportement qu’en admin).
+
+#### Étape 3 — Vérification
+
+```ruby
+still = candidates.where("stripe_product_id IS NULL OR stripe_price_id IS NULL")
+puts still.count.zero? ? "OK" : still.pluck(:id, :nom)
+```
+
+Puis activer `ONLINE_SALES_AVAILABLE=true` en prod pour que les prochains saves admin restent synchronisés sans script.
+
+#### Audit ponctuel (optionnel)
+
+**Ne pas** lancer en routine sur tout le catalogue (~3000 appels `Product.retrieve`, rate limits). Utile une seule fois si le dry-run est suspect ou en cas de doute sur la fin du bulk. Script **lecture seule** ; en cas d’écarts, lancer l’étape 2 uniquement sur les IDs concernés.
+
+```ruby
+mismatches = []
+Produit.where(eshop: true)
+  .where("prixvente IS NOT NULL AND prixvente > 0")
+  .where.not(stripe_product_id: nil)
+  .find_each do |p|
+    sp = Stripe::Product.retrieve(p.stripe_product_id)
+    name_ok = sp.name == p.nom.to_s
+    expected_desc = p.description.present? ? p.description.to_s.truncate(4500) : nil
+    desc_ok = expected_desc.nil? || sp.description.to_s == expected_desc
+    mismatches << [p.id, p.nom] unless name_ok && desc_ok
+  rescue Stripe::InvalidRequestError
+    mismatches << [p.id, p.nom, "missing_on_stripe"]
+  end
+puts "Écarts : #{mismatches.size}"
+mismatches.first(20).each { |r| puts r.inspect }
+```
+
+La comparaison stricte nom/description est fragile (description tronquée à 4500 car., description vide en base mais encore présente sur Stripe). Le checkout repose surtout sur `stripe_price_id`.
+
+### Audit catalogue e-shop ↔ Stripe (existence, lecture seule)
+
+Vérifie que **chaque** produit e-shop éligible au checkout a un `stripe_product_id` et un `stripe_price_id` en base, et que ces objets **existent** sur le compte Stripe courant (`STRIPE_SECRET_KEY`). **Aucune écriture** (pas de `StripeProductService`, pas de `create` / `update`).
+
+Comptez ~2 appels API par produit (`Product.retrieve` + `Price.retrieve`) — sur ~3000 lignes, prévoir quelques minutes et respecter les rate limits Stripe.
+
+```ruby
+# bin/rails console
+# heroku run rails console -a <app>
+
+puts "Stripe key: #{Stripe.api_key.to_s[0, 12]}..."
+
+scope = Produit.where(eshop: true)
+               .where("prixvente IS NOT NULL AND prixvente > 0")
+               .order(:id)
+
+missing_ids_db   = []  # pas d'ID en base
+product_missing  = []  # prod_ introuvable
+price_missing    = []  # price_ introuvable
+price_orphan     = []  # price existe mais rattaché à un autre Product
+inactive         = []  # product ou price désactivé (info)
+api_errors       = []  # autre erreur Stripe
+ok_count         = 0
+total            = scope.count
+
+scope.find_each.with_index do |p, i|
+  puts "… #{i + 1}/#{total}" if total.positive? && ((i + 1) % 200).zero?
+
+  if p.stripe_product_id.blank? || p.stripe_price_id.blank?
+    missing_ids_db << [p.id, p.nom, p.stripe_product_id, p.stripe_price_id]
+    next
+  end
+
+  begin
+    sp = Stripe::Product.retrieve(p.stripe_product_id)
+    inactive << [p.id, p.nom, "product_inactive"] if sp.active == false
+  rescue Stripe::InvalidRequestError => e
+    product_missing << [p.id, p.nom, p.stripe_product_id, e.message]
+    next
+  end
+
+  begin
+    pr = Stripe::Price.retrieve(p.stripe_price_id)
+    inactive << [p.id, p.nom, "price_inactive"] if pr.active == false
+    if pr.product != p.stripe_product_id
+      price_orphan << [p.id, p.nom, p.stripe_price_id, "price→#{pr.product}"]
+    end
+  rescue Stripe::InvalidRequestError => e
+    price_missing << [p.id, p.nom, p.stripe_price_id, e.message]
+    next
+  end
+
+  ok_count += 1
+rescue StandardError => e
+  api_errors << [p.id, p.nom, e.class, e.message]
+end
+
+puts "\n--- Rapport (lecture seule) ---"
+puts "Catalogue e-shop (prixvente > 0) : #{total}"
+puts "OK (product + price existants)   : #{ok_count}"
+puts "Sans IDs en base                 : #{missing_ids_db.size}"
+puts "Product introuvable sur Stripe   : #{product_missing.size}"
+puts "Price introuvable sur Stripe     : #{price_missing.size}"
+puts "Price rattaché à autre Product   : #{price_orphan.size}"
+puts "Product/Price inactifs (info)    : #{inactive.size}"
+puts "Autres erreurs                   : #{api_errors.size}"
+
+[[missing_ids_db, "Sans IDs en base"],
+ [product_missing, "Product introuvable"],
+ [price_missing, "Price introuvable"],
+ [price_orphan, "Price orphelin"],
+ [inactive, "Inactifs (info)"],
+ [api_errors, "Autres erreurs"]].each do |list, label|
+  next if list.empty?
+
+  puts "\n#{label} (#{list.size}) :"
+  list.first(30).each { |r| puts "  #{r.inspect}" }
+  puts "  … et #{list.size - 30} de plus" if list.size > 30
+end
+
+puts "\nTerminé — rien n'a été modifié."
+```
+
+En cas d’anomalies : corriger en base ou lancer le [refresh incrémental](#refresh-incrémental-post-bulk) / recréation ciblée — pas ce script.
 
 ---
 
@@ -249,11 +505,17 @@ dans doc pdf commande eshop:
 
 ok
 
+- bouton remboursement la commande eshop : (ca la passe en devis (verif stock bien corrigé), ca ajoute un remboursemetn du montant du paiement stripe, ajoute un badge qui dit commande remboursée et une alerte visible sur la page web qui dit attention remboursement a faire depuis stripe)
+verif document facture conforme avec le remboursement
+
+ok 
+
+
+
 todo:
 
-- bouton remboursement la commande eshop : (ca la passe en devis (verif stock bien corrigé), ca ajoute un remboursemetn du montant du paiement stripe, ajoute un badge qui commande remboursée et une alrte visible qui dit attention remboursement a faire depuis stripe)
+ok - refresh incrémental post-bulk (voir section « Refresh incrémental » ci-dessus)
 
+avant 3320
 
-- faire un  refresh pour maj les tous produits qui auraient été modifiés, 
-update ou create product ou price
-
+apres idem avec 9 modifs
