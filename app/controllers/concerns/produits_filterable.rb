@@ -121,8 +121,8 @@ module ProduitsFilterable
     available_produits_scope = Produit.where(id: available_produits_ids)
                                       .reorder("produits.coup_de_coeur DESC, produits.updated_at DESC")
 
-    # 🔁 Then paginate the available produits (5 per page)
-    @pagy, @produits = pagy(available_produits_scope, items: 4)
+    # 🔁 Then paginate the available produits (9 per page)
+    @pagy, @produits = pagy(available_produits_scope, items: 9)
   end
 
   # Calcule les options de filtres disponibles à partir d'un scope de produits

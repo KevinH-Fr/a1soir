@@ -9,7 +9,7 @@ class Admin::FournisseursController < Admin::ApplicationController
     @q = Fournisseur.ransack(search_params[:q])
     fournisseurs_scope = @q.result(distinct: true)
     @fournisseurs_count = fournisseurs_scope.count
-    @pagy, @fournisseurs = pagy_countless(fournisseurs_scope.order(created_at: :desc), items: 2)
+    @pagy, @fournisseurs = pagy_countless(fournisseurs_scope.order(created_at: :desc), items: 10)
   end
 
   def show

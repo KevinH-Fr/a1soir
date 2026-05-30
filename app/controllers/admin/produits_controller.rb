@@ -65,7 +65,7 @@ class Admin::ProduitsController < Admin::ApplicationController
   
     produits = @q.result(distinct: true).order(updated_at: :desc)
   
-    @pagy, @produits = pagy_countless(produits, items: 2)
+    @pagy, @produits = pagy_countless(produits, items: 10)
   
     @categorie_produits = CategorieProduit.order(:nom)
     @type_produits = TypeProduit.order(:nom)

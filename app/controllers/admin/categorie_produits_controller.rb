@@ -11,7 +11,7 @@ class Admin::CategorieProduitsController < Admin::ApplicationController
       q:[:nom_cont])
     @q = CategorieProduit.ransack(search_params[:q])
     categorie_produits = @q.result(distinct: true).order(created_at: :desc)
-    @pagy, @categorie_produits = pagy_countless(categorie_produits, items: 2)
+    @pagy, @categorie_produits = pagy_countless(categorie_produits, items: 10)
 
   end
 

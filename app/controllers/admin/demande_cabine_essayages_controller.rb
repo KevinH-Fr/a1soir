@@ -9,7 +9,7 @@ class Admin::DemandeCabineEssayagesController < Admin::ApplicationController
       q:[:nom_or_prenom_or_mail_or_telephone_cont])
     @q = DemandeCabineEssayage.ransack(search_params[:q])
     demandes = @q.result(distinct: true).order(created_at: :desc)
-    @pagy, @demande_cabine_essayages = pagy_countless(demandes, items: 2)
+    @pagy, @demande_cabine_essayages = pagy_countless(demandes, items: 10)
   end
 
   def show

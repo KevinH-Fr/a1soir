@@ -10,7 +10,7 @@ class Admin::EnsemblesController < Admin::ApplicationController
       q:[:produit_nom_cont])
     @q = Ensemble.ransack(search_params[:q])
     ensembles = @q.result(distinct: true).order(created_at: :desc)
-    @pagy, @ensembles = pagy_countless(ensembles, items: 2)
+    @pagy, @ensembles = pagy_countless(ensembles, items: 10)
 
   end
 

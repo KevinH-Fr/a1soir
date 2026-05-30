@@ -9,7 +9,7 @@ class Admin::MeetingsController < Admin::ApplicationController
       q:[:nom_or_datedebut_or_datefin_or_lieu_cont])
     @q = Meeting.ransack(search_params[:q])
     meetings = @q.result(distinct: true).order(created_at: :desc)
-    @pagy, @meetings = pagy_countless(meetings, items: 2)
+    @pagy, @meetings = pagy_countless(meetings, items: 10)
 
     @commandes = Commande.all
     @clients = Client.all
