@@ -17,20 +17,25 @@ ______________
 ToDo short terme : 
 _____________________
 
-sur nouvelle branch git
 
-- passer sur ferrer pour pdf et reconstruire les pdf a la plce de wicked pdf ?
+- passer sur ferrer pour pdf et reconstruire les pdf a la plce de wicked pdf 
+
+reprendre : 
+
+ok - push prod de l'update ferrum
     etiquettes, commandes, syntehse reporting admin
-- supprimer les var env pour format pdf etiquettes
-- supprimer wkhtmltopdf de la prod (buildpack)
+ok - supprimer les var env pour format pdf etiquettes
+ok - supprimer wkhtmltopdf de la prod (buildpack)
+ok - verif pdf reporting stock bien protégé admin seul pas vendeur
+ok - supprimer les tests ferrum
 
-verif pdf reporting stock bien protégé admin seul pas vendeur
 
-- supprimer les tests ferrum
 - passer sur last version of heroku
 - verif prise de rdv ok avec mail en prod
 - verif article sous article ok
-
+- voir avec cha si elle veut un format plus pratique pour le decoupage des etiquettes ?
+- retester notamment avec bcp tailels et couleurs en prod
+- restester commande
 
 ToDo long terme :
 _________________
