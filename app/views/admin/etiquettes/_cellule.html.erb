@@ -3,7 +3,7 @@
 
   <%# Image produit (prend tout l'espace restant) %>
   <div class="etiquette-image-area p-2 d-flex align-items-center justify-content-center">
-    <%= pdf_image_tag(produit.default_image, style: "width:100%;height:100%;object-fit:contain;") %>
+    <%= pdf_product_thumb_tag(produit.default_image, width: 400, style: "width:100%;height:100%;object-fit:contain;") %>
   </div>
 
   <%# QR + nom + prix %>

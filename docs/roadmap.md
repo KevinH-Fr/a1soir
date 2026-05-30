@@ -36,9 +36,6 @@ ok - upgrade puma ?
 ok - verif prise de rdv ok avec mail en prod
 ok - verif article sous article ok
 
-reprendre : 
-
-
 ok - voir avec cha si elle veut un format plus pratique pour le decoupage des etiquettes ?
 ok - retester notamment avec bcp tailels et couleurs en prod
 ok - restester commande
@@ -49,11 +46,16 @@ ok - fix n+1 admin
 ok - fix n+1 public
 
 
+opti pdf : 
+- images a eviter en pleine qualité
+- voir si gc en buildpack fonctionne bien ?
+- voir pour ameliorer la baseline a 630 mb sur heroku ?
+- si necessaire passer sur un worker pour pdf ?
+
 
 ToDo long terme :
 _________________
 
-- aumgenter le nb de produits chargés d'un coup dans produtis (turbo)
 - partie blog : ajouter des pages seo avec l'histoire d'une cateogire et les liens vers les produits, une video pour engagemnet plus long
 
 - mettre en place le flux merchant pour produits en boutique (code etablissement)

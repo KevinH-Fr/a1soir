@@ -21,7 +21,7 @@
       <tr>
         <td class="text-center align-middle text-muted small"><%= i + 1 %></td>
         <td class="text-center align-middle">
-          <%= pdf_image_tag(article.produit.default_image, class: "img-fluid rounded pdf-thumb") %>
+          <%= pdf_product_thumb_tag(article.produit.default_image, width: 80, class: "img-fluid rounded pdf-thumb") %>
         </td>
         <td class="align-middle">
           <div class="fw-bold small"><%= article.produit.nom %></div>
@@ -46,7 +46,7 @@
           <td class="align-middle">
             <div class="d-flex align-items-center gap-2">
               <div class="flex-shrink-0">
-                <%= pdf_image_tag(sousarticle.produit.default_image, class: "img-fluid rounded pdf-thumb-sm") %>
+                <%= pdf_product_thumb_tag(sousarticle.produit.default_image, width: 40, class: "img-fluid rounded pdf-thumb-sm") %>
               </div>
               <div class="flex-grow-1 small">
                 <div class="fw-bold"><%= sousarticle.produit.nom %></div>
