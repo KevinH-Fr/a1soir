@@ -11,7 +11,7 @@ class Admin::TaillesController < Admin::ApplicationController
       q:[:nom_cont])
     @q = Taille.ransack(search_params[:q])
     tailles = @q.result(distinct: true).order(:nom)
-    @pagy, @tailles = pagy_countless(tailles, items: 10)
+    @pagy, @tailles = pagy_countless(tailles, items: 2)
 
 
   end

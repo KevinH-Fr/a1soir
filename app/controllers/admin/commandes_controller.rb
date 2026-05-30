@@ -22,7 +22,7 @@ class Admin::CommandesController < Admin::ApplicationController
     
     #  Rails.logger.debug commandes.to_sql  # <-- à retirer ensuite
     
-      @pagy, @commandes = pagy_countless(commandes, items: 10)
+      @pagy, @commandes = pagy_countless(commandes, items: 2)
     
       @clients = Client.all
       @profiles = Profile.all

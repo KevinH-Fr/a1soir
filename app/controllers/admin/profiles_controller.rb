@@ -10,7 +10,7 @@ class Admin::ProfilesController < Admin::ApplicationController
     @q = Profile.ransack(search_params[:q])
     profiles_scope = @q.result(distinct: true)
     @profiles_count = profiles_scope.count
-    @pagy, @profiles = pagy_countless(profiles_scope.order(created_at: :desc), items: 10)
+    @pagy, @profiles = pagy_countless(profiles_scope.order(created_at: :desc), items: 2)
   end
 
   def show

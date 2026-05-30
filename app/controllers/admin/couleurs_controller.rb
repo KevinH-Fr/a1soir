@@ -10,7 +10,7 @@ class Admin::CouleursController < Admin::ApplicationController
       q:[:nom_cont])
     @q = Couleur.ransack(search_params[:q])
     couleurs = @q.result(distinct: true).order(:nom)
-    @pagy, @couleurs = pagy_countless(couleurs, items: 10)
+    @pagy, @couleurs = pagy_countless(couleurs, items: 2)
 
   end
 
