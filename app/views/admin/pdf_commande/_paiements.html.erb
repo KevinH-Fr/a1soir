@@ -1,6 +1,7 @@
 <% commande = @doc_edition.commande %>
+<% eshop = commande.eshop? %>
 <% stripe_payment = commande.stripe_payment %>
-<% afficher_stripe = commande.eshop? && stripe_payment&.status == "paid" %>
+<% afficher_stripe = eshop && stripe_payment&.status == "paid" %>
 
 <% if pdf_afficher_paiements?(commande) %>
   <div class="pdf-no-break mt-4">
@@ -14,7 +15,9 @@
           <th>Mode</th>
           <th class="text-center">Date</th>
           <th class="text-end">Prix</th>
-          <th class="text-end">Caution</th>
+          <% unless eshop %>
+            <th class="text-end">Caution</th>
+          <% end %>
         </tr>
       </thead>
       <tbody>
@@ -26,7 +29,9 @@
             <td class="align-middle small"><%= paiement.moyen %></td>
             <td class="text-center align-middle small"><%= paiement.custom_date.strftime("%d/%m/%y") if paiement.custom_date.present? %></td>
             <td class="text-end align-middle"><%= custom_currency_format(paiement.montant) if paiement.typepaiement == "prix" %></td>
-            <td class="text-end align-middle"><%= custom_currency_format(paiement.montant) if paiement.typepaiement == "caution" %></td>
+            <% unless eshop %>
+              <td class="text-end align-middle"><%= custom_currency_format(paiement.montant) if paiement.typepaiement == "caution" %></td>
+            <% end %>
           </tr>
         <% end %>
 
@@ -39,7 +44,9 @@
             <td class="align-middle small"><%= stripe_label %></td>
             <td class="text-center align-middle small"><%= stripe_payment.created_at.strftime("%d/%m/%y") %></td>
             <td class="text-end align-middle"><%= custom_currency_format(recu_prix_stripe_euros(commande)) %></td>
-            <td class="text-end align-middle"></td>
+            <% unless eshop %>
+              <td class="text-end align-middle"></td>
+            <% end %>
           </tr>
         <% end %>
       </tbody>
@@ -47,7 +54,9 @@
         <tr>
           <td colspan="3" class="text-end text-muted small">Total reçu</td>
           <td class="text-end"><%= custom_currency_format(recu_prix(commande)) %></td>
-          <td class="text-end"><%= custom_currency_format(recu_caution(commande)) %></td>
+          <% unless eshop %>
+            <td class="text-end"><%= custom_currency_format(recu_caution(commande)) %></td>
+          <% end %>
         </tr>
       </tfoot>
     </table>
