@@ -270,7 +270,7 @@ GEM
       date
       stringio
     public_suffix (5.0.4)
-    puma (6.4.2)
+    puma (7.2.1)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.6)
@@ -453,7 +453,7 @@ DEPENDENCIES
   letter_opener
   pagy
   pg (~> 1.4, >= 1.4.1)
-  puma (>= 5.0)
+  puma (~> 7.1)
   rails (~> 7.2.0)
   ransack (>= 4.2.1)
   redis (>= 4.0.1)
