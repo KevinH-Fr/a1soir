@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
-ruby "3.2.2"
-gem "rails", "~> 7.1.3"
+ruby "3.3.11"
+gem "rails", "~> 7.2.0"
 gem "sprockets-rails"
 gem "puma", ">= 5.0"
 #gem "importmap-rails"
@@ -44,7 +44,7 @@ gem "letter_opener", group: :development
 
 gem "rqrcode", "~> 2.0"
 
-gem 'ransack'
+gem 'ransack', '>= 4.2.1'
 
 #gem 'jquery-rails'
 
@@ -67,7 +67,6 @@ gem 'stringio'
 
 group :development do
   gem 'derailed_benchmarks'
-  gem 'syntax_suggest'
 end
 
 #gem 'scout_apm'
