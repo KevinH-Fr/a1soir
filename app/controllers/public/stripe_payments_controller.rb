@@ -76,7 +76,7 @@ module Public
         end
 
         ids = session[:cart]
-        by_id = Produit.where(id: ids).actif.index_by(&:id)
+        by_id = Produit.where(id: ids).actif.for_public_cart_thumbnail.index_by(&:id)
         @cart = ids.filter_map { |cid| by_id[cid] }
 
         format.turbo_stream do
@@ -101,7 +101,7 @@ module Public
       session[:cart].delete(id)
       flash.now[:info] = t("public.stripe_payments.flash.removed_from_cart", name: @produit.nom)
 
-      by_id = Produit.where(id: session[:cart]).actif.index_by(&:id)
+      by_id = Produit.where(id: session[:cart]).actif.for_public_cart_thumbnail.index_by(&:id)
       @cart = session[:cart].filter_map { |cid| by_id[cid] }
 
       respond_to do |format|

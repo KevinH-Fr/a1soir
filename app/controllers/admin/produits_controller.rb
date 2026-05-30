@@ -9,7 +9,8 @@ class Admin::ProduitsController < Admin::ApplicationController
     @count_produits = Produit.count
   
     search_params = params.permit(
-      :format, :page, :filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_prix,
+      :format, :page, :subdomain,
+      :filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_prix,
       q: [:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont, :id_eq]
     )
   
@@ -63,7 +64,9 @@ class Admin::ProduitsController < Admin::ApplicationController
       @q = produits.ransack(search_params[:q])
     end
   
-    produits = @q.result(distinct: true).order(updated_at: :desc)
+    produits = @q.result(distinct: true)
+                  .includes(Produit::CARD_INCLUDES)
+                  .order(updated_at: :desc)
   
     @pagy, @produits = pagy_countless(produits, items: 2)
   
@@ -640,7 +643,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     end
 
     def set_produit
-      @produit = Produit.find(params[:id])
+      @produit = Produit.includes(Produit::CARD_INCLUDES).find(params[:id])
     end
 
     def produit_params

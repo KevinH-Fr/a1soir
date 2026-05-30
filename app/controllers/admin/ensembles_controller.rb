@@ -9,7 +9,10 @@ class Admin::EnsemblesController < Admin::ApplicationController
     search_params = params.permit(:format, :page, 
       q:[:produit_nom_cont])
     @q = Ensemble.ransack(search_params[:q])
-    ensembles = @q.result(distinct: true).order(created_at: :desc)
+    ensembles = @q.result(distinct: true)
+                    .includes(:produit, :type_produit1, :type_produit2, :type_produit3,
+                              :type_produit4, :type_produit5, :type_produit6)
+                    .order(created_at: :desc)
     @pagy, @ensembles = pagy_countless(ensembles, items: 2)
 
   end

@@ -8,7 +8,7 @@
         param_key: :filter_categorie,
         collection: @categorie_produits,
         model: CategorieProduit,
-        current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_mode, :filter_prix)),
+        current_params: listing_params_with_search(produits_filter_params(exclude: :filter_categorie)),
         all_label: "Toutes les catégories",
         columns: 2,
         id_suffix: id_suffix,
@@ -23,7 +23,7 @@
         param_key: :filter_type_produit,
         collection: @type_produits,
         model: TypeProduit,
-        current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_statut, :filter_fournisseur, :filter_mode, :filter_prix)),
+        current_params: listing_params_with_search(produits_filter_params(exclude: :filter_type_produit)),
         all_label: "Tous les types",
         columns: 2,
         id_suffix: id_suffix,
@@ -38,7 +38,7 @@
         param_key: :filter_taille,
         collection: @tailles,
         model: Taille,
-        current_params: listing_params_with_search(params.permit(:filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_mode, :filter_prix)),
+        current_params: listing_params_with_search(produits_filter_params(exclude: :filter_taille)),
         all_label: "Toutes les tailles",
         columns: 2,
         id_suffix: id_suffix,
@@ -53,7 +53,7 @@
         param_key: :filter_couleur,
         collection: @couleurs,
         model: Couleur,
-        current_params: listing_params_with_search(params.permit(:filter_taille, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_mode, :filter_prix)),
+        current_params: listing_params_with_search(produits_filter_params(exclude: :filter_couleur)),
         all_label: "Toutes les couleurs",
         columns: 2,
         id_suffix: id_suffix,
@@ -66,7 +66,7 @@
         label: "Statut",
         icon: "bi bi-bookmark-check",
         param_key: :filter_statut,
-        current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_fournisseur, :filter_mode, :filter_prix)),
+        current_params: listing_params_with_search(produits_filter_params(exclude: :filter_statut)),
         id_suffix: id_suffix,
         always_show_label: always_show_label
       ) %>
@@ -79,7 +79,7 @@
         param_key: :filter_fournisseur,
         collection: @fournisseurs,
         model: Fournisseur,
-        current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_mode, :filter_prix)),
+        current_params: listing_params_with_search(produits_filter_params(exclude: :filter_fournisseur)),
         columns: 2,
         id_suffix: id_suffix,
         always_show_label: always_show_label
@@ -91,7 +91,7 @@
         label: "Prix",
         icon: "bi bi-currency-euro",
         param_key: :filter_prix,
-        current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_mode)),
+        current_params: listing_params_with_search(produits_filter_params(exclude: :filter_prix)),
         id_suffix: id_suffix,
         always_show_label: always_show_label
       ) %>
@@ -102,7 +102,7 @@
         label: "Mode",
         icon: "bi bi-zoom-in",
         param_key: :filter_mode,
-        current_params: listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_prix)),
+        current_params: listing_params_with_search(produits_filter_params(exclude: :filter_mode)),
         id_suffix: id_suffix,
         always_show_label: always_show_label
       ) %>

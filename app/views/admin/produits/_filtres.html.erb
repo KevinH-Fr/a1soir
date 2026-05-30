@@ -1,4 +1,4 @@
-<% sort_reset_params = listing_params_with_search(params.permit(:filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_mode, :filter_prix)) %>
+<% sort_reset_params = listing_params_with_search(produits_filter_params) %>
 
 <div class="container-fluid produits-filtres-wrapper mb-2">
   <div class="d-flex flex-wrap align-items-center gap-2 gap-lg-1">

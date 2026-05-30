@@ -49,7 +49,13 @@ class Commande < ApplicationRecord
   end
 
   def remboursee_eshop?
-    eshop? && devis? && avoir_rembs.remb_only.exists?
+    return false unless eshop? && devis?
+
+    if association(:avoir_rembs).loaded?
+      avoir_rembs.any? { |a| a.type_avoir_remb == "remboursement" }
+    else
+      avoir_rembs.remb_only.exists?
+    end
   end
 
   def date_remboursement_eshop

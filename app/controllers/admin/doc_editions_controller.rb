@@ -129,7 +129,7 @@ class Admin::DocEditionsController < Admin::ApplicationController
   end
 
   def generate_commande
-    @doc_edition = DocEdition.find(params[:doc_edition])
+    load_doc_edition_for_pdf!
     send_pdf_with_header_footer(
       template: "admin/pdf_commande/document",
       layout: "pdf",
@@ -139,7 +139,7 @@ class Admin::DocEditionsController < Admin::ApplicationController
 
 
   def send_email
-    @doc_edition = DocEdition.find(params[:doc_edition])
+    load_doc_edition_for_pdf!
 
     deliver_pdf_with_header_footer_email(template: "admin/pdf_commande/document", layout: "pdf") do |pdf_data|
       CommandeMailer.email_commande(@doc_edition, pdf_data)
@@ -156,6 +156,28 @@ class Admin::DocEditionsController < Admin::ApplicationController
   end
 
   private
+
+  # Précharge commande + associations pour le rendu PDF (évite N+1 articles/produits/images).
+  # Utilisé par generate_commande et send_email uniquement.
+  def load_doc_edition_for_pdf!
+    @doc_edition = DocEdition.includes(
+      commande: [
+        :client,
+        :profile,
+        :stripe_payment,
+        :paiement_recus,
+        :avoir_rembs,
+        :meetings,
+        { qr_code_attachment: :blob },
+        {
+          articles: {
+            produit: [:couleur, :taille, :image1_attachment],
+            sousarticles: { produit: [:couleur, :taille, :image1_attachment] }
+          }
+        }
+      ]
+    ).find(params[:doc_edition])
+  end
 
   def set_doc_edition
     @doc_edition = DocEdition.find(params[:id])

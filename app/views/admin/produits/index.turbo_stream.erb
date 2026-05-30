@@ -6,19 +6,6 @@
 
 <% if @pagy.next.present? %>
     <%= turbo_stream.replace :pagination do %>
-        <%= turbo_frame_tag :pagination, loading: :lazy, 
-              src: admin_produits_path(format: :turbo_stream, 
-              filter_taille: params[:filter_taille], 
-              filter_couleur: params[:filter_couleur], 
-              filter_categorie: params[:filter_categorie],
-              filter_type_produit: params[:filter_type_produit],
-              filter_statut: params[:filter_statut],
-              filter_fournisseur: params[:filter_fournisseur],
-              filter_mode: params[:filter_mode],
-              filter_prix: params[:filter_prix],
-              sort: params[:sort], 
-              q: params[:q]&.to_unsafe_h,
-              page: @pagy.next) %>
-
+        <%= turbo_frame_tag :pagination, loading: :lazy, src: produits_turbo_stream_path(page: @pagy.next) %>
     <% end %>
 <% end %>

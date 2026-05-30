@@ -13,7 +13,7 @@ class Admin::FournisseursController < Admin::ApplicationController
   end
 
   def show
-    @produits = @fournisseur.produits
+    @produits = @fournisseur.produits.includes(Produit::CARD_INCLUDES)
 
     datedebut = DateTime.parse(params[:debut]) if params[:debut].present?
     datefin = DateTime.parse(params[:fin]) if params[:fin].present?

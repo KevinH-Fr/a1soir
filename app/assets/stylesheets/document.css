@@ -25,6 +25,11 @@ body {
   break-inside: avoid;
 }
 
+.pdf-mentions-banner {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
 .pdf-qr {
   width: 120px;
 }

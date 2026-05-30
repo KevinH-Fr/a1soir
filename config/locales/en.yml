@@ -4,13 +4,16 @@ en:
   admin:
     toasts:
       commande:
-        remboursee_ok: "E-shop order cancelled — refund recorded (process the refund in Stripe)"
+        remboursee_ok: "E-shop order cancelled — refund recorded, email sent to customer (process the refund in Stripe)"
         remboursee_deja: "This e-shop order is already marked as refunded"
         remboursement_not_eshop: "Refunds are only available for e-shop orders"
         remboursement_no_stripe_payment: "No Stripe payment linked to this order"
         remboursement_stripe_not_paid: "Stripe payment is not in paid status"
         remboursement_zero_amount: "Invalid Stripe amount for refund"
         remboursement_record_invalid: "Unable to record the refund"
+      demande_rdv:
+        updated: "Appointment request updated"
+        destroyed: "Appointment request deleted"
 
   activerecord:
     errors:
@@ -175,6 +178,16 @@ en:
         shipping_free: "Free"
         total_label: "Total (incl. VAT)"
         thanks: "Thank you for your trust — see you soon!"
+    remboursement:
+      subject: "Your order has been cancelled — Autour D'un Soir"
+      body:
+        greeting: "Hello,"
+        intro: "We would like to inform you that your online order has been cancelled and a refund has been recorded."
+        refund_amount_label: "Refund amount"
+        produits_title: "Order concerned"
+        refund_notice: "The amount shown will be credited back to the payment method used for your purchase, as soon as possible."
+        contact: "If you have any questions, please contact us via the site contact form (a1soir.com/contact)."
+        thanks: "Thank you for your understanding."
 
   meta_tags:
     default:

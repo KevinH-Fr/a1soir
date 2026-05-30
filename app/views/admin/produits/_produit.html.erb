@@ -57,12 +57,10 @@
 
                 <% unless controller_name == "selection_produit" %>
                   <div class="d-inline-flex flex-wrap align-items-center gap-1">
-                    <% statut = produit.statut_disponibilite(Date.today.to_date, Date.today.to_date) %>
-                      <% disponibles = statut[:disponibles] %>
-                      <span class="badge border fs-6 fw-normal p-1 me-1 mb-1 <%= disponibles > 0 ? ' border-success text-success' : 'border-danger text-danger' %>">
-                        Disponibles: <%= disponibles %>
-                      </span>
-                    </div>
+                    <span class="badge border fs-6 fw-normal p-1 me-1 mb-1 <%= produit.today_availability? ? 'border-success text-success' : 'border-danger text-danger' %>">
+                      <%= produit.today_availability? ? "Disponible" : "Indisponible" %>
+                    </span>
+                  </div>
                 <% end %>
 
               </div>

@@ -33,17 +33,28 @@ module CommandesHelper
       doc_edition.doc_type.to_s.capitalize
     end
 
+    # Totaux : si les associations sont déjà préchargées (PDF via load_doc_edition_for_pdf!),
+    # on calcule en mémoire pour éviter des SUM SQL répétés dans les partials.
     def compte_articles(commande)
-        if commande 
-            commande.articles.sum(:quantite) 
+        return unless commande
+
+        if commande.association(:articles).loaded?
+          commande.articles.sum(&:quantite)
+        else
+          commande.articles.sum(:quantite)
         end
     end
 
     def du_prix(commande)
         return unless commande
 
-        prix_articles = commande.articles.sum(:total)
-        prix_sous_articles = commande.articles.joins(:sousarticles).sum('sousarticles.prix')
+        if commande.association(:articles).loaded?
+          prix_articles = commande.articles.sum { |a| a.total.to_d }
+          prix_sous_articles = commande.articles.flat_map(&:sousarticles).sum { |s| s.prix.to_d }
+        else
+          prix_articles = commande.articles.sum(:total)
+          prix_sous_articles = commande.articles.joins(:sousarticles).sum("sousarticles.prix")
+        end
         frais_livraison = commande.stripe_payment&.frais_livraison_centimes.to_d / 100
         (prix_articles + prix_sous_articles + frais_livraison).round(2)
     end
@@ -59,17 +70,26 @@ module CommandesHelper
     end
    
     def du_caution(commande)
-        if commande 
-            caution_articles = commande.articles.sum(:caution)
-            caution_sous_articles = commande.articles.joins(:sousarticles).sum('sousarticles.caution')
-            caution_articles + caution_sous_articles
-        end 
+        return unless commande
+
+        if commande.association(:articles).loaded?
+          caution_articles = commande.articles.sum { |a| a.caution.to_d }
+          caution_sous_articles = commande.articles.flat_map(&:sousarticles).sum { |s| s.caution.to_d }
+        else
+          caution_articles = commande.articles.sum(:caution)
+          caution_sous_articles = commande.articles.joins(:sousarticles).sum("sousarticles.caution")
+        end
+        caution_articles + caution_sous_articles
     end
 
     def recu_prix(commande)
         return 0 unless commande
 
-        manuel = commande.paiement_recus.only_prix.sum(:montant).to_d
+        manuel = if commande.association(:paiement_recus).loaded?
+                   commande.paiement_recus.select { |p| p.typepaiement == "prix" }.sum { |p| p.montant.to_d }
+                 else
+                   commande.paiement_recus.only_prix.sum(:montant).to_d
+                 end
         stripe = recu_prix_stripe_euros(commande)
         (manuel + stripe).round(2)
     end
@@ -98,15 +118,27 @@ module CommandesHelper
     end
 
     def recu_caution(commande)
-        commande.paiement_recus.only_caution.sum(:montant)
+        if commande.association(:paiement_recus).loaded?
+          commande.paiement_recus.select { |p| p.typepaiement == "caution" }.sum { |p| p.montant.to_d }
+        else
+          commande.paiement_recus.only_caution.sum(:montant)
+        end
     end 
 
     def avoir_deduit(commande)
-        commande.avoir_rembs.avoir_only.sum(:montant)
+        if commande.association(:avoir_rembs).loaded?
+          commande.avoir_rembs.select { |a| a.type_avoir_remb == "avoir" }.sum { |a| a.montant.to_d }
+        else
+          commande.avoir_rembs.avoir_only.sum(:montant)
+        end
     end 
 
     def remb_deduit(commande)
-        commande.avoir_rembs.remb_only.sum(:montant)
+        if commande.association(:avoir_rembs).loaded?
+          commande.avoir_rembs.select { |a| a.type_avoir_remb == "remboursement" }.sum { |a| a.montant.to_d }
+        else
+          commande.avoir_rembs.remb_only.sum(:montant)
+        end
     end 
 
     def solde_prix_avant_avoirremb(commande)

@@ -5,7 +5,7 @@
       totals_inline: render("admin/articles/synthese")) %>
 
 <div id="articles" class="<%= admin_list_stack_classes %>">
-  <% @articles.includes(:sousarticles).each do |article| %>
+  <% @articles.each do |article| %>
     <%= render partial: 'admin/articles/article', locals: { article: article } %>
   <% end %>
 </div>

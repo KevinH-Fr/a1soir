@@ -15,7 +15,7 @@ class Admin::CouleursController < Admin::ApplicationController
   end
 
   def show
-    produits_scope = @couleur.produits.order(updated_at: :desc)
+    produits_scope = @couleur.produits.includes(Produit::CARD_INCLUDES).order(updated_at: :desc)
     @pagy, @produits = pagy_countless(produits_scope, items: 4)
   end
 

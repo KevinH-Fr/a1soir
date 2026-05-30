@@ -45,6 +45,28 @@ class StripePaymentMailer < ApplicationMailer
     end
   end
 
+  def remboursement(commande)
+    @commande = commande
+    @payment = commande.stripe_payment
+    return if @payment&.customer_email.blank?
+
+    @items = @payment.stripe_payment_items.includes(:produit)
+    @montant_rembourse = @payment.amount.to_d / 100
+
+    I18n.locale = commande.client&.language || :fr
+
+    assign_public_url_helpers
+
+    attach_inline_logo
+
+    subject = I18n.t("stripe_payment_mailer.remboursement.subject")
+
+    mail(to: @payment.customer_email, subject: subject) do |format|
+      format.html { render template: "admin/stripe_payment_mailer/remboursement", layout: "mailer" }
+      format.text { render template: "admin/stripe_payment_mailer/remboursement" }
+    end
+  end
+
   def notification_admin(stripe_payment)
     @payment = stripe_payment
     @items = stripe_payment.stripe_payment_items.includes(:produit)

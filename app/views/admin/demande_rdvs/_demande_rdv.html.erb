@@ -16,10 +16,12 @@
           <%= badge_statut_demande_cabine(demande_rdv.statut) %>
           <%= custom_badge("fa-calendar", "", "", "", "envoyée le #{demande_rdv.created_at.strftime('%d/%m/%Y %H:%M')}") %>
           <%= custom_badge("fa-calendar-check", "", "", "", demande_rdv.date_rdv.strftime('%d/%m/%Y à %H:%M')) if demande_rdv.date_rdv.present? && demande_rdv.date_rdv.respond_to?(:strftime) %>
-          <% if demande_rdv.demande_cabine_essayage&.produits&.any? %>
+          <% produits_cabine = demande_rdv.demande_cabine_essayage&.produits %>
+          <% if produits_cabine&.any? %>
+            <% produits_count = produits_cabine.size %>
             <div class="badge lighter-beige-colored fw-normal m-1 fs-6 shadow-sm text-warning text-break" style="white-space: normal;">
               <i class="bi bi-cart-check me-1"></i>
-              <%= demande_rdv.demande_cabine_essayage.produits.count %> produit<%= 's' if demande_rdv.demande_cabine_essayage.produits.count > 1 %>
+              <%= produits_count %> produit<%= 's' if produits_count > 1 %>
             </div>
           <% end %>
         </div>

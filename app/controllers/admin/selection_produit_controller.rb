@@ -43,11 +43,9 @@ class Admin::SelectionProduitController < Admin::ApplicationController
       @q = produits.ransack(params[:q])
     end
   
-    @produits = @q.result(distinct: true).order(updated_at: :desc)
-  
-    # # search
-    # @q = Produit.ransack(params[:q])
-    # @produits = @q.result.includes(:couleur, :taille)
+    @produits = @q.result(distinct: true)
+                  .includes(Produit::CARD_INCLUDES)
+                  .order(updated_at: :desc)
 
   end
 
@@ -176,6 +174,7 @@ class Admin::SelectionProduitController < Admin::ApplicationController
     end
       
     @produits = Produit.joins(:categorie_produits)
+                  .includes(Produit::CARD_INCLUDES)
                   .where(categorie_produits: { id: @categorie_produits })
                   .where(taille: [@tailles, nil])
                   .where(couleur: [@couleurs, nil])

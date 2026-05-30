@@ -34,14 +34,14 @@
         </td>
         <td class="text-center align-middle"><%= article.quantite %></td>
         <td class="text-end align-middle"><%= custom_currency_format(article.prix) %></td>
-        <td class="text-end align-middle fw-bold"><%= custom_currency_format(article.total) %></td>
+        <td class="text-end align-middle"><%= custom_currency_format(article.total) %></td>
         <% unless eshop %>
           <td class="text-end align-middle"><%= custom_currency_format(article.caution) %></td>
         <% end %>
       </tr>
 
       <% article.sousarticles.each do |sousarticle| %>
-        <tr class="table-light">
+        <tr>
           <td colspan="2"></td>
           <td class="align-middle">
             <div class="d-flex align-items-center gap-2">

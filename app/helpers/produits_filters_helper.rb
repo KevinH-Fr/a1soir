@@ -9,6 +9,15 @@ module ProduitsFiltersHelper
     filter_statut filter_fournisseur filter_mode filter_prix
   ].freeze
 
+  # Lit les filtres depuis la query string
+  # et on ne propage que ce qu'il faut pour reconstruire les URLs de filtre.
+  def produits_filter_params(exclude: nil, include_sort: false)
+    keys = FILTER_PARAM_KEYS.dup
+    keys << :sort if include_sort
+    keys -= [exclude.to_sym] if exclude.present?
+    request.query_parameters.symbolize_keys.slice(*keys)
+  end
+
   FILTER_DROPDOWN_ITEM_NAME_LENGTH = 40
 
   def produits_active_filters_count
@@ -199,14 +208,11 @@ module ProduitsFiltersHelper
   def listing_params_with_search(base_params)
     merged_params = base_params.to_h
 
-    permitted_q = params.permit(q: SEARCH_QUERY_FIELDS)[:q]
     request_q = request.query_parameters["q"]
 
     search_payload =
-      if permitted_q.present?
-        permitted_q.to_h
-      elsif request_q.present?
-        request_q
+      if request_q.present?
+        ActionController::Parameters.new(q: request_q).permit(q: SEARCH_QUERY_FIELDS)[:q]&.to_h
       end
 
     merged_params[:q] = search_payload if search_payload.present?
@@ -216,6 +222,16 @@ module ProduitsFiltersHelper
     end
 
     merged_params
+  end
+
+  def produits_listing_path_params(page: nil)
+    params_hash = listing_params_with_search(produits_filter_params(include_sort: true))
+    params_hash[:page] = page if page.present?
+    params_hash
+  end
+
+  def produits_turbo_stream_path(page: nil)
+    admin_produits_path(produits_listing_path_params(page: page).merge(format: :turbo_stream))
   end
 
   def sort_dropdown(current_params)

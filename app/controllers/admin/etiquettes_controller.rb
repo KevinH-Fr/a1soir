@@ -41,7 +41,9 @@ class Admin::EtiquettesController < Admin::ApplicationController
       produit.statut_disponibilite(datedebut, datefin)[:disponibles] > 0
     end.map(&:id)
 
-    @produits = Produit.where(id: produits_ids).order(updated_at: :desc)
+    @produits = Produit.where(id: produits_ids)
+                       .includes(Produit::CARD_INCLUDES)
+                       .order(updated_at: :desc)
 
     @selection_produits = []
   end

@@ -16,7 +16,7 @@ class Admin::CategorieProduitsController < Admin::ApplicationController
   end
 
   def show
-    produits_scope = @categorie_produit.produits.order(updated_at: :desc)
+    produits_scope = @categorie_produit.produits.includes(Produit::CARD_INCLUDES).order(updated_at: :desc)
     @pagy, @produits = pagy_countless(produits_scope, items: 4)
   end
 

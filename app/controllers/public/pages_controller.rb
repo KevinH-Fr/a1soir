@@ -6,12 +6,12 @@ module Public
     #layout 'public' 
 
     def home
-      @coups_de_coeur = Produit.where(today_availability: true).coups_de_coeur.eshop_diffusion.actif.limit(8)
+      @coups_de_coeur = Produit.where(today_availability: true).coups_de_coeur.eshop_diffusion.actif.for_public_listing_cards.limit(8)
       load_periode_speciale_vars
     end
 
     def la_boutique
-      texte = Texte.last
+      texte = current_texte
       if texte.present?
         @texteContact  = texte.contact
         @texteHoraire  = texte.mode_periode_speciale? ? texte.horaire_periode_speciale : texte.horaire
@@ -23,7 +23,7 @@ module Public
     end
 
     def nos_collections
-      @coups_de_coeur = Produit.where(today_availability: true).coups_de_coeur.eshop_diffusion.actif.limit(8)
+      @coups_de_coeur = Produit.where(today_availability: true).coups_de_coeur.eshop_diffusion.actif.for_public_listing_cards.limit(8)
       session[:from_cabine] = false if session[:cabine_cart].blank?
     end
 
@@ -34,7 +34,7 @@ module Public
     end
 
     def festival_de_cannes
-      texte = Texte.last
+      texte = current_texte
       if texte.present?
         @texteContact = texte.contact
         @texteHoraire = texte.mode_periode_speciale? ? texte.horaire_periode_speciale : texte.horaire
@@ -70,9 +70,12 @@ module Public
     end
 
     def faq
-      @texteContact = Texte.last.contact
-      @texteHoraire = Texte.last.horaire
-      @texteAdresse = Texte.last.adresse
+      texte = current_texte
+      if texte.present?
+        @texteContact = texte.contact
+        @texteHoraire = texte.horaire
+        @texteAdresse = texte.adresse
+      end
     end
 
     def cabine_essayage
@@ -88,7 +91,9 @@ module Public
     end
 
     def produit
-      @produit = Produit.find(params[:id])
+      @produit = Produit.for_public_listing_cards
+                        .includes(:taille, :couleur, :categorie_produits)
+                        .find(params[:id])
       
       expected_slug = @produit.handle.presence || @produit.nom.parameterize
 
@@ -109,19 +114,21 @@ module Public
       @back_url = session[:produit_back_url] || produits_index_path
       
       @meme_produit_meme_couleur_autres_tailles = Produit
-      .where(handle: @produit.handle, couleur_id: @produit.couleur_id)
-      .where.not(id: @produit.id)
-      .where(today_availability: true)
-      .joins(:taille) 
-      .order('tailles.nom') 
-    
-      @meme_produit_meme_taille_autres_couleurs = Produit
-      .where(handle: @produit.handle, taille_id: @produit.taille_id)
-      .where.not(id: @produit.id)
-      .where(today_availability: true)
-      .joins(:couleur) 
+        .where(handle: @produit.handle, couleur_id: @produit.couleur_id)
+        .where.not(id: @produit.id)
+        .where(today_availability: true)
+        .includes(:taille)
+        .joins(:taille)
+        .order("tailles.nom")
 
-      @produits_similaires = @produit.similar_products(limit: 4)
+      @meme_produit_meme_taille_autres_couleurs = Produit
+        .where(handle: @produit.handle, taille_id: @produit.taille_id)
+        .where.not(id: @produit.id)
+        .where(today_availability: true)
+        .includes(:couleur)
+        .joins(:couleur)
+
+      @produits_similaires = @produit.similar_products(limit: 4).merge(Produit.for_public_listing_cards)
     end
 
     
@@ -205,10 +212,11 @@ module Public
     end
 
     def contact
-      if Texte.last.present?
-        @texteContact = Texte.last.contact
-        @texteAdresse = Texte.last.adresse
-        @texteHoraire = Texte.last.horaire
+      texte = current_texte
+      if texte.present?
+        @texteContact = texte.contact
+        @texteAdresse = texte.adresse
+        @texteHoraire = texte.horaire
       end
       @contact_message = ContactMessage.new
     end
@@ -216,7 +224,7 @@ module Public
     private
 
     def load_periode_speciale_vars
-      texte = Texte.last
+      texte = current_texte
       return unless texte&.mode_periode_speciale?
       @mode_periode_speciale   = true
       @encart_periode_speciale = I18n.locale == :fr ? texte.encart_periode_speciale_fr : texte.encart_periode_speciale_en

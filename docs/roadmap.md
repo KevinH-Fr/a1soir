@@ -18,9 +18,7 @@ ToDo short terme :
 _____________________
 
 
-- passer sur ferrer pour pdf et reconstruire les pdf a la plce de wicked pdf 
-
-reprendre : 
+ok - passer sur ferrer pour pdf et reconstruire les pdf a la plce de wicked pdf 
 
 ok - push prod de l'update ferrum
     etiquettes, commandes, syntehse reporting admin
@@ -28,7 +26,6 @@ ok - supprimer les var env pour format pdf etiquettes
 ok - supprimer wkhtmltopdf de la prod (buildpack)
 ok - verif pdf reporting stock bien protégé admin seul pas vendeur
 ok - supprimer les tests ferrum
-
 
 ok - upgrade ruby 3.2.2 avant, 3.3.11 apres
 ok - upgrade rails 7.1.3 avant, 7.2 apres
@@ -39,9 +36,18 @@ ok - upgrade puma ?
 ok - verif prise de rdv ok avec mail en prod
 ok - verif article sous article ok
 
-- voir avec cha si elle veut un format plus pratique pour le decoupage des etiquettes ?
-- retester notamment avec bcp tailels et couleurs en prod
-- restester commande
+reprendre : 
+
+
+ok - voir avec cha si elle veut un format plus pratique pour le decoupage des etiquettes ?
+ok - retester notamment avec bcp tailels et couleurs en prod
+ok - restester commande
+
+ok - tableau sous article
+ok - ajouter le mailer qui indiquer le remboursement fait suite a commande eshop annulé coté application
+ok - fix n+1 admin 
+ok - fix n+1 public
+
 
 
 ToDo long terme :

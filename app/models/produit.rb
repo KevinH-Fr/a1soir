@@ -1,4 +1,7 @@
 class Produit < ApplicationRecord
+  include ProduitCardPreloadable   # admin: Produit::CARD_INCLUDES
+  include PublicProduitPreloadable # public: for_public_listing_cards, for_public_cart_thumbnail
+
   has_and_belongs_to_many :categorie_produits
     
   belongs_to :type_produit, optional: true

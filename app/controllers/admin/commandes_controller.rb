@@ -18,6 +18,8 @@ class Admin::CommandesController < Admin::ApplicationController
     
       commandes = @q.result(distinct: true)
                     .select("commandes.*")
+                    .includes(:client, :profile, :stripe_payment, qr_code_attachment: :blob)
+                    .preload(:avoir_rembs)
                     .order("commandes.created_at DESC")
     
     #  Rails.logger.debug commandes.to_sql  # <-- à retirer ensuite
@@ -34,7 +36,11 @@ class Admin::CommandesController < Admin::ApplicationController
     @commande = Commande.includes(:stripe_payment, articles: [:produit, :sousarticles]).find(params[:commande]) if params[:commande]
     session[:commande] = @commande.id if @commande
 
-    @articles = @commande.articles.includes(produit: [:image1_attachment, :couleur, :taille])
+    @articles = @commande.articles.includes(
+      :sousarticles,
+      produit: [:image1_attachment, :couleur, :taille],
+      sousarticles: { produit: [:couleur, :taille, :image1_attachment] }
+    )
 
     @produits = Produit.all 
     @doc_edition = DocEdition.new
@@ -186,6 +192,7 @@ class Admin::CommandesController < Admin::ApplicationController
     result = EshopCommandeRemboursementService.new(@commande).call
 
     if result.success?
+      StripePaymentMailer.remboursement(@commande).deliver_later unless result.already_done
       toast_key = result.already_done ? :remboursee_deja : :remboursee_ok
       admin_push_domain_toast!(flash, :commande, toast_key)
     else
@@ -198,7 +205,9 @@ class Admin::CommandesController < Admin::ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_commande
-      @commande = Commande.find(params[:id])
+      @commande = Commande.includes(
+        :client, :profile, :stripe_payment, qr_code_attachment: :blob
+      ).preload(:avoir_rembs).find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

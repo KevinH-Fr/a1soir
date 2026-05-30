@@ -188,4 +188,39 @@ RSpec.describe StripePaymentMailer, type: :mailer do
       end
     end
   end
+
+  # -------------------------------------------------------------------------
+  # remboursement
+  # -------------------------------------------------------------------------
+
+  describe "#remboursement" do
+    subject(:mail) { described_class.remboursement(commande) }
+
+    it "is sent to the customer email" do
+      expect(mail.to).to include("alice@example.com")
+    end
+
+    it "has a subject" do
+      expect(mail.subject).to be_present
+    end
+
+    it "renders in html and text formats" do
+      expect(mail.html_part).to be_present
+      expect(mail.text_part).to be_present
+    end
+
+    it "includes the product name and refund amount in the body" do
+      expect(mail.html_part.body.encoded).to include("Robe mailer test")
+      expect(mail.html_part.body.encoded).to include("80")
+    end
+
+    context "when customer_email is blank" do
+      before { payment.update_column(:customer_email, nil) }
+
+      it "returns a message with no recipients (guard return)" do
+        result = described_class.remboursement(commande)
+        expect(result.to).to be_nil.or be_blank
+      end
+    end
+  end
 end

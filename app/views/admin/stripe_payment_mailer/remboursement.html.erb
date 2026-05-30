@@ -1,0 +1,45 @@
+<p><%= I18n.t("stripe_payment_mailer.remboursement.body.greeting") %></p>
+
+<p><%= I18n.t("stripe_payment_mailer.remboursement.body.intro") %></p>
+
+<% if @payment.present? %>
+  <table style="margin: 16px 0; border-collapse: collapse; font-size: 13px; color: #555;">
+    <tr>
+      <td style="padding: 2px 12px 2px 0; white-space: nowrap;">
+        <strong><%= I18n.t("stripe_payment_mailer.confirmation.body.order_ref") %> :</strong>
+      </td>
+      <td style="padding: 2px 0;">
+        <%= @payment.commande&.ref_commande || "##{@payment.id}" %>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 2px 12px 2px 0; white-space: nowrap;">
+        <strong><%= I18n.t("stripe_payment_mailer.remboursement.body.refund_amount_label") %> :</strong>
+      </td>
+      <td style="padding: 2px 0; font-weight: bold;">
+        <%= number_to_currency(@montant_rembourse, unit: "€", format: "%n %u", delimiter: " ") %>
+        (<%= @payment.currency&.upcase %>)
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+<div style="margin-top: 24px;">
+  <h3 style="margin-bottom: 16px; font-size: 18px;"><%= I18n.t("stripe_payment_mailer.remboursement.body.produits_title") %></h3>
+
+  <% @items.each do |item| %>
+    <% produit = item.produit %>
+    <% if produit.present? %>
+      <p style="margin: 8px 0; font-size: 14px;">
+        <strong><%= produit.nom %></strong>
+        — <%= I18n.t("stripe_payment_mailer.confirmation.body.quantity", n: item.quantity || 1) %>
+      </p>
+    <% end %>
+  <% end %>
+</div>
+
+<p style="margin-top: 24px;"><%= I18n.t("stripe_payment_mailer.remboursement.body.refund_notice") %></p>
+
+<p><%= I18n.t("stripe_payment_mailer.remboursement.body.contact") %></p>
+
+<p><%= I18n.t("stripe_payment_mailer.remboursement.body.thanks") %></p>

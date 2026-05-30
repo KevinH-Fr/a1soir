@@ -5,14 +5,21 @@
   </div>
 <% end %>
 
-<% if @doc_edition.commande.meetings.where('datedebut > ?', DateTime.now).exists? %>
+<%# Prochain RDV : en mémoire si meetings préchargés (PDF), sinon requête via next_upcoming_meeting %>
+<% meetings = @doc_edition.commande.meetings %>
+<% upcoming = if meetings.loaded?
+                meetings.select { |m| m.datedebut > Time.current }.min_by(&:datedebut)
+              else
+                @doc_edition.commande.next_upcoming_meeting
+              end %>
+<% if upcoming %>
   <div class="border-start border-3 border-secondary bg-light rounded-end p-3 mt-2 small">
     <div class="fw-bold text-secondary mb-1 text-uppercase pdf-label">Prochain rendez-vous</div>
-    <%= @doc_edition.commande.meetings.first.start_time.strftime("%d/%m/%Y à %H:%M") %>
+    <%= upcoming.start_time.strftime("%d/%m/%Y à %H:%M") %>
   </div>
 <% end %>
 
-<div class="border rounded p-3 mt-4 small fst-italic text-muted text-center">
+<div class="border rounded p-3 mt-4 small fst-italic text-muted text-center pdf-mentions-banner">
   <% locale = @doc_edition.commande.client&.language.presence || :fr %>
   <% I18n.with_locale(locale) do %>
     <% if @doc_edition.commande.eshop? %>

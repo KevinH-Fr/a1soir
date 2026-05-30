@@ -141,7 +141,10 @@ class Admin::ClientsController < Admin::ApplicationController
     end
 
     def set_client
-      @client = Client.find(params[:id])
+      @client = Client.includes(
+        :meetings,
+        commandes: [:client, :profile, :stripe_payment, :meetings, :avoir_rembs, { qr_code_attachment: :blob }]
+      ).find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

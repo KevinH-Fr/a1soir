@@ -41,7 +41,7 @@ module Public
         @cart = if ids.empty?
                   []
                 else
-                  by_id = Produit.where(id: ids).actif.index_by(&:id)
+                  by_id = Produit.where(id: ids).actif.for_public_cart_thumbnail.index_by(&:id)
                   filtered_cart = ids.filter_map { |id| by_id[id] }
                   session[:cart] = filtered_cart.map(&:id) if filtered_cart.size != ids.size
                   filtered_cart
@@ -62,7 +62,7 @@ module Public
         end
         
         ids = session[:cabine_cart] || []
-        @cabine_cart = ids.any? ? Produit.where(id: ids) : Produit.none
+        @cabine_cart = ids.any? ? Produit.where(id: ids).for_public_cart_thumbnail : Produit.none
       end
 
       # Barre flottante « valider le panier » (e-shop) : partout sauf page panier et parcours cabine.
@@ -76,8 +76,12 @@ module Public
         true
       end
 
+      def current_texte
+        @current_texte ||= Texte.last
+      end
+
       def load_footer_textes
-        texte = Texte.last
+        texte = current_texte
         if texte.present?
           @footer_texte_adresse           = texte.adresse
           @footer_texte_contact           = texte.contact

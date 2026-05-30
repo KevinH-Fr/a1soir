@@ -8,7 +8,9 @@ class Admin::MeetingsController < Admin::ApplicationController
     search_params = params.permit(:format, :page, 
       q:[:nom_or_datedebut_or_datefin_or_lieu_cont])
     @q = Meeting.ransack(search_params[:q])
-    meetings = @q.result(distinct: true).order(created_at: :desc)
+    meetings = @q.result(distinct: true)
+                  .includes(:client, commande: :client)
+                  .order(created_at: :desc)
     @pagy, @meetings = pagy_countless(meetings, items: 2)
 
     @commandes = Commande.all

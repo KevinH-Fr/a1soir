@@ -1,0 +1,23 @@
+<%= I18n.t("stripe_payment_mailer.remboursement.body.greeting") %>
+
+<%= I18n.t("stripe_payment_mailer.remboursement.body.intro") %>
+
+<% if @payment.present? %>
+<%= I18n.t("stripe_payment_mailer.confirmation.body.order_ref") %> : <%= @payment.commande&.ref_commande || "##{@payment.id}" %>
+<%= I18n.t("stripe_payment_mailer.remboursement.body.refund_amount_label") %> : <%= number_to_currency(@montant_rembourse, unit: "€", format: "%n %u", delimiter: " ") %> (<%= @payment.currency&.upcase %>)
+<% end %>
+
+<%= I18n.t("stripe_payment_mailer.remboursement.body.produits_title") %>
+
+<% @items.each do |item| %>
+<% produit = item.produit %>
+<% if produit.present? %>
+- <%= produit.nom %> — <%= I18n.t("stripe_payment_mailer.confirmation.body.quantity", n: item.quantity || 1) %>
+<% end %>
+<% end %>
+
+<%= I18n.t("stripe_payment_mailer.remboursement.body.refund_notice") %>
+
+<%= I18n.t("stripe_payment_mailer.remboursement.body.contact") %>
+
+<%= I18n.t("stripe_payment_mailer.remboursement.body.thanks") %>

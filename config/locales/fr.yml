@@ -41,7 +41,7 @@ fr:
         rendu_sans_email: "Commande rendue (sans envoi d'e-mail)"
         expedie_avec_email: "Commande expédiée — e-mail envoyé au client"
         expedie_sans_email: "Commande expédiée (sans e-mail)"
-        remboursee_ok: "Commande e-shop annulée — remboursement enregistré (effectuer le remboursement dans Stripe)"
+        remboursee_ok: "Commande e-shop annulée — remboursement enregistré, e-mail envoyé au client (effectuer le remboursement dans Stripe)"
         remboursee_deja: "Cette commande e-shop est déjà marquée comme remboursée"
         remboursement_not_eshop: "Remboursement réservé aux commandes e-shop"
         remboursement_no_stripe_payment: "Aucun paiement Stripe lié à cette commande"
@@ -545,6 +545,16 @@ fr:
         shipping_free: "Offerts"
         total_label: "Total TTC"
         thanks: "Merci pour votre confiance et à bientôt !"
+    remboursement:
+      subject: "Annulation de votre commande — Autour D'un Soir"
+      body:
+        greeting: "Bonjour,"
+        intro: "Nous vous informons que votre commande en ligne a été annulée et qu'un remboursement a été enregistré."
+        refund_amount_label: "Montant remboursé"
+        produits_title: "Commande concernée"
+        refund_notice: "Le montant indiqué sera recrédité sur le moyen de paiement utilisé lors de votre achat, dans les meilleurs délais."
+        contact: "Pour toute question, n'hésitez pas à nous contacter via le formulaire du site (a1soir.com/contact)."
+        thanks: "Merci pour votre compréhension."
 
   meta_tags:
     default:
