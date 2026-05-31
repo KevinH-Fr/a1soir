@@ -47,9 +47,12 @@ ok - fix n+1 public
 
 
 opti pdf : 
-- images a eviter en pleine qualité
+ok - images a eviter en pleine qualité
+gros gain avec ca
+voir avec cha si qualité image sur bon de commande ou etiquette trop faible
+
 - voir si gc en buildpack fonctionne bien ?
-- voir pour ameliorer la baseline a 630 mb sur heroku ?
+- voir pour ameliorer la baseline a 630/800 mb sur heroku ?
 - si necessaire passer sur un worker pour pdf ?
 
 
