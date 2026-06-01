@@ -56,6 +56,20 @@ voir avec cha si qualité image sur bon de commande ou etiquette trop faible
 - si necessaire passer sur un worker pour pdf ?
 
 
+
+call 0106:
+
+ok - dupliquer le scan de bloque large et le mettre aussi dans la navbar
+ok - sur bloc large eshop : enlevé le petit 1 si expédié
+ok - faire lsite de prenoms, comparer à prenom existant, indiquer prenom restant
+
+quid possible de chsoir les avis les plus récents plutot que plus pertiennts pour avis google 
+
+navbar sur admin et public, pouvoir cliquer en dehors de la navbar pour qu’elle se reduise, meme comportement que clique sur le bouton collapse
+
+
+
+
 ToDo long terme :
 _________________
 

@@ -46,3 +46,6 @@
 /produits_seo_export_prod.csv
 /produits_seo_import_prod.csv
 /produits_seo_import_generated.csv
+
+# Prénoms produits (outil local — pas en prod)
+/lib/tasks/products_prenoms.rake

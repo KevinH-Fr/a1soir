@@ -1,7 +1,9 @@
 module NavAdminHelper
   # Highlight when +controller_path+ matches (+nav_controller+ can be a String or Array).
-  def nav_link(path, name, icon_class, nav_controller:, **html_options)
+  # +nav_action+ (optional) limits active to one action — needed when several routes share a controller.
+  def nav_link(path, name, icon_class, nav_controller:, nav_action: nil, **html_options)
     active = Array(nav_controller).include?(controller_path)
+    active &&= (action_name == nav_action.to_s) if nav_action.present?
 
     extra_class = html_options.delete(:class)
     link_classes = %w[

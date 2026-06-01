@@ -7,13 +7,14 @@
     </button>
     <div class="collapse navbar-collapse justify-content-start justify-content-xxl-end ms-xxl-3" id="adminNavbar">
       <ul class="navbar-nav mb-0 d-flex flex-column flex-xxl-row align-items-stretch align-items-xxl-center gap-2 gap-xxl-3 flex-wrap w-100 w-xxl-auto ms-xxl-auto">
-        <%= nav_link admin_home_admin_path, "Accueil", "bi-house", nav_controller: "admin/home_admin" %>
+        <%= nav_link admin_home_admin_path, "Accueil", "bi-house", nav_controller: "admin/home_admin", nav_action: "index" %>
         <%= nav_link admin_clients_path, "Clients", "bi-person", nav_controller: "admin/clients" %>
         <%= nav_link admin_produits_path, "Produits", "bi-person-standing-dress", nav_controller: "admin/produits" %>
         <%= nav_link admin_commandes_path, "Commandes", "bi-file-earmark-post", nav_controller: "admin/commandes" %>
         <%= nav_link admin_meetings_path, "Calendrier", "bi-calendar-date", nav_controller: "admin/meetings" %>
         <%= nav_link admin_analyses_index_path, "Analyses", "bi-graph-up-arrow", nav_controller: "admin/analyses" %>
         <%= nav_link(admin_textes_path, "Marketing", "bi-flag", nav_controller: "admin/textes") if current_admin_user&.admin? %>
+        <%= nav_link admin_home_admin_scan_qr_path, "Scan", "bi-qr-code-scan", nav_controller: "admin/home_admin", nav_action: "selection_qr" %>
         <%= render "admin/shared/session_controls" %>
       </ul>
     </div>
