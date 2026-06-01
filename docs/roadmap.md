@@ -14,6 +14,18 @@ ______________
 - verifier produits ajoutés dans fiches
 - surveiller erreurs serveur depuis ferrum et chrome ajoutés
 
+C'est beaucoup plus directement lié à ta correction que le renvoi du sitemap.
+
+Mon ordre de priorité
+✅ Déployer la correction (fait)
+✅ Vérifier via curl (fait)
+✅ Renvoyer le sitemap (facultatif mais je le ferais)
+✅ Demander l'indexation de 5 à 10 produits stratégiques
+✅ Attendre 2 à 4 semaines
+
+Je ne serais pas surpris que le compteur de "19 produits valides" ne bouge pas pendant plusieurs jours, puis augmente d'un coup lorsque Google retraitera une partie du catalogue.
+
+
 ToDo short terme : 
 _____________________
 
