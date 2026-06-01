@@ -237,6 +237,14 @@ en:
       faq:
         title: "FAQ - Frequently asked questions - Autour D'Un Soir"
         description: "Find answers to frequently asked questions."
+      categories:
+        title: "Categories - Autour D'Un Soir"
+        description: "Browse all categories in our catalogue."
+    product:
+      description_with_category: "%{product} — %{category} in Cannes. Rental and sales at Autour D'Un Soir."
+      description_fallback: "%{product} — rental and sales in Cannes at Autour D'Un Soir."
+    faq_schema:
+      hours_fallback: "Tuesday to Saturday, by appointment."
 
   public:
     shared:
@@ -425,6 +433,14 @@ en:
         intro_text: "Discover our collections of wedding dresses, evening wear, tuxedos, and accessories. Whether you are looking to rent or buy, our Cannes shop offers a carefully curated selection to elevate your most precious moments."
         view_all_products: "View all products"
         cta_title: "Ready to discover our collections?"
+      categories:
+        header_title: "Categories"
+        header_subtitle: "Browse our catalogue by style"
+        intro_text: "Browse all our categories: wedding dresses, evening wear, suits, tuxedos and accessories. Select a category to explore our online catalogue or visit us in our Cannes shop."
+        section_title: "All categories"
+        empty_message: "No categories available at the moment."
+        view_all_products: "View all products"
+        cta_title: "Need help choosing?"
       rdv:
         header_title: "Book an appointment"
         header_subtitle: "Reserve your in-store time slot"

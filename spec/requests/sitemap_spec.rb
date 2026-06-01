@@ -59,6 +59,9 @@ RSpec.describe "Sitemap", type: :request do
     expect(body).to include(
       "<loc>http://www.example.com/fr/produit/robe-sitemap-#{produit_in_sitemap.id}</loc>"
     )
+    expect(body).to include("<loc>http://www.example.com/fr/faq</loc>")
+    expect(body).to include("<loc>http://www.example.com/fr/legal</loc>")
+    expect(body).to include("<loc>http://www.example.com/fr/categories</loc>")
   end
 
   it "excludes inactive or unavailable products" do

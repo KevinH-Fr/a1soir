@@ -27,6 +27,12 @@ module Public
       session[:from_cabine] = false if session[:cabine_cart].blank?
     end
 
+    def categories
+      @categories = CategorieProduit.not_service.order(:nom)
+      @coups_de_coeur = Produit.where(today_availability: true).coups_de_coeur.eshop_diffusion.actif.for_public_listing_cards.limit(8)
+      session[:from_cabine] = false if session[:cabine_cart].blank?
+    end
+
     def le_concept
     end
 

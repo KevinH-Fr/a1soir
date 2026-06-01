@@ -17,16 +17,42 @@
 <% end %>
 
 <div class="public-main-content">
+  <div class="text-center my-5 px-3" data-scroll-reveal>
+    <h1 class="text-light mb-3" style="font-family: 'Playfair Display', serif; font-size: 2.5rem;">
+      <%= t("public.pages.categories.header_title") %>
+    </h1>
+    <p class="text-light opacity-75 mx-auto mb-0" style="max-width: 700px; font-size: 1.1rem; line-height: 1.8;">
+      <%= t("public.pages.categories.intro_text") %>
+    </p>
+  </div>
 
-    <div class="container-fluid">
-
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2 p-2 m-0" data-scroll-reveal>
-            <% @categories.each do |categorie| %>
-                <div class="col">
-                    <%= card_categorie(categorie) %>
-                </div>
-            <% end %>
-        </div>
-    
+  <% if @categories.any? %>
+    <div class="container-fluid p-0">
+      <div class="row g-0">
+        <% @categories.each do |categorie| %>
+          <div class="col-12 col-md-6 col-lg-4 col-xl-3" data-scroll-reveal>
+            <%= card_categorie(categorie) %>
+          </div>
+        <% end %>
+      </div>
     </div>
+  <% else %>
+    <p class="text-center text-light opacity-75 my-5 px-3" data-scroll-reveal>
+      <%= t("public.pages.categories.empty_message") %>
+    </p>
+  <% end %>
+</div>
+
+<div class="container my-5 py-5 text-center" data-scroll-reveal>
+  <%= link_to t("public.pages.categories.view_all_products"), produits_index_url, class: "btn btn-light btn-lg px-5 public-btn-border-radius" %>
+</div>
+
+<%= render partial: "public/pages/home/coups_de_coeur" %>
+
+<div class="text-center my-5 py-4" data-scroll-reveal>
+  <h3 class="mb-4 text-light"><%= t("public.pages.categories.cta_title") %></h3>
+  <div class="d-flex gap-3 justify-content-center flex-wrap">
+    <%= cta_button(type: "produits", url: produits_index_path, variant: "light") %>
+    <%= cta_button(type: "rdv", url: "#{rdv_url}#rdv-form", variant: "dark", outline: "light") %>
+  </div>
 </div>

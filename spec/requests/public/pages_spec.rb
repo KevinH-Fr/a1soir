@@ -269,5 +269,45 @@ RSpec.describe "Public::Pages", type: :request do
 
       expect(response.body).to include(%(property="og:url" content="#{canonical_url}"))
     end
+
+    it "renders product-specific title and meta description" do
+      get "/fr/produit/robe-seo-#{produit_seo.id}"
+
+      expect(response.body).to include("<title>Robe SEO | Autour D&#39;Un Soir</title>")
+      expect(response.body).to include('meta name="description" content=')
+      expect(response.body).to include("Robe SEO")
+    end
+  end
+
+  # -------------------------------------------------------------------------
+  # GET /fr/categories
+  # -------------------------------------------------------------------------
+
+  describe "GET /fr/categories" do
+    let!(:categorie) do
+      CategorieProduit.create!(nom: "robes test", texte_annonce: "Robes pour votre jour J")
+    end
+
+    it "returns 200 and lists categories" do
+      get "/fr/categories"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("Robes Test")
+      expect(response.body).to include("Robes pour votre jour J")
+      expect(response.body).to include("collection-card")
+    end
+  end
+
+  # -------------------------------------------------------------------------
+  # GET /fr/faq — FAQPage schema
+  # -------------------------------------------------------------------------
+
+  describe "GET /fr/faq" do
+    it "includes FAQPage structured data" do
+      get "/fr/faq"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include('"@type":"FAQPage"')
+    end
   end
 end

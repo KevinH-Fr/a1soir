@@ -191,20 +191,20 @@ module PagesHelper
 
 
 
-  def collection_card(title:, items:, url:, delay: 0, image: nil, subtitle: nil, image_position: "center")
+  def collection_card(title:, items:, url:, delay: 0, image: nil, subtitle: nil, image_position: "center", height: 600)
     link_to url, class: "text-decoration-none collection-card-link" do
-      content_tag :div, class: "collection-card position-relative overflow-hidden", style: "height: 600px;",
+      content_tag :div, class: "collection-card position-relative overflow-hidden", style: "height: #{height}px;",
                         data: { controller: "collection-card-reveal" } do
-        # Image de fond
+        # Image de fond (absolute pour remplir le cadre sans déformer le ratio)
         image_section = if image.present?
           image_tag(
-            image_path_helper(image),
-            class: "img-fluid w-100 h-100 collection-card-image",
+            collection_card_image_source(image),
+            class: "collection-card-image position-absolute top-0 start-0 w-100 h-100",
             loading: "lazy",
             style: "object-fit: cover; object-position: #{image_position};",
             alt: title,
             width: 800,
-            height: 600
+            height: height
           )
         else
           content_tag :div, class: "d-flex align-items-center justify-content-center bg-secondary w-100 h-100" do
@@ -337,22 +337,26 @@ module PagesHelper
 
 
   def card_categorie(categorie)
-    link_to produits_url(slug: categorie.nom.parameterize, id: categorie.id), class: "text-decoration-none" do
-      content_tag :div, class: "card text-bg-light mb-1" do
-        image_tag(
-          categorie.default_image,
-          class: "card-img",
-          style: "height: 350px; object-fit: cover;",
-          alt: categorie.nom,
-          width: 400,
-          height: 350,
-          loading: "lazy"
-        ) +
-        content_tag(:div, class: "card-img-overlay") do
-          content_tag(:h5, categorie.nom, class: "card-title badge bg-brand-colored fs-6")
-        end
-      end
-    end
+    collection_card(
+      title: categorie_display_name(categorie),
+      subtitle: categorie.texte_annonce.presence,
+      items: [],
+      url: produits_url(slug: categorie.nom.parameterize, id: categorie.id),
+      image: categorie.default_image,
+      image_position: "center top",
+      height: 420
+    )
+  end
+
+  def categorie_display_name(categorie)
+    categorie.label.presence || categorie.nom.to_s.titleize
+  end
+
+  def collection_card_image_source(image)
+    return image if image.is_a?(ActiveStorage::Attached::One)
+    return image if image.is_a?(ActiveStorage::Blob)
+
+    image_path_helper(image.to_s)
   end
 
   def statut_disponibilite_shop(statut)

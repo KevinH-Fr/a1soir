@@ -31,7 +31,6 @@ _____________________
 
 
 ok - passer sur ferrer pour pdf et reconstruire les pdf a la plce de wicked pdf 
-
 ok - push prod de l'update ferrum
     etiquettes, commandes, syntehse reporting admin
 ok - supprimer les var env pour format pdf etiquettes
@@ -80,12 +79,15 @@ ok - verifier video bien dupliquée quand duplication produit
 
 ok - quid possible de chsoir les avis les plus récents plutot que plus pertiennts pour avis google 
 
+reprendre
+____________
 
+
+- seo quickwins : meta sur produit, cateogires, sitemap avec faq et legal
+- partie guides : ajouter des pages seo avec l'histoire d'une cateogire et les liens vers les produits, une video pour engagemnet plus long
 
 ToDo long terme :
 _________________
-
-- partie blog : ajouter des pages seo avec l'histoire d'une cateogire et les liens vers les produits, une video pour engagemnet plus long
 
 - voir pourquoi pas bcd de fiches de produits sur search console
 

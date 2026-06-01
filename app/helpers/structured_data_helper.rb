@@ -1,13 +1,30 @@
 module StructuredDataHelper
+  STORE_ADDRESS = {
+    street: "29 Boulevard Carnot",
+    locality: "Cannes",
+    postal_code: "06400",
+    country: "FR"
+  }.freeze
+
+  STORE_GEO = {
+    latitude: 43.5523,
+    longitude: 7.0178
+  }.freeze
+
+  STORE_PHONE = "+33493451717".freeze
+
+  FAQ_SECTIONS = [
+    [:general, 5],
+    [:location, 7],
+    [:sale, 3],
+    [:alterations, 5],
+    [:delivery, 2],
+    [:payment, 3]
+  ].freeze
+
   # Schéma global de la boutique (entreprise)
   def clothing_store_schema
-    {
-      "@context" => "https://schema.org",
-      "@type" => "ClothingStore",
-      "name" => "Autour D'Un Soir",
-      "url" => root_url,
-      "image" => "#{root_url}images/autourdunsoir_drapeau.png"
-    }
+    clothing_store_node.merge("@context" => "https://schema.org")
   end
 
   # Schéma global du site
@@ -28,6 +45,15 @@ module StructuredDataHelper
       "name" => name,
       "description" => description,
       "url" => url
+    }
+  end
+
+  # Schéma FAQPage pour la page FAQ
+  def faq_page_schema
+    {
+      "@context" => "https://schema.org",
+      "@type" => "FAQPage",
+      "mainEntity" => faq_schema_questions
     }
   end
 
@@ -146,9 +172,44 @@ module StructuredDataHelper
 
   private
 
+  def faq_schema_questions
+    FAQ_SECTIONS.flat_map do |section, count|
+      (1..count).filter_map do |n|
+        question = I18n.t("public.pages.faq.sections.#{section}.q#{n}.question", default: nil)
+        next if question.blank?
+
+        answer_html = faq_schema_answer_html(section, n)
+        answer_text = ActionController::Base.helpers.strip_tags(answer_html.to_s).squish
+        next if answer_text.blank?
+
+        {
+          "@type" => "Question",
+          "name" => question,
+          "acceptedAnswer" => {
+            "@type" => "Answer",
+            "text" => answer_text
+          }
+        }
+      end
+    end
+  end
+
+  def faq_schema_answer_html(section, n)
+    key = "public.pages.faq.sections.#{section}.q#{n}.answer_html"
+    return I18n.t(key) unless section == :general && n == 1
+
+    I18n.t(
+      key,
+      address: "29 Boulevard Carnot, 06400 Cannes",
+      hours: I18n.t("meta_tags.faq_schema.hours_fallback"),
+      phone: "04 93 45 17 17",
+      contact_link: I18n.t("public.pages.faq.sections.general.q1.contact_form")
+    )
+  end
+
   def product_schema_image_url(produit)
     return unless produit.image1.attached?
-  
+
     key = produit.image1.blob.key
     "#{ApplicationHelper::CLOUDINARY_BASE_IMAGE_URL}/q_auto,f_auto,w_1200/#{key}"
   end
@@ -184,12 +245,40 @@ module StructuredDataHelper
   end
 
   def clothing_store_node
-    {
+    node = {
       "@type" => "ClothingStore",
       "name" => "Autour D'Un Soir",
       "url" => root_url,
-      "image" => "#{root_url}images/autourdunsoir_drapeau.png"
+      "image" => "#{root_url}images/autourdunsoir_drapeau.png",
+      "telephone" => STORE_PHONE,
+      "address" => {
+        "@type" => "PostalAddress",
+        "streetAddress" => STORE_ADDRESS[:street],
+        "addressLocality" => STORE_ADDRESS[:locality],
+        "postalCode" => STORE_ADDRESS[:postal_code],
+        "addressCountry" => STORE_ADDRESS[:country]
+      },
+      "geo" => {
+        "@type" => "GeoCoordinates",
+        "latitude" => STORE_GEO[:latitude],
+        "longitude" => STORE_GEO[:longitude]
+      },
+      "areaServed" => [
+        { "@type" => "City", "name" => "Cannes" },
+        { "@type" => "AdministrativeArea", "name" => "Alpes-Maritimes" }
+      ]
     }
+
+    google_data = GooglePlacesService.fetch
+    if google_data&.dig(:rating).present?
+      node["aggregateRating"] = {
+        "@type" => "AggregateRating",
+        "ratingValue" => google_data[:rating],
+        "reviewCount" => google_data[:user_rating_count]
+      }
+    end
+
+    node
   end
 
   def website_node
@@ -223,4 +312,3 @@ module StructuredDataHelper
     }
   end
 end
-

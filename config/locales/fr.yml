@@ -604,6 +604,14 @@ fr:
       faq:
         title: "FAQ - Questions fréquentes - Autour D'Un Soir"
         description: "Retrouvez les réponses aux questions fréquentes."
+      categories:
+        title: "Catégories - Autour D'Un Soir"
+        description: "Parcourez toutes les catégories de notre catalogue."
+    product:
+      description_with_category: "%{product} — %{category} à Cannes. Location et vente chez Autour D'Un Soir."
+      description_fallback: "%{product} — location et vente à Cannes chez Autour D'Un Soir."
+    faq_schema:
+      hours_fallback: "Du mardi au samedi, sur rendez-vous."
 
   public:
     shared:
@@ -792,6 +800,14 @@ fr:
         intro_text: "Découvrez nos collections de robes de mariée, tenues de soirée, smokings et accessoires. Que vous cherchiez à louer ou acheter, notre boutique à Cannes vous propose une sélection soigneusement choisie pour sublimer vos moments les plus précieux."
         view_all_products: "Voir tous les produits"
         cta_title: "Prêt à découvrir nos collections ?"
+      categories:
+        header_title: "Catégories"
+        header_subtitle: "Explorez notre catalogue par univers"
+        intro_text: "Parcourez l'ensemble de nos catégories : robes de mariée, tenues de soirée, costumes, smokings et accessoires. Sélectionnez une catégorie pour découvrir notre catalogue en ligne ou venez nous rencontrer en boutique à Cannes."
+        section_title: "Toutes nos catégories"
+        empty_message: "Aucune catégorie disponible pour le moment."
+        view_all_products: "Voir tous les produits"
+        cta_title: "Besoin d'aide pour choisir ?"
       rdv:
         header_title: "Prendre rendez-vous"
         header_subtitle: "Réservez votre créneau en boutique"

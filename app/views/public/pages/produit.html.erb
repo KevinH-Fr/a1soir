@@ -1,3 +1,5 @@
+<% content_for :title, product_meta_title(@produit) %>
+<% content_for :meta_description, product_meta_description(@produit) %>
 <% content_for :og_image, @produit.default_image %>
 
 <% content_for :structured_data do %>

@@ -20,7 +20,10 @@ module Sitemap
       ["/cabine_essayage", "weekly", 0.8],
       ["/contact", "monthly", 0.7],
       ["/rdv", "weekly", 0.8],
-      ["/produits", "daily", 0.6]
+      ["/produits", "daily", 0.6],
+      ["/categories", "weekly", 0.7],
+      ["/faq", "monthly", 0.7],
+      ["/legal", "yearly", 0.4]
     ].freeze
 
     class << self

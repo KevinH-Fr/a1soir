@@ -52,7 +52,7 @@ module MetaTagsHelper
         keywords: "contact Autour D'Un Soir, adresse, téléphone, email"
       },
       produits: {
-        title: "Nos produits - Autour D'Un Soir",
+        title: "Produits - Autour D'Un Soir",
         description: "Découvrez notre catalogue de robes de mariée et accessoires. Large choix de modèles disponibles.",
         keywords: "produits, robes de mariée, catalogue, Autour D'Un Soir"
       },
@@ -75,6 +75,11 @@ module MetaTagsHelper
         title: "FAQ - Questions fréquemment posées - Autour D'Un Soir",
         description: "Trouvez les réponses aux questions fréquemment posées sur nos services de location et vente de robes de mariée.",
         keywords: "FAQ, questions fréquentes, Autour D'Un Soir, location robes de mariée, vente"
+      },
+      categories: {
+        title: "Catégories - Autour D'Un Soir",
+        description: "Parcourez toutes les catégories de notre catalogue : robes de mariée, tenues de soirée, costumes et accessoires.",
+        keywords: "catégories, catalogue, robes de mariée, Autour D'Un Soir, Cannes"
       }
     }
   }.freeze
@@ -89,6 +94,31 @@ module MetaTagsHelper
 
   def meta_keywords(page_key = nil)
     meta_tag_value(:keywords, page_key)
+  end
+
+  def product_meta_title(produit)
+    "#{produit.nom} | Autour D'Un Soir"
+  end
+
+  def product_meta_description(produit)
+    plain = ActionController::Base.helpers.strip_tags(produit.description.to_s).squish
+    return plain.truncate(155) if plain.present?
+
+    categorie = produit.categorie_produits.merge(CategorieProduit.not_service).order(:nom).first
+    if categorie
+      I18n.t(
+        "meta_tags.product.description_with_category",
+        product: produit.nom,
+        category: categorie.nom,
+        default: "#{produit.nom} — #{categorie.nom} à Cannes. Location et vente chez Autour D'Un Soir."
+      )
+    else
+      I18n.t(
+        "meta_tags.product.description_fallback",
+        product: produit.nom,
+        default: "#{produit.nom} — location et vente à Cannes chez Autour D'Un Soir."
+      )
+    end
   end
 
   private
@@ -149,6 +179,8 @@ module MetaTagsHelper
       :legal
     when 'pages#faq'
       :faq
+    when 'pages#categories'
+      :categories
     when 'pages#produit'
       nil
     else

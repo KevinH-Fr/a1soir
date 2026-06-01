@@ -825,8 +825,8 @@ footer .bi-facebook:hover {
   transition: transform 0.3s ease;
 }
 
-/* Collection card image placeholder */
-.collection-card-image {
+/* Legacy placeholder cards (not full-bleed collection cards) */
+.hover-card .collection-card-image {
   height: 250px;
 }
 
@@ -2396,6 +2396,7 @@ section {
 .collection-card-image {
   transition: transform 0.6s ease;
   transform-origin: center center;
+  object-fit: cover;
 }
 
 .collection-card-link:hover .collection-card-image {

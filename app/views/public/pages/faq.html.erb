@@ -6,6 +6,9 @@
           url: public_page_url
         ).to_json.html_safe %>
   </script>
+  <script type="application/ld+json">
+    <%= faq_page_schema.to_json.html_safe %>
+  </script>
 <% end %>
 
 <%= page_header(t("public.pages.faq.header_title"), t("public.pages.faq.header_subtitle"),
