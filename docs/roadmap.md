@@ -56,9 +56,6 @@ voir avec cha si qualité image sur bon de commande ou etiquette trop faible
 - si necessaire passer sur un worker pour pdf ?
 
 
-
-call 0106:
-
 ok - dupliquer le scan de bloque large et le mettre aussi dans la navbar
 ok - sur bloc large eshop : enlevé le petit 1 si expédié
 ok - faire lsite de prenoms, comparer à prenom existant, indiquer prenom restant
@@ -73,11 +70,12 @@ ok - quid possible de chsoir les avis les plus récents plutot que plus pertienn
 
 
 
-
 ToDo long terme :
 _________________
 
 - partie blog : ajouter des pages seo avec l'histoire d'une cateogire et les liens vers les produits, une video pour engagemnet plus long
+
+- voir pourquoi pas bcd de fiches de produits sur search console
 
 - mettre en place le flux merchant pour produits en boutique (code etablissement)
 - remettre une campaign google ads

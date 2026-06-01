@@ -235,4 +235,39 @@ RSpec.describe "Public::Pages", type: :request do
       expect(flash[:info].presence || flash.now[:info].presence).to be_present
     end
   end
+
+  # -------------------------------------------------------------------------
+  # GET /fr/produit/:slug-:id — canonical / og:url (no back_url in meta)
+  # -------------------------------------------------------------------------
+
+  describe "GET /fr/produit/:slug-:id" do
+    let!(:produit_seo) do
+      Produit.create!(
+        nom: "Robe SEO",
+        handle: "robe-seo",
+        prixvente: 50,
+        stripe_price_id: "price_seo_001",
+        eshop: true,
+        today_availability: true,
+        quantite: 1,
+        actif: true
+      )
+    end
+
+    let(:canonical_url) { "http://www.example.com/fr/produit/robe-seo-#{produit_seo.id}" }
+
+    it "renders a clean canonical without back_url query param" do
+      get "/fr/produit/robe-seo-#{produit_seo.id}", params: { back_url: "/fr/produits" }
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(%(<link rel="canonical" href="#{canonical_url}">))
+      expect(response.body).not_to include("back_url")
+    end
+
+    it "renders clean og:url without query params" do
+      get "/fr/produit/robe-seo-#{produit_seo.id}", params: { back_url: "/fr/produits" }
+
+      expect(response.body).to include(%(property="og:url" content="#{canonical_url}"))
+    end
+  end
 end

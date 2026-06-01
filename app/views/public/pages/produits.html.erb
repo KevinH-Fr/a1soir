@@ -3,7 +3,7 @@
     <%= webpage_schema(
           name: meta_title,
           description: meta_description,
-          url: request.original_url
+          url: public_page_url
         ).to_json.html_safe %>
   </script>
 
@@ -17,9 +17,9 @@
 
   <% if defined?(current_category) && current_category.present? %>
     <% breadcrumbs << { name: structured_breadcrumb_name(:categories), url: categories_url } %>
-    <% breadcrumbs << { name: current_category.nom, url: request.original_url } %>
+    <% breadcrumbs << { name: current_category.nom, url: public_page_url } %>
   <% else %>
-    <% breadcrumbs << { name: structured_breadcrumb_name(:products), url: request.original_url } %>
+    <% breadcrumbs << { name: structured_breadcrumb_name(:products), url: public_page_url } %>
   <% end %>
 
   <script type="application/ld+json">

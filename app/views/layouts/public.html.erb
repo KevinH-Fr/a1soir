@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description" content="<%= meta_description %>">
     <meta name="keywords" content="<%= meta_keywords %>">
-    <% hreflang_params = request.path_parameters.merge(request.query_parameters).symbolize_keys.except(:locale) %>
-    <link rel="canonical" href="<%= url_for(hreflang_params.merge(locale: I18n.locale, only_path: false)) %>">
+    <link rel="canonical" href="<%= public_page_url %>">
     <% I18n.available_locales.each do |locale| %>
-      <link rel="alternate" hreflang="<%= locale %>" href="<%= url_for(hreflang_params.merge(locale: locale, only_path: false)) %>">
+      <link rel="alternate" hreflang="<%= locale %>" href="<%= public_page_url(locale: locale) %>">
     <% end %>
-    <link rel="alternate" hreflang="x-default" href="<%= url_for(hreflang_params.merge(locale: I18n.default_locale, only_path: false)) %>">
+    <link rel="alternate" hreflang="x-default" href="<%= public_page_url(locale: I18n.default_locale) %>">
     <%# Données structurées globales (entreprise + site) %>
     <script type="application/ld+json">
       <%= structured_data_global.to_json.html_safe %>
@@ -21,7 +20,7 @@
     <meta property="og:title" content="<%= meta_title %>">
     <meta property="og:description" content="<%= meta_description %>">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="<%= request.original_url %>">
+    <meta property="og:url" content="<%= public_page_url %>">
     <meta property="og:image" content="<%= content_for?(:og_image) ? yield(:og_image) : "#{root_url}images/autourdunsoir_drapeau.png" %>">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">

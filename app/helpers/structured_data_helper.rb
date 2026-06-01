@@ -82,7 +82,10 @@ module StructuredDataHelper
       }
     end
 
-    crumbs << { name: produit.nom, url: request.original_url }
+    crumbs << {
+      name: produit.nom,
+      url: produit_url(slug: produit.handle, id: produit.id, locale: I18n.locale)
+    }
     crumbs
   end
 
@@ -117,7 +120,7 @@ module StructuredDataHelper
       graph << webpage_node(
         name: meta_title(page_key),
         description: meta_description(page_key),
-        url: request.original_url
+        url: public_page_url
       )
     end
 
