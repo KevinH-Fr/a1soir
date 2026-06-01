@@ -10,8 +10,8 @@ module PdfHelper
   end
 
   # Corps du document — vignettes produit via URL Cloudinary redimensionnée (HTML léger).
-  def pdf_product_thumb_tag(source, width:, **options)
-    src = pdf_image_src_for_body(source, width: width)
+  def pdf_product_thumb_tag(source, width:, quality: "auto", **options)
+    src = pdf_image_src_for_body(source, width: width, quality: quality)
     return "" if src.blank?
 
     tag.img(**options.merge(src: src))
@@ -33,12 +33,12 @@ module PdfHelper
     end
   end
 
-  def pdf_image_src_for_body(source, width:)
+  def pdf_image_src_for_body(source, width:, quality: "auto")
     case source
     when ActiveStorage::Attached::One
-      pdf_image_src_for_body(source.blob, width: width) if source.attached?
+      pdf_image_src_for_body(source.blob, width: width, quality: quality) if source.attached?
     when ActiveStorage::Blob
-      pdf_cloudinary_url(source, width: width)
+      pdf_cloudinary_url(source, width: width, quality: quality)
     when String
       if source.start_with?("http://", "https://", "data:")
         source
@@ -54,8 +54,8 @@ module PdfHelper
 
   private
 
-  def pdf_cloudinary_url(blob, width:)
-    transformation = "q_auto,f_auto,w_#{width}"
+  def pdf_cloudinary_url(blob, width:, quality: "auto")
+    transformation = "q_#{quality},f_auto,w_#{width}"
     "#{ApplicationHelper::CLOUDINARY_BASE_IMAGE_URL}/#{transformation}/#{blob.key}"
   end
 

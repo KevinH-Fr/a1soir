@@ -348,6 +348,10 @@ class Admin::ProduitsController < Admin::ApplicationController
       @produitBase.images.each do |image|
         copy.images.attach(image.blob)
       end
+
+      if @produitBase.video1.attached?
+        copy.video1.attach(@produitBase.video1.blob)
+      end
   
       # Call Stripe Service outside the transaction
       if OnlineSales.available?

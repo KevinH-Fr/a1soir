@@ -41,3 +41,6 @@ application.register("share-list", ShareListController)
 
 import CollectionCardRevealController from "./collection_card_reveal_controller"
 application.register("collection-card-reveal", CollectionCardRevealController)
+
+import NavbarOutsideCloseController from "./navbar_outside_close_controller"
+application.register("navbar-outside-close", NavbarOutsideCloseController)

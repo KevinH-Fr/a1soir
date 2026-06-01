@@ -38,7 +38,7 @@ Retirer le buildpack `wkhtmltopdf` s'il est encore présent (migration terminée
 
 - [`PdfHelper`](../app/helpers/pdf_helper.rb) — **corps** :
   - commandes : `pdf_product_thumb_tag` (`w_80` / `w_40`)
-  - étiquettes : `pdf_product_thumb_tag` (`w_400` pour la photo produit)
+  - étiquettes : `pdf_product_thumb_tag` (`w_800,q_90` pour la photo produit — qualité print)
   - **header/footer / QR** : `pdf_image_tag` (base64 embarqué, requis pour les templates d'en-tête Chrome)
 - Layout unifié [`layouts/pdf.html.erb`](../app/views/layouts/pdf.html.erb) — Bootstrap 5 + `document.css` inline
 

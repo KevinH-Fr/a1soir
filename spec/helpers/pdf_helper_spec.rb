@@ -15,6 +15,16 @@ RSpec.describe PdfHelper, type: :helper do
       expect(src).not_to start_with("data:")
     end
 
+    it "accepts a custom quality for print PDFs" do
+      blob = instance_double(ActiveStorage::Blob, key: "abc123")
+
+      src = helper.pdf_image_src_for_body(blob, width: 800, quality: 90)
+
+      expect(src).to eq(
+        "https://res.cloudinary.com/dukne3lhz/image/upload/q_90,f_auto,w_800/abc123"
+      )
+    end
+
     it "returns base64 for local fallback paths" do
       src = helper.pdf_image_src_for_body("/images/no_photo.png", width: 80)
 

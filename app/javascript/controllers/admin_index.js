@@ -29,3 +29,6 @@ application.register("qr-code-ajout-article", QrCodeAjoutArticleController)
 
 import QrCodeController from "./qr_code_controller"
 application.register("qr-code", QrCodeController)
+
+import NavbarOutsideCloseController from "./navbar_outside_close_controller"
+application.register("navbar-outside-close", NavbarOutsideCloseController)
