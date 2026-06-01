@@ -1089,6 +1089,7 @@ en:
           p5: "Whether you choose rental or purchase, we guarantee impeccable outfits, maintained with the utmost care. Our goal: to help you shine at your most important events."
         google_reviews:
           title: "Customer reviews"
+          sorted_by_recent: "Most recent reviews"
           based_on: "Based on %{count} Google reviews"
           view_all: "View all reviews on Google"
       festival_de_cannes:

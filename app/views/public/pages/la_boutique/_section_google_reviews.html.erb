@@ -9,6 +9,11 @@
           <%= t("public.pages.la_boutique.google_reviews.title") %>
           <span class="section-title-underline" style="background: white;"></span>
         </h2>
+        <% if @google_data[:reviews_sort] == "newest" %>
+          <p class="text-light opacity-75 mb-0 mt-2" style="font-size: 0.95rem;">
+            <%= t("public.pages.la_boutique.google_reviews.sorted_by_recent") %>
+          </p>
+        <% end %>
       </div>
 
       <!-- Note globale -->

@@ -1456,6 +1456,7 @@ fr:
           p5: "Que vous optiez pour la location ou l'achat, nous vous garantissons des tenues impeccables, entretenues avec le plus grand soin. Notre objectif : vous permettre de briller lors de vos événements les plus importants."
         google_reviews:
           title: "Avis clients"
+          sorted_by_recent: "Avis les plus récents"
           based_on: "Base sur %{count} avis Google"
           view_all: "Voir tous les avis sur Google"
       festival_de_cannes:

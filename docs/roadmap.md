@@ -66,11 +66,10 @@ ok - faire lsite de prenoms, comparer à prenom existant, indiquer prenom restan
 
 ok - navbar sur admin et public, pouvoir cliquer en dehors de la navbar pour qu’elle se reduise, meme comportement que clique sur le bouton collapse
 
-ameliroer qualité images sur etiquettes pdf
-verifier video bien dupliquée quand duplication produit
+ok - ameliroer qualité images sur etiquettes pdf
+ok - verifier video bien dupliquée quand duplication produit
 
-
-quid possible de chsoir les avis les plus récents plutot que plus pertiennts pour avis google 
+ok - quid possible de chsoir les avis les plus récents plutot que plus pertiennts pour avis google 
 
 
 
