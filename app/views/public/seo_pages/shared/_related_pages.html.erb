@@ -1,0 +1,12 @@
+<% if @related_pages.present? %>
+  <section class="container px-3 my-5 pb-4" data-scroll-reveal>
+    <h2 class="text-light fs-5 text-uppercase mb-3"><%= t("public.seo_pages.shared.related_title") %></h2>
+    <div class="d-flex flex-wrap gap-2">
+      <% @related_pages.each do |related| %>
+        <%= link_to seo_page_label(related),
+                    seo_page_path_for(related),
+                    class: "btn btn-outline-light btn-sm public-btn-border-radius" %>
+      <% end %>
+    </div>
+  </section>
+<% end %>

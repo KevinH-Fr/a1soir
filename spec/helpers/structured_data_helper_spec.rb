@@ -20,7 +20,12 @@ RSpec.describe StructuredDataHelper, type: :helper do
 
     it "includes area served" do
       expect(node["areaServed"]).to include(
-        { "@type" => "City", "name" => "Cannes" }
+        { "@type" => "City", "name" => "Cannes" },
+        { "@type" => "City", "name" => "Nice" },
+        { "@type" => "City", "name" => "Antibes" },
+        { "@type" => "City", "name" => "Monaco" },
+        { "@type" => "City", "name" => "Mandelieu-la-Napoule" },
+        { "@type" => "City", "name" => "Grasse" }
       )
     end
 

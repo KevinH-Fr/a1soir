@@ -1,0 +1,45 @@
+<% seo_page_section_keys(@page).each_with_index do |section_key, index| %>
+  <% section_image = seo_page_section_image(@page, section_key) %>
+  <% title = seo_page_t(@page, "sections.#{section_key}.title") %>
+  <% body = seo_page_t(@page, "sections.#{section_key}.body_html") %>
+  <% reverse = section_image&.dig(:reverse) == true || (section_image.present? && index.odd?) %>
+
+  <section class="container px-3 mb-5 seo-page-section" data-scroll-reveal>
+    <% if section_image&.dig(:image).present? %>
+      <div class="row g-4 g-lg-5 align-items-center <%= reverse ? 'flex-lg-row-reverse' : '' %>">
+        <div class="col-lg-5">
+          <div class="seo-section-image-wrap">
+            <%= image_tag(
+                  seo_page_image_source(section_image[:image]),
+                  class: "seo-section-image w-100",
+                  alt: title,
+                  width: 1200,
+                  height: 900,
+                  loading: "lazy",
+                  style: "object-fit: cover; object-position: #{section_image[:position].presence || 'center'};"
+                ) %>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="section-title-wrapper mb-4">
+            <h2 class="text-light fs-4 mb-0" style="font-family: 'Playfair Display', serif;">
+              <%= title %>
+            </h2>
+          </div>
+          <div class="text-light opacity-85 seo-section-body">
+            <%= body.html_safe %>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <div class="section-title-wrapper mb-4">
+        <h2 class="text-light fs-4" style="font-family: 'Playfair Display', serif;">
+          <%= title %>
+        </h2>
+      </div>
+      <div class="text-light opacity-85 seo-section-body">
+        <%= body.html_safe %>
+      </div>
+    <% end %>
+  </section>
+<% end %>

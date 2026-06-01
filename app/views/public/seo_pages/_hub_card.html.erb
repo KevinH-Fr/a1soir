@@ -1,0 +1,26 @@
+<%= link_to seo_page_path_for(page), class: "seo-hub-card-link text-decoration-none d-block h-100" do %>
+  <article class="seo-hub-card h-100">
+    <div class="seo-hub-card-top">
+      <span class="seo-hub-card-icon" aria-hidden="true">
+        <i class="bi bi-<%= seo_hub_group_icon(group) %>"></i>
+      </span>
+    </div>
+
+    <h3 class="seo-hub-card-title mb-0">
+      <%= seo_page_t(page, :link_title, default: seo_page_t(page, :header_title)) %>
+    </h3>
+
+    <% subtitle = seo_page_t(page, :header_subtitle, default: "") %>
+    <% if subtitle.present? %>
+      <p class="seo-hub-card-subtitle"><%= subtitle %></p>
+    <% end %>
+
+    <footer class="seo-hub-card-footer">
+      <span class="seo-hub-card-badge"><%= t("public.seo_pages.hub.groups.#{group}") %></span>
+      <span class="seo-hub-card-cta">
+        <%= t("public.seo_pages.hub.read_guide") %>
+        <span class="seo-hub-card-cta-arrow" aria-hidden="true">→</span>
+      </span>
+    </footer>
+  </article>
+<% end %>

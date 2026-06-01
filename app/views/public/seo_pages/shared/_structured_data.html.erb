@@ -1,0 +1,10 @@
+<script type="application/ld+json">
+  <%= webpage_schema(
+        name: meta_title,
+        description: meta_description,
+        url: public_page_url
+      ).to_json.html_safe %>
+</script>
+<script type="application/ld+json">
+  <%= breadcrumb_schema(seo_page_breadcrumbs(@page)).to_json.html_safe %>
+</script>

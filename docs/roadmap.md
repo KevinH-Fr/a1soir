@@ -85,6 +85,9 @@ ____________
 
 - seo quickwins : meta sur produit, cateogires, sitemap avec faq et legal
 - partie guides : ajouter des pages seo avec l'histoire d'une cateogire et les liens vers les produits, une video pour engagemnet plus long
+- demander a cha ok pour push pas tres important de tout relire je pense a la seconde
+- verif seo mieux sur les pages produit
+- repush sitemap
 
 ToDo long terme :
 _________________

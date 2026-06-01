@@ -1,0 +1,302 @@
+fr:
+  meta_tags:
+    pages:
+      seo_guides_hub:
+        title: "Guides & conseils - Autour D'Un Soir"
+        description: "Conseils robes de mariée, tenues de soirée et costumes à Cannes. Guides pratiques par Autour D'Un Soir."
+      robe_de_mariee_cannes:
+        title: "Robe de mariée Cannes - Autour D'Un Soir"
+        description: "Robes de mariée à Cannes : boutique Autour D'Un Soir depuis 1980. Essayage, retouches et collections — accessible depuis Nice, Antibes et Monaco."
+      essayage_robe_mariee_cannes:
+        title: "Essayage robe de mariée Cannes - Autour D'Un Soir"
+        description: "Réservez votre essayage de robe de mariée à Cannes. Cabine privée et conseil personnalisé — clientes accueillies depuis Nice, Antibes et Monaco."
+      costume_mariage_cannes:
+        title: "Costume mariage Cannes - Smokings & cérémonie"
+        description: "Costumes et smokings de mariage à Cannes. Location et vente en boutique — accessible depuis Nice, Antibes et Monaco."
+      guide_choisir_robe_mariee:
+        title: "Comment choisir sa robe de mariée - Guide Autour D'Un Soir"
+        description: "Conseils pour choisir sa robe de mariée : style, budget, délais et essayage en boutique à Cannes."
+      guide_robe_mariee_boheme:
+        title: "Robe de mariée bohème - Guide complet"
+        description: "Tout savoir sur la robe de mariée bohème : matières, coupes fluides, dentelle et inspirations."
+      guide_robe_mariee_morphologie:
+        title: "Robe de mariée selon sa morphologie - Guide"
+        description: "Quelle robe de mariée selon sa morphologie ? Sirène, princesse, fourreau, bustier : nos conseils."
+      guide_smoking_costume_mariage:
+        title: "Smoking ou costume de mariage - Lequel choisir ?"
+        description: "Smoking ou costume pour un mariage ? Comparatif des styles, couleurs et occasions."
+      guide_robe_invitee_mariage:
+        title: "Robe invitée mariage - Idées & conseils"
+        description: "Quelle tenue porter en tant qu'invitée à un mariage ? Robes cocktail, longues et codes dress code."
+      guide_tenue_gala_ceremonie:
+        title: "Tenue de gala et cérémonie - Guide Autour D'Un Soir"
+        description: "Quelle tenue pour un gala, un baptême ou une cérémonie ? Robes, smokings et conseils en boutique à Cannes."
+      guide_achat_location_soiree:
+        title: "Achat ou location de tenue de soirée - Guide"
+        description: "Faut-il acheter ou louer sa tenue de soirée ? Avantages, délais et conseils Autour D'Un Soir à Cannes."
+      guide_location_smoking_costume:
+        title: "Location smoking & costume Cannes - Autour D'Un Soir"
+        description: "Louer un smoking ou un costume à Cannes : essayage, retouches et formules location en boutique Autour D'Un Soir."
+      guide_chaussures_accessoires:
+        title: "Chaussures & accessoires de soirée - Guide Autour D'Un Soir"
+        description: "Chaussures et accessoires pour mariage, gala ou soirée à Cannes : conseils pour coordonner votre look en boutique Autour D'Un Soir."
+
+  public:
+    seo_pages:
+      hub:
+        title: "Guides & conseils"
+        intro: "Retrouvez nos guides pratiques pour préparer votre mariage, choisir votre tenue de soirée ou votre costume, et découvrir la boutique Autour D'Un Soir à Cannes."
+        read_guide: "Lire le guide"
+        groups:
+          local: "À Cannes"
+          guides: "Robes de mariée"
+          events: "Occasions & événements"
+          services: "Services & location"
+      shared:
+        products_title: "Notre sélection"
+        categories_title: "Nos collections"
+        view_collection: "Voir toute la collection"
+        boutique_title: "La boutique à Cannes"
+        boutique_fallback: "Autour D'Un Soir vous accueille au cœur de Cannes pour un accompagnement personnalisé."
+        faq_title: "Questions fréquentes"
+        related_title: "À lire aussi"
+        cta_title_default: "Prête à passer à l'étape suivante ?"
+
+      robe_de_mariee_cannes:
+        link_title: "Robe de mariée Cannes"
+        header_title: "Robe de mariée à Cannes"
+        header_subtitle: "Boutique Autour D'Un Soir — collections, essayage et retouches"
+        intro_html: "<p>Depuis 1980, <strong>Autour D'Un Soir</strong> accompagne les futures mariées à Cannes et sur toute la Côte d'Azur — Nice, Antibes, Monaco et les Alpes-Maritimes. Robes courtes ou longues, styles bohème, princesse ou sirène : notre équipe vous conseille en boutique pour trouver la robe qui vous ressemble.</p>"
+        cta_title: "Réservez votre essayage à Cannes"
+        sections:
+          boutique:
+            title: "Une adresse de référence à Cannes"
+            body_html: "<p>Notre boutique du boulevard Carnot accueille les mariées de Cannes et des communes voisines en rendez-vous personnalisé. Que vous veniez de Nice, d'Antibes ou de Monaco, essayage privé, sélection adaptée à vos goûts et retouches réalisées par notre atelier.</p>"
+          collections:
+            title: "Des collections pour chaque style"
+            body_html: "<p>Robes de mariée courtes et longues, matières nobles, dentelles et coupes actuelles. Nous proposons des modèles à la vente, avec un accompagnement complet jusqu'au jour J.</p>"
+          services:
+            title: "Essayage, retouches et accompagnement"
+            body_html: "<p>Le rendez-vous est fortement recommandé pour bénéficier d'une conseillère dédiée. Les retouches sont incluses dans nos prestations pour un ajustement parfait.</p>"
+          acces:
+            title: "Accessible depuis Nice, Antibes et Monaco"
+            body_html: "<p>La boutique se situe au 29 boulevard Carnot, à deux pas de la gare de Cannes. Comptez environ 30 minutes depuis Nice (A8 ou TER), 20 minutes depuis Antibes et 45 minutes depuis Monaco. Des parkings publics sont disponibles à proximité pour faciliter votre venue.</p>"
+        faq:
+          q1:
+            question: "Où essayer une robe de mariée à Cannes ?"
+            answer_html: "<p>Autour D'Un Soir, 29 boulevard Carnot à Cannes. Prenez rendez-vous en ligne ou par téléphone.</p>"
+          q2:
+            question: "Proposez-vous la location de robes de mariée ?"
+            answer_html: "<p>Non, nos robes de mariée sont proposées à la vente uniquement, pour garantir une coupe et des retouches définitives optimales.</p>"
+          q3:
+            question: "Je viens de Nice ou Monaco, comment venir en boutique ?"
+            answer_html: "<p>Depuis Nice, prenez l'A8 direction Cannes (sortie 42) ou le TER jusqu'à la gare de Cannes, puis 5 minutes à pied jusqu'au boulevard Carnot. Depuis Monaco, comptez environ 45 minutes en voiture via l'A8. Réservez votre créneau d'essayage à l'avance.</p>"
+
+      essayage_robe_de_mariee_cannes:
+        link_title: "Essayage robe de mariée Cannes"
+        header_title: "Essayage robe de mariée à Cannes"
+        header_subtitle: "Un moment privilégié en cabine d'essayage"
+        intro_html: "<p>L'essayage est une étape clé de votre préparation. En boutique à Cannes, nous accueillons les futures mariées de toute la Riviera — Nice, Antibes, Monaco — en cabine spacieuse, avec l'aide de conseillères expertes.</p>"
+        cta_title: "Réserver mon essayage"
+        sections:
+          deroulement:
+            title: "Comment se déroule l'essayage ?"
+            body_html: "<p>Après votre prise de rendez-vous, nous préparons une sélection de robes selon vos envies. Vous pouvez venir accompagnée, essayer plusieurs modèles et affiner votre choix avec nos conseils.</p>"
+          conseils:
+            title: "Nos conseils avant l'essayage"
+            body_html: "<p>Prévoyez sous-vêtements neutres, des chaussures à talons proches de celles du jour J et des photos de styles qui vous inspirent. Arrivez 10 minutes en avance pour profiter pleinement de votre créneau.</p>"
+          acces:
+            title: "Venir depuis Nice, Antibes ou Monaco"
+            body_html: "<p>29 boulevard Carnot, à 5 minutes à pied de la gare de Cannes. En voiture : environ 30 min depuis Nice, 20 min depuis Antibes, 45 min depuis Monaco. Pensez à réserver votre créneau pour un accueil personnalisé dès votre arrivée.</p>"
+        faq:
+          q1:
+            question: "Le rendez-vous est-il obligatoire ?"
+            answer_html: "<p>Il est fortement recommandé pour garantir la disponibilité d'une conseillère et une sélection préparée à l'avance.</p>"
+          q2:
+            question: "Accueillez-vous des clientes des Alpes-Maritimes ?"
+            answer_html: "<p>Oui, nous recevons régulièrement des clientes de Nice, Antibes, Monaco et de toute la région. La boutique est à Cannes, avec essayage privé et retouches sur place.</p>"
+
+      costume_mariage_cannes:
+        link_title: "Costume mariage Cannes"
+        header_title: "Costume & smoking de mariage à Cannes"
+        header_subtitle: "Tenues de cérémonie pour hommes et enfants"
+        intro_html: "<p>Smokings, costumes de cérémonie et tenues pour enfants : Autour D'Un Soir habille les mariés, témoins et invités avec élégance. Notre boutique à Cannes accueille une clientèle venue de Nice, Antibes, Monaco et de toute la Côte d'Azur.</p>"
+        cta_title: "Découvrir nos costumes en boutique"
+        sections:
+          collections:
+            title: "Smokings et costumes"
+            body_html: "<p>Large choix de coupes classiques ou modernes, accessoires assortis et retouches en boutique. Location ou vente selon vos besoins.</p>"
+          enfants:
+            title: "Tenues pour les plus jeunes"
+            body_html: "<p>Costumes pour garçons d'honneur et enfants, avec tailles adaptées et finitions soignées.</p>"
+          acces:
+            title: "Boutique accessible depuis la région"
+            body_html: "<p>Située boulevard Carnot à Cannes, à proximité de la gare. Environ 30 minutes depuis Nice, 20 minutes depuis Antibes et 45 minutes depuis Monaco. Essayage et retouches disponibles sur place.</p>"
+        faq:
+          q1:
+            question: "Je viens de Nice ou d'Antibes, puis-je essayer un costume en boutique ?"
+            answer_html: "<p>Oui, nous accueillons les mariés et invités de toute la région sur rendez-vous. La boutique est à Cannes, 29 boulevard Carnot — facilement accessible en voiture ou en train depuis Nice et Antibes.</p>"
+
+      comment_choisir_sa_robe_de_mariee:
+        link_title: "Comment choisir sa robe de mariée"
+        header_title: "Comment choisir sa robe de mariée ?"
+        header_subtitle: "Style, budget, délais : nos conseils d'expertes"
+        intro_html: "<p>Choisir sa robe de mariée est un moment unique. Voici les critères essentiels pour avancer sereinement, avant votre essayage en boutique.</p>"
+        sections:
+          style:
+            title: "Définir son style"
+            body_html: "<p>Bohème, princesse, sirène, minimaliste… Inspirez-vous de votre lieu de réception, de la saison et de votre personnalité. Apportez des références visuelles à votre essayage.</p>"
+          budget:
+            title: "Anticiper son budget"
+            body_html: "<p>Prévoyez également les retouches, les accessoires et les chaussures. En boutique, nous vous aidons à trouver un équilibre entre le modèle de vos rêves et votre enveloppe.</p>"
+          delais:
+            title: "Respecter les délais"
+            body_html: "<p>Idéalement, commencez vos recherches 8 à 12 mois avant le mariage pour profiter du plus large choix et des délais de retouches.</p>"
+
+      robe_de_mariee_boheme:
+        link_title: "Robe de mariée bohème"
+        header_title: "Robe de mariée bohème"
+        header_subtitle: "Fluide, romantique et naturelle"
+        intro_html: "<p>La robe bohème séduit par sa légèreté : dentelle, manches fluides, dos ouvert et matières douces. Idéale pour un mariage en extérieur ou champêtre.</p>"
+        sections:
+          matieres:
+            title: "Matières et détails"
+            body_html: "<p>Crêpe, tulle, dentelle guipure ou broderies florales : privilégiez des matières légères qui bougent avec vous.</p>"
+          mariage:
+            title: "Pour quel type de mariage ?"
+            body_html: "<p>Jardin, plage, domaine provençal ou cérémonie laïque en plein air : la robe bohème s'harmonise avec les décors naturels.</p>"
+
+      robe_de_mariee_morphologie:
+        link_title: "Robe de mariée morphologie"
+        header_title: "Quelle robe selon sa morphologie ?"
+        header_subtitle: "Sirène, princesse, fourreau, bustier"
+        intro_html: "<p>Chaque morphologie a des coupes qui la subliment. L'essayage reste indispensable, mais voici des pistes pour affiner votre recherche.</p>"
+        sections:
+          sirene:
+            title: "Robe sirène"
+            body_html: "<p>Épouse les courbes et flaire à partir des genoux. Valorise les silhouettes hourglass et les hanches marquées.</p>"
+          princesse:
+            title: "Robe princesse"
+            body_html: "<p>Jupe volumineuse à partir de la taille. Équilibre les silhouettes et apporte une allure majestueuse.</p>"
+          fourreau:
+            title: "Robe fourreau"
+            body_html: "<p>Ligne épurée et élégante, proche du corps sans être moulante. Idéale pour une allure chic et moderne.</p>"
+
+      smoking_ou_costume_mariage:
+        link_title: "Smoking ou costume mariage"
+        header_title: "Smoking ou costume de mariage ?"
+        header_subtitle: "Le bon choix selon l'occasion"
+        intro_html: "<p>Le smoking convient aux mariages formels et en soirée. Le costume trois pièces offre plus de souplesse pour les cérémonies diurnes ou champêtres.</p>"
+        sections:
+          smoking:
+            title: "Quand choisir le smoking ?"
+            body_html: "<p>Mariage en soirée, réception black tie ou cérémonie très habillée : le smoking noir ou midnight blue est la référence.</p>"
+          costume:
+            title: "Quand choisir le costume ?"
+            body_html: "<p>Mariage civil, cérémonie en journée ou ambiance décontractée chic : optez pour un costume bleu, beige ou gris avec cravate ou nœud papillon.</p>"
+
+      robe_invitee_mariage:
+        link_title: "Robe invitée mariage"
+        header_title: "Tenue invitée de mariage"
+        header_subtitle: "Élégante sans voler la vedette"
+        intro_html: "<p>Invitée à un mariage ? Privilégiez une robe cocktail ou longue selon le dress code, en évitant le blanc et les tons trop proches de la mariée.</p>"
+        sections:
+          dresscode:
+            title: "Lire le dress code"
+            body_html: "<p>Champêtre, chic, black tie : adaptez la longueur, les matières et les accessoires. En cas de doute, une robe midi ou longue sobre reste un choix sûr.</p>"
+          location:
+            title: "Louer ou acheter ?"
+            body_html: "<p>La location est idéale pour une tenue portée une ou deux fois. Autour D'Un Soir propose robes courtes et longues à louer ou acheter à Cannes.</p>"
+
+      tenue_gala_ceremonie:
+        link_title: "Tenue gala & cérémonie"
+        header_title: "Tenue de gala et cérémonie"
+        header_subtitle: "Galas, baptêmes, remises de diplômes et soirées habillées"
+        intro_html: "<p>Galas, baptêmes, remises de diplômes ou dîners de gala sur la Côte d'Azur : la tenue doit être à la hauteur de l'occasion. Robes longues, cocktail, smokings et costumes — Autour D'Un Soir vous conseille en boutique à Cannes.</p>"
+        sections:
+          femmes:
+            title: "Pour les femmes"
+            body_html: "<p>Robe longue pour un gala ou une soirée black tie, robe cocktail pour un cocktail habillé ou un baptême chic. Privilégiez des matières nobles, des coupes flatteuses et des accessoires sobres.</p>"
+          hommes:
+            title: "Pour les hommes"
+            body_html: "<p>Smoking ou costume trois pièces selon le niveau de formalité. Cravate ou nœud papillon, chaussures vernies et pochette assortie : notre équipe vous aide à composer une tenue harmonieuse.</p>"
+          occasions:
+            title: "Quelles occasions couvrir ?"
+            body_html: "<p>Baptêmes, communions, galas caritatifs, soirées d'entreprise, remises de prix ou événements pendant le Festival de Cannes : nous proposons location et vente, avec essayage en boutique.</p>"
+        faq:
+          q1:
+            question: "Quelle différence entre tenue de gala et tenue de cocktail ?"
+            answer_html: "<p>Le gala ou black tie appelle une robe longue ou un smoking. Le cocktail autorise une robe mi-longue ou courte plus audacieuse, ou un costume avec cravate pour les hommes.</p>"
+          q2:
+            question: "Peut-on louer une tenue pour un gala à Cannes ?"
+            answer_html: "<p>Oui, robes et smokings sont disponibles à la location en boutique, avec essayage et retouches. Idéal pour un événement ponctuel sur la Riviera.</p>"
+
+      achat_ou_location_tenue_soiree:
+        link_title: "Achat ou location tenue de soirée"
+        header_title: "Achat ou location de tenue de soirée ?"
+        header_subtitle: "Le guide pour faire le bon choix"
+        intro_html: "<p>Galas, mariages, soirées ou Festival de Cannes : selon la fréquence d'utilisation, la location ou l'achat peuvent être plus avantageux.</p>"
+        sections:
+          location:
+            title: "Les avantages de la location"
+            body_html: "<p>Accédez à des tenues de créateurs pour une fraction du prix d'achat. Entretien inclus, idéal pour un événement ponctuel.</p>"
+          achat:
+            title: "Les avantages de l'achat"
+            body_html: "<p>Investissement durable si vous portez régulièrement des tenues de soirée. Retouches possibles pour un ajustement sur mesure.</p>"
+        faq:
+          q1:
+            question: "Peut-on louer en ligne ?"
+            answer_html: "<p>La location se fait en boutique à Cannes, avec essayage et retouches inclus dans notre accompagnement.</p>"
+          q2:
+            question: "Quelle durée de location ?"
+            answer_html: "<p>La durée standard est de 4 jours (retrait 2 jours avant l'événement, retour 2 jours après).</p>"
+
+      location_smoking_costume_cannes:
+        link_title: "Location smoking & costume"
+        header_title: "Location smoking et costume à Cannes"
+        header_subtitle: "Essayage, retouches et formules location en boutique"
+        intro_html: "<p>Besoin d'un smoking ou d'un costume pour un mariage, un gala ou une soirée ? Autour D'Un Soir propose la location en boutique à Cannes, avec essayage et retouches — clientèle accueillie depuis Nice, Antibes et Monaco.</p>"
+        sections:
+          formules:
+            title: "Nos formules de location"
+            body_html: "<p>Location sur 4 jours : retrait 2 jours avant l'événement, retour 2 jours après. Smokings, costumes de cérémonie et accessoires (nœud papillon, ceinture, pochette) disponibles en boutique.</p>"
+          essayage:
+            title: "Essayage et retouches inclus"
+            body_html: "<p>Chaque location débute par un essayage pour ajuster la coupe. Notre atelier réalise les retouches nécessaires afin que votre tenue soit impeccable le jour J.</p>"
+          acces:
+            title: "Boutique à Cannes, accessible depuis la région"
+            body_html: "<p>29 boulevard Carnot, à 5 minutes de la gare de Cannes. Environ 30 min depuis Nice, 20 min depuis Antibes et 45 min depuis Monaco. Prenez rendez-vous pour un accueil personnalisé.</p>"
+        faq:
+          q1:
+            question: "Peut-on louer un smoking sans l'acheter ?"
+            answer_html: "<p>Oui, nos smokings et costumes sont proposés en location en boutique. L'essayage et les retouches font partie de notre accompagnement.</p>"
+          q2:
+            question: "Proposez-vous aussi la vente de costumes ?"
+            answer_html: "<p>Oui, location et vente sont possibles selon vos besoins. En cas d'événements répétés, l'achat peut être plus avantageux — nos conseillers vous orientent.</p>"
+
+      chaussures_accessoires_soiree:
+        link_title: "Chaussures & accessoires"
+        header_title: "Chaussures et accessoires de soirée"
+        header_subtitle: "Sublimer votre tenue de mariage, gala ou cérémonie"
+        intro_html: "<p>La robe ou le costume ne suffisent pas : chaussures, sac, bijoux et accessoires donnent le ton final à votre look. En boutique à Cannes, Autour D'Un Soir vous aide à coordonner chaque détail pour un résultat harmonieux — mariage, gala ou soirée sur la Côte d'Azur.</p>"
+        cta_title: "Compléter ma tenue en boutique"
+        sections:
+          chaussures:
+            title: "Choisir ses chaussures"
+            body_html: "<p>Talons, escarpins, sandales ou mules : la hauteur et le confort comptent autant que le style. Prévoyez l'essayage avec votre robe ou votre pantalon pour vérifier la longueur et la couleur. Pour les hommes, richelieu, mocassins ou chaussures vernies selon le niveau de formalité.</p>"
+          accessoires:
+            title: "Sacs, bijoux et finitions"
+            body_html: "<p>Pochette, clutch, ceinture, bijoux ou châle : les accessoires structurent votre silhouette sans la surcharger. Nous proposons une sélection femme et homme pour compléter une tenue de mariage, de gala ou de soirée.</p>"
+          coordonner:
+            title: "Coordonner l'ensemble"
+            body_html: "<p>Repartez sur une palette cohérente : métal des bijoux, teinte des chaussures, ton du sac. En cabine d'essayage, nos conseillères et conseillers ajustent les associations pour un rendu élégant et personnel.</p>"
+          boutique:
+            title: "Retrouver nos collections à Cannes"
+            body_html: "<p>Chaussures et accessoires sont disponibles en boutique, 29 boulevard Carnot à Cannes. Essayage sur place, accessible depuis Nice, Antibes et Monaco — idéal pour finaliser votre tenue avant le jour J ou votre événement.</p>"
+        faq:
+          q1:
+            question: "Peut-on acheter ou louer chaussures et accessoires ?"
+            answer_html: "<p>Selon les articles, la vente ou la location est possible en boutique. Nos équipes vous indiquent les options disponibles pour chaque modèle lors de votre visite.</p>"
+          q2:
+            question: "Dois-je apporter ma robe pour choisir mes chaussures ?"
+            answer_html: "<p>C'est recommandé : vous visualisez immédiatement la longueur, les proportions et l'harmonie des couleurs. Sinon, apportez une photo ou la couleur dominante de votre tenue.</p>"

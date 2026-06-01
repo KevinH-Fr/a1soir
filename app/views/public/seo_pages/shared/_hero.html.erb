@@ -1,0 +1,14 @@
+<% og_image = seo_page_og_image_url(@page) %>
+<% content_for :og_image, og_image if og_image.present? %>
+
+<div class="container-fluid text-start w-100 py-5 mb-4" data-scroll-reveal>
+  <div class="container px-3">
+    <h1 class="text-white fw-bold mb-3" style="font-family: 'Playfair Display', serif; font-size: 2.5rem;">
+      <%= seo_page_t(@page, :header_title) %>
+    </h1>
+    <% subtitle = seo_page_t(@page, :header_subtitle, default: nil) %>
+    <% if subtitle.present? %>
+      <p class="text-white-50 fs-5 mb-0" style="line-height: 1.7;"><%= subtitle %></p>
+    <% end %>
+  </div>
+</div>

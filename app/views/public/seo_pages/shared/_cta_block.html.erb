@@ -1,0 +1,7 @@
+<div class="text-center my-5 py-4" data-scroll-reveal>
+  <h2 class="mb-4 text-light h4"><%= seo_page_t(@page, :cta_title, default: t("public.seo_pages.shared.cta_title_default")) %></h2>
+  <div class="d-flex gap-3 justify-content-center flex-wrap">
+    <%= cta_button(type: "rdv", url: "#{rdv_url}#rdv-form", variant: "light") %>
+    <%= cta_button(type: "collections", url: nos_collections_path, variant: "dark", outline: "light") %>
+  </div>
+</div>

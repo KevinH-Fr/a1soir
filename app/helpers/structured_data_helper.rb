@@ -13,6 +13,22 @@ module StructuredDataHelper
 
   STORE_PHONE = "+33493451717".freeze
 
+  AREA_SERVED = [
+    { "@type" => "City", "name" => "Cannes" },
+    { "@type" => "City", "name" => "Nice" },
+    { "@type" => "City", "name" => "Antibes" },
+    { "@type" => "City", "name" => "Juan-les-Pins" },
+    { "@type" => "City", "name" => "Monaco" },
+    { "@type" => "City", "name" => "Mandelieu-la-Napoule" },
+    { "@type" => "City", "name" => "Mougins" },
+    { "@type" => "City", "name" => "Grasse" },
+    { "@type" => "City", "name" => "Saint-Raphaël" },
+    { "@type" => "City", "name" => "Le Cannet" },
+    { "@type" => "City", "name" => "Valbonne" },
+    { "@type" => "City", "name" => "Vallauris" },
+    { "@type" => "AdministrativeArea", "name" => "Alpes-Maritimes" }
+  ].freeze
+
   FAQ_SECTIONS = [
     [:general, 5],
     [:location, 7],
@@ -263,10 +279,7 @@ module StructuredDataHelper
         "latitude" => STORE_GEO[:latitude],
         "longitude" => STORE_GEO[:longitude]
       },
-      "areaServed" => [
-        { "@type" => "City", "name" => "Cannes" },
-        { "@type" => "AdministrativeArea", "name" => "Alpes-Maritimes" }
-      ]
+      "areaServed" => AREA_SERVED
     }
 
     google_data = GooglePlacesService.fetch

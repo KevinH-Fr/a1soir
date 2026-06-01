@@ -181,6 +181,8 @@ module MetaTagsHelper
       :faq
     when 'pages#categories'
       :categories
+    when 'seo_pages#show', 'seo_pages#hub'
+      controller.instance_variable_get(:@seo_meta_key)&.to_sym
     when 'pages#produit'
       nil
     else

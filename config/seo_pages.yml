@@ -1,0 +1,265 @@
+# Registre des pages SEO — source de vérité pour routes, sitemap et rendu.
+# Contenu éditorial : config/locales/seo_pages.fr.yml
+#
+# Images : résolues automatiquement via SeoPages::CategoryImages
+# à partir des produits des catégories product_filters.category_names.
+
+pages:
+  robe-de-mariee-cannes:
+    slug: robe-de-mariee-cannes
+    scope: local
+    type: local_landing
+    meta_key: robe_de_mariee_cannes
+    hub_group: local
+    sitemap:
+      changefreq: weekly
+      priority: 0.9
+    product_filters:
+      category_names:
+        - robes de mariée courtes
+        - robes de mariée longues
+    includes:
+      - boutique_snippet
+      - reviews
+      - map
+      - rdv
+      - products
+    related_pages:
+      - slug: essayage-robe-de-mariee-cannes
+        scope: local
+      - slug: comment-choisir-sa-robe-de-mariee
+        scope: guides
+      - slug: robe-de-mariee-boheme
+        scope: guides
+
+  essayage-robe-de-mariee-cannes:
+    slug: essayage-robe-de-mariee-cannes
+    scope: local
+    type: local_landing
+    meta_key: essayage_robe_mariee_cannes
+    hub_group: local
+    sitemap:
+      changefreq: weekly
+      priority: 0.85
+    product_filters:
+      category_names:
+        - robes de mariée courtes
+        - robes de mariée longues
+    includes:
+      - boutique_snippet
+      - reviews
+      - rdv
+      - products
+    related_pages:
+      - slug: robe-de-mariee-cannes
+        scope: local
+      - slug: comment-choisir-sa-robe-de-mariee
+        scope: guides
+
+  costume-mariage-cannes:
+    slug: costume-mariage-cannes
+    scope: local
+    type: local_landing
+    meta_key: costume_mariage_cannes
+    hub_group: local
+    sitemap:
+      changefreq: weekly
+      priority: 0.85
+    product_filters:
+      category_names:
+        - costume
+        - smokings
+    includes:
+      - boutique_snippet
+      - reviews
+      - rdv
+      - products
+    related_pages:
+      - slug: smoking-ou-costume-mariage
+        scope: guides
+      - slug: robe-de-mariee-cannes
+        scope: local
+
+  comment-choisir-sa-robe-de-mariee:
+    slug: comment-choisir-sa-robe-de-mariee
+    scope: guides
+    type: style_guide
+    meta_key: guide_choisir_robe_mariee
+    hub_group: guides
+    sitemap:
+      changefreq: monthly
+      priority: 0.8
+    product_filters:
+      category_names:
+        - robes de mariée longues
+    related_pages:
+      - slug: robe-de-mariee-boheme
+        scope: guides
+      - slug: robe-de-mariee-morphologie
+        scope: guides
+      - slug: robe-de-mariee-cannes
+        scope: local
+
+  robe-de-mariee-boheme:
+    slug: robe-de-mariee-boheme
+    scope: guides
+    type: style_guide
+    meta_key: guide_robe_mariee_boheme
+    hub_group: guides
+    sitemap:
+      changefreq: monthly
+      priority: 0.75
+    product_filters:
+      category_names:
+        - robes de mariée longues
+    related_pages:
+      - slug: comment-choisir-sa-robe-de-mariee
+        scope: guides
+      - slug: robe-de-mariee-cannes
+        scope: local
+
+  robe-de-mariee-morphologie:
+    slug: robe-de-mariee-morphologie
+    scope: guides
+    type: style_guide
+    meta_key: guide_robe_mariee_morphologie
+    hub_group: guides
+    sitemap:
+      changefreq: monthly
+      priority: 0.75
+    product_filters:
+      category_names:
+        - robes de mariée longues
+    related_pages:
+      - slug: comment-choisir-sa-robe-de-mariee
+        scope: guides
+      - slug: essayage-robe-de-mariee-cannes
+        scope: local
+
+  smoking-ou-costume-mariage:
+    slug: smoking-ou-costume-mariage
+    scope: guides
+    type: style_guide
+    meta_key: guide_smoking_costume_mariage
+    hub_group: guides
+    sitemap:
+      changefreq: monthly
+      priority: 0.75
+    product_filters:
+      category_names:
+        - costume
+        - smokings
+    related_pages:
+      - slug: costume-mariage-cannes
+        scope: local
+
+  robe-invitee-mariage:
+    slug: robe-invitee-mariage
+    scope: guides
+    type: event_guide
+    meta_key: guide_robe_invitee_mariage
+    hub_group: events
+    sitemap:
+      changefreq: monthly
+      priority: 0.7
+    product_filters:
+      category_names:
+        - robes courtes
+        - robes longues
+    related_pages:
+      - slug: tenue-gala-ceremonie
+        scope: guides
+      - slug: achat-ou-location-tenue-soiree
+        scope: guides
+
+  tenue-gala-ceremonie:
+    slug: tenue-gala-ceremonie
+    scope: guides
+    type: event_guide
+    meta_key: guide_tenue_gala_ceremonie
+    hub_group: events
+    sitemap:
+      changefreq: monthly
+      priority: 0.7
+    product_filters:
+      category_names:
+        - robes courtes
+        - robes longues
+        - costume
+        - smokings
+    related_pages:
+      - slug: robe-invitee-mariage
+        scope: guides
+      - slug: achat-ou-location-tenue-soiree
+        scope: guides
+      - slug: festival-de-cannes
+        scope: redirect
+
+  achat-ou-location-tenue-soiree:
+    slug: achat-ou-location-tenue-soiree
+    scope: guides
+    type: service_guide
+    meta_key: guide_achat_location_soiree
+    hub_group: services
+    sitemap:
+      changefreq: monthly
+      priority: 0.7
+    product_filters:
+      category_names:
+        - robes courtes
+        - robes longues
+    related_pages:
+      - slug: robe-invitee-mariage
+        scope: guides
+      - slug: location-smoking-costume-cannes
+        scope: guides
+      - slug: festival-de-cannes
+        scope: redirect
+
+  location-smoking-costume-cannes:
+    slug: location-smoking-costume-cannes
+    scope: guides
+    type: service_guide
+    meta_key: guide_location_smoking_costume
+    hub_group: services
+    sitemap:
+      changefreq: monthly
+      priority: 0.7
+    product_filters:
+      category_names:
+        - costume
+        - smokings
+    includes:
+      - boutique_snippet
+      - reviews
+      - rdv
+      - products
+    related_pages:
+      - slug: achat-ou-location-tenue-soiree
+        scope: guides
+      - slug: costume-mariage-cannes
+        scope: local
+      - slug: smoking-ou-costume-mariage
+        scope: guides
+
+  chaussures-accessoires-soiree:
+    slug: chaussures-accessoires-soiree
+    scope: guides
+    type: style_guide
+    meta_key: guide_chaussures_accessoires
+    hub_group: guides
+    sitemap:
+      changefreq: monthly
+      priority: 0.75
+    product_filters:
+      category_names:
+        - chaussures
+        - accessoires
+        - accessoires femmes
+    related_pages:
+      - slug: comment-choisir-sa-robe-de-mariee
+        scope: guides
+      - slug: tenue-gala-ceremonie
+        scope: guides
+      - slug: robe-de-mariee-cannes
+        scope: local

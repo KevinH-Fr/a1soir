@@ -1,0 +1,18 @@
+<% categories = seo_page_categories(@page) %>
+<% if categories.any? %>
+  <section class="container px-3 mb-5" data-scroll-reveal>
+    <div class="section-title-wrapper py-3 mb-3 text-center">
+      <h2 class="text-light fs-3 text-uppercase section-title d-inline-block position-relative">
+        <%= t("public.seo_pages.shared.categories_title") %>
+        <span class="section-title-underline" style="background: white;"></span>
+      </h2>
+    </div>
+    <div class="d-flex flex-wrap gap-2 justify-content-center">
+      <% categories.each do |category| %>
+        <%= link_to categorie_display_name(category),
+                    seo_page_category_url(category),
+                    class: "btn btn-outline-light public-btn-border-radius px-4" %>
+      <% end %>
+    </div>
+  </section>
+<% end %>

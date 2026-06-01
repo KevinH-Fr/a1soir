@@ -1,0 +1,8 @@
+<% intro = seo_page_t(@page, :intro_html, default: nil) %>
+<% if intro.present? %>
+  <div class="container px-3 mb-5" data-scroll-reveal>
+    <div class="text-light opacity-85 mx-auto" style="max-width: 760px; font-size: 1.05rem; line-height: 1.85;">
+      <%= intro.html_safe %>
+    </div>
+  </div>
+<% end %>

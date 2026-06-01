@@ -1,0 +1,24 @@
+<% if @produits.present? %>
+  <section class="container-fluid px-0 my-5 py-4" data-scroll-reveal>
+    <div class="container">
+      <div class="section-title-wrapper py-3 mb-3 text-center">
+        <h2 class="text-light fs-3 text-uppercase section-title d-inline-block position-relative">
+          <%= t("public.seo_pages.shared.products_title") %>
+          <span class="section-title-underline" style="background: white;"></span>
+        </h2>
+      </div>
+
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 justify-content-center">
+        <% @produits.each do |produit| %>
+          <%= render partial: "public/pages/produit/produit", locals: { produit: produit } %>
+        <% end %>
+      </div>
+
+      <div class="text-center mt-4">
+        <%= link_to t("public.seo_pages.shared.view_collection"),
+                    seo_page_products_collection_url(@page),
+                    class: "btn btn-outline-light public-btn-border-radius" %>
+      </div>
+    </div>
+  </section>
+<% end %>

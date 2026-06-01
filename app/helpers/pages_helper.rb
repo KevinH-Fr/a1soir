@@ -24,10 +24,10 @@ module PagesHelper
         # Container des deux images côte à côte
         images_container = content_tag :div, class: "d-flex h-100" do
           img1 = if image1.present?
-            image_path = image_path_helper(image1)
+            image_source = collection_card_image_source(image1)
             content_tag :div, class: "page-header-image-wrapper page-header-image-wrapper-first", style: "height: 100%; overflow: hidden;" do
               image_tag(
-                image_path,
+                image_source,
                 class: "img-fluid page-header-image",
                 style: "width: 100%; height: 100%; object-fit: cover; object-position: #{image1_position}; transition: transform 0.6s ease;",
                 alt: title,
@@ -42,10 +42,10 @@ module PagesHelper
           end
           
           img2 = if image2.present?
-            image_path = image_path_helper(image2)
+            image_source = collection_card_image_source(image2)
             content_tag :div, class: "page-header-image-wrapper d-none d-md-block", style: "width: 50%; height: 100%; overflow: hidden;" do
               image_tag(
-                image_path,
+                image_source,
                 class: "img-fluid page-header-image",
                 style: "width: 100%; height: 100%; object-fit: cover; object-position: #{image2_position}; transition: transform 0.6s ease;",
                 alt: title,
@@ -437,7 +437,7 @@ module PagesHelper
 
   # Helper pour construire les URLs de filtres produits
   # category_names peut être un String ou un Array de Strings
-  def produits_filter_url(category_names: nil, taille_name: nil, couleur_id: nil, prixmax: nil, type: nil)
+  def produits_filter_url(category_names: nil, taille_name: nil, couleur_id: nil, prixmax: nil, type: nil, search: nil)
     # Gérer à la fois un string et un tableau de strings
     category_names = [category_names] if category_names.is_a?(String)
     
@@ -457,6 +457,11 @@ module PagesHelper
     filter_params[:couleur] = couleur_id if couleur_id
     filter_params[:prixmax] = prixmax if prixmax
     filter_params[:type] = type if type
+    if search.present?
+      filter_params[:q] = {
+        nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont: search
+      }
+    end
     
     # Générer l'URL
     if categories.size == 1

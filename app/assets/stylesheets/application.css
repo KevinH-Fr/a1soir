@@ -2530,6 +2530,241 @@ section {
 }
 
 /* ================================
+   SEO GUIDES HUB
+   ================================ */
+
+.seo-guides-hub-intro {
+  max-width: 42rem;
+  font-size: 1.05rem;
+  line-height: 1.85;
+}
+
+.seo-guides-hub-section + .seo-guides-hub-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.seo-hub-section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.seo-hub-section-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 248, 220, 0.2);
+  border-radius: 50%;
+  color: rgba(255, 248, 220, 0.9);
+  font-size: 1rem;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.seo-hub-section-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.35rem, 2.5vw, 1.65rem);
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+.seo-hub-card-link {
+  color: inherit;
+}
+
+.seo-hub-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 1.65rem 1.65rem 1.35rem;
+  background: linear-gradient(
+    155deg,
+    rgba(8, 8, 8, 0.94) 0%,
+    rgba(22, 22, 22, 0.9) 55%,
+    rgba(32, 32, 32, 0.88) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.seo-hub-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 248, 220, 0.85),
+    rgba(255, 248, 220, 0.15)
+  );
+  opacity: 0.55;
+  transition: opacity 0.35s ease, width 0.35s ease;
+}
+
+.seo-hub-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at top right,
+    rgba(255, 248, 220, 0.06) 0%,
+    transparent 55%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.seo-hub-card-link:hover .seo-hub-card,
+.seo-hub-card-link:focus-visible .seo-hub-card {
+  transform: translateY(-5px);
+  border-color: rgba(255, 248, 220, 0.22);
+  box-shadow: 0 14px 42px rgba(0, 0, 0, 0.48);
+}
+
+.seo-hub-card-link:hover .seo-hub-card::before,
+.seo-hub-card-link:focus-visible .seo-hub-card::before {
+  opacity: 1;
+  width: 3px;
+}
+
+.seo-hub-card-link:hover .seo-hub-card::after,
+.seo-hub-card-link:focus-visible .seo-hub-card::after {
+  opacity: 1;
+}
+
+.seo-hub-card-top {
+  margin-bottom: 1.15rem;
+  position: relative;
+  z-index: 1;
+}
+
+.seo-hub-card-icon {
+  width: 2.65rem;
+  height: 2.65rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: rgba(255, 248, 220, 0.92);
+  font-size: 1.05rem;
+  background: rgba(255, 255, 255, 0.04);
+  transition: border-color 0.35s ease, background 0.35s ease;
+}
+
+.seo-hub-card-link:hover .seo-hub-card-icon,
+.seo-hub-card-link:focus-visible .seo-hub-card-icon {
+  border-color: rgba(255, 248, 220, 0.28);
+  background: rgba(255, 248, 220, 0.06);
+}
+
+.seo-hub-card-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.35;
+  color: #fff;
+  margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+.seo-hub-card-subtitle {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.58);
+  margin-bottom: 0;
+  flex-grow: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.seo-hub-card-footer {
+  margin-top: auto;
+  padding-top: 1.15rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+.seo-hub-card-badge {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.42);
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.seo-hub-card-cta {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 248, 220, 0.82);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.seo-hub-card-cta-arrow {
+  display: inline-block;
+  margin-left: 0.15rem;
+  transition: transform 0.25s ease;
+}
+
+.seo-hub-card-link:hover .seo-hub-card-cta-arrow,
+.seo-hub-card-link:focus-visible .seo-hub-card-cta-arrow {
+  transform: translateX(4px);
+}
+
+.seo-section-image-wrap {
+  overflow: hidden;
+  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  aspect-ratio: 4 / 5;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.seo-section-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  transition: transform 0.6s ease;
+}
+
+.seo-section-image-wrap:hover .seo-section-image {
+  transform: scale(1.03);
+}
+
+.seo-section-body {
+  max-width: 42rem;
+  line-height: 1.85;
+}
+
+.seo-page-section + .seo-page-section {
+  padding-top: 0.5rem;
+}
+
+/* ================================
    FLOATING CONTACT ICONS
    ================================ */
 

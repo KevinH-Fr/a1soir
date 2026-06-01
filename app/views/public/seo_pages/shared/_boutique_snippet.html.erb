@@ -1,0 +1,14 @@
+<section class="container px-3 my-5" data-scroll-reveal>
+  <div class="concept-card text-light p-4 p-md-5">
+    <h2 class="h4 mb-3"><%= t("public.seo_pages.shared.boutique_title") %></h2>
+    <% if @texteBoutique.present? %>
+      <div class="opacity-85 mb-4"><%= @texteBoutique %></div>
+    <% else %>
+      <p class="opacity-85"><%= t("public.seo_pages.shared.boutique_fallback") %></p>
+    <% end %>
+    <div class="d-flex gap-3 flex-wrap">
+      <%= link_to t("public.footer.shop"), la_boutique_path, class: "btn btn-light public-btn-border-radius" %>
+      <%= link_to t("public.footer.appointment"), "#{rdv_path}#rdv-form", class: "btn btn-outline-light public-btn-border-radius" %>
+    </div>
+  </div>
+</section>

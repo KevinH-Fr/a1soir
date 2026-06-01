@@ -23,7 +23,8 @@ module Sitemap
       ["/produits", "daily", 0.6],
       ["/categories", "weekly", 0.7],
       ["/faq", "monthly", 0.7],
-      ["/legal", "yearly", 0.4]
+      ["/legal", "yearly", 0.4],
+      ["/guides", "weekly", 0.7]
     ].freeze
 
     class << self
@@ -93,6 +94,8 @@ module Sitemap
         end
       end
 
+      items.concat(seo_page_entries)
+
       CategorieProduit.not_service.find_each do |categorie|
         [:fr, :en].each do |locale|
           items << entry(
@@ -141,6 +144,18 @@ module Sitemap
     def absolute_path(path)
       base = @host.to_s.chomp("/")
       "#{base}#{path}"
+    end
+
+    def seo_page_entries
+      SeoPages::Registry.sitemap_entries.flat_map do |seo_entry|
+        [:fr, :en].map do |locale|
+          entry(
+            loc: absolute_path("/#{locale}#{seo_entry[:path]}"),
+            changefreq: seo_entry[:changefreq],
+            priority: seo_entry[:priority]
+          )
+        end
+      end
     end
   end
 end

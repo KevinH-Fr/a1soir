@@ -1,0 +1,17 @@
+<% items = seo_page_faq_items(@page) %>
+<% if items.any? %>
+  <section class="container px-3 my-5" data-scroll-reveal>
+    <%= content_section(id: "seo-faq", icon: "question-circle", title: t("public.seo_pages.shared.faq_title"), accordion_id: "accordionSeoFaq") do %>
+      <% items.each_with_index do |item, index| %>
+        <%= collapsible_item(
+              id: "seo-faq-#{item[:id]}",
+              parent_id: "accordionSeoFaq",
+              title: item[:question],
+              expanded: index.zero?
+            ) do %>
+          <%= item[:answer_html].html_safe %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </section>
+<% end %>

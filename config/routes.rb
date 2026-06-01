@@ -29,6 +29,14 @@ Rails.application.routes.draw do
       post 'send_contact_message', to: 'contact_messages#create'
       get 'categories', to: 'pages#categories'
 
+      get 'guides', to: 'seo_pages#hub', as: :seo_guides_hub
+      get 'guides/:slug', to: 'seo_pages#show', as: :seo_guide, defaults: { scope: 'guides' }
+      get 'tenue-festival-de-cannes', to: redirect { |params, _| "/#{params[:locale] || 'fr'}/festival-de-cannes" }
+
+      get ':slug', to: 'seo_pages#show', as: :seo_page,
+          constraints: Constraints::SeoPageSlug,
+          defaults: { scope: 'local' }
+
       get 'rdv', to: 'pages#rdv'
 
       # Demande de rendez-vous
