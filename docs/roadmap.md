@@ -89,8 +89,6 @@ ok - demander a cha ok pour push pas tres important de tout relire je pense a la
 ok - partie guides : ajouter des pages seo avec l'histoire d'une cateogire et les liens vers les produits, une video pour engagemnet plus long
 ok - voir contenu un peu plus dense, qualitattif, pertinent, historique,
 
-reprendre
-____________
 
 
 ok - relire en local en fr, verifier coherence
@@ -98,11 +96,26 @@ ok - verif pas d'erreur en EN de missing
 ok - push sur main
 ok - push prod
 
-- verifier en prod images adaptées
-- verif seo mieux sur les pages produit
-- verif strctured data ok sur pages seo
-- verifier completer texte categories depuis admin
-- repush sitemap
+ok - verifier en prod images adaptées
+
+ok - verif seo mieux sur les pages produit
+ok - verif strctured data ok sur pages seo
+ok - verifier completer texte categories depuis admin
+ok - repush sitemap
+
+reprendre
+____________
+
+
+dans search console wore web vitals jai ca : 
+51 URL dans ce groupe
+
+Groupe CLS
+0,23
+Gravité
+Amélioration nécessaire
+L'expérience utilisateur est évaluée pour des groupes d'URL, pas pour chacune d'elles. En savoir plus
+
 
 
 ToDo long terme :

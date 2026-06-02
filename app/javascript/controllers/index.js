@@ -37,9 +37,6 @@ application.register("form-element", FormElementController)
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
-import PlaceholderCardController from "./placeholder_card_controller"
-application.register("placeholder-card", PlaceholderCardController)
-
 import ProductGalleryModalController from "./product_gallery_modal_controller"
 application.register("product-gallery-modal", ProductGalleryModalController)
 

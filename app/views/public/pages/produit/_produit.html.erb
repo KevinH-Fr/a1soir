@@ -1,76 +1,39 @@
 <div class="col" style="width: 22rem;">
-    
-    <div data-controller="placeholder-card">
+  <div class="card rounded-0 bg-dark text-light border-dark">
+    <%= link_to produit_path(slug: produit.handle, id: produit.id, back_url: produits_back_url), class: "text-decoration-none position-relative", data: { turbo: false } do %>
+      <% if produit.en_promotion? %>
+        <span class="position-absolute top-0 start-0 m-2 rounded-0 badge bg-dark bg-opacity-75 text-light p-2 promotion-badge">
+          PROMOTION
+        </span>
+      <% end %>
+      <%= render partial: "public/pages/carousel", locals: { produit: produit, carousel_class: "card-img-top carousel-multiple" } %>
+    <% end %>
 
-          <!-- Card with Placeholder -->
-          <div class="card rounded-0 card-placeholder bg-dark text-light border-dark" aria-hidden="true" data-placeholder-card-target="placeholder">
-              <!-- Placeholder image/carousel -->
-              <div class="placeholder card-img-top carousel-multiple" style="height: 300px; background-color: #3a3a3a;"></div>
-                      
-              <div class="card-body">
-                  <!-- Placeholder titre -->
-                  <h5 class="card-title placeholder-glow">
-                      <span class="placeholder col-8 bg-secondary"></span>
-                  </h5>
-                  
-                  <!-- Placeholder prix (2 badges) -->
-                  <p class="card-text placeholder-glow d-flex justify-content-between m-0">
-                      <span class="placeholder col-5 bg-secondary"></span>
-                      <span class="placeholder col-5 bg-secondary"></span>
-                  </p>
-                  
-                  <!-- Placeholder taille -->
-                  <p class="card-text placeholder-glow d-flex justify-content-between">
-                      <span class="placeholder col-4 bg-secondary"></span>
-                      <span></span>
-                  </p>
-                  
-                  <!-- Placeholder bouton -->
-                  <div class="placeholder-glow">
-                      <span class="btn btn-sm w-100 placeholder bg-secondary" style="height: 38px;"></span>
-                  </div>
-              </div>
-          </div>
+    <div class="card-body">
+      <%= link_to produit_path(slug: produit.handle, id: produit.id, back_url: produits_back_url), class: "text-decoration-none", data: { turbo: false } do %>
+        <h5 class="card-title text-light text-truncate">
+          <%= produit.nom %>
+        </h5>
+      <% end %>
 
-          <!-- Real Content -->
-          <div class="card rounded-0 card-content bg-dark text-light border-dark" data-placeholder-card-target="content" style="display:none;">
-              
-              <%= link_to produit_path(slug: produit.handle, id: produit.id, back_url: produits_back_url), class: "text-decoration-none position-relative", data: { turbo: false } do %>
-                
-                  <% if produit.en_promotion? %>
-                    <span class="position-absolute top-0 start-0 m-2 rounded-0 badge bg-dark bg-opacity-75 text-light p-2 promotion-badge">
-                      PROMOTION
-                    </span>
-                  <% end %>
-                  <%= render partial: "public/pages/carousel", locals: { produit: produit, carousel_class: "card-img-top carousel-multiple" } %>
-              <% end %>
+      <p class="card-text d-flex justify-content-between m-0">
+        <%= badge_prix(:sale, produit.prixvente, produit) %>
+        <%= badge_prix(:rental, produit.prixlocation) if produit.prixlocation.present? %>
+      </p>
 
-              <div class="card-body">
-                  <%= link_to produit_path(slug: produit.handle, id: produit.id, back_url: produits_back_url), class: "text-decoration-none", data: { turbo: false } do %>
-                      <h5 class="card-title text-light text-truncate">
-                          <%= produit.nom %>
-                      </h5>
-                  <% end %>
+      <p class="card-text d-flex justify-content-between">
+        <% if params[:taille].present? %>
+          <%= badge_taille(produit) %>
+        <% else %>
+          <span></span>
+        <% end %>
+      </p>
 
-                  <p class="card-text d-flex justify-content-between m-0">
-                      <%= badge_prix(:sale, produit.prixvente, produit) %>
-                      <%= badge_prix(:rental, produit.prixlocation) if produit.prixlocation.present? %>
-                  </p>
-                  
-                  <p class="card-text d-flex justify-content-between">
-                      <% if params[:taille].present? %>
-                          <%= badge_taille(produit) %>
-                      <% else %>
-                         <span></span>
-                      <% end %>
-                  </p>
-                  
-                  <% if session[:from_cabine] %>
-                    <%= render partial: "public/pages/cart_buttons/cabine_product_button", locals: { produit: produit } %>
-                  <% elsif OnlineSales.available? && produit.eshop? && produit.stripe_price_id.present? %>
-                    <%= render partial: "public/pages/cart_buttons/shop_product_button", locals: { produit: produit } %>
-                  <% end %>
-              </div>
-          </div>
-      </div>
+      <% if session[:from_cabine] %>
+        <%= render partial: "public/pages/cart_buttons/cabine_product_button", locals: { produit: produit } %>
+      <% elsif OnlineSales.available? && produit.eshop? && produit.stripe_price_id.present? %>
+        <%= render partial: "public/pages/cart_buttons/shop_product_button", locals: { produit: produit } %>
+      <% end %>
+    </div>
+  </div>
 </div>

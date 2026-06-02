@@ -18,9 +18,6 @@ application.register("carousel", CarouselController)
 import ChatController from "./chat_controller"
 application.register("chat", ChatController)
 
-import PlaceholderCardController from "./placeholder_card_controller"
-application.register("placeholder-card", PlaceholderCardController)
-
 import ProductGalleryModalController from "./product_gallery_modal_controller"
 application.register("product-gallery-modal", ProductGalleryModalController)
 
