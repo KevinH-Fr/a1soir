@@ -11,9 +11,10 @@ RSpec.describe SeoPages::CategoryImages do
   let!(:robes_soiree_longues) { CategorieProduit.create!(nom: "robes longues") }
   let!(:enfants) { CategorieProduit.create!(nom: "enfants") }
 
-  def create_product(name:, categories:, image_bytes: nil, video_bytes: nil)
+  def create_product(name:, categories:, image_bytes: nil, video_bytes: nil, description: nil)
     product = Produit.create!(
       nom: name,
+      description: description,
       prixvente: 100,
       eshop: true,
       actif: true,
@@ -86,6 +87,26 @@ RSpec.describe SeoPages::CategoryImages do
       expect(result.dig("sirene", :image).blob.id).to eq(sirene_product.image1.blob.id)
       expect(result.dig("princesse", :image).blob.id).to eq(princesse_product.image1.blob.id)
       expect(result.dig("fourreau", :image).blob.id).to eq(fourreau_product.image1.blob.id)
+    end
+
+    it "matches princesse section on product title only, not description" do
+      create_product(
+        name: "Robe sirène dentelle",
+        description: "Jupe princesse et volume au bas",
+        categories: [robes_longues],
+        image_bytes: "sirene-princesse-desc"
+      )
+      princesse_product = create_product(
+        name: "Robe princesse volume",
+        description: "Ligne épurée",
+        categories: [robes_longues],
+        image_bytes: "princesse-title"
+      )
+
+      page = SeoPages::Registry.find("robe-de-mariee-morphologie", scope: "guides")
+      result = described_class.call(page, section_keys: %w[princesse])
+
+      expect(result.dig("princesse", :product_id)).to eq(princesse_product.id)
     end
 
     it "returns no images when no products are available" do

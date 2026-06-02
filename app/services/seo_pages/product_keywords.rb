@@ -3,6 +3,10 @@
 module SeoPages
   class ProductKeywords
     RANSACK_FIELD = :nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont
+    RANSACK_TITLE_FIELD = :nom_cont
+
+    # Coupes / styles : le libellé catalogue est dans le titre produit, pas la description.
+    TITLE_SEARCH_TERMS = %w[princesse].freeze
 
     SLUG_SEARCH_TERMS = [
       [/boheme/, "boheme"],
@@ -34,9 +38,18 @@ module SeoPages
       scope.where(id: ids)
     end
 
+    def self.search_in_title_only?(term)
+      TITLE_SEARCH_TERMS.include?(term.to_s.downcase)
+    end
+
+    def self.ransack_field_for(term)
+      search_in_title_only?(term) ? RANSACK_TITLE_FIELD : RANSACK_FIELD
+    end
+
     # DISTINCT (ex. by_categories) + ORDER BY (ex. public_listing_order) + jointures ransack → PG invalide.
     def self.pluck_ids_for_search_term(scope, term)
-      scope.reorder(nil).ransack(RANSACK_FIELD => term).result.reorder(nil).pluck(:id)
+      field = ransack_field_for(term)
+      scope.reorder(nil).ransack(field => term).result.reorder(nil).pluck(:id)
     end
 
     def self.variants_for(term)

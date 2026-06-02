@@ -4,12 +4,24 @@ require "rails_helper"
 
 RSpec.describe StructuredDataHelper, type: :helper do
   before do
-    allow(helper).to receive(:root_url).and_return("http://www.example.com/fr/")
+    allow(helper).to receive(:request).and_return(
+      instance_double(ActionDispatch::Request, base_url: "https://a1soir.com")
+    )
+    allow(helper).to receive(:structured_home_url).and_return("https://a1soir.com/fr/home")
+    allow(helper).to receive(:structured_site_url).and_return("https://a1soir.com/fr")
+    allow(helper).to receive(:structured_store_logo_url).and_return("https://a1soir.com/images/autourdunsoir_drapeau.png")
     allow(GooglePlacesService).to receive(:fetch).and_return(nil)
   end
 
   describe "#clothing_store_node" do
     subject(:node) { helper.send(:clothing_store_node) }
+
+    it "uses canonical URLs without locale query params" do
+      expect(node["url"]).to eq("https://a1soir.com/fr/home")
+      expect(node["image"]).to eq("https://a1soir.com/images/autourdunsoir_drapeau.png")
+      expect(node["url"]).not_to include("?locale=")
+      expect(node["image"]).not_to include("?locale=")
+    end
 
     it "includes address and geo coordinates" do
       expect(node["telephone"]).to eq("+33493451717")

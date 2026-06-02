@@ -5,6 +5,9 @@ module SeoPages
     PRODUCT_POOL_LIMIT = 120
     VIDEO_SCORE_BONUS = 3
 
+    # Sections coupe / style : correspondance dans le nom produit uniquement.
+    TITLE_ONLY_SECTION_KEYS = %w[princesse].freeze
+
     SECTION_KEYWORDS = {
       "femmes" => %w[robe longues courtes],
       "hommes" => %w[costume smoking],
@@ -219,7 +222,7 @@ module SeoPages
 
       section_terms = SECTION_KEYWORDS[section_key.to_s]
       if section_terms.present? && !editorial_section?(section_key)
-        pool = pool.select { |product| product_matches_section?(product, section_terms) }
+        pool = pool.select { |product| product_matches_section?(product, section_terms, section_key: section_key) }
         pool = load_section_products(section_terms, used_blob_ids, used_product_ids) if pool.empty?
         pool = load_section_products(WEDDING_DRESS_TERMS, used_blob_ids, used_product_ids) if pool.empty? && wedding_dress_fallback?(section_key, section_terms)
         return nil if pool.empty?
@@ -314,7 +317,7 @@ module SeoPages
     end
 
     def choose_varied_product(pool, keywords, used_category_ids, section_key)
-      scored = pool.map { |product| [product, score_product(product, keywords, used_category_ids)] }
+      scored = pool.map { |product| [product, score_product(product, keywords, used_category_ids, section_key: section_key)] }
       max_score = scored.map(&:last).max
       if max_score.to_i.zero?
         sorted = pool.sort_by { |product| fallback_sort_key(product, used_category_ids) }
@@ -339,9 +342,21 @@ module SeoPages
       Zlib.crc32("#{@page[:slug]}-#{section_key}") % size
     end
 
-    def product_matches_section?(product, section_terms)
-      searchable = product_searchable_text(product)
+    def product_matches_section?(product, section_terms, section_key: nil)
+      searchable = section_searchable_text(product, section_key)
       section_terms.any? { |term| searchable.include?(term.to_s.downcase) }
+    end
+
+    def section_searchable_text(product, section_key)
+      if title_only_section?(section_key)
+        product.nom.to_s.downcase
+      else
+        product_searchable_text(product)
+      end
+    end
+
+    def title_only_section?(section_key)
+      TITLE_ONLY_SECTION_KEYS.include?(section_key.to_s)
     end
 
     def product_searchable_text(product)
@@ -417,8 +432,12 @@ module SeoPages
         section_terms.any? { |term| %w[sirène sirene princesse fourreau boheme bohème coupe].include?(term.to_s.downcase) }
     end
 
-    def score_product(product, keywords, used_category_ids = [])
-      searchable = product_searchable_text(product)
+    def score_product(product, keywords, used_category_ids = [], section_key: nil)
+      searchable = if title_only_section?(section_key)
+        product.nom.to_s.downcase
+      else
+        product_searchable_text(product)
+      end
       page_terms = ProductKeywords.call(@page).flat_map { |term| ProductKeywords.variants_for(term) }
       terms = (keywords + page_terms).map(&:to_s).map(&:downcase).uniq
 

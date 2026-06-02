@@ -49,7 +49,7 @@ module StructuredDataHelper
       "@context" => "https://schema.org",
       "@type" => "WebSite",
       "name" => "Autour D'Un Soir",
-      "url" => root_url
+      "url" => structured_site_url
     }
   end
 
@@ -112,7 +112,7 @@ module StructuredDataHelper
   # Fil d'Ariane pour une fiche produit
   def product_breadcrumbs(produit:)
     crumbs = [
-      { name: structured_breadcrumb_name(:home), url: root_url },
+      { name: structured_breadcrumb_name(:home), url: structured_home_url },
       { name: structured_breadcrumb_name(:products), url: produits_index_url }
     ]
 
@@ -264,8 +264,8 @@ module StructuredDataHelper
     node = {
       "@type" => "ClothingStore",
       "name" => "Autour D'Un Soir",
-      "url" => root_url,
-      "image" => "#{root_url}images/autourdunsoir_drapeau.png",
+      "url" => structured_home_url,
+      "image" => structured_store_logo_url,
       "telephone" => STORE_PHONE,
       "address" => {
         "@type" => "PostalAddress",
@@ -300,7 +300,7 @@ module StructuredDataHelper
     {
       "@type" => "WebSite",
       "name" => "Autour D'Un Soir",
-      "url" => root_url
+      "url" => structured_site_url
     }
   end
 

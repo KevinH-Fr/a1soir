@@ -80,5 +80,35 @@ RSpec.describe SeoPages::ProductKeywords do
       expect { described_class.apply(scoped, page).load }.not_to raise_error
       expect(described_class.apply(scoped, page).pluck(:id)).to eq([product.id])
     end
+
+    it "matches princesse in product title only, not description or taille" do
+      taille = Taille.create!(nom: "princesse")
+      Produit.create!(
+        nom: "Robe sirène",
+        description: "Silhouette princesse",
+        prixvente: 100,
+        eshop: true,
+        actif: true,
+        today_availability: true,
+        quantite: 1,
+        taille: taille,
+        handle: "sirene-#{SecureRandom.hex(4)}"
+      ).tap { |product| product.categorie_produits << category }
+
+      princesse = Produit.create!(
+        nom: "Robe princesse royale",
+        description: "Sirène revisitée",
+        prixvente: 100,
+        eshop: true,
+        actif: true,
+        today_availability: true,
+        quantite: 1,
+        handle: "princesse-#{SecureRandom.hex(4)}"
+      ).tap { |product| product.categorie_produits << category }
+
+      page = { slug: "robe-de-mariee-princesse", product_filters: { category_names: [category.nom] } }
+
+      expect(described_class.apply(base_scope, page).pluck(:id)).to eq([princesse.id])
+    end
   end
 end

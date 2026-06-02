@@ -32,7 +32,7 @@ module SeoPagesHelper
 
   def seo_page_breadcrumbs(page)
     crumbs = [
-      { name: structured_breadcrumb_name(:home), url: root_url },
+      { name: structured_breadcrumb_name(:home), url: structured_home_url },
       { name: I18n.t("public.seo_pages.hub.title"), url: seo_guides_hub_url }
     ]
 
@@ -99,7 +99,7 @@ module SeoPagesHelper
     return path if path.blank?
     return path if path.start_with?("http://", "https://")
 
-    "#{root_url.chomp('/')}#{path}"
+    public_static_asset_url(path)
   end
 
   def resolved_images(page)
