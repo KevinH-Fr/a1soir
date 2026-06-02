@@ -127,4 +127,20 @@ RSpec.describe "Public::SeoPages", type: :request do
       expect(response).to have_http_status(:not_found)
     end
   end
+
+  describe "GET /en/guides/costume-mariage-cannes" do
+    it "redirects to the local landing page" do
+      get "/en/guides/costume-mariage-cannes"
+
+      expect(response).to redirect_to("/en/costume-mariage-cannes")
+    end
+  end
+
+  describe "GET /fr/location-smoking-costume-cannes" do
+    it "redirects to the guides URL" do
+      get "/fr/location-smoking-costume-cannes"
+
+      expect(response).to redirect_to("/fr/guides/location-smoking-costume-cannes")
+    end
+  end
 end

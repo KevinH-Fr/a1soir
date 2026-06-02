@@ -11,6 +11,8 @@ module Public
 
     def show
       load_page
+      return if performed?
+
       load_boutique_context
       @produits = SeoPages::ProductScope.call(@page)
       @related_pages = SeoPages::Registry.related_pages(@page)
@@ -25,10 +27,28 @@ module Public
 
     def load_page
       scope = params[:scope].presence || (request.path.include?("/guides/") ? "guides" : "local")
-      @page = SeoPages::Registry.find(params[:slug], scope: scope)
-      raise ActiveRecord::RecordNotFound unless @page
+      slug = params[:slug].to_s
+      @page = SeoPages::Registry.find(slug, scope: scope)
+
+      unless @page
+        alternate_scope = scope == "guides" ? "local" : "guides"
+        alternate = SeoPages::Registry.find(slug, scope: alternate_scope)
+        if alternate
+          redirect_to canonical_seo_page_path(alternate), status: :moved_permanently
+          return
+        end
+        raise ActiveRecord::RecordNotFound
+      end
 
       @seo_meta_key = @page[:meta_key]
+    end
+
+    def canonical_seo_page_path(page)
+      if page[:scope] == "guides"
+        seo_guide_path(slug: page[:slug])
+      else
+        seo_page_path(slug: page[:slug])
+      end
     end
 
     def load_boutique_context
