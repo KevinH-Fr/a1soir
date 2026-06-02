@@ -26,8 +26,8 @@
               <%= title %>
             </h2>
           </div>
-          <div class="text-light opacity-85 seo-section-body">
-            <%= body.html_safe %>
+          <div class="text-light opacity-85 seo-section-body seo-page-prose">
+            <%= seo_page_html(body) %>
           </div>
         </div>
       </div>
@@ -37,8 +37,8 @@
           <%= title %>
         </h2>
       </div>
-      <div class="text-light opacity-85 seo-section-body">
-        <%= body.html_safe %>
+      <div class="text-light opacity-85 seo-section-body seo-page-prose">
+        <%= seo_page_html(body) %>
       </div>
     <% end %>
   </section>

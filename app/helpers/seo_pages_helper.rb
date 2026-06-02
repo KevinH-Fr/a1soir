@@ -88,6 +88,18 @@ module SeoPagesHelper
     )
   end
 
+  def seo_page_html(html)
+    return "" if html.blank?
+
+    fragment = Nokogiri::HTML::DocumentFragment.parse(html.to_s)
+    fragment.css("a").each do |anchor|
+      classes = anchor["class"].to_s.split
+      classes << "seo-page-link" unless classes.include?("seo-page-link")
+      anchor["class"] = classes.join(" ")
+    end
+    fragment.to_html.html_safe
+  end
+
   def seo_page_faq_items(page)
     faq = I18n.t("public.seo_pages.#{seo_page_i18n_key(page)}.faq", default: {})
     return [] unless faq.is_a?(Hash)
@@ -98,6 +110,30 @@ module SeoPagesHelper
 
       { id: key.to_s, question: item[:question], answer_html: item[:answer_html] }
     end
+  end
+
+  def seo_page_faq_schema(page)
+    entities = seo_page_faq_items(page).filter_map do |item|
+      answer_text = ActionController::Base.helpers.strip_tags(item[:answer_html].to_s).squish
+      next if answer_text.blank?
+
+      {
+        "@type" => "Question",
+        "name" => item[:question],
+        "acceptedAnswer" => {
+          "@type" => "Answer",
+          "text" => answer_text
+        }
+      }
+    end
+
+    return nil if entities.empty?
+
+    {
+      "@context" => "https://schema.org",
+      "@type" => "FAQPage",
+      "mainEntity" => entities
+    }
   end
 
   def seo_page_products_collection_url(page)

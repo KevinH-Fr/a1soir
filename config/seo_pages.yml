@@ -97,6 +97,8 @@ pages:
         scope: guides
       - slug: robe-de-mariee-morphologie
         scope: guides
+      - slug: essayage-robe-de-mariee-cannes
+        scope: local
       - slug: robe-de-mariee-cannes
         scope: local
 
@@ -114,6 +116,8 @@ pages:
         - robes de mariée longues
     related_pages:
       - slug: comment-choisir-sa-robe-de-mariee
+        scope: guides
+      - slug: robe-de-mariee-morphologie
         scope: guides
       - slug: robe-de-mariee-cannes
         scope: local
@@ -133,6 +137,10 @@ pages:
     related_pages:
       - slug: comment-choisir-sa-robe-de-mariee
         scope: guides
+      - slug: robe-de-mariee-boheme
+        scope: guides
+      - slug: robe-de-mariee-cannes
+        scope: local
       - slug: essayage-robe-de-mariee-cannes
         scope: local
 
@@ -152,6 +160,8 @@ pages:
     related_pages:
       - slug: costume-mariage-cannes
         scope: local
+      - slug: location-smoking-costume-cannes
+        scope: guides
 
   robe-invitee-mariage:
     slug: robe-invitee-mariage

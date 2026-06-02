@@ -9,7 +9,9 @@
               title: item[:question],
               expanded: index.zero?
             ) do %>
-          <%= item[:answer_html].html_safe %>
+          <div class="seo-page-prose">
+            <%= seo_page_html(item[:answer_html]) %>
+          </div>
         <% end %>
       <% end %>
     <% end %>

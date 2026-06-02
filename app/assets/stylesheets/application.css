@@ -2760,6 +2760,28 @@ section {
   line-height: 1.85;
 }
 
+.seo-page-prose a.seo-page-link {
+  color: #e8e8e8;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgba(255, 255, 255, 0.35);
+  text-underline-offset: 0.2em;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.18) 38%, transparent 38%);
+  transition: color 0.2s ease, background 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.seo-page-prose a.seo-page-link:hover,
+.seo-page-prose a.seo-page-link:focus-visible {
+  color: #fff;
+  text-decoration-color: rgba(255, 255, 255, 0.6);
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.28) 38%, transparent 38%);
+}
+
+.seo-page-prose p + p {
+  margin-top: 1rem;
+}
+
 .seo-page-section + .seo-page-section {
   padding-top: 0.5rem;
 }

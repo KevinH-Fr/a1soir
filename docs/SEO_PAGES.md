@@ -109,7 +109,7 @@ Aucune URL Cloudinary à maintenir dans le YAML.
 
 - **Meta tags** : `@seo_meta_key` → `meta_tags_helper#determine_page_key`
 - **Sitemap** : `SeoPages::Registry.sitemap_entries` + `/guides` dans `Sitemap::Builder`
-- **JSON-LD** : `WebPage` + `BreadcrumbList` (`shared/_structured_data.html.erb`)
+- **JSON-LD** : `WebPage` + `BreadcrumbList` ; `FAQPage` si la page a des entrées `faq` dans les locales (`seo_page_faq_schema`)
 - **Hreflang** : layout public (`/fr/…` ↔ `/en/…`, même slug)
 - **Produits** : filtre par `product_filters.category_names` (noms exacts en base)
 

@@ -8,3 +8,9 @@
 <script type="application/ld+json">
   <%= breadcrumb_schema(seo_page_breadcrumbs(@page)).to_json.html_safe %>
 </script>
+<% faq_schema = seo_page_faq_schema(@page) %>
+<% if faq_schema.present? %>
+<script type="application/ld+json">
+  <%= faq_schema.to_json.html_safe %>
+</script>
+<% end %>

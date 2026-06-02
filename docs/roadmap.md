@@ -82,12 +82,23 @@ ok - quid possible de chsoir les avis les plus récents plutot que plus pertienn
 reprendre
 ____________
 
+ok - enlever le petit 0 sur eshop quand pas deleemnts
+ok - verifier horaires passent bien sur structured data node
 
-- seo quickwins : meta sur produit, cateogires, sitemap avec faq et legal
+ok - seo quickwins : meta sur produit, cateogires, sitemap avec faq et legal
+ok - demander a cha ok pour push pas tres important de tout relire je pense a la seconde
+
 - partie guides : ajouter des pages seo avec l'histoire d'une cateogire et les liens vers les produits, une video pour engagemnet plus long
-- demander a cha ok pour push pas tres important de tout relire je pense a la seconde
+- voir contenu un peu plus dense, qualitattif, pertinent, historique,
+- relire en local en fr, verifier coherence
+- verif pas d'erreur en EN de missing
+
+- push prod
+- verifier en prod images adaptées
 - verif seo mieux sur les pages produit
+- verif strctured data ok sur pages seo
 - repush sitemap
+
 
 ToDo long terme :
 _________________

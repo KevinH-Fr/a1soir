@@ -13,13 +13,6 @@ module Chatbot
       parking: ["Parking Mozart", "Parking St Nicolas", "Parking Vauban"]
     }.freeze
 
-    FALLBACK_OPENING_HOURS = [
-      "Lundi: 10:00 - 17:00",
-      "Mardi-Vendredi: 10:00 - 12:00 / 15:00 - 19:00",
-      "Samedi: 10:00 - 17:00",
-      "Dimanche: Ferme"
-    ].freeze
-
     FAQ_FACTS = {
       appointment: "Le rendez-vous est recommande (et necessaire pour essayages/retouches).",
       rent_duration: "La location standard est de 4 jours (2 jours avant + 2 jours apres l'evenement).",
@@ -176,10 +169,7 @@ module Chatbot
     end
 
     def self.fetch_opening_hours
-      lines = Texte.last&.horaire&.to_plain_text&.split("\n")&.reject(&:blank?)
-      lines.presence || FALLBACK_OPENING_HOURS
-    rescue StandardError
-      FALLBACK_OPENING_HOURS
+      StoreOpeningHours.lines
     end
 
     def self.get_service_links(arguments, base_url:, locale:)

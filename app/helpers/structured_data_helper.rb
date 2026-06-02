@@ -291,6 +291,8 @@ module StructuredDataHelper
       }
     end
 
+    node.merge!(StoreOpeningHours.for_clothing_store_schema)
+
     node
   end
 

@@ -17,9 +17,10 @@ RSpec.describe "Public::SeoPages", type: :request do
       expect(response.body).not_to include("page-header-container")
       expect(response.body).to include("Nice")
       expect(response.body).to include("Robes De Mariée Courtes")
-      expect(response.body).to include("Je viens de Nice ou Monaco")
+      expect(response.body).to include("Combien de temps avant le mariage")
       expect(response.body).to include("Robe de mariée Cannes - Autour D")
       expect(response.body).to include("BreadcrumbList")
+      expect(response.body).to include("FAQPage")
     end
   end
 

@@ -42,6 +42,20 @@ RSpec.describe StructuredDataHelper, type: :helper do
         expect(node.dig("aggregateRating", "reviewCount")).to eq(120)
       end
     end
+
+    it "includes opening hours from Texte" do
+      texte = Texte.create!
+      texte.horaire = "Lundi: 10:00 - 18:00\nSamedi: 10:00 - 17:00"
+      allow(Texte).to receive(:last).and_return(texte)
+
+      expect(node["openingHours"]).to eq(["Lundi: 10:00 - 18:00", "Samedi: 10:00 - 17:00"])
+    end
+
+    it "falls back to default opening hours when Texte is missing" do
+      allow(Texte).to receive(:last).and_return(nil)
+
+      expect(node["openingHours"]).to eq(StoreOpeningHours::FALLBACK)
+    end
   end
 
   describe "#faq_page_schema" do

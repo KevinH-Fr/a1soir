@@ -6,19 +6,19 @@ en:
         description: "Wedding dress, evening wear and suit advice in Cannes. Practical guides by Autour D'Un Soir."
       robe_de_mariee_cannes:
         title: "Wedding dress Cannes - Autour D'Un Soir"
-        description: "Wedding dresses in Cannes: Autour D'Un Soir shop since 1980. Fittings and alterations — easy to reach from Nice, Antibes and Monaco."
+        description: "Wedding dresses in Cannes since 1980: private fitting room, in-house alterations and short & long collections. Autour D'Un Soir at 29 bd Carnot."
       essayage_robe_mariee_cannes:
         title: "Wedding dress fitting Cannes - Autour D'Un Soir"
-        description: "Book your wedding dress fitting in Cannes. Private fitting room and personalised advice — clients welcome from Nice, Antibes and Monaco."
+        description: "Wedding dress fitting in Cannes: private room, prepared selection and advice since 1980. Book at Autour D'Un Soir, 29 bd Carnot."
       costume_mariage_cannes:
         title: "Wedding suit Cannes - Tuxedos & ceremony wear"
         description: "Wedding suits and tuxedos in Cannes. Rental and sales in store — accessible from Nice, Antibes and Monaco."
       guide_choisir_robe_mariee:
         title: "How to choose your wedding dress - Autour D'Un Soir guide"
-        description: "Tips for choosing your wedding dress: style, budget, timeline and in-store fitting in Cannes."
+        description: "Practical guide: style, budget, timeline, fitting and mistakes to avoid. Tips from Autour D'Un Soir in Cannes since 1980."
       guide_robe_mariee_boheme:
         title: "Bohemian wedding dress - Complete guide"
-        description: "Everything about bohemian wedding dresses: fabrics, flowing cuts, lace and inspiration."
+        description: "Bohemian wedding dress: fabrics, cuts, accessories and fitting advice in Cannes. Autour D'Un Soir guide."
       guide_robe_mariee_morphologie:
         title: "Wedding dress for your body shape - Guide"
         description: "Which wedding dress for your body shape? Mermaid, ball gown, sheath, bustier: our advice."
@@ -36,7 +36,7 @@ en:
         description: "Should you buy or rent your evening outfit? Benefits, timelines and Autour D'Un Soir tips in Cannes."
       guide_location_smoking_costume:
         title: "Tuxedo & suit rental Cannes - Autour D'Un Soir"
-        description: "Rent a tuxedo or suit in Cannes: fitting, alterations and rental packages at Autour D'Un Soir."
+        description: "Tuxedo and suit rental in Cannes: 4-day package, fitting, workshop alterations and accessories. Autour D'Un Soir."
       guide_chaussures_accessoires:
         title: "Evening shoes & accessories - Autour D'Un Soir guide"
         description: "Shoes and accessories for weddings, galas and evening events in Cannes: tips to complete your look at Autour D'Un Soir."
@@ -66,237 +66,398 @@ en:
         link_title: "Wedding dress Cannes"
         header_title: "Wedding dress in Cannes"
         header_subtitle: "Autour D'Un Soir shop — collections, fittings and alterations"
-        intro_html: "<p>Since 1980, <strong>Autour D'Un Soir</strong> has been guiding brides-to-be in Cannes and across the French Riviera — Nice, Antibes, Monaco and the Alpes-Maritimes. Short or long dresses, bohemian, ball gown or mermaid styles: our team advises you in store to find the dress that suits you.</p>"
+        intro_html: "<p>Since 1980, <strong>Autour D'Un Soir</strong> has been guiding brides-to-be in Cannes and across the French Riviera. Unlike an online shop, we welcome you in a private fitting room: you feel the fabrics, try the cuts and benefit from alterations by our in-house workshop through to your wedding day.</p><p>Short or long dresses, bohemian, ball gown or mermaid styles: our advisors and seamstresses help you find the dress that matches your shape, budget and wedding vibe. Read our <a href=\"/en/guides/comment-choisir-sa-robe-de-mariee\">guide to choosing your wedding dress</a> before your appointment.</p>"
         cta_title: "Book your fitting in Cannes"
         sections:
+          histoire:
+            title: "Forty years of wedding dresses in Cannes"
+            body_html: "<p>When the shop opened in 1980, brides often chose classic long gowns with lace and pronounced trains. Over the decades we have seen ball gowns, mermaid silhouettes, then the rise of bohemian styles and outdoor weddings on the French Riviera.</p><p>That experience helps us guide you wisely: we know what photographs well in Mediterranean light, what suits a Provence estate ceremony or an evening reception in Cannes. Every collection is chosen for elegance, comfort and careful finishing.</p>"
           boutique:
             title: "A leading address in Cannes"
-            body_html: "<p>Our shop on boulevard Carnot welcomes brides from Cannes and nearby towns by appointment. Whether you come from Nice, Antibes or Monaco, enjoy private fitting, a selection tailored to your tastes and alterations by our in-house workshop.</p>"
+            body_html: "<p>Our shop at 29 boulevard Carnot welcomes brides by appointment. You are not left alone in front of a rail of dresses: an advisor prepares a selection based on your wishes, body shape and wedding date.</p><p>Fittings take place in a spacious room; you may bring family or friends. Our seamstresses then handle alterations (length, bodice, straps) for a flawless fit. Learn more on our <a href=\"/en/la_boutique\">shop and team page</a>.</p>"
           collections:
             title: "Collections for every style"
-            body_html: "<p>Short and long wedding dresses, fine fabrics, lace and contemporary cuts. We offer models for purchase, with full support through to your big day.</p>"
+            body_html: "<p>We offer short and long wedding dresses in crepe, satin, tulle or lace. Silhouettes range from clean sheaths to full ball gowns, mermaid cuts and flowing bohemian styles with sleeves.</p><p>All our wedding dresses are <strong>sold in store</strong>: you leave with a garment tailored to you, not a one-size rental. Browse a selection online, then refine your choice at your fitting.</p>"
           services:
             title: "Fitting, alterations and guidance"
-            body_html: "<p>Booking an appointment is strongly recommended to benefit from a dedicated advisor. Alterations are included in our services for a perfect fit.</p>"
+            body_html: "<p>Booking an appointment is strongly recommended so an advisor and fitting room are ready for you. Ideally, start looking <strong>8 to 12 months</strong> before the wedding for the widest choice and workshop timelines.</p><p>Alterations are part of our service: measurements in store, progressive adjustments and a final check before the big day. To prepare your visit, see our <a href=\"/en/essayage-robe-de-mariee-cannes\">wedding dress fitting in Cannes</a> page.</p>"
           acces:
-            title: "Easy to reach from Nice, Antibes and Monaco"
-            body_html: "<p>The shop is at 29 boulevard Carnot, a short walk from Cannes train station. Allow about 30 minutes from Nice (A8 or TER train), 20 minutes from Antibes and 45 minutes from Monaco. Public car parks are available nearby.</p>"
+            title: "Getting to the shop from the region"
+            body_html: "<p>The shop is a short walk from Cannes train station. By car from Nice: about 30 minutes (A8 exit 42 or coastal road). From Antibes: 20 minutes; from Monaco: 45 minutes. Public car parks nearby (Mozart, Saint-Nicolas, Vauban).</p><p>By train, the Nice–Cannes TER stops 5 minutes on foot from the shop. Book your fitting slot in advance, especially during peak wedding season on the Riviera.</p>"
         faq:
           q1:
             question: "Where can I try on a wedding dress in Cannes?"
-            answer_html: "<p>Autour D'Un Soir, 29 boulevard Carnot in Cannes. Book online or by phone.</p>"
+            answer_html: "<p>At Autour D'Un Soir, 29 boulevard Carnot in Cannes. Book online or call +33 4 93 45 17 17.</p>"
           q2:
             question: "Do you offer wedding dress rental?"
-            answer_html: "<p>No, our wedding dresses are available for purchase only, to ensure the best fit and final alterations.</p>"
+            answer_html: "<p>No. Our wedding dresses are for purchase only, so we can carry out final alterations and a fit tailored to your silhouette.</p>"
           q3:
-            question: "I'm coming from Nice or Monaco — how do I get to the shop?"
-            answer_html: "<p>From Nice, take the A8 towards Cannes (exit 42) or the TER train to Cannes station, then a 5-minute walk to boulevard Carnot. From Monaco, allow about 45 minutes by car via the A8. Book your fitting slot in advance.</p>"
+            question: "How far in advance should I order my dress?"
+            answer_html: "<p>We recommend starting 8 to 12 months before the date. That allows time for fittings, supplier orders if needed and workshop alterations.</p>"
+          q4:
+            question: "How many fittings should I plan?"
+            answer_html: "<p>Usually two to three appointments are enough: a first visit to explore styles, a second to refine the dress and accessories, then a final fitting after alterations.</p>"
+          q5:
+            question: "Should I budget for alterations and accessories?"
+            answer_html: "<p>Yes. Beyond the dress, allow for veil, shoes, jewellery and any specific alterations. In store we help you balance your full look with your overall budget.</p>"
 
       essayage_robe_de_mariee_cannes:
         link_title: "Wedding dress fitting Cannes"
         header_title: "Wedding dress fitting in Cannes"
         header_subtitle: "A special moment in our fitting room"
-        intro_html: "<p>Your fitting is a key step in your preparations. At our Cannes shop, we welcome brides-to-be from across the Riviera — Nice, Antibes, Monaco — in a spacious fitting room with expert advisors.</p>"
+        intro_html: "<p>Your fitting is when the dress becomes real: you feel the fabrics, see how it moves and share the moment with loved ones. At Autour D'Un Soir in Cannes, every appointment is prepared in advance by an advisor who knows our collection.</p><p>Whether you live in Cannes or the wider region, we welcome you in a spacious fitting room. Read our <a href=\"/en/guides/comment-choisir-sa-robe-de-mariee\">how to choose your dress</a> guide first to arrive with clear ideas.</p>"
         cta_title: "Book my fitting"
         sections:
           deroulement:
             title: "How does a fitting work?"
-            body_html: "<p>After booking, we prepare a selection of dresses based on your preferences. You may bring guests, try several styles and refine your choice with our advice.</p>"
+            body_html: "<p>After booking, we prepare a selection based on your wedding date, budget and visual references. In the fitting room you try several silhouettes: ball gown, mermaid, bohemian, sheath.</p><p>Your advisor takes notes, photographs favourites (with your consent) and plans alterations if you confirm a purchase. Allow about 1.5 to 2 hours for a relaxed first visit.</p>"
           conseils:
             title: "Our tips before your fitting"
-            body_html: "<p>Bring neutral underwear, heels similar to those you will wear on the day and photos of styles you love. Arrive 10 minutes early to make the most of your appointment.</p>"
+            body_html: "<p>Bring nude underwear, heels close to your wedding height, and 5 to 10 inspiration photos — not an endless list. Limit yourself to 1 or 2 guests whose taste you trust.</p><p>Avoid heavy makeup on the neckline and fresh tan lines that can skew how pale lace looks. Arrive 10 minutes early to settle in calmly.</p>"
+          retouches:
+            title: "After your choice: alterations and timeline"
+            body_html: "<p>Once you choose a dress, our workshop schedules alterations: hems, tapers, straps, train. A second appointment confirms the fit after work is done.</p><p>Wedding dresses are sold in store — not rented — for a final tailored fit. See our <a href=\"/en/robe-de-mariee-cannes\">wedding dress Cannes</a> page for collections.</p>"
           acces:
-            title: "Getting here from Nice, Antibes or Monaco"
-            body_html: "<p>29 boulevard Carnot, 5 minutes on foot from Cannes train station. By car: about 30 min from Nice, 20 min from Antibes, 45 min from Monaco. Book your slot for a personalised welcome on arrival.</p>"
+            title: "Getting to the shop"
+            body_html: "<p>29 boulevard Carnot, 5 minutes from Cannes train station. Parking nearby. About 30 min from Nice, 20 min from Antibes, 45 min from Monaco.</p><p>Book online or by phone, especially March to September, peak wedding season on the Riviera.</p>"
         faq:
           q1:
             question: "Is an appointment required?"
-            answer_html: "<p>It is strongly recommended to ensure an advisor is available and a selection is prepared in advance.</p>"
+            answer_html: "<p>Strongly recommended: a dedicated advisor and prepared fitting room await you. Without an appointment, welcome depends on how busy we are.</p>"
           q2:
-            question: "Do you welcome clients from across the Alpes-Maritimes?"
-            answer_html: "<p>Yes, we regularly welcome clients from Nice, Antibes, Monaco and the wider region. The shop is in Cannes, with private fittings and alterations on site.</p>"
+            question: "Do you welcome clients from across the region?"
+            answer_html: "<p>Yes — Nice, Antibes, Monaco and the Alpes-Maritimes. Private fitting and alterations on site in Cannes.</p>"
+          q3:
+            question: "How many dresses can I try?"
+            answer_html: "<p>For a first appointment we usually plan 6 to 8 targeted models, with more at a second visit if needed.</p>"
+          q4:
+            question: "Can I bring my mother or bridesmaids?"
+            answer_html: "<p>Yes, 1 or 2 guests are welcome. Beyond that, opinions can get confusing — choose people whose judgment you value.</p>"
 
       costume_mariage_cannes:
         link_title: "Wedding suit Cannes"
         header_title: "Wedding suit & tuxedo in Cannes"
         header_subtitle: "Ceremony wear for men and children"
-        intro_html: "<p>Tuxedos, ceremony suits and outfits for children: Autour D'Un Soir dresses grooms, groomsmen and guests with elegance. Our Cannes shop welcomes clients from Nice, Antibes, Monaco and across the French Riviera.</p>"
+        intro_html: "<p>Groom, best man or honoured guest: men's formal wear sets the tone for the wedding party. In Cannes, Autour D'Un Soir offers tuxedos, three-piece suits and children's outfits, for <strong>rental or purchase</strong>, with fitting and workshop alterations.</p><p>Our team guides you according to dress code — daytime, evening, beach or gala. Compare <a href=\"/en/guides/smoking-ou-costume-mariage\">tuxedo or suit</a> and our <a href=\"/en/guides/location-smoking-costume-cannes\">rental packages in Cannes</a>.</p>"
         cta_title: "Discover our suits in store"
         sections:
           collections:
             title: "Tuxedos and suits"
-            body_html: "<p>Wide choice of classic or modern cuts, matching accessories and in-store alterations. Rental or purchase depending on your needs.</p>"
+            body_html: "<p>Black or midnight blue tuxedo, navy, beige or charcoal suit: slim or classic cuts, always adjustable in store. Shirts, bow ties, neckties and pocket squares coordinated on site.</p><p>4-day rental suits a one-off wedding; buying makes sense if you wear ceremony wear regularly. We compare both options honestly.</p>"
+          essayage:
+            title: "Fitting and alterations"
+            body_html: "<p>Bring your ceremony shoes to the fitting: trouser length and posture are judged standing. Our workshop handles hems, tapers and sleeves.</p><p>Booking is recommended, especially April to June (weddings and Cannes Festival). Reserve early for size and colour.</p>"
           enfants:
             title: "Outfits for the little ones"
-            body_html: "<p>Suits for page boys and children, with suitable sizes and careful finishing.</p>"
+            body_html: "<p>Page boys and young attendants: fitted suits, colours harmonised with the groom. Rental or purchase depending on the model.</p><p>A family group fitting simplifies colours and official photos.</p>"
           acces:
-            title: "Reachable from across the region"
-            body_html: "<p>Located on boulevard Carnot in Cannes, near the train station. About 30 minutes from Nice, 20 minutes from Antibes and 45 minutes from Monaco. Fittings and alterations available in store.</p>"
+            title: "Shop in Cannes"
+            body_html: "<p>29 boulevard Carnot, near the train station. About 30 min from Nice, 20 min from Antibes, 45 min from Monaco. Public parking nearby.</p>"
         faq:
           q1:
-            question: "I'm coming from Nice or Antibes — can I try on a suit in store?"
-            answer_html: "<p>Yes, we welcome grooms and guests from across the region by appointment. The shop is in Cannes at 29 boulevard Carnot — easily reached by car or train from Nice and Antibes.</p>"
+            question: "Can I try on a suit if I'm coming from Nice or Antibes?"
+            answer_html: "<p>Yes, by appointment. The shop is in Cannes, reachable by train or car.</p>"
+          q2:
+            question: "Rental or purchase for a wedding?"
+            answer_html: "<p>Rental for a one-off event; purchase if you will wear the outfit again. Our advisors guide you based on your situation.</p>"
+          q3:
+            question: "Do you offer tuxedos for Cannes Festival?"
+            answer_html: "<p>Yes, with fitting and early booking recommended in May.</p>"
 
       comment_choisir_sa_robe_de_mariee:
         link_title: "How to choose your wedding dress"
         header_title: "How to choose your wedding dress?"
         header_subtitle: "Style, budget, timeline: expert advice"
-        intro_html: "<p>Choosing your wedding dress is a unique moment. Here are the essential criteria to move forward with confidence before your in-store fitting.</p>"
+        intro_html: "<p>Choosing your wedding dress can feel overwhelming: endless inspiration online, conflicting advice, and a real fear of getting it wrong. At Autour D'Un Soir in Cannes we have guided brides since 1980 — here is a clear approach before your first fitting.</p><p>This guide does not replace the fitting room — that is where the dress comes alive on you — but it helps you define style, budget and timing. You can then book on our <a href=\"/en/robe-de-mariee-cannes\">wedding dresses in Cannes</a> page.</p>"
         sections:
           style:
             title: "Define your style"
-            body_html: "<p>Bohemian, ball gown, mermaid, minimalist… Take inspiration from your venue, the season and your personality. Bring visual references to your fitting.</p>"
+            body_html: "<p>Start with your wedding, not an Instagram trend: venue (church, beach, estate), season, formality. A rustic Provence wedding points to flowing fabrics; an evening reception in Cannes may call for a more structured line.</p><p>Look at the main families: <strong>bohemian</strong> (lace, sleeves, movement), <strong>ball gown</strong> (full skirt), <strong>mermaid</strong> (fitted silhouette), <strong>minimalist</strong> (clean lines). Bring 5 to 10 reference photos to your fitting, not a list of 50 contradictory looks.</p>"
           budget:
             title: "Plan your budget"
-            body_html: "<p>Also allow for alterations, accessories and shoes. In store, we help you balance your dream dress with your budget.</p>"
+            body_html: "<p>The dress is only part of the outfit budget: allow for veil or cape, shoes, jewellery, a possible second dress, and alterations. In store we explain clearly what is included in the listed price.</p><p>Set an overall budget before your fitting and share it with your advisor — that avoids falling for a dress out of reach. We can suggest alternatives in the same style family at different price points.</p>"
           delais:
             title: "Allow enough time"
-            body_html: "<p>Ideally, start looking 8 to 12 months before the wedding to enjoy the widest choice and alteration timelines.</p>"
+            body_html: "<p>Ideally, start 8 to 12 months before the wedding. Some dresses are available immediately; others need a supplier order (12 to 16 weeks). Workshop alterations also require several visits.</p><p>During busy periods on the French Riviera (spring–summer), fitting slots fill quickly: book early even if not every detail of your décor is fixed yet.</p>"
+          essayage:
+            title: "Prepare for your fitting"
+            body_html: "<p>Wear nude underwear, heels close to your wedding height and minimal makeup on necklines. Come with 1 or 2 trusted guests — too many opinions can cloud your own feeling.</p><p>In the fitting room, go step by step: silhouette first, fabric second, details last. Note how you feel walking and sitting, not only in the mirror. See our <a href=\"/en/essayage-robe-de-mariee-cannes\">fitting in Cannes</a> page for more.</p>"
+          morphologie:
+            title: "Body shape and cut"
+            body_html: "<p>Body-shape guides (mermaid, ball gown, sheath) are useful pointers, but only a fitting decides: the same cut can surprise you positively. See our <a href=\"/en/guides/robe-de-mariee-morphologie\">dress and body shape guide</a>.</p><p>Our team looks at posture, torso length and proportions to suggest dresses that flatter you — without boxing you into a single category.</p>"
+          erreurs:
+            title: "Common mistakes to avoid"
+            body_html: "<p>Buying too early before your wedding style is clear, or waiting until the last minute. Copying an influencer's dress without considering your shape. Bringing too large a committee that imposes its taste.</p><p>Forgetting comfort: you will wear the dress for hours and may dance. Leaving accessories until the last moment when they change the whole silhouette. Confusing evening rental with wedding dress purchase: our wedding dresses are <strong>sold</strong> for final alterations.</p>"
+          histoire:
+            title: "How tastes have evolved in our shop"
+            body_html: "<p>In forty years in Cannes we have seen 80s shoulders, 90s volume, the return of minimalism, then the rise of bohemian and highly personal weddings. Today's brides want authenticity as much as the perfect photo.</p><p>That history informs our advice: we know which cuts stand the test of time and which are passing trends. Our role is to help you choose a dress you will still love in photos twenty years from now.</p>"
+        faq:
+          q1:
+            question: "When should I start looking for my wedding dress?"
+            answer_html: "<p>8 to 12 months before the date is ideal. You get the best choice and workshop time without stress.</p>"
+          q2:
+            question: "Should I budget for accessories?"
+            answer_html: "<p>Yes: veil, shoes, jewellery and any extra alterations add to the dress price. In store we help you plan the full look.</p>"
+          q3:
+            question: "Can I bring someone to my fitting?"
+            answer_html: "<p>Yes — 1 or 2 guests are enough. Too many people can make the decision harder.</p>"
+          q4:
+            question: "Do I need a second dress for the evening?"
+            answer_html: "<p>It is a plus for dancing freely, especially with a long dress or train. It is optional depending on how your reception is organised.</p>"
+          q5:
+            question: "Can I rent a wedding dress at Autour D'Un Soir?"
+            answer_html: "<p>No. Wedding dresses are sold in store for final alterations and fit. We do offer rental for many evening outfits.</p>"
 
       robe_de_mariee_boheme:
         link_title: "Bohemian wedding dress"
         header_title: "Bohemian wedding dress"
         header_subtitle: "Flowing, romantic and natural"
-        intro_html: "<p>The bohemian dress charms with its lightness: lace, flowing sleeves, open back and soft fabrics. Perfect for an outdoor or rustic wedding.</p>"
+        intro_html: "<p>The bohemian wedding dress stands for freedom and romance: flowing fabrics, delicate lace, open back or light sleeves. Very popular on the French Riviera for outdoor weddings, it suits ceremonies by the sea or in Provence estates.</p><p>At our Cannes shop we offer bohemian dresses for purchase, with fitting and alterations. This guide helps you refine your criteria before your appointment; for the bigger picture, see <a href=\"/en/guides/comment-choisir-sa-robe-de-mariee\">how to choose your wedding dress</a>.</p>"
         sections:
           matieres:
             title: "Fabrics and details"
-            body_html: "<p>Crepe, tulle, guipure lace or floral embroidery: choose lightweight fabrics that move with you.</p>"
-          mariage:
-            title: "For what type of wedding?"
-            body_html: "<p>Garden, beach, Provence estate or outdoor civil ceremony: the bohemian dress harmonises with natural settings.</p>"
+            body_html: "<p>Bohemian style is about movement: light crepe, soft tulle, guipure lace, floral embroidery or sheer sleeves. Avoid stiff fabrics that break the natural effect.</p><p>Details include low or V-back, thin belts, short trains or detachable trains for the evening. Finishes can feel deliberately artisanal (fringe, hand embroidery) for an authentic look.</p>"
+          coupe:
+            title: "Cuts and silhouettes"
+            body_html: "<p>Bohemian is not one single cut: it can be a flowing empire line, a soft mermaid, or a fitted bodice with a flared skirt. Long lace sleeves are iconic, but fine straps or a bustier work too.</p><p>Think comfort: walking on sand, sea breeze, summer heat. In the fitting room we test the dress in motion, not only in the mirror.</p>"
+          saison_lieu:
+            title: "Season and venue"
+            body_html: "<p>In summer on the Riviera, choose breathable fabrics and a dress that does not drag too much on sand or grass. For a Provence estate, ivory, champagne and ivory lace blend beautifully with the setting.</p><p>Indoor bohemian weddings are possible too: adjust train length and transparency. Discuss this with your advisor at your Cannes fitting.</p>"
+          accessoires:
+            title: "Bohemian accessories"
+            body_html: "<p>Flower crown, light veil, flat sandals or wedge heels, subtle gold jewellery: accessories complete the dress without overpowering it. Avoid very « princess » tiaras if your line is natural.</p><p>In store we coordinate veil, jewellery and shoes with your dress. See our <a href=\"/en/guides/chaussures-accessoires-soiree\">shoes and accessories guide</a>.</p>"
+          histoire:
+            title: "Bohemian style in our shop"
+            body_html: "<p>Bohemian bridal wear took off in the 2010s with personalised weddings and outdoor celebrations. In Cannes we see it on Mediterranean beaches, villa gardens and festival-style weddings.</p><p>Our selection mixes established designers and dresses with a fluid fit tested in the fitting room: what matters is that the dress feels like you and works in real conditions — wind, heat, outdoor photos.</p>"
+        faq:
+          q1:
+            question: "Is a bohemian dress suitable for a beach wedding?"
+            answer_html: "<p>Yes, with a suitable length (short or detachable train) and light fabrics. Your fitting confirms comfort when moving.</p>"
+          q2:
+            question: "Lace or crepe for a bohemian look?"
+            answer_html: "<p>Both work: lace for romance, crepe for a modern flowing drape. Many dresses combine the two.</p>"
+          q3:
+            question: "Which bohemian dress for my body shape?"
+            answer_html: "<p>Bohemian styles suit several shapes thanks to flowing cuts and belts. See our <a href=\"/en/guides/robe-de-mariee-morphologie\">body shape guide</a>, then confirm in store.</p>"
+          q4:
+            question: "Where can I try on a bohemian wedding dress in Cannes?"
+            answer_html: "<p>At Autour D'Un Soir, 29 boulevard Carnot. Book a fitting on our <a href=\"/en/robe-de-mariee-cannes\">wedding dress Cannes</a> page.</p>"
 
       robe_de_mariee_morphologie:
         link_title: "Wedding dress body shape"
         header_title: "Which dress for your body shape?"
         header_subtitle: "Mermaid, ball gown, sheath, bustier"
-        intro_html: "<p>Every body shape has cuts that flatter it. A fitting remains essential, but here are pointers to refine your search.</p>"
+        intro_html: "<p>Body-shape guides give pointers, but nothing replaces a fitting: a mermaid dress can surprise someone who thought they were « ball gown only ». In our Cannes fitting room we look at posture, torso length and comfort in motion.</p><p>This guide helps you narrow your search before your appointment. Then refine at your <a href=\"/en/essayage-robe-de-mariee-cannes\">fitting in Cannes</a> and on our <a href=\"/en/robe-de-mariee-cannes\">wedding dresses</a> page.</p>"
         sections:
           sirene:
             title: "Mermaid dress"
-            body_html: "<p>Hugs the curves and flares from the knee. Flatters hourglass figures and defined hips.</p>"
+            body_html: "<p>The mermaid fits bust and hips, then flares at the knee. It flatters hourglass figures and creates a very feminine line.</p><p>Check comfort if you climb stairs or dance for hours: walk in the dress. A light or detachable train can help.</p>"
           princesse:
             title: "Ball gown"
-            body_html: "<p>Full skirt from the waist. Balances silhouettes and creates a majestic look.</p>"
+            body_html: "<p>Full skirt from the natural waist or hip. It balances shoulders and hips and looks majestic in photos.</p><p>Ideal if you want a defined waist without tight hips. Volume can be adjusted depending on the model.</p>"
           fourreau:
             title: "Sheath dress"
-            body_html: "<p>Clean, elegant line, close to the body without being tight. Ideal for a chic, modern look.</p>"
+            body_html: "<p>Straight or slightly flared line, close without being bodycon. Chic, modern, often minimalist.</p><p>Suits those who love a clean silhouette. Flowing crepe is often more comfortable than stiff satin.</p>"
+          bustier:
+            title: "Bustier and shoulders"
+            body_html: "<p>Bustiers structure the upper body; wide straps or sleeves add support. If you have narrow shoulders, a structured neckline or sleeves can balance the silhouette.</p><p>At your fitting, raise your arms and test hugs: support should stay comfortable all day.</p>"
+          essayage:
+            title: "Why the fitting decides"
+            body_html: "<p>Body shape is not a single letter: torso length, posture and personal taste matter as much. Our Cannes advisors cross your feelings with experience to suggest 6 to 8 relevant dresses.</p><p>See also <a href=\"/en/guides/comment-choisir-sa-robe-de-mariee\">how to choose your dress</a> for style and budget.</p>"
+        faq:
+          q1:
+            question: "Can one body shape wear several cuts?"
+            answer_html: "<p>Yes. Guides are pointers, not rules. Only a fitting confirms what flatters you.</p>"
+          q2:
+            question: "Does a ball gown make you look bigger?"
+            answer_html: "<p>Volume starts at the waist: chosen well, it structures without adding bulk. Waist height and neckline make the difference.</p>"
+          q3:
+            question: "Where can I try dresses for my shape in Cannes?"
+            answer_html: "<p>Autour D'Un Soir, 29 boulevard Carnot. Book a fitting for a targeted selection.</p>"
 
       smoking_ou_costume_mariage:
         link_title: "Tuxedo or wedding suit"
         header_title: "Tuxedo or wedding suit?"
         header_subtitle: "The right choice for the occasion"
-        intro_html: "<p>A tuxedo suits formal and evening weddings. A three-piece suit offers more flexibility for daytime or rustic ceremonies.</p>"
+        intro_html: "<p>Choosing between tuxedo and suit shapes the groom's and male guests' elegance. Dress code, time and venue — church, beach, estate, evening — guide the decision.</p><p>At our Cannes shop we offer both, for rental or purchase, with fitting. For rental packages see <a href=\"/en/guides/location-smoking-costume-cannes\">tuxedo rental Cannes</a> and <a href=\"/en/costume-mariage-cannes\">wedding suits</a>.</p>"
         sections:
           smoking:
             title: "When to choose a tuxedo?"
-            body_html: "<p>Evening wedding, black tie reception or very formal ceremony: black or midnight blue tuxedo is the classic choice.</p>"
+            body_html: "<p>Evening wedding, black tie reception, gala or very formal ceremony: tuxedo (black or midnight blue) is the reference. White shirt, bow tie, patent or black oxfords.</p><p>Midnight blue often photographs better under flash than pure black. Try both in the fitting room.</p>"
           costume:
             title: "When to choose a suit?"
-            body_html: "<p>Civil wedding, daytime ceremony or smart-casual vibe: choose a blue, beige or grey suit with tie or bow tie.</p>"
+            body_html: "<p>Civil wedding, daytime ceremony, garden or smart chic: three-piece suit in blue, beige, grey or bottle green. Tie or bow depending on formality.</p><p>More flexible than a tuxedo, it works for other professional or family events.</p>"
+          accessoires:
+            title: "Accessories and consistency"
+            body_html: "<p>Pocket square, belt, cufflinks, discreet watch: details unify the look. Match the wedding party and bride if you are best man.</p><p>Everything is coordinated in store — no need to buy elsewhere without trying on.</p>"
+          location:
+            title: "Rent or buy?"
+            body_html: "<p>For a one-off wedding, 4-day rental is cost-effective; our workshop adjusts the outfit for a perfect fit. For several events a year, buying may pay off.</p><p>Our advisors compare both without pushing the more expensive option.</p>"
+        faq:
+          q1:
+            question: "Should a best man match the groom's style?"
+            answer_html: "<p>Not necessarily identical, but harmonised: same formality level (tuxedo vs suit) and complementary colours.</p>"
+          q2:
+            question: "Is a tuxedo mandatory for an evening wedding?"
+            answer_html: "<p>If dress code is black tie, yes. Otherwise a very dressy dark suit may suffice — check with the couple.</p>"
+          q3:
+            question: "Where to try tuxedo and suit in Cannes?"
+            answer_html: "<p>Autour D'Un Soir, 29 boulevard Carnot, by appointment.</p>"
 
       robe_invitee_mariage:
         link_title: "Wedding guest dress"
         header_title: "Wedding guest outfit"
         header_subtitle: "Elegant without stealing the spotlight"
-        intro_html: "<p>Invited to a wedding? Choose a cocktail or long dress according to the dress code, avoiding white and shades too close to the bride's.</p>"
+        intro_html: "<p>As a wedding guest you want balance between elegance and discretion: avoid white and shades too close to the bride while expressing your style. Cocktail, long dress or chic set: the invitation dress code is your first reference.</p><p>In Cannes, Autour D'Un Soir offers short and long dresses for <strong>rental or purchase</strong>, with fitting. See also <a href=\"/en/guides/achat-ou-location-tenue-soiree\">buy or rent</a> and <a href=\"/en/guides/chaussures-accessoires-soiree\">accessories</a>.</p>"
         sections:
           dresscode:
             title: "Read the dress code"
-            body_html: "<p>Rustic, chic, black tie: adapt length, fabrics and accessories. When in doubt, a simple midi or long dress is a safe choice.</p>"
+            body_html: "<p><strong>Rustic</strong>: flowing, floral, midi length. <strong>Chic</strong>: cocktail or simple long. <strong>Black tie</strong>: long dress for very formal evenings.</p><p>When in doubt, an elegant midi in a deep colour (blue, green, burgundy) is safe. Ask the couple if a colour theme applies.</p>"
+          couleurs:
+            title: "Colours and pitfalls"
+            body_html: "<p>White, ivory and ecru are for the bride. Very pale pastels can also blur in photos. Prefer rich colours or discreet floral prints.</p><p>For an evening wedding on the Riviera, light fabrics with a shawl or bolero for cooler air work well.</p>"
           location:
             title: "Rent or buy?"
-            body_html: "<p>Rental is ideal for an outfit worn once or twice. Autour D'Un Soir offers short and long dresses to rent or buy in Cannes.</p>"
+            body_html: "<p>4-day rental suits an outfit worn once or twice. Buying makes sense for several weddings or galas in a year.</p><p>In-store fitting: confirm length, comfort seated and harmony with your shoes.</p>"
+          accessoires:
+            title: "Shoes and finishing touches"
+            body_html: "<p>Stable heels for dancing, matching clutch, understated jewellery. Test the full look in the fitting room.</p><p>Our <a href=\"/en/guides/chaussures-accessoires-soiree\">shoes and accessories guide</a> covers coordination.</p>"
+        faq:
+          q1:
+            question: "Can I wear black as a guest?"
+            answer_html: "<p>Yes, unless the couple says otherwise. Black is elegant for an evening wedding.</p>"
+          q2:
+            question: "Long or cocktail dress?"
+            answer_html: "<p>Depends on dress code and time: cocktail for afternoon, long often for evening or black tie.</p>"
+          q3:
+            question: "Where to rent a guest dress in Cannes?"
+            answer_html: "<p>Autour D'Un Soir, 29 boulevard Carnot, by appointment with fitting.</p>"
 
       tenue_gala_ceremonie:
         link_title: "Gala & ceremony outfit"
         header_title: "Gala and ceremony outfit"
         header_subtitle: "Galas, christenings, graduations and formal evenings"
-        intro_html: "<p>Galas, christenings, graduations or formal dinners on the French Riviera: your outfit should match the occasion. Long dresses, cocktail wear, tuxedos and suits — Autour D'Un Soir advises you in store in Cannes.</p>"
+        intro_html: "<p>Galas, christenings, graduations or evenings during Cannes Festival: each occasion has its formality level. A successful outfit respects the code without being showy.</p><p>Autour D'Un Soir in Cannes dresses women and men for rental or purchase, with fitting and alterations. Compare <a href=\"/en/guides/robe-invitee-mariage\">wedding guest wear</a> and <a href=\"/en/guides/location-smoking-costume-cannes\">tuxedo rental</a> for men.</p>"
         sections:
           femmes:
             title: "For women"
-            body_html: "<p>Long dress for a gala or black tie evening, cocktail dress for a smart reception or chic christening. Choose fine fabrics, flattering cuts and understated accessories.</p>"
+            body_html: "<p><strong>Gala / black tie</strong>: long dress, fine fabrics (silk, satin, crepe), discreet jewellery. <strong>Smart cocktail</strong>: sophisticated midi or short. <strong>Chic christening</strong>: pastels or elegant prints; avoid pure white if the family reserves it.</p><p>In the fitting room we check comfort seated and length with your shoes.</p>"
           hommes:
             title: "For men"
-            body_html: "<p>Tuxedo or three-piece suit depending on formality. Tie or bow tie, patent shoes and matching pocket square: our team helps you put together a harmonious look.</p>"
+            body_html: "<p>Tuxedo for black tie; three-piece suit for smart cocktail or less strict gala. Patent shoes or oxfords, coordinated pocket square and bow tie.</p><p>During Cannes Festival, book early: high demand in May.</p>"
           occasions:
             title: "Which occasions?"
-            body_html: "<p>Christenings, communions, charity galas, corporate events, award ceremonies or Cannes Festival events: we offer rental and sales, with in-store fittings.</p>"
+            body_html: "<p>Christenings, communions, charity galas, corporate events, award ceremonies, Croisette dinners: we cover most dress codes in the region.</p><p>4-day rental or purchase depending on how often you dress up — our advisors guide you.</p>"
+          festival:
+            title: "Cannes Festival and prestige events"
+            body_html: "<p>Red carpets and private parties need flawless outfits. Fitting is essential to check how the cut works under flash photography.</p><p>Book early in May: slots and sizes go quickly.</p>"
         faq:
           q1:
             question: "What's the difference between gala and cocktail dress code?"
             answer_html: "<p>Gala or black tie calls for a long dress or tuxedo. Cocktail allows a bolder midi or short dress, or a suit with tie for men.</p>"
           q2:
             question: "Can I rent an outfit for a gala in Cannes?"
-            answer_html: "<p>Yes, dresses and tuxedos are available to rent in store, with fitting and alterations. Ideal for a one-off event on the Riviera.</p>"
+            answer_html: "<p>Yes, dresses and tuxedos are available to rent in store, with fitting and workshop adjustments for a perfectly tailored look. Ideal for a one-off event on the Riviera.</p>"
 
       achat_ou_location_tenue_soiree:
         link_title: "Buy or rent evening wear"
         header_title: "Buy or rent evening wear?"
         header_subtitle: "The guide to making the right choice"
-        intro_html: "<p>Galas, weddings, parties or Cannes Festival: depending on how often you will wear it, renting or buying may be more advantageous.</p>"
+        intro_html: "<p>Wedding guest, gala, corporate evening or Cannes Festival: should you rent or buy? It depends on frequency, budget and whether you want a signature piece to keep.</p><p>At Autour D'Un Soir, evening dresses, tuxedos and suits are available for <strong>4-day rental</strong> or purchase — wedding dresses are purchase only. Fitting in store in Cannes.</p>"
         sections:
           location:
             title: "Benefits of renting"
-            body_html: "<p>Access designer outfits for a fraction of the purchase price. Cleaning included, ideal for a one-off event.</p>"
+            body_html: "<p>Access premium outfits on a controlled budget. Cleaning and pressing included in our service. Ideal for a one-off event or a size you will not wear again.</p><p>Standard package: pick up 2 days before, return 2 days after. Deposit at pick-up, 30% booking deposit.</p>"
           achat:
             title: "Benefits of buying"
-            body_html: "<p>A lasting investment if you regularly wear evening outfits. Alterations available for a bespoke fit.</p>"
+            body_html: "<p>Worth it if you attend several weddings or galas a year, or want a piece you can alter repeatedly.</p><p>Buying also lets you choose a cut perfectly adjusted to your shape, with no return deadline.</p>"
+          comparatif:
+            title: "Quick decision guide"
+            body_html: "<p><strong>Rent</strong> if: one event, tight budget, want variety. <strong>Buy</strong> if: recurring events, reference outfit, important bespoke alterations.</p><p>If unsure, our advisors compare total cost (repeat rental vs purchase) at your fitting.</p>"
+          boutique:
+            title: "Fitting in Cannes"
+            body_html: "<p>Rental and purchase are in store only — to confirm size, comfort and style. 29 boulevard Carnot.</p><p>See <a href=\"/en/guides/location-smoking-costume-cannes\">tuxedo rental</a> for men and <a href=\"/en/guides/robe-invitee-mariage\">guest dress</a> for women.</p>"
         faq:
           q1:
             question: "Can I rent online?"
-            answer_html: "<p>Rental is in store in Cannes only, with fitting and alterations included in our service.</p>"
+            answer_html: "<p>No. Rental and fitting in our Cannes shop only, to adjust the outfit to your shape.</p>"
           q2:
             question: "How long is the rental period?"
-            answer_html: "<p>The standard rental period is 4 days (pick up 2 days before the event, return 2 days after).</p>"
+            answer_html: "<p>Standard 4 days: pick up 2 days before the event, return 2 days after.</p>"
+          q3:
+            question: "Can I rent a wedding dress?"
+            answer_html: "<p>No. Wedding dresses are sold in store. Rental covers evening wear, tuxedos and suits.</p>"
 
       location_smoking_costume_cannes:
         link_title: "Tuxedo & suit rental"
         header_title: "Tuxedo and suit rental in Cannes"
         header_subtitle: "Fitting, alterations and rental packages in store"
-        intro_html: "<p>Need a tuxedo or suit for a wedding, gala or evening event? Autour D'Un Soir offers in-store rental in Cannes, with fitting and alterations — clients welcome from Nice, Antibes and Monaco.</p>"
+        intro_html: "<p>For a wedding, gala or Cannes Festival event, renting a tuxedo or suit gives you a premium look without a full purchase. At <strong>Autour D'Un Soir</strong>, rental is in store only: fitting, workshop alterations and accessories on site.</p><p>Our standard package covers 4 days (pick up before the event, return after). Compare with our <a href=\"/en/guides/achat-ou-location-tenue-soiree\">buy or rent guide</a> and <a href=\"/en/guides/smoking-ou-costume-mariage\">tuxedo or suit</a> comparison.</p>"
         sections:
           formules:
             title: "Our rental packages"
-            body_html: "<p>4-day rental: pick up 2 days before the event, return 2 days after. Tuxedos, ceremony suits and accessories (bow tie, belt, pocket square) available in store.</p>"
+            body_html: "<p>Standard rental is <strong>4 days</strong>: pick up 2 days before your event, return 2 days after (as on our <a href=\"/en/faq\">FAQ</a>). Fitting takes place before pick-up; our workshop adjusts the outfit so it fits you perfectly on the day.</p><p>Black or midnight blue tuxedos, three-piece ceremony suits, trousers and jackets, plus bow ties, belts and pocket squares are available in store. A deposit proportional to the outfit value is required at pick-up.</p>"
           essayage:
-            title: "Fitting and alterations included"
-            body_html: "<p>Every rental starts with a fitting to adjust the cut. Our workshop handles alterations so your outfit is flawless on the day.</p>"
+            title: "Fitting and workshop adjustments"
+            body_html: "<p>Every rental starts with a fitting: we check shoulder fit, jacket and trouser length, and how the shirt sits. Our workshop then carries out the necessary alterations (hems, tapers, sleeves) so the outfit fits you perfectly.</p><p>Bring your ceremony shoes to the fitting for trouser length. Booking is recommended, especially during Cannes Festival or summer wedding season.</p>"
+          occasions:
+            title: "Weddings, galas and events"
+            body_html: "<p><strong>Evening wedding</strong>: tuxedo or dark suit depending on dress code. <strong>Daytime wedding</strong>: blue, beige or grey suit. <strong>Gala or ceremony</strong>: black tie tuxedo or three-piece suit.</p><p>During Cannes Festival we welcome many clients for parties and red-carpet events: book early. Children's outfits are available for wedding parties and group photos.</p>"
+          accessoires_homme:
+            title: "Accessories and finishing touches"
+            body_html: "<p>Bow tie or necktie, pocket square, belt, cufflinks: everything can be coordinated in store. Patent shoes or oxfords depending on formality.</p><p>We help you build a harmonious look from suit to details, for a polished result on the day.</p>"
+          enfants:
+            title: "Children's suits"
+            body_html: "<p>Page boys and young attendants: children's sizes with workshop adjustments. Rental or purchase depending on the model.</p><p>Booking a children's fitting with yours helps match colours and formality across the family.</p>"
+          expertise:
+            title: "Rent or buy: our advice"
+            body_html: "<p>Rental suits a one-off event (wedding guest, gala, Festival). Buying makes sense if you wear ceremony wear regularly. Our advisors compare both options honestly.</p><p>Since 1980 in Cannes we have dressed grooms, groomsmen and guests — that experience guides our advice on cut, colour and accessories.</p>"
           acces:
-            title: "Cannes shop, easy to reach from the region"
-            body_html: "<p>29 boulevard Carnot, 5 minutes from Cannes train station. About 30 min from Nice, 20 min from Antibes and 45 min from Monaco. Book an appointment for a personalised welcome.</p>"
+            title: "Shop in Cannes"
+            body_html: "<p>29 boulevard Carnot, 5 minutes on foot from Cannes train station. By car: about 30 min from Nice, 20 min from Antibes, 45 min from Monaco. Public car parks nearby.</p><p>In-store booking with a 30% deposit to confirm rental. See also our <a href=\"/en/costume-mariage-cannes\">wedding suits in Cannes</a> page.</p>"
         faq:
           q1:
             question: "Can I rent a tuxedo without buying?"
-            answer_html: "<p>Yes, our tuxedos and suits are available for in-store rental. Fitting and alterations are part of our service.</p>"
+            answer_html: "<p>Yes. Tuxedos and suits are available for in-store rental, with fitting and workshop alterations for a perfect fit.</p>"
           q2:
             question: "Do you also sell suits?"
-            answer_html: "<p>Yes, rental and purchase are both available depending on your needs. For repeated events, buying may be more cost-effective — our advisors will guide you.</p>"
+            answer_html: "<p>Yes, rental and purchase are both available. For repeated events, buying may be more cost-effective — our advisors will guide you.</p>"
+          q3:
+            question: "Black tuxedo or midnight blue?"
+            answer_html: "<p>Black is the classic black tie choice. Midnight blue often photographs better in evening light and with flash. Try both in store for your event.</p>"
+          q4:
+            question: "Do you rent children's suits?"
+            answer_html: "<p>Yes, with children's sizes and tailored adjustments. Book a fitting slot to coordinate with yours.</p>"
+          q5:
+            question: "What if I return the outfit late?"
+            answer_html: "<p>Pick-up and return dates are set at booking. Late return may incur extra charges according to our in-store rental terms.</p>"
 
       chaussures_accessoires_soiree:
         link_title: "Shoes & accessories"
         header_title: "Evening shoes and accessories"
         header_subtitle: "The finishing touches for wedding, gala or ceremony wear"
-        intro_html: "<p>A dress or suit is not enough: shoes, bags, jewellery and accessories set the final tone of your look. At our Cannes shop, Autour D'Un Soir helps you coordinate every detail for a harmonious result — wedding, gala or evening on the French Riviera.</p>"
+        intro_html: "<p>A dress or suit is not enough: shoes, bags, jewellery and accessories set the final tone. A colour mismatch or wrong heel height can spoil otherwise great photos.</p><p>At our Cannes shop we coordinate every detail in the fitting room — wedding, gala or evening. After choosing your outfit, see <a href=\"/en/guides/comment-choisir-sa-robe-de-mariee\">choosing your dress</a> or <a href=\"/en/guides/robe-invitee-mariage\">guest wear</a> if needed.</p>"
         cta_title: "Complete my outfit in store"
         sections:
           chaussures:
             title: "Choosing your shoes"
-            body_html: "<p>Heels, pumps, sandals or mules: height and comfort matter as much as style. Try them with your dress or trousers to check length and colour. For men, oxfords, loafers or patent shoes depending on formality.</p>"
+            body_html: "<p>Heels, pumps, sandals or mules: height affects dress or trouser length. Try them <strong>with</strong> your outfit so we can adjust hems if needed.</p><p>Men: oxfords, loafers or patent depending on tuxedo or suit. Comfort for dancing and walking on carpet or sand (outdoor weddings).</p>"
           accessoires:
             title: "Bags, jewellery and finishing touches"
-            body_html: "<p>Clutch, belt, jewellery or shawl: accessories structure your silhouette without overloading it. We offer a women's and men's selection to complete wedding, gala or evening outfits.</p>"
+            body_html: "<p>Clutch, belt, jewellery, shawl or bolero: each piece should serve the silhouette, not overload it. For weddings, avoid jewellery that competes with the bride.</p><p>Women's and men's selection in store for wedding, gala and evening.</p>"
           coordonner:
             title: "Coordinating the whole look"
-            body_html: "<p>Stick to a coherent palette: metal of jewellery, shoe shade, bag tone. In the fitting room, our advisors fine-tune combinations for an elegant, personal result.</p>"
+            body_html: "<p>Coherent palette: jewellery metal (gold or silver), shoe shade, bag tone. Two dominant colours plus an accent are often enough.</p><p>In the fitting room we check the full look in different light — useful for outdoor photos on the Riviera.</p>"
           boutique:
             title: "Find our collections in Cannes"
-            body_html: "<p>Shoes and accessories are available in store at 29 boulevard Carnot in Cannes. Try on in person — easy to reach from Nice, Antibes and Monaco — ideal to finalise your outfit before the big day or your event.</p>"
+            body_html: "<p>29 boulevard Carnot. Try on in person to finalise before the big day. Ideal after choosing a dress with us or bringing yours for coordination.</p>"
         faq:
           q1:
             question: "Can shoes and accessories be bought or rented?"
-            answer_html: "<p>Depending on the item, purchase or rental is available in store. Our team will tell you the options for each model when you visit.</p>"
+            answer_html: "<p>Depending on the item, purchase or rental in store. Our team explains options for each model.</p>"
           q2:
             question: "Should I bring my dress to choose shoes?"
-            answer_html: "<p>It's recommended: you can immediately see length, proportions and colour harmony. Otherwise, bring a photo or the main colour of your outfit.</p>"
+            answer_html: "<p>Strongly recommended for length and colours. Otherwise a photo or fabric swatch.</p>"
+          q3:
+            question: "What heel height for a long dress?"
+            answer_html: "<p>The height you can wear all evening. At your fitting we adjust the hem accordingly.</p>"
