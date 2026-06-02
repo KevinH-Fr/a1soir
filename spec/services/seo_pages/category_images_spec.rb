@@ -95,14 +95,24 @@ RSpec.describe SeoPages::CategoryImages do
       expect(result).to eq({})
     end
 
-    it "skips access sections without illustrative image" do
-      create_product(name: "Robe boutique", categories: [robes_courtes], image_bytes: "boutique-image")
+    it "assigns a boutique visual to access sections when products are available" do
+      create_product(name: "Robe boutique cannes", categories: [robes_courtes], image_bytes: "boutique-image")
 
       page = SeoPages::Registry.find("robe-de-mariee-cannes", scope: "local")
       result = described_class.call(page, section_keys: %w[acces boutique])
 
-      expect(result["acces"]).to be_nil
+      expect(result["acces"]).to be_present
       expect(result["boutique"]).to be_present
+    end
+
+    it "falls back to any available product when section keywords do not match" do
+      create_product(name: "Robe mariée classique", categories: [robes_longues], image_bytes: "robe-image")
+
+      page = SeoPages::Registry.find("comment-choisir-sa-robe-de-mariee", scope: "guides")
+      result = described_class.call(page, section_keys: %w[delais])
+
+      expect(result["delais"]).to be_present
+      expect(result.dig("delais", :image)).to be_attached
     end
 
     it "picks different products for sections that share broad wedding keywords" do

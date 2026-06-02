@@ -2,7 +2,7 @@
 
 module SeoPages
   class CategoryImages
-    PRODUCT_POOL_LIMIT = 80
+    PRODUCT_POOL_LIMIT = 120
     VIDEO_SCORE_BONUS = 3
 
     SECTION_KEYWORDS = {
@@ -45,7 +45,7 @@ module SeoPages
       "expertise" => %w[cannes boutique],
       "accessoires_homme" => %w[papillon pochette ceinture cravate],
       "bustier" => %w[bustier corsage dos],
-      "acces" => []
+      "acces" => %w[boutique cannes]
     }.freeze
 
     SLUG_KEYWORDS = [
@@ -98,8 +98,6 @@ module SeoPages
       used_category_ids = []
 
       @section_keys.each_with_object({}) do |section_key, memo|
-        next if SECTION_KEYWORDS.key?(section_key) && SECTION_KEYWORDS[section_key].empty?
-
         keywords = section_search_terms(section_key, slug_keywords)
         product = pick_product(
           products,
@@ -127,6 +125,13 @@ module SeoPages
     end
 
     def pick_product(products, keywords, used_blob_ids, used_product_ids, used_category_ids, section_key: nil)
+      product = pick_product_for_section(
+        products, keywords, used_blob_ids, used_product_ids, used_category_ids, section_key: section_key
+      )
+      product || fallback_pick_product(products, used_blob_ids, used_product_ids, used_category_ids, section_key)
+    end
+
+    def pick_product_for_section(products, keywords, used_blob_ids, used_product_ids, used_category_ids, section_key: nil)
       pool = available_products(products, used_blob_ids, used_product_ids)
       return nil if pool.empty?
 
@@ -139,6 +144,27 @@ module SeoPages
       end
 
       choose_varied_product(pool, keywords, used_category_ids, section_key)
+    end
+
+    def fallback_pick_product(products, used_blob_ids, used_product_ids, used_category_ids, section_key)
+      pool = products.select { |product| product_has_media?(product) && !used_product_ids.include?(product.id) }
+      return nil if pool.empty?
+
+      fresh = pool.select { |product| media_available?(product, used_blob_ids) }
+      pool = fresh.presence || pool
+      sorted = pool.sort_by { |product| fallback_sort_key(product, used_category_ids) }
+      sorted[stable_section_index(section_key, sorted.size)]
+    end
+
+    def fallback_sort_key(product, used_category_ids)
+      category_ids = product.categorie_produits.map(&:id)
+      overlap = (category_ids & used_category_ids).size
+      [
+        product.video1.attached? ? 0 : 1,
+        overlap,
+        -category_ids.size,
+        product.id
+      ]
     end
 
     def available_products(products, used_blob_ids, used_product_ids)
@@ -186,7 +212,10 @@ module SeoPages
     def choose_varied_product(pool, keywords, used_category_ids, section_key)
       scored = pool.map { |product| [product, score_product(product, keywords, used_category_ids)] }
       max_score = scored.map(&:last).max
-      return nil if max_score.to_i.zero?
+      if max_score.to_i.zero?
+        sorted = pool.sort_by { |product| fallback_sort_key(product, used_category_ids) }
+        return sorted[stable_section_index(section_key, sorted.size)]
+      end
 
       threshold = [max_score - 1, 1].max
       candidates = scored.select { |_, score| score >= threshold }.map(&:first)

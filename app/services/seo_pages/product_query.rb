@@ -2,8 +2,22 @@
 
 module SeoPages
   class ProductQuery
+    HANDLE_DEDUP_FETCH_MULTIPLIER = 4
+    MAX_SQL_LIMIT = 200
+
     def self.scope_for(page, limit: nil, require_image: false)
       new(page, limit: limit, require_image: require_image).call
+    end
+
+    def self.deduplicate_by_handle(products)
+      seen = {}
+      products.each_with_object([]) do |product, unique|
+        key = product.handle.presence || "id_#{product.id}"
+        next if seen[key]
+
+        seen[key] = true
+        unique << product
+      end
     end
 
     def initialize(page, limit: nil, require_image: false)
@@ -26,18 +40,21 @@ module SeoPages
       scoped = apply_keywords(base)
       scoped = base if scoped.none? && ProductKeywords.call(@page).present?
 
-      scoped = scoped.limit(@limit) if @limit
+      sql_limit = sql_limit_for(@limit)
+      scoped = scoped.limit(sql_limit) if sql_limit
       products = scoped.to_a
 
       if @require_image
         products = products.select { |product| product_visual_media?(product) }
         if products.empty? && ProductKeywords.call(@page).present?
           fallback = base
-          fallback = fallback.limit(@limit) if @limit
+          fallback = fallback.limit(sql_limit) if sql_limit
           products = fallback.to_a.select { |product| product_visual_media?(product) }
         end
       end
 
+      products = self.class.deduplicate_by_handle(products)
+      products = products.first(@limit) if @limit
       products
     end
 
@@ -49,6 +66,12 @@ module SeoPages
 
     def product_visual_media?(product)
       product.image1.attached? || product.video1.attached?
+    end
+
+    def sql_limit_for(limit)
+      return nil unless limit
+
+      [limit * HANDLE_DEDUP_FETCH_MULTIPLIER, MAX_SQL_LIMIT].min
     end
   end
 end

@@ -8,12 +8,12 @@ RSpec.describe SeoPages::ProductScope do
   let(:page) do
     {
       product_filters: {
-        category_names: ["robes de mariée courtes"]
+        category_names: [category.nom]
       }
     }
   end
 
-  def create_product(name:)
+  def create_product(name:, handle: nil, taille: nil, image_bytes: "product-image")
     product = Produit.create!(
       nom: name,
       prixvente: 100,
@@ -21,9 +21,17 @@ RSpec.describe SeoPages::ProductScope do
       actif: true,
       today_availability: true,
       quantite: 1,
-      handle: "#{name.parameterize}-#{SecureRandom.hex(4)}"
+      handle: handle || "#{name.parameterize}-#{SecureRandom.hex(4)}",
+      taille: taille
     )
     product.categorie_produits << category
+    if image_bytes
+      product.image1.attach(
+        io: StringIO.new(image_bytes),
+        filename: "#{name.parameterize}.jpg",
+        content_type: "image/jpeg"
+      )
+    end
     product
   end
 
@@ -41,6 +49,21 @@ RSpec.describe SeoPages::ProductScope do
 
     expect(result.map(&:id)).not_to include(*excluded)
     expect(result.size).to eq(6)
+  end
+
+  it "returns only one product per handle" do
+    shared_handle = "robe-partagee-#{SecureRandom.hex(4)}"
+    taille_s = Taille.create!(nom: "S-#{SecureRandom.hex(2)}")
+    taille_m = Taille.create!(nom: "M-#{SecureRandom.hex(2)}")
+
+    create_product(name: "Robe taille S", handle: shared_handle, taille: taille_s)
+    create_product(name: "Robe taille M", handle: shared_handle, taille: taille_m)
+    create_product(name: "Autre robe")
+
+    result = described_class.call(page)
+
+    expect(result.size).to eq(2)
+    expect(result.map(&:handle).uniq).to eq([shared_handle, result.last.handle])
   end
 
   it "filters products by slug keyword when present" do

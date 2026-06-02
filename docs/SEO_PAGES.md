@@ -96,8 +96,8 @@ Résolues automatiquement par `SeoPages::CategoryImages` :
 
 - source : produits actifs e-shop des catégories `product_filters.category_names` (+ expansion par slug via `CategoryScope`)
 - recherche produit : mot-clé dérivé du slug (`ProductKeywords`, ex. `boheme` → « bohème ») appliqué sur nom, description et catégories — utilisé pour la sélection et le lien « Voir toute la collection »
-- sections : un visuel produit différent par section (pas de doublon sur la page) — **vidéo** `Produit#video1` si disponible (Cloudinary), sinon **image** `image1` ; poster = `image1` quand la vidéo en a une
-- sélection produits affichée : 6 articles maximum (`SeoPages::ProductScope`)
+- sections : un visuel produit différent par section (pas de doublon sur la page) — **vidéo** `Produit#video1` si disponible (Cloudinary), sinon **image** `image1` ; poster = `image1` quand la vidéo en a une ; repli sur tout produit avec média si les mots-clés de section ne matchent pas
+- sélection produits affichée : 6 articles maximum (`SeoPages::ProductScope`), uniquement avec image ou vidéo
 - liens catégories : boutons vers chaque collection liée à la page (`SeoPages::CategoryScope` étend selon le slug)
 - image Open Graph : première image de section disponible
 
