@@ -277,6 +277,22 @@ RSpec.describe "Public::Pages", type: :request do
       expect(response.body).to include('meta name="description" content=')
       expect(response.body).to include("Robe SEO")
     end
+
+    it "renders absolute Cloudinary URL for og:image and twitter:image" do
+      blob = ActiveStorage::Blob.create_and_upload!(
+        io: StringIO.new("fake"),
+        filename: "robe-seo.jpg",
+        content_type: "image/jpeg"
+      )
+      produit_seo.image1.attach(blob)
+
+      get "/fr/produit/robe-seo-#{produit_seo.id}"
+
+      og_url = "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/#{blob.key}"
+      expect(response.body).to include(%(property="og:image" content="#{og_url}"))
+      expect(response.body).to include(%(name="twitter:image" content="#{og_url}"))
+      expect(response.body).not_to include('property="og:image" content="/images/')
+    end
   end
 
   # -------------------------------------------------------------------------

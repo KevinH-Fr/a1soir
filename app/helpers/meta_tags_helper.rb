@@ -121,6 +121,15 @@ module MetaTagsHelper
     end
   end
 
+  # URL absolue HTTPS pour og:image / twitter:image (réseaux sociaux).
+  def product_og_image_url(produit)
+    if produit.image1.attached?
+      cloudinary_attachment_url(produit.image1, width: 1200)
+    else
+      public_static_asset_url("images/no_photo.png")
+    end
+  end
+
   private
 
   def meta_tag_value(key, page_key = nil)
