@@ -30,11 +30,11 @@ module SeoPages
       products = scoped.to_a
 
       if @require_image
-        products = products.select { |product| product.image1.attached? }
+        products = products.select { |product| product_visual_media?(product) }
         if products.empty? && ProductKeywords.call(@page).present?
           fallback = base
           fallback = fallback.limit(@limit) if @limit
-          products = fallback.to_a.select { |product| product.image1.attached? }
+          products = fallback.to_a.select { |product| product_visual_media?(product) }
         end
       end
 
@@ -45,6 +45,10 @@ module SeoPages
 
     def apply_keywords(scope)
       ProductKeywords.apply(scope, @page)
+    end
+
+    def product_visual_media?(product)
+      product.image1.attached? || product.video1.attached?
     end
   end
 end

@@ -191,9 +191,12 @@ module PagesHelper
 
 
 
-  def collection_card(title:, items:, url:, delay: 0, image: nil, subtitle: nil, image_position: "center", height: 600)
+  def collection_card(title:, items:, url:, delay: 0, image: nil, subtitle: nil, image_position: "center", height: 600, category_layout: false)
+    card_classes = ["collection-card", "position-relative", "overflow-hidden"]
+    card_classes << "collection-card--category" if category_layout
+
     link_to url, class: "text-decoration-none collection-card-link" do
-      content_tag :div, class: "collection-card position-relative overflow-hidden", style: "height: #{height}px;",
+      content_tag :div, class: card_classes.join(" "), style: "height: #{height}px;",
                         data: { controller: "collection-card-reveal" } do
         # Image de fond (absolute pour remplir le cadre sans déformer le ratio)
         image_section = if image.present?
@@ -218,7 +221,12 @@ module PagesHelper
                       data: { collection_card_reveal_target: "title" })
         end
 
-        subtitle_tag = if subtitle.present?
+        subtitle_tag = if category_layout
+          content_tag(:div, class: "cc-announce-slot") do
+            content_tag(:p, subtitle.to_s, class: "text-white-50 mb-0 cc-subtitle",
+                        data: { collection_card_reveal_target: "subtitle" })
+          end
+        elsif subtitle.present?
           content_tag(:p, subtitle, class: "text-white-50 mb-2 cc-subtitle",
                       data: { collection_card_reveal_target: "subtitle" })
         else
@@ -236,18 +244,29 @@ module PagesHelper
           "".html_safe
         end
 
-        cta = content_tag :span, class: "cc-cta",
-                                  data: { collection_card_reveal_target: "cta" } do
-          content_tag(:span, t("public.helpers.collection_card.discover"), class: "cc-cta-label") +
-          content_tag(:span, " \u2192".html_safe, class: "cc-cta-arrow")
+        cta = unless category_layout
+          content_tag :span, class: "cc-cta",
+                                    data: { collection_card_reveal_target: "cta" } do
+            content_tag(:span, t("public.helpers.collection_card.discover"), class: "cc-cta-label") +
+            content_tag(:span, " \u2192".html_safe, class: "cc-cta-arrow")
+          end
+        else
+          "".html_safe
         end
 
         reveal_zone = content_tag :div, class: "cc-reveal" do
           (subtitle_tag + tags + cta).html_safe
         end
 
-        overlay = content_tag :div, class: "cc-overlay position-absolute bottom-0 start-0 end-0 p-4 p-md-5" do
-          (default_zone + reveal_zone).html_safe
+        overlay_classes = ["cc-overlay", "position-absolute", "bottom-0", "start-0", "end-0", "p-4", "p-md-5"]
+        overlay_classes << "cc-overlay--category" if category_layout
+
+        overlay = content_tag :div, class: overlay_classes.join(" ") do
+          if category_layout
+            (reveal_zone + default_zone).html_safe
+          else
+            (default_zone + reveal_zone).html_safe
+          end
         end
 
         image_section + overlay
@@ -342,9 +361,10 @@ module PagesHelper
       subtitle: categorie.texte_annonce.presence,
       items: [],
       url: produits_url(slug: categorie.nom.parameterize, id: categorie.id),
-      image: categorie.default_image,
+      image: categorie.presentation_image,
       image_position: "center top",
-      height: 420
+      height: 420,
+      category_layout: true
     )
   end
 

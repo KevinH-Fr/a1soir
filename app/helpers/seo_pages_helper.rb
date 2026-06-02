@@ -56,12 +56,33 @@ module SeoPagesHelper
     resolved_images(page)[section_key.to_s]
   end
 
+  def seo_page_section_has_media?(section)
+    return false if section.blank?
+
+    section[:media_type] == :video && section[:video].present? && section[:video].attached? ||
+      section[:image].present? && section[:image].attached?
+  end
+
+  def seo_page_section_video_source(video)
+    return nil unless video.present? && video.attached?
+
+    cloudinary_video_url(video, width: 1200)
+  end
+
+  def seo_page_section_poster_source(image)
+    return nil if image.blank? || !image.attached?
+
+    collection_card_image_source(image)
+  end
+
   def seo_page_image_source(image)
     collection_card_image_source(image)
   end
 
   def seo_page_og_image_url(page)
-    image = resolved_images(page).values.find { |section| section[:image].present? }&.dig(:image)
+    image = resolved_images(page).values.find do |section|
+      section[:image].present? && section[:image].attached?
+    end&.dig(:image)
     return nil if image.blank?
 
     absolute_image_url(image)
@@ -80,12 +101,22 @@ module SeoPagesHelper
   end
 
   def resolved_images(page)
+    if @seo_section_images.present? && page_matches_controller_page?(page)
+      return @seo_section_images
+    end
+
     @resolved_seo_page_images ||= {}
     cache_key = [page[:scope], page[:slug], I18n.locale].join("/")
     @resolved_seo_page_images[cache_key] ||= SeoPages::CategoryImages.call(
       page,
       section_keys: seo_page_section_keys(page)
     )
+  end
+
+  def page_matches_controller_page?(page)
+    defined?(@page) && @page.present? &&
+      @page[:slug].to_s == page[:slug].to_s &&
+      @page[:scope].to_s == page[:scope].to_s
   end
 
   def seo_page_html(html)

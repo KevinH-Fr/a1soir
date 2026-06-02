@@ -21,6 +21,23 @@ class CategorieProduit < ApplicationRecord
         end
     end
 
+    def presentation_image
+        return image1 if image1.attached?
+
+        sample = sample_produit_with_image
+        return sample.image1 if sample&.image1&.attached?
+
+        "/images/no_photo.png"
+    end
+
+    def sample_produit_with_image
+        produits
+            .merge(Produit.actif.eshop_diffusion)
+            .joins(:image1_attachment)
+            .order(updated_at: :desc)
+            .first
+    end
+
     def hard_destroy_allowed?
       return false if produits.exists?
       return false if Produit.exists?(categorie_produit_id: id)

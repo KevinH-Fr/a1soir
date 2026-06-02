@@ -1,0 +1,26 @@
+<%# locals: section_media, title, position: "center" %>
+<% if section_media[:media_type] == :video && section_media[:video]&.attached? %>
+  <% video_src = seo_page_section_video_source(section_media[:video]) %>
+  <% poster_src = seo_page_section_poster_source(section_media[:image]) %>
+  <video
+    class="seo-section-video w-100"
+    autoplay
+    loop
+    muted
+    playsinline
+    <% if poster_src.present? %>poster="<%= poster_src %>"<% end %>
+    aria-label="<%= title %>"
+    style="object-fit: cover; object-position: <%= position.presence || 'center' %>;">
+    <source src="<%= video_src %>" type="<%= section_media[:video].content_type %>">
+  </video>
+<% elsif section_media[:image].present? && section_media[:image].attached? %>
+  <%= image_tag(
+        seo_page_image_source(section_media[:image]),
+        class: "seo-section-image w-100",
+        alt: title,
+        width: 1200,
+        height: 900,
+        loading: "lazy",
+        style: "object-fit: cover; object-position: #{position.presence || 'center'};"
+      ) %>
+<% end %>

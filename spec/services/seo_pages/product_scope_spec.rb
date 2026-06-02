@@ -33,6 +33,16 @@ RSpec.describe SeoPages::ProductScope do
     expect(described_class.call(page).size).to eq(6)
   end
 
+  it "excludes products already used in section images" do
+    products = 8.times.map { |index| create_product(name: "Robe #{index}") }
+    excluded = products.first(2).map(&:id)
+
+    result = described_class.call(page, exclude_product_ids: excluded)
+
+    expect(result.map(&:id)).not_to include(*excluded)
+    expect(result.size).to eq(6)
+  end
+
   it "filters products by slug keyword when present" do
     page = SeoPages::Registry.find("robe-de-mariee-boheme", scope: "guides")
     create_product(name: "Robe bohème fluide")

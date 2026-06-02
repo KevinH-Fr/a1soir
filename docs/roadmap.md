@@ -95,11 +95,13 @@ ____________
 
 ok - relire en local en fr, verifier coherence
 ok - verif pas d'erreur en EN de missing
-- push sur main
-- push prod
+ok - push sur main
+ok - push prod
+
 - verifier en prod images adaptées
 - verif seo mieux sur les pages produit
 - verif strctured data ok sur pages seo
+- verifier completer texte categories depuis admin
 - repush sitemap
 
 

@@ -10,7 +10,7 @@ RSpec.describe SeoPages::CategoryImages do
   let!(:robes_soiree_courtes) { CategorieProduit.create!(nom: "robes courtes") }
   let!(:robes_soiree_longues) { CategorieProduit.create!(nom: "robes longues") }
 
-  def create_product(name:, categories:, image_bytes:)
+  def create_product(name:, categories:, image_bytes: nil, video_bytes: nil)
     product = Produit.create!(
       nom: name,
       prixvente: 100,
@@ -21,11 +21,20 @@ RSpec.describe SeoPages::CategoryImages do
       handle: "#{name.parameterize}-#{SecureRandom.hex(4)}"
     )
     product.categorie_produits << categories
-    product.image1.attach(
-      io: StringIO.new(image_bytes),
-      filename: "#{name.parameterize}.jpg",
-      content_type: "image/jpeg"
-    )
+    if image_bytes
+      product.image1.attach(
+        io: StringIO.new(image_bytes),
+        filename: "#{name.parameterize}.jpg",
+        content_type: "image/jpeg"
+      )
+    end
+    if video_bytes
+      product.video1.attach(
+        io: StringIO.new(video_bytes),
+        filename: "#{name.parameterize}.mp4",
+        content_type: "video/mp4"
+      )
+    end
     product
   end
 
@@ -38,7 +47,7 @@ RSpec.describe SeoPages::CategoryImages do
       page = SeoPages::Registry.find("robe-de-mariee-cannes", scope: "local")
       result = described_class.call(page, section_keys: %w[boutique collections services])
 
-      blob_ids = result.values.map { |section| section[:image].blob.id }
+      blob_ids = result.values.map { |section| section[:image]&.blob&.id }.compact
       expect(blob_ids.uniq.size).to eq(blob_ids.size)
       expect(result.keys).to match_array(%w[boutique collections services])
     end
@@ -94,6 +103,69 @@ RSpec.describe SeoPages::CategoryImages do
 
       expect(result["acces"]).to be_nil
       expect(result["boutique"]).to be_present
+    end
+
+    it "picks different products for sections that share broad wedding keywords" do
+      6.times do |index|
+        create_product(
+          name: "Robe mariée modèle #{index}",
+          categories: [index.even? ? robes_courtes : robes_longues],
+          image_bytes: "robe-#{index}"
+        )
+      end
+
+      page = SeoPages::Registry.find("robe-de-mariee-cannes", scope: "local")
+      result = described_class.call(page, section_keys: %w[histoire boutique services])
+
+      product_ids = result.values.filter_map { |section| section[:product_id] }
+      expect(product_ids.uniq.size).to eq(product_ids.size)
+    end
+
+    it "varies the hero section product between pages with the same section key" do
+      4.times do |index|
+        create_product(
+          name: "Robe mariée variante #{index}",
+          categories: [robes_longues],
+          image_bytes: "variant-#{index}"
+        )
+      end
+
+      cannes = SeoPages::Registry.find("robe-de-mariee-cannes", scope: "local")
+      essayage = SeoPages::Registry.find("essayage-robe-de-mariee-cannes", scope: "local")
+
+      cannes_boutique = described_class.call(cannes, section_keys: %w[boutique]).dig("boutique", :product_id)
+      essayage_boutique = described_class.call(essayage, section_keys: %w[boutique]).dig("boutique", :product_id)
+
+      expect(cannes_boutique).to be_present
+      expect(essayage_boutique).to be_present
+      expect(cannes_boutique).not_to eq(essayage_boutique)
+    end
+
+    it "uses video media when the best matching product has a video" do
+      create_product(name: "Robe photo seule", categories: [robes_courtes], image_bytes: "photo-only")
+      create_product(
+        name: "Robe mariée vidéo boutique",
+        categories: [robes_courtes],
+        image_bytes: "video-poster",
+        video_bytes: "video-content"
+      )
+
+      page = SeoPages::Registry.find("robe-de-mariee-cannes", scope: "local")
+      result = described_class.call(page, section_keys: %w[boutique])
+
+      expect(result.dig("boutique", :media_type)).to eq(:video)
+      expect(result.dig("boutique", :video)).to be_attached
+      expect(result.dig("boutique", :image)).to be_attached
+    end
+
+    it "falls back to image when no product with video matches" do
+      create_product(name: "Robe sans vidéo", categories: [robes_courtes], image_bytes: "image-only")
+
+      page = SeoPages::Registry.find("robe-de-mariee-cannes", scope: "local")
+      result = described_class.call(page, section_keys: %w[boutique])
+
+      expect(result.dig("boutique", :media_type)).to eq(:image)
+      expect(result.dig("boutique", :video)).to be_nil
     end
   end
 end

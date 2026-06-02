@@ -1,23 +1,18 @@
 <% seo_page_section_keys(@page).each_with_index do |section_key, index| %>
-  <% section_image = seo_page_section_image(@page, section_key) %>
+  <% section_media = seo_page_section_image(@page, section_key) %>
   <% title = seo_page_t(@page, "sections.#{section_key}.title") %>
   <% body = seo_page_t(@page, "sections.#{section_key}.body_html") %>
-  <% reverse = section_image&.dig(:reverse) == true || (section_image.present? && index.odd?) %>
+  <% reverse = section_media&.dig(:reverse) == true || (seo_page_section_has_media?(section_media) && index.odd?) %>
 
   <section class="container px-3 mb-5 seo-page-section" data-scroll-reveal>
-    <% if section_image&.dig(:image).present? %>
+    <% if seo_page_section_has_media?(section_media) %>
       <div class="row g-4 g-lg-5 align-items-center <%= reverse ? 'flex-lg-row-reverse' : '' %>">
         <div class="col-lg-5">
           <div class="seo-section-image-wrap">
-            <%= image_tag(
-                  seo_page_image_source(section_image[:image]),
-                  class: "seo-section-image w-100",
-                  alt: title,
-                  width: 1200,
-                  height: 900,
-                  loading: "lazy",
-                  style: "object-fit: cover; object-position: #{section_image[:position].presence || 'center'};"
-                ) %>
+            <%= render "public/seo_pages/shared/section_media",
+                       section_media: section_media,
+                       title: title,
+                       position: section_media[:position] %>
           </div>
         </div>
         <div class="col-lg-7">

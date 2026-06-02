@@ -14,7 +14,7 @@ module Public
       return if performed?
 
       load_boutique_context
-      @produits = SeoPages::ProductScope.call(@page)
+      load_seo_page_assets
       @related_pages = SeoPages::Registry.related_pages(@page)
       render @page[:type]
     end
@@ -49,6 +49,17 @@ module Public
       else
         seo_page_path(slug: page[:slug])
       end
+    end
+
+    def load_seo_page_assets
+      section_keys = I18n.t(
+        "public.seo_pages.#{SeoPages::Registry.i18n_key(@page)}.sections",
+        default: {}
+      ).keys.map(&:to_s)
+
+      @seo_section_images = SeoPages::CategoryImages.call(@page, section_keys: section_keys)
+      used_product_ids = @seo_section_images.values.filter_map { |section| section[:product_id] }
+      @produits = SeoPages::ProductScope.call(@page, exclude_product_ids: used_product_ids)
     end
 
     def load_boutique_context
