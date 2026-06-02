@@ -377,9 +377,7 @@ module SeoPages
 
     def find_by_text_terms(section_terms, base_scope)
       terms = section_terms.flat_map { |term| ProductKeywords.variants_for(term) }.uniq
-      ids = terms.flat_map do |term|
-        base_scope.ransack(ProductKeywords::RANSACK_FIELD => term).result.pluck(:id)
-      end.uniq
+      ids = terms.flat_map { |term| ProductKeywords.pluck_ids_for_search_term(base_scope, term) }.uniq
 
       return [] if ids.empty?
 

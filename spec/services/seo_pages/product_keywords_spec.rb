@@ -59,5 +59,26 @@ RSpec.describe SeoPages::ProductKeywords do
 
       expect(result.pluck(:nom)).to eq(["Robe bohème"])
     end
+
+    it "does not fail when scope has distinct, order and ransack joins on taille" do
+      taille = Taille.create!(nom: "retouche-atelier")
+      product = Produit.create!(
+        nom: "Service atelier",
+        prixvente: 50,
+        eshop: true,
+        actif: true,
+        today_availability: true,
+        quantite: 1,
+        taille: taille,
+        handle: "retouche-#{SecureRandom.hex(4)}"
+      )
+      product.categorie_produits << category
+
+      scoped = base_scope.public_listing_order
+      page = { slug: "test", product_filters: { search_term: "retouche" } }
+
+      expect { described_class.apply(scoped, page).load }.not_to raise_error
+      expect(described_class.apply(scoped, page).pluck(:id)).to eq([product.id])
+    end
   end
 end

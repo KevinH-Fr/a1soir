@@ -27,13 +27,16 @@ module SeoPages
       terms = call(page).flat_map { |term| variants_for(term) }.uniq
       return scope if terms.blank?
 
-      ids = terms.flat_map do |term|
-        scope.ransack(RANSACK_FIELD => term).result.pluck(:id)
-      end.uniq
+      ids = terms.flat_map { |term| pluck_ids_for_search_term(scope, term) }.uniq
 
       return scope.none if ids.empty?
 
       scope.where(id: ids)
+    end
+
+    # DISTINCT (ex. by_categories) + ORDER BY (ex. public_listing_order) + jointures ransack → PG invalide.
+    def self.pluck_ids_for_search_term(scope, term)
+      scope.reorder(nil).ransack(RANSACK_FIELD => term).result.reorder(nil).pluck(:id)
     end
 
     def self.variants_for(term)
