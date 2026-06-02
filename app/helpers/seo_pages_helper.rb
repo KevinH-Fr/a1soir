@@ -72,11 +72,13 @@ module SeoPagesHelper
   def seo_page_section_poster_source(image)
     return nil if image.blank? || !image.attached?
 
-    collection_card_image_source(image)
+    cloudinary_attachment_url(image, width: 1200)
   end
 
   def seo_page_image_source(image)
-    collection_card_image_source(image)
+    return nil unless image.present? && image.attached?
+
+    cloudinary_attachment_url(image, width: 1200)
   end
 
   def seo_page_og_image_url(page)
@@ -90,7 +92,7 @@ module SeoPagesHelper
 
   def absolute_image_url(image)
     if image.is_a?(ActiveStorage::Attached::One) && image.attached?
-      return url_for(image)
+      return cloudinary_attachment_url(image, width: 1200)
     end
 
     path = image_path_helper(image)

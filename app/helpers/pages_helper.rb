@@ -24,7 +24,7 @@ module PagesHelper
         # Container des deux images côte à côte
         images_container = content_tag :div, class: "d-flex h-100" do
           img1 = if image1.present?
-            image_source = collection_card_image_source(image1)
+            image_source = collection_card_image_source(image1, width: 1920)
             content_tag :div, class: "page-header-image-wrapper page-header-image-wrapper-first", style: "height: 100%; overflow: hidden;" do
               image_tag(
                 image_source,
@@ -42,7 +42,7 @@ module PagesHelper
           end
           
           img2 = if image2.present?
-            image_source = collection_card_image_source(image2)
+            image_source = collection_card_image_source(image2, width: 1920)
             content_tag :div, class: "page-header-image-wrapper d-none d-md-block", style: "width: 50%; height: 100%; overflow: hidden;" do
               image_tag(
                 image_source,
@@ -372,9 +372,9 @@ module PagesHelper
     categorie.label.presence || categorie.nom.to_s.titleize
   end
 
-  def collection_card_image_source(image)
-    return image if image.is_a?(ActiveStorage::Attached::One)
-    return image if image.is_a?(ActiveStorage::Blob)
+  def collection_card_image_source(image, width: 800)
+    optimized_url = cloudinary_attachment_url(image, width: width)
+    return optimized_url if optimized_url.present?
 
     image_path_helper(image.to_s)
   end

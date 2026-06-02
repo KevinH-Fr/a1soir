@@ -120,7 +120,7 @@ module ProduitsFilterable
     # Scope pour la pagination avec ORDER BY (requête simple sans DISTINCT)
     available_produits_scope = Produit.where(id: available_produits_ids)
                                       .for_public_listing_cards
-                                      .reorder("produits.coup_de_coeur DESC, produits.updated_at DESC")
+                                      .public_listing_order
 
     # 🔁 Then paginate the available produits (9 per page)
     @pagy, @produits = pagy(available_produits_scope, items: 6)

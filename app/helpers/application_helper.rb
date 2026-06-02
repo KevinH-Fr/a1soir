@@ -186,16 +186,34 @@ module ApplicationHelper
     "#{CLOUDINARY_BASE_VIDEO_URL}/#{transformation}/#{key}"
   end
 
+  # URL Cloudinary optimisée (q_auto, f_auto, largeur max) pour un attachment ActiveStorage.
+  def cloudinary_attachment_url(source, width: 800)
+    blob = cloudinary_attachment_blob(source)
+    return nil unless blob
+
+    transformation = "q_auto,f_auto,w_#{width}"
+    "#{CLOUDINARY_BASE_IMAGE_URL}/#{transformation}/#{blob.key}"
+  end
+
   # Génère un image_tag optimisé via Cloudinary à partir d'un attachment ActiveStorage.
   # Fallback vers image_tag classique si l'argument est un chemin string (ex: no_photo).
   def cloudinary_attachment_image(attachment, width: 800, alt:, **options)
-    if attachment.respond_to?(:blob)
-      key = attachment.blob.key
-      transformation = "q_auto,f_auto,w_#{width}"
-      url = "#{CLOUDINARY_BASE_IMAGE_URL}/#{transformation}/#{key}"
+    url = cloudinary_attachment_url(attachment, width: width)
+    if url.present?
       image_tag(url, { alt: alt }.merge(options))
     else
       image_tag(attachment, { alt: alt }.merge(options))
+    end
+  end
+
+  def cloudinary_attachment_blob(source)
+    case source
+    when ActiveStorage::Blob
+      source
+    else
+      return source.blob if source.respond_to?(:attached?) && source.attached?
+
+      source.blob if source.respond_to?(:blob)
     end
   end
 

@@ -9,6 +9,7 @@ RSpec.describe SeoPages::CategoryImages do
   let!(:smokings) { CategorieProduit.create!(nom: "smokings") }
   let!(:robes_soiree_courtes) { CategorieProduit.create!(nom: "robes courtes") }
   let!(:robes_soiree_longues) { CategorieProduit.create!(nom: "robes longues") }
+  let!(:enfants) { CategorieProduit.create!(nom: "enfants") }
 
   def create_product(name:, categories:, image_bytes: nil, video_bytes: nil)
     product = Produit.create!(
@@ -113,6 +114,46 @@ RSpec.describe SeoPages::CategoryImages do
 
       expect(result["delais"]).to be_present
       expect(result.dig("delais", :image)).to be_attached
+    end
+
+    it "never reuses the same image blob across sections on robe invitee mariage" do
+      create_product(name: "Robe invitée A", categories: [robes_courtes], image_bytes: "invitee-a")
+      create_product(name: "Robe invitée B", categories: [robes_longues], image_bytes: "invitee-b")
+
+      page = SeoPages::Registry.find("robe-invitee-mariage", scope: "guides")
+      result = described_class.call(page, section_keys: %w[dresscode couleurs location accessoires])
+
+      blob_ids = result.values.filter_map { |section| section[:image]&.blob&.id }.compact
+      expect(blob_ids.uniq.size).to eq(blob_ids.size)
+      expect(result.size).to be <= 2
+    end
+
+    it "picks a product from the enfants category for the enfants section on costume mariage cannes" do
+      create_product(name: "Costume homme", categories: [costume], image_bytes: "costume-img")
+      enfant_product = create_product(name: "Costume garçon", categories: [enfants], image_bytes: "enfant-img")
+
+      page = SeoPages::Registry.find("costume-mariage-cannes", scope: "local")
+      result = described_class.call(page, section_keys: %w[collections enfants])
+
+      expect(result.dig("enfants", :product_id)).to eq(enfant_product.id)
+      expect(result.dig("enfants", :product_id)).not_to eq(result.dig("collections", :product_id))
+    end
+
+    it "fills morphologie when more sections than unique products on comment choisir" do
+      5.times do |index|
+        create_product(
+          name: "Robe mariée modèle #{index}",
+          categories: [robes_longues],
+          image_bytes: "robe-#{index}"
+        )
+      end
+
+      page = SeoPages::Registry.find("comment-choisir-sa-robe-de-mariee", scope: "guides")
+      section_keys = %w[style budget delais essayage morphologie erreurs histoire]
+      result = described_class.call(page, section_keys: section_keys)
+
+      expect(result.keys).to match_array(section_keys)
+      expect(result["morphologie"][:image]).to be_attached
     end
 
     it "picks different products for sections that share broad wedding keywords" do

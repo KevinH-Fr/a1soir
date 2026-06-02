@@ -69,6 +69,7 @@ pages:
       category_names:
         - costume
         - smokings
+        - enfants
     includes:
       - boutique_snippet
       - reviews

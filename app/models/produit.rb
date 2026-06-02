@@ -63,6 +63,8 @@ class Produit < ApplicationRecord
   scope :inactif, -> { where(actif: [false, nil]) }
   scope :eshop_diffusion, -> { where(eshop: true) }
   scope :coups_de_coeur, -> { where(coup_de_coeur: true).order(coup_de_coeur_position: :asc, id: :asc) }
+  # Même tri que le catalogue public (/produits) : coups de cœur, puis fraîcheur.
+  scope :public_listing_order, -> { order(coup_de_coeur: :desc, updated_at: :desc, id: :desc) }
   scope :en_promotion, -> { 
     where.not(ancien_prixvente: nil)
          .where.not(prixvente: nil)

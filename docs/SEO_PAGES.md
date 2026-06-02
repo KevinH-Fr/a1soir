@@ -96,9 +96,10 @@ Résolues automatiquement par `SeoPages::CategoryImages` :
 
 - source : produits actifs e-shop des catégories `product_filters.category_names` (+ expansion par slug via `CategoryScope`)
 - recherche produit : mot-clé dérivé du slug (`ProductKeywords`, ex. `boheme` → « bohème ») appliqué sur nom, description et catégories — utilisé pour la sélection et le lien « Voir toute la collection »
-- sections : un visuel produit différent par section (pas de doublon sur la page) — **vidéo** `Produit#video1` si disponible (Cloudinary), sinon **image** `image1` ; poster = `image1` quand la vidéo en a une ; repli sur tout produit avec média si les mots-clés de section ne matchent pas
-- sélection produits affichée : 6 articles maximum (`SeoPages::ProductScope`), uniquement avec image ou vidéo
-- liens catégories : boutons vers chaque collection liée à la page (`SeoPages::CategoryScope` étend selon le slug)
+- sections : un visuel produit différent par section (jamais le même fichier image/vidéo deux fois sur la page) — **vidéo** `Produit#video1` si disponible (Cloudinary `w_1200`), sinon **image** `image1` via `cloudinary_attachment_url` (`q_auto,f_auto,w_1200`) ; si le catalogue n’a pas assez de visuels uniques, certaines sections restent sans image plutôt qu’un doublon
+- sélection produits affichée : 6 articles maximum (`SeoPages::ProductScope`), uniquement avec image ou vidéo, tri identique au catalogue (`coup_de_coeur` puis `updated_at`, pas l’ordre alphabétique)
+- liens catégories : boutons vers chaque collection liée à la page (`SeoPages::CategoryScope` étend selon le slug) ; ex. `costume-mariage-cannes` inclut `costume`, `smokings` et `enfants`
+- section `enfants` : visuel et produits ciblés via la catégorie `enfants` (`SECTION_TARGET_CATEGORY_NAMES`)
 - image Open Graph : première image de section disponible
 
 Aucune URL Cloudinary à maintenir dans le YAML.

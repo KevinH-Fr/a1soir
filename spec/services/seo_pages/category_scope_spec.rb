@@ -12,6 +12,7 @@ RSpec.describe SeoPages::CategoryScope do
   let!(:accessoires_femmes) { CategorieProduit.create!(nom: "accessoires femmes") }
   let!(:robes_soiree_courtes) { CategorieProduit.create!(nom: "robes courtes") }
   let!(:robes_soiree_longues) { CategorieProduit.create!(nom: "robes longues") }
+  let!(:enfants) { CategorieProduit.create!(nom: "enfants") }
 
   it "expands wedding guide pages to all wedding dress categories" do
     page = SeoPages::Registry.find("comment-choisir-sa-robe-de-mariee", scope: "guides")
@@ -23,6 +24,12 @@ RSpec.describe SeoPages::CategoryScope do
     page = SeoPages::Registry.find("smoking-ou-costume-mariage", scope: "guides")
 
     expect(described_class.call(page)).to contain_exactly(costume, smokings)
+  end
+
+  it "includes enfants on costume mariage cannes" do
+    page = SeoPages::Registry.find("costume-mariage-cannes", scope: "local")
+
+    expect(described_class.call(page)).to contain_exactly(costume, smokings, enfants)
   end
 
   it "returns configured categories for local landing pages" do

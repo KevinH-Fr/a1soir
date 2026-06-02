@@ -5,8 +5,8 @@ module SeoPages
     HANDLE_DEDUP_FETCH_MULTIPLIER = 4
     MAX_SQL_LIMIT = 200
 
-    def self.scope_for(page, limit: nil, require_image: false)
-      new(page, limit: limit, require_image: require_image).call
+    def self.scope_for(page, limit: nil, require_image: false, dedupe_by_handle: true)
+      new(page, limit: limit, require_image: require_image, dedupe_by_handle: dedupe_by_handle).call
     end
 
     def self.deduplicate_by_handle(products)
@@ -20,10 +20,11 @@ module SeoPages
       end
     end
 
-    def initialize(page, limit: nil, require_image: false)
+    def initialize(page, limit: nil, require_image: false, dedupe_by_handle: true)
       @page = page
       @limit = limit
       @require_image = require_image
+      @dedupe_by_handle = dedupe_by_handle
     end
 
     def call
@@ -36,6 +37,7 @@ module SeoPages
                     .for_public_listing_cards
                     .includes(:categorie_produits)
                     .by_categories(categories.map(&:id))
+                    .public_listing_order
 
       scoped = apply_keywords(base)
       scoped = base if scoped.none? && ProductKeywords.call(@page).present?
@@ -53,7 +55,7 @@ module SeoPages
         end
       end
 
-      products = self.class.deduplicate_by_handle(products)
+      products = self.class.deduplicate_by_handle(products) if @dedupe_by_handle
       products = products.first(@limit) if @limit
       products
     end

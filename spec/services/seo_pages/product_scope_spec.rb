@@ -66,6 +66,20 @@ RSpec.describe SeoPages::ProductScope do
     expect(result.map(&:handle).uniq).to eq([shared_handle, result.last.handle])
   end
 
+  it "orders like the public catalogue: coups de coeur first, then most recently updated" do
+    base_time = Time.current
+    zebra = create_product(name: "Zebra robe", image_bytes: "z")
+    zebra.update_columns(updated_at: base_time - 3.days)
+    recent = create_product(name: "Robe récente", image_bytes: "r")
+    recent.update_columns(updated_at: base_time - 1.day)
+    star = create_product(name: "Ancienne vedette", image_bytes: "c")
+    star.update_columns(coup_de_coeur: true, updated_at: base_time - 10.days)
+
+    result = described_class.call(page)
+
+    expect(result.map(&:id)).to eq([star.id, recent.id, zebra.id])
+  end
+
   it "filters products by slug keyword when present" do
     page = SeoPages::Registry.find("robe-de-mariee-boheme", scope: "guides")
     create_product(name: "Robe bohème fluide")
