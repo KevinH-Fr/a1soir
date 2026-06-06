@@ -23,7 +23,10 @@ Rails.application.configure do
   # Disable serving static files from `public/`, relying on NGINX/Apache to do so instead.
   # config.public_file_server.enabled = false
 
-  # Cache longue durée : voir config/initializers/fonts_cache_headers.rb (/fonts/* uniquement)
+  # Cache longue durée : voir config/initializers/static_cache_headers.rb
+  config.public_file_server.headers = {
+    "Cache-Control" => "public, max-age=#{1.year.to_i}"
+  }
 
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
