@@ -8,8 +8,4 @@ Rails.application.config.assets.version = "1.0"
 
 # Polices auto-hébergées (layout public uniquement)
 Rails.application.config.assets.paths << Rails.root.join("app/assets/fonts")
-Rails.application.config.assets.precompile += %w[
-  fonts-playfair.css
-  fonts-cormorant.css
-  fonts-montserrat.css
-]
+Rails.application.config.assets.precompile += %w[fonts-public.css]

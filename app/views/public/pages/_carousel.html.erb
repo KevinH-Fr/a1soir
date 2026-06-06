@@ -1,5 +1,6 @@
 <% carousel_id = "carouselProduit_#{produit.id}" %>
 <% container_id = "carouselContainer_#{produit.id}" %>
+<% primary_slide_priority = carousel_class.to_s.include?("carousel-single") %>
 
 <div id="<%= container_id %>">
   <div id="<%= carousel_id %>" class="carousel slide" data-controller="carousel">
@@ -22,7 +23,7 @@
         <% slide_index += 1 %>
       <% else %>
         <div class="carousel-item active">
-          <%= image_tag(produit.default_image_white, class: "d-block w-100", alt: produit.nom, loading: "eager", fetchpriority: "high", width: 800, height: 600, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
+          <%= image_tag(produit.default_image_white, class: "d-block w-100", alt: produit.nom, loading: (primary_slide_priority ? "eager" : "lazy"), fetchpriority: (primary_slide_priority ? "high" : nil), width: 800, height: 600, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
         </div>
         <% slide_index += 1 %>
       <% end %>

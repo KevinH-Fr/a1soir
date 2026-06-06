@@ -121,6 +121,8 @@ L'expérience utilisateur est évaluée pour des groupes d'URL, pas pour chacune
 ToDo long terme :
 _________________
 
+
+- pwa ?
 - voir pourquoi pas bcd de fiches de produits sur search console
 
 - mettre en place le flux merchant pour produits en boutique (code etablissement)
@@ -131,3 +133,4 @@ _________________
 - lien acheter sur insta ? fb etc ?
 
 -  qrzing
+
