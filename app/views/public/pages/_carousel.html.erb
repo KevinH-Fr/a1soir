@@ -1,6 +1,8 @@
 <% carousel_id = "carouselProduit_#{produit.id}" %>
 <% container_id = "carouselContainer_#{produit.id}" %>
 <% primary_slide_priority = carousel_class.to_s.include?("carousel-single") %>
+<% media_width = local_assigns.fetch(:media_width, 800) %>
+<% media_height = (media_width * 0.75).round %>
 
 <div id="<%= container_id %>">
   <div id="<%= carousel_id %>" class="carousel slide" data-controller="carousel">
@@ -9,21 +11,21 @@
       
       <% if produit.video1.attached? %>
         <div class="carousel-item active" style="cursor: pointer;" role="button" aria-label="<%= t('public.pages.produit.open_gallery', product: produit.nom) %>" data-bs-toggle="modal" data-bs-target="#modalProduit_<%= produit.id %>">
-          <video autoplay loop muted playsinline preload="metadata" poster="<%= produit.image1.attached? ? cloudinary_attachment_url(produit.image1, width: 800) : '/images/no_photo_white.png' %>"
-            width="800" height="600" class="d-block w-100"
-            src="<%= cloudinary_video_url(produit.video1) %>">
+          <video autoplay loop muted playsinline preload="metadata" poster="<%= produit.image1.attached? ? cloudinary_attachment_url(produit.image1, width: media_width) : '/images/no_photo_white.png' %>"
+            width="<%= media_width %>" height="<%= media_height %>" class="d-block w-100"
+            src="<%= cloudinary_video_url(produit.video1, width: media_width) %>">
             <track kind="captions" src="" label="Français" srclang="fr" default>
             Votre navigateur ne prend pas en charge la lecture de vidéos.
           </video>
         </div>
         <% slide_index += 1 %>
         <div class="carousel-item">
-          <%= image_tag(produit.default_image_white, class: "d-block w-100 rounded-0", alt: produit.nom, loading: "lazy", width: 800, height: 600, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
+          <%= image_tag(produit.default_image_white, class: "d-block w-100 rounded-0", alt: produit.nom, loading: "lazy", width: media_width, height: media_height, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
         </div>
         <% slide_index += 1 %>
       <% else %>
         <div class="carousel-item active">
-          <%= image_tag(produit.default_image_white, class: "d-block w-100", alt: produit.nom, loading: (primary_slide_priority ? "eager" : "lazy"), fetchpriority: (primary_slide_priority ? "high" : nil), width: 800, height: 600, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
+          <%= image_tag(produit.default_image_white, class: "d-block w-100", alt: produit.nom, loading: (primary_slide_priority ? "eager" : "lazy"), fetchpriority: (primary_slide_priority ? "high" : nil), width: media_width, height: media_height, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
         </div>
         <% slide_index += 1 %>
       <% end %>
@@ -31,7 +33,7 @@
       <% if produit.images %>
         <% produit.images.each_with_index do |image, img_index| %>
           <div class="carousel-item">
-            <%= cloudinary_attachment_image(image, width: 800, height: 600, alt: produit.nom, loading: "lazy", class: "d-block w-100", style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}", gallery_index: img_index }) %>
+            <%= cloudinary_attachment_image(image, width: media_width, height: media_height, alt: produit.nom, loading: "lazy", class: "d-block w-100", style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}", gallery_index: img_index }) %>
           </div>
           <% slide_index += 1 %>
         <% end %>
