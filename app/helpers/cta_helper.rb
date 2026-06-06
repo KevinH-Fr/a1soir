@@ -23,11 +23,11 @@ module CtaHelper
     }
   }.freeze
 
-  def cta_button(type:, url:, variant: "light", outline: false)
+  def cta_button(type:, url:, variant: "light", outline: false, text: nil)
     type_key = type.to_s
     config = CTA_CONFIG[type_key] || raise(ArgumentError, "Type inconnu: #{type}")
 
-    text = I18n.t("public.cta.#{type_key}")
+    text = text.presence || I18n.t("public.cta.#{type_key}")
     icon = config[:icon]
     
     # Déterminer la classe du bouton selon le variant

@@ -539,6 +539,7 @@ en:
             promo_button: "On sale"
       produit:
         back: "Back"
+        view_more_products: "Browse more products"
         rental_info: "Rental is available only in our shop."
         other_sizes_title: "Other available sizes"
         other_colors_title: "Other available colors"

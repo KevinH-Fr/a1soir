@@ -906,6 +906,7 @@ fr:
             promo_button: "En promotion"
       produit:
         back: "Retour"
+        view_more_products: "Voir plus de produits"
         rental_info: "La location se fait uniquement au magasin."
         other_sizes_title: "Autres tailles disponibles"
         other_colors_title: "Autres couleurs disponibles"
