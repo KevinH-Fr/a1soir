@@ -544,6 +544,10 @@ en:
         other_sizes_title: "Other available sizes"
         other_colors_title: "Other available colors"
         add_other_products: "Add more products"
+        open_gallery: "Open gallery: %{product}"
+        previous_image: "Previous image"
+        next_image: "Next image"
+        go_to_slide: "Show image %{number} of %{product}"
       vous_aimerez_aussi:
         title: "You may also like"
       faq:

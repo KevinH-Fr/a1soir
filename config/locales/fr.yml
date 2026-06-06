@@ -911,6 +911,10 @@ fr:
         other_sizes_title: "Autres tailles disponibles"
         other_colors_title: "Autres couleurs disponibles"
         add_other_products: "Ajouter d'autres produits"
+        open_gallery: "Ouvrir la galerie : %{product}"
+        previous_image: "Image précédente"
+        next_image: "Image suivante"
+        go_to_slide: "Afficher l'image %{number} de %{product}"
       vous_aimerez_aussi:
         title: "Vous aimerez aussi"
       faq:

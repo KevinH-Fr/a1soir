@@ -73,9 +73,9 @@
           <!-- Other sizes -->
           <% if @meme_produit_meme_couleur_autres_tailles.any? %>
             <div class="mb-2 fs-3">
-              <h6 class="mb-2 d-flex align-items-center text-secondary">
+              <h2 class="h6 mb-2 d-flex align-items-center text-secondary">
                 <span><%= t("public.pages.produit.other_sizes_title") %></span>
-              </h6>
+              </h2>
               <div class="d-flex flex-wrap gap-2">
                 <% @meme_produit_meme_couleur_autres_tailles.each do |produit| %>
                   <%= badge_taille_link(produit) %>
@@ -87,9 +87,9 @@
           <!-- Other colors -->
           <% if @meme_produit_meme_taille_autres_couleurs.any? %>
             <div class="my-3 fs-3">
-              <h6 class="mb-2 d-flex align-items-center text-secondary">
+              <h2 class="h6 mb-2 d-flex align-items-center text-secondary">
                 <span><%= t("public.pages.produit.other_colors_title") %></span>
-              </h6>
+              </h2>
               <div class="d-flex flex-wrap gap-2">
                 <% @meme_produit_meme_taille_autres_couleurs.each do |produit| %>
                   <%= badge_couleur_link(produit) %>

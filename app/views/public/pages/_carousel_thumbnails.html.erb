@@ -12,7 +12,8 @@
       <% if produit.video1.attached? %>
         <button type="button" class="carousel-thumbnail flex-shrink-0 <%= 'active' if thumbnail_index == 0 %> border-0 bg-transparent p-0" 
              data-bs-target="#<%= carousel_id %>"
-             data-bs-slide-to="<%= thumbnail_index %>">
+             data-bs-slide-to="<%= thumbnail_index %>"
+             aria-label="<%= t('public.pages.produit.go_to_slide', number: thumbnail_index + 1, product: produit.nom) %>">
           <div class="position-relative">
             <video class="carousel-thumbnail-media" muted playsinline>
               <source src="<%= url_for(produit.video1) %>" type="<%= produit.video1.content_type %>">
@@ -25,7 +26,8 @@
         <% thumbnail_index += 1 %>
         <button type="button" class="carousel-thumbnail flex-shrink-0 border-0 bg-transparent p-0" 
              data-bs-target="#<%= carousel_id %>"
-             data-bs-slide-to="<%= thumbnail_index %>">
+             data-bs-slide-to="<%= thumbnail_index %>"
+             aria-label="<%= t('public.pages.produit.go_to_slide', number: thumbnail_index + 1, product: produit.nom) %>">
           <%= image_tag(
                 produit.default_image_white,
                 class: "carousel-thumbnail-media",
@@ -39,7 +41,8 @@
       <% else %>
         <button type="button" class="carousel-thumbnail flex-shrink-0 active border-0 bg-transparent p-0" 
              data-bs-target="#<%= carousel_id %>"
-             data-bs-slide-to="<%= thumbnail_index %>">
+             data-bs-slide-to="<%= thumbnail_index %>"
+             aria-label="<%= t('public.pages.produit.go_to_slide', number: thumbnail_index + 1, product: produit.nom) %>">
           <%= image_tag(
                 produit.default_image_white,
                 class: "carousel-thumbnail-media",
@@ -56,7 +59,8 @@
         <% produit.images.each do |image| %>
           <button type="button" class="carousel-thumbnail flex-shrink-0 border-0 bg-transparent p-0" 
                data-bs-target="#<%= carousel_id %>"
-               data-bs-slide-to="<%= thumbnail_index %>">
+               data-bs-slide-to="<%= thumbnail_index %>"
+               aria-label="<%= t('public.pages.produit.go_to_slide', number: thumbnail_index + 1, product: produit.nom) %>">
             <%= image_tag(
                   image,
                   class: "carousel-thumbnail-media",
@@ -72,4 +76,3 @@
     </div>
   </div>
 <% end %>
-
