@@ -1,6 +1,7 @@
 module ApplicationHelper
 
   include Pagy::Frontend
+  include PublicFontsHelper
   
   CLOUDINARY_BASE_IMAGE_URL = "https://res.cloudinary.com/dukne3lhz/image/upload".freeze
   CLOUDINARY_BASE_VIDEO_URL = "https://res.cloudinary.com/dukne3lhz/video/upload".freeze

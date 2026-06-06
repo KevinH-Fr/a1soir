@@ -623,13 +623,21 @@ body.bg-black .dropdown-item.fw-bold {
   object-fit: cover;
 }
 
-.carousel-single {
+.carousel-inner.carousel-single {
+  aspect-ratio: 4 / 3;
+  min-height: 50vh;
   max-height: 70vh;
+  background-color: #f5f5f5;
 }
 
-.carousel-single .carousel-item img,
-.carousel-single .carousel-item video {
-  max-height: 80vh;
+.carousel-inner.carousel-single .carousel-item {
+  height: 100%;
+}
+
+.carousel-inner.carousel-single .carousel-item img,
+.carousel-inner.carousel-single .carousel-item video {
+  height: 100%;
+  max-height: none;
   object-fit: contain;
   width: 100%;
 }
@@ -1137,7 +1145,7 @@ section {
    Page Home - Hero Section & 3D Model
    ======================================== */
 
-/* Google Fonts Playfair Display — déjà chargée dans le <head> du layout, import supprimé */
+/* Playfair Display — @font-face dans fonts-playfair.css (layout public uniquement) */
 
 /* Hero section */
 .home-hero {

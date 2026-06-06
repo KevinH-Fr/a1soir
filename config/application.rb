@@ -27,6 +27,6 @@ module A1soir
     config.i18n.available_locales = %i[fr en]
     config.i18n.default_locale = :fr
 
-
+    config.assets.paths << Rails.root.join("app/assets/fonts")
   end
 end

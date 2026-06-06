@@ -39,10 +39,11 @@
     <%# Bootstrap Icons — chargement synchrone (évite le shift icônes navbar / ticker) %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <%# Google Fonts — chargement synchrone (évite FOUT / CLS titres et body) %>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap">
+    <%# Polices auto-hébergées — mêmes familles qu'avant (CDN), chargées sur toutes les pages publiques %>
+    <link rel="preload" href="<%= public_font_asset_path('playfair-display-latin-400-normal.woff2') %>" as="font" type="font/woff2" crossorigin>
+    <%= stylesheet_link_tag "fonts-playfair", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "fonts-cormorant", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "fonts-montserrat", "data-turbo-track": "reload" %>
 
     <%# AOS CSS — chargement non-bloquant %>
     <link rel="preload" href="https://unpkg.com/aos@next/dist/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
