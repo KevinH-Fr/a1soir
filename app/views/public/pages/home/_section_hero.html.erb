@@ -13,7 +13,7 @@
 
 <div class="position-relative vh-100" style="height: 100vh; overflow: hidden;">
   <!-- Vidéo en pleine page -->
-  <video autoplay muted loop playsinline poster="<%= poster_url %>" class="position-absolute top-0 start-0 w-100 h-100" style="object-fit: cover; z-index: 0;">
+  <video autoplay muted loop playsinline preload="none" poster="<%= poster_url %>" class="position-absolute top-0 start-0 w-100 h-100" style="object-fit: cover; z-index: 0;">
     <source src="<%= video_url %>" type="video/webm">
     <track kind="captions" src="" label="Français" srclang="fr" default>
     Votre navigateur ne prend pas en charge la lecture de vidéos.
