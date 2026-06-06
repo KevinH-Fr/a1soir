@@ -1,6 +1,6 @@
 <%
   video_url  = "/images/robe_mariee_soiree_hp.webm"
-  poster_url = "/images/robe_mariee_soiree_hp.jpg"
+  poster_url = "/images/robe_mariee_soiree_hp.webp"
   title      = t("public.pages.home.hero.title")
   subtitle   = t("public.pages.home.hero.subtitle")
   button_text = t("public.pages.home.hero.button_text")
@@ -8,7 +8,7 @@
 %>
 
 <% content_for :hero_preload do %>
-  <link rel="preload" href="<%= poster_url %>" as="image" fetchpriority="high">
+  <link rel="preload" href="<%= poster_url %>" as="image" type="image/webp" fetchpriority="high">
 <% end %>
 
 <div class="position-relative vh-100" style="height: 100vh; overflow: hidden;">
