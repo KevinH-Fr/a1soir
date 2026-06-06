@@ -49,3 +49,7 @@
 
 # Prénoms produits (outil local — pas en prod)
 /lib/tasks/products_prenoms.rake
+
+# Bootstrap Icons — sync local (SVG + CSS subset)
+/lib/tasks/bootstrap_icons.rake
+/lib/bootstrap_icons/
