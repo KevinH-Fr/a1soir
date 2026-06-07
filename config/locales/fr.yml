@@ -668,6 +668,7 @@ fr:
         add_to_fitting_room: "Ajouter à la cabine"
         remove_from_cart: "Retirer du panier"
         add_to_cart: "Ajouter au panier"
+        unavailable: "Indisponible"
     stripe_payments:
       flash:
         product_not_available: "Ce produit n'est pas disponible à l'achat en ligne."
@@ -1333,6 +1334,7 @@ fr:
         flash:
           already_in_cart: "Ce produit est déjà dans votre cabine d'essayage"
           limit_reached: "Limite de 10 produits atteinte. Retirez un produit pour en ajouter un autre."
+          product_unavailable: "Ce produit n'est plus disponible."
           added: "%{product_name} ajouté à votre cabine d'essayage"
           removed: "%{product_name} retiré de votre cabine d'essayage"
         steps:

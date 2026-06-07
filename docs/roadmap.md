@@ -12,9 +12,8 @@ ______________
 - verifier flux merchant se met bien à jour aussi - jours semaines
    ok - fix group item id
 - verifier produits ajoutés dans fiches
-- surveiller erreurs serveur depuis ferrum et chrome ajoutés
-
-C'est beaucoup plus directement lié à ta correction que le renvoi du sitemap.
+- verifier core web vitals meilleure note meilleur lcs et fcp
+ok - surveiller erreurs serveur depuis ferrum et chrome ajoutés
 
 Mon ordre de priorité
 ✅ Déployer la correction (fait)
@@ -103,34 +102,21 @@ ok - verif strctured data ok sur pages seo
 ok - verifier completer texte categories depuis admin
 ok - repush sitemap
 
-reprendre
-____________
-
-
-dans search console wore web vitals jai ca : 
-51 URL dans ce groupe
-
-Groupe CLS
-0,23
-Gravité
-Amélioration nécessaire
-L'expérience utilisateur est évaluée pour des groupes d'URL, pas pour chacune d'elles. En savoir plus
-
 
 
 ToDo long terme :
 _________________
 
 
-- pwa ?
-- voir pourquoi pas bcd de fiches de produits sur search console
 
 - mettre en place le flux merchant pour produits en boutique (code etablissement)
+- voir si produits magasin s'affichent sur merchant center et dans fiche google
 - remettre une campaign google ads
-
 - essyage virtuel
 - chatbot ia
 - lien acheter sur insta ? fb etc ?
 
+- pwa ?
+- voir pourquoi pas bcd de fiches de produits sur search console
 -  qrzing
 

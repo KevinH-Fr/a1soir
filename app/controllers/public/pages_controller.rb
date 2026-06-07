@@ -178,6 +178,8 @@ module Public
 
       if session[:cabine_cart].include?(id)
         flash.now[:notice] = t("public.pages.cabine_essayage.flash.already_in_cart")
+      elsif !@produit.today_availability?
+        flash.now[:alert] = t("public.pages.cabine_essayage.flash.product_unavailable")
       elsif session[:cabine_cart].size >= 10
         flash.now[:alert] = t("public.pages.cabine_essayage.flash.limit_reached")
       else

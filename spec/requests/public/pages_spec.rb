@@ -189,6 +189,28 @@ RSpec.describe "Public::Pages", type: :request do
       expect(session[:cabine_cart].count(produit_a.id)).to eq(1)
     end
 
+    context "when product has today_availability: false" do
+      let!(:produit_indispo) do
+        Produit.create!(
+          nom: "Robe indispo cabine",
+          stripe_price_id: "price_cab_oos_001",
+          eshop: true,
+          today_availability: false,
+          quantite: 0
+        )
+      end
+
+      it "does not add product to cabine cart" do
+        post "/fr/cabine/add_product/#{produit_indispo.id}"
+        expect(session[:cabine_cart]).not_to include(produit_indispo.id)
+      end
+
+      it "returns a flash alert" do
+        post "/fr/cabine/add_product/#{produit_indispo.id}"
+        expect(flash[:alert].presence || flash.now[:alert].presence).to be_present
+      end
+    end
+
     context "when cabine cart already has 10 items" do
       before do
         # cabine_add_product only responds to turbo_stream — use the correct

@@ -66,6 +66,29 @@ RSpec.describe "Public StripePayments", type: :request do
         expect(flash[:alert].presence || flash.now[:alert].presence).to be_present
       end
     end
+
+    context "when product has today_availability: false" do
+      let!(:produit_out_of_stock) do
+        Produit.create!(
+          nom: "Robe épuisée",
+          prixvente: 60,
+          stripe_price_id: "price_req_oos_add_001",
+          eshop: true,
+          today_availability: false,
+          quantite: 0
+        )
+      end
+
+      it "does not add product to cart" do
+        post "/fr/stripe_payments/add_to_cart/#{produit_out_of_stock.id}"
+        expect(session[:cart]).not_to include(produit_out_of_stock.id)
+      end
+
+      it "responds with a flash alert" do
+        post "/fr/stripe_payments/add_to_cart/#{produit_out_of_stock.id}"
+        expect(flash[:alert].presence || flash.now[:alert].presence).to be_present
+      end
+    end
   end
 
   # -------------------------------------------------------------------------
@@ -152,12 +175,15 @@ RSpec.describe "Public StripePayments", type: :request do
           prixvente: 60,
           stripe_price_id: "price_req_oos_001",
           eshop: true,
-          today_availability: false,
-          quantite: 0
+          today_availability: true,
+          quantite: 1
         )
       end
 
-      before { post "/fr/stripe_payments/add_to_cart/#{produit_out_of_stock.id}" }
+      before do
+        post "/fr/stripe_payments/add_to_cart/#{produit_out_of_stock.id}"
+        produit_out_of_stock.update_column(:today_availability, false)
+      end
 
       it "redirects to cart with a stock-unavailable flash alert" do
         post "/fr/stripe_payments", params: { cgv_accepted: "1" }

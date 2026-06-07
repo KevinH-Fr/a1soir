@@ -52,7 +52,7 @@ module Public
       id = params[:id].to_i
       @produit = Produit.find(id)
 
-      unless @produit.actif? && @produit.eshop? && @produit.stripe_price_id.present?
+      unless @produit.actif? && @produit.eshop? && @produit.stripe_price_id.present? && @produit.today_availability?
         respond_to do |format|
           flash.now[:alert] = t("public.stripe_payments.flash.product_not_available")
           format.turbo_stream do

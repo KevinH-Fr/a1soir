@@ -301,6 +301,7 @@ en:
         add_to_fitting_room: "Add to fitting room"
         remove_from_cart: "Remove from cart"
         add_to_cart: "Add to cart"
+        unavailable: "Unavailable"
     stripe_payments:
       flash:
         product_not_available: "This product is not available for online purchase."
@@ -966,6 +967,7 @@ en:
         flash:
           already_in_cart: "This product is already in your fitting room"
           limit_reached: "Limit of 10 products reached. Remove one product to add another."
+          product_unavailable: "This product is no longer available."
           added: "%{product_name} added to your fitting room"
           removed: "%{product_name} removed from your fitting room"
         steps:
