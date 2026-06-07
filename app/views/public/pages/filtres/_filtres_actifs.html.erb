@@ -8,8 +8,7 @@
       <p class="text-light small mb-2 opacity-75">
         <i class="bi bi-info-circle me-1"></i><%= t("public.pages.produits.filters.active.hint") %>
       </p>
-      <%= button_to update_filters_path(slug: nil, id: nil, couleur: nil, prixmax: nil, taille: nil, type: nil, en_promotion: nil, from_cabine: params[:from_cabine], type_produit: nil),
-          class: "btn btn-sm btn-outline-light" do %>
+      <%= link_to produits_reset_path, class: "btn btn-sm btn-outline-light" do %>
         <i class="bi bi-x-circle me-1"></i><%= t("public.pages.produits.filters.active.clear_all") %>
       <% end %>
     </div>

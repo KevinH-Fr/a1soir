@@ -38,8 +38,8 @@ class FiltersProduitsService
     end
 
     produits = produits.by_couleur(@couleur) if @couleur.present?
-    produits = produits.by_prixmax(@prixmax) if @prixmax.present?
     produits = produits.by_type(@type) if @type.present?
+    produits = produits.by_prixmax(@prixmax, @type) if @prixmax.present?
     produits = produits.en_promotion if @en_promotion
 
     produits

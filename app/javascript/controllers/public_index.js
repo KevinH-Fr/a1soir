@@ -41,3 +41,6 @@ application.register("collection-card-reveal", CollectionCardRevealController)
 
 import NavbarOutsideCloseController from "./navbar_outside_close_controller"
 application.register("navbar-outside-close", NavbarOutsideCloseController)
+
+import ProduitsSearchController from "./produits_search_controller"
+application.register("produits-search", ProduitsSearchController)

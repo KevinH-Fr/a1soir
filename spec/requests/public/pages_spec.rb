@@ -318,6 +318,79 @@ RSpec.describe "Public::Pages", type: :request do
   end
 
   # -------------------------------------------------------------------------
+  # GET /fr/produits — back_url avec filtres + recherche
+  # -------------------------------------------------------------------------
+
+  describe "GET /fr/produits" do
+    let!(:taille_m) { Taille.create!(nom: "M") }
+    let!(:produit_listing) do
+      Produit.create!(
+        nom: "Robe listing back",
+        handle: "robe-listing-back",
+        prixvente: 50,
+        stripe_price_id: "price_listing_back",
+        eshop: true,
+        today_availability: true,
+        quantite: 1,
+        taille: taille_m,
+        actif: true
+      )
+    end
+
+    let(:search_q) do
+      {
+        nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont: "Robe"
+      }
+    end
+
+    def extract_back_url_from_response
+      href = response.body[/href="([^"]*back_url=[^"]*)"/, 1]
+      return if href.blank?
+
+      CGI.unescape(CGI.parse(URI.parse(href).query)["back_url"].first)
+    end
+
+    it "includes active filters and search term in product back_url" do
+      get "/fr/produits", params: { taille: taille_m.id, q: search_q }
+
+      expect(response).to have_http_status(:ok)
+
+      back_url = extract_back_url_from_response
+      expect(back_url).to include("taille=#{taille_m.id}")
+      expect(back_url).to include("Robe")
+    end
+
+    it "preserves search when updating a filter via turbo stream" do
+      post "/fr/update_filters",
+           params: { taille: taille_m.id, q: search_q },
+           headers: { "Accept" => "text/vnd.turbo-stream.html, text/html" }
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("Robe")
+      expect(response.body).to include("taille=#{taille_m.id}")
+    end
+
+    it "links clear all filters to a clean produits URL" do
+      get "/fr/produits", params: { taille: taille_m.id, q: search_q }
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include('href="/fr/produits"')
+      expect(response.body).not_to include("update_filters")
+    end
+
+    it "refreshes filter dropdowns when search changes via turbo stream" do
+      get "/fr/produits",
+          params: { q: search_q },
+          headers: { "Accept" => "text/vnd.turbo-stream.html, text/html" }
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include('<turbo-stream action="update" target="filtres-taille"')
+      expect(response.body).to include('<turbo-stream action="update" target="produits-filtres"')
+      expect(response.body).not_to include('<turbo-stream action="update" target="produits-search"')
+    end
+  end
+
+  # -------------------------------------------------------------------------
   # GET /fr/categories
   # -------------------------------------------------------------------------
 

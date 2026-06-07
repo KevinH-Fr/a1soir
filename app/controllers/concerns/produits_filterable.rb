@@ -37,34 +37,47 @@ module ProduitsFilterable
 
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: [
-          turbo_stream.update("filtres-categorie",
-            partial: "public/pages/filtres/filtres_categorie"),
-
-          turbo_stream.update("filtres-type-produit",
-            partial: "public/pages/filtres/filtres_type_produit"),
-
-          turbo_stream.update("filtres-taille",
-            partial: "public/pages/filtres/filtres_taille"),
-
-          turbo_stream.update("filtres-couleur",
-            partial: "public/pages/filtres/filtres_couleur"),
-
-          turbo_stream.update("filtres-prix",
-            partial: "public/pages/filtres/filtres_prix"),
-
-          turbo_stream.update("filtres-type",
-            partial: "public/pages/filtres/filtres_type"),
-
-          turbo_stream.update("filtres-actifs",
-            partial: "public/pages/filtres/filtres_actifs"),
-
-          turbo_stream.update("produits-filtres",
-            partial: "public/pages/produits_filtres")
-        ]
+        render turbo_stream: produits_listing_turbo_streams
       end
       format.html
     end
+  end
+
+  # Rafraîchit filtres + résultats (+ recherche si include_search).
+  # Ne pas remplacer le champ recherche pendant la saisie (curseur / focus).
+  def produits_listing_turbo_streams(include_search: true)
+    streams = [
+      turbo_stream.update("filtres-categorie",
+        partial: "public/pages/filtres/filtres_categorie"),
+
+      turbo_stream.update("filtres-type-produit",
+        partial: "public/pages/filtres/filtres_type_produit"),
+
+      turbo_stream.update("filtres-taille",
+        partial: "public/pages/filtres/filtres_taille"),
+
+      turbo_stream.update("filtres-couleur",
+        partial: "public/pages/filtres/filtres_couleur"),
+
+      turbo_stream.update("filtres-prix",
+        partial: "public/pages/filtres/filtres_prix"),
+
+      turbo_stream.update("filtres-type",
+        partial: "public/pages/filtres/filtres_type"),
+
+      turbo_stream.update("filtres-actifs",
+        partial: "public/pages/filtres/filtres_actifs"),
+
+      turbo_stream.update("produits-filtres",
+        partial: "public/pages/produits_filtres")
+    ]
+
+    if include_search
+      streams.insert(-1, turbo_stream.update("produits-search",
+        partial: "public/pages/produits_search"))
+    end
+
+    streams
   end
 
   private
@@ -76,6 +89,10 @@ module ProduitsFilterable
       q: [:nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont],
       id: []
     )
+
+    if search_params[:q].present? && search_params[:q].values.all?(&:blank?)
+      search_params = search_params.except(:q)
+    end
 
     produits_scope = filtered_produits_scope
     @q = produits_scope.ransack(search_params[:q])
@@ -173,7 +190,7 @@ module ProduitsFilterable
     # Tranches de prix disponibles selon les autres filtres actifs.
     scope_pour_prix = prix_scope || produits_scope
     @tranches_prix = [50, 100, 200, 500, 1000].select do |max_price|
-      scope_pour_prix.by_prixmax(max_price).exists?
+      scope_pour_prix.by_prixmax(max_price, params[:type]).exists?
     end
 
     # Types (Vente/Location) - vérifier lesquels existent

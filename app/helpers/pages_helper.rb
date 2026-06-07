@@ -491,33 +491,74 @@ module PagesHelper
     end
   end
 
-  # Helper pour construire l'URL de retour vers la page produits avec tous les paramètres de filtres
-  def produits_back_url
-    # Construire les paramètres de filtres avec tous les filtres actifs
-    filter_params = {}
-    filter_params[:taille] = params[:taille] if params[:taille].present?
-    filter_params[:couleur] = params[:couleur] if params[:couleur].present?
-    filter_params[:prixmax] = params[:prixmax] if params[:prixmax].present?
-    filter_params[:type] = params[:type] if params[:type].present?
-    filter_params[:type_produit] = params[:type_produit] if params[:type_produit].present?
-    filter_params[:en_promotion] = params[:en_promotion] if params[:en_promotion].present?
-    filter_params[:from_cabine] = params[:from_cabine] if params[:from_cabine].present?
-    filter_params[:q] = params[:q]&.to_unsafe_h if params[:q].present?
-    
-    # Déterminer si on a une seule catégorie ou plusieurs
-    is_single_category = params[:id].present? && !params[:id].is_a?(Array)
-    
-    if is_single_category
-      produits_path(
-        id: params[:id],
-        slug: params[:slug],
-        **filter_params
-      )
+  # Paramètres de listing public partagés entre filtres Turbo, recherche et back_url fiche produit.
+  # Les overrides permettent de remplacer ou effacer une valeur (ex. taille: nil).
+  def produits_active_params(**overrides)
+    {
+      id: params[:id],
+      slug: params[:slug],
+      taille: params[:taille],
+      couleur: params[:couleur],
+      prixmax: params[:prixmax],
+      type: params[:type],
+      type_produit: params[:type_produit],
+      en_promotion: params[:en_promotion],
+      from_cabine: params[:from_cabine],
+      q: produits_search_params_from_request
+    }.merge(overrides).each_with_object({}) do |(key, value), result|
+      next if value.nil?
+      next if value.respond_to?(:empty?) && value.empty?
+
+      result[key] = value
+    end
+  end
+
+  # URL propre pour réinitialiser filtres + recherche (redirect GET, pas de params résiduels).
+  def produits_reset_path
+    reset_params = {}
+    reset_params[:from_cabine] = true if params[:from_cabine].present? || session[:from_cabine]
+    produits_index_path(**reset_params)
+  end
+
+  # Route POST des dropdowns filtres : conserve recherche + autres filtres actifs.
+  def update_produits_filters_path(**overrides)
+    update_filters_path(**produits_active_params(**overrides))
+  end
+
+  # URL cible du formulaire de recherche (catégorie courante + filtres, sans q).
+  def produits_listing_search_url
+    path_params = produits_active_params.except(:q)
+    single_category = params[:id].present? && !params[:id].is_a?(Array)
+
+    if single_category
+      produits_path(**path_params)
     else
-      produits_index_path(
-        id: params[:id],
-        **filter_params
-      )
+      produits_index_path(**path_params)
+    end
+  end
+
+  # Champs cachés pour que la recherche Turbo conserve les filtres déjà appliqués.
+  def produits_search_filter_hidden_fields
+    safe_join(
+      produits_active_params.except(:q).flat_map do |key, value|
+        if key == :id && value.is_a?(Array)
+          value.map { |category_id| hidden_field_tag("id[]", category_id) }
+        else
+          [hidden_field_tag(key, value)]
+        end
+      end
+    )
+  end
+
+  # Helper pour construire l'URL de retour vers la page produits avec tous les paramètres actifs
+  def produits_back_url
+    listing_params = produits_active_params
+    single_category = params[:id].present? && !params[:id].is_a?(Array)
+
+    if single_category
+      produits_path(**listing_params)
+    else
+      produits_index_path(**listing_params)
     end
   end
 
@@ -834,6 +875,15 @@ module PagesHelper
         (content_tag(:i, nil, class: "bi bi-bag-plus me-2") + t("public.helpers.cart_buttons.add_to_cart")).html_safe
       end
     end
+  end
+
+  def produits_search_params_from_request
+    return unless params[:q].present?
+
+    search_params = params[:q].to_unsafe_h
+    return if search_params.values.all?(&:blank?)
+
+    search_params
   end
 
 end

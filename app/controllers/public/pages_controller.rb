@@ -94,6 +94,17 @@ module Public
     def produits
       session[:from_cabine] = params[:from_cabine].present?
       produits_with_filters
+
+      respond_to do |format|
+        format.html
+        format.turbo_stream do
+          if request.headers["Turbo-Frame"] == "pagination"
+            render :produits
+          else
+            render turbo_stream: produits_listing_turbo_streams(include_search: false)
+          end
+        end
+      end
     end
 
     def produit

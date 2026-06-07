@@ -1,0 +1,21 @@
+<div id="produits-search">
+  <%= search_form_for @q,
+      url: produits_listing_search_url,
+      html: {
+        class: "d-flex align-items-center w-100 position-relative",
+        data: {
+          controller: "produits-search",
+          turbo_stream: true,
+          action: "turbo:submit-end->produits-search#syncUrl"
+        }
+      } do |f| %>
+    <%= produits_search_filter_hidden_fields %>
+    <%= f.search_field :nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont,
+        class: "form-control bg-dark text-light border-secondary placeholder-light w-100 me-1 ps-5",
+        autofocus: false,
+        autocomplete: "off",
+        placeholder: t("public.pages.produits.search.placeholder"),
+        data: { action: "input->produits-search#queueSubmit" } %>
+    <i class="bi bi-search text-light position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%);"></i>
+  <% end %>
+</div>

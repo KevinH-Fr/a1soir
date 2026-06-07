@@ -10,12 +10,12 @@
 
         <div class="dropdown-menu overflow-y-auto" aria-labelledby="typeProduitDropdown" style="max-height: 18rem">
             <%= button_to t("public.pages.produits.filters.type_produit.all_button"),
-                update_filters_path(slug: params[:slug], id: params[:id], taille: params[:taille], couleur: params[:couleur], prixmax: params[:prixmax], type: params[:type], type_produit: nil, from_cabine: params[:from_cabine]),
+                update_produits_filters_path(type_produit: nil),
                 class: "dropdown-item text-nowrap #{'fw-bold' if params[:type_produit].blank?}" %>
             <hr class="dropdown-divider">
             <% @types_produits.each do |type_produit| %>
                 <%= button_to type_produit.nom,
-                    update_filters_path(slug: params[:slug], id: params[:id], taille: params[:taille], couleur: params[:couleur], prixmax: params[:prixmax], type: params[:type], type_produit: type_produit.id, from_cabine: params[:from_cabine]),
+                    update_produits_filters_path(type_produit: type_produit.id),
                     class: "dropdown-item text-nowrap #{'fw-bold' if params[:type_produit].to_s == type_produit.id.to_s}" %>
             <% end %>
         </div>

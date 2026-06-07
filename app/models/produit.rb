@@ -79,9 +79,18 @@ class Produit < ApplicationRecord
   scope :by_fournisseur, ->(fournisseur) { where(fournisseur: fournisseur) }
 
 
-  # Scope to filter by prixvente or prixlocation being less than or equal to prixmax
-  scope :by_prixmax, ->(prixmax) { 
-    where("prixvente <= ? OR prixlocation <= ?", prixmax, prixmax) if prixmax.present? 
+  # Filtre prix max : tient compte du type (Vente → prixvente, Location → prixlocation).
+  scope :by_prixmax, ->(prixmax, type = nil) {
+    return all unless prixmax.present?
+
+    case type
+    when "Vente"
+      where("prixvente > 0 AND prixvente <= ?", prixmax)
+    when "Location"
+      where("prixlocation > 0 AND prixlocation <= ?", prixmax)
+    else
+      where("(prixvente > 0 AND prixvente <= ?) OR (prixlocation > 0 AND prixlocation <= ?)", prixmax, prixmax)
+    end
   }
   
    # Scope to filter by type (Vente or Location)
