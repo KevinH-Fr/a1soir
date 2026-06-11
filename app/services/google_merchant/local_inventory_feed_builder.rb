@@ -15,7 +15,6 @@ module GoogleMerchant
           .joins(:image1_attachment)
           .where("produits.prixvente > 0")
           .where(today_availability: true)
-          .select(:id, :prixvente)
         limit = ENV["MERCHANT_LOCAL_FEED_LIMIT"].presence&.to_i
         limit&.positive? ? scope.limit(limit) : scope
       end
