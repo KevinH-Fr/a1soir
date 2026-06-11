@@ -111,6 +111,12 @@ _________________
 
 - mettre en place le flux merchant pour produits en boutique (code etablissement)
 - voir si produits magasin s'affichent sur merchant center et dans fiche google
+
+Flux principal : 3356 produits
+Flux local :     2577 produits
+Différence :      779 produits
+
+
 - remettre une campaign google ads
 - essyage virtuel
 - chatbot ia
@@ -120,3 +126,6 @@ _________________
 - voir pourquoi pas bcd de fiches de produits sur search console
 -  qrzing
 
+Flux principal : 3370 produits
+Flux local :     2578 produits
+Différence :      792 produits

@@ -97,6 +97,50 @@ RSpec.describe "Google Merchant feed", type: :request do
     expect(response.body).not_to include("Sans image")
   end
 
+  describe "local destination exclusions" do
+    let!(:produit_out_of_stock) do
+      p = Produit.create!(
+        nom: "Robe hors stock",
+        description: "<p>Indisponible</p>",
+        prixvente: 89.0,
+        poids: 400,
+        stripe_price_id: "price_merchant_feed_004",
+        eshop: true,
+        actif: true,
+        today_availability: false,
+        quantite: 1,
+        handle: "robe-hors-stock",
+        taille: taille_m,
+        couleur: couleur_rouge
+      )
+      p.image1.attach(
+        io: StringIO.new("fake-jpeg-bytes"),
+        filename: "robe-oos.jpg",
+        content_type: "image/jpeg"
+      )
+      p.categorie_produits << categorie_robes_courtes
+      p
+    end
+
+    it "excludes out-of-stock products from local destinations" do
+      get "/google_merchant_feed.xml"
+      item = response.body[/<item>.*?produit-#{produit_out_of_stock.id}.*?<\/item>/m]
+
+      expect(item).to include("<g:availability>out_of_stock</g:availability>")
+      GoogleMerchant::FeedBuilder::LOCAL_EXCLUDED_DESTINATIONS.each do |destination|
+        expect(item).to include("<g:excluded_destination>#{destination}</g:excluded_destination>")
+      end
+    end
+
+    it "does not exclude in-stock products from local destinations" do
+      get "/google_merchant_feed.xml"
+      item = response.body[/<item>.*?produit-#{produit_in_feed.id}.*?<\/item>/m]
+
+      expect(item).to include("<g:availability>in_stock</g:availability>")
+      expect(item).not_to include("<g:excluded_destination>")
+    end
+  end
+
   it "emits item_group_id of at most 50 characters for long handles" do
     long_handle = "harper-robe-longue-fourreau-jersey-plisse-perles-fente"
     produit_long = Produit.create!(

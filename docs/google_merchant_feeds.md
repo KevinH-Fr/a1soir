@@ -108,12 +108,11 @@ Selection recommandee :
 - Ajouter le filtre `today_availability: true`.
 - Conserver uniquement les produits avec `prixvente > 0`.
 
-Mapping simple :
+Mapping simple (produits `today_availability: true` uniquement) :
 
 ```ruby
 availability = "in_stock"
 quantity = produit.statut_disponibilite(Time.current, Time.current)[:disponibles]
-quantity = 1 if quantity.to_i <= 0
 pickup_sla = "next_day"
 ```
 
@@ -209,3 +208,53 @@ Erreurs probables :
 4. Lancer une recuperation manuelle.
 5. Corriger les erreurs eventuelles.
 6. Etendre ou confirmer l'envoi de tous les produits disponibles en boutique.
+
+## Ecart Flux Principal / Flux Local
+
+Comptage rapide :
+
+```bash
+echo -n "Flux principal: " && curl -sL https://a1soir.com/google_merchant_feed.xml | grep -c '<item>'
+echo -n "Flux local:     " && curl -sL https://a1soir.com/google_local_inventory_feed.xml | grep -c '<item>'
+```
+
+Ecart attendu (~800 produits) : produits `today_availability: false` (hors stock). Le flux
+local ne contient que les produits reellement disponibles en boutique. Ne pas les y ajouter
+en `in_stock` pour « combler » l'ecart.
+
+## Produits Hors Stock et Programme Local
+
+Si les fiches locales / annonces en magasin sont activees, Google exige des donnees
+d'inventaire pour chaque produit du flux principal. Les produits hors stock n'ont pas
+d'entree dans le flux local → erreur « donnees d'inventaire en magasin manquantes ».
+
+Correction implementee dans le flux principal (`GoogleMerchant::FeedBuilder`,
+constante `LOCAL_EXCLUDED_DESTINATIONS`), pour les produits `today_availability: false`
+uniquement :
+
+```xml
+<g:excluded_destination>Local_inventory_ads</g:excluded_destination>
+<g:excluded_destination>Free_local_listings</g:excluded_destination>
+```
+
+Ref. Google : [excluded_destination](https://support.google.com/merchants/answer/6324486?hl=fr),
+[donnees d'inventaire manquantes](https://support.google.com/merchants/answer/14980864?hl=fr).
+
+Ne pas utiliser `out_of_stock` dans le flux local pour simuler un inventaire : le flux local
+ne liste que le stock magasin reel. Ne pas marquer tous les produits `in_stock` dans le
+flux local.
+
+## Resultats Attendus
+
+Apres deploy et recuperation du flux principal :
+
+- Flux principal : ~3370 produits (en stock + hors stock).
+- Flux local : ~2578 produits (`today_availability: true` uniquement).
+- Erreur « inventaire manquant » : doit diminuer sur les ~800 produits exclus du local.
+- Shopping en ligne (`Free_listings`, `Shopping_ads`) : inchange, y compris `out_of_stock`.
+- Fiches / annonces locales : uniquement les produits disponibles en boutique.
+
+Si l'erreur persiste apres 24-48 h : verifier dans Merchant Center que les methodes de
+marketing magasin ne forcent pas l'inventaire au niveau de la source de donnees (parametres
+de la source du flux principal).
+

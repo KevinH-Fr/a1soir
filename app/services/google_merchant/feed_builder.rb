@@ -7,6 +7,7 @@ module GoogleMerchant
     CLOUDINARY_IMAGE_BASE = "https://res.cloudinary.com/dukne3lhz/image/upload".freeze
     IMAGE_TRANSFORM = "q_auto,f_auto,w_1200"
     FEED_BRAND = "Autour D'Un Soir".freeze
+    LOCAL_EXCLUDED_DESTINATIONS = %w[Local_inventory_ads Free_local_listings].freeze
 
     class << self
       def feed_scope
@@ -58,6 +59,7 @@ module GoogleMerchant
               xm.tag!("g:link", produit_url_for(produit))
               xm.tag!("g:image_link", image_url_for(produit))
               xm.tag!("g:availability", availability_for(produit))
+              write_excluded_local_destinations(xm, produit)
               xm.tag!("g:condition", "new")
               xm.tag!("g:price", FeedFormatting.format_price_eur(produit.prixvente))
               xm.tag!("g:brand", FEED_BRAND)
@@ -93,6 +95,14 @@ module GoogleMerchant
 
     def availability_for(produit)
       produit.today_availability ? "in_stock" : "out_of_stock"
+    end
+
+    def write_excluded_local_destinations(xm, produit)
+      return if produit.today_availability?
+
+      self.class::LOCAL_EXCLUDED_DESTINATIONS.each do |destination|
+        xm.tag!("g:excluded_destination", destination)
+      end
     end
 
     def strip_description(html)
