@@ -84,7 +84,7 @@ RSpec.describe "Google local inventory feed", type: :request do
     expect(body).to include("<g:id>produit-#{produit_in_feed.id}</g:id>")
     expect(body).to include("<g:store_code>14941325208231197348</g:store_code>")
     expect(body).to include("<g:availability>in_stock</g:availability>")
-    expect(body).to include("<g:quantity>2</g:quantity>")
+    expect(body).to include("<g:quantity>1</g:quantity>")
     expect(body).to include("<g:price>695.00 EUR</g:price>")
     expect(body).to include("<g:pickup_method>buy</g:pickup_method>")
     expect(body).to include("<g:pickup_sla>next_day</g:pickup_sla>")

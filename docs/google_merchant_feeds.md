@@ -112,7 +112,7 @@ Mapping simple (produits `today_availability: true` uniquement) :
 
 ```ruby
 availability = "in_stock"
-quantity = produit.statut_disponibilite(Time.current, Time.current)[:disponibles]
+quantity = 1  # today_availability garantit au moins 1 unite ; pas de statut_disponibilite (timeout Heroku 30s)
 pickup_sla = "next_day"
 ```
 
@@ -221,6 +221,10 @@ echo -n "Flux local:     " && curl -sL https://a1soir.com/google_local_inventory
 Ecart attendu (~800 produits) : produits `today_availability: false` (hors stock). Le flux
 local ne contient que les produits reellement disponibles en boutique. Ne pas les y ajouter
 en `in_stock` pour « combler » l'ecart.
+
+Si `grep -c '<item>'` retourne 0 : verifier le status HTTP. Un timeout Heroku (H12, 503)
+signifie que le routeur a coupe la reponse avant la fin du XML — pas un catalogue vide.
+Le flux local evite `statut_disponibilite` par produit pour rester sous la limite de 30s.
 
 ## Produits Hors Stock et Programme Local
 

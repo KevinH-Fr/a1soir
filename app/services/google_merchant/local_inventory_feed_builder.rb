@@ -10,7 +10,12 @@ module GoogleMerchant
 
     class << self
       def feed_scope
-        scope = FeedBuilder.feed_scope.where(today_availability: true)
+        scope = Produit.actif
+          .eshop_diffusion
+          .joins(:image1_attachment)
+          .where("produits.prixvente > 0")
+          .where(today_availability: true)
+          .select(:id, :prixvente)
         limit = ENV["MERCHANT_LOCAL_FEED_LIMIT"].presence&.to_i
         limit&.positive? ? scope.limit(limit) : scope
       end
@@ -43,8 +48,6 @@ module GoogleMerchant
           xm.link(@channel_link)
           xm.description(@channel_description)
           @products.find_each do |produit|
-            next unless produit.image1.attached?
-
             xm.item do
               xm.tag!("g:id", FeedFormatting.item_id(produit))
               xm.tag!("g:store_code", @store_code)
@@ -62,9 +65,10 @@ module GoogleMerchant
 
     private
 
-    def quantity_for(produit)
-      qty = produit.statut_disponibilite(Time.current, Time.current)[:disponibles].to_i
-      qty.positive? ? qty : 1
+    def quantity_for(_produit)
+      # Scope is today_availability: true — at least one unit is available today.
+      # Avoid statut_disponibilite (~8 SQL queries/product); feed must stay under Heroku's 30s timeout.
+      1
     end
   end
 end
