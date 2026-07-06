@@ -129,3 +129,21 @@ Différence :      779 produits
 Flux principal : 3370 produits
 Flux local :     2578 produits
 Différence :      792 produits
+
+
+
+
+0607:
+
+tous les produtis acceptés dans tous les flux ok!
+test campaigns en cours
+
+à verifier en local : 
+- tous les articles seo et liens (quelques un en en)
+- flux merchant et medias
+- autres fonctions (achat, rdv cabine)
+
+en prod:
+- articles seo et medias bons
+- flux merchant avec plusieurs medias
+- demander indexation des nouvelles pages seo

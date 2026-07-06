@@ -71,4 +71,87 @@ RSpec.describe GoogleMerchant::FeedFormatting do
       expect(result).to end_with("-#{Digest::SHA256.hexdigest(raw)[0, 7]}")
     end
   end
+
+  describe ".image_link_url" do
+    it "returns a Cloudinary image URL with merchant width transform" do
+      blob = instance_double(ActiveStorage::Blob, key: "abc123")
+      url = described_class.image_link_url(blob)
+
+      expect(url).to eq(
+        "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/abc123"
+      )
+    end
+
+    it "returns nil when blob is nil" do
+      expect(described_class.image_link_url(nil)).to be_nil
+    end
+  end
+
+  describe ".additional_image_link_urls" do
+    let(:primary_blob) { instance_double(ActiveStorage::Blob, key: "primary-key") }
+    let(:gallery_blob_a) { instance_double(ActiveStorage::Blob, key: "gallery-a") }
+    let(:gallery_blob_b) { instance_double(ActiveStorage::Blob, key: "gallery-b") }
+    let(:attachment_a) { double(blob: gallery_blob_a) }
+    let(:attachment_b) { double(blob: gallery_blob_b) }
+    let(:image1) { double(attached?: true, blob: primary_blob) }
+    let(:produit) do
+      double(
+        image1: image1,
+        images: images
+      )
+    end
+
+    context "when images are not attached" do
+      let(:images) { double(attached?: false) }
+
+      it "returns an empty array" do
+        expect(described_class.additional_image_link_urls(produit)).to eq([])
+      end
+    end
+
+    context "when images are attached" do
+      let(:images) { double(attached?: true) }
+
+      it "returns gallery URLs excluding the primary image" do
+        allow(images).to receive(:map) { |&block| [attachment_a, attachment_b].map(&block) }
+
+        urls = described_class.additional_image_link_urls(produit)
+
+        expect(urls).to eq([
+          "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/gallery-a",
+          "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/gallery-b"
+        ])
+      end
+
+      it "excludes blobs with the same key as image1" do
+        duplicate_attachment = double(blob: primary_blob)
+        allow(images).to receive(:map) { |&block| [duplicate_attachment, attachment_a].map(&block) }
+
+        urls = described_class.additional_image_link_urls(produit)
+
+        expect(urls).to eq([
+          "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/gallery-a"
+        ])
+      end
+    end
+  end
+
+  describe ".video_link_url" do
+    it "returns an mp4 Cloudinary URL when video1 is attached" do
+      blob = instance_double(ActiveStorage::Blob, key: "video-key")
+      video1 = double(attached?: true, blob: blob)
+      produit = double(video1: video1)
+
+      expect(described_class.video_link_url(produit)).to eq(
+        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_1200,f_mp4/video-key.mp4"
+      )
+    end
+
+    it "returns nil when video1 is not attached" do
+      video1 = double(attached?: false)
+      produit = double(video1: video1)
+
+      expect(described_class.video_link_url(produit)).to be_nil
+    end
+  end
 end

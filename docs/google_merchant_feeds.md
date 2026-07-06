@@ -56,6 +56,42 @@ Audit console (familles concernees) :
 Produit.where("CHAR_LENGTH(handle) > 50").distinct.pluck(:handle, :nom)
 ```
 
+### Medias produit (`image_link`, `additional_image_link`, `video_link`)
+
+Le flux principal exporte les medias Cloudinary via `GoogleMerchant::FeedFormatting` :
+
+| Champ XML | Source | Limite |
+|-----------|--------|--------|
+| `g:image_link` | `produit.image1` | 1 (obligatoire pour entrer dans le flux) |
+| `g:additional_image_link` | `produit.images` (hors doublon `image1`) | 10 |
+| `g:video_link` | `produit.video1` | 1 |
+
+Exemple XML :
+
+```xml
+<g:image_link>https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/primary-key</g:image_link>
+<g:additional_image_link>https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/gallery-key</g:additional_image_link>
+<g:video_link>https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_1200,f_mp4/video-key.mp4</g:video_link>
+```
+
+Les URLs image reprennent la meme transformation que le site (`q_auto,f_auto,w_1200`).
+La video utilise `q_auto,w_1200,f_mp4` + extension `.mp4` (format MP4 attendu par Google
+Merchant, plafond 1200 px comme les pages SEO produit), distinct du helper carousel site
+(`f_auto`).
+
+Aucun filtre applicatif sur duree, resolution ou format : si le media est attache, il est
+exporte. Google Merchant Center valide ensuite la conformite (rejet eventuel sans impact sur la
+fiche produit).
+
+Le flux inventaire local n'exporte pas ces champs.
+
+Verification apres deploy :
+
+```bash
+curl -sL https://a1soir.com/google_merchant_feed.xml | grep -c 'additional_image_link'
+curl -sL https://a1soir.com/google_merchant_feed.xml | grep -c 'video_link'
+```
+
 ## Flux Inventaire Local
 
 URL publique :
@@ -261,4 +297,29 @@ Apres deploy et recuperation du flux principal :
 Si l'erreur persiste apres 24-48 h : verifier dans Merchant Center que les methodes de
 marketing magasin ne forcent pas l'inventaire au niveau de la source de donnees (parametres
 de la source du flux principal).
+
+
+
+## Checklist Post-Deploy (avant Google)
+
+```bash
+# 1. Flux OK ?
+curl -sI https://a1soir.com/google_merchant_feed.xml
+curl -sI https://a1soir.com/google_local_inventory_feed.xml
+
+# 2. Comptages (~3370 principal, ~2578 local)
+echo -n "items: " && curl -sL https://a1soir.com/google_merchant_feed.xml | grep -c '<item>'
+echo -n "galerie: " && curl -sL https://a1soir.com/google_merchant_feed.xml | grep -c 'additional_image_link'
+echo -n "videos: " && curl -sL https://a1soir.com/google_merchant_feed.xml | grep -c 'video_link'
+
+# 3. Echantillon medias + g:link a1soir.com
+curl -sL https://a1soir.com/google_merchant_feed.xml | grep -m1 -A15 'additional_image_link'
+curl -sL https://a1soir.com/google_merchant_feed.xml | grep -oP '(?<=<g:video_link>)[^<]+'
+```
+
+Attendu : `200`, XML valide, `g:link` sur `a1soir.com`, URLs Cloudinary `w_1200` (images) et
+`f_mp4` (videos). Pas de `image_link` / `video_link` dans le flux local.
+
+Si OK → Merchant Center → recuperation manuelle du flux principal, puis du flux local.
+Diagnostics medias : laisser 24-48 h.
 

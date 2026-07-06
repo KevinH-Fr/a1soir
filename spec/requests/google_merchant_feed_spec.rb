@@ -119,12 +119,13 @@ RSpec.describe "Google Merchant feed", type: :request do
         content_type: "image/jpeg"
       )
       p.categorie_produits << categorie_robes_courtes
+      p.update_column(:today_availability, false)
       p
     end
 
     it "excludes out-of-stock products from local destinations" do
       get "/google_merchant_feed.xml"
-      item = response.body[/<item>.*?produit-#{produit_out_of_stock.id}.*?<\/item>/m]
+      item = response.body[%r{<item>\s*<g:id>produit-#{produit_out_of_stock.id}</g:id>.*?</item>}m]
 
       expect(item).to include("<g:availability>out_of_stock</g:availability>")
       GoogleMerchant::FeedBuilder::LOCAL_EXCLUDED_DESTINATIONS.each do |destination|
@@ -134,10 +135,67 @@ RSpec.describe "Google Merchant feed", type: :request do
 
     it "does not exclude in-stock products from local destinations" do
       get "/google_merchant_feed.xml"
-      item = response.body[/<item>.*?produit-#{produit_in_feed.id}.*?<\/item>/m]
+      item = response.body[%r{<item>\s*<g:id>produit-#{produit_in_feed.id}</g:id>.*?</item>}m]
 
       expect(item).to include("<g:availability>in_stock</g:availability>")
       expect(item).not_to include("<g:excluded_destination>")
+    end
+  end
+
+  describe "product media" do
+    let!(:produit_with_media) do
+      p = Produit.create!(
+        nom: "Robe avec galerie et video",
+        description: "<p>Galerie complete</p>",
+        prixvente: 149.0,
+        poids: 450,
+        stripe_price_id: "price_merchant_feed_005",
+        eshop: true,
+        actif: true,
+        today_availability: true,
+        quantite: 1,
+        handle: "robe-galerie-video",
+        taille: taille_m,
+        couleur: couleur_rouge
+      )
+      p.image1.attach(
+        io: StringIO.new("primary-image"),
+        filename: "primary.jpg",
+        content_type: "image/jpeg"
+      )
+      p.images.attach(
+        io: StringIO.new("gallery-image-1"),
+        filename: "gallery-1.jpg",
+        content_type: "image/jpeg"
+      )
+      p.images.attach(
+        io: StringIO.new("gallery-image-2"),
+        filename: "gallery-2.jpg",
+        content_type: "image/jpeg"
+      )
+      p.video1.attach(
+        io: StringIO.new("fake-video-bytes"),
+        filename: "demo.mp4",
+        content_type: "video/mp4"
+      )
+      p.categorie_produits << categorie_robes_courtes
+      p
+    end
+
+    it "exports additional_image_link and video_link for products with gallery and video" do
+      get "/google_merchant_feed.xml"
+      item = response.body[%r{<item>\s*<g:id>produit-#{produit_with_media.id}</g:id>.*?</item>}m]
+
+      expect(item).to match(%r{<g:additional_image_link>https://res\.cloudinary\.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/[^<]+</g:additional_image_link>})
+      expect(item).to match(%r{<g:video_link>https://res\.cloudinary\.com/dukne3lhz/video/upload/q_auto,w_1200,f_mp4/[^<]+\.mp4</g:video_link>})
+    end
+
+    it "does not export media tags for products without gallery or video" do
+      get "/google_merchant_feed.xml"
+      item = response.body[%r{<item>\s*<g:id>produit-#{produit_in_feed.id}</g:id>.*?</item>}m]
+
+      expect(item).not_to include("<g:additional_image_link>")
+      expect(item).not_to include("<g:video_link>")
     end
   end
 

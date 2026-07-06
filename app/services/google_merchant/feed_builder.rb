@@ -4,8 +4,6 @@ module GoogleMerchant
   # RSS 2.0 + http://base.google.com/ns/1.0 for Google Merchant Center (v1 attributes only).
   class FeedBuilder
     GOOGLE_NS = "http://base.google.com/ns/1.0"
-    CLOUDINARY_IMAGE_BASE = "https://res.cloudinary.com/dukne3lhz/image/upload".freeze
-    IMAGE_TRANSFORM = "q_auto,f_auto,w_1200"
     FEED_BRAND = "Autour D'Un Soir".freeze
     LOCAL_EXCLUDED_DESTINATIONS = %w[Local_inventory_ads Free_local_listings].freeze
 
@@ -15,7 +13,12 @@ module GoogleMerchant
           .eshop_diffusion
           .joins(:image1_attachment)
           .where("produits.prixvente > 0")
-          .includes(:image1_attachment, :taille, :couleur, :categorie_produits)
+          .includes(
+            :image1_attachment,
+            { images_attachments: :blob },
+            :video1_attachment,
+            :taille, :couleur, :categorie_produits
+          )
       end
 
       def format_shipping_weight_kg(grams)
@@ -57,7 +60,12 @@ module GoogleMerchant
               xm.tag!("g:title", truncate_plain(produit.nom, 150))
               xm.tag!("g:description", truncate_plain(strip_description(produit.description), 5000))
               xm.tag!("g:link", produit_url_for(produit))
-              xm.tag!("g:image_link", image_url_for(produit))
+              xm.tag!("g:image_link", FeedFormatting.image_link_url(produit.image1.blob))
+              FeedFormatting.additional_image_link_urls(produit).each do |url|
+                xm.tag!("g:additional_image_link", url)
+              end
+              video_url = FeedFormatting.video_link_url(produit)
+              xm.tag!("g:video_link", video_url) if video_url
               xm.tag!("g:availability", availability_for(produit))
               write_excluded_local_destinations(xm, produit)
               xm.tag!("g:condition", "new")
@@ -86,11 +94,6 @@ module GoogleMerchant
         host: @host,
         protocol: @protocol
       )
-    end
-
-    def image_url_for(produit)
-      key = produit.image1.blob.key
-      "#{CLOUDINARY_IMAGE_BASE}/#{IMAGE_TRANSFORM}/#{key}"
     end
 
     def availability_for(produit)

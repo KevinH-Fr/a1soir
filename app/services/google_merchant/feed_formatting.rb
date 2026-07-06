@@ -7,6 +7,7 @@ module GoogleMerchant
   module FeedFormatting
     ITEM_GROUP_ID_MAX = 50
     ITEM_GROUP_ID_HASH_LENGTH = 7
+    MAX_ADDITIONAL_IMAGES = 10
 
     module_function
 
@@ -33,6 +34,30 @@ module GoogleMerchant
     def format_price_eur(amount)
       value = amount.to_d
       format("%.2f EUR", value)
+    end
+
+    def image_link_url(blob)
+      return nil unless blob
+
+      "#{ApplicationHelper::CLOUDINARY_BASE_IMAGE_URL}/q_auto,f_auto,w_1200/#{blob.key}"
+    end
+
+    def additional_image_link_urls(produit)
+      return [] unless produit.images.attached?
+
+      primary_key = produit.image1.blob&.key
+      produit.images.map(&:blob)
+        .uniq(&:key)
+        .reject { |blob| blob.key == primary_key }
+        .first(MAX_ADDITIONAL_IMAGES)
+        .map { |blob| image_link_url(blob) }
+    end
+
+    def video_link_url(produit)
+      return nil unless produit.video1.attached?
+
+      key = produit.video1.blob.key
+      "#{ApplicationHelper::CLOUDINARY_BASE_VIDEO_URL}/q_auto,w_1200,f_mp4/#{key}.mp4"
     end
   end
 end
