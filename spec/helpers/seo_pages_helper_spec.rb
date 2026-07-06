@@ -17,6 +17,38 @@ RSpec.describe SeoPagesHelper, type: :helper do
     end
   end
 
+  describe "#seo_footer_pages" do
+    it "returns pages for a footer group in order" do
+      pages = helper.seo_footer_pages("bride")
+
+      expect(pages.map { |p| p[:slug] }).to eq(%w[
+        robe-de-mariee-cannes
+        essayage-robe-de-mariee-cannes
+        comment-choisir-sa-robe-de-mariee
+        robe-de-mariee-morphologie
+      ])
+    end
+  end
+
+  describe "#seo_footer_groups" do
+    it "returns themed footer groups with curated pages" do
+      groups = helper.seo_footer_groups
+
+      expect(groups.map(&:first)).to eq(%w[bride guest costume])
+      expect(groups.assoc("guest").last.map { |p| p[:slug] }).to eq(%w[
+        robe-invitee-mariage
+        tenue-gala-ceremonie
+        achat-ou-location-tenue-soiree
+      ])
+      expect(groups.assoc("costume").last.map { |p| p[:slug] }).to eq(%w[
+        costume-mariage-cannes
+        smoking-ou-costume-mariage
+        location-smoking-costume-cannes
+        chaussures-accessoires-soiree
+      ])
+    end
+  end
+
   describe "#seo_page_faq_schema" do
     let(:page) { SeoPages::Registry.find("robe-de-mariee-cannes", scope: "local") }
 

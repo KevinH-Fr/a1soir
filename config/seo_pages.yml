@@ -11,6 +11,8 @@ pages:
     type: local_landing
     meta_key: robe_de_mariee_cannes
     hub_group: local
+    footer_group: bride
+    footer_order: 1
     sitemap:
       changefreq: weekly
       priority: 0.9
@@ -38,6 +40,8 @@ pages:
     type: local_landing
     meta_key: essayage_robe_mariee_cannes
     hub_group: local
+    footer_group: bride
+    footer_order: 2
     sitemap:
       changefreq: weekly
       priority: 0.85
@@ -62,6 +66,8 @@ pages:
     type: local_landing
     meta_key: costume_mariage_cannes
     hub_group: local
+    footer_group: costume
+    footer_order: 1
     sitemap:
       changefreq: weekly
       priority: 0.85
@@ -87,6 +93,8 @@ pages:
     type: style_guide
     meta_key: guide_choisir_robe_mariee
     hub_group: guides
+    footer_group: bride
+    footer_order: 3
     sitemap:
       changefreq: monthly
       priority: 0.8
@@ -129,6 +137,8 @@ pages:
     type: style_guide
     meta_key: guide_robe_mariee_morphologie
     hub_group: guides
+    footer_group: bride
+    footer_order: 4
     sitemap:
       changefreq: monthly
       priority: 0.75
@@ -151,6 +161,8 @@ pages:
     type: style_guide
     meta_key: guide_smoking_costume_mariage
     hub_group: guides
+    footer_group: costume
+    footer_order: 2
     sitemap:
       changefreq: monthly
       priority: 0.75
@@ -170,6 +182,8 @@ pages:
     type: event_guide
     meta_key: guide_robe_invitee_mariage
     hub_group: events
+    footer_group: guest
+    footer_order: 1
     sitemap:
       changefreq: monthly
       priority: 0.7
@@ -189,6 +203,8 @@ pages:
     type: event_guide
     meta_key: guide_tenue_gala_ceremonie
     hub_group: events
+    footer_group: guest
+    footer_order: 2
     sitemap:
       changefreq: monthly
       priority: 0.7
@@ -212,6 +228,8 @@ pages:
     type: service_guide
     meta_key: guide_achat_location_soiree
     hub_group: services
+    footer_group: guest
+    footer_order: 3
     sitemap:
       changefreq: monthly
       priority: 0.7
@@ -233,6 +251,8 @@ pages:
     type: service_guide
     meta_key: guide_location_smoking_costume
     hub_group: services
+    footer_group: costume
+    footer_order: 3
     sitemap:
       changefreq: monthly
       priority: 0.7
@@ -259,6 +279,8 @@ pages:
     type: style_guide
     meta_key: guide_chaussures_accessoires
     hub_group: guides
+    footer_group: costume
+    footer_order: 4
     sitemap:
       changefreq: monthly
       priority: 0.75
@@ -274,3 +296,187 @@ pages:
         scope: guides
       - slug: robe-de-mariee-cannes
         scope: local
+
+  histoire-autour-dun-soir-cannes:
+    slug: histoire-autour-dun-soir-cannes
+    scope: guides
+    type: style_guide
+    meta_key: guide_histoire_autour_dun_soir
+    hub_group: guides
+    sitemap:
+      changefreq: monthly
+      priority: 0.75
+    product_filters:
+      category_names:
+        - robes de mariée longues
+    related_pages:
+      - slug: robe-de-mariee-cannes
+        scope: local
+      - slug: metier-couturiere-retouches
+        scope: guides
+
+  metier-couturiere-retouches:
+    slug: metier-couturiere-retouches
+    scope: guides
+    type: style_guide
+    meta_key: guide_metier_couturiere
+    hub_group: guides
+    sitemap:
+      changefreq: monthly
+      priority: 0.75
+    product_filters:
+      category_names:
+        - robes de mariée longues
+    related_pages:
+      - slug: savoir-faire-retouches-robe-mariee
+        scope: guides
+      - slug: robe-de-mariee-cannes
+        scope: local
+
+  savoir-faire-retouches-robe-mariee:
+    slug: savoir-faire-retouches-robe-mariee
+    scope: guides
+    type: service_guide
+    meta_key: guide_retouches_robe_mariee
+    hub_group: services
+    sitemap:
+      changefreq: monthly
+      priority: 0.75
+    product_filters:
+      category_names:
+        - robes de mariée longues
+    related_pages:
+      - slug: metier-couturiere-retouches
+        scope: guides
+      - slug: essayage-robe-de-mariee-cannes
+        scope: local
+
+  costumes-epoque-histoire-mode:
+    slug: costumes-epoque-histoire-mode
+    scope: guides
+    type: style_guide
+    meta_key: guide_costumes_epoque_histoire
+    hub_group: events
+    sitemap:
+      changefreq: monthly
+      priority: 0.7
+    product_filters:
+      category_names:
+        - costume
+    related_pages:
+      - slug: costume-epoque-mariage-theme
+        scope: guides
+      - slug: costumes-cinema-television-cannes
+        scope: guides
+
+  costume-epoque-mariage-theme:
+    slug: costume-epoque-mariage-theme
+    scope: guides
+    type: event_guide
+    meta_key: guide_mariage_theme_epoque
+    hub_group: events
+    sitemap:
+      changefreq: monthly
+      priority: 0.7
+    product_filters:
+      category_names:
+        - costume
+    related_pages:
+      - slug: costumes-epoque-histoire-mode
+        scope: guides
+      - slug: robe-de-mariee-cannes
+        scope: local
+
+  costumes-cinema-television-cannes:
+    slug: costumes-cinema-television-cannes
+    scope: guides
+    type: event_guide
+    meta_key: guide_costumes_cinema_tv
+    hub_group: services
+    sitemap:
+      changefreq: monthly
+      priority: 0.7
+    product_filters:
+      category_names:
+        - costume
+        - smokings
+    related_pages:
+      - slug: habiller-evenement-entreprise-gala
+        scope: guides
+      - slug: festival-de-cannes-histoire-tenues
+        scope: guides
+
+  habiller-evenement-entreprise-gala:
+    slug: habiller-evenement-entreprise-gala
+    scope: guides
+    type: service_guide
+    meta_key: guide_evenement_entreprise_gala
+    hub_group: services
+    sitemap:
+      changefreq: monthly
+      priority: 0.7
+    product_filters:
+      category_names:
+        - costume
+        - smokings
+        - robes longues
+    related_pages:
+      - slug: tenue-gala-ceremonie
+        scope: guides
+      - slug: costumes-cinema-television-cannes
+        scope: guides
+
+  histoire-robe-de-mariee-traditions:
+    slug: histoire-robe-de-mariee-traditions
+    scope: guides
+    type: style_guide
+    meta_key: guide_histoire_robe_mariee
+    hub_group: guides
+    sitemap:
+      changefreq: monthly
+      priority: 0.75
+    product_filters:
+      category_names:
+        - robes de mariée longues
+    related_pages:
+      - slug: comment-choisir-sa-robe-de-mariee
+        scope: guides
+      - slug: robe-de-mariee-cannes
+        scope: local
+
+  se-marier-cote-azur-lieux-saisons:
+    slug: se-marier-cote-azur-lieux-saisons
+    scope: guides
+    type: event_guide
+    meta_key: guide_mariage_cote_azur
+    hub_group: guides
+    sitemap:
+      changefreq: monthly
+      priority: 0.75
+    product_filters:
+      category_names:
+        - robes de mariée longues
+    related_pages:
+      - slug: robe-de-mariee-cannes
+        scope: local
+      - slug: histoire-robe-de-mariee-traditions
+        scope: guides
+
+  festival-de-cannes-histoire-tenues:
+    slug: festival-de-cannes-histoire-tenues
+    scope: guides
+    type: event_guide
+    meta_key: guide_festival_cannes_tenues
+    hub_group: events
+    sitemap:
+      changefreq: monthly
+      priority: 0.7
+    product_filters:
+      category_names:
+        - robes longues
+        - smokings
+    related_pages:
+      - slug: festival-de-cannes
+        scope: redirect
+      - slug: tenue-gala-ceremonie
+        scope: guides

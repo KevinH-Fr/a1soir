@@ -1,12 +1,25 @@
-<% if @related_pages.present? %>
-  <section class="container px-3 my-5 pb-4" data-scroll-reveal>
-    <h2 class="text-light fs-5 text-uppercase mb-3"><%= t("public.seo_pages.shared.related_title") %></h2>
-    <div class="d-flex flex-wrap gap-2">
+<section class="container px-3 my-5 pb-4 seo-related-section" data-scroll-reveal>
+  <h2 class="text-light fs-5 text-uppercase mb-4"><%= t("public.seo_pages.shared.related_title") %></h2>
+
+  <div class="seo-related-grid">
+    <% if @related_pages.present? %>
       <% @related_pages.each do |related| %>
-        <%= link_to seo_page_label(related),
-                    seo_page_path_for(related),
-                    class: "btn btn-outline-light btn-sm public-btn-border-radius" %>
+        <%= link_to seo_page_path_for(related), class: "seo-related-chip text-decoration-none" do %>
+          <span class="seo-related-chip-icon" aria-hidden="true">
+            <i class="bi bi-<%= seo_related_page_icon(related) %>"></i>
+          </span>
+          <span class="seo-related-chip-label"><%= seo_page_label(related) %></span>
+          <span class="seo-related-chip-arrow" aria-hidden="true">→</span>
+        <% end %>
       <% end %>
-    </div>
-  </section>
-<% end %>
+    <% end %>
+
+    <%= link_to seo_guides_hub_path, class: "seo-related-chip seo-related-chip--all text-decoration-none" do %>
+      <span class="seo-related-chip-icon" aria-hidden="true">
+        <i class="bi bi-house" aria-hidden="true"></i>
+      </span>
+      <span class="seo-related-chip-label"><%= t("public.seo_pages.shared.all_guides") %></span>
+      <span class="seo-related-chip-arrow" aria-hidden="true">→</span>
+    <% end %>
+  </div>
+</section>

@@ -563,20 +563,20 @@ fr:
       keywords: "location costumes cannes, robes de mariee, smoking, accessoires"
     pages:
       home:
-        title: "Autour D'Un Soir - Robes de mariée et location de tenues de soirée"
-        description: "Location, fabrication et vente de costumes et accessoires à Cannes."
+        title: "Mariage à Cannes — Robes de mariée | Autour D'Un Soir"
+        description: "Boutique de mariage à Cannes depuis 1980 : robes de mariée, essayage en cabine, retouches atelier et tenues de soirée."
       la_boutique:
-        title: "La boutique - Autour D'Un Soir"
-        description: "Visitez notre boutique Autour D'Un Soir et decouvrez nos collections."
+        title: "Boutique mariage à Cannes depuis 1980 | Autour D'Un Soir"
+        description: "Visitez notre boutique de mariage à Cannes : robes de mariée, essayage, atelier de retouches et collections depuis 1980."
       nos_collections:
-        title: "Nos collections - Autour D'Un Soir"
-        description: "Explorez nos collections de robes de mariée pour votre jour J."
+        title: "Collections mariage & soirée - Autour D'Un Soir"
+        description: "Explorez nos collections de robes de mariée et tenues de mariage pour votre jour J à Cannes."
       le_concept:
         title: "Le concept - Autour D'Un Soir"
         description: "Decouvrez l'histoire et les valeurs d'Autour D'Un Soir."
       cabine_essayage:
-        title: "Cabine d'essayage - Autour D'Un Soir"
-        description: "Réservez votre séance d'essayage dans notre cabine privée."
+        title: "Essayage robe de mariée à Cannes | Autour D'Un Soir"
+        description: "Essayage robe de mariée et préparation de votre mariage à Cannes : cabine privée, conseil et retouches atelier."
       cart:
         title: "Mon panier - Autour D'Un Soir"
         description: "Finalisez votre commande en ligne : tenues sélectionnées, paiement sécurisé."
@@ -584,8 +584,8 @@ fr:
         title: "Statut du paiement - Autour D'Un Soir"
         description: "Récapitulatif de votre commande en ligne et du paiement sécurisé."
       rdv:
-        title: "Prendre rendez-vous - Autour D'Un Soir"
-        description: "Réservez votre rendez-vous en boutique."
+        title: "Rendez-vous mariage & essayage à Cannes | Autour D'Un Soir"
+        description: "Réservez votre rendez-vous mariage ou essayage robe de mariée en boutique à Cannes."
       contact:
         title: "Contact - Autour D'Un Soir"
         description: "Contactez Autour D'Un Soir pour toute question."
@@ -763,6 +763,14 @@ fr:
       legal_mentions: "Mentions légales & CGV"
       manage_cookies: "Gérer mes cookies"
       copyright: "© %{year} Autour D'Un Soir - Tous droits réservés"
+      seo_local: "Mariage à Cannes"
+      seo_guides: "Guides & conseils"
+      seo_guides_intro: "Nos conseils pour préparer votre tenue à Cannes"
+      all_guides: "Tous les guides"
+      seo_groups:
+        bride: "Mariée à Cannes"
+        guest: "Invité & soirée"
+        costume: "Costume & accessoires"
     pages:
       home:
         collections_title: "Nos collections"
@@ -771,7 +779,8 @@ fr:
         categories:
           wedding_dresses:
             title: "Robes de mariée"
-            subtitle: "Découvrez notre sélection de robes de mariée courtes et longues pour votre jour spécial"
+            subtitle: "Découvrez notre sélection de robes de mariée courtes et longues pour votre mariage à Cannes"
+            landing_link: "Robes de mariée à Cannes"
           evening_wear:
             title: "Tenues de soirée"
             subtitle: "Explorez notre collection de tenues de soirée élégantes pour toutes vos occasions"
@@ -967,7 +976,7 @@ fr:
               answer_html: "<p>Une caution proportionnelle à la valeur de la tenue est demandée lors du retrait.</p><p class='mb-0'>Elle est restituée si la tenue est rendue en bon état et dans les délais.</p>"
             q6:
               question: "Peut-on louer une robe de mariée ?"
-              answer_html: "<p>Nous ne proposons pas de robe de mariée à la location pour des raisons de qualité.</p><p>Nous voulons garantir une robe parfaite pour votre grand jour.</p><p class='mb-0'>La coupe et les retouches définitives sont essentielles.</p>"
+              answer_html: "<p>Nous ne proposons pas de robe de mariée à la location pour des raisons de qualité.</p><p>Nous voulons garantir une robe parfaite pour votre grand jour.</p><p>La coupe et les retouches définitives sont essentielles. Pour découvrir nos modèles, consultez notre page <a href=\"/fr/robe-de-mariee-cannes\">robes de mariée à Cannes</a>.</p>"
             q7:
               question: "Peut-on louer une robe en ligne ?"
               answer_html: "<p>Nous ne proposons pas encore la location à distance.</p><p class='mb-0'>Notre conseil et nos retouches en boutique font partie intégrante du service.</p>"
@@ -1432,7 +1441,7 @@ fr:
         public_cards:
           experience:
             title: "Expérience"
-            content: "<p class='text-center mb-0'>Plus de 20 ans d'expérience dans le domaine de la mode et de l'événementiel. Notre équipe connait parfaitement les tendances et les exigences de chaque type d'événement.</p>"
+            content: "<p class='text-center mb-0'>Depuis 1980, notre équipe accompagne mariées et clients à Cannes avec une expertise mode et événementiel. Nous connaissons les tendances et les exigences de chaque type d'événement.</p>"
           expertise:
             title: "Expertise"
             content: "<p class='text-center mb-0'>Conseillères spécialisées en styling, retouches professionnelles sur place, et accompagnement personnalisé pour chaque client. Votre satisfaction est notre priorité.</p>"
@@ -1454,7 +1463,7 @@ fr:
             text: "Découvrez notre vaste collection de robes et tenues de soirée pour tous vos événements. Location ou achat, nous vous accompagnons dans votre choix pour que vous soyez parfaite le jour J."
           wedding_dresses:
             title: "Robes de mariée"
-            text: "Trouvez la robe de mariée de vos rêves parmi notre sélection exclusive. De la dentelle classique aux créations modernes, chaque modèle est choisi pour sublimer votre jour le plus important."
+            text: "Trouvez la robe de mariée de vos rêves parmi notre sélection exclusive à Cannes. De la dentelle classique aux créations modernes, chaque modèle est choisi pour sublimer votre mariage."
           suits:
             title: "Costumes et smokings"
             text: "Messieurs, découvrez notre collection de costumes, smokings et tenues de cérémonie. Élégance et raffinement assurés pour tous vos événements prestigieux."

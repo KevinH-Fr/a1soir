@@ -38,4 +38,22 @@ RSpec.describe SeoPages::Registry do
       expect(paths).to include("/guides/chaussures-accessoires-soiree")
     end
   end
+
+  describe ".related_pages" do
+    it "keeps explicit related pages first" do
+      page = described_class.find("comment-choisir-sa-robe-de-mariee", scope: "guides")
+      related = described_class.related_pages(page)
+
+      expect(related.first[:slug]).to eq("robe-de-mariee-boheme")
+    end
+
+    it "supplements sparse pages up to the target count" do
+      page = described_class.find("histoire-autour-dun-soir-cannes", scope: "guides")
+      related = described_class.related_pages(page)
+
+      expect(related.length).to eq(SeoPages::Registry::RELATED_PAGES_TARGET)
+      expect(related.map { |entry| entry[:slug] }).to include("robe-de-mariee-cannes", "metier-couturiere-retouches")
+      expect(related.map { |entry| entry[:slug] }).not_to include("histoire-autour-dun-soir-cannes")
+    end
+  end
 end

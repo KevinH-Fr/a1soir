@@ -185,11 +185,26 @@ module SeoPagesHelper
     produits_filter_url(category_names: category.nom)
   end
 
+  def seo_footer_pages(group)
+    SeoPages::Registry.all
+      .select { |page| page[:footer_group].to_s == group.to_s }
+      .sort_by { |page| page[:footer_order] || 999 }
+  end
+
+  SEO_FOOTER_GROUP_ORDER = %w[bride guest costume].freeze
+
+  def seo_footer_groups
+    SEO_FOOTER_GROUP_ORDER.filter_map do |group|
+      pages = seo_footer_pages(group)
+      [group, pages] if pages.any?
+    end
+  end
+
   SEO_HUB_GROUP_ORDER = %w[local guides events services].freeze
 
   SEO_HUB_GROUP_ICONS = {
     "local" => "geo-alt-fill",
-    "guides" => "book-half",
+    "guides" => "heart-fill",
     "events" => "stars",
     "services" => "bag-heart"
   }.freeze
@@ -206,5 +221,11 @@ module SeoPagesHelper
 
   def seo_hub_group_icon(group)
     SEO_HUB_GROUP_ICONS.fetch(group.to_s, "arrow-right")
+  end
+
+  def seo_related_page_icon(page)
+    return "stars" if page[:scope] == "redirect"
+
+    seo_hub_group_icon(page[:hub_group])
   end
 end

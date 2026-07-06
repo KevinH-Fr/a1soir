@@ -196,20 +196,20 @@ en:
       keywords: "cannes costume rental, wedding dresses, tuxedo, accessories"
     pages:
       home:
-        title: "Autour D'Un Soir - Wedding dresses and evening wear rental"
-        description: "Costume and accessories rental, tailoring, and sales in Cannes."
+        title: "Wedding in Cannes — Wedding dresses | Autour D'Un Soir"
+        description: "Wedding shop in Cannes since 1980: wedding dresses, private fitting room, in-house alterations and evening wear."
       la_boutique:
-        title: "The shop - Autour D'Un Soir"
-        description: "Visit our Autour D'Un Soir shop and discover our collections."
+        title: "Wedding shop in Cannes since 1980 | Autour D'Un Soir"
+        description: "Visit our wedding shop in Cannes: wedding dresses, fittings, alteration workshop and collections since 1980."
       nos_collections:
-        title: "Our collections - Autour D'Un Soir"
-        description: "Explore our wedding dress collections for your special day."
+        title: "Wedding & evening collections - Autour D'Un Soir"
+        description: "Explore our wedding dress and bridal collections for your special day in Cannes."
       le_concept:
         title: "Our concept - Autour D'Un Soir"
         description: "Discover the story and values behind Autour D'Un Soir."
       cabine_essayage:
-        title: "Fitting room - Autour D'Un Soir"
-        description: "Book your fitting session in our private fitting room."
+        title: "Wedding dress fitting in Cannes | Autour D'Un Soir"
+        description: "Wedding dress fitting and wedding preparation in Cannes: private room, advice and in-house alterations."
       cart:
         title: "My cart - Autour D'Un Soir"
         description: "Complete your online order: selected outfits, secure payment."
@@ -217,8 +217,8 @@ en:
         title: "Payment status - Autour D'Un Soir"
         description: "Summary of your online order and secure payment."
       rdv:
-        title: "Book an appointment - Autour D'Un Soir"
-        description: "Book your in-store appointment."
+        title: "Wedding appointment & fitting in Cannes | Autour D'Un Soir"
+        description: "Book your wedding or wedding dress fitting appointment at our Cannes shop."
       contact:
         title: "Contact - Autour D'Un Soir"
         description: "Contact Autour D'Un Soir for any question."
@@ -396,6 +396,14 @@ en:
       legal_mentions: "Legal notice & Terms"
       manage_cookies: "Manage cookies"
       copyright: "© %{year} Autour D'Un Soir - All rights reserved"
+      seo_local: "Wedding in Cannes"
+      seo_guides: "Guides & advice"
+      seo_guides_intro: "Our advice to help you choose your outfit in Cannes"
+      all_guides: "All guides"
+      seo_groups:
+        bride: "Bride in Cannes"
+        guest: "Guest & evening"
+        costume: "Suits & accessories"
     pages:
       home:
         collections_title: "Our collections"
@@ -404,7 +412,8 @@ en:
         categories:
           wedding_dresses:
             title: "Wedding dresses"
-            subtitle: "Discover our curated selection of short and long wedding dresses for your special day"
+            subtitle: "Discover our curated selection of short and long wedding dresses for your wedding in Cannes"
+            landing_link: "Wedding dresses in Cannes"
           evening_wear:
             title: "Evening wear"
             subtitle: "Explore our elegant evening wear collection for all your occasions"
@@ -600,7 +609,7 @@ en:
               answer_html: "<p>A deposit proportional to the outfit value is required.</p><p class='mb-0'>It is fully returned if the outfit is returned on time and in good condition.</p>"
             q6:
               question: "Can I rent a wedding dress?"
-              answer_html: "<p>We do not rent wedding dresses for quality reasons.</p><p>We want each dress to be perfect for your special day.</p><p class='mb-0'>Final alterations are essential.</p>"
+              answer_html: "<p>We do not rent wedding dresses for quality reasons.</p><p>We want each dress to be perfect for your special day.</p><p>Final alterations are essential. To explore our models, see our <a href=\"/en/robe-de-mariee-cannes\">wedding dresses in Cannes</a> page.</p>"
             q7:
               question: "Can I rent a dress online?"
               answer_html: "<p>Not at the moment.</p><p class='mb-0'>Our in-store advice and alterations are part of the service quality.</p>"
@@ -1065,7 +1074,7 @@ en:
         public_cards:
           experience:
             title: "Experience"
-            content: "<p class='text-center mb-0'>Over 20 years of experience in fashion and events. Our team knows trends and the expectations of every type of event.</p>"
+            content: "<p class='text-center mb-0'>Since 1980, our team has been guiding brides and clients in Cannes with fashion and event expertise. We know trends and the expectations of every type of event.</p>"
           expertise:
             title: "Expertise"
             content: "<p class='text-center mb-0'>Stylists specialized in styling, professional alterations on site, and personalized support for every client. Your satisfaction is our priority.</p>"
@@ -1087,7 +1096,7 @@ en:
             text: "Discover our large collection of dresses and evening outfits for all your events. Whether renting or buying, we help you choose the perfect look for your special occasion."
           wedding_dresses:
             title: "Wedding dresses"
-            text: "Find the wedding dress of your dreams in our exclusive selection. From classic lace to modern designs, every piece is chosen to elevate your most important day."
+            text: "Find the wedding dress of your dreams in our exclusive Cannes selection. From classic lace to modern designs, every piece is chosen to enhance your wedding day."
           suits:
             title: "Suits and tuxedos"
             text: "Gentlemen, discover our collection of suits, tuxedos, and ceremony outfits. Elegance and refinement guaranteed for all your prestigious events."

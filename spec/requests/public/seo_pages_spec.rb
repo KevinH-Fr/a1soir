@@ -18,7 +18,7 @@ RSpec.describe "Public::SeoPages", type: :request do
       expect(response.body).to include("Nice")
       expect(response.body).to include("Robes De Mariée Courtes")
       expect(response.body).to include("Combien de temps avant le mariage")
-      expect(response.body).to include("Robe de mariée Cannes - Autour D")
+      expect(response.body).to include("Boutique mariage depuis 1980")
       expect(response.body).to include("BreadcrumbList")
       expect(response.body).to include("FAQPage")
     end
@@ -49,6 +49,10 @@ RSpec.describe "Public::SeoPages", type: :request do
       expect(response.body).to include("seo-section-image")
       expect(response.body).to include("Robes De Mariée Courtes")
       expect(response.body).to include("Robes De Mariée Longues")
+      expect(response.body).to include("À lire aussi")
+      expect(response.body).to include("seo-related-chip")
+      expect(response.body).to include("Tous les guides")
+      expect(response.body).to include("seo-related-chip--all")
     end
 
     it "returns 200 in English" do
@@ -118,6 +122,16 @@ RSpec.describe "Public::SeoPages", type: :request do
       get "/fr/tenue-festival-de-cannes"
 
       expect(response).to redirect_to("/fr/festival-de-cannes")
+    end
+  end
+
+  describe "GET /fr/guides/histoire-autour-dun-soir-cannes" do
+    it "returns 200 with editorial content" do
+      get "/fr/guides/histoire-autour-dun-soir-cannes"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).not_to include("translation missing")
+      expect(response.body).to include("L'histoire d'Autour D'Un Soir")
     end
   end
 

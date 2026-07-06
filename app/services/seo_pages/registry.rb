@@ -33,15 +33,14 @@ module SeoPages
         all.group_by { |p| p[:hub_group].presence || "other" }
       end
 
+      RELATED_PAGES_TARGET = 6
+
       def related_pages(page)
-        Array(page[:related_pages]).filter_map do |ref|
-          ref = ref.deep_symbolize_keys
-          if ref[:scope] == "redirect"
-            { slug: ref[:slug], scope: "redirect" }
-          else
-            find(ref[:slug], scope: ref[:scope])
-          end
-        end
+        explicit = resolve_related_refs(page)
+        return explicit if explicit.size >= RELATED_PAGES_TARGET
+
+        extras = supplemental_related_pages(page, exclude: explicit)
+        explicit + extras.first(RELATED_PAGES_TARGET - explicit.size)
       end
 
       def sitemap_entries
@@ -77,6 +76,65 @@ module SeoPages
       end
 
       private
+
+      def resolve_related_refs(page)
+        Array(page[:related_pages]).filter_map do |ref|
+          ref = ref.deep_symbolize_keys
+          if ref[:scope] == "redirect"
+            { slug: ref[:slug], scope: "redirect" }
+          else
+            find(ref[:slug], scope: ref[:scope])
+          end
+        end
+      end
+
+      def supplemental_related_pages(page, exclude:)
+        excluded_keys = exclude.map { |entry| page_key(entry[:slug], entry[:scope]) }.to_set
+        excluded_keys << page_key(page[:slug], page[:scope])
+
+        candidate_pools = [
+          pool_same_hub_group(page),
+          pool_complementary_hub_group(page),
+          pool_all_pages
+        ]
+
+        candidate_pools.flatten
+          .uniq { |entry| page_key(entry[:slug], entry[:scope]) }
+          .reject { |entry| excluded_keys.include?(page_key(entry[:slug], entry[:scope])) }
+      end
+
+      def pool_same_hub_group(page)
+        all
+          .select { |entry| entry[:hub_group] == page[:hub_group] }
+          .sort_by { |entry| related_sort_key(entry) }
+      end
+
+      def pool_complementary_hub_group(page)
+        groups = case page[:hub_group]
+                 when "local" then %w[guides services]
+                 when "guides" then %w[local services events]
+                 when "events" then %w[guides services local]
+                 when "services" then %w[guides local events]
+                 else []
+                 end
+
+        all
+          .select { |entry| groups.include?(entry[:hub_group]) }
+          .sort_by { |entry| related_sort_key(entry) }
+      end
+
+      def pool_all_pages
+        all
+          .reject { |entry| entry[:scope] == "redirect" }
+          .sort_by { |entry| related_sort_key(entry) }
+      end
+
+      def related_sort_key(entry)
+        hub_rank = SEO_HUB_GROUP_ORDER.index(entry[:hub_group]) || 99
+        [hub_rank, entry[:footer_order] || 999, entry[:slug]]
+      end
+
+      SEO_HUB_GROUP_ORDER = %w[local guides events services].freeze
 
       def load_pages
         @pages ||= begin
