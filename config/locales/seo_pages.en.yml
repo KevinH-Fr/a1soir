@@ -42,8 +42,8 @@ en:
         title: Evening shoes & accessories - Autour D'Un Soir guide
         description: 'Shoes and accessories for weddings, galas and evening events in Cannes: tips to complete your look at Autour D''Un Soir.'
       guide_histoire_autour_dun_soir:
-        title: History of Autour D'Un Soir in Cannes since 1980
-        description: 'The story of Autour D''Un Soir in Cannes: forty years serving weddings, evening wear and costume on the French Riviera.'
+        title: History of Autour D'Un Soir
+        description: 'The history and craft of Autour D''Un Soir: weddings, evening wear, costumes and alteration workshop.'
       guide_metier_couturiere:
         title: The seamstress craft in store - Autour D'Un Soir
         description: 'Behind the workshop: alterations, seamstress skills and textile expertise at Autour D''Un Soir in Cannes.'
@@ -195,11 +195,11 @@ en:
         link_title: How to choose your wedding dress
         header_title: How to choose your wedding dress?
         header_subtitle: 'Style, budget, timeline: expert advice'
-        intro_html: '<p>Choosing your wedding dress can feel overwhelming: endless inspiration online, conflicting advice, and a real fear of getting it wrong. At Autour D''Un Soir in Cannes we have guided brides since 1980 — here is a clear approach before your first fitting.</p><p>This guide does not replace the fitting room — that is where the dress comes alive on you — but it helps you define style, budget and timing. You can then book on our <a href="/en/robe-de-mariee-cannes">wedding dresses in Cannes</a> page.</p>'
+        intro_html: '<p>Choosing your wedding dress can feel overwhelming: inspiration moves fast, advice contradicts itself, and the fear of getting it wrong is real. Yet a wedding dress is first of all a constructed garment: a cut, a fabric, a drape, a way of moving.</p><p>This guide does not replace the fitting room — that is where the dress comes alive on you — but it helps you understand the useful criteria: style, budget, timing, comfort and consistency with the venue. You can then book on our <a href="/en/robe-de-mariee-cannes">wedding dresses in Cannes</a> page.</p>'
         sections:
           style:
             title: Define your style
-            body_html: "<p>Start with your wedding, not an Instagram trend: venue (church, beach, estate), season, formality. A rustic Provence wedding points to flowing fabrics; an evening reception in Cannes may call for a more structured line.</p><p>Look at the main families: <strong>bohemian</strong> (lace, sleeves, movement), <strong>ball gown</strong> (full skirt), <strong>mermaid</strong> (fitted silhouette), <strong>minimalist</strong> (clean lines). Bring 5 to 10 reference photos to your fitting, not a list of 50 contradictory looks.</p>"
+            body_html: "<p>Start with your wedding, not with a trend: venue (church, beach, estate), season, formality. A rustic Provence wedding often points to flowing fabrics; an evening reception in Cannes may call for a more structured line, easier to read under artificial light.</p><p>Look at the main families: <strong>bohemian</strong> (lace, sleeves, movement), <strong>ball gown</strong> (full skirt), <strong>mermaid</strong> (fitted silhouette), <strong>minimalist</strong> (clean lines). Behind those names are technical choices: skirt volume, bodice support, fabric weight, crepe softness or lace relief. Bring 5 to 10 reference photos to your fitting, not a list of 50 contradictory looks.</p>"
           budget:
             title: Plan your budget
             body_html: "<p>The dress is only part of the outfit budget: allow for veil or cape, shoes, jewellery, a possible second dress, and alterations. In store we explain clearly what is included in the listed price.</p><p>Set an overall budget before your fitting and share it with your advisor — that avoids falling for a dress out of reach. We can suggest alternatives in the same style family at different price points.</p>"
@@ -208,7 +208,7 @@ en:
             body_html: "<p>Ideally, start 8 to 12 months before the wedding. Some dresses are available immediately; others need a supplier order (12 to 16 weeks). Workshop alterations also require several visits.</p><p>During busy periods on the French Riviera (spring–summer), fitting slots fill quickly: book early even if not every detail of your décor is fixed yet.</p>"
           essayage:
             title: Prepare for your fitting
-            body_html: '<p>Wear nude underwear, heels close to your wedding height and minimal makeup on necklines. Come with 1 or 2 trusted guests — too many opinions can cloud your own feeling.</p><p>In the fitting room, go step by step: silhouette first, fabric second, details last. Note how you feel walking and sitting, not only in the mirror. See our <a href="/en/essayage-robe-de-mariee-cannes">fitting in Cannes</a> page for more.</p>'
+            body_html: '<p>Wear nude underwear, heels close to your wedding height and minimal makeup on necklines. Come with 1 or 2 trusted guests — too many opinions can cloud your own feeling.</p><p>In the fitting room, go step by step: silhouette first, fabric second, details last. A dress should be judged standing, seated and in motion: a fabric may fall beautifully in front of a mirror but pull at the bodice, weigh on the shoulders or restrict walking. See our <a href="/en/essayage-robe-de-mariee-cannes">fitting in Cannes</a> page for more.</p>'
           morphologie:
             title: Body shape and cut
             body_html: '<p>Body-shape guides (mermaid, ball gown, sheath) are useful pointers, but only a fitting decides: the same cut can surprise you positively. See our <a href="/en/guides/robe-de-mariee-morphologie">dress and body shape guide</a>.</p><p>Our team looks at posture, torso length and proportions to suggest dresses that flatter you — without boxing you into a single category.</p>'
@@ -217,7 +217,7 @@ en:
             body_html: "<p>Buying too early before your wedding style is clear, or waiting until the last minute. Copying an influencer's dress without considering your shape. Bringing too large a committee that imposes its taste.</p><p>Forgetting comfort: you will wear the dress for hours and may dance. Leaving accessories until the last moment when they change the whole silhouette. Confusing evening rental with wedding dress purchase: our wedding dresses are <strong>sold</strong> for final alterations.</p>"
           histoire:
             title: How tastes have evolved in our shop
-            body_html: "<p>In forty years in Cannes we have seen 80s shoulders, 90s volume, the return of minimalism, then the rise of bohemian and highly personal weddings. Today's brides want authenticity as much as the perfect photo.</p><p>That history informs our advice: we know which cuts stand the test of time and which are passing trends. Our role is to help you choose a dress you will still love in photos twenty years from now.</p>"
+            body_html: "<p>Tastes move in cycles. The 1980s left room for marked sleeves and visible volume; the 1990s and 2000s saw cleaner lines return; the 2010s popularised bohemian dresses, detailed backs and highly personal weddings.</p><p>These changes show that a wedding dress is never separate from its era. To avoid a costume effect or an overly dated trend, look at what remains readable over time: good proportion, quality fabric, a detail placed in the right spot. That is often what ages best in photographs.</p>"
         faq:
           q1:
             question: When should I start looking for my wedding dress?
@@ -238,11 +238,11 @@ en:
         link_title: Bohemian wedding dress
         header_title: Bohemian wedding dress
         header_subtitle: Flowing, romantic and natural
-        intro_html: '<p>The bohemian wedding dress stands for freedom and romance: flowing fabrics, delicate lace, open back or light sleeves. Very popular on the French Riviera for outdoor weddings, it suits ceremonies by the sea or in Provence estates.</p><p>At our Cannes shop we offer bohemian dresses for purchase, with fitting and alterations. This guide helps you refine your criteria before your appointment; for the bigger picture, see <a href="/en/guides/comment-choisir-sa-robe-de-mariee">how to choose your wedding dress</a>.</p>'
+        intro_html: '<p>The bohemian wedding dress combines freedom, romance and comfort: flowing fabrics, delicate lace, open back or light sleeves. Its aesthetic belongs to a wider history, between folk inspiration, a taste for natural-looking materials and ceremonies less formal than very classic weddings.</p><p>Very popular on the French Riviera for outdoor weddings, it suits ceremonies by the sea or in Provence estates. This guide helps you refine your criteria before your appointment; for the bigger picture, see <a href="/en/guides/comment-choisir-sa-robe-de-mariee">how to choose your wedding dress</a>.</p>'
         sections:
           matieres:
             title: Fabrics and details
-            body_html: "<p>Bohemian style is about movement: light crepe, soft tulle, guipure lace, floral embroidery or sheer sleeves. Avoid stiff fabrics that break the natural effect.</p><p>Details include low or V-back, thin belts, short trains or detachable trains for the evening. Finishes can feel deliberately artisanal (fringe, hand embroidery) for an authentic look.</p>"
+            body_html: "<p>Bohemian style is about movement: light crepe, soft tulle, guipure lace, floral embroidery or sheer sleeves. Guipure, thicker and more drawn than some fine laces, gives visible relief in photos; crepe creates a more fluid, matte line.</p><p>Details include low or V-back, thin belts, short trains or detachable trains for the evening. Finishes may feel freer (fringe, floral motifs, scalloped edges), but they require as much precision as a very structured dress.</p>"
           coupe:
             title: Cuts and silhouettes
             body_html: "<p>Bohemian is not one single cut: it can be a flowing empire line, a soft mermaid, or a fitted bodice with a flared skirt. Long lace sleeves are iconic, but fine straps or a bustier work too.</p><p>Think comfort: walking on sand, sea breeze, summer heat. In the fitting room we test the dress in motion, not only in the mirror.</p>"
@@ -254,7 +254,7 @@ en:
             body_html: '<p>Flower crown, light veil, flat sandals or wedge heels, subtle gold jewellery: accessories complete the dress without overpowering it. Avoid very « princess » tiaras if your line is natural.</p><p>In store we coordinate veil, jewellery and shoes with your dress. See our <a href="/en/guides/chaussures-accessoires-soiree">shoes and accessories guide</a>.</p>'
           histoire:
             title: Bohemian style in our shop
-            body_html: "<p>Bohemian bridal wear took off in the 2010s with personalised weddings and outdoor celebrations. In Cannes we see it on Mediterranean beaches, villa gardens and festival-style weddings.</p><p>Our selection mixes established designers and dresses with a fluid fit tested in the fitting room: what matters is that the dress feels like you and works in real conditions — wind, heat, outdoor photos.</p>"
+            body_html: "<p>Bohemian bridal wear spread especially in the 2010s, with outdoor ceremonies, more personal weddings and visual references shared online. It also reuses older codes: lace, soft sleeves, flower crowns and less corseted silhouettes.</p><p>On the French Riviera, this style has to remain practical: wind, heat, strong light, outdoor photos. A successful bohemian dress is not only beautiful on a hanger; it keeps its drape when you walk, sit and stay in it as the ceremony unfolds.</p>"
         faq:
           q1:
             question: Is a bohemian dress suitable for a beach wedding?
@@ -272,14 +272,14 @@ en:
         link_title: Wedding dress body shape
         header_title: Which dress for your body shape?
         header_subtitle: Mermaid, ball gown, sheath, bustier
-        intro_html: '<p>Body-shape guides give pointers, but nothing replaces a fitting: a mermaid dress can surprise someone who thought they were « ball gown only ». In our Cannes fitting room we look at posture, torso length and comfort in motion.</p><p>This guide helps you narrow your search before your appointment. Then refine at your <a href="/en/essayage-robe-de-mariee-cannes">fitting in Cannes</a> and on our <a href="/en/robe-de-mariee-cannes">wedding dresses</a> page.</p>'
+        intro_html: '<p>Body-shape guides give pointers, but nothing replaces a fitting: a mermaid dress can surprise someone who thought they were « ball gown only ». A cut works through very concrete elements: waist placement, bodice support, skirt volume and vertical lines.</p><p>This guide helps you narrow your search before your appointment without boxing yourself into a category. Then refine at your <a href="/en/essayage-robe-de-mariee-cannes">fitting in Cannes</a> and on our <a href="/en/robe-de-mariee-cannes">wedding dresses</a> page.</p>'
         sections:
           sirene:
             title: Mermaid dress
-            body_html: "<p>The mermaid fits bust and hips, then flares at the knee. It flatters hourglass figures and creates a very feminine line.</p><p>Check comfort if you climb stairs or dance for hours: walk in the dress. A light or detachable train can help.</p>"
+            body_html: "<p>The mermaid fits bust and hips, then usually flares around the knee or slightly above depending on the model. It creates a very defined line, appreciated for its sculptural effect.</p><p>Technically, everything depends on the balance between support and ease: if the flare starts too low, walking becomes difficult; if the fabric is too soft, the line loses its intention. Check stairs, dancing and sitting before deciding.</p>"
           princesse:
             title: Ball gown
-            body_html: "<p>Full skirt from the natural waist or hip. It balances shoulders and hips and looks majestic in photos.</p><p>Ideal if you want a defined waist without tight hips. Volume can be adjusted depending on the model.</p>"
+            body_html: "<p>The ball gown relies on a clear contrast: fitted bodice, full skirt from the natural waist or sometimes slightly lower. Volume can come from tulle, organza, petticoats or several fabric layers.</p><p>It looks majestic in photos, but the volume should stay proportionate to the venue and your stature. In a small room, a very wide skirt may be less practical; in an estate or large hall, it has room to exist.</p>"
           fourreau:
             title: Sheath dress
             body_html: "<p>Straight or slightly flared line, close without being bodycon. Chic, modern, often minimalist.</p><p>Suits those who love a clean silhouette. Flowing crepe is often more comfortable than stiff satin.</p>"
@@ -303,14 +303,14 @@ en:
         link_title: Tuxedo or wedding suit
         header_title: Tuxedo or wedding suit?
         header_subtitle: The right choice for the occasion
-        intro_html: <p>Choosing between tuxedo and suit shapes the groom's and male guests' elegance. Dress code, time and venue — church, beach, estate, evening — guide the decision.</p><p>At our Cannes shop we offer both, for rental or purchase, with fitting. For rental packages see <a href="/en/guides/location-smoking-costume-cannes">tuxedo rental Cannes</a> and <a href="/en/costume-mariage-cannes">wedding suits</a>.</p>
+        intro_html: <p>Choosing between tuxedo and suit comes from two different traditions. The tuxedo belongs to evening wear and black tie codes; the suit remains more flexible, suited to daytime ceremonies, civil weddings and less formal events.</p><p>Dress code, time and venue — church, beach, estate, evening — therefore guide the decision. At our Cannes shop we offer both, for rental or purchase, with fitting. For rental packages see <a href="/en/guides/location-smoking-costume-cannes">tuxedo rental Cannes</a> and <a href="/en/costume-mariage-cannes">wedding suits</a>.</p>
         sections:
           smoking:
             title: When to choose a tuxedo?
-            body_html: "<p>Evening wedding, black tie reception, gala or very formal ceremony: tuxedo (black or midnight blue) is the reference. White shirt, bow tie, patent or black oxfords.</p><p>Midnight blue often photographs better under flash than pure black. Try both in the fitting room.</p>"
+            body_html: "<p>Evening wedding, black tie reception, gala or very formal ceremony: the tuxedo is the reference. It differs from a suit through satin or grosgrain details on the lapel, the trouser line and the traditional pairing with a white shirt and bow tie.</p><p>Black remains the great classic. Midnight blue is also used in evening wear because it can keep more depth under some artificial lights. Try both in the fitting room according to the real context of the event.</p>"
           costume:
             title: When to choose a suit?
-            body_html: "<p>Civil wedding, daytime ceremony, garden or smart chic: three-piece suit in blue, beige, grey or bottle green. Tie or bow depending on formality.</p><p>More flexible than a tuxedo, it works for other professional or family events.</p>"
+            body_html: "<p>Civil wedding, daytime ceremony, garden or smart chic: a three-piece suit in blue, beige, grey or bottle green offers more freedom. A tie lengthens the silhouette; a bow tie gives a more ceremonial note.</p><p>The suit is also practical: it is easier to wear again for professional or family events. Fit remains essential: clean shoulders, correct sleeve length and trousers breaking properly over the shoe.</p>"
           accessoires:
             title: Accessories and consistency
             body_html: "<p>Pocket square, belt, cufflinks, discreet watch: details unify the look. Match the wedding party and bride if you are best man.</p><p>Everything is coordinated in store — no need to buy elsewhere without trying on.</p>"
@@ -359,11 +359,11 @@ en:
         link_title: Gala & ceremony outfit
         header_title: Gala and ceremony outfit
         header_subtitle: Galas, christenings, graduations and formal evenings
-        intro_html: '<p>Galas, christenings, graduations or evenings during Cannes Festival: each occasion has its formality level. A successful outfit respects the code without being showy.</p><p>Autour D''Un Soir in Cannes dresses women and men for rental or purchase, with fitting and alterations. Compare <a href="/en/guides/robe-invitee-mariage">wedding guest wear</a> and <a href="/en/guides/location-smoking-costume-cannes">tuxedo rental</a> for men.</p>'
+        intro_html: '<p>Galas, christenings, graduations or evenings during Cannes Festival: each occasion has its formality level. A successful outfit respects the code without being showy, because elegance depends on context as much as on the piece itself.</p><p>Evening dress codes come from a long social tradition: long dress for the most formal events, tuxedo for black tie, cocktail wear for less protocol-heavy moments. Compare <a href="/en/guides/robe-invitee-mariage">wedding guest wear</a> and <a href="/en/guides/location-smoking-costume-cannes">tuxedo rental</a> for men.</p>'
         sections:
           femmes:
             title: For women
-            body_html: "<p><strong>Gala / black tie</strong>: long dress, fine fabrics (silk, satin, crepe), discreet jewellery. <strong>Smart cocktail</strong>: sophisticated midi or short. <strong>Chic christening</strong>: pastels or elegant prints; avoid pure white if the family reserves it.</p><p>In the fitting room we check comfort seated and length with your shoes.</p>"
+            body_html: "<p><strong>Gala / black tie</strong>: long dress, fine fabrics (silk, satin, crepe), discreet jewellery. <strong>Smart cocktail</strong>: sophisticated midi or short. <strong>Chic christening</strong>: pastels or elegant prints; avoid pure white if the family reserves it.</p><p>Satin reflects more light, crepe gives a more matte finish, tulle adds volume. In the fitting room, check seated comfort, length with your shoes and how the fabric behaves under strong light.</p>"
           hommes:
             title: For men
             body_html: "<p>Tuxedo for black tie; three-piece suit for smart cocktail or less strict gala. Patent shoes or oxfords, coordinated pocket square and bow tie.</p><p>During Cannes Festival, book early: high demand in May.</p>"
@@ -372,7 +372,7 @@ en:
             body_html: "<p>Christenings, communions, charity galas, corporate events, award ceremonies, Croisette dinners: we cover most dress codes in the region.</p><p>4-day rental or purchase depending on how often you dress up — our advisors guide you.</p>"
           festival:
             title: Cannes Festival and prestige events
-            body_html: "<p>Red carpets and private parties need flawless outfits. Fitting is essential to check how the cut works under flash photography.</p><p>Book early in May: slots and sizes go quickly.</p>"
+            body_html: "<p>Red carpets and private parties need a very readable outfit: clean line, controlled length, coherent accessories. Flash photography emphasises reflections, creases and transparency; a fabric that looks beautiful in soft light may behave differently in photos.</p><p>The Festival concentrates demand in May: anticipate fittings, especially for tuxedos, long gowns and last-minute alterations.</p>"
         faq:
           q1:
             question: What's the difference between gala and cocktail dress code?
@@ -412,7 +412,7 @@ en:
         link_title: Tuxedo & suit rental
         header_title: Tuxedo and suit rental in Cannes
         header_subtitle: Fitting, alterations and rental packages in store
-        intro_html: '<p>For a wedding, gala or Cannes Festival event, renting a tuxedo or suit gives you a premium look without a full purchase. At <strong>Autour D''Un Soir</strong>, rental is in store only: fitting, workshop alterations and accessories on site.</p><p>Our standard package covers 4 days (pick up before the event, return after). Compare with our <a href="/en/guides/achat-ou-location-tenue-soiree">buy or rent guide</a> and <a href="/en/guides/smoking-ou-costume-mariage">tuxedo or suit</a> comparison.</p>'
+        intro_html: '<p>For a wedding, gala or Cannes Festival event, renting a tuxedo or suit lets you adapt the outfit precisely to one occasion: formality level, time of day, venue, season and photos. The issue is not only size, but the consistency of the full look.</p><p>Our standard package covers 4 days (pick up before the event, return after). To understand the dress-code differences, compare with our <a href="/en/guides/achat-ou-location-tenue-soiree">buy or rent guide</a> and <a href="/en/guides/smoking-ou-costume-mariage">tuxedo or suit</a> comparison.</p>'
         sections:
           formules:
             title: Our rental packages
@@ -422,10 +422,10 @@ en:
             body_html: "<p>Every rental starts with a fitting: we check shoulder fit, jacket and trouser length, and how the shirt sits. Our workshop then carries out the necessary alterations (hems, tapers, sleeves) so the outfit fits you perfectly.</p><p>Bring your ceremony shoes to the fitting for trouser length. Booking is recommended, especially during Cannes Festival or summer wedding season.</p>"
           occasions:
             title: Weddings, galas and events
-            body_html: "<p><strong>Evening wedding</strong>: tuxedo or dark suit depending on dress code. <strong>Daytime wedding</strong>: blue, beige or grey suit. <strong>Gala or ceremony</strong>: black tie tuxedo or three-piece suit.</p><p>During Cannes Festival we welcome many clients for parties and red-carpet events: book early. Children's outfits are available for wedding parties and group photos.</p>"
+            body_html: "<p><strong>Evening wedding</strong>: tuxedo or dark suit depending on dress code. <strong>Daytime wedding</strong>: blue, beige or grey suit. <strong>Gala or ceremony</strong>: black tie tuxedo or three-piece suit.</p><p>Vocabulary matters: black tie normally means tuxedo and bow tie; cocktail leaves more freedom; a civil ceremony often allows a lighter or less formal outfit. During Cannes Festival, book early for parties and red-carpet events.</p>"
           accessoires_homme:
             title: Accessories and finishing touches
-            body_html: "<p>Bow tie or necktie, pocket square, belt, cufflinks: everything can be coordinated in store. Patent shoes or oxfords depending on formality.</p><p>We help you build a harmonious look from suit to details, for a polished result on the day.</p>"
+            body_html: "<p>Bow tie or necktie, pocket square, belt, cufflinks: these details set the formality level. With a tuxedo, a cummerbund or low waistcoat, bow tie and black shoes remain the most classic references.</p><p>With a suit, the tie, pocket square and shoe colour can soften or dress up the look. The important thing is not to mix too many registers in the same outfit.</p>"
           enfants:
             title: Children's suits
             body_html: "<p>Page boys and young attendants: children's sizes with workshop adjustments. Rental or purchase depending on the model.</p><p>Booking a children's fitting with yours helps match colours and formality across the family.</p>"
@@ -460,13 +460,13 @@ en:
         sections:
           chaussures:
             title: Choosing your shoes
-            body_html: "<p>Heels, pumps, sandals or mules: height affects dress or trouser length. Try them <strong>with</strong> your outfit so we can adjust hems if needed.</p><p>Men: oxfords, loafers or patent depending on tuxedo or suit. Comfort for dancing and walking on carpet or sand (outdoor weddings).</p>"
+            body_html: "<p>Heels, pumps, sandals or mules: height affects dress or trouser length. Try them <strong>with</strong> your outfit so we can adjust hems if needed; a few centimetres change the fall of a long dress.</p><p>Men: oxfords, loafers or patent depending on tuxedo or suit. Patent belongs to the most formal codes; smooth black leather is often more versatile. Also think about the ground: carpet, paving stones, sand or lawn do not require the same stability.</p>"
           accessoires:
             title: Bags, jewellery and finishing touches
             body_html: "<p>Clutch, belt, jewellery, shawl or bolero: each piece should serve the silhouette, not overload it. For weddings, avoid jewellery that competes with the bride.</p><p>Women's and men's selection in store for wedding, gala and evening.</p>"
           coordonner:
             title: Coordinating the whole look
-            body_html: "<p>Coherent palette: jewellery metal (gold or silver), shoe shade, bag tone. Two dominant colours plus an accent are often enough.</p><p>In the fitting room we check the full look in different light — useful for outdoor photos on the Riviera.</p>"
+            body_html: "<p>Coherent palette: jewellery metal (gold or silver), shoe shade, bag tone. Two dominant colours plus an accent are often enough. Accessories should create a reminder, not add a new idea to every detail.</p><p>Think about photography too: shiny materials catch flash, very pale pastels can look close to white, and too many mixed metals may read less clearly. The full outfit should remain legible up close and from a distance.</p>"
           boutique:
             title: Find our collections in Cannes
             body_html: "<p>29 boulevard Carnot. Try on in person to finalise before the big day. Ideal after choosing a dress with us or bringing yours for coordination.</p>"
@@ -483,15 +483,15 @@ en:
       histoire_autour_dun_soir_cannes:
         link_title: Shop history
         header_title: The history of Autour D'Un Soir in Cannes
-        header_subtitle: A fashion and events address since 1980
-        intro_html: '<p>In 1980, Autour D''Un Soir opened at 29 boulevard Carnot in the heart of Cannes. The city already lived to the rhythm of cinema, galas and Riviera weddings — but few shops combined event wardrobes, costumes and an alteration workshop under one roof.</p><p>Forty years on, the philosophy is unchanged: guide every client with care, whether for a wedding, an evening, an audiovisual production or a historical re-enactment. See also our <a href="/en/robe-de-mariee-cannes">wedding dresses in Cannes</a> page.</p>'
+        header_subtitle: A fashion, workshop and events address
+        intro_html: '<p>Since 1980, Autour D''Un Soir has built its craft around event wardrobes, costumes and the alteration workshop. In Cannes, the city lives to the rhythm of cinema, galas and Riviera weddings — a world where fittings, fabric choice and adjustments matter as much as style.</p><p>That philosophy is unchanged: guide every client with care, whether for a wedding, an evening, an audiovisual production or a historical re-enactment. See also our <a href="/en/robe-de-mariee-cannes">wedding dresses in Cannes</a> page.</p>'
         sections:
           origines:
             title: The beginnings in 1980
-            body_html: "<p>The 1980s marked a turning point in event fashion: brides explored more varied cuts, evenings multiplied on the Côte d'Azur, and Cannes confirmed its status as an international showcase.</p><p>The shop was born from this local energy: exceptional outfits with genuine human guidance, not just a rail of clothes.</p>"
+            body_html: "<p>The 1980s marked a visible turning point in event fashion: assertive silhouettes, stronger shoulders, a taste for shiny fabrics and sometimes very voluminous wedding dresses. At the same time, Cannes continued to connect cinema, private parties and prestige events.</p><p>In this world, clothing is not only functional: it is tied to a public, photographed, shared moment. That event culture explains the importance given to choice, fitting and adjustment.</p>"
           evolution:
             title: Four decades of craft
-            body_html: "<p>Over the seasons we have seen ball gown volumes, the return of minimalism, the rise of bohemian styles and growing demand for film and TV wardrobe. The workshop became a pillar: without expert alterations, a dress — bridal or evening — never fully reveals its potential.</p>"
+            body_html: "<p>Over the seasons we have seen ball gown volumes, the return of minimalism, the rise of bohemian styles and growing demand for film and TV wardrobe. These changes also follow evolving uses: more civil weddings, outdoor ceremonies, professional evenings and more mobile audiovisual productions.</p><p>The workshop became a pillar because a dress or suit is not just the size printed on a label. Hem, bodice, sleeve, jacket drape: those details turn a garment available in store into an outfit suited to a person and an occasion.</p>"
           cannes:
             title: Cannes and the French Riviera
             body_html: "<p>Our city is not just a backdrop: the Festival, seaside weddings, corporate galas and shoots shape our daily work. We know real constraints — summer heat, sea breeze, Provence estate stairs — and build them into our advice.</p>"
@@ -501,7 +501,7 @@ en:
         faq:
           q1:
             question: Since when has Autour D'Un Soir existed?
-            answer_html: "<p>The shop opened in 1980 at 29 boulevard Carnot in Cannes.</p>"
+            answer_html: "<p>The story of Autour D'Un Soir began in 1980. Today, the shop welcomes you at 29 boulevard Carnot in Cannes.</p>"
           q2:
             question: What services does the shop offer?
             answer_html: "<p>Wedding dresses (sales), evening wear (rental and sales), suits, period costume, workshop alterations and corporate/audiovisual services.</p>"
@@ -516,10 +516,10 @@ en:
         sections:
           atelier:
             title: Daily life in the workshop
-            body_html: "<p>Hems, tapers, straps, trains, linings: every alteration starts with careful observation in the fitting room. The seamstress notes tension points, posture and real length in motion — not only in the mirror.</p>"
+            body_html: "<p>Hems, tapers, straps, trains, linings: every alteration starts with careful observation in the fitting room. The seamstress notes tension points, posture and real length in motion — not only in the mirror.</p><p>Technically, a successful alteration respects the garment's construction: fabric grain, lining, boning, closure, embroidery or lace motif. This step is discreet for the final client, but it determines comfort and elegance on the day.</p>"
           gestes:
             title: Gestures that matter
-            body_html: "<p>Tapering a bodice without distorting lace, shortening a train while keeping the drape, adjusting a sleeve for dancing: these are precise skills built over years of practice.</p>"
+            body_html: "<p>Tapering a bodice without distorting lace, shortening a train while keeping the drape, adjusting a sleeve for dancing: these are precise skills built over years of practice.</p><p>Difficulty varies with the fabric. Satin shows tension easily, tulle requires patience across layers, and lace often means repositioning a motif by hand. This textile knowledge creates a clean result without the alteration being visible.</p>"
           mariage:
             title: Why it matters for weddings
             body_html: '<p>A wedding dress bought without alterations is rarely perfect: bodies are unique and ready-to-wear is built for standard sizes. That is why we sell wedding dresses in store with full workshop support. See <a href="/en/guides/savoir-faire-retouches-robe-mariee">wedding dress alterations expertise</a>.</p>'
@@ -541,10 +541,10 @@ en:
         sections:
           buste:
             title: Bodice and support
-            body_html: "<p>The bodice must support without squeezing. On a strapless or open-back dress, a few millimetres change the drape. Our seamstresses rework side seams, adjust straps and reinforce internal structure when needed.</p>"
+            body_html: "<p>The bodice must support without squeezing. On a strapless or open-back dress, a few millimetres change the drape: too loose and the dress slips; too tight and it marks the skin and restricts breathing.</p><p>Structured dresses often use seams, boning, linings or internal support. Alterations must preserve that architecture, especially when the back is open or lace leaves less room for correction.</p>"
           longueur:
             title: Length and hem
-            body_html: "<p>Hem length is decided with your wedding-day shoes, on a floor similar to the ceremony venue. Outdoors on the Riviera we also anticipate terrain: grass, sand or stone.</p>"
+            body_html: "<p>Hem length is decided with your wedding-day shoes, on a floor similar to the ceremony venue. A long dress should skim without making you trip; suit trousers should break correctly over the shoe.</p><p>Outdoors on the Riviera we also anticipate terrain: grass, sand, stone or stairs. A spectacular length in store may become less practical if the ceremony is outside or the evening involves a lot of movement.</p>"
           traine:
             title: Train and movement
             body_html: "<p>A dramatic train needs balance between aesthetics and practicality. We can add bustle systems for the evening or shorten slightly for dancing.</p>"
@@ -566,10 +566,10 @@ en:
         sections:
           periodes:
             title: Major periods
-            body_html: "<p>Renaissance, 18th century, Napoleonic era, Belle Époque, Roaring Twenties, mid-century, seventies and eighties: each period has its volumes, colours and accessories.</p>"
+            body_html: "<p>Renaissance, 18th century, Napoleonic era, Belle Époque, Roaring Twenties, mid-century, seventies and eighties: each period has its volumes, colours and accessories. Renaissance dress often plays with sleeves, brocades and constructed silhouettes; the 18th century emphasises panniers, embroidered coats and wigs; the 1920s shorten and fluidify lines.</p><p>A credible costume relies on these details, not only on a general « atmosphere ». Even for a non-academic event, choosing two or three accurate references helps avoid a fancy-dress effect.</p>"
           matieres:
             title: Fabrics and finishing
-            body_html: "<p>Embroidery, lace, buttons, caps and hats complete the silhouette. In store we explain how these elements work together for a credible period look.</p>"
+            body_html: "<p>Embroidery, lace, buttons, caps and hats complete the silhouette. Accessories are often what makes a period recognisable: a headpiece, cravat, braid, gloves or jewellery immediately guides the reading.</p><p>Consistency also depends on fabrics. A fabric that is too contemporary, too shiny or too stretchy can break the historical illusion, even if the general cut looks right.</p>"
           usages:
             title: Theatre, film and themed weddings
             body_html: <p>Our period costumes serve stage productions, shoots and private events. For a themed wedding see <a href="/en/guides/costume-epoque-mariage-theme">period wedding</a> or our <a href="/en/nos_autres_activites">other activities</a>.</p>
@@ -591,10 +591,10 @@ en:
         sections:
           choix:
             title: Choosing an era
-            body_html: "<p>Belle Époque, 1920s, Renaissance: each choice implies different constraints for guests. A clear direction with shared visual references works better than a vague theme.</p>"
+            body_html: "<p>Belle Époque, 1920s, Renaissance: each choice implies different constraints for guests. Belle Époque suggests long dresses, bodices, hats and promenade elegance; the 1920s favour straighter lines, pearls, fringe and short hairstyles; Renaissance themes require more theatrical volume.</p><p>A clear direction with shared visual references works better than a vague theme. An « old-fashioned » theme without a precise period often creates a mix that is hard to harmonise in photos.</p>"
           coherence:
             title: Silhouette consistency
-            body_html: "<p>Bride, groom, witnesses and guests: define a common level of expectation. Perfect period dress next to modern outfit can create photo imbalance.</p>"
+            body_html: "<p>Bride, groom, witnesses and guests: define a common level of expectation. You can aim for loose historical inspiration or a stricter re-enactment, but that needs deciding before fittings.</p><p>A very accurate period costume next to a modern outfit can create photo imbalance. Conversely, a coherent palette, a few well-chosen accessories and compatible silhouettes can sometimes create the atmosphere without constraining every guest.</p>"
           boutique:
             title: The shop's role
             body_html: <p>We advise on available pieces, required alterations and feasibility by date. Discover our collection on <a href="/en/guides/costumes-epoque-histoire-mode">period costumes</a>.</p>
@@ -616,10 +616,10 @@ en:
         sections:
           role:
             title: The costume designer's role
-            body_html: "<p>The costume designer translates era, social status and personality. They anticipate alterations between takes, plan duplicates and adapt to set surprises.</p>"
+            body_html: "<p>The costume designer translates era, social status and personality. A jacket that looks too new, a dress that feels too contemporary or a poorly chosen colour can contradict the character before they even speak.</p><p>The work is also logistical: anticipating alterations between takes, planning duplicates if a scene dirties or damages an outfit, adapting clothing to camera movement and continuity. Costume must tell something while supporting the constraints of a set.</p>"
           cannes:
             title: Cannes, a filming city
-            body_html: "<p>Proximity to studios, the Festival and iconic locations: the Riviera attracts international productions. Our varied stock and responsiveness meet these demanding, time-sensitive needs.</p>"
+            body_html: "<p>The Riviera attracts varied productions thanks to its settings: seaside, hotels, villas, old streets, ports and places associated with the Festival. Cannes also concentrates an image culture that can make requests very fast-moving.</p><p>In that context, a varied stock is useful because a shoot may need a contemporary silhouette, a tuxedo, an evening gown or a period costume on a short timeline. Availability is not enough: the piece also has to work on screen.</p>"
           stock:
             title: A wardrobe built for the image
             body_html: '<p>Period costume, tuxedos, evening gowns, uniforms: diversity covers varied silhouettes and styles. See also <a href="/en/nos_autres_activites">our corporate and audiovisual services</a>.</p>'
@@ -666,10 +666,10 @@ en:
         sections:
           origines:
             title: Origins and symbols
-            body_html: "<p>In antiquity and the Middle Ages, the wedding dress signalled family wealth more than a single style. White spread in the 19th century, notably after Queen Victoria's wedding.</p>"
+            body_html: "<p>In antiquity and the Middle Ages, the wedding dress often signalled family wealth more than a single style. Brides frequently wore their finest dress, sometimes colourful, with fabrics and ornaments indicating social rank.</p><p>In Western usage, white spread gradually in the 19th century, notably after Queen Victoria's wedding in 1840. It later became strongly associated with the bride, although ivory, champagne and other shades remain very present.</p>"
           couleurs:
             title: Colours and cultures
-            body_html: "<p>Red in Asia, blue in some European traditions: marriage remains a cultural ritual. Today ivory, champagne and blush sit alongside pure white in store.</p>"
+            body_html: "<p>Red in several Asian traditions, blue associated with fidelity in some older European usages, white in the modern Western imagination: marriage remains a cultural ritual before it is a simple fashion question.</p><p>Today ivory, champagne, nude, blush or touches of colour sit alongside pure white. These shades change how the dress reads on skin and in photos: optical white can look very bright, while ivory often softens contrast.</p>"
           moderne:
             title: The contemporary bride
             body_html: '<p>Second marriage, civil wedding, short dress, suit: codes are opening up. In Cannes we support this diversity. See <a href="/en/guides/comment-choisir-sa-robe-de-mariee">how to choose your dress</a>.</p>'
@@ -712,14 +712,14 @@ en:
         link_title: Cannes Festival outfits
         header_title: Cannes Festival and its iconic looks
         header_subtitle: History of the Cannes red carpet
-        intro_html: "<p>Since 1946 the Cannes Festival has turned the city into a global showcase of elegance. Long gowns, tuxedos, bold creations: the red carpet tells the story of fashion as much as cinema.</p><p>Based in Cannes since 1980, we have watched these dress codes evolve. This guide traces that history — and the link between Festival and our shop.</p>"
+        intro_html: "<p>Since 1946 the Cannes Festival has turned the city into a global showcase of elegance. Long gowns, tuxedos, bold creations: the red carpet tells the story of fashion as much as cinema.</p><p>We have watched these dress codes evolve. This guide traces that history — and the link between Festival and our shop.</p>"
         sections:
           tapis:
             title: Birth of the red carpet
-            body_html: "<p>The red carpet gradually became a ritual. Outfits became an event in themselves, discussed as much as the films.</p>"
+            body_html: "<p>The red carpet gradually became a ritual of representation. It organises the arrival of artists, creates symbolic distance from the public and gives photographers an instantly recognisable frame.</p><p>In Cannes, this ritual has become inseparable from the Festival's image: outfits are discussed as much as films because they also tell a story about an era, a fashion house, a personality and sometimes a risk taken.</p>"
           evolution:
             title: Evolving silhouettes
-            body_html: "<p>From the 1950s to contemporary creations, gala dresses grew bolder. Classic tuxedos now sit alongside modern interpretations.</p>"
+            body_html: "<p>From the 1950s to contemporary creations, gala dresses have grown bolder: sculptural volume, open backs, slits, embroidery and controlled transparency. Silhouettes change, but the long gown remains a strong reference for major events.</p><p>For men, the classic tuxedo remains a reference while now coexisting with more modern interpretations: coloured jackets, slimmer cuts, lapel details or less expected accessories.</p>"
           boutique:
             title: Autour D'Un Soir and the Festival
             body_html: <p>During the Festival the shop welcomes clients and professionals for evening wear and tuxedos. See our <a href="/en/festival-de-cannes">Cannes Festival</a> page and <a href="/en/guides/tenue-gala-ceremonie">gala outfit guide</a>.</p>

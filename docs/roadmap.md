@@ -139,9 +139,9 @@ tous les produtis acceptés dans tous les flux ok!
 test campaigns en cours
 
 à verifier en local : 
-- tous les articles seo et liens (quelques un en en)
-- flux merchant et medias
-- autres fonctions (achat, rdv cabine)
+ok- tous les articles seo et liens (quelques un en en)
+ok- flux merchant et medias
+ok- autres fonctions (achat, rdv cabine)
 
 en prod:
 - articles seo et medias bons

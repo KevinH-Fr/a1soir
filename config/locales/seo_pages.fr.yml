@@ -42,8 +42,8 @@ fr:
         title: Chaussures & accessoires de soirée - Guide Autour D'Un Soir
         description: 'Chaussures et accessoires pour mariage, gala ou soirée à Cannes : conseils pour coordonner votre look en boutique Autour D''Un Soir.'
       guide_histoire_autour_dun_soir:
-        title: Histoire d'Autour D'Un Soir à Cannes depuis 1980
-        description: 'L''histoire de la boutique Autour D''Un Soir à Cannes : quarante ans au service du mariage, de la soirée et du costume sur la Côte d''Azur.'
+        title: Histoire d'Autour D'Un Soir
+        description: 'L''histoire et le savoir-faire de la boutique Autour D''Un Soir : mariage, soirée, costume et atelier de retouches.'
       guide_metier_couturiere:
         title: Le métier de couturière en boutique - Autour D'Un Soir
         description: 'Coulisses de l''atelier : retouches, gestes de couturière et savoir-faire textile chez Autour D''Un Soir à Cannes.'
@@ -195,11 +195,11 @@ fr:
         link_title: Comment choisir sa robe de mariée
         header_title: Comment choisir sa robe de mariée ?
         header_subtitle: 'Style, budget, délais : nos conseils d''expertes'
-        intro_html: '<p>Choisir sa robe de mariée peut sembler intimidant : Pinterest regorge d''inspirations, les avis fusent de partout, et la peur de se tromper est légitime. Chez Autour D''Un Soir à Cannes, nous accompagnons les futures mariées depuis 1980 : voici une méthode claire pour avancer sereinement avant votre premier essayage.</p><p>Ce guide ne remplace pas la cabine d''essayage — c''est là que la robe prend vie sur vous — mais il vous aide à définir style, budget et calendrier. Vous pourrez ensuite réserver un rendez-vous sur notre page <a href="/fr/robe-de-mariee-cannes">robes de mariée à Cannes</a>.</p>'
+        intro_html: '<p>Choisir sa robe de mariée peut sembler intimidant : les inspirations circulent vite, les avis se contredisent et la peur de se tromper est légitime. Pourtant, la robe de mariée reste d''abord un vêtement construit : une coupe, une matière, un tombé, une façon de bouger.</p><p>Ce guide ne remplace pas la cabine d''essayage — c''est là que la robe prend vie sur vous — mais il vous aide à comprendre les critères utiles : style, budget, calendrier, confort et cohérence avec le lieu. Vous pourrez ensuite réserver un rendez-vous sur notre page <a href="/fr/robe-de-mariee-cannes">robes de mariée à Cannes</a>.</p>'
         sections:
           style:
             title: Définir son style
-            body_html: "<p>Commencez par votre mariage, pas par une tendance Instagram : lieu (église, plage, domaine), saison, niveau de formalité. Un mariage champêtre en Provence oriente vers des matières fluides ; une réception en soirée à Cannes peut appeler une ligne plus structurée.</p><p>Repérez les grandes familles : <strong>bohème</strong> (dentelle, manches, mouvement), <strong>princesse</strong> (jupe volumineuse), <strong>sirène</strong> (coupe près du corps), <strong>minimaliste</strong> (ligne épurée). Apportez 5 à 10 photos de référence à l'essayage, pas une liste de 50 modèles contradictoires.</p>"
+            body_html: "<p>Commencez par votre mariage, pas par une tendance : lieu (église, plage, domaine), saison, niveau de formalité. Un mariage champêtre en Provence oriente souvent vers des matières fluides ; une réception en soirée à Cannes peut appeler une ligne plus structurée, plus lisible sous une lumière artificielle.</p><p>Repérez les grandes familles : <strong>bohème</strong> (dentelle, manches, mouvement), <strong>princesse</strong> (jupe volumineuse), <strong>sirène</strong> (coupe près du corps), <strong>minimaliste</strong> (ligne épurée). Derrière ces noms, il y a surtout des choix techniques : volume de jupe, tenue du buste, poids du tissu, souplesse du crêpe ou relief de la dentelle. Apportez 5 à 10 photos de référence à l'essayage, pas une liste de 50 modèles contradictoires.</p>"
           budget:
             title: Anticiper son budget
             body_html: "<p>La robe n'est qu'une partie du budget « tenue » : prévoyez voile ou cape, chaussures, bijoux, éventuelle seconde robe, et retouches. En boutique, nous indiquons clairement ce qui est inclus dans le prix affiché.</p><p>Fixez une enveloppe globale avant l'essayage et communiquez-la à votre conseillère : cela évite de tomber amoureuse d'un modèle hors budget. Nous savons proposer des alternatives dans la même famille de style à des prix différents.</p>"
@@ -208,7 +208,7 @@ fr:
             body_html: "<p>Idéalement, commencez 8 à 12 mois avant le mariage. Certains modèles sont disponibles immédiatement ; d'autres nécessitent une commande fournisseur (12 à 16 semaines). Les retouches en atelier demandent aussi plusieurs passages.</p><p>En période chargée sur la Côte d'Azur (printemps–été), les créneaux d'essayage partent vite : réservez tôt, même si vous n'avez pas encore fixé tous les détails de la décoration.</p>"
           essayage:
             title: Préparer son essayage en cabine
-            body_html: '<p>Portez des sous-vêtements couleur chair, des talons de hauteur proche du jour J et peu de maquillage sur les cols. Venez avec 1 ou 2 personnes de confiance — trop d''avis peuvent brouiller votre ressenti.</p><p>En cabine, avancez par étapes : silhouette d''abord, matière ensuite, détails en dernier. Notez ce que vous ressentez en marchant et en vous asseyant, pas seulement devant le miroir. Détails sur <a href="/fr/essayage-robe-de-mariee-cannes">l''essayage à Cannes</a>.</p>'
+            body_html: '<p>Portez des sous-vêtements couleur chair, des talons de hauteur proche du jour J et peu de maquillage sur les cols. Venez avec 1 ou 2 personnes de confiance — trop d''avis peuvent brouiller votre ressenti.</p><p>En cabine, avancez par étapes : silhouette d''abord, matière ensuite, détails en dernier. Une robe doit se juger debout, assise et en mouvement : le tissu peut tomber parfaitement devant un miroir mais tirer au niveau du buste, peser sur les épaules ou gêner la marche. Détails sur <a href="/fr/essayage-robe-de-mariee-cannes">l''essayage à Cannes</a>.</p>'
           morphologie:
             title: Morphologie et coupe
             body_html: '<p>Les guides morphologie (sirène, princesse, fourreau) donnent des pistes, mais seul l''essayage tranche : une même coupe peut surprendre positivement. Consultez notre guide <a href="/fr/guides/robe-de-mariee-morphologie">robe et morphologie</a> pour affiner vos recherches.</p><p>Notre équipe observe votre posture, la longueur de buste et la répartition des volumes pour orienter vers les modèles qui vous subliment — sans vous enfermer dans une case.</p>'
@@ -217,7 +217,7 @@ fr:
             body_html: "<p>Acheter trop tôt sans avoir validé le style de mariage, ou au contraire attendre la dernière minute. Copier la robe d'une influenceuse sans tenir compte de votre morphologie. Venir avec un comité trop nombreux qui impose son avis.</p><p>Oublier le confort : vous porterez la robe plusieurs heures, vous danserez peut-être. Négliger les accessoires jusqu'au dernier moment alors qu'ils changent la silhouette. Enfin, confondre location de soirée et achat de robe de mariée : chez nous, les robes de mariée sont <strong>vendues</strong>, pour des retouches définitives.</p>"
           histoire:
             title: Comment les goûts ont évolué en boutique
-            body_html: "<p>En quarante ans à Cannes, nous avons vu les épaulettes des années 80, les volumes des 90, le retour du minimalisme, puis l'explosion du bohème et des mariages personnalisés. Aujourd'hui, les mariées cherchent autant l'authenticité que la photo parfaite.</p><p>Cette évolution nourrit nos conseils : nous savons quelles coupes résistent au temps et lesquelles sont une mode passagère. Notre rôle est de vous aider à choisir une robe dont vous serez encore fière sur les photos dans vingt ans.</p>"
+            body_html: "<p>Les goûts changent par cycles. Les années 80 ont laissé une place aux manches marquées et aux volumes visibles ; les années 90 et 2000 ont vu revenir des lignes plus sobres ; les années 2010 ont popularisé les robes bohèmes, les dos travaillés et les mariages très personnalisés.</p><p>Ces évolutions montrent qu'une robe de mariée n'est jamais isolée de son époque. Pour éviter l'effet déguisement ou la tendance trop datée, observez ce qui reste lisible dans le temps : une belle proportion, une matière de qualité, un détail placé au bon endroit. C'est souvent cela qui résiste le mieux sur les photos.</p>"
         faq:
           q1:
             question: Quand commencer à chercher sa robe de mariée ?
@@ -238,11 +238,11 @@ fr:
         link_title: Robe de mariée bohème
         header_title: Robe de mariée bohème
         header_subtitle: Fluide, romantique et naturelle
-        intro_html: '<p>La robe de mariée bohème incarne la liberté et la romantisme : matières fluides, dentelles délicates, dos ouvert ou manches légères. Très demandée sur la Côte d''Azur pour les mariages en plein air, elle convient aux cérémonies au bord de l''eau ou dans les domaines de Provence.</p><p>En boutique à Cannes, nous proposons des modèles bohème à la vente, avec essayage et retouches. Ce guide vous aide à affiner vos critères avant le rendez-vous ; pour le choix global, voir aussi <a href="/fr/guides/comment-choisir-sa-robe-de-mariee">comment choisir sa robe de mariée</a>.</p>'
+        intro_html: '<p>La robe de mariée bohème associe liberté, romantisme et confort : matières fluides, dentelles délicates, dos ouvert ou manches légères. Son esthétique s''inscrit dans une histoire plus large, entre inspirations folk, goût des matières naturelles et cérémonies moins formelles que les mariages très classiques.</p><p>Très demandée sur la Côte d''Azur pour les mariages en plein air, elle convient aux cérémonies au bord de l''eau ou dans les domaines de Provence. Ce guide vous aide à affiner vos critères avant le rendez-vous ; pour le choix global, voir aussi <a href="/fr/guides/comment-choisir-sa-robe-de-mariee">comment choisir sa robe de mariée</a>.</p>'
         sections:
           matieres:
             title: Matières et détails
-            body_html: "<p>Le bohème mise sur le mouvement : crêpe léger, tulle souple, dentelle guipure, broderies florales ou manches en transparence. Évitez les tissus trop rigides qui cassent l'effet naturel.</p><p>Côté détails : dos nu ou en V, ceintures fines, petites traînes ou traînes amovibles pour la soirée. Les finitions peuvent être volontairement « imparfaites » (franges, broderies artisanales) pour un rendu authentique.</p>"
+            body_html: "<p>Le bohème mise sur le mouvement : crêpe léger, tulle souple, dentelle guipure, broderies florales ou manches en transparence. La guipure, plus épaisse et dessinée que certaines dentelles fines, donne un relief visible en photo ; le crêpe apporte au contraire une ligne plus fluide et plus mate.</p><p>Côté détails : dos nu ou en V, ceintures fines, petites traînes ou traînes amovibles pour la soirée. Les finitions peuvent paraître plus libres (franges, motifs floraux, bords festonnés), mais elles demandent autant de précision qu'une robe très structurée.</p>"
           coupe:
             title: Coupes et silhouettes
             body_html: "<p>La robe bohème n'est pas une seule coupe : elle peut être fluide type empire, légèrement sirène, ou près du corps avec jupe évasée. Les manches longues en dentelle sont emblématiques, mais les bretelles fines ou le bustier fonctionnent aussi.</p><p>Pensez à votre confort : marche sur le sable, vent en bord de mer, chaleur estivale. En cabine, nous testons la robe en mouvement, pas seulement face au miroir.</p>"
@@ -254,7 +254,7 @@ fr:
             body_html: '<p>Couronne de fleurs, voile léger, sandales plates ou talons compensés, bijoux dorés discrets : les accessoires complètent la robe sans la surcharger. Évitez les diadèmes trop « princesse » si votre ligne est naturelle.</p><p>En boutique, nous coordonnons voile, bijoux et chaussures avec la robe choisie. Voir aussi notre guide <a href="/fr/guides/chaussures-accessoires-soiree">chaussures et accessoires</a>.</p>'
           histoire:
             title: Le style bohème en boutique
-            body_html: "<p>Le bohème bridal s'est imposé dans les années 2010, porté par les mariages « Pinterest » et les cérémonies personnalisées. À Cannes, nous l'observons sur les plages du Midi, les jardins de villas et les mariages festivaliers.</p><p>Notre sélection mêle créateurs reconnus et pièces au tombé fluide testées en cabine : ce qui compte, c'est que la robe vous ressemble et résiste aux conditions réelles de votre journée — vent, chaleur, photos en extérieur.</p>"
+            body_html: "<p>Le style bohème bridal s'est surtout diffusé dans les années 2010, avec l'essor des cérémonies en extérieur, des mariages plus personnels et des références visuelles partagées en ligne. Il reprend aussi des codes plus anciens : dentelle, manches souples, couronnes florales, silhouettes moins corsetées.</p><p>Sur la Côte d'Azur, ce style doit rester concret : vent, chaleur, lumière forte, photos en extérieur. Une robe bohème réussie n'est pas seulement jolie sur cintre ; elle garde son tombé quand on marche, quand on s'assoit et quand la cérémonie se prolonge.</p>"
         faq:
           q1:
             question: La robe bohème convient-elle à un mariage sur la plage ?
@@ -272,14 +272,14 @@ fr:
         link_title: Robe de mariée morphologie
         header_title: Quelle robe selon sa morphologie ?
         header_subtitle: Sirène, princesse, fourreau, bustier
-        intro_html: '<p>Les guides morphologie donnent des repères, mais aucune règle ne remplace l''essayage : une robe sirène peut surprendre une silhouette qu''on croyait « princesse only ». En cabine à Cannes, nous observons votre posture, votre longueur de buste et votre confort en mouvement.</p><p>Ce guide vous aide à cibler vos recherches avant le rendez-vous. Ensuite, affinez sur <a href="/fr/essayage-robe-de-mariee-cannes">l''essayage à Cannes</a> et notre page <a href="/fr/robe-de-mariee-cannes">robes de mariée</a>.</p>'
+        intro_html: '<p>Les guides morphologie donnent des repères, mais aucune règle ne remplace l''essayage : une robe sirène peut surprendre une silhouette qu''on croyait « princesse only ». Une coupe fonctionne grâce à des éléments très concrets : placement de la taille, soutien du buste, ampleur de jupe, verticalité des lignes.</p><p>Ce guide vous aide à cibler vos recherches avant le rendez-vous sans vous enfermer dans une catégorie. Ensuite, affinez sur <a href="/fr/essayage-robe-de-mariee-cannes">l''essayage à Cannes</a> et notre page <a href="/fr/robe-de-mariee-cannes">robes de mariée</a>.</p>'
         sections:
           sirene:
             title: Robe sirène
-            body_html: "<p>La sirène épouse le buste et les hanches, puis s'évase au genou. Elle valorise les silhouettes en sablier et crée une ligne très féminine.</p><p>Attention au confort si vous devez monter des marches ou danser longtemps : vérifiez l'aisance en marchant. Une traîne légère ou amovible peut aider.</p>"
+            body_html: "<p>La sirène épouse le buste et les hanches, puis s'évase généralement autour du genou ou un peu au-dessus selon les modèles. Elle crée une ligne très dessinée, appréciée pour son effet sculptural.</p><p>Techniquement, tout se joue dans l'équilibre entre maintien et aisance : si l'évasement démarre trop bas, la marche devient difficile ; si la matière est trop souple, la ligne perd son intention. Vérifiez les escaliers, la danse et la position assise avant de décider.</p>"
           princesse:
             title: Robe princesse
-            body_html: "<p>Jupe volumineuse à partir de la taille naturelle ou hanche. Elle équilibre les épaules et les hanches, et apporte une allure majestueuse en photos.</p><p>Idéale pour les mariées qui souhaitent une taille marquée sans moulant sur les hanches. Le volume peut être ajusté selon les modèles.</p>"
+            body_html: "<p>La robe princesse repose sur un contraste net : buste ajusté, jupe volumineuse à partir de la taille naturelle ou parfois légèrement plus bas. Ce volume peut venir du tulle, de l'organza, de jupons ou de plusieurs épaisseurs de tissu.</p><p>Elle apporte une allure majestueuse en photos, mais le volume doit rester proportionné au lieu et à votre stature. Dans un petit espace, une jupe très ample peut être moins pratique ; dans un domaine ou une grande salle, elle prend mieux sa place.</p>"
           fourreau:
             title: Robe fourreau
             body_html: "<p>Ligne droite ou légèrement évasée, proche du corps sans être stretch moulant. Allure chic, moderne, souvent minimaliste.</p><p>Convient à celles qui aiment une silhouette épurée. Les matières fluides (crêpe) offrent plus de confort que le satin très structuré.</p>"
@@ -303,14 +303,14 @@ fr:
         link_title: Smoking ou costume mariage
         header_title: Smoking ou costume de mariage ?
         header_subtitle: Le bon choix selon l'occasion
-        intro_html: <p>Le choix entre smoking et costume structure l'élégance du marié et des invités masculins. Le dress code de la cérémonie, l'heure et le lieu — église, plage, domaine, soirée — orientent la décision.</p><p>En boutique à Cannes, nous proposons les deux, en location ou vente, avec essayage. Pour les formules location, voir <a href="/fr/guides/location-smoking-costume-cannes">location smoking Cannes</a> et <a href="/fr/costume-mariage-cannes">costumes mariage</a>.</p>
+        intro_html: <p>Le choix entre smoking et costume vient de deux traditions différentes. Le smoking appartient aux codes du soir et du black tie ; le costume reste plus souple, adapté aux cérémonies de jour, aux mariages civils et aux événements moins formels.</p><p>Le dress code, l'heure et le lieu — église, plage, domaine, soirée — orientent donc la décision. En boutique à Cannes, nous proposons les deux, en location ou vente, avec essayage. Pour les formules location, voir <a href="/fr/guides/location-smoking-costume-cannes">location smoking Cannes</a> et <a href="/fr/costume-mariage-cannes">costumes mariage</a>.</p>
         sections:
           smoking:
             title: Quand choisir le smoking ?
-            body_html: "<p>Mariage en soirée, réception black tie, gala ou cérémonie très habillée : le smoking (noir ou midnight blue) est la référence. Chemise blanche, nœud papillon, chaussures vernies ou richelieu noirs.</p><p>Le midnight blue photographie souvent mieux sous les flashs que le noir pur. Essayez les deux en cabine.</p>"
+            body_html: "<p>Mariage en soirée, réception black tie, gala ou cérémonie très habillée : le smoking est la référence. Il se distingue du costume par ses détails satinés ou gros-grain sur le revers, la ligne du pantalon et l'association traditionnelle avec chemise blanche et nœud papillon.</p><p>Le noir reste le grand classique. Le midnight blue est aussi utilisé dans les tenues de soirée, car il peut garder davantage de profondeur sous certaines lumières artificielles. Essayez les deux en cabine selon le contexte réel de l'événement.</p>"
           costume:
             title: Quand choisir le costume ?
-            body_html: "<p>Mariage civil, cérémonie en journée, jardin ou ambiance smart chic : costume trois pièces bleu, beige, gris ou vert bouteille. Cravate ou nœud selon le niveau de formalité.</p><p>Plus souple que le smoking, il se réutilise pour d'autres événements professionnels ou familiaux.</p>"
+            body_html: "<p>Mariage civil, cérémonie en journée, jardin ou ambiance smart chic : le costume trois pièces bleu, beige, gris ou vert bouteille offre plus de liberté. La cravate allonge la silhouette ; le nœud papillon donne une note plus cérémonielle.</p><p>Le costume a aussi un avantage pratique : il se réutilise plus facilement pour d'autres événements professionnels ou familiaux. La qualité de l'ajustement reste essentielle : épaules nettes, longueur de manche correcte, pantalon bien cassé sur la chaussure.</p>"
           accessoires:
             title: Accessoires et cohérence
             body_html: "<p>Pochette, ceinture, boutons de manchette, montre discrète : les détails unifient la tenue. Harmonisez avec les couleurs du cortège et de la mariée si vous êtes témoin.</p><p>Tout est coordonné en boutique — pas besoin d'acheter ailleurs sans essayage.</p>"
@@ -359,11 +359,11 @@ fr:
         link_title: Tenue gala & cérémonie
         header_title: Tenue de gala et cérémonie
         header_subtitle: Galas, baptêmes, remises de diplômes et soirées habillées
-        intro_html: '<p>Galas, baptêmes, remises de diplômes ou soirées pendant le Festival de Cannes : chaque occasion a son niveau de formalité. Une tenue réussie respecte le code sans être ostentatoire.</p><p>Autour D''Un Soir à Cannes habille femmes et hommes en location ou vente, avec essayage et retouches. Comparez <a href="/fr/guides/robe-invitee-mariage">tenue invitée</a> pour les mariages et <a href="/fr/guides/location-smoking-costume-cannes">location smoking</a> pour les hommes.</p>'
+        intro_html: '<p>Galas, baptêmes, remises de diplômes ou soirées pendant le Festival de Cannes : chaque occasion a son niveau de formalité. Une tenue réussie respecte le code sans être ostentatoire, car l''élégance dépend autant du contexte que de la pièce portée.</p><p>Les codes de soirée viennent d''une longue tradition mondaine : robe longue pour les événements les plus habillés, smoking pour le black tie, cocktail pour les moments moins protocolaires. Comparez <a href="/fr/guides/robe-invitee-mariage">tenue invitée</a> pour les mariages et <a href="/fr/guides/location-smoking-costume-cannes">location smoking</a> pour les hommes.</p>'
         sections:
           femmes:
             title: Pour les femmes
-            body_html: "<p><strong>Gala / black tie</strong> : robe longue, matières nobles (soie, satin, crêpe), bijoux discrets. <strong>Cocktail habillé</strong> : midi ou courte sophistiquée. <strong>Baptême chic</strong> : couleurs pastel ou imprimés élégants, éviter le blanc pur si la famille le réserve.</p><p>En cabine, nous vérifions le confort assis et la longueur avec vos chaussures.</p>"
+            body_html: "<p><strong>Gala / black tie</strong> : robe longue, matières nobles (soie, satin, crêpe), bijoux discrets. <strong>Cocktail habillé</strong> : midi ou courte sophistiquée. <strong>Baptême chic</strong> : couleurs pastel ou imprimés élégants, éviter le blanc pur si la famille le réserve.</p><p>Le satin reflète davantage la lumière, le crêpe donne un rendu plus mat, le tulle apporte du volume. En cabine, vérifiez le confort assis, la longueur avec vos chaussures et le comportement de la matière sous une lumière forte.</p>"
           hommes:
             title: Pour les hommes
             body_html: "<p>Smoking pour black tie ; costume trois pièces pour cocktail habillé ou gala moins strict. Chaussures vernies ou richelieu, pochette et nœud papillon coordonnés.</p><p>Pendant le Festival de Cannes, anticipez la réservation : forte demande en mai.</p>"
@@ -372,7 +372,7 @@ fr:
             body_html: "<p>Baptêmes, communions, galas caritatifs, soirées d'entreprise, remises de prix, dîners sur la Croisette : nous couvrons l'essentiel des dress codes de la région.</p><p>Location 4 jours ou achat selon fréquence d'utilisation — nos conseillers vous orientent.</p>"
           festival:
             title: Festival de Cannes et événements prestige
-            body_html: "<p>Montées de marches et soirées privées exigent une tenue irréprochable. Essayage obligatoire pour valider la coupe sous les flashs.</p><p>Réservez tôt en mai : créneaux et tailles partent rapidement.</p>"
+            body_html: "<p>Montées de marches et soirées privées exigent une tenue très lisible : ligne nette, longueur maîtrisée, accessoires cohérents. Les flashs accentuent les reflets, les plis et les transparences ; une matière magnifique en lumière douce peut réagir différemment en photo.</p><p>Le Festival concentre beaucoup de demandes en mai : mieux vaut anticiper les essayages, surtout pour les smokings, robes longues et retouches de dernière minute.</p>"
         faq:
           q1:
             question: Quelle différence entre tenue de gala et tenue de cocktail ?
@@ -412,7 +412,7 @@ fr:
         link_title: Location smoking & costume
         header_title: Location smoking et costume à Cannes
         header_subtitle: Essayage, retouches et formules location en boutique
-        intro_html: '<p>Pour un mariage, un gala ou le Festival de Cannes, louer un smoking ou un costume permet d''accéder à une tenue haut de gamme sans investir à l''achat. Chez <strong>Autour D''Un Soir</strong>, la location se fait en boutique : essayage, retouches atelier et accessoires sur place.</p><p>Notre formule standard couvre 4 jours (retrait avant l''événement, retour après). Comparez avec notre guide <a href="/fr/guides/achat-ou-location-tenue-soiree">achat ou location</a> et le comparatif <a href="/fr/guides/smoking-ou-costume-mariage">smoking ou costume</a>.</p>'
+        intro_html: '<p>Pour un mariage, un gala ou le Festival de Cannes, louer un smoking ou un costume permet d''adapter précisément la tenue à un événement donné : niveau de formalité, heure, lieu, saison, photos. L''enjeu n''est pas seulement la taille, mais la cohérence du vêtement complet.</p><p>Notre formule standard couvre 4 jours (retrait avant l''événement, retour après). Pour comprendre les différences de codes, comparez avec notre guide <a href="/fr/guides/achat-ou-location-tenue-soiree">achat ou location</a> et le comparatif <a href="/fr/guides/smoking-ou-costume-mariage">smoking ou costume</a>.</p>'
         sections:
           formules:
             title: Nos formules de location
@@ -422,10 +422,10 @@ fr:
             body_html: "<p>Chaque location commence par un essayage : nous vérifions la taille aux épaules, la longueur de veste et de pantalon, le tombé de la chemise. Notre atelier réalise ensuite les retouches nécessaires (ourlets, pinces, manches) pour que la tenue vous corresponde parfaitement.</p><p>Prévoyez vos chaussures de cérémonie à l'essayage pour ajuster la longueur du pantalon. Le rendez-vous est recommandé, surtout en période du Festival de Cannes ou des mariages estivaux.</p>"
           occasions:
             title: Mariage, gala et événements
-            body_html: "<p><strong>Mariage en soirée</strong> : smoking ou costume foncé selon le dress code. <strong>Mariage de jour</strong> : costume bleu, beige ou gris. <strong>Gala ou cérémonie</strong> : smoking black tie ou costume trois pièces.</p><p>Pendant le Festival de Cannes, nous accueillons de nombreux clients pour des soirées et montées de marches : anticipez votre réservation. Tenues enfants disponibles pour cortèges et photos de groupe.</p>"
+            body_html: "<p><strong>Mariage en soirée</strong> : smoking ou costume foncé selon le dress code. <strong>Mariage de jour</strong> : costume bleu, beige ou gris. <strong>Gala ou cérémonie</strong> : smoking black tie ou costume trois pièces.</p><p>Le vocabulaire compte : black tie implique normalement smoking et nœud papillon ; cocktail laisse plus de liberté ; cérémonie civile autorise souvent une tenue plus claire ou moins formelle. Pendant le Festival de Cannes, anticipez votre réservation pour les soirées et montées de marches.</p>"
           accessoires_homme:
             title: Accessoires et finitions
-            body_html: "<p>Nœud papillon ou cravate, pochette, ceinture, boutons de manchette : tout peut être coordonné en boutique. Chaussures vernies ou richelieu selon le niveau de formalité.</p><p>Nous vous aidons à composer une tenue harmonieuse, du costume aux détails, pour un rendu soigné sans stress le jour J.</p>"
+            body_html: "<p>Nœud papillon ou cravate, pochette, ceinture, boutons de manchette : ces détails donnent le niveau de formalité. Avec un smoking, la ceinture de smoking ou le gilet bas, le nœud papillon et les chaussures noires restent les repères les plus classiques.</p><p>Avec un costume, la cravate, la pochette et la couleur des chaussures peuvent assouplir ou habiller l'ensemble. L'important est de ne pas mélanger trop de registres dans une même tenue.</p>"
           enfants:
             title: Costumes pour enfants
             body_html: "<p>Garçons d'honneur, pages et enfants du cortège : tailles adaptées, coupes ajustées en atelier. Location ou vente selon les modèles.</p><p>Prévoir un essayage enfant en même temps que le vôtre permet de harmoniser les couleurs et le niveau de formalité de la famille.</p>"
@@ -460,13 +460,13 @@ fr:
         sections:
           chaussures:
             title: Choisir ses chaussures
-            body_html: "<p>Talons, escarpins, sandales ou mules : la hauteur influence la longueur de robe ou de pantalon. Prévoyez l'essayage <strong>avec</strong> votre tenue pour ajuster l'ourlet si besoin.</p><p>Hommes : richelieu, mocassins ou vernis selon smoking ou costume. Confort pour danser et marcher sur tapis ou sable (mariages en extérieur).</p>"
+            body_html: "<p>Talons, escarpins, sandales ou mules : la hauteur influence la longueur de robe ou de pantalon. Prévoyez l'essayage <strong>avec</strong> votre tenue pour ajuster l'ourlet si besoin ; quelques centimètres changent le tombé d'une robe longue.</p><p>Hommes : richelieu, mocassins ou vernis selon smoking ou costume. Le soulier verni appartient aux codes les plus habillés ; un cuir lisse noir reste souvent plus polyvalent. Pensez aussi au sol : tapis, pavés, sable ou pelouse ne demandent pas la même stabilité.</p>"
           accessoires:
             title: Sacs, bijoux et finitions
             body_html: "<p>Clutch, pochette, ceinture, bijoux, châle ou boléro : chaque élément doit servir la silhouette, pas la surcharger. Pour un mariage, évitez les bijoux trop voyants qui rivalisent avec la mariée.</p><p>Sélection femme et homme en boutique pour mariage, gala et soirée.</p>"
           coordonner:
             title: Coordonner l'ensemble
-            body_html: "<p>Palette cohérente : métal des bijoux (or ou argent), teinte des chaussures, ton du sac. Deux couleurs dominantes + un accent suffisent souvent.</p><p>En cabine, nos conseillères valident l'ensemble sous différentes lumières — utile pour les photos en extérieur sur la Riviera.</p>"
+            body_html: "<p>Palette cohérente : métal des bijoux (or ou argent), teinte des chaussures, ton du sac. Deux couleurs dominantes + un accent suffisent souvent. Les accessoires servent à créer un rappel, pas à ajouter une nouvelle idée à chaque détail.</p><p>Pensez aussi à la photographie : les matières brillantes captent les flashs, les pastels très clairs peuvent se rapprocher du blanc, les métaux trop mélangés donnent parfois une impression moins nette. La tenue complète doit rester lisible de près comme de loin.</p>"
           boutique:
             title: Retrouver nos collections à Cannes
             body_html: "<p>29 boulevard Carnot. Essayage sur place pour finaliser la tenue avant le jour J. Idéal en complément d'une robe choisie chez nous ou apportée pour harmonisation.</p>"
@@ -483,15 +483,15 @@ fr:
       histoire_autour_dun_soir_cannes:
         link_title: Histoire de la boutique
         header_title: L'histoire d'Autour D'Un Soir à Cannes
-        header_subtitle: Une adresse de mode et d'événementiel depuis 1980
-        intro_html: '<p>En 1980, Autour D''Un Soir ouvre ses portes au 29 boulevard Carnot, au cœur de Cannes. À l''époque, la ville vit déjà au rythme du cinéma, des galas et des mariages sur la Riviera — mais peu de boutiques allient garde-robe événementielle, costumes et atelier de retouches sous un même toit.</p><p>Quarante ans plus tard, cette philosophie n''a pas changé : accompagner chaque client avec exigence, que ce soit pour un mariage, une soirée, une production audiovisuelle ou une reconstitution historique. Découvrez aussi notre page <a href="/fr/robe-de-mariee-cannes">robes de mariée à Cannes</a>.</p>'
+        header_subtitle: Une adresse de mode, d'atelier et d'événementiel
+        intro_html: '<p>Depuis 1980, Autour D''Un Soir construit son savoir-faire autour de la garde-robe événementielle, des costumes et de l''atelier de retouches. À Cannes, la ville vit au rythme du cinéma, des galas et des mariages sur la Riviera — un univers où l''essayage, le choix des matières et l''ajustement comptent autant que le style.</p><p>Cette philosophie n''a pas changé : accompagner chaque client avec exigence, que ce soit pour un mariage, une soirée, une production audiovisuelle ou une reconstitution historique. Découvrez aussi notre page <a href="/fr/robe-de-mariee-cannes">robes de mariée à Cannes</a>.</p>'
         sections:
           origines:
             title: Les débuts en 1980
-            body_html: "<p>Les années 80 marquent un tournant dans la mode événementielle : les mariées explorent des coupes plus variées, les soirées se multiplient sur la Côte d'Azur, et Cannes confirme son statut de vitrine internationale.</p><p>La boutique naît de cette énergie locale : proposer des tenues d'exception avec un vrai accompagnement humain, pas seulement un rail de vêtements.</p>"
+            body_html: "<p>Les années 80 marquent un tournant visible dans la mode événementielle : silhouettes affirmées, épaules plus présentes, goût des matières brillantes et robes de mariée parfois très volumineuses. Dans le même temps, Cannes continue d'associer cinéma, soirées privées et événements de prestige.</p><p>Dans cet univers, la tenue n'est pas seulement fonctionnelle : elle est liée à un moment public, photographié, partagé. Cette culture de l'événement explique l'importance donnée au choix, à l'essayage et à l'ajustement.</p>"
           evolution:
             title: Quatre décennies de métier
-            body_html: "<p>Au fil des saisons, nous avons vu passer les volumes des robes princesse, le retour du minimalisme, l'essor du bohème et la demande croissante pour des tenues de cinéma et de télévision. L'atelier s'est imposé comme un pilier : sans retouches expertes, une robe — qu'elle soit de mariée ou de soirée — ne révèle jamais tout son potentiel.</p><p>Cette continuité explique pourquoi des familles reviennent chez nous : elles retrouvent la même exigence de finition, génération après génération.</p>"
+            body_html: "<p>Au fil des saisons, nous avons vu passer les volumes des robes princesse, le retour du minimalisme, l'essor du bohème et la demande croissante pour des tenues de cinéma et de télévision. Ces changements suivent aussi l'évolution des usages : mariages civils plus fréquents, cérémonies en extérieur, soirées professionnelles, productions audiovisuelles plus mobiles.</p><p>L'atelier s'est imposé comme un pilier, car une robe ou un costume ne se résume pas à une taille indiquée sur une étiquette. Ourlet, buste, manche, tombé de veste : ce sont ces détails qui transforment un vêtement disponible en boutique en tenue adaptée à une personne et à une occasion.</p>"
           cannes:
             title: Cannes et la Côte d'Azur
             body_html: "<p>Notre ville n'est pas un simple décor : le Festival, les mariages en bord de mer, les galas d'entreprise et les tournages façonnent notre quotidien. Nous connaissons les contraintes réelles — chaleur estivale, vent en bord de mer, escaliers de domaines provençaux — et nous les intégrons dans nos conseils.</p><p>Cette ancrage local nourrit notre regard : nous savons ce qui fonctionne sur la Riviera, en cabine comme sur un plateau de tournage.</p>"
@@ -501,7 +501,7 @@ fr:
         faq:
           q1:
             question: Depuis quand Autour D'Un Soir existe-t-il ?
-            answer_html: "<p>La boutique a ouvert en 1980 au 29 boulevard Carnot à Cannes.</p>"
+            answer_html: "<p>L'histoire d'Autour D'Un Soir commence en 1980. Aujourd'hui, la boutique vous accueille au 29 boulevard Carnot à Cannes.</p>"
           q2:
             question: Quelles activités la boutique propose-t-elle ?
             answer_html: "<p>Robes de mariée (vente), tenues de soirée (location et vente), costumes, costumes d'époque, retouches atelier et prestations pour entreprises et audiovisuel.</p>"
@@ -516,10 +516,10 @@ fr:
         sections:
           atelier:
             title: L'atelier au quotidien
-            body_html: "<p>Ourlets, pinces, bretelles, traînes, doublures : chaque retouche commence par une observation minutieuse en cabine. La couturière note les points de tension, la posture et la longueur réelle en mouvement — pas seulement face au miroir.</p><p>Cette étape est invisible pour le client final, mais elle détermine le confort et l'élégance le jour J.</p>"
+            body_html: "<p>Ourlets, pinces, bretelles, traînes, doublures : chaque retouche commence par une observation minutieuse en cabine. La couturière note les points de tension, la posture et la longueur réelle en mouvement — pas seulement face au miroir.</p><p>Techniquement, une retouche réussie respecte la construction du vêtement : sens du tissu, doublure, baleines, fermeture, broderie ou motif de dentelle. Cette étape est discrète pour le client final, mais elle détermine le confort et l'élégance le jour J.</p>"
           gestes:
             title: Les gestes qui comptent
-            body_html: "<p>Repiquer un buste sans déformer une dentelle, raccourcir une traîne en préservant le tombé, ajuster une manche pour qu'elle suive le bras en dansant : ce sont des gestes précis, appris sur des années de pratique.</p><p>Notre équipe cumule des décennies d'expérience, de la robe de mariée au costume de scène.</p>"
+            body_html: "<p>Repiquer un buste sans déformer une dentelle, raccourcir une traîne en préservant le tombé, ajuster une manche pour qu'elle suive le bras en dansant : ce sont des gestes précis, appris sur des années de pratique.</p><p>La difficulté varie selon la matière. Le satin marque facilement les points de tension, le tulle demande de la patience sur les épaisseurs, la dentelle impose souvent de replacer un motif à la main. C'est ce savoir-faire textile qui donne un rendu propre sans que la retouche se voie.</p>"
           mariage:
             title: Pourquoi c'est crucial pour le mariage
             body_html: '<p>Une robe de mariée achetée sans retouche reste rarement parfaite : les morphologies sont uniques, et les modèles de série sont conçus pour une taille standard. C''est pourquoi nous vendons les robes de mariée en boutique avec un accompagnement atelier complet.</p><p>En savoir plus sur <a href="/fr/guides/savoir-faire-retouches-robe-mariee">le savoir-faire des retouches mariée</a>.</p>'
@@ -541,10 +541,10 @@ fr:
         sections:
           buste:
             title: Buste et maintien
-            body_html: "<p>Le buste doit soutenir sans comprimer. Sur une robe bustier ou dos nu, quelques millimètres de différence transforment le tombé. Nos couturières reprennent les pinces latérales, ajustent les bretelles et renforcent si besoin la structure interne.</p>"
+            body_html: "<p>Le buste doit soutenir sans comprimer. Sur une robe bustier ou dos nu, quelques millimètres de différence transforment le tombé : trop large, la robe glisse ; trop serrée, elle marque la peau et limite la respiration.</p><p>Les robes structurées utilisent souvent pinces, baleines, doublures ou renforts internes. Les retouches doivent préserver cette architecture, surtout quand le dos est ouvert ou que la dentelle laisse moins de marge de correction.</p>"
           longueur:
             title: Longueur et ourlet
-            body_html: "<p>L'ourlet se décide avec vos chaussures du jour J, sur un sol proche de celui de la cérémonie. En extérieur sur la Riviera, nous anticipons aussi le terrain : herbe, sable ou dalles.</p>"
+            body_html: "<p>L'ourlet se décide avec vos chaussures du jour J, sur un sol proche de celui de la cérémonie. Une robe longue doit effleurer sans faire trébucher ; un pantalon de costume doit casser correctement sur la chaussure.</p><p>En extérieur sur la Riviera, nous anticipons aussi le terrain : herbe, sable, dalles ou escaliers. Une longueur spectaculaire en boutique peut devenir moins pratique si la cérémonie se déroule dehors ou si la soirée prévoit beaucoup de déplacements.</p>"
           traine:
             title: Traîne et mouvement
             body_html: "<p>Une traîne spectaculaire demande un équilibre entre esthétique et praticité. Nous pouvons prévoir des systèmes d'accroche pour la soirée, ou raccourcir légèrement pour faciliter la danse.</p>"
@@ -566,10 +566,10 @@ fr:
         sections:
           periodes:
             title: Les grandes périodes
-            body_html: "<p>Renaissance, XVIIIe siècle, époque napoléonienne, Belle Époque, années folles, mid-century, seventies et eighties : chaque période a ses volumes, ses couleurs et ses accessoires. Un costume crédible repose sur ces détails, pas seulement sur une « ambiance » générale.</p>"
+            body_html: "<p>Renaissance, XVIIIe siècle, époque napoléonienne, Belle Époque, années folles, mid-century, seventies et eighties : chaque période a ses volumes, ses couleurs et ses accessoires. La Renaissance joue volontiers sur les manches, les brocarts et les silhouettes construites ; le XVIIIe siècle met l'accent sur les paniers, les habits brodés et les perruques ; les années 20 raccourcissent et fluidifient les lignes.</p><p>Un costume crédible repose sur ces détails, pas seulement sur une « ambiance » générale. Même pour un événement non académique, choisir deux ou trois repères justes évite l'effet déguisement.</p>"
           matieres:
             title: Matières et finitions
-            body_html: "<p>Broderies, dentelles, boutons, coiffes et chapeaux complètent la silhouette. En boutique, nous expliquons comment ces éléments s'assemblent pour rester cohérents avec une époque donnée.</p>"
+            body_html: "<p>Broderies, dentelles, boutons, coiffes et chapeaux complètent la silhouette. Les accessoires sont souvent ce qui rend une époque reconnaissable : une coiffe, une cravate, une ganse, une paire de gants ou un bijou orientent immédiatement la lecture.</p><p>La cohérence passe aussi par les matières. Un tissu trop contemporain, trop brillant ou trop extensible peut casser l'illusion historique, même si la coupe générale paraît correcte.</p>"
           usages:
             title: Théâtre, cinéma et mariages thématiques
             body_html: <p>Nos costumes d'époque servent des productions scéniques, des tournages et des événements privés. Pour un mariage à thème, voir aussi <a href="/fr/guides/costume-epoque-mariage-theme">mariage d'époque</a> ou nos <a href="/fr/nos_autres_activites">autres activités</a>.</p>
@@ -591,10 +591,10 @@ fr:
         sections:
           choix:
             title: Choisir une époque
-            body_html: "<p>Belle Époque, années 20, Renaissance : chaque choix implique des contraintes différentes pour les invités. Mieux vaut une direction claire et quelques références visuelles partagées qu'un thème trop vague.</p>"
+            body_html: "<p>Belle Époque, années 20, Renaissance : chaque choix implique des contraintes différentes pour les invités. La Belle Époque évoque robes longues, corsages, chapeaux et élégance de promenade ; les années 20 privilégient lignes plus droites, perles, franges et coiffures courtes ; la Renaissance demande des volumes plus théâtraux.</p><p>Mieux vaut une direction claire et quelques références visuelles partagées qu'un thème trop vague. Un thème « ancien » sans période précise produit souvent un mélange difficile à harmoniser sur les photos.</p>"
           coherence:
             title: Cohérence des silhouettes
-            body_html: "<p>Mariée, marié, témoins et invités : définissez un niveau d'exigence commun. Un costume d'époque parfait à côté d'une tenue moderne peut créer un décalage sur les photos.</p>"
+            body_html: "<p>Mariée, marié, témoins et invités : définissez un niveau d'exigence commun. Vous pouvez viser une inspiration historique souple ou une reconstitution plus stricte, mais il faut le décider avant les essayages.</p><p>Un costume d'époque très fidèle à côté d'une tenue moderne peut créer un décalage sur les photos. À l'inverse, une palette de couleurs cohérente, quelques accessoires bien choisis et des silhouettes compatibles suffisent parfois à créer l'atmosphère sans contraindre tous les invités.</p>"
           boutique:
             title: Le rôle de la boutique
             body_html: <p>Nous conseillons sur les pièces disponibles, les retouches nécessaires et la faisabilité selon la date. Découvrez notre collection sur <a href="/fr/guides/costumes-epoque-histoire-mode">costumes d'époque</a>.</p>
@@ -616,10 +616,10 @@ fr:
         sections:
           role:
             title: Le rôle du costumier
-            body_html: "<p>Le costumier traduit une époque, un statut social, une personnalité. Il anticipe les retouches entre les prises, prévoit des doublons et s'adapte aux imprévus du plateau.</p>"
+            body_html: "<p>Le costumier traduit une époque, un statut social, une personnalité. Une veste trop neuve, une robe trop actuelle ou une couleur mal choisie peuvent contredire le personnage avant même qu'il parle.</p><p>Le travail est aussi logistique : anticiper les retouches entre les prises, prévoir des doublons si une scène salit ou abîme une tenue, adapter le vêtement aux mouvements de caméra et aux raccords. Le costume doit raconter quelque chose tout en supportant les contraintes du plateau.</p>"
           cannes:
             title: Cannes, ville de tournage
-            body_html: "<p>Proximité des studios, du Festival et des lieux iconiques : la Riviera attire les productions internationales. Notre stock varié et notre réactivité répondent à ces besoins ponctuels et exigeants.</p>"
+            body_html: "<p>La Riviera attire des productions variées grâce à ses décors : bord de mer, hôtels, villas, rues anciennes, ports et lieux associés au Festival. Cannes concentre aussi une culture de l'image qui rend les demandes parfois très rapides.</p><p>Dans ce contexte, un stock varié est utile parce qu'un tournage peut avoir besoin d'une silhouette contemporaine, d'un smoking, d'une robe de gala ou d'un costume d'époque dans des délais courts. La disponibilité ne suffit pas : il faut aussi que la pièce fonctionne à l'écran.</p>"
           stock:
             title: Un stock pensé pour l'image
             body_html: '<p>Costumes d''époque, smokings, robes de soirée, uniformes : la diversité permet de couvrir des silhouettes et des styles variés. Découvrez aussi <a href="/fr/nos_autres_activites">nos prestations entreprises et audiovisuelles</a>.</p>'
@@ -666,10 +666,10 @@ fr:
         sections:
           origines:
             title: Origines et symboles
-            body_html: "<p>Dans l'Antiquité et le Moyen Âge, la robe de noces signale la richesse de la famille plus qu'un style unique. Le blanc se généralise au XIXe siècle, notamment après le mariage de la reine Victoria.</p>"
+            body_html: "<p>Dans l'Antiquité et le Moyen Âge, la robe de noces signale souvent la richesse de la famille plus qu'un style unique. Les mariées portent fréquemment leur plus belle robe, parfois colorée, avec des matières et ornements qui indiquent leur rang social.</p><p>Dans les usages occidentaux, le blanc se généralise progressivement au XIXe siècle, notamment après le mariage de la reine Victoria en 1840. Il devient ensuite un symbole fortement associé à la mariée, même si l'ivoire, le champagne et d'autres nuances restent très présents.</p>"
           couleurs:
             title: Couleurs et cultures
-            body_html: "<p>Rouge en Asie, bleu dans certaines traditions européennes : le mariage reste un rituel culturel. Aujourd'hui, ivoire, champagne et blush côtoient le blanc pur en boutique.</p>"
+            body_html: "<p>Rouge dans plusieurs traditions asiatiques, bleu associé à la fidélité dans certains usages européens anciens, blanc dans l'imaginaire occidental moderne : le mariage reste un rituel culturel avant d'être une simple question de mode.</p><p>Aujourd'hui, ivoire, champagne, nude, blush ou touches colorées côtoient le blanc pur. Ces nuances changent le rendu sur la peau et en photo : un blanc optique peut paraître très lumineux, tandis qu'un ivoire adoucit souvent le contraste.</p>"
           moderne:
             title: La mariée contemporaine
             body_html: '<p>Deuxième mariage, mariage civil, robe courte, costume : les codes se libèrent. En boutique à Cannes, nous accompagnons cette diversité. Voir <a href="/fr/guides/comment-choisir-sa-robe-de-mariee">comment choisir sa robe</a>.</p>'
@@ -712,14 +712,14 @@ fr:
         link_title: Tenues Festival de Cannes
         header_title: Le Festival de Cannes et ses tenues mythiques
         header_subtitle: Histoire du tapis rouge cannois
-        intro_html: "<p>Depuis 1946, le Festival de Cannes transforme la ville en vitrine mondiale de l'élégance. Robes longues, smokings, créations audacieuses : le tapis rouge raconte l'histoire de la mode autant que celle du cinéma.</p><p>Installés à Cannes depuis 1980, nous avons vu évoluer ces codes vestimentaires. Ce guide retrace cette histoire — et le lien entre Festival et boutique.</p>"
+        intro_html: "<p>Depuis 1946, le Festival de Cannes transforme la ville en vitrine mondiale de l'élégance. Robes longues, smokings, créations audacieuses : le tapis rouge raconte l'histoire de la mode autant que celle du cinéma.</p><p>Nous avons vu évoluer ces codes vestimentaires. Ce guide retrace cette histoire — et le lien entre Festival et boutique.</p>"
         sections:
           tapis:
             title: Naissance du tapis rouge
-            body_html: "<p>Le tapis rouge s'impose progressivement comme rituel. Les tenues deviennent un événement en soi, commenté autant que les films.</p>"
+            body_html: "<p>Le tapis rouge s'impose progressivement comme rituel de représentation. Il organise l'arrivée des artistes, crée une distance symbolique avec le public et donne aux photographes un cadre parfaitement identifiable.</p><p>À Cannes, ce rituel est devenu indissociable de l'image du Festival : les tenues sont commentées autant que les films, parce qu'elles racontent aussi une époque, une maison de couture, une personnalité et parfois une prise de risque.</p>"
           evolution:
             title: Évolution des silhouettes
-            body_html: "<p>Des années 50 aux créations contemporaines, les robes de gala gagnent en audace. Les smokings classiques côtoient aujourd'hui des interprétations modernes.</p>"
+            body_html: "<p>Des années 50 aux créations contemporaines, les robes de gala gagnent en audace : volumes sculpturaux, dos nus, fentes, broderies, transparences maîtrisées. Les silhouettes changent, mais la robe longue reste un repère fort des grands événements.</p><p>Côté masculin, le smoking classique demeure une référence, tout en cohabitant aujourd'hui avec des interprétations plus modernes : vestes colorées, coupes plus ajustées, détails de col ou accessoires moins attendus.</p>"
           boutique:
             title: Autour D'Un Soir et le Festival
             body_html: <p>Pendant le Festival, la boutique accueille clients et professionnels pour des tenues de soirée et smokings. Voir notre page <a href="/fr/festival-de-cannes">Festival de Cannes</a> et le guide <a href="/fr/guides/tenue-gala-ceremonie">tenue de gala</a>.</p>
