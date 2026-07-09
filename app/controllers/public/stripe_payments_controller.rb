@@ -68,10 +68,12 @@ module Public
       end
 
       respond_to do |format|
+        added_to_cart = false
         if session[:cart].include?(id)
           flash.now[:notice] = t("public.stripe_payments.flash.already_in_cart")
         else
           session[:cart] << id
+          added_to_cart = true
           flash.now[:success] = t("public.stripe_payments.flash.added_to_cart", name: @produit.nom)
         end
 
@@ -80,7 +82,7 @@ module Public
         @cart = ids.filter_map { |cid| by_id[cid] }
 
         format.turbo_stream do
-          render turbo_stream: [
+          streams = [
             turbo_stream.replace(
               "produit_#{@produit.id}_button",
               partial: "public/pages/cart_buttons/shop_product_button",
@@ -90,6 +92,14 @@ module Public
             turbo_stream.replace("cart_badge", partial: "public/shared/cart_nav_link"),
             shop_cart_floating_footer_stream
           ]
+          if added_to_cart && helpers.analytics_consent?
+            stream = helpers.ga4_event_turbo_stream(
+              "add_to_cart",
+              helpers.ga4_add_to_cart_payload(@produit)
+            )
+            streams << stream if stream
+          end
+          render turbo_stream: streams
         end
         format.html { redirect_to produit_path(slug: @produit.handle, id: @produit.id) }
       end
@@ -178,7 +188,9 @@ module Public
         redirect_to root_path and return
       end
 
-      @payment = StripePayment.includes(:commande).find(params[:id])
+      @payment = StripePayment.includes(:commande, stripe_payment_items: { produit: :categorie_produits })
+                              .find(params[:id])
+      @ga4_purchase_event = helpers.ga4_track_purchase_event(@payment, session)
     rescue ActiveRecord::RecordNotFound
       flash[:alert] = t("public.stripe_payments.flash.not_found")
       redirect_to root_path

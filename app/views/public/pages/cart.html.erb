@@ -138,8 +138,19 @@
 
                 <%# CTA buttons — primary %>
                 <div class="d-grid gap-2">
+                  <% ga4_checkout_payload = analytics_consent? ? ga4_begin_checkout_payload(@cart) : nil %>
+                  <% if ga4_checkout_payload.present? %>
+                    <script>
+                      function ga4BeginCheckout() {
+                        if (typeof gtag !== "function") return true;
+                        gtag("event", "begin_checkout", <%= ga4_checkout_payload.to_json.html_safe %>);
+                        return true;
+                      }
+                    </script>
+                  <% end %>
                   <%= form_with url: stripe_payments_path, method: :post,
-                      data: { turbo: false }, class: "m-0" do |f| %>
+                      data: { turbo: false },
+                      html: ga4_checkout_payload.present? ? { onsubmit: "return ga4BeginCheckout();", class: "m-0" } : { class: "m-0" } do |f| %>
                     <div class="form-check mb-2">
                       <input type="checkbox"
                              class="form-check-input"

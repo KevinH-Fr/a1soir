@@ -19,6 +19,12 @@
     <% if @payment.present? %>
       <% paid = @payment.status == "paid" %>
 
+      <% if @ga4_purchase_event.present? %>
+        <%= render "public/shared/ga4_event",
+              event_name: "purchase",
+              payload: @ga4_purchase_event %>
+      <% end %>
+
       <%# ── Main grid ───────────────────────────────────────────────── %>
       <div class="row justify-content-center g-3 g-lg-4 mb-5">
         <div class="col-12 col-xl-10 col-xxl-9">

@@ -121,6 +121,15 @@
 <%= render partial: "product_gallery_modal", locals: { produit: @produit } %>
 <%= render partial: "public/pages/vous_aimerez_aussi", locals: { produits_similaires: @produits_similaires } %>
 
+<% if analytics_consent? && OnlineSales.available? && @produit.eshop? && @produit.stripe_price_id.present? %>
+  <% ga4_view_item = ga4_view_item_payload(@produit) %>
+  <% if ga4_view_item.present? %>
+    <%= render "public/shared/ga4_event",
+          event_name: "view_item",
+          payload: ga4_view_item %>
+  <% end %>
+<% end %>
+
 <div class="text-center my-5 py-4">
   <%= cta_button(type: "produits", url: @back_url, variant: "light", text: t("public.pages.produit.view_more_products")) %>
 </div>
