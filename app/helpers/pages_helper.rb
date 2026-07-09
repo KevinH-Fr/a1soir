@@ -562,6 +562,15 @@ module PagesHelper
     end
   end
 
+  # back_url des cartes produit : listing → filtres courants ; fiche produit → session préservée
+  def produit_card_back_url
+    if controller_path == "public/pages" && action_name == "produit"
+      session[:produit_back_url].presence || produits_index_path
+    else
+      produits_back_url
+    end
+  end
+
   def public_card(
     icon:, 
     title:, 
