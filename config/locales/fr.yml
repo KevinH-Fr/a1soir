@@ -610,6 +610,9 @@ fr:
     product:
       description_with_category: "%{product} — %{category} à Cannes. Location et vente chez Autour D'Un Soir."
       description_fallback: "%{product} — location et vente à Cannes chez Autour D'Un Soir."
+    category:
+      title: "%{category} | Autour D'Un Soir"
+      description: "%{category} — location et vente à Cannes. Découvrez notre sélection chez Autour D'Un Soir."
     faq_schema:
       hours_fallback: "Du mardi au samedi, sur rendez-vous."
 
@@ -884,6 +887,7 @@ fr:
           title: "Une question ? Un projet ?"
           description: "Notre équipe est impatiente de vous rencontrer et de vous accompagner"
       produits:
+        listing_heading: "Nos produits"
         search:
           placeholder: "Rechercher"
         filters:

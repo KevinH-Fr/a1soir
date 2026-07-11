@@ -84,4 +84,79 @@ RSpec.describe StructuredDataHelper, type: :helper do
       )
     end
   end
+
+  describe "#website_node" do
+    before do
+      allow(helper).to receive(:produits_index_url).and_return("https://a1soir.com/fr/produits")
+    end
+
+    it "includes SearchAction for product search" do
+      node = helper.send(:website_node)
+
+      expect(node.dig("potentialAction", "@type")).to eq("SearchAction")
+      expect(node.dig("potentialAction", "target", "urlTemplate")).to include("https://a1soir.com/fr/produits")
+      expect(node.dig("potentialAction", "target", "urlTemplate")).to include("{search_term_string}")
+    end
+  end
+
+  describe "#product_schema" do
+    let(:categorie) { CategorieProduit.create!(nom: "Robes de soirée", service: false) }
+    let(:couleur) { Couleur.create!(nom: "Noir") }
+    let(:taille) { Taille.create!(nom: "38") }
+    let(:produit) do
+      Produit.create!(
+        nom: "Robe test",
+        reffrs: "REF-123",
+        prixvente: 120,
+        quantite: 1,
+        actif: true,
+        eshop: true,
+        today_availability: true,
+        couleur: couleur,
+        taille: taille
+      ).tap { |p| p.categorie_produits << categorie }
+    end
+
+    before do
+      allow(helper).to receive(:produit_url).and_return("https://a1soir.com/fr/produit/robe-test-1")
+    end
+
+    it "includes sku, category, color and size" do
+      schema = helper.product_schema(produit: produit)
+
+      expect(schema["sku"]).to eq(produit.id.to_s)
+      expect(schema["category"]).to eq("robes de soirée")
+      expect(schema["color"]).to eq("noir")
+      expect(schema["size"]).to eq("38")
+    end
+  end
+
+  describe "#item_list_schema" do
+    let(:produit) do
+      Produit.create!(
+        nom: "Robe liste",
+        prixvente: 80,
+        quantite: 1,
+        actif: true,
+        eshop: true,
+        today_availability: true
+      )
+    end
+
+    before do
+      allow(helper).to receive(:produit_url).and_return("https://a1soir.com/fr/produit/robe-liste-1")
+    end
+
+    it "returns ItemList with product URLs" do
+      schema = helper.item_list_schema(produits: [produit])
+
+      expect(schema["@type"]).to eq("ItemList")
+      expect(schema["itemListElement"].first).to include(
+        "@type" => "ListItem",
+        "position" => 1,
+        "name" => "Robe liste",
+        "url" => "https://a1soir.com/fr/produit/robe-liste-1"
+      )
+    end
+  end
 end

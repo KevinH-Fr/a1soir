@@ -243,6 +243,9 @@ en:
     product:
       description_with_category: "%{product} — %{category} in Cannes. Rental and sales at Autour D'Un Soir."
       description_fallback: "%{product} — rental and sales in Cannes at Autour D'Un Soir."
+    category:
+      title: "%{category} | Autour D'Un Soir"
+      description: "%{category} — rental and sales in Cannes. Browse our selection at Autour D'Un Soir."
     faq_schema:
       hours_fallback: "Tuesday to Saturday, by appointment."
 
@@ -517,6 +520,7 @@ en:
           title: "A question? A project?"
           description: "Our team is looking forward to meeting and assisting you"
       produits:
+        listing_heading: "Our products"
         search:
           placeholder: "Search"
         filters:

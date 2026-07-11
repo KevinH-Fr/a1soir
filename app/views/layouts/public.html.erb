@@ -4,6 +4,9 @@
     <title><%= meta_title %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description" content="<%= meta_description %>">
+    <% if content_for?(:robots) %>
+      <meta name="robots" content="<%= yield(:robots) %>">
+    <% end %>
     <meta name="keywords" content="<%= meta_keywords %>">
     <link rel="canonical" href="<%= public_page_url %>">
     <% I18n.available_locales.each do |locale| %>
@@ -19,7 +22,7 @@
     <!-- Open Graph -->
     <meta property="og:title" content="<%= meta_title %>">
     <meta property="og:description" content="<%= meta_description %>">
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="<%= content_for?(:og_type) ? yield(:og_type) : 'website' %>">
     <meta property="og:url" content="<%= public_page_url %>">
     <meta property="og:image" content="<%= content_for?(:og_image) ? yield(:og_image) : structured_store_logo_url %>">
     <!-- Twitter Card -->

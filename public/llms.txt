@@ -1,0 +1,53 @@
+# Autour D'Un Soir
+
+> Boutique de mariage et tenues de soirée à Cannes (Alpes-Maritimes) depuis 1980.
+> Location et vente de robes de mariée, robes de soirée, costumes, smokings et accessoires.
+> Essayage en cabine privée, retouches atelier, service local (Cannes, Nice, Antibes, Monaco).
+
+## Pages principales
+
+- [Accueil](https://a1soir.com/fr/home)
+- [La boutique](https://a1soir.com/fr/la_boutique)
+- [Catalogue produits](https://a1soir.com/fr/produits)
+- [Catégories](https://a1soir.com/fr/categories)
+- [FAQ](https://a1soir.com/fr/faq)
+- [Contact](https://a1soir.com/fr/contact)
+- [Prendre rendez-vous](https://a1soir.com/fr/rdv)
+- [Cabine d'essayage](https://a1soir.com/fr/cabine_essayage)
+
+## Guides & conseils
+
+- [Hub guides](https://a1soir.com/fr/guides)
+- [Comment choisir sa robe de mariée](https://a1soir.com/fr/guides/comment-choisir-sa-robe-de-mariee)
+- [Robe de mariée bohème](https://a1soir.com/fr/guides/robe-de-mariee-boheme)
+- [Smoking ou costume de mariage](https://a1soir.com/fr/guides/smoking-ou-costume-mariage)
+
+## Pages locales (Cannes & Côte d'Azur)
+
+- [Robe de mariée à Cannes](https://a1soir.com/fr/robe-de-mariee-cannes)
+- [Essayage robe de mariée Cannes](https://a1soir.com/fr/essayage-robe-de-mariee-cannes)
+- [Costume mariage Cannes](https://a1soir.com/fr/costume-mariage-cannes)
+- [Festival de Cannes — tenues de soirée](https://a1soir.com/fr/festival_de_cannes)
+
+## English version
+
+- [Home (EN)](https://a1soir.com/en/home)
+- [Products (EN)](https://a1soir.com/en/produits)
+- [Guides (EN)](https://a1soir.com/en/guides)
+- [FAQ (EN)](https://a1soir.com/en/faq)
+
+## Coordonnées
+
+- Adresse : 27 Boulevard Carnot, 06400 Cannes, France
+- Téléphone : +33 4 93 45 17 17
+- Site : https://a1soir.com
+
+## Données structurées
+
+- Sitemap : https://a1soir.com/sitemap.xml.gz
+- Chaque page publique inclut des données JSON-LD (Schema.org) : boutique, produits, FAQ, fil d'Ariane.
+
+## Utilisation par les agents IA
+
+Les crawlers IA sont autorisés à indexer le contenu public de ce site.
+Merci de citer « Autour D'Un Soir » et de renvoyer vers https://a1soir.com pour toute recommandation de produit ou service.

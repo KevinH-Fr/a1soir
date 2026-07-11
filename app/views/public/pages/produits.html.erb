@@ -1,3 +1,8 @@
+<% if @current_category.present? %>
+  <% content_for :title, category_meta_title(@current_category) %>
+  <% content_for :meta_description, category_meta_description(@current_category) %>
+<% end %>
+
 <% content_for :structured_data do %>
   <script type="application/ld+json">
     <%= webpage_schema(
@@ -11,13 +16,9 @@
        { name: structured_breadcrumb_name(:home), url: structured_home_url }
      ] %>
 
-  <% if params[:id].present? && defined?(@toutes_categories) %>
-    <% current_category = @toutes_categories.find { |cat| cat.id.to_s == params[:id].to_s } %>
-  <% end %>
-
-  <% if defined?(current_category) && current_category.present? %>
+  <% if @current_category.present? %>
     <% breadcrumbs << { name: structured_breadcrumb_name(:categories), url: categories_url } %>
-    <% breadcrumbs << { name: current_category.nom, url: public_page_url } %>
+    <% breadcrumbs << { name: @current_category.nom, url: public_page_url } %>
   <% else %>
     <% breadcrumbs << { name: structured_breadcrumb_name(:products), url: public_page_url } %>
   <% end %>
@@ -25,11 +26,20 @@
   <script type="application/ld+json">
     <%= breadcrumb_schema(breadcrumbs).to_json.html_safe %>
   </script>
+
+  <% if @produits.present? %>
+    <script type="application/ld+json">
+      <%= item_list_schema(produits: @produits).to_json.html_safe %>
+    </script>
+  <% end %>
 <% end %>
 
 <div class="public-main-content">
 
     <div class="p-4">
+        <h1 class="h3 text-light text-center mb-3">
+          <%= @current_category&.nom || t("public.pages.produits.listing_heading") %>
+        </h1>
 
         <%= render partial: "public/pages/produits_search" %>
 

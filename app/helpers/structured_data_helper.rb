@@ -80,6 +80,7 @@ module StructuredDataHelper
       "@type" => "Product",
       "name" => produit.nom,
       "url" => produit_url(slug: produit.handle, id: produit.id, locale: I18n.locale),
+      "sku" => product_schema_sku(produit),
       "brand" => {
         "@type" => "Brand",
         "name" => "Autour D'Un Soir"
@@ -92,10 +93,35 @@ module StructuredDataHelper
     image = product_schema_image_url(produit)
     schema["image"] = image if image.present?
 
+    category = product_schema_category(produit)
+    schema["category"] = category if category.present?
+
+    color = produit.couleur&.nom
+    schema["color"] = color if color.present?
+
+    size = produit.taille&.nom
+    schema["size"] = size if size.present?
+
     offers = product_schema_offers(produit)
     schema["offers"] = offers if offers.present?
 
     schema
+  end
+
+  # Schéma ItemList pour une page catalogue / catégorie
+  def item_list_schema(produits:)
+    {
+      "@context" => "https://schema.org",
+      "@type" => "ItemList",
+      "itemListElement" => produits.each_with_index.map do |produit, index|
+        {
+          "@type" => "ListItem",
+          "position" => index + 1,
+          "name" => produit.nom,
+          "url" => produit_url(slug: produit.handle, id: produit.id, locale: I18n.locale)
+        }
+      end
+    }
   end
 
   # Libellés du fil d'Ariane JSON-LD (FR/EN via locales)
@@ -230,6 +256,19 @@ module StructuredDataHelper
     "#{ApplicationHelper::CLOUDINARY_BASE_IMAGE_URL}/q_auto,f_auto,w_1200/#{key}"
   end
 
+  def product_schema_sku(produit)
+    produit.id.to_s
+  end
+
+  def product_schema_category(produit)
+    produit.categorie_produits.merge(CategorieProduit.not_service).order(:nom).first&.nom
+  end
+
+  def website_search_url_template
+    search_param = "q[nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont]"
+    "#{produits_index_url(locale: I18n.locale)}?#{CGI.escape(search_param)}={search_term_string}"
+  end
+
   def product_schema_offers(produit)
     availability = produit.today_availability ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
     offers = []
@@ -300,7 +339,15 @@ module StructuredDataHelper
     {
       "@type" => "WebSite",
       "name" => "Autour D'Un Soir",
-      "url" => structured_site_url
+      "url" => structured_site_url,
+      "potentialAction" => {
+        "@type" => "SearchAction",
+        "target" => {
+          "@type" => "EntryPoint",
+          "urlTemplate" => website_search_url_template
+        },
+        "query-input" => "required name=search_term_string"
+      }
     }
   end
 

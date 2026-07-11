@@ -130,6 +130,22 @@ module MetaTagsHelper
     end
   end
 
+  def category_meta_title(categorie)
+    I18n.t(
+      "meta_tags.category.title",
+      category: categorie.nom,
+      default: "#{categorie.nom} | Autour D'Un Soir"
+    )
+  end
+
+  def category_meta_description(categorie)
+    I18n.t(
+      "meta_tags.category.description",
+      category: categorie.nom,
+      default: "#{categorie.nom} — location et vente à Cannes. Catalogue Autour D'Un Soir."
+    )
+  end
+
   private
 
   def meta_tag_value(key, page_key = nil)

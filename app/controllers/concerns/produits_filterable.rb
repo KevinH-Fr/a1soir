@@ -141,6 +141,10 @@ module ProduitsFilterable
 
     # 🔁 Then paginate the available produits (9 per page)
     @pagy, @produits = pagy(available_produits_scope, items: 6)
+
+    if params[:id].present? && !params[:id].is_a?(Array)
+      @current_category = CategorieProduit.find_by(id: params[:id])
+    end
   end
 
   # Calcule les options de filtres disponibles à partir d'un scope de produits

@@ -4,5 +4,26 @@ User-agent: *
 # <meta name="robots" content="noindex, nofollow"> dans le layout admin.
 # Ici on ne bloque donc pas tout le site, uniquement on déclare le sitemap.
 
-# Remplace ce domaine si nécessaire dans ton environnement de production.
+# Manifest pour agents IA / LLM
+# https://a1soir.com/llms.txt
+
 Sitemap: https://a1soir.com/sitemap.xml.gz
+
+# Crawlers IA — contenu public autorisé
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
