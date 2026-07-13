@@ -172,13 +172,14 @@ RSpec.describe AnalyticsHelper, type: :helper do
       allow(helper).to receive(:analytics_consent?).and_return(true)
     end
 
-    it "outputs a gtag event script" do
+    it "outputs a Stimulus ga4-event element" do
       html = helper.render(
         partial: "public/shared/ga4_event",
         locals: { event_name: "view_item", payload: helper.ga4_view_item_payload(produit) }
       )
 
-      expect(html).to include('gtag("event", &quot;view_item&quot;')
+      expect(html).to include('data-controller="ga4-event"')
+      expect(html).to include("view_item")
       expect(html).to include("Veste costume 441100/82")
     end
 

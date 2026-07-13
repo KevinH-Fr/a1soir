@@ -1,9 +1,8 @@
 # Vérification SEO prod — commandes
 
-Tests à lancer après déploiement sur `https://a1soir.com`.
+Tests sur `https://a1soir.com` après déploiement.
 
-Remplacer `PRODUIT_SLUG-ID` par une vraie fiche (ex. `robe-de-mariee-dentelle-bustier-abigail-2748`)  
-Remplacer `CATEGORIE_SLUG-ID` par une vraie catégorie (ex. `accessoires-43`)
+Produit de référence : **Louana** (`louana-robe-longue-bustier-drape-satin-fendue-4111`)
 
 ---
 
@@ -26,28 +25,31 @@ Attendu :
 
 ```bash
 curl -s https://a1soir.com/fr/home | grep 'og:type'
-curl -s https://a1soir.com/fr/produit/PRODUIT_SLUG-ID | grep -E 'og:type|canonical|og:url'
-curl -s "https://a1soir.com/fr/produit/PRODUIT_SLUG-ID?back_url=%2Ffr%2Fproduits" | grep canonical
+
+curl -s https://a1soir.com/fr/produit/louana-robe-longue-bustier-drape-satin-fendue-4111 | grep -E 'og:type|canonical|og:url'
+
+curl -s "https://a1soir.com/fr/produit/louana-robe-longue-bustier-drape-satin-fendue-4111?back_url=%2Ffr%2Fproduits%3Fid%255B%255D%3D46%26id%255B%255D%3D44%26id%255B%255D%3D43" | grep canonical
 ```
 
 Attendu :
 - `/fr/home` → `content="website"`
-- fiche produit → `content="product"`
-- `canonical` / `og:url` sans `back_url`
+- Louana → `content="product"`
+- `canonical` = `https://a1soir.com/fr/produit/louana-robe-longue-bustier-drape-satin-fendue-4111` (sans `back_url`)
 
 ---
 
 ## 3. JSON-LD Product (sku, category, size)
 
 ```bash
-curl -s https://a1soir.com/fr/produit/PRODUIT_SLUG-ID | grep -o '"@type":"Product"[^}]*'
-curl -s https://a1soir.com/fr/produit/PRODUIT_SLUG-ID | grep -o '"sku":"[^"]*"'
+curl -s https://a1soir.com/fr/produit/louana-robe-longue-bustier-drape-satin-fendue-4111 | grep -o '"@type":"Product"[^}]*'
+
+curl -s https://a1soir.com/fr/produit/louana-robe-longue-bustier-drape-satin-fendue-4111 | grep -o '"sku":"[^"]*"'
 ```
 
 Attendu :
 - `"@type":"Product"`
-- `"sku"` = **id produit** (ex. `"2748"`), pas la ref fournisseur
-- `"category"` et `"size"` si renseignés en base
+- `"sku":"4111"` (id produit, pas ref fournisseur)
+- `"category"`, `"size":"42"`, `"color"` si renseignés en base
 
 ---
 
@@ -55,12 +57,13 @@ Attendu :
 
 ```bash
 curl -s https://a1soir.com/fr/home | grep -o 'SearchAction\|search_term_string'
-curl -s "https://a1soir.com/fr/produits?q%5Bnom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont%5D=TERME_RECHERCHE" | grep -i TERME_RECHERCHE
+
+curl -s "https://a1soir.com/fr/produits?q%5Bnom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont%5D=louana" | grep -i louana
 ```
 
 Attendu :
 - `SearchAction` + `urlTemplate` + `{search_term_string}` dans le JSON-LD
-- recherche avec un terme connu → produits correspondants
+- recherche `louana` → fiche Louana dans les résultats
 
 ---
 
@@ -68,13 +71,18 @@ Attendu :
 
 ```bash
 curl -s https://a1soir.com/fr/produits | grep -E '<title>|meta name="description"'
-curl -s https://a1soir.com/fr/produits/CATEGORIE_SLUG-ID | grep -E '<title>|meta name="description"'
+
+curl -s https://a1soir.com/fr/produits/accessoires-43 | grep -E '<title>|meta name="description"'
+
+curl -s "https://a1soir.com/fr/produits?id%5B%5D=46&id%5B%5D=44&id%5B%5D=43" | grep '<title>'
+
 curl -s https://a1soir.com/fr/produits | grep ItemList
 ```
 
 Attendu :
 - index → title « Nos produits »
-- catégorie → title `{nom catégorie} | Autour D'Un Soir`
+- catégorie seule (`accessoires-43`) → title `accessoires | Autour D'Un Soir`
+- multi-catégories (`id[]=46&44&43`) → title générique « Nos produits »
 - `ItemList` présent sur l'index si produits affichés
 
 ---
@@ -83,6 +91,7 @@ Attendu :
 
 ```bash
 curl -s https://a1soir.com/fr/cart | grep robots
+
 curl -s https://a1soir.com/fr/status_payment/ID_PAIEMENT | grep robots
 ```
 
@@ -94,8 +103,8 @@ Attendu :
 
 ## 7. Outils externes (navigateur)
 
-- [Google Rich Results Test](https://search.google.com/test/rich-results) → fiche produit, `Product` détecté
-- [Meta Sharing Debugger](https://developers.facebook.com/tools/debug/) → fiche produit, `og:type: product`
+- [Google Rich Results Test](https://search.google.com/test/rich-results?url=https%3A%2F%2Fa1soir.com%2Ffr%2Fproduit%2Flouana-robe-longue-bustier-drape-satin-fendue-4111) → `Product` détecté
+- [Meta Sharing Debugger](https://developers.facebook.com/tools/debug/?q=https%3A%2F%2Fa1soir.com%2Ffr%2Fproduit%2Flouana-robe-longue-bustier-drape-satin-fendue-4111) → `og:type: product`
 
 ---
 

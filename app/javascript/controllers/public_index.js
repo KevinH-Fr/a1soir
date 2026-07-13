@@ -44,3 +44,6 @@ application.register("navbar-outside-close", NavbarOutsideCloseController)
 
 import ProduitsSearchController from "./produits_search_controller"
 application.register("produits-search", ProduitsSearchController)
+
+import Ga4EventController from "./ga4_event_controller"
+application.register("ga4-event", Ga4EventController)
