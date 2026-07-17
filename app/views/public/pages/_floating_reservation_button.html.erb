@@ -5,9 +5,11 @@
   <div class="container-fluid">
     <div class="d-flex justify-content-center">
       <%= link_to "#{cabine_essayage_path(open_form: true, from_cabine: true)}#reservationForm", 
-          class: "btn btn-light btn-lg px-5 rounded-0",
+          class: "btn btn-light btn-lg rounded-0 public-floating-bar__btn",
           data: { turbo_frame: "_top" } do %>
-        <i class="bi bi-calendar-check me-2"></i><%= t("public.pages.cabine_essayage.book_fitting") %>
+        <i class="bi bi-calendar-check public-floating-bar__icon" aria-hidden="true"></i>
+        <span class="public-floating-bar__label public-floating-bar__label--long"><%= t("public.pages.cabine_essayage.book_fitting") %></span>
+        <span class="public-floating-bar__label public-floating-bar__label--short"><%= t("public.pages.cabine_essayage.book_fitting_short") %></span>
       <% end %>
     </div>
   </div>

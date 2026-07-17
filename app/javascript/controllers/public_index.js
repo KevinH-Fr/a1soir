@@ -47,3 +47,9 @@ application.register("produits-search", ProduitsSearchController)
 
 import Ga4EventController from "./ga4_event_controller"
 application.register("ga4-event", Ga4EventController)
+
+import LazyPaginationController from "./lazy_pagination_controller"
+application.register("lazy-pagination", LazyPaginationController)
+
+import ScrollToTopController from "./scroll_to_top_controller"
+application.register("scroll-to-top", ScrollToTopController)

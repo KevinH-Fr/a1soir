@@ -888,6 +888,9 @@ fr:
           description: "Notre équipe est impatiente de vous rencontrer et de vous accompagner"
       produits:
         listing_heading: "Nos produits"
+        scroll_to_top:
+          title: "Remonter en haut de la page"
+          aria: "Remonter en haut de la page"
         search:
           placeholder: "Rechercher"
         filters:
@@ -1336,6 +1339,7 @@ fr:
         cart_title: "Ma cabine d'essayage"
         add_products: "Ajouter des produits"
         book_fitting: "Réserver mon essayage"
+        book_fitting_short: "Réserver"
         share_whatsapp: "WhatsApp"
         share_email: "E-mail"
         share_copy: "Copier"
@@ -1388,6 +1392,7 @@ fr:
           one: "1 article"
           other: "%{count} articles"
         floating_validate: "Valider mon panier"
+        floating_validate_short: "Valider panier"
         try_in_store: "Essayer en boutique — Prendre RDV"
         print_list: "Imprimer ma liste"
         share_whatsapp: "WhatsApp"

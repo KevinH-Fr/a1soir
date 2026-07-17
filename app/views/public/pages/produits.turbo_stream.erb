@@ -12,6 +12,7 @@
     %>
     <%= turbo_stream.replace :pagination do %>
         <%= turbo_frame_tag :pagination, loading: :lazy,
+            data: { controller: "lazy-pagination" },
             src: if is_single_category
                 produits_path(format: :turbo_stream, 
                     id: params[:id], slug: params[:slug], 

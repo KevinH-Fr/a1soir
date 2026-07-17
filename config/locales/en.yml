@@ -521,6 +521,9 @@ en:
           description: "Our team is looking forward to meeting and assisting you"
       produits:
         listing_heading: "Our products"
+        scroll_to_top:
+          title: "Back to top"
+          aria: "Back to top"
         search:
           placeholder: "Search"
         filters:
@@ -969,6 +972,7 @@ en:
         cart_title: "My fitting room"
         add_products: "Add products"
         book_fitting: "Book my fitting"
+        book_fitting_short: "Book fitting"
         share_whatsapp: "WhatsApp"
         share_email: "E-mail"
         share_copy: "Copy"
@@ -1021,6 +1025,7 @@ en:
           one: "1 item"
           other: "%{count} items"
         floating_validate: "Review my cart"
+        floating_validate_short: "My cart"
         try_in_store: "Try in store — Book an appointment"
         print_list: "Print my list"
         share_whatsapp: "WhatsApp"
