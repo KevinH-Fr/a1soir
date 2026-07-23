@@ -1,4 +1,6 @@
 class GoogleCalendarService
+  include Rails.application.routes.url_helpers
+
   SCOPES = [Google::Apis::CalendarV3::AUTH_CALENDAR]
 
   def initialize
@@ -10,18 +12,7 @@ class GoogleCalendarService
 
   # Create event and return the event ID
   def create_event_from_meeting(meeting)
-    event = Google::Apis::CalendarV3::Event.new(
-      summary: meeting.full_name,
-      description: meeting.full_details || "",
-      location: meeting.lieu || "Unknown location",
-      start: { date_time: meeting.start_time.to_datetime.rfc3339 },
-      end: { date_time: meeting.end_time.to_datetime.rfc3339 },
-      uid: "a1soir-#{meeting.id}@a1soir.com",
-      sequence: meeting.updated_at.to_i,
-      status: "confirmed"
-    )
-
-    created_event = @service.insert_event(@calendar_id, event)
+    created_event = @service.insert_event(@calendar_id, build_event_from_meeting(meeting))
     created_event.id # Return the event ID
   end
 
@@ -29,18 +20,7 @@ class GoogleCalendarService
   def update_event_from_meeting(meeting)
     return unless meeting.google_calendar_event_id
 
-    event = Google::Apis::CalendarV3::Event.new(
-      summary: meeting.full_name,
-      description: meeting.full_details || "",
-      location: meeting.adresse_rdv || "Unknown location",
-      start: { date_time: meeting.start_time.to_datetime.rfc3339 },
-      end: { date_time: meeting.end_time.to_datetime.rfc3339 },
-      uid: "a1soir-#{meeting.id}@a1soir.com",
-      sequence: meeting.updated_at.to_i,
-      status: "confirmed"
-    )
-
-    @service.update_event(@calendar_id, meeting.google_calendar_event_id, event)
+    @service.update_event(@calendar_id, meeting.google_calendar_event_id, build_event_from_meeting(meeting))
   end
 
   # Delete event from Google Calendar using the event ID
@@ -54,6 +34,37 @@ class GoogleCalendarService
   end
 
   private
+
+  def build_event_from_meeting(meeting)
+    Google::Apis::CalendarV3::Event.new(
+      summary: meeting.full_name,
+      description: calendar_description(meeting),
+      location: meeting.adresse_rdv || meeting.lieu || "Unknown location",
+      start: { date_time: meeting.start_time.to_datetime.rfc3339 },
+      end: { date_time: meeting.end_time.to_datetime.rfc3339 },
+      uid: "a1soir-#{meeting.id}@a1soir.com",
+      sequence: meeting.updated_at.to_i,
+      status: "confirmed"
+    )
+  end
+
+  def calendar_description(meeting)
+    parts = [meeting.full_details.presence]
+
+    if meeting.commande.present?
+      parts << "Commande : #{admin_commande_url(meeting.commande, **admin_url_options)}"
+    end
+
+    parts.compact.join("\n\n")
+  end
+
+  def admin_url_options
+    if Rails.env.development?
+      { host: "admin.lvh.me", port: 3000, protocol: "http" }
+    else
+      { host: ENV.fetch("ADMIN_MAILER_HOST", "admin.a1soir.com"), protocol: "https" }
+    end
+  end
 
   def authorize
     credentials_json = ENV['GOOGLE_CREDENTIALS_JSON']
