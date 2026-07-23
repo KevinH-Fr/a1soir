@@ -97,4 +97,52 @@ RSpec.describe StripePayment, type: :model do
       expect(described_class.a_expedier).to be_empty
     end
   end
+
+  describe "#total_poids_grammes" do
+    let!(:produit_a) { Produit.create!(nom: "Robe A poids", quantite: 1, poids: 800) }
+    let!(:produit_b) { Produit.create!(nom: "Robe B poids", quantite: 1, poids: 450) }
+
+    def payment_with_items(items)
+      StripePayment.create!(
+        stripe_payment_id: "pi_poids_#{SecureRandom.hex(4)}",
+        amount: 5000,
+        currency: "eur",
+        status: "paid"
+      ).tap do |payment|
+        items.each do |produit, qty|
+          StripePaymentItem.create!(stripe_payment: payment, produit: produit, quantity: qty, unit_amount: 5000)
+        end
+      end
+    end
+
+    it "sums product weights multiplied by line quantities" do
+      payment = payment_with_items([[produit_a, 1], [produit_b, 2]])
+      expect(payment.total_poids_grammes).to eq(800 + (450 * 2))
+    end
+
+    it "falls back to commande articles when payment items are missing" do
+      profile = Profile.create!(prenom: "V", nom: "Shop")
+      client = Client.create!(prenom: "A", nom: "B", mail: "poids-fallback@example.com")
+      commande = Commande.create!(
+        client: client,
+        profile: profile,
+        nom: "E-shop",
+        montant: 50,
+        devis: false,
+        type_locvente: "vente",
+        typeevent: Commande::EVENEMENTS_OPTIONS.first,
+        eshop: true
+      )
+      Article.create!(commande: commande, produit: produit_a, quantite: 2, prix: 50, total: 100, locvente: "vente")
+      payment = StripePayment.create!(
+        stripe_payment_id: "pi_legacy_poids_#{SecureRandom.hex(4)}",
+        amount: 5000,
+        currency: "eur",
+        status: "paid",
+        commande: commande
+      )
+
+      expect(payment.total_poids_grammes).to eq(1600)
+    end
+  end
 end

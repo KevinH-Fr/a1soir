@@ -206,7 +206,7 @@ class Admin::CommandesController < Admin::ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_commande
       @commande = Commande.includes(
-        :client, :profile, :stripe_payment, qr_code_attachment: :blob
+        :client, :profile, { stripe_payment: { stripe_payment_items: :produit } }, qr_code_attachment: :blob
       ).preload(:avoir_rembs).find(params[:id])
     end
 

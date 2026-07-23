@@ -33,4 +33,10 @@ class ShippingCostService
     tier = SHIPPING_TIERS.find { |max_g, _| total_grams <= max_g }
     (tier || SHIPPING_TIERS.last)[1]
   end
+
+  # Affichage du poids colis (grammes) — même unité que fee_cents_for / checkout.
+  def self.format_weight_grams(grams)
+    g = [grams.to_i, 0].max
+    "#{g.to_s.reverse.scan(/\d{1,3}/).join("\u00a0").reverse} g"
+  end
 end

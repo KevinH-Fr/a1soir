@@ -96,4 +96,19 @@ RSpec.describe ShippingCostService do
       end
     end
   end
+
+  describe ".format_weight_grams" do
+    it "formats grams with thin space grouping" do
+      expect(described_class.format_weight_grams(1700)).to eq("1\u00a0700 g")
+    end
+
+    it "formats values under 1000 without grouping" do
+      expect(described_class.format_weight_grams(800)).to eq("800 g")
+    end
+
+    it "returns 0 g for zero or negative input" do
+      expect(described_class.format_weight_grams(0)).to eq("0 g")
+      expect(described_class.format_weight_grams(-50)).to eq("0 g")
+    end
+  end
 end

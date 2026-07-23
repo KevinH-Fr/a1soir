@@ -79,9 +79,29 @@
                     <% if stripe_payment.shipping_country.present? %>
                       <div class="mt-1"><%= stripe_payment.shipping_country %></div>
                     <% end %>
+                    <div class="mt-2 pt-2 border-top">
+                      <span class="text-muted">Poids colis</span>
+                      <% if stripe_payment.colis_poids_calculable? %>
+                        <% total_grams = stripe_payment.total_poids_grammes %>
+                        <div class="fw-semibold text-dark">
+                          <%= ShippingCostService.format_weight_grams(total_grams) %>
+                        </div>
+                      <% else %>
+                        <div class="text-dark">—</div>
+                      <% end %>
+                    </div>
                   </div>
                 <% else %>
                   <p class="small text-muted mb-0 lh-sm">Adresse non enregistrée (paiement antérieur ou session incomplète).</p>
+                  <% if stripe_payment.colis_poids_calculable? %>
+                    <% total_grams = stripe_payment.total_poids_grammes %>
+                    <div class="mt-2 pt-2 border-top small text-dark lh-sm">
+                      <span class="text-muted">Poids colis</span>
+                      <div class="fw-semibold">
+                        <%= ShippingCostService.format_weight_grams(total_grams) %>
+                      </div>
+                    </div>
+                  <% end %>
                 <% end %>
               </div>
             </div>
