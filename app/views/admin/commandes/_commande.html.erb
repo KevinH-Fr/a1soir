@@ -30,12 +30,17 @@
 
         <% if commande.eshop? %>
         <div class="mx-1 mb-2 px-2 py-2 rounded border border-warning border-opacity-25 bg-warning bg-opacity-10">
-          <div class="d-flex align-items-start gap-2">
-            <i class="bi bi-cart-check text-warning flex-shrink-0" aria-hidden="true"></i>
-            <div class="small">
-              <span class="fw-semibold">Vente e-shop</span>
-              <span class="d-block text-muted mb-0">Cette commande provient d’un achat en ligne (paiement Stripe).</span>
+          <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap">
+            <div class="d-flex align-items-start gap-2">
+              <i class="bi bi-cart-check text-warning flex-shrink-0" aria-hidden="true"></i>
+              <div class="small">
+                <span class="fw-semibold">Vente e-shop</span>
+                <span class="d-block text-muted mb-0">Cette commande provient d’un achat en ligne (paiement Stripe).</span>
+              </div>
             </div>
+            <% if local_assigns[:show_eshop_guide] %>
+              <%= render "admin/shared/eshop_tutorial_button", btn_class: "flex-shrink-0" %>
+            <% end %>
           </div>
 
           <% if commande.remboursee_eshop? %>

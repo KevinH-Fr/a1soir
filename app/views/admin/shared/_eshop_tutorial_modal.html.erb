@@ -1,0 +1,49 @@
+<% content = eshop_tutorial_content %>
+<div class="modal fade" id="<%= eshop_tutorial_modal_id %>" tabindex="-1"
+     aria-labelledby="<%= eshop_tutorial_modal_id %>Label" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title fs-5 d-flex align-items-center gap-2" id="<%= eshop_tutorial_modal_id %>Label">
+          <i class="bi bi-cart-check text-info" aria-hidden="true"></i>
+          <%= content[:title] %>
+        </h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= t("admin.eshop_tutorial.close") %>"></button>
+      </div>
+
+      <div class="modal-body">
+        <% if content[:intro].present? %>
+          <p class="text-body-secondary mb-4"><%= simple_format(content[:intro], {}, sanitize: false) %></p>
+        <% end %>
+
+        <div class="d-flex flex-column gap-4">
+          <% eshop_tutorial_steps.each_with_index do |step, index| %>
+            <article class="border rounded-3 p-3 p-md-4 bg-body-tertiary bg-opacity-25">
+              <h3 class="h6 mb-2 d-flex align-items-center gap-2">
+                <span class="badge rounded-pill text-bg-info"><%= index + 1 %></span>
+                <%= step[:title] %>
+              </h3>
+
+              <% if step[:body].present? %>
+                <div class="small text-body-secondary <%= 'mb-3' if step[:image].present? %>">
+                  <%= simple_format(step[:body], {}, sanitize: false) %>
+                </div>
+              <% end %>
+
+              <% if step[:image].present? %>
+                <%= eshop_tutorial_image_tag(step) %>
+              <% end %>
+            </article>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <p class="small text-muted me-auto mb-0 d-none d-md-block">
+          <%= t("admin.eshop_tutorial.footer_hint") %>
+        </p>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><%= t("admin.eshop_tutorial.close") %></button>
+      </div>
+    </div>
+  </div>
+</div>

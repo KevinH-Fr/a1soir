@@ -1,7 +1,7 @@
 <%= card_main_model("Commande", "file-earmark-fill", "") %>
 
 <div class="<%= admin_list_stack_classes %>">
-  <%= render @commande %>
+  <%= render @commande, show_eshop_guide: @commande.eshop? %>
 </div>
 <%= render partial: 'admin/clients/client_mini', locals: { client: @commande.client } %>
 <%= render 'admin/articles/articles' %>
@@ -13,6 +13,8 @@
 <hr>
 
 <%= return_model_index_button("Retour vers commandes", admin_commandes_path) %>
+
+<%= render "admin/shared/eshop_tutorial_modal" if @commande.eshop? %>
 
 <br> <br>
 

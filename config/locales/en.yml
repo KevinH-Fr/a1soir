@@ -2,6 +2,11 @@ en:
   hello: "Hello world"
 
   admin:
+    eshop_tutorial:
+      button: "E-shop guide"
+      close: "Close"
+      image_placeholder: "Screenshot to be added"
+      footer_hint: "Content from the online orders procedure."
     toasts:
       defaults:
         created: "Created successfully"

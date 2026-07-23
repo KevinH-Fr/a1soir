@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Admin::StripePaymentsController < Admin::ApplicationController
+  helper StripePaymentsHelper
+
   def index
     @stripe_payments_count = StripePayment.count
     payments = StripePayment.order(created_at: :desc).includes(:commande, stripe_payment_items: :produit)

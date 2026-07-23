@@ -1,6 +1,11 @@
 fr:
 
   admin:
+    eshop_tutorial:
+      button: "Guide e-shop"
+      close: "Fermer"
+      image_placeholder: "Capture d'écran à ajouter"
+      footer_hint: "Contenu issu de la procédure commandes internet."
     toasts:
       defaults:
         created: "Création réussie"

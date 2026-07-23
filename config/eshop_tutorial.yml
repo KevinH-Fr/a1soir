@@ -1,0 +1,109 @@
+# Guide admin e-shop — procédure commandes internet
+# Images : app/assets/images/admin/eshop_tutorial/<fichier>.png
+
+fr:
+  title: "Guide commandes internet"
+  intro: "Procédure pour traiter une commande e-shop : de la réception du paiement à l'expédition du colis."
+  steps:
+    - title: "Accéder aux paiements e-shop"
+      body: |
+        Depuis le logiciel, sur la page d'accueil, cliquer sur « Paiements e-shop ».
+      image: "admin/eshop_tutorial/01.png"
+
+    - title: "Identifier la commande à expédier"
+      body: |
+        Identifier la nouvelle commande « à expédier » et cliquer sur le numéro de commande.
+      image: "admin/eshop_tutorial/02.png"
+
+    - title: "Ouvrir la commande"
+      body: |
+        Ouvrir la commande et identifier les produits à expédier.
+      image: "admin/eshop_tutorial/03.png"
+
+    - title: "Imprimer la facture"
+      body: |
+        Imprimer la facture de la commande.
+      image: "admin/eshop_tutorial/04.png"
+
+    - title: "Adresse de livraison Stripe"
+      body: |
+        Descendre en bas de la commande, dans le cadre paiement Stripe, et cliquer sur la flèche « détail client livraison stripe & expédition ».
+
+        Cela affiche l'adresse et les coordonnées pour l'expédition.
+      image: "admin/eshop_tutorial/05.png"
+
+    - title: "Connexion Colissimo"
+      body: |
+        Ouvrir Colissimo dans une nouvelle fenêtre de navigateur.
+      image: "admin/eshop_tutorial/06.png"
+
+    - title: "Valider la connexion"
+      body: |
+        Valider la connexion avec les identifiants déjà enregistrés.
+      image: "admin/eshop_tutorial/07.png"
+
+    - title: "Affranchir"
+      body: |
+        Préparer les étiquettes d'expédition et de retour : cliquer sur « Affranchir ».
+      image: "admin/eshop_tutorial/08.png"
+
+    - title: "Destinataire"
+      body: |
+        Compléter la partie destinataire : adresse, e-mail, téléphone, puis valider.
+      image: "admin/eshop_tutorial/09.png"
+
+    - title: "Caractéristiques du colis"
+      body: |
+        Compléter la partie « Caractéristiques » :
+
+        Poids :
+        • 1 robe ou 2 pièces de vêtements = 1 kg
+        • 1 paire de chaussures ou 1 accessoire = 0,5 kg
+
+        Références commande : reporter la référence du bon de commande.
+
+        Livraison avec signature : non, sauf si commande > 200 €.
+
+        Format : standard.
+
+        Impressions : cliquer sur « Générer un colis retour », puis « Imprimer ».
+      image: "admin/eshop_tutorial/10.png"
+
+    - title: "Impression des étiquettes"
+      body: |
+        Un fichier PDF s'ouvre et doit être imprimé.
+
+        La première étiquette est celle à coller sur le colis.
+
+        La seconde est celle à glisser dans le colis pour un retour éventuel.
+
+    - title: "Historique Colissimo"
+      body: |
+        Toujours sur la page Colissimo, cliquer sur « Historique ».
+      image: "admin/eshop_tutorial/11.png"
+
+    - title: "Retrouver l'envoi du jour"
+      body: |
+        L'envoi du jour apparaît dans la liste.
+      image: "admin/eshop_tutorial/12.png"
+
+    - title: "Marquer comme expédié"
+      body: |
+        Copier le numéro de colis, revenir dans le logiciel Autour d'un soir, coller le numéro dans « Expédition n° de suivi », puis cliquer sur « Marquer comme expédié ».
+      image: "admin/eshop_tutorial/13.png"
+
+    - title: "E-mail au client"
+      body: |
+        Une fenêtre s'ouvre pour envoyer un e-mail automatique au client : cliquer sur « Avec mail ».
+      image: "admin/eshop_tutorial/14.png"
+
+    - title: "Préparer le colis"
+      body: |
+        Mettre à l'intérieur du colis :
+        • les articles de la commande
+        • la facture
+        • l'étiquette pour le retour
+
+        Coller à l'extérieur du colis : l'étiquette d'expédition.
+
+        Déposer le colis dans un bureau de poste.
