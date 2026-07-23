@@ -120,6 +120,13 @@ export default class extends Controller {
     this.observer.observe(this.element)
   }
 
+  visitTag(event) {
+    event.preventDefault()
+    event.stopPropagation()
+    const url = event.currentTarget.dataset.url
+    if (url) window.location.href = url
+  }
+
   disconnect() {
     this.clearTimers()
     if (this.observer) this.observer.disconnect()

@@ -3,7 +3,10 @@
   <div class="col-12 col-md-6 col-lg-6" data-scroll-reveal>
     <%= collection_card(
       title: t("public.pages.home.categories.wedding_dresses.title"),
-      items: ["Courtes", "Longues"],
+      items: [
+        { label: "Courtes", category_name: "robes de mariée courtes" },
+        { label: "Longues", category_name: "robes de mariée longues" }
+      ],
       url: produits_filter_url(category_names: ["robes de mariée courtes", "robes de mariée longues"]),
       image: "/images/cat_robes_mariees.webp",
       subtitle: t("public.pages.home.categories.wedding_dresses.subtitle"),
@@ -14,7 +17,12 @@
   <div class="col-12 col-md-6 col-lg-6" data-scroll-reveal>
     <%= collection_card(
       title: t("public.pages.home.categories.evening_wear.title"),
-      items: ["Longues", "Courtes", "Ensembles pantalon", "Combinaisons"],
+      items: [
+        { label: "Longues", category_name: "robes longues" },
+        { label: "Courtes", category_name: "robes courtes" },
+        { label: "Ensembles pantalon", category_name: "ensembles pantalons" },
+        { label: "Combinaisons", category_name: "combinaisons" }
+      ],
       url: produits_filter_url(category_names: ["robes courtes", "robes longues", "ensembles pantalons"]),
       image: "/images/cat_tenues_soiree.webp",
       subtitle: t("public.pages.home.categories.evening_wear.subtitle"),
@@ -25,7 +33,11 @@
   <div class="col-12 col-md-6 col-lg-6" data-scroll-reveal>
     <%= collection_card(
       title: t("public.pages.home.categories.suits.title"),
-      items: ["Smokings", "Cérémonies", "Enfant"],
+      items: [
+        { label: "Smokings", category_name: "smokings" },
+        { label: "Cérémonies", category_name: "costume" },
+        { label: "Enfant", category_name: "enfants" }
+      ],
       url: produits_filter_url(category_names: "costume"),
       image: "/images/cat_costume.webp",
       subtitle: t("public.pages.home.categories.suits.subtitle"),
@@ -36,7 +48,12 @@
   <div class="col-12 col-md-6 col-lg-6" data-scroll-reveal>
     <%= collection_card(
       title: t("public.pages.home.categories.accessories.title"),
-      items: ["Chaussures Homme", "Chaussures Femmes", "Accessoires Hommes", "Accessoires Femmes"],
+      items: [
+        { label: "Chaussures Homme", category_name: "chaussures" },
+        { label: "Chaussures Femmes", category_name: "chaussures" },
+        { label: "Accessoires Hommes", category_name: "accessoires" },
+        { label: "Accessoires Femmes", category_name: "accessoires femmes" }
+      ],
       url: produits_filter_url(category_names: ["chaussures", "accessoires", "accessoires femmes"]), 
       image: "/images/cat_accessoires.webp",
       subtitle: t("public.pages.home.categories.accessories.subtitle"),

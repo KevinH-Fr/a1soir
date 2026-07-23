@@ -236,9 +236,7 @@ module PagesHelper
         tags = if items.present?
           content_tag :div, class: "cc-tags mb-2",
                             data: { collection_card_reveal_target: "tags" } do
-            items.map do |item|
-              content_tag(:span, item, class: "cc-tag")
-            end.join.html_safe
+            items.map { |item| collection_card_item_tag(item) }.join.html_safe
           end
         else
           "".html_safe
@@ -271,6 +269,32 @@ module PagesHelper
 
         image_section + overlay
       end
+    end
+  end
+
+  def collection_card_item_tag(item)
+    label, item_url = collection_card_item_link_data(item)
+
+    if item_url.present?
+      content_tag(:span, label,
+        class: "cc-tag cc-tag--link",
+        role: "link",
+        data: { url: item_url, action: "click->collection-card-reveal#visitTag" })
+    else
+      content_tag(:span, label, class: "cc-tag")
+    end
+  end
+
+  def collection_card_item_link_data(item)
+    case item
+    when Hash
+      label = item[:label] || item["label"]
+      item_url = item[:url] || item["url"]
+      category_name = item[:category_name] || item["category_name"]
+      item_url ||= produits_filter_url(category_names: category_name) if category_name.present?
+      [label, item_url]
+    else
+      [item.to_s, nil]
     end
   end
 
