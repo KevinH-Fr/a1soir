@@ -100,7 +100,7 @@ class Admin::MeetingsController < Admin::ApplicationController
         
         format.html do
           admin_push_domain_toast!(flash, :meeting, :created)
-          redirect_to meeting_url(@meeting)
+          redirect_to admin_meeting_path(@meeting)
         end
         format.json { render :show, status: :created, location: @meeting }
       else
@@ -138,7 +138,7 @@ class Admin::MeetingsController < Admin::ApplicationController
 
         format.html do
           admin_push_domain_toast!(flash, :meeting, :updated)
-          redirect_to meeting_url(@meeting)
+          redirect_to admin_meeting_path(@meeting)
         end
         format.json { render :show, status: :ok, location: @meeting }
       else

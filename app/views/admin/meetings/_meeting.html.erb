@@ -13,7 +13,11 @@
 
           <% if meeting.commande %>
             <% unless controller_name == "commandes" && action_name == "show" %>
-              <%= custom_badge("", "", "", "", meeting.commande.full_name) %>
+              <%= link_to admin_commande_path(meeting.commande),
+                          class: "text-decoration-none text-dark",
+                          data: { turbo: false } do %>
+                <%= custom_badge("", "", "", "", meeting.commande.full_name) %>
+              <% end %>
             <% end %>
           <% end %>
 

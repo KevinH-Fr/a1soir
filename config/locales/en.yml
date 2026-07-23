@@ -3,7 +3,45 @@ en:
 
   admin:
     toasts:
+      defaults:
+        created: "Created successfully"
+        updated: "Updated successfully"
+        destroyed: "Deleted successfully"
+      meeting:
+        created: "Appointment created"
+        updated: "Appointment updated"
+        destroyed: "Appointment deleted"
+        email_sent: "Reminder email sent"
+        reminder_enqueued: "Reminder task queued"
+      rdv:
+        periode_created: "Unavailable period created"
+        periode_updated: "Unavailable period updated"
+        periode_destroyed: "Unavailable period deleted"
+        type_created: "Appointment type created"
+        type_updated: "Appointment type updated"
+        type_destroyed: "Appointment type deleted"
+        parametre_created: "Appointment settings created"
+        parametre_updated: "Appointment settings updated"
+        parametre_destroyed: "Appointment settings deleted"
+      doc_edition:
+        created: "Document edition created"
+        updated: "Document edition updated"
+        email_sent: "Email sent"
+      sousarticle:
+        created: "Sub-item created"
+        updated: "Sub-item updated"
+        destroyed: "Sub-item deleted"
       commande:
+        created: "Order created"
+        updated: "Order updated"
+        destroyed: "Order deleted"
+        destroy_blocked: "Unable to delete this order: related records still exist in the database."
+        statut_retire: "Order marked as picked up by the customer"
+        statut_non_retire: "Order marked as not picked up"
+        rendu_avec_email: "Order returned — confirmation email sent to the customer"
+        rendu_sans_email: "Order returned (no email sent)"
+        expedie_avec_email: "Order shipped — email sent to the customer"
+        expedie_sans_email: "Order shipped (no email)"
         remboursee_ok: "E-shop order cancelled — refund recorded, email sent to customer (process the refund in Stripe)"
         remboursee_deja: "This e-shop order is already marked as refunded"
         remboursement_not_eshop: "Refunds are only available for e-shop orders"
@@ -11,9 +49,119 @@ en:
         remboursement_stripe_not_paid: "Stripe payment is not in paid status"
         remboursement_zero_amount: "Invalid Stripe amount for refund"
         remboursement_record_invalid: "Unable to record the refund"
+      selection_produit:
+        ensemble_introuvable: "No matching outfit found."
+        selection_ensemble_introuvable: "Selected outfit not found."
+        article_introuvable: "No matching item found for the outfit."
+        locvente_manquant: "Rental / sale type not defined for the transformation."
+        transform_ok: "Outfit transformation completed."
+      user:
+        role_updated: "Role updated"
+      etiquette:
+        selection_supprimee: "Selection cleared"
+      texte:
+        created: "Marketing content created"
+        updated: "Marketing content updated"
+        destroyed: "Marketing content deleted"
+        media_deleted: "Media deleted"
+      admin_parameter:
+        created: "Setting created"
+        updated: "Setting updated"
+        destroyed: "Setting deleted"
+      message:
+        created: "Message created"
+        updated: "Message updated"
+        destroyed: "Message deleted"
       demande_rdv:
         updated: "Appointment request updated"
         destroyed: "Appointment request deleted"
+      demande_cabine:
+        created: "Fitting room request created"
+        updated: "Fitting room request updated"
+        destroyed: "Fitting room request deleted"
+      profile:
+        created: "Profile created"
+        updated: "Profile updated"
+        destroyed: "Profile deleted"
+        destroy_blocked: "Unable to delete this profile: orders are still linked, or it is the e-shop technical profile."
+      type_produit:
+        created: "Product type created"
+        updated: "Product type updated"
+        destroyed: "Product type deleted"
+        destroy_blocked: "Unable to delete this type: products or outfits still use it."
+      categorie_produit:
+        created: "Category created"
+        updated: "Category updated"
+        destroyed: "Category deleted"
+        destroy_blocked: "Unable to delete this category: products are still linked."
+      couleur:
+        created: "Color created"
+        updated: "Color updated"
+        destroyed: "Color deleted"
+        destroy_blocked: "Unable to delete this color: products still use it."
+      taille:
+        created: "Size created"
+        updated: "Size updated"
+        destroyed: "Size deleted"
+        destroy_blocked: "Unable to delete this size: products still use it."
+      fournisseur:
+        created: "Supplier created"
+        updated: "Supplier updated"
+        destroyed: "Supplier deleted"
+        destroy_blocked: "Unable to delete this supplier: products are still linked."
+      ensemble:
+        created: "Outfit created"
+        updated: "Outfit updated"
+        destroyed: "Outfit deleted"
+        destroy_blocked: "Unable to delete this outfit: related records still exist."
+      client:
+        created: "Customer created"
+        updated: "Customer updated"
+        destroyed: "Customer deleted"
+        destroy_blocked: "Unable to delete this customer: orders or appointments are still linked."
+      article:
+        created: "Item created"
+        updated: "Item updated"
+        destroyed: "Item deleted"
+      avoir_remb:
+        created: "Credit / refund created"
+        updated: "Credit / refund updated"
+        destroyed: "Credit / refund deleted"
+      paiement_recu:
+        created: "Payment recorded"
+        updated: "Payment updated"
+        destroyed: "Payment deleted"
+        labels:
+          typepaiement:
+            prix: "Price"
+            caution: "Deposit"
+          moyen:
+            carte_bleue: "Credit card"
+            especes: "Cash"
+            cheque: "Cheque"
+            virement: "Bank transfer"
+      produit:
+        duplicate_exists: "A product with the same reference already exists."
+        created: "Product created"
+        updated: "Product updated"
+        destroyed: "Product deleted"
+        destroy_blocked: "Unable to delete this product: related records still exist (fitting room, orders, etc.)."
+        image_deleted: "Image deleted"
+        video_deleted: "Video deleted"
+        duplicated: "Product duplicated"
+        duplicate_no_base: "No base product specified"
+        coup_de_coeur_added: "Product added to favorites"
+        coup_de_coeur_removed: "Product removed from favorites"
+        save_error: "Error while updating"
+        coup_de_coeur_position_updated: "Position updated"
+        coup_de_coeur_not_found: "Product not found"
+        promotion_price_invalid: "The new price must be greater than 0"
+        promotion_requires_sale_price: "The product must have a sale price to apply a promotion"
+        promotion_applied: "Promotion applied"
+        promotion_apply_error: "Error while applying the promotion"
+        promotion_not_active: "This product is not on promotion"
+        promotion_removed: "Promotion removed"
+        promotion_remove_error: "Error while removing the promotion"
 
   activerecord:
     errors:
