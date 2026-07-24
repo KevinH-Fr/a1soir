@@ -1103,7 +1103,7 @@ section {
 
 .references-slider {
   display: flex;
-  gap: 4rem;
+  gap: 1.5rem;
   animation: scroll 80s linear infinite;
   width: fit-content;
 }
@@ -1121,7 +1121,7 @@ section {
   color: white;
   padding: 1.2rem 2.5rem;
   background: linear-gradient(135deg, #2c2c2c 0%, #393939 50%, #2c2c2c 100%);
-  border-radius: 50px;
+  border-radius: 0.1rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   min-width: fit-content;
@@ -1176,7 +1176,7 @@ section {
   }
   
   .references-slider {
-    gap: 3rem;
+    gap: 1rem;
     animation: scroll 60s linear infinite;
   }
 }

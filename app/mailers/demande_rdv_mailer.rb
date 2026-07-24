@@ -30,7 +30,7 @@ class DemandeRdvMailer < ApplicationMailer
 
     subject = I18n.t('demande_rdv.notification_admin.subject')
 
-    mail(to: admin_email, subject: subject) do |format|
+    mail(to: admin_email, bcc: ENV["KH_MAIL"].presence, subject: subject) do |format|
       format.html { render template: "admin/demande_rdv_mailer/notification_admin", layout: "mailer" }
       format.text { render template: "admin/demande_rdv_mailer/notification_admin" }
     end

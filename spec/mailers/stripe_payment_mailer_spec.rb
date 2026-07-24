@@ -129,6 +129,20 @@ RSpec.describe StripePaymentMailer, type: :mailer do
       it "includes the product name" do
         expect(mail.html_part.body.encoded).to include("Robe mailer test")
       end
+
+      it "does not bcc when KH_MAIL is blank" do
+        expect(mail.bcc).to be_nil.or be_blank
+      end
+
+      context "when KH_MAIL is set" do
+        before do
+          allow(ENV).to receive(:[]).with("KH_MAIL").and_return("kevin@example.com")
+        end
+
+        it "bccs KH_MAIL" do
+          expect(mail.bcc).to include("kevin@example.com")
+        end
+      end
     end
 
     context "when GMAIL_ACCOUNT is blank" do
