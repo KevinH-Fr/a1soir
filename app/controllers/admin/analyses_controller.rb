@@ -77,7 +77,8 @@ class Admin::AnalysesController < Admin::ApplicationController
     base_r, base_g, base_b = 208, 77, 123
     target_r, target_g, target_b = 245, 190, 210
 
-    profiles = Profile.includes(commandes: [:paiement_recus, :articles])
+    # Exclut le profil admin (Profile::ADMIN_PROFILE_ID) des stats affichées par profil.
+    profiles = Profile.for_analyses_charts.includes(commandes: [:paiement_recus, :articles])
     total = profiles.size
 
     if datedebut.present? && datefin.present?

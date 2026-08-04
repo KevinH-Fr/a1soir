@@ -4,6 +4,11 @@ class Profile < ApplicationRecord
 
     has_one_attached :profile_pic
     has_many :commandes
+    
+    # Profil admin technique (id 1 en production) : conservé pour les commandes,
+    # mais exclu des graphiques « par profil » sur la page Analyses.
+    ADMIN_PROFILE_ID = 1
+    scope :for_analyses_charts, -> { where.not(id: ADMIN_PROFILE_ID) }
 
     # Profil vendeur pour les commandes créées depuis Stripe (peu de lignes en base : filtre Ruby, pas de LOWER SQL).
     def self.for_eshop_commandes
