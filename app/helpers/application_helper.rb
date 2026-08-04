@@ -16,6 +16,10 @@ module ApplicationHelper
       number_to_currency(amount, precision: 0, unit: "€", format: "%n %u", delimiter: " ")
   end
 
+  def montant_ht_depuis_ttc(amount)
+    amount.to_d / (1 + AdminParameter.first.tx_tva.to_f / 100)
+  end
+
   def custom_badge(icon_class, text, color, bold, value)
     content_tag(:div,
       class: "badge lighter-beige-colored fw-normal #{bold} bg-#{color} m-1 fs-6 shadow-sm text-dark text-break",

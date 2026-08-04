@@ -4,12 +4,12 @@
   </div>
 
   <% @data = [@totalTransactionsLoc, @totalTransactionsVente] %>
+  <% ttc_label = analyses_donut_amount_label(@totalTransactions) %>
+  <% ht_label = analyses_donut_ht_label(@totalTransactions) %>
 
 <script>
   var couleur1 = 'rgb(116, 159, 130)';
   var couleur2 = 'rgb(66, 95, 87)';
-
-  var nbTotalCa = <%= @totalTransactions %>;
 
   var centerTextDoghnutTransactions = {
     id: 'centerTextDoghnutTransactions',
@@ -18,10 +18,10 @@
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.font = "bold 12px sans-serif";
-      const text = "TTC: " + nbTotalCa + " - HT: " +  Math.round(nbTotalCa / 1.2);
       const x = chart.getDatasetMeta(0).data[0].x;
       const y = chart.getDatasetMeta(0).data[0].y;
-      ctx.fillText(text, x, y);
+      ctx.fillText("HT: <%= ht_label %>", x, y - 7);
+      ctx.fillText("TTC: <%= ttc_label %>", x, y + 7);
     }
   }
 

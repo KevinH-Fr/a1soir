@@ -60,8 +60,7 @@ module CommandesHelper
     end
 
     def du_prix_ht(commande)
-        prix_ht = du_prix(commande) /  ( 1 + (AdminParameter.first.tx_tva.to_f / 100 ) )
-        prix_ht.round(2)
+        montant_ht_depuis_ttc(du_prix(commande)).round(2)
     end
 
     def tva_sur_prix(commande)

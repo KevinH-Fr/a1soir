@@ -14,7 +14,11 @@
       backgroundColor: [couleur2, couleur1],
       borderColor: 'rgb(0, 0, 0)',
       borderWidth: 1,
-      tension: 0.4
+      tension: 0.4,
+      pointBackgroundColor: couleur1,
+      pointBorderColor: couleur1,
+      pointHoverBackgroundColor: couleur1,
+      pointHoverBorderColor: 'rgb(0, 0, 0)'
     }]
   };
 
@@ -33,9 +37,10 @@
 
       elements: {
         point: {
-          radius: 2,
-          hoverRadius: 4,
-          borderWidth: 1,
+          radius: 0,
+          hoverRadius: 3,
+          hitRadius: 8,
+          borderWidth: 0,
           hoverBorderWidth: 2
         }
       },

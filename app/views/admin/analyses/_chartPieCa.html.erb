@@ -4,6 +4,8 @@
   </div>
 
   <% @data = [@totalPrixCaCb, @totalPrixCaEspeces, @totalPrixCaCheque, @totalPrixCaVirement, @totalPrixCaStripe] %>
+  <% ttc_label = analyses_donut_amount_label(@totalPrixCa) %>
+  <% ht_label = analyses_donut_ht_label(@totalPrixCa) %>
 
 <script>
   var couleur1 = 'rgb(30, 90, 180)';   // bleu doux
@@ -12,9 +14,6 @@
   var couleur4 = 'rgb(255, 200, 60)';  // jaune doré
   var couleur5 = 'rgb(97, 119, 200)';  // Stripe
 
-
-  var nbTotalPaiements = <%= @totalPrixCa %>;
-
   var centerTextDoghnutPaiements = {
     id: 'centerTextDoghnutCa',
     afterDatasetsDraw(chart, args, pluginOptions){
@@ -22,11 +21,10 @@
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.font = "bold 12px sans-serif";
-      const text = "total " + Math.round(Number(nbTotalPaiements));
-      const textWidth = ctx.measureText(text).width;
       const x = chart.getDatasetMeta(0).data[0].x;
       const y = chart.getDatasetMeta(0).data[0].y;
-      ctx.fillText(text, x, y);
+      ctx.fillText("HT: <%= ht_label %>", x, y - 7);
+      ctx.fillText("TTC: <%= ttc_label %>", x, y + 7);
     }
   }
 

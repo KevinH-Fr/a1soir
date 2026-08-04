@@ -1,4 +1,13 @@
 module AnalysesHelper
+  # Texte central des donuts CA / transactions : entier, séparateur de milliers (affichage uniquement).
+  def analyses_donut_amount_label(amount)
+    number_with_delimiter(amount.to_d.round, delimiter: " ")
+  end
+
+  def analyses_donut_ht_label(ttc_amount)
+    analyses_donut_amount_label(montant_ht_depuis_ttc(ttc_amount))
+  end
+
   def render_dashboard_section(title, icon_name = nil, partials)
     content_tag(:div, class: "card m-2 my-4 shadow-sm") do
       concat(content_tag(:div, class: "card-header bg-secondary text-light py-1") do
@@ -62,8 +71,8 @@ module AnalysesHelper
     [
       ["Aujourd'hui", [today, today]],
       ["30 jours", [today - 29, today]],
-      ["Mois courant", [today.beginning_of_month, today.end_of_month]],
-      ["Mois précédent", [prev_month.beginning_of_month, prev_month.end_of_month]]
+      ["Mois précédent", [prev_month.beginning_of_month, prev_month.end_of_month]],
+      ["Mois courant", [today.beginning_of_month, today.end_of_month]]
     ]
   end
 

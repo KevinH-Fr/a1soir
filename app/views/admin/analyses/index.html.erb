@@ -59,14 +59,20 @@
 
       <% if @datedebut.present? && @datefin.present? %>
         <div class="small border-top border-secondary-subtle pt-2 mt-1 d-flex flex-wrap align-items-center justify-content-between gap-2">
-          <div class="d-flex flex-wrap align-items-center gap-2">
+          <button type="button"
+                  class="btn btn-sm p-0 border-0 bg-transparent d-flex flex-wrap align-items-center gap-2 text-start"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#customDateFilter"
+                  aria-expanded="<%= custom_period_filter_open? %>"
+                  aria-controls="customDateFilter"
+                  title="Modifier la période">
             <span class="text-body-secondary">Affichage</span>
             <span class="px-2 py-1 fw-medium rounded-pill border bg-white bg-opacity-75 text-body">
               <%= @datedebut.strftime("%d/%m/%Y") %>
               <span class="text-body-secondary mx-1">·</span>
               <%= @datefin.strftime("%d/%m/%Y") %>
             </span>
-          </div>
+          </button>
           <%= link_to url_for(debut: Date.today, fin: Date.today),
                       class: "btn btn-sm btn-outline-danger",
                       title: "Réinitialiser la période sur aujourd'hui" do %>
