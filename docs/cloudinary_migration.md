@@ -1,165 +1,135 @@
 # Migration Cloudinary — A1soir
 
-Guide synthétique pour basculer vers un nouveau compte Cloudinary sans casser l'app.
+Bascule vers un **nouveau cloud** en conservant les mêmes `public_id` (= `active_storage_blobs.key`). **Pas de changement en base.**
 
-## Architecture actuelle
+Script : `lib/tasks/cloudinary_copy.rake`.
 
-| Couche | Fichiers clés | Rôle |
-|--------|---------------|------|
-| Config | `config/initializers/cloudinary.rb` | `cloud_name` hardcodé (`dukne3lhz`), clés via `CLOUDINARY_KEY` / `CLOUDINARY_SECRET` |
-| Uploads | `config/storage.yml`, `development.rb`, `production.rb` | ActiveStorage → Cloudinary (`type: authenticated`) |
-| URLs dynamiques | `app/helpers/application_helper.rb` | `cloudinary_attachment_url(blob.key)` — produits, catégories, PDF, feed Google |
-| URLs statiques | `app/views/public/pages/*`, `pages_controller.rb` | ~50 URLs hardcodées (FAQ, contact, landing Festival…) |
+| | Compte |
+|---|---|
+| Source (`CLOUDINARY_*`) | ancien — prod actuelle |
+| Dest (`CLOUDINARY_DEST_*`) | nouveau — tests puis future prod |
 
-**Règle importante** : les URLs produits sont reconstruites depuis `active_storage_blobs.key` (= `public_id` Cloudinary). Si on copie les fichiers avec le **même public_id**, pas de changement en base.
+`CLOUDINARY_USE=source|dest` : interrupteur **local** (ce que Rails affiche). Le rake **ignore** ça : il lit toujours source, écrit toujours dest.
 
----
-
-## Filtrer uniquement les médias A1soir
-
-Le compte Cloudinary peut contenir d'autres médias (autres projets, tests, uploads manuels). **Ne pas migrer tout le compte** — construire une liste blanche (allowlist).
-
-### Source 1 — ActiveStorage (catalogue, admin)
-
-Liste de référence depuis la base prod :
-
-```bash
-heroku run rails runner "puts ActiveStorage::Blob.distinct.pluck(:key).sort" -a a1soir-2 > cloudinary_blobs_a1soir.txt
-```
-
-Modèles concernés : `Produit` (image1, video1, images), `CategorieProduit`, `Texte`, `Profile`, `Commande`.
-
-### Source 2 — Médias statiques (pages marketing)
-
-Extraire les `public_id` hardcodés dans le code :
-
-```bash
-rg -o 'res\.cloudinary\.com/dukne3lhz/(?:image|video)/upload/[^/]+/([^"'\''\s\)]+)' app/ \
-  | sed 's/.*\///' \
-  | sed 's/\.mp4$//' \
-  | sort -u > cloudinary_static_a1soir.txt
-```
-
-Fichiers principaux : `app/views/public/pages/`, `app/controllers/public/pages_controller.rb`, `application_helper.rb` (`no_photo_url`).
-
-### Liste finale
-
-```bash
-cat cloudinary_blobs_a1soir.txt cloudinary_static_a1soir.txt | sort -u > cloudinary_allowlist_a1soir.txt
-wc -l cloudinary_allowlist_a1soir.txt   # nombre de médias à migrer
-```
-
-### Vérifier côté Cloudinary (optionnel)
-
-Lister les ressources du compte et ne garder que celles de l'allowlist :
-
-```ruby
-# rails runner (avec clés de l'ANCIEN compte)
-allowlist = File.readlines("cloudinary_allowlist_a1soir.txt", chomp: true).to_set
-
-Cloudinary::Api.resources(type: "authenticated", max_results: 500).each do |batch|
-  batch["resources"].each do |r|
-    id = r["public_id"]
-    puts id if allowlist.include?(id)
-  end
-end
-```
-
-**Ne migrer que les public_id présents dans `cloudinary_allowlist_a1soir.txt`.**
+**Ne pas** mettre `CLOUDINARY_DEST_*` ni `CLOUDINARY_USE` sur Heroku prod.
 
 ---
 
-## Phases de migration
+## Étapes de bascule
 
-### 0. Nouveau compte Cloudinary
+### 0. Prérequis (local)
 
-Reproduire les réglages de l'ancien :
-
-- Delivery type : **authenticated**
-- CORS : domaines prod + `localhost:3000`
-- Noter : cloud name, API key, API secret
-
-### 1. Centraliser la config (code)
-
-Remplacer `dukne3lhz` en dur par `ENV['CLOUDINARY_CLOUD_NAME']` dans :
-
-- `config/initializers/cloudinary.rb`
-- `app/helpers/application_helper.rb` (constantes `CLOUDINARY_BASE_*`)
-- specs associées
-
-Variables à gérer partout :
+- **Passer le nouveau compte en plan payant avant la copie complète.** Le Free refuse les fichiers **> 10 Mo** (`File size too large. Maximum is 10485760`) et le quota **25 crédits** ne tiendra pas ~6 000 médias + transformations. Déjà bloqué en static : `equipe1_qgcprn`, `equipe2_aubkac` (~15 Mo). Alternative ponctuelle : recompresser ces 2 images sous 10 Mo — insuffisant pour la prod (vidéos, uploads admin).
+- Nouveau compte : delivery **authenticated**, CORS prod + `localhost:3000`.
+- `.env` : `CLOUDINARY_*` = ancien, `CLOUDINARY_DEST_*` = nouveau, `CLOUDINARY_DEST_FOLDER=A1soir`.
+- Smoke test : `bin/rails cloudinary:copy_assets ONLY=faq1_fp6utw` puis `CLOUDINARY_USE=dest`.
+- Pages publiques statiques seulement (sans les blobs Active Storage) :
 
 ```bash
-CLOUDINARY_CLOUD_NAME=...
-CLOUDINARY_KEY=...
-CLOUDINARY_SECRET=...
+bin/rails cloudinary:list_assets INCLUDE=static
+bin/rails cloudinary:copy_assets INCLUDE=static
 ```
 
-### 2. Copier les médias
+Puis `CLOUDINARY_USE=dest` + restart Rails pour les voir en local.
 
-Pour chaque `public_id` de l'allowlist, copier vers le nouveau compte **en conservant le même public_id** :
-
-```ruby
-Cloudinary::Uploader.upload(
-  "https://res.cloudinary.com/ANCIEN_CLOUD/image/authenticated/s--TOKEN--/PUBLIC_ID",
-  public_id: "PUBLIC_ID",
-  type: "authenticated",
-  resource_type: "auto"   # image ou video
-)
-```
-
-Alternative : script rake qui boucle sur l'allowlist + API Admin Cloudinary.
-
-Pages statiques : même principe, puis remplacer `dukne3lhz` par le nouveau cloud name dans les vues (ou migrer vers les helpers `cloudinary_image`).
-
-### 3. Tester en local
-
-Créer un `.env` avec les **nouvelles** clés (dotenv déjà installé).
-
-Checklist :
-
-- [ ] Upload d'une image test en admin
-- [ ] Affichage d'un produit existant (blob migré)
-- [ ] Vidéo produit (`_carousel.html.erb`)
-- [ ] Feed Google Merchant
-- [ ] PDF (vignettes produit)
-
-Test minimal sans migration complète : uploader 1 produit test → valide le branchement. Les anciens produits resteront cassés tant qu'ils ne sont pas migrés.
-
-### 4. Basculer la prod
-
-Ordre impératif :
-
-1. Migrer tous les médias de l'allowlist
-2. Déployer le code (cloud_name en ENV)
-3. Changer les variables Heroku :
+### 1. Catalogue = DB **prod** (pas le sqlite local)
 
 ```bash
-heroku config:set CLOUDINARY_CLOUD_NAME=... CLOUDINARY_KEY=... CLOUDINARY_SECRET=... -a a1soir-2
+heroku run rake cloudinary:list_assets -a a1soir-2
+```
+
+Coller / récupérer la liste → `tmp/cloudinary_allowlist.txt` (gitignoré).
+
+`list_assets` local = blobs de **ta** DB + IDs du code. Utile pour tester, pas pour coller à la prod.
+
+### 2. Copier **depuis le laptop** (prod reste sur l’ancien)
+
+```bash
+bin/rails cloudinary:copy_assets ALLOWLIST=tmp/cloudinary_allowlist.txt
+```
+
+Relancer = skip si déjà présent (`OVERWRITE=1` pour forcer).
+
+### 3. Valider en local (`CLOUDINARY_USE=dest`)
+
+- [ ] Produit existant (image + vidéo)
+- [ ] Pages marketing
+- [ ] PDF, feed Google Merchant
+- [ ] Upload admin (nouveau fichier arrive bien sur dest)
+
+Si l’admin a uploadé pendant la copie : re-`list_assets` Heroku + relancer la copie.
+
+### 4. Gel court + rattrapage
+
+Limiter les uploads prod, re-lister, re-copier.
+
+### 5. Cutover Heroku
+
+Déployer le code qui construit les URLs via `CLOUDINARY_CLOUD_NAME` (helpers, pas d’URLs en dur).
+
+Puis **remplacer** les 3 vars classiques (pas un « mode dest ») :
+
+```bash
+heroku config:set \
+  CLOUDINARY_CLOUD_NAME=a1soir-1 \
+  CLOUDINARY_KEY=… \
+  CLOUDINARY_SECRET=… \
+  -a a1soir-2
 heroku restart -a a1soir-2
 ```
 
-4. Vérifier pages + upload admin
+Vérifier site + upload admin.
 
-**Rollback** : remettre les anciennes variables Heroku + restart. Garder l'ancien compte en backup plusieurs semaines.
+**Rollback** : remettre les anciennes 3 vars + restart. Garder l’ancien compte **quelques semaines**.
 
----
+### 6. Après validation (pas le jour J)
 
-## Ce qui casse / ne casse pas
-
-| Élément | Casse sans migration ? |
-|---------|------------------------|
-| Images / vidéos produits | Oui |
-| Feed Google Merchant, PDF | Oui |
-| Pages marketing (URLs encore sur ancien compte) | Non |
-| Nouveaux uploads admin | Non (si clés OK) |
+- Local : `CLOUDINARY_*` = **autre** cloud que la prod (l’ancien compte convient comme bac à sable).
+- Supprimer `DEST_*` et `CLOUDINARY_USE`.
+- Garder le rake tant qu’il reste des oublis / `missing_source`, puis le retirer.
 
 ---
 
-## Résumé
+## Dossier `A1soir` et liens
 
-```
-Allowlist (DB + code) → Copier avec même public_id → Centraliser ENV → Test local → Switch Heroku
-```
+| | Effet sur les URLs |
+|---|---|
+| `asset_folder: A1soir` (script actuel) | Rangement Media Library. **URL inchangée.** |
+| `folder: "A1soir"` (fixed folders) | ID = `A1soir/xxx` → **liens cassés.** Ne pas faire. |
 
-Pas de migration de schéma DB si les public_id sont conservés.
+L’app sert `https://res.cloudinary.com/{cloud_name}/image/upload/…/{public_id}` **sans** préfixe dossier.
+
+Les liens **ne sont pas forcément cassés** après bascule : même ID + nouveau `cloud_name` = OK.
+
+Ça casse si : fichier non copié, ID préfixé, ou URL encore en dur vers `dukne3lhz`.
+
+---
+
+## Dev vs prod (pas des dossiers)
+
+Aujourd’hui local et prod partagent **les mêmes clés** → un upload local peut écraser un média prod.
+
+Un dossier Cloudinary `dev/` vs `prod/` **n’isole pas** : même quota, mêmes `public_id`. Isolation = **deux clouds**.
+
+Après bascule :
+
+| | Cloud |
+|---|---|
+| Prod Heroku | nouveau (`a1soir-1`) |
+| Dev local | ancien compte (ou un 3ᵉ produit plus tard) |
+
+Jamais les clés prod dans le `.env` local une fois la prod basculée.
+
+---
+
+## Commandes utiles
+
+```bash
+bin/rails cloudinary:which
+bin/rails cloudinary:list_assets INCLUDE=static
+bin/rails cloudinary:copy_assets INCLUDE=static
+bin/rails cloudinary:copy_assets DRY_RUN=1
+bin/rails cloudinary:copy_assets ONLY=faq1_fp6utw
+bin/rails cloudinary:copy_assets LIMIT=50
+bin/rails cloudinary:copy_assets ALLOWLIST=tmp/cloudinary_allowlist.txt
+```

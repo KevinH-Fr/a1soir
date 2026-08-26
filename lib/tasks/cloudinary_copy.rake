@@ -37,6 +37,9 @@
 #
 # Le script LIT avec source et ECRIT avec dest, quel que soit CLOUDINARY_USE.
 #
+# Plan dest : passer en payant avant la copie complète. Le Free limite l'upload
+# à 10 Mo (equipe1 / equipe2 ont échoué) et 25 crédits ne suffisent pas en prod.
+#
 # -----------------------------------------------------------------------------
 # Git / environnements (la partie "intelligente")
 # -----------------------------------------------------------------------------
@@ -89,6 +92,10 @@
 #
 #   # Copier UN média (smoke test vers le nouveau compte)
 #   bin/rails cloudinary:copy_assets ONLY=faq1_fp6utw
+#
+#   # Pages publiques statiques seulement (pas les ~6000 blobs Active Storage)
+#   bin/rails cloudinary:list_assets INCLUDE=static
+#   bin/rails cloudinary:copy_assets INCLUDE=static
 #
 #   # Copier tout (blobs DB locale + IDs hardcodés dans app/)
 #   bin/rails cloudinary:copy_assets
@@ -352,15 +359,19 @@ namespace :cloudinary do
   desc "Liste les public_id A1soir (blobs DB + pages) sans copier"
   task list_assets: :environment do
     ids = CloudinaryCopy.collect_public_ids
+    static_ids = CloudinaryCopy.static_public_ids
+    listed_static = ids & static_ids
     CloudinaryCopy.write_allowlist!(ids)
     puts "Source cloud : #{CloudinaryCopy.source_creds[:cloud_name]}"
-    puts "Médias listés : #{ids.size}"
-    puts "Fichier       : #{CloudinaryCopy::ALLOWLIST_PATH}"
+    puts "Statiques    : #{static_ids.size}  (pages publiques dans app/)"
+    puts "Dont listés  : #{listed_static.size}"
+    puts "Médias listés: #{ids.size}  (INCLUDE=#{ENV.fetch('INCLUDE', 'blobs,static')})"
+    puts "Fichier      : #{CloudinaryCopy::ALLOWLIST_PATH}"
     puts "(tmp/ est gitignoré — ne pas committer une allowlist prod)"
     puts
     ids.each_with_index { |id, i| puts "#{i + 1}\t#{id}" }
     puts
-    puts "Total : #{ids.size}"
+    puts "Total : #{ids.size}  |  statiques : #{static_ids.size} (#{listed_static.size} dans cette liste)"
   end
 
   desc "Copie les médias de l'ancien compte (CLOUDINARY_*) vers CLOUDINARY_DEST_*"
