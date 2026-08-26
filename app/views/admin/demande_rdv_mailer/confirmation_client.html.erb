@@ -27,11 +27,9 @@
             <div style="margin-bottom: 24px; padding-bottom: 24px; display: table; width: 100%;">
               <div style="display: table-row;">
                 <% if produit.image1.attached? %>
-                  <% host = Rails.env.production? ? 'a1soir-2-2a03802389d6.herokuapp.com' : 'localhost:3000' %>
-                  <% protocol = Rails.env.production? ? 'https' : 'http' %>
                   <div style="display: table-cell; vertical-align: top; padding-right: 16px; width: 120px;">
                     <a href="<%= produit_url %>">
-                      <%= image_tag rails_blob_url(produit.image1, host: host, protocol: protocol), alt: produit.nom, style: "max-width: 100px; height: auto; border-radius: 4px;", width: "100" %>
+                      <%= image_tag "#{ApplicationHelper::CLOUDINARY_BASE_IMAGE_URL}/q_auto,f_auto,w_200/#{produit.image1.key}", alt: produit.nom, style: "max-width: 100px; height: auto; border-radius: 4px;", width: "100" %>
                     </a>
                   </div>
                 <% end %>

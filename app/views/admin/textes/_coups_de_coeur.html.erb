@@ -59,7 +59,7 @@
 
                   <div class="col-auto">
                     <% if produit.image1.attached? %>
-                      <%= image_tag produit.default_image, class: "rounded object-fit-cover", style: "width: 80px; height: 80px;" %>
+                      <%= cloudinary_attachment_image produit.default_image, width: 160, alt: produit.nom, class: "rounded object-fit-cover", style: "width: 80px; height: 80px;" %>
                     <% else %>
                       <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
                         <i class="bi bi-image text-muted"></i>

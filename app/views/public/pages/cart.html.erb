@@ -40,9 +40,10 @@
                     <%# Thumbnail %>
                     <%= link_to produit_path(slug: cart_item.handle, id: cart_item.id),
                         class: "cart-item-thumb-wrap flex-shrink-0" do %>
-                      <%= image_tag(cart_item.default_image,
+                      <%= cloudinary_attachment_image(cart_item.default_image,
                           class: "cart-item-thumb",
                           alt: cart_item.nom,
+                          width: 256,
                           loading: "lazy") %>
                     <% end %>
 

@@ -15,7 +15,7 @@
         <!-- Image Column -->
         <div class="col-sm-4 p-1 text-center">
           <div data-turbo="false">
-            <%= link_to image_tag(produit.default_image, class: "img-fluid img-produit"), admin_produit_path(produit)  %>
+            <%= link_to cloudinary_attachment_image(produit.default_image, width: 600, alt: produit.nom, class: "img-fluid img-produit"), admin_produit_path(produit)  %>
           </div>
         </div>
         <!-- Text Column -->
@@ -186,7 +186,7 @@
             <div class="col-12">
               <div class="d-flex flex-wrap gap-2">
                 <% produit.images.each do |image| %>
-                  <%= image_tag(image, class: "rounded border", style: "object-fit: cover; width: 120px; height: 120px;") %>
+                  <%= cloudinary_attachment_image(image, width: 240, alt: produit.nom, class: "rounded border", style: "object-fit: cover; width: 120px; height: 120px;") %>
                 <% end %>
                 <% if produit.video1.attached? %>
                   <div class="d-flex align-items-center justify-content-center rounded border bg-light"

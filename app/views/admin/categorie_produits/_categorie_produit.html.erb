@@ -5,7 +5,7 @@
 
         <div class="col-sm-2 text-center">
           <div data-turbo="false">
-            <%= link_to image_tag(categorie_produit.default_image, class: "img-fluid"),
+            <%= link_to cloudinary_attachment_image(categorie_produit.default_image, width: 400, alt: categorie_produit.nom, class: "img-fluid"),
                   admin_categorie_produit_path(categorie_produit) %>
           </div>
         </div>

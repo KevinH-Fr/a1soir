@@ -26,7 +26,7 @@
       <div class="col-sm-4 p-1 text-center">
         <% if produit.persisted? && produit.save %>
           <div data-turbo="false">
-            <%= image_tag(produit.default_image, class: "img-fluid img-produit") %>
+            <%= cloudinary_attachment_image(produit.default_image, width: 600, alt: produit.nom, class: "img-fluid img-produit") %>
           </div>
         <% end %>
       </div>

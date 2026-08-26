@@ -9,8 +9,8 @@
 <% end %>
 
 <%= page_header(t("public.pages.cabine_essayage.header_title"), t("public.pages.cabine_essayage.header_subtitle"),
-image1: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/essayage_hjd2pe",
-image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/essayage2_s3mof4") %>
+image1: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/essayage_hjd2pe",
+image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/essayage2_s3mof4") %>
 
 <div class="public-main-content">
   <%= render "public/shared/recaptcha_script" %>
@@ -111,12 +111,13 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1920/
                       <!-- Image -->
                       <div style="width: 80px; height: 80px; flex-shrink: 0;">
                         <% if produit.default_image.present? %>
-                          <%= image_tag(
-                                produit.default_image, 
+                          <%= cloudinary_attachment_image(
+                                produit.default_image,
                                 class: "img-fluid rounded",
                                 style: "width: 100%; height: 100%; object-fit: cover;",
                                 alt: produit.nom,
-                                width: 80,
+                                width: 160,
+                                html_width: 80,
                                 height: 80,
                                 loading: "lazy"
                               ) %>

@@ -466,6 +466,8 @@ RSpec.describe "Public::Pages", type: :request do
         "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_800,vc_auto,f_mp4/video2_rgzof7"
       )
       expect(response.body).not_to include("video/upload/v1767993750/video2_rgzof7.mp4")
+      expect(response.body).to include("q_auto,f_auto,w_1200/equipe1_qgcprn")
+      expect(response.body).not_to include("w_1920")
     end
   end
 
@@ -478,6 +480,17 @@ RSpec.describe "Public::Pages", type: :request do
         "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_800,vc_auto,f_mp4/NC3007_TEAL_gaot6g"
       )
       expect(response.body).not_to include("video/upload/v1769264471/NC3007_TEAL_gaot6g.mp4")
+      expect(response.body).to include("q_auto,f_auto,w_1200/le_concept1_nz10zg")
+    end
+  end
+
+  describe "GET /fr/festival-de-cannes" do
+    it "serves WhatsApp images with Cloudinary transforms" do
+      get "/fr/festival-de-cannes"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("q_auto,f_auto,w_1200/WhatsApp_Image")
+      expect(response.body).not_to include("image/upload/v177842")
     end
   end
 end

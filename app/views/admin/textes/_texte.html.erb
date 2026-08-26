@@ -77,7 +77,7 @@
           <div class="accordion-body py-2">
             <div class="d-flex flex-wrap gap-2">
               <% texte.carousel_images.each do |image| %>
-                <%= image_tag(image, class: "rounded shadow-sm admin-carousel-image") %>
+                <%= cloudinary_attachment_image(image, width: 400, alt: "", class: "rounded shadow-sm admin-carousel-image") %>
               <% end %>
             </div>
           </div>

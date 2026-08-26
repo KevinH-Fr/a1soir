@@ -1,7 +1,7 @@
 <div class="card mx-2 my-3 p-2 light-beige-colored shadow-sm">
     <div class="row d-flex align-items-center">
         <div class="col-2 text-center">
-          <%= image_tag(produit.default_image, width: 50, class: "rounded") %>  
+          <%= cloudinary_attachment_image(produit.default_image, width: 100, html_width: 50, alt: produit.nom, class: "rounded") %>  
         </div>
         <div class="col ps-4">
             <h4 class="fw-bold"> <%= produit.nom %>  </h4>

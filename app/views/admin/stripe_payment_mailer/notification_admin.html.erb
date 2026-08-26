@@ -35,7 +35,7 @@
         <% if produit.image1.attached? %>
           <div style="display: table-cell; vertical-align: top; padding-right: 16px; width: 120px;">
             <a href="<%= product_page_url %>">
-              <%= image_tag rails_blob_url(produit.image1, host: @blob_rails_host, protocol: @blob_rails_protocol), alt: produit.nom, style: "max-width: 100px; height: auto; border-radius: 4px;", width: "100" %>
+              <%= image_tag "#{ApplicationHelper::CLOUDINARY_BASE_IMAGE_URL}/q_auto,f_auto,w_200/#{produit.image1.key}", alt: produit.nom, style: "max-width: 100px; height: auto; border-radius: 4px;", width: "100" %>
             </a>
           </div>
         <% end %>

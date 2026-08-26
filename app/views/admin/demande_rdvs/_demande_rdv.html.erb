@@ -74,7 +74,7 @@
                   <div class="card p-1 light-beige-colored shadow-sm">
                     <div class="d-flex align-items-center">
                       <div class="me-1">
-                        <%= image_tag(produit.default_image, width: 40, class: "rounded") %>
+                        <%= cloudinary_attachment_image(produit.default_image, width: 80, html_width: 40, alt: produit.nom, class: "rounded") %>
                       </div>
                       <div class="flex-grow-1" style="min-width: 0;">
                         <h6 class="mb-0 fw-bold small text-dark" style="font-size: 0.85rem;"><%= produit.nom %></h6>

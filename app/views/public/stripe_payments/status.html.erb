@@ -41,9 +41,10 @@
 
                     <%# Thumbnail %>
                     <div class="stripe-status-thumb-wrap flex-shrink-0">
-                      <%= image_tag(item.produit.default_image,
+                      <%= cloudinary_attachment_image(item.produit.default_image,
                           class: "stripe-status-thumb",
                           alt: item.produit.nom,
+                          width: 256,
                           loading: "lazy") %>
                     </div>
 

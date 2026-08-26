@@ -227,11 +227,19 @@ module ApplicationHelper
     "#{CLOUDINARY_BASE_IMAGE_URL}/#{transformation}/#{blob.key}"
   end
 
+  # URL Cloudinary pour un public_id statique (pages, WhatsApp, etc.).
+  def cloudinary_static_image_url(public_id, width: 1200)
+    return if public_id.blank?
+
+    "#{CLOUDINARY_BASE_IMAGE_URL}/q_auto,f_auto,w_#{width}/#{public_id}"
+  end
+
   # Génère un image_tag optimisé via Cloudinary à partir d'un attachment ActiveStorage.
   # Fallback vers image_tag classique si l'argument est un chemin string (ex: no_photo).
-  def cloudinary_attachment_image(attachment, width: 800, alt:, **options)
+  # html_width: attribut HTML (taille affichée) ; width: transformation Cloudinary.
+  def cloudinary_attachment_image(attachment, width: 800, alt: "", html_width: nil, **options)
     url = cloudinary_attachment_url(attachment, width: width)
-    html_options = { alt: alt, width: width }.merge(options)
+    html_options = { alt: alt, width: html_width || width }.merge(options)
     if url.present?
       image_tag(url, html_options)
     else

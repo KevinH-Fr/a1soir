@@ -3,7 +3,7 @@
     <div class="card-body p-2 d-flex flex-column gap-2">
       <div class="row g-0 gx-2 gy-1 align-items-center">
         <div class="col-auto">
-          <%= image_tag(profile.default_image, class: "img-fluid rounded", style: "max-width: 4.5rem") %>
+          <%= cloudinary_attachment_image(profile.default_image, width: 160, alt: profile.prenom.to_s, class: "img-fluid rounded", style: "max-width: 4.5rem") %>
         </div>
         <div class="col min-w-0">
           <div class="d-flex flex-wrap gap-1">

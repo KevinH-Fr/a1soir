@@ -86,6 +86,20 @@ RSpec.describe StripePaymentMailer, type: :mailer do
       expect(mail.html_part.body.encoded).to include("Robe mailer test")
     end
 
+    it "embeds a transformed Cloudinary image when the product has a photo" do
+      blob = ActiveStorage::Blob.create_and_upload!(
+        io: StringIO.new("fake-image"),
+        filename: "robe-mailer.jpg",
+        content_type: "image/jpeg"
+      )
+      produit.image1.attach(blob)
+
+      expect(mail.html_part.body.encoded).to include(
+        "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_200/#{blob.key}"
+      )
+      expect(mail.html_part.body.encoded).not_to include("/rails/active_storage/")
+    end
+
     context "when customer_email is blank" do
       before { payment.update_column(:customer_email, nil) }
 

@@ -50,23 +50,23 @@ module Public
       offer_sheets =
         if I18n.locale == :en
           {
-            offer_sheet_1_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424806/WhatsApp_Image_2026-05-10_at_16.15.31_2_fifemk.jpg",
-            offer_sheet_2_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424806/WhatsApp_Image_2026-05-10_at_16.15.31_3_ubusx0.jpg"
+            offer_sheet_1_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.15.31_2_fifemk.jpg"),
+            offer_sheet_2_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.15.31_3_ubusx0.jpg")
           }
         else
           {
-            offer_sheet_1_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.15.31_x7htic.jpg",
-            offer_sheet_2_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.15.31_1_vdv9ww.jpg"
+            offer_sheet_1_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.15.31_x7htic.jpg"),
+            offer_sheet_2_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.15.31_1_vdv9ww.jpg")
           }
         end
 
       @festival_media = offer_sheets.merge(
-        header_image_1_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.15.31_5_iy6io3.jpg",
-        header_image_2_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.16.35_xyakfo.jpg",
-        social_proof_image_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.15.31_5_iy6io3.jpg",
+        header_image_1_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.15.31_5_iy6io3.jpg"),
+        header_image_2_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.16.35_xyakfo.jpg"),
+        social_proof_image_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.15.31_5_iy6io3.jpg"),
         video_url: helpers.cloudinary_video_url("Festival_2026_Reel_Instagram_xgmvwd", width: 800, format: "mp4"),
-        video_poster_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.16.35_xyakfo.jpg",
-        whatsapp_visual_url: "https://res.cloudinary.com/dukne3lhz/image/upload/v1778424535/WhatsApp_Image_2026-05-10_at_16.16.01_2_osynga.jpg"
+        video_poster_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.16.35_xyakfo.jpg"),
+        whatsapp_visual_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.16.01_2_osynga.jpg")
       )
 
       load_periode_speciale_vars

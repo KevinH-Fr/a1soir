@@ -24,15 +24,15 @@ module PagesHelper
         # Container des deux images côte à côte
         images_container = content_tag :div, class: "d-flex h-100" do
           img1 = if image1.present?
-            image_source = collection_card_image_source(image1, width: 1920)
+            image_source = collection_card_image_source(image1, width: 1200)
             content_tag :div, class: "page-header-image-wrapper page-header-image-wrapper-first", style: "height: 100%; overflow: hidden;" do
               image_tag(
                 image_source,
                 class: "img-fluid page-header-image",
                 style: "width: 100%; height: 100%; object-fit: cover; object-position: #{image1_position}; transition: transform 0.6s ease;",
                 alt: title,
-                width: 1920,
-                height: 1080
+                width: 1200,
+                height: 675
               )
             end
           else
@@ -42,15 +42,15 @@ module PagesHelper
           end
           
           img2 = if image2.present?
-            image_source = collection_card_image_source(image2, width: 1920)
+            image_source = collection_card_image_source(image2, width: 1200)
             content_tag :div, class: "page-header-image-wrapper d-none d-md-block", style: "width: 50%; height: 100%; overflow: hidden;" do
               image_tag(
                 image_source,
                 class: "img-fluid page-header-image",
                 style: "width: 100%; height: 100%; object-fit: cover; object-position: #{image2_position}; transition: transform 0.6s ease;",
                 alt: title,
-                width: 1920,
-                height: 1080,
+                width: 1200,
+                height: 675,
                 loading: "lazy"
               )
             end
@@ -328,8 +328,8 @@ module PagesHelper
               class: "image-hover-base",
               style: "object-fit: cover; transition: opacity 0.5s ease;",
               alt: title,
-              width: 1920,
-              height: 1080,
+              width: 1200,
+              height: 675,
               loading: "lazy"
             )
             if image2.present?
@@ -338,8 +338,8 @@ module PagesHelper
                 class: "image-hover-overlay",
                 style: "object-fit: cover; transition: opacity 0.5s ease;",
                 alt: "#{title} - deuxième visuel",
-                width: 1920,
-                height: 1080,
+                width: 1200,
+                height: 675,
                 loading: "lazy"
               )
               base_image + overlay_image

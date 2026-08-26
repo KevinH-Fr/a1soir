@@ -6,7 +6,7 @@
 
       <div class="row align-items-center">
         <div class="col-sm-3 text-center">
-          <%= image_tag(article.produit.default_image, class: "img-produit rounded") %>
+          <%= cloudinary_attachment_image(article.produit.default_image, width: 600, alt: article.produit.nom, class: "img-produit rounded") %>
         </div>
 
         <div class="col-sm-9 ps-2">

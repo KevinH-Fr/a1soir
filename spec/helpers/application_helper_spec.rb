@@ -19,6 +19,14 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
+  describe "#cloudinary_static_image_url" do
+    it "builds an optimized URL for a static public_id" do
+      expect(helper.cloudinary_static_image_url("WhatsApp_Image_example.jpg", width: 1200)).to eq(
+        "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/WhatsApp_Image_example.jpg"
+      )
+    end
+  end
+
   describe "#cloudinary_attachment_image" do
     it "keeps the HTML width attribute for layout" do
       blob = instance_double(ActiveStorage::Blob, key: "thumb-key")
@@ -27,6 +35,15 @@ RSpec.describe ApplicationHelper, type: :helper do
 
       expect(html).to include('width="200"')
       expect(html).to include("q_auto,f_auto,w_200/thumb-key")
+    end
+
+    it "can keep a smaller HTML width than the Cloudinary transform" do
+      blob = instance_double(ActiveStorage::Blob, key: "thumb-key")
+
+      html = helper.cloudinary_attachment_image(blob, width: 80, html_width: 40, alt: "Robe")
+
+      expect(html).to include('width="40"')
+      expect(html).to include("w_80/thumb-key")
     end
   end
 
