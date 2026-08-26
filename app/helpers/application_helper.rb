@@ -185,10 +185,37 @@ module ApplicationHelper
     image_tag(url, { alt: alt }.merge(options))
   end
 
-  def cloudinary_video_url(attachment, width: 800, quality: "auto")
-    key = attachment.blob.key
-    transformation = "q_#{quality},w_#{width},vc_auto,f_auto"
+  def cloudinary_video_url(source, width: 800, quality: "auto", format: "auto")
+    key = cloudinary_video_public_id(source)
+    return if key.blank?
+
+    transformation = "q_#{quality},w_#{width},vc_auto,f_#{format}"
     "#{CLOUDINARY_BASE_VIDEO_URL}/#{transformation}/#{key}"
+  end
+
+  # Image statique extraite d'une frame vidéo (évite de charger le MP4 dans une miniature).
+  def cloudinary_video_poster_url(source, width: 200, height: width, start_offset: 0)
+    key = cloudinary_video_public_id(source)
+    return if key.blank?
+
+    transformation = "so_#{start_offset},w_#{width},h_#{height},c_fill,q_auto,f_jpg"
+    "#{CLOUDINARY_BASE_VIDEO_URL}/#{transformation}/#{key}.jpg"
+  end
+
+  def cloudinary_video_public_id(source)
+    return if source.blank?
+
+    if source.is_a?(String)
+      return source.sub(/\.(mp4|mov|webm|m4v)\z/i, "")
+    end
+
+    key = if source.is_a?(ActiveStorage::Blob) || (source.respond_to?(:key) && !source.respond_to?(:blob))
+            source.key
+          elsif source.respond_to?(:blob) && source.blob
+            source.blob.key
+          end
+
+    key.to_s.sub(/\.(mp4|mov|webm|m4v)\z/i, "").presence
   end
 
   # URL Cloudinary optimisée (q_auto, f_auto, largeur max) pour un attachment ActiveStorage.
@@ -204,22 +231,20 @@ module ApplicationHelper
   # Fallback vers image_tag classique si l'argument est un chemin string (ex: no_photo).
   def cloudinary_attachment_image(attachment, width: 800, alt:, **options)
     url = cloudinary_attachment_url(attachment, width: width)
+    html_options = { alt: alt, width: width }.merge(options)
     if url.present?
-      image_tag(url, { alt: alt }.merge(options))
+      image_tag(url, html_options)
     else
-      image_tag(attachment, { alt: alt }.merge(options))
+      image_tag(attachment, html_options)
     end
   end
 
   def cloudinary_attachment_blob(source)
-    case source
-    when ActiveStorage::Blob
-      source
-    else
-      return source.blob if source.respond_to?(:attached?) && source.attached?
+    return source if source.is_a?(ActiveStorage::Blob)
+    return source.blob if source.respond_to?(:attached?) && source.attached?
+    return source.blob if source.respond_to?(:blob) && source.blob
 
-      source.blob if source.respond_to?(:blob)
-    end
+    source if source.respond_to?(:key) && !source.respond_to?(:attached?)
   end
 
     def google_calendar_embed_url

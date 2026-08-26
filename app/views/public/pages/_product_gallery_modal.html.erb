@@ -32,7 +32,7 @@
             
             <% if produit.video1.attached? %>
               <div class="carousel-item <%= 'active' if slide_idx == 0 %> h-100 position-relative">
-                <video autoplay loop muted playsinline class="position-absolute top-50 start-50 translate-middle rounded-1" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;" src="<%= url_for(produit.video1) %>" type="<%= produit.video1.content_type %>">
+                <video autoplay loop muted playsinline class="position-absolute top-50 start-50 translate-middle rounded-1" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;" src="<%= cloudinary_video_url(produit.video1, width: 1200) %>">
                   Votre navigateur ne prend pas en charge la lecture de vidéos.
                 </video>
               </div>
@@ -41,7 +41,7 @@
             
             <% if produit.default_image_white.present? %>
               <div class="carousel-item <%= 'active' if slide_idx == 0 %> h-100 position-relative">
-                <%= image_tag(produit.default_image_white, class: "position-absolute top-50 start-50 translate-middle rounded-1", style: "max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;", alt: produit.nom) %>
+                <%= cloudinary_attachment_image(produit.default_image_white, width: 1200, class: "position-absolute top-50 start-50 translate-middle rounded-1", style: "max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;", alt: produit.nom) %>
               </div>
               <% slide_idx += 1 %>
             <% end %>
@@ -49,7 +49,7 @@
             <% if produit.images %>
               <% produit.images.each do |image| %>
                 <div class="carousel-item <%= 'active' if slide_idx == 0 %> h-100 position-relative">
-                  <%= image_tag(image, class: "position-absolute top-50 start-50 translate-middle rounded-1", style: "max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;", alt: produit.nom) %>
+                  <%= cloudinary_attachment_image(image, width: 1200, class: "position-absolute top-50 start-50 translate-middle rounded-1", style: "max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;", alt: produit.nom) %>
                 </div>
                 <% slide_idx += 1 %>
               <% end %>

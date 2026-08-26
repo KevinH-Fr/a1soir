@@ -14,10 +14,15 @@
              data-bs-target="#<%= carousel_id %>"
              data-bs-slide-to="<%= thumbnail_index %>"
              aria-label="<%= t('public.pages.produit.go_to_slide', number: thumbnail_index + 1, product: produit.nom) %>">
-          <div class="position-relative">
-            <video class="carousel-thumbnail-media" muted playsinline>
-              <source src="<%= url_for(produit.video1) %>" type="<%= produit.video1.content_type %>">
-            </video>
+          <div class="position-relative w-100 h-100">
+            <%= image_tag(
+                  cloudinary_video_poster_url(produit.video1, width: 200, height: 200),
+                  alt: produit.nom,
+                  loading: "lazy",
+                  width: 200,
+                  height: 200,
+                  class: "carousel-thumbnail-media"
+                ) %>
             <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
               <i class="bi bi-play-circle-fill text-white fs-4"></i>
             </div>
@@ -28,13 +33,13 @@
              data-bs-target="#<%= carousel_id %>"
              data-bs-slide-to="<%= thumbnail_index %>"
              aria-label="<%= t('public.pages.produit.go_to_slide', number: thumbnail_index + 1, product: produit.nom) %>">
-          <%= image_tag(
+          <%= cloudinary_attachment_image(
                 produit.default_image_white,
+                width: 200,
+                height: 200,
                 class: "carousel-thumbnail-media",
                 alt: produit.nom,
-                loading: "lazy",
-                width: 200,
-                height: 200
+                loading: "lazy"
               ) %>
         </button>
         <% thumbnail_index += 1 %>
@@ -43,13 +48,13 @@
              data-bs-target="#<%= carousel_id %>"
              data-bs-slide-to="<%= thumbnail_index %>"
              aria-label="<%= t('public.pages.produit.go_to_slide', number: thumbnail_index + 1, product: produit.nom) %>">
-          <%= image_tag(
+          <%= cloudinary_attachment_image(
                 produit.default_image_white,
+                width: 200,
+                height: 200,
                 class: "carousel-thumbnail-media",
                 alt: produit.nom,
-                loading: "lazy",
-                width: 200,
-                height: 200
+                loading: "lazy"
               ) %>
         </button>
         <% thumbnail_index += 1 %>
@@ -61,13 +66,13 @@
                data-bs-target="#<%= carousel_id %>"
                data-bs-slide-to="<%= thumbnail_index %>"
                aria-label="<%= t('public.pages.produit.go_to_slide', number: thumbnail_index + 1, product: produit.nom) %>">
-            <%= image_tag(
+            <%= cloudinary_attachment_image(
                   image,
+                  width: 200,
+                  height: 200,
                   class: "carousel-thumbnail-media",
                   alt: produit.nom,
-                  loading: "lazy",
-                  width: 200,
-                  height: 200
+                  loading: "lazy"
                 ) %>
           </button>
           <% thumbnail_index += 1 %>

@@ -19,10 +19,57 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
+  describe "#cloudinary_attachment_image" do
+    it "keeps the HTML width attribute for layout" do
+      blob = instance_double(ActiveStorage::Blob, key: "thumb-key")
+
+      html = helper.cloudinary_attachment_image(blob, width: 200, alt: "Robe")
+
+      expect(html).to include('width="200"')
+      expect(html).to include("q_auto,f_auto,w_200/thumb-key")
+    end
+  end
+
+  describe "#cloudinary_video_url" do
+    it "returns a transformed Cloudinary URL for an attachment" do
+      blob = instance_double(ActiveStorage::Blob, key: "demo-video-key")
+      attachment = double("video_attachment", blob: blob)
+
+      expect(helper.cloudinary_video_url(attachment, width: 800)).to eq(
+        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_800,vc_auto,f_auto/demo-video-key"
+      )
+    end
+
+    it "accepts a static public_id" do
+      expect(helper.cloudinary_video_url("video2_rgzof7", width: 800)).to eq(
+        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_800,vc_auto,f_auto/video2_rgzof7"
+      )
+    end
+
+    it "strips a media extension from a public_id" do
+      expect(helper.cloudinary_video_url("clip.mp4", width: 1200)).to end_with("/clip")
+    end
+
+    it "can force mp4 when the HTML source declares type=video/mp4" do
+      expect(helper.cloudinary_video_url("reel", width: 800, format: "mp4")).to include("f_mp4/reel")
+    end
+  end
+
+  describe "#cloudinary_video_poster_url" do
+    it "returns a still frame from the video, not the product image" do
+      blob = instance_double(ActiveStorage::Blob, key: "demo-video-key")
+      attachment = double("video_attachment", blob: blob)
+
+      expect(helper.cloudinary_video_poster_url(attachment, width: 200, height: 200)).to eq(
+        "https://res.cloudinary.com/dukne3lhz/video/upload/so_0,w_200,h_200,c_fill,q_auto,f_jpg/demo-video-key.jpg"
+      )
+    end
+  end
+
   describe "PagesHelper#collection_card_image_source" do
     it "returns a Cloudinary URL for ActiveStorage attachments" do
       blob = instance_double(ActiveStorage::Blob, key: "card-key-1")
-      attachment = instance_double(ActiveStorage::Attached::One, attached?: true, blob: blob)
+      attachment = double("attachment", attached?: true, blob: blob)
 
       expect(helper.collection_card_image_source(attachment, width: 800)).to include("w_800/card-key-1")
     end

@@ -315,6 +315,41 @@ RSpec.describe "Public::Pages", type: :request do
       expect(response.body).to include(%(name="twitter:image" content="#{og_url}"))
       expect(response.body).not_to include('property="og:image" content="/images/')
     end
+
+    it "serves product images and videos via Cloudinary transforms, not originals" do
+      image_blob = ActiveStorage::Blob.create_and_upload!(
+        io: StringIO.new("fake-image"),
+        filename: "robe-seo.jpg",
+        content_type: "image/jpeg"
+      )
+      video_blob = ActiveStorage::Blob.create_and_upload!(
+        io: StringIO.new("fake-video"),
+        filename: "robe-seo.mp4",
+        content_type: "video/mp4"
+      )
+      produit_seo.image1.attach(image_blob)
+      produit_seo.video1.attach(video_blob)
+
+      get "/fr/produit/robe-seo-#{produit_seo.id}"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(
+        "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_800/#{image_blob.key}"
+      )
+      expect(response.body).to include(
+        "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/#{image_blob.key}"
+      )
+      expect(response.body).to include(
+        "https://res.cloudinary.com/dukne3lhz/video/upload/so_0,w_200,h_200,c_fill,q_auto,f_jpg/#{video_blob.key}.jpg"
+      )
+      expect(response.body).to include(
+        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_800,vc_auto,f_auto/#{video_blob.key}"
+      )
+      expect(response.body).to include(
+        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_1200,vc_auto,f_auto/#{video_blob.key}"
+      )
+      expect(response.body).not_to include("/rails/active_storage/")
+    end
   end
 
   # -------------------------------------------------------------------------
@@ -419,6 +454,30 @@ RSpec.describe "Public::Pages", type: :request do
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include('"@type":"FAQPage"')
+    end
+  end
+
+  describe "GET /fr/la-boutique" do
+    it "serves the boutique video with a Cloudinary transform" do
+      get "/fr/la_boutique"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(
+        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_800,vc_auto,f_auto/video2_rgzof7"
+      )
+      expect(response.body).not_to include("video/upload/v1767993750/video2_rgzof7.mp4")
+    end
+  end
+
+  describe "GET /fr/le-concept" do
+    it "serves the concept video with a Cloudinary transform" do
+      get "/fr/le_concept"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(
+        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_800,vc_auto,f_auto/NC3007_TEAL_gaot6g"
+      )
+      expect(response.body).not_to include("video/upload/v1769264471/NC3007_TEAL_gaot6g.mp4")
     end
   end
 end

@@ -20,12 +20,12 @@
         </div>
         <% slide_index += 1 %>
         <div class="carousel-item">
-          <%= image_tag(produit.default_image_white, class: "d-block w-100 rounded-0", alt: produit.nom, loading: "lazy", width: media_width, height: media_height, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
+          <%= cloudinary_attachment_image(produit.default_image_white, width: media_width, height: media_height, alt: produit.nom, loading: "lazy", class: "d-block w-100 rounded-0", style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
         </div>
         <% slide_index += 1 %>
       <% else %>
         <div class="carousel-item active">
-          <%= image_tag(produit.default_image_white, class: "d-block w-100", alt: produit.nom, loading: (primary_slide_priority ? "eager" : "lazy"), fetchpriority: (primary_slide_priority ? "high" : nil), width: media_width, height: media_height, style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
+          <%= cloudinary_attachment_image(produit.default_image_white, width: media_width, height: media_height, alt: produit.nom, loading: (primary_slide_priority ? "eager" : "lazy"), fetchpriority: (primary_slide_priority ? "high" : nil), class: "d-block w-100", style: "cursor: pointer;", role: "button", data: { bs_toggle: "modal", bs_target: "#modalProduit_#{produit.id}" }) %>
         </div>
         <% slide_index += 1 %>
       <% end %>
