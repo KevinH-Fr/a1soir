@@ -343,10 +343,10 @@ RSpec.describe "Public::Pages", type: :request do
         "https://res.cloudinary.com/dukne3lhz/video/upload/so_0,w_200,h_200,c_fill,q_auto,f_jpg/#{video_blob.key}.jpg"
       )
       expect(response.body).to include(
-        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_800,vc_auto,f_auto/#{video_blob.key}"
+        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_800,vc_auto,f_mp4/#{video_blob.key}"
       )
       expect(response.body).to include(
-        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_1200,vc_auto,f_auto/#{video_blob.key}"
+        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_1200,vc_auto,f_mp4/#{video_blob.key}"
       )
       expect(response.body).not_to include("/rails/active_storage/")
     end
@@ -463,7 +463,7 @@ RSpec.describe "Public::Pages", type: :request do
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include(
-        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_800,vc_auto,f_auto/video2_rgzof7"
+        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_800,vc_auto,f_mp4/video2_rgzof7"
       )
       expect(response.body).not_to include("video/upload/v1767993750/video2_rgzof7.mp4")
     end
@@ -475,7 +475,7 @@ RSpec.describe "Public::Pages", type: :request do
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include(
-        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_800,vc_auto,f_auto/NC3007_TEAL_gaot6g"
+        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_800,vc_auto,f_mp4/NC3007_TEAL_gaot6g"
       )
       expect(response.body).not_to include("video/upload/v1769264471/NC3007_TEAL_gaot6g.mp4")
     end

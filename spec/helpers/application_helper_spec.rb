@@ -36,13 +36,13 @@ RSpec.describe ApplicationHelper, type: :helper do
       attachment = double("video_attachment", blob: blob)
 
       expect(helper.cloudinary_video_url(attachment, width: 800)).to eq(
-        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_800,vc_auto,f_auto/demo-video-key"
+        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_800,vc_auto,f_mp4/demo-video-key"
       )
     end
 
     it "accepts a static public_id" do
       expect(helper.cloudinary_video_url("video2_rgzof7", width: 800)).to eq(
-        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_800,vc_auto,f_auto/video2_rgzof7"
+        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_800,vc_auto,f_mp4/video2_rgzof7"
       )
     end
 
@@ -50,8 +50,8 @@ RSpec.describe ApplicationHelper, type: :helper do
       expect(helper.cloudinary_video_url("clip.mp4", width: 1200)).to end_with("/clip")
     end
 
-    it "can force mp4 when the HTML source declares type=video/mp4" do
-      expect(helper.cloudinary_video_url("reel", width: 800, format: "mp4")).to include("f_mp4/reel")
+    it "defaults to mp4 for Safari / iOS HTML5 video" do
+      expect(helper.cloudinary_video_url("reel", width: 800)).to include("f_mp4/reel")
     end
   end
 

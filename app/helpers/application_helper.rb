@@ -185,7 +185,7 @@ module ApplicationHelper
     image_tag(url, { alt: alt }.merge(options))
   end
 
-  def cloudinary_video_url(source, width: 800, quality: "auto", format: "auto")
+  def cloudinary_video_url(source, width: 800, quality: "auto", format: "mp4")
     key = cloudinary_video_public_id(source)
     return if key.blank?
 
