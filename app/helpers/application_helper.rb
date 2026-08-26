@@ -3,8 +3,9 @@ module ApplicationHelper
   include Pagy::Frontend
   include PublicFontsHelper
   
-  CLOUDINARY_BASE_IMAGE_URL = "https://res.cloudinary.com/dukne3lhz/image/upload".freeze
-  CLOUDINARY_BASE_VIDEO_URL = "https://res.cloudinary.com/dukne3lhz/video/upload".freeze
+  CLOUDINARY_CLOUD_NAME = Cloudinary.config.cloud_name.to_s.freeze
+  CLOUDINARY_BASE_IMAGE_URL = "https://res.cloudinary.com/#{CLOUDINARY_CLOUD_NAME}/image/upload".freeze
+  CLOUDINARY_BASE_VIDEO_URL = "https://res.cloudinary.com/#{CLOUDINARY_CLOUD_NAME}/video/upload".freeze
 
   def custom_currency_format(amount)
     precision = amount.to_f == amount.to_i ? 0 : 2
@@ -176,7 +177,7 @@ module ApplicationHelper
     end
 
     def no_photo_url
-      'https://res.cloudinary.com/dukne3lhz/image/upload/v1738665309/no_photo_black_p8wyfh.png'
+      "#{CLOUDINARY_BASE_IMAGE_URL}/v1738665309/no_photo_black_p8wyfh.png"
     end
 
   def cloudinary_image(public_id, width:, alt:, **options)

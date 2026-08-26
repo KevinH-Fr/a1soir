@@ -9,8 +9,8 @@
 <% end %>
 
 <%= page_header(t("public.pages.cabine_essayage.header_title"), t("public.pages.cabine_essayage.header_subtitle"),
-image1: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/essayage_hjd2pe",
-image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/essayage2_s3mof4") %>
+image1: cloudinary_static_image_url("essayage_hjd2pe", width: 1200),
+image2: cloudinary_static_image_url("essayage2_s3mof4", width: 1200)) %>
 
 <div class="public-main-content">
   <%= render "public/shared/recaptcha_script" %>

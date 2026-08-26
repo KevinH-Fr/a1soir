@@ -16,17 +16,26 @@
 #   CLOUDINARY_KEY / CLOUDINARY_SECRET
 #   (cloud_name encore hardcodé `dukne3lhz` dans config/initializers/cloudinary.rb)
 #
-# Ces variables NE DOIVENT PAS changer tant que la copie n'est pas finie :
-#   prod, staging et ton .env local continuent de LIRE l'ancien compte.
+# Ces variables NE DOIVENT PAS être écrasées par les DEST_* :
+#   CLOUDINARY_KEY / SECRET / CLOUDINARY_CLOUD_NAME = ancien compte
+#   CLOUDINARY_DEST_* = nouveau compte
+#   CLOUDINARY_USE=source|dest  → uniquement l'app Rails (défaut source)
 #
-# Le NOUVEAU compte (autre login Cloudinary) se passe UNIQUEMENT via des
-# variables séparées, jamais commitées :
-#   CLOUDINARY_DEST_CLOUD_NAME
-#   CLOUDINARY_DEST_KEY
-#   CLOUDINARY_DEST_SECRET
+# Le script ignore CLOUDINARY_USE (lit source, écrit dest). Pour tester
+# le site sur le nouveau compte : CLOUDINARY_USE=dest + restart Rails.
+# Pour revenir à l'ancien : CLOUDINARY_USE=source (ou supprimer la ligne).
 #
-# Le script LIT avec les identifiants source (compte actuel) et ECRIT avec
-# les identifiants dest. Rails / Active Storage / le site ne basculent pas.
+# Fin de migration : copier DEST_* vers CLOUDINARY_*, supprimer DEST_*
+# et CLOUDINARY_USE.
+#
+# Le folder Cloudinary (A1soir) n'est PAS le public_id. L'app Rails utilise
+# des IDs sans préfixe (`faq1_fp6utw`, clés Active Storage). On range donc
+# les fichiers DANS le dossier A1soir via `asset_folder`, SANS préfixer
+# le public_id (sinon les URLs et la DB cassent).
+# Ne pas utiliser le paramètre upload `folder:` : en mode "fixed folders"
+# il transforme l'ID en `A1soir/faq1_fp6utw`.
+#
+# Le script LIT avec source et ECRIT avec dest, quel que soit CLOUDINARY_USE.
 #
 # -----------------------------------------------------------------------------
 # Git / environnements (la partie "intelligente")
@@ -41,9 +50,8 @@
 #      pointeur (cloud_name en ENV + deploy).
 #
 # 2. Local
-#    - Garder CLOUDINARY_KEY/SECRET = ancien compte (comme aujourd'hui).
-#    - Ajouter les 3 CLOUDINARY_DEST_* dans `.env` (gitignore).
-#    - Tester avec 1 média : ONLY=faq1_fp6utw DRY_RUN=1 puis sans DRY_RUN.
+#    - Garder CLOUDINARY_* = ancien, CLOUDINARY_DEST_* = nouveau.
+#    - Tester l'app : CLOUDINARY_USE=dest (puis source pour revenir).
 #
 # 3. Staging (recommandé avant la prod)
 #    - La copie se fait depuis TON laptop (les DEST_* n'ont pas besoin
@@ -97,26 +105,25 @@ require "open-uri"
 require "tempfile"
 
 module CloudinaryCopy
-  SOURCE_CLOUD_FALLBACK = "dukne3lhz"
   ALLOWLIST_PATH = Rails.root.join("tmp/cloudinary_allowlist.txt")
   REPORT_PATH = Rails.root.join("tmp/cloudinary_copy_report.txt")
 
   module_function
 
   def source_creds
-    {
-      cloud_name: ENV["CLOUDINARY_CLOUD_NAME"].presence || SOURCE_CLOUD_FALLBACK,
-      api_key: ENV.fetch("CLOUDINARY_KEY"),
-      api_secret: ENV.fetch("CLOUDINARY_SECRET")
-    }
+    CloudinaryEnv.source
   end
 
   def dest_creds
-    {
-      cloud_name: ENV.fetch("CLOUDINARY_DEST_CLOUD_NAME"),
-      api_key: ENV.fetch("CLOUDINARY_DEST_KEY"),
-      api_secret: ENV.fetch("CLOUDINARY_DEST_SECRET")
-    }
+    CloudinaryEnv.dest
+  end
+
+  def dest_folder
+    CloudinaryEnv.dest_folder
+  end
+
+  def source_folder
+    CloudinaryEnv.source_folder
   end
 
   def dry_run?
@@ -192,10 +199,27 @@ module CloudinaryCopy
 
   # --- API Cloudinary -------------------------------------------------------
 
-  def find_on(creds, public_id)
-    candidates = [public_id]
+  def id_candidates(public_id)
+    bases = [public_id]
     without_ext = public_id.sub(/\.(png|jpe?g|webp|gif)\z/i, "")
-    candidates << without_ext if without_ext != public_id
+    bases << without_ext if without_ext != public_id
+
+    folders = [source_folder, dest_folder].compact.uniq
+    bases.flat_map do |pid|
+      [pid, *folders.map { |folder| "#{folder.sub(%r{/\z}, "")}/#{pid}" }]
+    end.uniq
+  end
+
+  def delivery_public_id(found_id)
+    [source_folder, dest_folder].compact.each do |folder|
+      prefix = "#{folder.sub(%r{/\z}, "")}/"
+      return found_id.delete_prefix(prefix) if found_id.start_with?(prefix)
+    end
+    found_id
+  end
+
+  def find_on(creds, public_id)
+    candidates = id_candidates(public_id)
 
     %w[image video].each do |resource_type|
       %w[authenticated upload].each do |type|
@@ -213,6 +237,26 @@ module CloudinaryCopy
       end
     end
     nil
+  end
+
+  # Déplace un asset déjà uploadé dans le dossier Media Library (A1soir).
+  # Le 1er essai va souvent à la racine Assets ; un 2e run sans OVERWRITE
+  # le déplace via l'Admin API (asset_folder), sans changer le public_id.
+  def assign_dest_folder!(public_id, resource)
+    return false if dest_folder.blank? || dry_run?
+
+    Cloudinary::Api.update(
+      public_id,
+      dest_creds.merge(
+        resource_type: resource["resource_type"],
+        type: resource["type"],
+        asset_folder: dest_folder
+      )
+    )
+    true
+  rescue Cloudinary::Api::Error => e
+    warn "  (folder dest non appliqué pour #{public_id}: #{e.message})"
+    false
   end
 
   def signed_download_url(resource)
@@ -234,11 +278,17 @@ module CloudinaryCopy
     pause
     return { status: :missing_source, public_id: public_id } if source.nil?
 
-    real_id = source["_lookup_public_id"] || source["public_id"]
+    lookup_id = source["_lookup_public_id"] || source["public_id"]
+    real_id = delivery_public_id(lookup_id)
 
-    if !overwrite? && find_on(dest_creds, real_id)
-      pause
-      return { status: :skipped_exists, public_id: real_id }
+    existing_dest = find_on(dest_creds, real_id)
+    pause
+    if existing_dest && !overwrite?
+      moved = assign_dest_folder!(real_id, existing_dest)
+      return {
+        status: moved ? :skipped_exists_moved_folder : :skipped_exists,
+        public_id: real_id
+      }
     end
     pause
 
@@ -256,18 +306,27 @@ module CloudinaryCopy
     URI.open(url) { |io| IO.copy_stream(io, tempfile) }
     tempfile.rewind
 
-    Cloudinary::Uploader.upload(
-      tempfile.path,
-      dest_creds.merge(
-        public_id: real_id,
-        resource_type: source["resource_type"],
-        type: source["type"],
-        overwrite: true
-      )
+    upload_options = dest_creds.merge(
+      public_id: real_id,
+      resource_type: source["resource_type"],
+      type: source["type"],
+      overwrite: true
     )
-    pause
+    if dest_folder.present?
+      upload_options[:asset_folder] = dest_folder
+    end
 
-    { status: :copied, public_id: real_id, resource_type: source["resource_type"], type: source["type"] }
+    uploaded = Cloudinary::Uploader.upload(tempfile.path, upload_options)
+    pause
+    assign_dest_folder!(real_id, uploaded.merge("resource_type" => source["resource_type"], "type" => source["type"]))
+
+    {
+      status: :copied,
+      public_id: real_id,
+      resource_type: source["resource_type"],
+      type: source["type"],
+      asset_folder: dest_folder || uploaded["asset_folder"]
+    }
   ensure
     tempfile&.close!
   end
@@ -282,6 +341,14 @@ module CloudinaryCopy
 end
 
 namespace :cloudinary do
+  desc "Affiche quel compte l'app utilise (source ou dest) vs ce que la copie utilise"
+  task which: :environment do
+    app = CloudinaryEnv.app
+    puts "App (CLOUDINARY_USE=#{CloudinaryEnv.use_dest? ? 'dest' : 'source'}) : #{app[:cloud_name]}"
+    puts "Copie source : #{CloudinaryEnv.source[:cloud_name]}"
+    puts "Copie dest   : #{CloudinaryEnv.dest[:cloud_name]}  folder=#{CloudinaryEnv.dest_folder.inspect}"
+  end
+
   desc "Liste les public_id A1soir (blobs DB + pages) sans copier"
   task list_assets: :environment do
     ids = CloudinaryCopy.collect_public_ids
@@ -291,7 +358,9 @@ namespace :cloudinary do
     puts "Fichier       : #{CloudinaryCopy::ALLOWLIST_PATH}"
     puts "(tmp/ est gitignoré — ne pas committer une allowlist prod)"
     puts
-    ids.each { |id| puts id }
+    ids.each_with_index { |id, i| puts "#{i + 1}\t#{id}" }
+    puts
+    puts "Total : #{ids.size}"
   end
 
   desc "Copie les médias de l'ancien compte (CLOUDINARY_*) vers CLOUDINARY_DEST_*"
@@ -300,8 +369,11 @@ namespace :cloudinary do
     abort "Aucun public_id à copier." if ids.empty?
 
     dest = CloudinaryCopy.dest_creds
+    abort "CLOUDINARY_DEST_CLOUD_NAME / KEY / SECRET manquants." if dest.values.any?(&:blank?)
     puts "Source : #{CloudinaryCopy.source_creds[:cloud_name]}  (CLOUDINARY_KEY actuel)"
+    puts "        folder source (lookup) : #{CloudinaryCopy.source_folder || '(racine / inchangé)'}"
     puts "Dest   : #{dest[:cloud_name]}  (CLOUDINARY_DEST_*)"
+    puts "        folder dest (Media Library) : #{CloudinaryCopy.dest_folder || '(racine — définis CLOUDINARY_DEST_FOLDER=A1soir)'}"
     puts "Mode   : #{CloudinaryCopy.dry_run? ? 'DRY_RUN (aucune écriture dest)' : 'écriture réelle'}"
     puts "Overwrite dest si déjà présent : #{CloudinaryCopy.overwrite?}"
     puts "À traiter : #{ids.size}"
