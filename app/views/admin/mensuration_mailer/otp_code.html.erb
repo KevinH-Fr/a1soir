@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <p><%= I18n.t('mensurations.mailer.otp.body') %></p>
+
+    <p style="font-size: 28px; letter-spacing: 6px; font-weight: bold; margin: 24px 0;"><%= @code %></p>
+
+    <p style="font-size: 13px; color: #666;"><%= I18n.t('mensurations.mailer.otp.validity') %></p>
+    <p style="font-size: 13px; color: #666;"><%= I18n.t('mensurations.mailer.otp.ignore') %></p>
+  </body>
+</html>

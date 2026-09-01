@@ -1,7 +1,7 @@
 <%= card_main_model("Client", "person") %>
 
 <div class="<%= admin_list_stack_classes %>">
-  <%= render @client %>
+  <%= render @client, with_mensuration: true %>
 </div>
 
 <%= card_main_model(

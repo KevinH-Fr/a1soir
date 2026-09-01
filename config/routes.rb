@@ -33,6 +33,14 @@ Rails.application.routes.draw do
       get 'guides/:slug', to: 'seo_pages#show', as: :seo_guide, defaults: { scope: 'guides' }
       get 'tenue-festival-de-cannes', to: redirect { |params, _| "/#{params[:locale] || 'fr'}/festival-de-cannes" }
 
+      # Mensurations sur invitation — volontairement hors sitemap / menus (lien envoyé par mail).
+      # Déclaré avant le catch-all ':slug' pour ne pas être avalé par les pages SEO.
+      get 'm/:token', to: 'mensurations#show', as: :mensuration
+      post 'm/:token/otp', to: 'mensurations#send_otp', as: :mensuration_otp
+      post 'm/:token/verify', to: 'mensurations#verify_otp', as: :mensuration_verify
+      post 'm/:token', to: 'mensurations#save', as: :mensuration_save
+      delete 'm/:token', to: 'mensurations#destroy', as: :mensuration_delete
+
       get ':slug', to: 'seo_pages#show', as: :seo_page,
           constraints: Constraints::SeoPageSlug,
           defaults: { scope: 'local' }
@@ -176,6 +184,15 @@ Rails.application.routes.draw do
       resources :clients do 
         member do
           post :edit
+        end
+      end
+
+      # Dimensions : invitations mensurations + fiches. :id = invitation.
+      resources :mensurations, only: [:index, :create, :destroy] do
+        member do
+          post :resend
+          # La photo client ne sort jamais en URL Cloudinary publique : proxy admin authentifié.
+          get :photo
         end
       end
       

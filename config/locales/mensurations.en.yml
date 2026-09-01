@@ -1,0 +1,113 @@
+en:
+  mensurations:
+    form:
+      title_femme: "Measurement form — Women"
+      title_homme: "Measurement form — Men"
+      intro: "Please fill in this form carefully. Thank you for your time."
+      required_hint: "* = required"
+      identity_title: "Your details"
+      measures_title: "Your measurements"
+      photo_title: "Full-length photo"
+      photo_hint: "A full-length photo of you (head to toe) helps us advise you better."
+      submit: "Send my measurements"
+      update: "Update my measurements"
+      delete: "Delete my form"
+      delete_confirm: "Permanently delete your measurements and photo?"
+      saved: "Thank you! Your measurements have been saved."
+      deleted: "Your form has been deleted."
+      already_completed: "Your form is saved. To edit or delete it, please verify your email again."
+    otp:
+      request_title: "Email verification"
+      request_hint: "To access the form, we send a code to the email address that received this link."
+      send_code: "Send me the code"
+      resend_code: "Send a new code"
+      code_sent: "A code has just been sent to your email (valid for 15 minutes)."
+      code_label: "Code received by email"
+      verify: "Verify"
+      invalid_code: "Invalid or expired code. Check your inbox or request a new code."
+      too_many_attempts: "Too many attempts. Please request a new code."
+      resend_wait: "A code was just sent. Please wait a minute before requesting another one."
+      session_expired: "Your session has expired. Please verify your email again."
+    identity:
+      prenom: "First name"
+      nom: "Last name"
+      email: "Email"
+      telephone: "Phone"
+      adresse: "Address"
+      cp: "Postcode"
+      ville: "City"
+      date_evenement: "Date of event"
+    fields:
+      hauteur:
+        label: "Your total height in cm, without shoes"
+        hint: "e.g. 168 for 1.68 m"
+      taille_robe_marque:
+        label: "Your dress size (ready-to-wear) + brand"
+        hint: "e.g. FR 38, FR 42"
+      hauteur_talons:
+        label: "Heel height you usually wear, in cm"
+        hint: "e.g. 6 cm, 10 cm"
+      taille_pantalon_jupe_marque:
+        label: "Your trousers or skirt size (ready-to-wear) + brand"
+        hint: "e.g. FR 36, FR 46"
+      preference_forme_robe:
+        label: "Your preferred dress shape"
+        hint: "fitted, flared, sleeves, neckline, etc."
+      taille_veste_chemisier:
+        label: "Your jacket or blouse size"
+        hint: "e.g. 36 or 44"
+      taille_soutien_gorge:
+        label: "Your bra size"
+        hint: "e.g. 90D, 85B"
+      tour_cou:
+        label: "Your neck size in cm"
+      coupe_chemise:
+        label: "Your preferred shirt fit"
+      taille_veste:
+        label: "Your jacket size"
+        hint: "e.g. 48 or 52"
+      taille_chemise:
+        label: "Your shirt size"
+        hint: "e.g. 37-38 or 45-46"
+      tour_poitrine:
+        label: "Your chest size in cm"
+      tour_taille:
+        label: "Your waist size in cm"
+      tour_hanches:
+        label: "Your hip size in cm"
+      largeur_epaules:
+        label: "Your shoulder width in cm"
+      longueur_bras_ext:
+        label: "Your outer arm length in cm"
+      longueur_jambe_ext:
+        label: "Your outer leg length starting from the waist, in cm"
+      longueur_jambe_int:
+        label: "Your inner leg length starting from the crotch, in cm"
+      taille_pantalon_marque:
+        label: "Your trousers size (ready-to-wear) + brand"
+        hint: "e.g. 42, 56"
+      tour_taille_ceinture:
+        label: "Your waist size at your trousers' belt, in cm"
+      tour_hanches_pantalon:
+        label: "Your hip size at the widest part, in cm"
+      pointure:
+        label: "Your shoe size"
+        hint: "French, US or UK size"
+    choices:
+      coupe_chemise:
+        slim: "Slim"
+        classique: "Classic"
+    mailer:
+      invitation:
+        subject: "Your measurements — Autour d'un Soir"
+        greeting: "Hello %{name},"
+        greeting_no_name: "Hello,"
+        body: "To prepare your outfit as well as possible, please send us your measurements using the form below."
+        cta: "Fill in my measurements"
+        validity: "This link is valid until %{date}."
+        signature: "The Autour d'un Soir team"
+      otp:
+        subject: "Your verification code — Autour d'un Soir"
+        body: "Here is your verification code:"
+        validity: "This code is valid for 15 minutes."
+        ignore: "If you did not request this, please ignore this email."

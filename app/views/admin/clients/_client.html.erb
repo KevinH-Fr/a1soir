@@ -2,6 +2,9 @@
 <% variant = local_assigns.fetch(:variant, :full) %>
 <% mini = variant.to_sym == :mini %>
 <% collapse_id = mini ? "collapseClientMini#{dom_id(client)}" : "collapseClient#{dom_id(client)}" %>
+<%# Fiche mensurations : uniquement là où le rendu la demande (page client), pas dans les listes. %>
+<% mensuration = local_assigns[:with_mensuration] ? client.mensuration : nil %>
+<% mensuration_collapse_id = "collapseMensuration#{dom_id(client)}" %>
 
 <% unless inner_only %>
 <div id="<%= dom_id client %>">
@@ -40,6 +43,16 @@
            aria-controls="<%= collapse_id %>">
           <%= admin_collapse_details_button_content %>
         </a>
+        <% if mensuration %>
+          <a class="small text-muted text-decoration-none d-inline-flex align-items-center"
+             data-bs-toggle="collapse"
+             href="#<%= mensuration_collapse_id %>"
+             role="button"
+             aria-expanded="false"
+             aria-controls="<%= mensuration_collapse_id %>">
+            <%= admin_collapse_details_button_content(label: "Dimensions") %>
+          </a>
+        <% end %>
         <div class="ms-auto">
           <%= links_record(client, edit_params: mini ? { client_display_variant: "mini" } : nil) %>
         </div>
@@ -63,6 +76,13 @@
           <%= field_with_label("langue: ", client.language_label, icon_class: "bi-translate") %>
         </div>
       </div>
+
+      <% if mensuration %>
+        <div class="collapse" id="<%= mensuration_collapse_id %>">
+          <hr class="mt-2 mb-2 border-0 border-top border-secondary opacity-25">
+          <%= render "admin/mensurations/client_fiche", mensuration: mensuration %>
+        </div>
+      <% end %>
 
     </div>
   </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_05_30_105236) do
+ActiveRecord::Schema[7.2].define(version: 2026_09_02_001100) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -301,6 +301,46 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_30_105236) do
     t.index ["demande_rdv_id"], name: "index_meetings_on_demande_rdv_id"
   end
 
+  create_table "mensuration_invitations", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "token", null: false
+    t.datetime "expires_at", null: false
+    t.string "template", default: "femme", null: false
+    t.string "locale", default: "fr", null: false
+    t.string "prenom"
+    t.string "nom"
+    t.text "message_perso"
+    t.string "otp_digest"
+    t.datetime "otp_sent_at"
+    t.integer "otp_attempts", default: 0, null: false
+    t.string "status", default: "sent", null: false
+    t.integer "client_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_mensuration_invitations_on_client_id"
+    t.index ["email"], name: "index_mensuration_invitations_on_email"
+    t.index ["token"], name: "index_mensuration_invitations_on_token", unique: true
+  end
+
+  create_table "mensurations", force: :cascade do |t|
+    t.integer "mensuration_invitation_id", null: false
+    t.integer "client_id"
+    t.string "prenom"
+    t.string "nom"
+    t.string "telephone"
+    t.string "adresse"
+    t.string "cp"
+    t.string "ville"
+    t.date "date_evenement"
+    t.json "measurements", default: {}, null: false
+    t.string "template", null: false
+    t.string "locale", default: "fr", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_mensurations_on_client_id"
+    t.index ["mensuration_invitation_id"], name: "index_mensurations_on_mensuration_invitation_id", unique: true
+  end
+
   create_table "messages", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -539,6 +579,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_30_105236) do
   add_foreign_key "meetings", "clients"
   add_foreign_key "meetings", "commandes"
   add_foreign_key "meetings", "demande_rdvs"
+  add_foreign_key "mensuration_invitations", "clients"
+  add_foreign_key "mensurations", "clients"
+  add_foreign_key "mensurations", "mensuration_invitations"
   add_foreign_key "paiement_recus", "commandes"
   add_foreign_key "paiements", "commandes"
   add_foreign_key "produits", "categorie_produits"

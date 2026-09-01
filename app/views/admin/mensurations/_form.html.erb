@@ -1,0 +1,25 @@
+<% compact_collapse = local_assigns[:index_collapse] && !mensuration_invitation.persisted? %>
+<%= render layout: "admin/shared/form_card_shell",
+           locals: {
+             compact: compact_collapse,
+             embedded: local_assigns.fetch(:admin_form_row_embedded, false)
+           } do %>
+  <%= form_with(model: mensuration_invitation, url: admin_mensurations_path, method: :post, data: { turbo: false }) do |form| %>
+    <%= custom_form_elements(form,
+          [:email, :text_field, "E-mail *"],
+          [:prenom, :text_field, "Prénom"],
+          [:nom, :text_field, "Nom"]) %>
+
+    <%= custom_form_elements(form,
+          [:message_perso, :text_area, "Message personnel (optionnel)", { rows: 3 }]) %>
+
+    <div class="input-group input-group-sm my-1 px-1">
+      <%= form.label :template, "Formulaire", class: "input-group-text" %>
+      <%= form.select :template, options_for_select([["Femme", "femme"], ["Homme", "homme"]], mensuration_invitation.template), {}, class: "form-select" %>
+      <%= form.label :locale, "Langue", class: "input-group-text" %>
+      <%= form.select :locale, options_for_select([["Français", "fr"], ["Anglais", "en"]], mensuration_invitation.locale), {}, class: "form-select" %>
+    </div>
+
+    <%= custom_submit_button(form, label: "Envoyer l'invitation") %>
+  <% end %>
+<% end %>

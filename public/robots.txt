@@ -1,4 +1,7 @@
 User-agent: *
+# Formulaire mensurations sur invitation : privé, jamais référencé.
+Disallow: /fr/m/
+Disallow: /en/m/
 
 # Le back-office admin est déjà protégé par la balise
 # <meta name="robots" content="noindex, nofollow"> dans le layout admin.

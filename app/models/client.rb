@@ -6,6 +6,9 @@ class Client < ApplicationRecord
 
     has_many :commandes
     has_many :meetings
+    # Fiche mensurations remplie par le client (invitation publique) — nullify : supprimer
+    # le client ne doit pas effacer silencieusement mesures + photo (suppression explicite en admin).
+    has_one :mensuration, dependent: :nullify
     
     validates :nom, presence: true
     validate :tel_or_mail_present

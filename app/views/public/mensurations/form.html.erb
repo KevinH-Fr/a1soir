@@ -1,0 +1,107 @@
+<div class="card">
+  <div class="card-body p-4">
+    <h1 class="h4 mb-2"><%= t("mensurations.form.title_#{@invitation.template}") %></h1>
+    <p class="text-muted mb-1"><%= t("mensurations.form.intro") %></p>
+    <p class="text-muted small"><%= t("mensurations.form.required_hint") %></p>
+
+    <%= form_with url: mensuration_save_path(token: @invitation.token), method: :post, local: true, multipart: true do |f| %>
+
+      <h2 class="h6 mt-4 border-bottom pb-2"><%= t("mensurations.form.identity_title") %></h2>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label"><%= t("mensurations.identity.prenom") %> *</label>
+          <%= text_field_tag "mensuration[prenom]", @mensuration.prenom, class: "form-control", required: true %>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label"><%= t("mensurations.identity.nom") %> *</label>
+          <%= text_field_tag "mensuration[nom]", @mensuration.nom, class: "form-control", required: true %>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label"><%= t("mensurations.identity.email") %></label>
+          <%# E-mail non modifiable : c'est l'adresse vérifiée par le code. %>
+          <%= text_field_tag nil, @invitation.email, class: "form-control", disabled: true %>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label"><%= t("mensurations.identity.telephone") %></label>
+          <%= telephone_field_tag "mensuration[telephone]", @mensuration.telephone, class: "form-control" %>
+        </div>
+        <div class="col-12">
+          <label class="form-label"><%= t("mensurations.identity.adresse") %></label>
+          <%= text_field_tag "mensuration[adresse]", @mensuration.adresse, class: "form-control" %>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label"><%= t("mensurations.identity.cp") %></label>
+          <%= text_field_tag "mensuration[cp]", @mensuration.cp, class: "form-control" %>
+        </div>
+        <div class="col-md-8">
+          <label class="form-label"><%= t("mensurations.identity.ville") %></label>
+          <%= text_field_tag "mensuration[ville]", @mensuration.ville, class: "form-control" %>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label"><%= t("mensurations.identity.date_evenement") %></label>
+          <%= date_field_tag "mensuration[date_evenement]", @mensuration.date_evenement, class: "form-control" %>
+        </div>
+      </div>
+
+      <h2 class="h6 mt-4 border-bottom pb-2"><%= t("mensurations.form.measures_title") %></h2>
+
+      <div class="row g-3">
+        <% @mensuration.fields.each do |field| %>
+          <% key = field["key"] %>
+          <div class="col-md-6">
+            <label class="form-label">
+              <%= t("mensurations.fields.#{key}.label") %><%= " *" if field["required"] %>
+            </label>
+            <% case field["input"] %>
+            <% when "choice" %>
+              <%= select_tag "measurements[#{key}]",
+                    options_for_select(field["choices"].map { |c| [t("mensurations.choices.#{key}.#{c}"), c] }, @mensuration.value_for(key)),
+                    include_blank: true, class: "form-select" %>
+            <% when "textarea" %>
+              <%= text_area_tag "measurements[#{key}]", @mensuration.value_for(key), class: "form-control", rows: 2 %>
+            <% else %>
+              <%= text_field_tag "measurements[#{key}]", @mensuration.value_for(key), class: "form-control", required: field["required"] %>
+            <% end %>
+            <% hint = t("mensurations.fields.#{key}.hint", default: "") %>
+            <% if hint.present? %>
+              <div class="form-text"><%= hint %></div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <h2 class="h6 mt-4 border-bottom pb-2"><%= t("mensurations.form.photo_title") %></h2>
+      <p class="text-muted small"><%= t("mensurations.form.photo_hint") %></p>
+      <% if @mensuration.photo_pied.attached? %>
+        <%# Pas d'URL de la photo stockée côté public : on signale juste sa présence. %>
+        <p class="small"><i class="bi bi-check-circle"></i> <%= @mensuration.photo_pied.filename %></p>
+      <% end %>
+      <%= file_field_tag :photo_pied, accept: "image/*", class: "form-control", onchange: "previewPhoto(this)" %>
+      <img id="photo-preview" class="img-thumbnail mt-2 d-none" style="max-height: 240px;" alt="">
+
+      <div class="mt-4">
+        <%= submit_tag @mensuration.persisted? ? t("mensurations.form.update") : t("mensurations.form.submit"), class: "btn btn-dark" %>
+      </div>
+    <% end %>
+
+    <% if @mensuration.persisted? %>
+      <div class="mt-3">
+        <%= button_to t("mensurations.form.delete"), mensuration_delete_path(token: @invitation.token), method: :delete,
+              class: "btn btn-outline-danger btn-sm",
+              form: { onsubmit: "return confirm(#{t('mensurations.form.delete_confirm').to_json});" } %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  // Aperçu local uniquement : le fichier n'est envoyé qu'à la soumission.
+  function previewPhoto(input) {
+    var img = document.getElementById("photo-preview");
+    if (input.files && input.files[0]) {
+      img.src = URL.createObjectURL(input.files[0]);
+      img.classList.remove("d-none");
+    }
+  }
+</script>

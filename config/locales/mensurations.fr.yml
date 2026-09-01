@@ -1,0 +1,113 @@
+fr:
+  mensurations:
+    form:
+      title_femme: "Formulaire de prise de mesures — Femmes"
+      title_homme: "Formulaire de prise de mesures — Hommes"
+      intro: "Remplissez minutieusement ce formulaire. Merci pour votre temps."
+      required_hint: "* = à remplir impérativement"
+      identity_title: "Vos coordonnées"
+      measures_title: "Vos mesures"
+      photo_title: "Photo en pied"
+      photo_hint: "Une photo de vous en pied (de la tête aux pieds) nous aide à mieux vous conseiller."
+      submit: "Envoyer mes mesures"
+      update: "Mettre à jour mes mesures"
+      delete: "Supprimer ma fiche"
+      delete_confirm: "Supprimer définitivement vos mesures et votre photo ?"
+      saved: "Merci ! Vos mesures ont bien été enregistrées."
+      deleted: "Votre fiche a été supprimée."
+      already_completed: "Votre fiche est enregistrée. Pour la modifier ou la supprimer, validez à nouveau votre e-mail."
+    otp:
+      request_title: "Vérification de votre e-mail"
+      request_hint: "Pour accéder au formulaire, nous envoyons un code à l'adresse e-mail à laquelle vous avez reçu ce lien."
+      send_code: "Recevoir le code"
+      resend_code: "Renvoyer un code"
+      code_sent: "Un code vient de vous être envoyé par e-mail (valable 15 minutes)."
+      code_label: "Code reçu par e-mail"
+      verify: "Valider"
+      invalid_code: "Code invalide ou expiré. Vérifiez votre boîte mail ou demandez un nouveau code."
+      too_many_attempts: "Trop d'essais. Demandez un nouveau code."
+      resend_wait: "Un code vient déjà d'être envoyé. Patientez une minute avant d'en redemander un."
+      session_expired: "Votre session a expiré. Validez à nouveau votre e-mail."
+    identity:
+      prenom: "Prénom"
+      nom: "Nom"
+      email: "E-mail"
+      telephone: "Téléphone"
+      adresse: "Adresse"
+      cp: "Code postal"
+      ville: "Ville"
+      date_evenement: "Date de l'événement"
+    fields:
+      hauteur:
+        label: "Votre taille totale en cm, sans chaussures"
+        hint: "ex : 168 pour 1m68"
+      taille_robe_marque:
+        label: "Votre taille en robe (vêtement) + marque"
+        hint: "ex : T38, T42"
+      hauteur_talons:
+        label: "Votre hauteur de talons portés en cm"
+        hint: "ex : 6 cm, 10 cm"
+      taille_pantalon_jupe_marque:
+        label: "Votre taille de pantalon ou jupe (vêtement) + marque"
+        hint: "ex : T36, T46"
+      preference_forme_robe:
+        label: "Votre préférence de forme de robe"
+        hint: "près du corps, évasée, manche, décolletée, etc."
+      taille_veste_chemisier:
+        label: "Votre taille de veste ou chemisier"
+        hint: "ex : 36 ou 44"
+      taille_soutien_gorge:
+        label: "Votre taille de soutien-gorge"
+        hint: "ex : 90D, 85B"
+      tour_cou:
+        label: "Votre tour de cou en cm"
+      coupe_chemise:
+        label: "Votre préférence de coupe chemise"
+      taille_veste:
+        label: "Votre taille de veste"
+        hint: "ex : 48 ou 52"
+      taille_chemise:
+        label: "Votre taille de chemise"
+        hint: "ex : 37-38 ou 45-46"
+      tour_poitrine:
+        label: "Votre tour de poitrine en cm"
+      tour_taille:
+        label: "Votre tour de taille en cm"
+      tour_hanches:
+        label: "Votre tour de hanches en cm"
+      largeur_epaules:
+        label: "Votre largeur d'épaules en cm"
+      longueur_bras_ext:
+        label: "Votre longueur extérieure de bras en cm"
+      longueur_jambe_ext:
+        label: "Votre longueur de jambe extérieure en partant de la ceinture, en cm"
+      longueur_jambe_int:
+        label: "Votre longueur de jambe intérieure en partant de l'entrejambe, en cm"
+      taille_pantalon_marque:
+        label: "Votre taille de pantalon (vêtement) + marque"
+        hint: "ex : T42, T56"
+      tour_taille_ceinture:
+        label: "Votre tour de taille au niveau de la ceinture de votre pantalon, en cm"
+      tour_hanches_pantalon:
+        label: "Votre tour de hanches au niveau de la partie la plus large, en cm"
+      pointure:
+        label: "Votre taille de chaussures"
+        hint: "taille française, US ou UK"
+    choices:
+      coupe_chemise:
+        slim: "Slim"
+        classique: "Classique"
+    mailer:
+      invitation:
+        subject: "Vos mensurations — Autour d'un Soir"
+        greeting: "Bonjour %{name},"
+        greeting_no_name: "Bonjour,"
+        body: "Pour préparer au mieux votre tenue, merci de nous transmettre vos mensurations via le formulaire ci-dessous."
+        cta: "Remplir mes mensurations"
+        validity: "Ce lien est valable jusqu'au %{date}."
+        signature: "Toute l'équipe de la boutique Autour d'un Soir"
+      otp:
+        subject: "Votre code de vérification — Autour d'un Soir"
+        body: "Voici votre code de vérification :"
+        validity: "Ce code est valable 15 minutes."
+        ignore: "Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail."

@@ -1,0 +1,12 @@
+<% if @invitation.full_name.present? %><%= I18n.t('mensurations.mailer.invitation.greeting', name: @invitation.full_name) %><% else %><%= I18n.t('mensurations.mailer.invitation.greeting_no_name') %><% end %>
+
+<%= I18n.t('mensurations.mailer.invitation.body') %>
+<% if @invitation.message_perso.present? %>
+<%= @invitation.message_perso %>
+<% end %>
+
+<%= @url %>
+
+<%= I18n.t('mensurations.mailer.invitation.validity', date: I18n.l(@invitation.expires_at.to_date)) %>
+
+<%= I18n.t('mensurations.mailer.invitation.signature') %>

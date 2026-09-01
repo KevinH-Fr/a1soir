@@ -1,0 +1,63 @@
+<% mensuration = invitation.mensuration %>
+<% status_label, status_class =
+     if invitation.expired? && mensuration.nil?
+       ["Lien expiré", "bg-secondary"]
+     elsif mensuration.present?
+       ["Fiche reçue", "bg-success"]
+     elsif invitation.status == "verified"
+       ["E-mail vérifié", "bg-info"]
+     else
+       ["Invitée", "bg-warning text-dark"]
+     end %>
+
+<div id="<%= dom_id invitation %>">
+  <div class="card mx-2 light-beige-colored shadow-sm">
+    <div class="card-body p-2">
+
+      <div class="d-flex flex-wrap align-items-center gap-2">
+        <span class="badge lighter-beige-colored fw-bold fs-6 shadow-sm text-dark"><%= invitation.email %></span>
+        <% if invitation.full_name.present? %>
+          <span class="badge lighter-beige-colored fw-normal fs-6 text-dark"><%= invitation.full_name %></span>
+        <% end %>
+        <span class="badge bg-dark"><%= invitation.template.capitalize %> · <%= invitation.locale.upcase %></span>
+        <span class="badge <%= status_class %>"><%= status_label %></span>
+        <span class="badge lighter-beige-colored fw-normal text-dark">
+          Lien valable jusqu'au <%= l(invitation.expires_at.to_date) %>
+        </span>
+        <% if invitation.client.present? %>
+          <%= link_to invitation.client.full_name, admin_client_path(invitation.client), class: "badge bg-primary text-decoration-none" %>
+        <% end %>
+      </div>
+
+      <% if mensuration.present? %>
+        <div class="mt-2">
+          <a class="btn btn-sm btn-outline-dark" data-bs-toggle="collapse" href="#fiche_<%= invitation.id %>" role="button" aria-expanded="false" aria-controls="fiche_<%= invitation.id %>">
+            <i class="bi bi-chevron-down me-1" style="font-size: 0.7rem;"></i>Fiche mensurations
+          </a>
+          <div class="collapse mt-2" id="fiche_<%= invitation.id %>">
+            <%= render "admin/mensurations/fiche", mensuration: mensuration %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
+        <%= button_to resend_admin_mensuration_path(invitation), method: :post,
+              class: "btn btn-sm btn-outline-primary",
+              form: { data: { turbo_confirm: "Renvoyer une invitation à #{invitation.email} ? L'ancien lien sera invalidé." } } do %>
+          <i class="bi bi-envelope-fill me-1"></i>Renvoyer le lien
+        <% end %>
+
+        <%# Lien public copiable (dépannage : SMS, WhatsApp…) %>
+        <input type="text" readonly class="form-control form-control-sm w-auto flex-grow-1" style="max-width: 420px; font-size: 0.75rem;"
+               value="<%= public_mensuration_url(invitation) %>" onclick="this.select();">
+
+        <%= button_to admin_mensuration_path(invitation), method: :delete,
+              class: "btn btn-sm btn-outline-danger ms-auto",
+              form: { data: { turbo_confirm: "Supprimer l'invitation#{' et la fiche mensurations (photo comprise)' if mensuration.present?} ?" } } do %>
+          <i class="bi bi-trash me-1"></i>Supprimer
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</div>

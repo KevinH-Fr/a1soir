@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <title>Autour d'un Soir</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%# Page sur invitation : jamais indexée, jamais archivée. %>
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= favicon_link_tag asset_path('a1soir_favicon.png'), rel: 'icon', type: 'image/png' %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "vendor/bootstrap-icons-used", "data-turbo-track": "reload" %>
+  </head>
+
+  <body class="bg-black">
+    <main class="container py-4" style="max-width: 720px;">
+      <div class="text-center mb-4">
+        <%= image_tag '/images/logo_courant_public.png', alt: "Autour d'un Soir", width: 220 %>
+      </div>
+
+      <%# Flash inline simple : ce layout n'embarque ni Turbo ni Stimulus. %>
+      <% flash.each do |key, value| %>
+        <div class="alert <%= key.to_s == 'alert' ? 'alert-warning' : 'alert-success' %>" role="alert">
+          <%= value %>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </main>
+  </body>
+</html>

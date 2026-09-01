@@ -68,7 +68,8 @@ class Admin::ClientsController < Admin::ApplicationController
           render turbo_stream: [
             turbo_stream.update(@client,
               partial: "admin/clients/client",
-              locals: { client: @client, variant: variant, client_inner_only: true }),
+              locals: { client: @client, variant: variant, client_inner_only: true,
+                        with_mensuration: variant == :full }),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
           ]
         end
@@ -143,6 +144,7 @@ class Admin::ClientsController < Admin::ApplicationController
     def set_client
       @client = Client.includes(
         :meetings,
+        { mensuration: [:mensuration_invitation, { photo_pied_attachment: :blob }] },
         commandes: [:client, :profile, :stripe_payment, :meetings, :avoir_rembs, { qr_code_attachment: :blob }]
       ).find(params[:id])
     end

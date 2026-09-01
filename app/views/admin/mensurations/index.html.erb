@@ -1,0 +1,14 @@
+<%= bandeau_entete("Dimensions", "person-lines-fill", @count_invitations,
+        :email_or_nom_or_prenom_cont, admin_mensurations_path) %>
+
+<%= admin_collapse_nouveau collapse_id: "collapseNew",
+      target_id: "new",
+      inner_partial: "admin/mensurations/form",
+      mensuration_invitation: MensurationInvitation.new,
+      index_collapse: true %>
+
+<div id="mensuration_invitations" class="<%= admin_list_stack_classes %>">
+  <% @invitations.each do |invitation| %>
+    <%= render "admin/mensurations/invitation", invitation: invitation %>
+  <% end %>
+</div>
