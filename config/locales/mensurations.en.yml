@@ -8,6 +8,9 @@ en:
       identity_title: "Your details"
       measures_title: "Your measurements"
       photo_title: "Full-length photo"
+      next: "Continue"
+      prev: "Back"
+      step: "Step %{current} of %{total}"
       photo_hint: "A full-length photo of you (head to toe) helps us advise you better."
       submit: "Send my measurements"
       update: "Update my measurements"
@@ -28,6 +31,11 @@ en:
       too_many_attempts: "Too many attempts. Please request a new code."
       resend_wait: "A code was just sent. Please wait a minute before requesting another one."
       session_expired: "Your session has expired. Please verify your email again."
+    footer:
+      visit_site: "Discover the boutique"
+      address: "Address"
+      contact: "Contact"
+      boutique: "Boutique"
     identity:
       prenom: "First name"
       nom: "Last name"

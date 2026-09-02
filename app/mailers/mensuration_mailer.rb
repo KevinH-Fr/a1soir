@@ -4,7 +4,7 @@ class MensurationMailer < ApplicationMailer
   # Lien d'invitation vers /m/:token, dans la langue choisie à l'invitation.
   def invitation(invitation)
     @invitation = invitation
-    @url = mensuration_link(invitation)
+    @url = invitation.public_form_url
 
     I18n.with_locale(invitation.locale) do
       attach_inline_logo
@@ -28,19 +28,6 @@ class MensurationMailer < ApplicationMailer
         format.html { render template: "admin/mensuration_mailer/otp_code", layout: "mailer" }
         format.text { render template: "admin/mensuration_mailer/otp_code" }
       end
-    end
-  end
-
-  private
-
-  # Le default_url_options mailer pointe sur l'hôte admin : le lien client vise le site public.
-  def mensuration_link(invitation)
-    if Rails.env.production?
-      mensuration_url(token: invitation.token, locale: invitation.locale,
-                      host: ENV.fetch("PUBLIC_APP_HOST", "a1soir.com"), protocol: "https")
-    else
-      mensuration_url(token: invitation.token, locale: invitation.locale,
-                      host: "localhost", port: 3000, protocol: "http")
     end
   end
 end

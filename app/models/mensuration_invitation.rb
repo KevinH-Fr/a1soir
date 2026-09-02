@@ -1,3 +1,5 @@
+require "bcrypt"
+
 class MensurationInvitation < ApplicationRecord
   # Lien public /m/:token — opaque, régénérable (regenerate_token) si l'admin renvoie l'invitation.
   has_secure_token :token
@@ -51,7 +53,7 @@ class MensurationInvitation < ApplicationRecord
   # Génère et stocke le code (hashé) ; retourne le code en clair pour l'e-mail uniquement.
   def generate_otp!
     code = format("%06d", SecureRandom.random_number(1_000_000))
-    update!(otp_digest: BCrypt::Password.create(code), otp_sent_at: Time.current, otp_attempts: 0)
+    update!(otp_digest: ::BCrypt::Password.create(code), otp_sent_at: Time.current, otp_attempts: 0)
     code
   end
 
@@ -65,7 +67,7 @@ class MensurationInvitation < ApplicationRecord
     return false if otp_sent_at < OTP_VALIDITY.ago
     return false if otp_attempts >= OTP_MAX_ATTEMPTS
 
-    if BCrypt::Password.new(otp_digest).is_password?(code.to_s.strip)
+    if ::BCrypt::Password.new(otp_digest).is_password?(code.to_s.strip)
       # Code à usage unique : consommé dès le succès.
       update!(otp_digest: nil, otp_attempts: 0, status: mensuration.present? ? status : "verified")
       true
@@ -77,6 +79,23 @@ class MensurationInvitation < ApplicationRecord
 
   def full_name
     [prenom, nom].compact_blank.join(" ").presence
+  end
+
+  # Lien public (mail + bouton copier admin) : toujours l'hôte boutique, jamais le sous-domaine admin.
+  def public_form_url
+    Rails.application.routes.url_helpers.mensuration_url(
+      token: token,
+      locale: locale,
+      **self.class.public_form_url_options
+    )
+  end
+
+  def self.public_form_url_options
+    if Rails.env.production?
+      { host: ENV.fetch("PUBLIC_APP_HOST", "a1soir.com"), protocol: "https" }
+    else
+      { host: ENV.fetch("PUBLIC_APP_HOST", "localhost"), port: 3000, protocol: "http" }
+    end
   end
 
   private

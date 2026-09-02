@@ -8,6 +8,9 @@ fr:
       identity_title: "Vos coordonnées"
       measures_title: "Vos mesures"
       photo_title: "Photo en pied"
+      next: "Continuer"
+      prev: "Retour"
+      step: "Étape %{current} sur %{total}"
       photo_hint: "Une photo de vous en pied (de la tête aux pieds) nous aide à mieux vous conseiller."
       submit: "Envoyer mes mesures"
       update: "Mettre à jour mes mesures"
@@ -28,6 +31,11 @@ fr:
       too_many_attempts: "Trop d'essais. Demandez un nouveau code."
       resend_wait: "Un code vient déjà d'être envoyé. Patientez une minute avant d'en redemander un."
       session_expired: "Votre session a expiré. Validez à nouveau votre e-mail."
+    footer:
+      visit_site: "Découvrir la boutique"
+      address: "Adresse"
+      contact: "Contact"
+      boutique: "Boutique"
     identity:
       prenom: "Prénom"
       nom: "Nom"

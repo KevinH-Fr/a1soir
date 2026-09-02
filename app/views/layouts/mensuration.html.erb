@@ -9,24 +9,69 @@
     <%= csp_meta_tag %>
 
     <%= favicon_link_tag asset_path('a1soir_favicon.png'), rel: 'icon', type: 'image/png' %>
+    <%= stylesheet_link_tag "fonts-public", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "vendor/bootstrap-icons-used", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "mensuration", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body class="bg-black">
-    <main class="container py-4" style="max-width: 720px;">
-      <div class="text-center mb-4">
-        <%= image_tag '/images/logo_courant_public.png', alt: "Autour d'un Soir", width: 220 %>
+  <body class="bg-black text-light d-flex flex-column min-vh-100">
+    <header class="py-3">
+      <div class="container-fluid ps-2 pe-3">
+        <%= link_to home_path, class: "d-inline-block" do %>
+          <%= image_tag "/images/a1soirlogo2.png",
+                class: "navbar-logo mb-0 px-2",
+                alt: "Autour d'un Soir",
+                width: 521,
+                height: 64 %>
+        <% end %>
       </div>
+    </header>
 
-      <%# Flash inline simple : ce layout n'embarque ni Turbo ni Stimulus. %>
+    <main class="container flex-grow-1 py-4" style="max-width: 720px;">
       <% flash.each do |key, value| %>
-        <div class="alert <%= key.to_s == 'alert' ? 'alert-warning' : 'alert-success' %>" role="alert">
+        <% is_alert = key.to_s.in?(%w[alert error]) %>
+        <div class="mensuration-flash <%= "mensuration-flash--alert" if is_alert %> mb-3 mx-2" role="status">
+          <i class="bi bi-<%= is_alert ? "exclamation-triangle" : "info-circle" %> me-2 public-brand-color"></i>
           <%= value %>
         </div>
       <% end %>
 
       <%= yield %>
     </main>
+
+    <footer class="public-site-footer mt-auto py-4">
+      <div class="container py-2">
+        <div class="row g-4">
+          <div class="col-12 col-md-4">
+            <h2 class="h6 text-uppercase mb-3 text-light"><%= t("mensurations.footer.address") %></h2>
+            <% if @footer_texte_adresse.present? %>
+              <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape("autour d'un soir 06400 cannes")}",
+                    target: "_blank", rel: "noopener noreferrer",
+                    class: "text-light text-decoration-none hover-link d-inline-flex align-items-start" do %>
+                <i class="bi bi-geo-alt-fill me-2 small" style="margin-top: 2px;"></i>
+                <span class="small fw-bold" style="line-height: 1.6;"><%= @footer_texte_adresse %></span>
+                <i class="bi bi-box-arrow-up-right ms-2 opacity-75" style="font-size: 0.75rem; margin-top: 2px;"></i>
+              <% end %>
+            <% end %>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <h2 class="h6 text-uppercase mb-3 text-light"><%= t("mensurations.footer.contact") %></h2>
+            <% if @footer_texte_contact.present? %>
+              <p class="small fw-bold mb-0 d-flex align-items-start">
+                <i class="bi bi-telephone-fill me-2" style="margin-top: 2px;"></i>
+                <%= @footer_texte_contact %>
+              </p>
+            <% end %>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <h2 class="h6 text-uppercase mb-3 text-light"><%= t("mensurations.footer.boutique") %></h2>
+            <%= link_to t("mensurations.footer.visit_site"), home_path, class: "text-light text-decoration-none hover-link small" %>
+          </div>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>

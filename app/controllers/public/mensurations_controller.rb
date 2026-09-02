@@ -10,6 +10,7 @@ module Public
 
     before_action :set_locale
     before_action :set_invitation
+    before_action :load_footer_texte
     before_action :require_otp_session, only: [:save, :destroy]
 
     # Page unique : demande de code tant que l'e-mail n'est pas vérifié, formulaire ensuite.
@@ -75,6 +76,15 @@ module Public
 
     def default_url_options
       { locale: I18n.locale }
+    end
+
+    # Coordonnées boutique pour le pied de page (même source que le footer public).
+    def load_footer_texte
+      texte = Texte.last
+      return unless texte
+
+      @footer_texte_adresse = texte.adresse&.to_plain_text.presence
+      @footer_texte_contact = texte.contact&.to_plain_text.presence
     end
 
     # 404 générique : ne pas révéler si un token a existé / est expiré.

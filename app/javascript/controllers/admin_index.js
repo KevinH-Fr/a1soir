@@ -32,3 +32,6 @@ application.register("qr-code", QrCodeController)
 
 import NavbarOutsideCloseController from "./navbar_outside_close_controller"
 application.register("navbar-outside-close", NavbarOutsideCloseController)
+
+import CopyUrlController from "./copy_url_controller"
+application.register("copy-url", CopyUrlController)

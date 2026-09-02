@@ -2,8 +2,6 @@
 class Admin::MensurationsController < Admin::ApplicationController
   before_action :set_invitation, only: [:resend, :destroy, :photo]
 
-  helper_method :public_mensuration_url
-
   def index
     @q = MensurationInvitation.ransack(params[:q])
     scope = @q.result.includes(:client, :mensuration).order(created_at: :desc)
@@ -62,10 +60,5 @@ class Admin::MensurationsController < Admin::ApplicationController
 
   def invitation_params
     params.require(:mensuration_invitation).permit(:email, :prenom, :nom, :template, :locale, :message_perso)
-  end
-
-  def public_mensuration_url(invitation)
-    host = ENV["PUBLIC_APP_HOST"].presence || request.domain
-    mensuration_url(token: invitation.token, locale: invitation.locale, host: host, port: request.port)
   end
 end
