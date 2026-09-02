@@ -28,6 +28,11 @@ class MensurationInvitation < ApplicationRecord
     %w[email nom prenom status template locale created_at expires_at]
   end
 
+  # La recherche admin ne porte que sur des attributs, aucune association exposée.
+  def self.ransackable_associations(_auth_object = nil)
+    []
+  end
+
   def expired?
     expires_at.past?
   end

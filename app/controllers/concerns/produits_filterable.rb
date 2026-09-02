@@ -137,10 +137,17 @@ module ProduitsFilterable
     # Scope pour la pagination avec ORDER BY (requête simple sans DISTINCT)
     available_produits_scope = Produit.where(id: available_produits_ids)
                                       .for_public_listing_cards
+                                      .includes(:taille)
                                       .public_listing_order
 
     # 🔁 Then paginate the available produits (9 per page)
     @pagy, @produits = pagy(available_produits_scope, items: 6)
+
+    # Pastilles de taille : uniquement les cartes de cette page (infinite scroll inclus).
+    @listing_tailles_by_key = ListingPageTaillesService.new(
+      @produits,
+      taille_filter_id: params[:taille]
+    ).call
 
     if params[:id].present? && !params[:id].is_a?(Array)
       @current_category = CategorieProduit.find_by(id: params[:id])

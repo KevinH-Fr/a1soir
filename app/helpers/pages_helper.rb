@@ -515,6 +515,13 @@ module PagesHelper
     end
   end
 
+  # Tailles à afficher sur une carte listing (hash page courante, sinon rien).
+  def listing_card_tailles(produit)
+    return [] if @listing_tailles_by_key.nil?
+
+    Array(@listing_tailles_by_key[[produit.handle, produit.couleur_id]])
+  end
+
   # Paramètres de listing public partagés entre filtres Turbo, recherche et back_url fiche produit.
   # Les overrides permettent de remplacer ou effacer une valeur (ex. taille: nil).
   def produits_active_params(**overrides)

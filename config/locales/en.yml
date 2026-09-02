@@ -674,6 +674,7 @@ en:
           description: "Our team is looking forward to meeting and assisting you"
       produits:
         listing_heading: "Our products"
+        available_sizes: "Available sizes"
         scroll_to_top:
           title: "Back to top"
           aria: "Back to top"

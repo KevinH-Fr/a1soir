@@ -893,6 +893,7 @@ fr:
           description: "Notre équipe est impatiente de vous rencontrer et de vous accompagner"
       produits:
         listing_heading: "Nos produits"
+        available_sizes: "Tailles disponibles"
         scroll_to_top:
           title: "Remonter en haut de la page"
           aria: "Remonter en haut de la page"

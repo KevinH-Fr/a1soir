@@ -1,13 +1,29 @@
 <div class="col" style="width: 22rem;">
   <div class="card rounded-0 bg-dark text-light border-dark">
-    <%= link_to produit_path(slug: produit.handle, id: produit.id, back_url: produit_card_back_url), class: "text-decoration-none position-relative", data: { turbo: false } do %>
-      <% if produit.en_promotion? %>
-        <span class="position-absolute top-0 start-0 m-2 rounded-0 badge bg-dark bg-opacity-75 text-light p-2 promotion-badge">
-          PROMOTION
-        </span>
+    <div class="position-relative">
+      <%= link_to produit_path(slug: produit.handle, id: produit.id, back_url: produit_card_back_url), class: "text-decoration-none", data: { turbo: false } do %>
+        <% if produit.en_promotion? %>
+          <span class="position-absolute top-0 start-0 m-2 rounded-0 badge bg-dark bg-opacity-75 text-light p-2 promotion-badge">
+            PROMOTION
+          </span>
+        <% end %>
+        <%= render partial: "public/pages/carousel", locals: { produit: produit, carousel_class: "card-img-top carousel-multiple", media_width: 440 } %>
       <% end %>
-      <%= render partial: "public/pages/carousel", locals: { produit: produit, carousel_class: "card-img-top carousel-multiple", media_width: 440 } %>
-    <% end %>
+
+      <% card_tailles = listing_card_tailles(produit) %>
+      <% if card_tailles.any? %>
+        <div class="listing-taille-pills" aria-label="<%= t("public.pages.produits.available_sizes") %>">
+          <% card_tailles.each do |taille| %>
+            <%= link_to produit_path(slug: taille[:handle], id: taille[:id], back_url: produit_card_back_url),
+                        class: "listing-taille-pill",
+                        data: { turbo: false },
+                        aria: { label: taille[:nom] } do %>
+              <span class="listing-taille-pill-label"><%= taille[:nom] %></span>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
 
     <div class="card-body">
       <%= link_to produit_path(slug: produit.handle, id: produit.id, back_url: produit_card_back_url), class: "text-decoration-none", data: { turbo: false } do %>

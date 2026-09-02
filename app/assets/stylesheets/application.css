@@ -606,6 +606,49 @@ body.bg-black .dropdown-item.fw-bold {
   overflow: hidden;
 }
 
+.listing-taille-pills {
+  position: absolute;
+  right: 0.65rem;
+  bottom: 0.65rem;
+  z-index: 12;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.28rem;
+}
+
+.listing-taille-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 1.85rem;
+  min-width: 1.85rem;
+  padding: 0 0.4rem 0.14rem;
+  background: rgba(0, 0, 0, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+  text-decoration: none;
+  color: #fff;
+}
+
+.listing-taille-pill:hover,
+.listing-taille-pill:focus-visible {
+  color: #fff;
+  background: #111;
+  border-color: #fff;
+}
+
+.listing-taille-pill-label {
+  display: block;
+  font-family: "Montserrat", Arial, Helvetica, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
 .carousel-multiple{
   height: 300px; 
   object-fit: cover;

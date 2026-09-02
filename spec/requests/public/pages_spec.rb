@@ -413,6 +413,58 @@ RSpec.describe "Public::Pages", type: :request do
       expect(response.body).not_to include("update_filters")
     end
 
+    context "listing size pills" do
+      let!(:taille_s) { Taille.create!(nom: "S") }
+      let!(:couleur) { Couleur.create!(nom: "noir-pills") }
+
+      let!(:produit_s) do
+        Produit.create!(
+          nom: "Robe pastilles listing",
+          prixvente: 50,
+          stripe_price_id: "price_listing_pills_s",
+          eshop: true,
+          today_availability: true,
+          quantite: 1,
+          taille: taille_s,
+          couleur: couleur,
+          actif: true
+        )
+      end
+
+      let!(:produit_m) do
+        Produit.create!(
+          nom: "Robe pastilles listing",
+          prixvente: 50,
+          stripe_price_id: "price_listing_pills_m",
+          eshop: true,
+          today_availability: true,
+          quantite: 1,
+          taille: taille_m,
+          couleur: couleur,
+          actif: true
+        )
+      end
+
+      it "shows every available size on the grouped card" do
+        get "/fr/produits"
+
+        expect(response).to have_http_status(:ok)
+        pills = response.body.scan(/listing-taille-pill-label">([^<]+)/).flatten
+        expect(pills).to include("S", "M")
+        expect(response.body).to include("produit/#{produit_s.handle}-#{produit_s.id}")
+        expect(response.body).to include("produit/#{produit_m.handle}-#{produit_m.id}")
+      end
+
+      it "shows only the filtered size when a taille filter is active" do
+        get "/fr/produits", params: { taille: taille_m.id }
+
+        expect(response).to have_http_status(:ok)
+        pills = response.body.scan(/listing-taille-pill-label">([^<]+)/).flatten
+        expect(pills).to include("M")
+        expect(pills).not_to include("S")
+      end
+    end
+
     it "refreshes filter dropdowns when search changes via turbo stream" do
       get "/fr/produits",
           params: { q: search_q },
