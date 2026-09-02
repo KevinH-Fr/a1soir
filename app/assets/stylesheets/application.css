@@ -2680,7 +2680,7 @@ section {
 
 
 .info-card:hover,
-.concept-card:hover {
+.concept-card:hover:not(.mensuration-form) {
   transform: translateY(-5px);
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
 }

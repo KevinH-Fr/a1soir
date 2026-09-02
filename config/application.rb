@@ -28,5 +28,8 @@ module A1soir
     config.i18n.default_locale = :fr
 
     config.assets.paths << Rails.root.join("app/assets/fonts")
+
+    # Pages d'erreur via le routeur (`match "/404"` etc.) — façon Rails.
+    config.exceptions_app = routes
   end
 end

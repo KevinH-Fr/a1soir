@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <title><%= t("error_pages.not_found.title") %> — Autour d'un Soir</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= favicon_link_tag asset_path("a1soir_favicon.png"), rel: "icon", type: "image/png" %>
+    <%= stylesheet_link_tag "fonts-public", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "vendor/bootstrap-icons-used", "data-turbo-track": "reload" %>
+  </head>
+
+  <body class="bg-black text-light d-flex flex-column min-vh-100">
+    <header class="py-3">
+      <div class="container-fluid ps-2 pe-3">
+        <%= link_to home_path, class: "d-inline-block" do %>
+          <%= image_tag "/images/a1soirlogo2.png",
+                class: "navbar-logo mb-0 px-2",
+                alt: "Autour d'un Soir",
+                width: 521,
+                height: 64 %>
+        <% end %>
+      </div>
+    </header>
+
+    <main class="container flex-grow-1 py-4" style="max-width: 720px;">
+      <%= yield %>
+    </main>
+  </body>
+</html>

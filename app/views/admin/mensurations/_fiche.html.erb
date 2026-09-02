@@ -1,37 +1,39 @@
 <%# Détail d'une fiche mensurations (partagé : hub Dimensions + fiche client). %>
 <% invitation = mensuration.mensuration_invitation %>
+<%# Sur la fiche client, identité = déjà la carte client (créée / rattachée à la save). %>
+<% hide_identity = local_assigns.fetch(:hide_identity, false) %>
 
-<div class="row g-2">
-  <div class="col-lg-8">
-    <div class="d-flex flex-wrap gap-1 mb-2">
-      <%= field_with_label("Prénom", mensuration.prenom) %>
-      <%= field_with_label("Nom", mensuration.nom) %>
-      <%= field_with_label("E-mail", invitation.email) %>
-      <%= field_with_label("Téléphone", mensuration.telephone) %>
-      <%= field_with_label("Adresse", [mensuration.adresse, mensuration.cp, mensuration.ville].compact_blank.join(", ")) %>
-      <%= field_with_label("Événement", mensuration.date_evenement && l(mensuration.date_evenement)) %>
-      <%= field_with_label("Reçue le", l(mensuration.updated_at.to_date)) %>
+<div class="d-flex flex-wrap gap-2 align-items-start">
+  <div class="flex-grow-1">
+    <div class="d-flex flex-wrap gap-1">
+      <% unless hide_identity %>
+        <%= field_with_label("Prénom: ", mensuration.prenom) %>
+        <%= field_with_label("Nom: ", mensuration.nom) %>
+        <%= field_with_label("E-mail: ", invitation.email) %>
+        <%= field_with_label("Téléphone: ", mensuration.telephone) %>
+        <%= field_with_label("Adresse: ", [mensuration.adresse, mensuration.cp, mensuration.ville].compact_blank.join(", ")) %>
+      <% end %>
+      <%= field_with_label("Événement: ", mensuration.date_evenement && l(mensuration.date_evenement)) %>
+      <%= field_with_label("Reçue le ", l(mensuration.updated_at.to_date), icon_class: "bi-calendar-check") %>
+
+      <% mensuration.fields.each do |field| %>
+        <% value = mensuration.value_for(field["key"]) %>
+        <% next if value.blank? %>
+        <% display = if field["input"] == "choice"
+             t("mensurations.choices.#{field['key']}.#{value}", locale: :fr, default: value)
+           else
+             value
+           end %>
+        <%= field_with_label("#{t("mensurations.fields.#{field['key']}.admin", locale: :fr)}: ", display) %>
+      <% end %>
     </div>
-
-    <table class="table table-sm table-striped mb-0 small">
-      <tbody>
-        <% mensuration.fields.each do |field| %>
-          <% value = mensuration.value_for(field["key"]) %>
-          <% next if value.blank? %>
-          <tr>
-            <td class="text-muted"><%= t("mensurations.fields.#{field['key']}.label", locale: :fr) %></td>
-            <td class="fw-bold"><%= value %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
   </div>
 
   <% if mensuration.photo_pied.attached? %>
-    <div class="col-lg-4">
+    <div class="flex-shrink-0">
       <%# Proxy admin : URL signée courte régénérée à chaque affichage, jamais d'URL publique. %>
       <%= link_to photo_admin_mensuration_path(invitation), target: "_blank", rel: "noopener", data: { turbo: false } do %>
-        <img src="<%= photo_admin_mensuration_path(invitation) %>" alt="Photo en pied" class="img-thumbnail" style="max-height: 320px;">
+        <img src="<%= photo_admin_mensuration_path(invitation) %>" alt="Photo en pied" class="img-thumbnail d-block" style="max-height: 320px;">
       <% end %>
     </div>
   <% end %>

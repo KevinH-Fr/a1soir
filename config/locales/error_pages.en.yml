@@ -1,0 +1,6 @@
+en:
+  error_pages:
+    not_found:
+      title: "Page not found"
+      body: "This page does not exist or is no longer available."
+      home: "Back to the boutique"

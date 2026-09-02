@@ -6,6 +6,11 @@ Rails.application.routes.draw do
   get "/google_local_inventory_feed.xml", to: "google_merchant_feeds#local_inventory", as: :google_local_inventory_feed
   get "/sitemap.xml.gz", to: "sitemaps#show", as: :sitemap
 
+  # Cibles de config.exceptions_app (ShowExceptions réécrit PATH_INFO en /404, /422, /500).
+  match "/404", to: "errors#not_found", via: :all
+  match "/422", to: "errors#unprocessable", via: :all
+  match "/500", to: "errors#internal", via: :all
+
   root to: redirect('/fr')
 
   scope '(:locale)', locale: /fr|en/ do

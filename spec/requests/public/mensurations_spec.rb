@@ -34,6 +34,7 @@ RSpec.describe "Public::Mensurations", type: :request do
       get "/fr/m/inconnu123"
 
       expect(response).to have_http_status(:not_found)
+      expect(response.body).to include("Page introuvable")
     end
 
     it "retourne un 404 générique pour un lien expiré" do
@@ -42,6 +43,7 @@ RSpec.describe "Public::Mensurations", type: :request do
       get "/fr/m/#{invitation.token}"
 
       expect(response).to have_http_status(:not_found)
+      expect(response.body).to include("Page introuvable")
     end
   end
 

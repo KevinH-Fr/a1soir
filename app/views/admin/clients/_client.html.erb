@@ -59,28 +59,35 @@
       </div>
 
       <div class="collapse" id="<%= collapse_id %>">
-        <hr class="mt-2 mb-2 border-0 border-top border-secondary opacity-25">
-        <div class="d-flex flex-wrap gap-2 px-2">
-          <%= field_with_label("type: ", client.propart, icon_class: "bi-tag") %>
-          <%= field_with_label("commentaires: ", client.commentaires, icon_class: "bi-chat-left-text") %>
-          <%= field_with_label("intitule: ", client.intitule, icon_class: "bi-card-heading") %>
-          <%= field_with_label("tel: ", client.tel, icon_class: "bi-telephone") %>
-          <%= field_with_label("tel2: ", client.tel2, icon_class: "bi-telephone-fill") %>
-          <%= field_with_label("mail: ", client.mail, icon_class: "bi-envelope") %>
-          <%= field_with_label("mail2: ", client.mail2, icon_class: "bi-envelope-fill") %>
-          <%= field_with_label("adresse: ", client.adresse, icon_class: "bi-geo-alt") %>
-          <%= field_with_label("cp: ", client.cp, icon_class: "bi-mailbox") %>
-          <%= field_with_label("ville: ", client.ville, icon_class: "bi-building") %>
-          <%= field_with_label("pays: ", client.pays, icon_class: "bi-globe2") %>
-          <%= field_with_label("contact: ", client.contact, icon_class: "bi-person") %>
-          <%= field_with_label("langue: ", client.language_label, icon_class: "bi-translate") %>
+        <div class="pt-2">
+          <div class="border-top border-secondary opacity-25 pt-2 pb-1">
+            <div class="d-flex flex-wrap gap-2 px-2">
+              <%= field_with_label("type: ", client.propart, icon_class: "bi-tag") %>
+              <%= field_with_label("commentaires: ", client.commentaires, icon_class: "bi-chat-left-text") %>
+              <%= field_with_label("intitule: ", client.intitule, icon_class: "bi-card-heading") %>
+              <%= field_with_label("tel: ", client.tel, icon_class: "bi-telephone") %>
+              <%= field_with_label("tel2: ", client.tel2, icon_class: "bi-telephone-fill") %>
+              <%= field_with_label("mail: ", client.mail, icon_class: "bi-envelope") %>
+              <%= field_with_label("mail2: ", client.mail2, icon_class: "bi-envelope-fill") %>
+              <%= field_with_label("adresse: ", client.adresse, icon_class: "bi-geo-alt") %>
+              <%= field_with_label("cp: ", client.cp, icon_class: "bi-mailbox") %>
+              <%= field_with_label("ville: ", client.ville, icon_class: "bi-building") %>
+              <%= field_with_label("pays: ", client.pays, icon_class: "bi-globe2") %>
+              <%= field_with_label("contact: ", client.contact, icon_class: "bi-person") %>
+              <%= field_with_label("langue: ", client.language_label, icon_class: "bi-translate") %>
+            </div>
+          </div>
         </div>
       </div>
 
       <% if mensuration %>
         <div class="collapse" id="<%= mensuration_collapse_id %>">
-          <hr class="mt-2 mb-2 border-0 border-top border-secondary opacity-25">
-          <%= render "admin/mensurations/client_fiche", mensuration: mensuration %>
+          <%# Padding interne, pas de margin sur le collapse (sinon tressautement à l’anim Bootstrap). %>
+          <div class="pt-2">
+            <div class="border-top border-secondary opacity-25 pt-2 px-2 pb-1">
+              <%= render "admin/mensurations/client_fiche", mensuration: mensuration %>
+            </div>
+          </div>
         </div>
       <% end %>
 

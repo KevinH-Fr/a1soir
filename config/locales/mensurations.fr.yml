@@ -48,58 +48,80 @@ fr:
     fields:
       hauteur:
         label: "Votre taille totale en cm, sans chaussures"
+        admin: "Taille totale (cm), sans chaussures"
         hint: "ex : 168 pour 1m68"
       taille_robe_marque:
         label: "Votre taille en robe (vêtement) + marque"
+        admin: "Taille robe + marque"
         hint: "ex : T38, T42"
       hauteur_talons:
         label: "Votre hauteur de talons portés en cm"
+        admin: "Hauteur talons (cm)"
         hint: "ex : 6 cm, 10 cm"
       taille_pantalon_jupe_marque:
         label: "Votre taille de pantalon ou jupe (vêtement) + marque"
+        admin: "Taille pantalon/jupe + marque"
         hint: "ex : T36, T46"
       preference_forme_robe:
         label: "Votre préférence de forme de robe"
+        admin: "Préférence forme robe"
         hint: "près du corps, évasée, manche, décolletée, etc."
       taille_veste_chemisier:
         label: "Votre taille de veste ou chemisier"
+        admin: "Taille veste/chemisier"
         hint: "ex : 36 ou 44"
       taille_soutien_gorge:
         label: "Votre taille de soutien-gorge"
+        admin: "Taille soutien-gorge"
         hint: "ex : 90D, 85B"
       tour_cou:
         label: "Votre tour de cou en cm"
+        admin: "Tour de cou (cm)"
       coupe_chemise:
         label: "Votre préférence de coupe chemise"
+        admin: "Coupe chemise"
       taille_veste:
         label: "Votre taille de veste"
+        admin: "Taille veste"
         hint: "ex : 48 ou 52"
       taille_chemise:
         label: "Votre taille de chemise"
+        admin: "Taille chemise"
         hint: "ex : 37-38 ou 45-46"
       tour_poitrine:
         label: "Votre tour de poitrine en cm"
+        admin: "Tour de poitrine (cm)"
       tour_taille:
         label: "Votre tour de taille en cm"
+        admin: "Tour de taille (cm)"
       tour_hanches:
         label: "Votre tour de hanches en cm"
+        admin: "Tour de hanches (cm)"
       largeur_epaules:
         label: "Votre largeur d'épaules en cm"
+        admin: "Largeur d'épaules (cm)"
       longueur_bras_ext:
         label: "Votre longueur extérieure de bras en cm"
+        admin: "Longueur bras ext. (cm)"
       longueur_jambe_ext:
         label: "Votre longueur de jambe extérieure en partant de la ceinture, en cm"
+        admin: "Longueur jambe ext. depuis ceinture (cm)"
       longueur_jambe_int:
         label: "Votre longueur de jambe intérieure en partant de l'entrejambe, en cm"
+        admin: "Longueur jambe int. depuis entrejambe (cm)"
       taille_pantalon_marque:
         label: "Votre taille de pantalon (vêtement) + marque"
+        admin: "Taille pantalon + marque"
         hint: "ex : T42, T56"
       tour_taille_ceinture:
         label: "Votre tour de taille au niveau de la ceinture de votre pantalon, en cm"
+        admin: "Tour de taille ceinture (cm)"
       tour_hanches_pantalon:
         label: "Votre tour de hanches au niveau de la partie la plus large, en cm"
+        admin: "Tour de hanches (partie large) (cm)"
       pointure:
         label: "Votre taille de chaussures"
+        admin: "Pointure"
         hint: "taille française, US ou UK"
     choices:
       coupe_chemise:

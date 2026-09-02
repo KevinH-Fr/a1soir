@@ -35,6 +35,9 @@ RSpec.describe Mensuration, type: :model do
       keys.each do |key|
         expect(I18n.t("mensurations.fields.#{key}.label", locale: :fr)).not_to include("translation missing")
         expect(I18n.t("mensurations.fields.#{key}.label", locale: :en)).not_to include("translation missing")
+        admin = I18n.t("mensurations.fields.#{key}.admin", locale: :fr)
+        expect(admin).not_to include("translation missing")
+        expect(admin).not_to match(/\Avotre\b/i)
       end
     end
   end

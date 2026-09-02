@@ -87,10 +87,13 @@ module Public
       @footer_texte_contact = texte.contact&.to_plain_text.presence
     end
 
-    # 404 générique : ne pas révéler si un token a existé / est expiré.
+    # 404 boutique (même page qu'un token inconnu ou expiré). Render direct :
+    # en local, raise RecordNotFound affiche la page d'erreur Rails, pas la 404.
     def set_invitation
       @invitation = MensurationInvitation.find_by(token: params[:token])
-      raise ActiveRecord::RecordNotFound if @invitation.nil? || @invitation.expired?
+      return if @invitation&.usable?
+
+      render "errors/not_found", layout: "error", status: :not_found
     end
 
     def build_mensuration

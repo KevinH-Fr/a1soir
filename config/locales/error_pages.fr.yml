@@ -1,0 +1,6 @@
+fr:
+  error_pages:
+    not_found:
+      title: "Page introuvable"
+      body: "Cette page n'existe pas ou n'est plus disponible."
+      home: "Retour à la boutique"
