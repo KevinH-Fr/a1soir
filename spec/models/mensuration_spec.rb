@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe Mensuration, type: :model do
   let(:invitation) do
-    MensurationInvitation.create!(email: "jean@example.com", template: "homme", locale: "fr")
+    MensurationInvitation.create!(email: "jean@example.com", nom: "Dupont", template: "homme", locale: "fr")
   end
 
   def build_mensuration(attrs = {})
@@ -29,6 +29,29 @@ RSpec.describe Mensuration, type: :model do
       expect(femme).not_to include("tour_cou")
     end
 
+    it "sépare les tailles étiquette et les mensurations au mètre pour l'homme" do
+      homme = described_class.new(template: "homme")
+      steps = homme.fields_by_form_step
+
+      expect(steps.keys).to eq(%w[tailles corps])
+      expect(steps["tailles"].map { |f| f["key"] }).to eq(
+        %w[taille_veste taille_chemise coupe_chemise taille_pantalon_marque pointure]
+      )
+      expect(steps["corps"].map { |f| f["key"] }).to start_with("hauteur", "tour_cou", "largeur_epaules")
+      expect(steps["corps"].map { |f| f["key"] }).to include("tour_taille_ceinture", "tour_hanches_pantalon")
+    end
+
+    it "garde un seul volet de mesures pour la femme, robe avant le reste" do
+      femme = described_class.new(template: "femme")
+      steps = femme.fields_by_form_step
+      clothes = steps["mesures"].select { |f| f["group"] == "vetements" }.map { |f| f["key"] }
+
+      expect(steps.keys).to eq(%w[mesures])
+      expect(clothes).to eq(
+        %w[taille_robe_marque taille_soutien_gorge taille_pantalon_jupe_marque taille_veste_chemisier]
+      )
+    end
+
     it "a un libellé i18n fr et en pour chaque champ" do
       keys = described_class.all_fields.values.flatten.map { |f| f["key"] }.uniq
 
@@ -43,7 +66,7 @@ RSpec.describe Mensuration, type: :model do
   end
 
   describe "#resolve_and_link_client!" do
-    it "rattache au client existant (mail + nom) sans écraser sa fiche" do
+    it "rattache au client existant (même e-mail) sans écraser sa fiche" do
       existing = Client.create!(
         nom: "Dupont", prenom: "Jean-Existant", mail: "jean@example.com",
         tel: "0600000000", ville: "Nice"
@@ -61,7 +84,7 @@ RSpec.describe Mensuration, type: :model do
       expect(existing.prenom).to eq("Jean-Existant")
     end
 
-    it "crée un client si aucune correspondance mail + nom" do
+    it "crée un client si aucun compte n'a cet e-mail" do
       mensuration = build_mensuration(telephone: "0722222222", adresse: "1 rue Haute", cp: "06400", ville: "Cannes")
       mensuration.save!
 
@@ -74,13 +97,25 @@ RSpec.describe Mensuration, type: :model do
       expect(client.intitule).to eq("Monsieur")
     end
 
-    it "ne matche pas sur le mail seul si le nom diffère" do
-      Client.create!(nom: "Martin", mail: "jean@example.com")
+    it "rattache sur l'e-mail vérifié même si le nom saisi diffère" do
+      existing = Client.create!(nom: "Martin", mail: "jean@example.com")
 
       mensuration = build_mensuration
       mensuration.save!
 
-      expect { mensuration.resolve_and_link_client! }.to change(Client, :count).by(1)
+      expect { mensuration.resolve_and_link_client! }.not_to change(Client, :count)
+      expect(mensuration.reload.client).to eq(existing)
+    end
+
+    it "ne crée pas un second client si le nom change à la mise à jour" do
+      mensuration = build_mensuration
+      mensuration.save!
+      mensuration.resolve_and_link_client!
+      original = mensuration.client
+
+      mensuration.update!(nom: "Durand")
+      expect { mensuration.resolve_and_link_client! }.not_to change(Client, :count)
+      expect(mensuration.reload.client).to eq(original)
     end
   end
 

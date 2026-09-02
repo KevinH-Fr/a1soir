@@ -1,132 +1,138 @@
 <% field_class = "form-control form-control-sm bg-dark text-light border-secondary" %>
-<% select_class = "form-select form-select-sm bg-dark text-light border-secondary" %>
+<% saved = @mensuration.persisted? %>
+<% hide_answers = saved && !@editing %>
 
-<div class="concept-card mensuration-form mx-2" data-controller="form-wizard photo-preview">
-  <h1 class="h5 mb-2 text-light"><%= t("mensurations.form.title_#{@invitation.template}") %></h1>
-  <p class="text-light opacity-75 small mb-1"><%= t("mensurations.form.intro") %></p>
-  <p class="text-light opacity-50 small mb-3"><%= t("mensurations.form.required_hint") %></p>
-
-  <div class="mb-3">
-    <div class="small text-light opacity-75 mb-1"
-         data-form-wizard-target="caption"
-         data-template="<%= t("mensurations.form.step") %>">
-      <%= t("mensurations.form.step", current: 1, total: 3) %>
-    </div>
-    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33" style="height: 3px; background: rgba(255, 255, 255, 0.12);">
-      <div class="progress-bar bg-light" data-form-wizard-target="bar" style="width: 33%;"></div>
-    </div>
-  </div>
-
-  <%= form_with url: mensuration_save_path(token: @invitation.token), method: :post, local: true, multipart: true do |f| %>
-
-    <div data-form-wizard-target="step">
-      <h2 class="h6 mb-2 text-light"><%= t("mensurations.form.identity_title") %></h2>
-      <div class="row g-2">
-        <div class="col-md-6">
-          <%= text_field_tag "mensuration[prenom]", @mensuration.prenom, class: field_class, required: true,
-                placeholder: "#{t('mensurations.identity.prenom')} *",
-                "aria-label": "#{t('mensurations.identity.prenom')} *" %>
-        </div>
-        <div class="col-md-6">
-          <%= text_field_tag "mensuration[nom]", @mensuration.nom, class: field_class, required: true,
-                placeholder: "#{t('mensurations.identity.nom')} *",
-                "aria-label": "#{t('mensurations.identity.nom')} *" %>
-        </div>
-        <div class="col-md-6">
-          <%= text_field_tag nil, @invitation.email, class: "#{field_class} opacity-75", disabled: true,
-                placeholder: t("mensurations.identity.email"), "aria-label": t("mensurations.identity.email") %>
-        </div>
-        <div class="col-md-6">
-          <%= telephone_field_tag "mensuration[telephone]", @mensuration.telephone, class: field_class,
-                placeholder: t("mensurations.identity.telephone"), "aria-label": t("mensurations.identity.telephone") %>
-        </div>
-        <div class="col-12">
-          <%= text_field_tag "mensuration[adresse]", @mensuration.adresse, class: field_class,
-                placeholder: t("mensurations.identity.adresse"), "aria-label": t("mensurations.identity.adresse") %>
-        </div>
-        <div class="col-4">
-          <%= text_field_tag "mensuration[cp]", @mensuration.cp, class: field_class,
-                placeholder: t("mensurations.identity.cp"), "aria-label": t("mensurations.identity.cp") %>
-        </div>
-        <div class="col-8">
-          <%= text_field_tag "mensuration[ville]", @mensuration.ville, class: field_class,
-                placeholder: t("mensurations.identity.ville"), "aria-label": t("mensurations.identity.ville") %>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group input-group-sm">
-            <span class="input-group-text bg-dark text-light border-secondary small opacity-75"><%= t("mensurations.identity.date_evenement") %></span>
-            <%= date_field_tag "mensuration[date_evenement]", @mensuration.date_evenement, class: field_class,
-                  "aria-label": t("mensurations.identity.date_evenement") %>
-          </div>
+<div data-controller="form-wizard photo-preview<%= " form-reveal" if saved %>">
+  <% if saved %>
+    <div class="mensuration-flash mensuration-flash--success mb-3 mx-2" role="status">
+      <div class="d-flex align-items-start gap-2">
+        <i class="bi bi-check-circle-fill mensuration-saved-icon flex-shrink-0" aria-hidden="true"></i>
+        <div class="flex-grow-1">
+          <p class="fw-semibold mb-1"><%= t("mensurations.form.thanks_title") %></p>
+          <p class="small mb-3 opacity-75"><%= t("mensurations.form.thanks_body") %></p>
+          <button type="button"
+                  class="btn btn-sm btn-outline-light public-btn-border-radius"
+                  data-action="form-reveal#toggle"
+                  aria-expanded="<%= hide_answers ? "false" : "true" %>">
+            <span data-form-reveal-target="showLabel" class="<%= "d-none" unless hide_answers %>">
+              <%= t("mensurations.form.show_answers") %>
+            </span>
+            <span data-form-reveal-target="hideLabel" class="<%= "d-none" if hide_answers %>">
+              <%= t("mensurations.form.hide_answers") %>
+            </span>
+          </button>
         </div>
       </div>
     </div>
+  <% end %>
 
-    <div class="d-none" data-form-wizard-target="step">
-      <h2 class="h6 mb-2 text-light"><%= t("mensurations.form.measures_title") %></h2>
-      <div class="row g-2">
-        <% @mensuration.fields.each do |field| %>
-          <% key = field["key"] %>
-          <% label = t("mensurations.fields.#{key}.label") %>
-          <% hint = t("mensurations.fields.#{key}.hint", default: "") %>
-          <% placeholder = "#{label}#{" *" if field["required"]}" %>
+  <div class="concept-card mensuration-form mx-2 <%= "d-none" if hide_answers %>"
+       <% if saved %>data-form-reveal-target="panel"<% end %>>
+    <h1 class="h5 mb-2 text-light"><%= t("mensurations.form.title_#{@invitation.template}") %></h1>
+    <p class="text-light opacity-75 small mb-1"><%= t("mensurations.form.intro") %></p>
+    <p class="text-light opacity-50 small mb-3"><%= t("mensurations.form.required_hint") %></p>
+    <div class="mb-3">
+      <div class="small text-light opacity-75 mb-1"
+           data-form-wizard-target="caption"
+           data-template="<%= t("mensurations.form.step") %>">
+        <%= t("mensurations.form.step", current: 1, total: 3) %>
+      </div>
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33" style="height: 3px; background: rgba(255, 255, 255, 0.12);">
+        <div class="progress-bar bg-light" data-form-wizard-target="bar" style="width: 33%;"></div>
+      </div>
+    </div>
+
+    <%= form_with url: mensuration_save_path(token: @invitation.token), method: :post, local: true, multipart: true do |f| %>
+
+      <div data-form-wizard-target="step">
+        <h2 class="h6 mb-2 text-light"><%= t("mensurations.form.identity_title") %></h2>
+        <div class="row g-2">
           <div class="col-md-6">
-            <% case field["input"] %>
-            <% when "choice" %>
-              <%= select_tag "measurements[#{key}]",
-                    options_for_select(field["choices"].map { |c| [t("mensurations.choices.#{key}.#{c}"), c] }, @mensuration.value_for(key)),
-                    include_blank: placeholder,
-                    class: select_class,
-                    "aria-label": placeholder,
-                    title: hint.presence %>
-            <% when "textarea" %>
-              <%= text_area_tag "measurements[#{key}]", @mensuration.value_for(key), class: field_class, rows: 2,
-                    placeholder: placeholder, "aria-label": placeholder, title: hint.presence %>
-            <% else %>
-              <%= text_field_tag "measurements[#{key}]", @mensuration.value_for(key), class: field_class,
-                    required: field["required"], placeholder: placeholder, "aria-label": placeholder, title: hint.presence %>
-            <% end %>
+            <%= mensuration_labeled_field "mensuration[prenom]", @mensuration.prenom,
+                  "#{t('mensurations.identity.prenom')} *", required: true %>
           </div>
-        <% end %>
+          <div class="col-md-6">
+            <%= mensuration_labeled_field nil, @mensuration.nom, t("mensurations.identity.nom"),
+                  disabled: true, id: "mensuration_nom", class: "opacity-75" %>
+          </div>
+          <div class="col-md-6">
+            <%= mensuration_labeled_field nil, @invitation.email, t("mensurations.identity.email"),
+                  disabled: true, id: "mensuration_email", class: "opacity-75" %>
+          </div>
+          <div class="col-md-6">
+            <%= mensuration_labeled_field "mensuration[telephone]", @mensuration.telephone,
+                  t("mensurations.identity.telephone"), type: :tel %>
+          </div>
+          <div class="col-12">
+            <%= mensuration_labeled_field "mensuration[adresse]", @mensuration.adresse,
+                  t("mensurations.identity.adresse") %>
+          </div>
+          <div class="col-4">
+            <%= mensuration_labeled_field "mensuration[cp]", @mensuration.cp,
+                  t("mensurations.identity.cp") %>
+          </div>
+          <div class="col-8">
+            <%= mensuration_labeled_field "mensuration[ville]", @mensuration.ville,
+                  t("mensurations.identity.ville") %>
+          </div>
+          <div class="col-md-6">
+            <%= mensuration_labeled_field "mensuration[date_evenement]", @mensuration.date_evenement,
+                  t("mensurations.identity.date_evenement"), type: :date %>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="d-none" data-form-wizard-target="step">
-      <h2 class="h6 mb-2 text-light"><%= t("mensurations.form.photo_title") %></h2>
-      <p class="text-light opacity-75 small mb-2"><%= t("mensurations.form.photo_hint") %></p>
-      <% if @mensuration.photo_pied.attached? %>
-        <p class="small text-light mb-2"><i class="bi bi-check-circle"></i> <%= @mensuration.photo_pied.filename %></p>
+      <% @mensuration.fields_by_form_step.each do |step_key, step_fields| %>
+        <%= render "public/mensurations/measure_step",
+              step_key: step_key, fields: step_fields, mensuration: @mensuration %>
       <% end %>
-      <%= file_field_tag :photo_pied, accept: "image/*", class: field_class, data: { action: "change->photo-preview#preview" } %>
-      <img data-photo-preview-target="image" class="img-thumbnail mt-2 d-none" style="max-height: 180px;" alt="">
-    </div>
 
-    <div class="d-flex align-items-center mt-3">
-      <button type="button"
-              class="btn btn-sm btn-outline-light public-btn-border-radius d-none"
-              data-form-wizard-target="prev"
-              data-action="form-wizard#prev">
-        <i class="bi bi-arrow-left me-1"></i><%= t("mensurations.form.prev") %>
-      </button>
+      <div class="d-none" data-form-wizard-target="step">
+        <h2 class="h6 mb-2 text-light"><%= t("mensurations.form.photo_title") %></h2>
+        <p class="text-light opacity-75 small mb-2"><%= t("mensurations.form.photo_hint") %></p>
+        <% if @mensuration.photo_pied.attached? %>
+          <p class="small text-light mb-2"><i class="bi bi-check-circle"></i> <%= @mensuration.photo_pied.filename %></p>
+        <% end %>
+        <%= file_field_tag :photo_pied, accept: "image/*", class: field_class, data: { action: "change->photo-preview#preview" } %>
+        <img data-photo-preview-target="image" class="img-thumbnail mt-2 d-none" style="max-height: 180px;" alt="">
+      </div>
 
-      <button type="button"
-              class="btn btn-light public-btn-border-radius ms-auto px-4"
-              data-form-wizard-target="next"
-              data-action="form-wizard#next">
-        <%= t("mensurations.form.next") %><i class="bi bi-arrow-right ms-1"></i>
-      </button>
+      <div class="d-flex align-items-center mt-3 gap-2">
+        <button type="button"
+                class="btn btn-sm btn-outline-light public-btn-border-radius d-none"
+                data-form-wizard-target="prev"
+                data-action="form-wizard#prev">
+          <i class="bi bi-arrow-left me-1"></i><%= t("mensurations.form.prev") %>
+        </button>
 
-      <%= submit_tag @mensuration.persisted? ? t("mensurations.form.update") : t("mensurations.form.submit"),
-            class: "btn btn-light public-btn-border-radius ms-auto px-4 d-none",
-            data: { "form-wizard-target": "submit" } %>
-    </div>
-  <% end %>
+        <% if Rails.env.development? %>
+          <button type="button"
+                  class="btn btn-sm btn-outline-secondary public-btn-border-radius"
+                  data-form-wizard-target="fill"
+                  data-action="form-wizard#fillStep">
+            Dev : remplir cette étape
+          </button>
+        <% end %>
 
-  <% if @mensuration.persisted? %>
-    <div class="mt-3">
-      <%= button_to t("mensurations.form.delete"), mensuration_delete_path(token: @invitation.token), method: :delete,
-            class: "btn btn-outline-danger btn-sm",
-            form: { onsubmit: "return confirm(#{t('mensurations.form.delete_confirm').to_json});" } %>
-    </div>
-  <% end %>
+        <button type="button"
+                class="btn btn-light public-btn-border-radius ms-auto px-4"
+                data-form-wizard-target="next"
+                data-action="form-wizard#next">
+          <%= t("mensurations.form.next") %><i class="bi bi-arrow-right ms-1"></i>
+        </button>
+
+        <%= submit_tag saved ? t("mensurations.form.update") : t("mensurations.form.submit"),
+              class: "btn btn-light public-btn-border-radius ms-auto px-4 d-none",
+              data: { "form-wizard-target": "submit" } %>
+      </div>
+    <% end %>
+
+    <% if saved %>
+      <div class="mt-4 text-end">
+        <%= button_to t("mensurations.form.delete"), mensuration_delete_path(token: @invitation.token), method: :delete,
+              class: "mensuration-delete-link",
+              form: { onsubmit: "return confirm(#{t('mensurations.form.delete_confirm').to_json});" } %>
+      </div>
+    <% end %>
+  </div>
 </div>

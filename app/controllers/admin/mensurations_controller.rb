@@ -32,24 +32,16 @@ class Admin::MensurationsController < Admin::ApplicationController
     redirect_back fallback_location: admin_mensurations_path, notice: "Fiche mensurations supprimée."
   end
 
-  # Proxy admin : la photo client n'est jamais exposée en URL Cloudinary publique.
-  # Redirige vers une URL signée à expiration courte — un nouveau lien à chaque affichage.
+  # Proxy admin : la photo n'est jamais une URL Cloudinary dans le HTML.
+  # On envoie les octets en inline — une redirection vers /image/download n'est pas affichable dans <img>.
   def photo
     blob = @invitation.mensuration&.photo_pied&.blob
     raise ActiveRecord::RecordNotFound unless blob
 
-    url = if blob.service_name == "cloudinary"
-            Cloudinary::Utils.private_download_url(
-              blob.key,
-              blob.filename.extension_without_delimiter.presence || "jpg",
-              resource_type: "image",
-              type: "authenticated",
-              expires_at: 10.minutes.from_now.to_i
-            )
-          else
-            blob.url(disposition: :inline)
-          end
-    redirect_to url, allow_other_host: true
+    send_data photo_bytes(blob),
+              type: blob.content_type.presence || "image/jpeg",
+              disposition: :inline,
+              filename: blob.filename.to_s
   end
 
   private
@@ -60,5 +52,43 @@ class Admin::MensurationsController < Admin::ApplicationController
 
   def invitation_params
     params.require(:mensuration_invitation).permit(:email, :prenom, :nom, :template, :locale, :message_perso)
+  end
+
+  def photo_bytes(blob)
+    return blob.download unless blob.service_name == "cloudinary"
+
+    ext = blob.filename.extension_without_delimiter.presence || "jpg"
+    %w[upload authenticated].each do |delivery_type|
+      url = Cloudinary::Utils.cloudinary_url(
+        blob.key.to_s,
+        resource_type: :image,
+        type: delivery_type,
+        sign_url: true,
+        secure: true,
+        format: ext
+      )
+      body = Cloudinary::Downloader.download(url)
+      return body if image_bytes?(body)
+    end
+
+    # Dernier recours : l'API download (non affichable en <img>) lue côté serveur.
+    download_url = Cloudinary::Utils.private_download_url(
+      blob.key.to_s,
+      ext,
+      resource_type: "image",
+      type: "authenticated",
+      expires_at: 10.minutes.from_now.to_i
+    )
+    body = Cloudinary::Downloader.download(download_url)
+    return body if image_bytes?(body)
+
+    raise ActiveRecord::RecordNotFound
+  end
+
+  def image_bytes?(body)
+    return false if body.blank? || body.bytesize < 12
+
+    head = body.b[0, 12]
+    head.start_with?("\xFF\xD8".b, "\x89PNG".b, "GIF8".b, "RIFF".b)
   end
 end

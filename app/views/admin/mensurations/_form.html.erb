@@ -6,7 +6,7 @@
            } do %>
   <%= form_with(model: mensuration_invitation, url: admin_mensurations_path, method: :post, data: { turbo: false }) do |form| %>
     <%= custom_form_elements(form,
-          [:email, :text_field, "E-mail *"],
+          [:email, :email_field, "E-mail", { required: true }],
           [:prenom, :text_field, "Prénom"],
           [:nom, :text_field, "Nom"]) %>
 

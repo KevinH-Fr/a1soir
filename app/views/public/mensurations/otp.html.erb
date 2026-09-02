@@ -1,13 +1,15 @@
 <% field_class = "form-control form-control-sm bg-dark text-light border-secondary" %>
 <% code_pending = @invitation.otp_sent_at.present? && @invitation.otp_sent_at > MensurationInvitation::OTP_VALIDITY.ago %>
 
-<div class="concept-card mensuration-form text-center mx-2">
-  <h1 class="h5 mb-2 text-light"><%= t("mensurations.otp.request_title") %></h1>
-  <p class="text-light opacity-75 small mb-3 mx-auto" style="max-width: 28rem;"><%= t("mensurations.otp.request_hint") %></p>
+<div class="concept-card mensuration-form text-center mx-2 py-4">
+  <h1 class="h6 mb-0 text-light"><%= t("mensurations.otp.request_title") %></h1>
+  <p class="text-light opacity-75 small my-4 mx-auto" style="max-width: 22rem; line-height: 1.5;">
+    <%= t("mensurations.otp.request_hint") %>
+  </p>
 
   <% if code_pending %>
-    <%= form_with url: mensuration_verify_path(token: @invitation.token), method: :post, local: true, html: { class: "mx-auto", style: "max-width: 20rem;" } do |f| %>
-      <div class="mb-3">
+    <%= form_with url: mensuration_verify_path(token: @invitation.token), method: :post, local: true, html: { class: "mx-auto", style: "max-width: 16rem;" } do |f| %>
+      <div class="mb-2">
         <%= f.text_field :code,
               class: "#{field_class} text-center",
               inputmode: "numeric",
@@ -19,21 +21,20 @@
               "aria-label": t("mensurations.otp.code_label"),
               data: { controller: "otp-submit", action: "input->otp-submit#check" } %>
       </div>
-      <div class="d-flex justify-content-center">
-        <%= f.submit t("mensurations.otp.verify"), class: "btn btn-light public-btn-border-radius px-4", style: "min-width: 12rem;" %>
-      </div>
+      <%= f.submit t("mensurations.otp.verify"), class: "btn btn-sm btn-light public-btn-border-radius w-100" %>
     <% end %>
 
-    <div class="mt-2">
-      <%= button_to t("mensurations.otp.resend_code"), mensuration_otp_path(token: @invitation.token), method: :post, class: "btn btn-link btn-sm text-light opacity-75" %>
+    <div class="mt-4">
+      <%= button_to t("mensurations.otp.resend_code"), mensuration_otp_path(token: @invitation.token),
+            method: :post,
+            class: "btn btn-link btn-sm text-light opacity-50 p-0" %>
     </div>
   <% else %>
-    <div class="d-flex justify-content-center">
+    <div class="mx-auto" style="max-width: 16rem;">
       <%= button_to t("mensurations.otp.send_code"), mensuration_otp_path(token: @invitation.token),
             method: :post,
-            class: "btn btn-light public-btn-border-radius px-4",
-            form_class: "d-inline",
-            style: "min-width: 12rem;" %>
+            class: "btn btn-sm btn-light public-btn-border-radius w-100",
+            form_class: "d-block" %>
     </div>
   <% end %>
 </div>

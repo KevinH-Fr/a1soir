@@ -72,17 +72,26 @@
         </div>
       </div>
 
-      <div class="collapse py-1 px-2" id="<%= collapse_id %>">
-        <div class="d-flex flex-wrap gap-2 px-2 mb-2">
-          <%= field_with_label("Envoyée le: ", l(invitation.created_at, format: :short), icon_class: "bi-clock") %>
-          <%= field_with_label("Lien: ", public_url, icon_class: "bi-link-45deg") %>
-          <%= field_with_label("Message: ", invitation.message_perso, icon_class: "bi-chat-left-text") if invitation.message_perso.present? %>
+      <div class="collapse" id="<%= collapse_id %>">
+        <div class="pt-2">
+          <div class="border-top border-secondary border-opacity-25 pt-2 px-2 pb-1">
+            <% if mensuration.present? %>
+              <%= render "admin/mensurations/fiche",
+                    mensuration: mensuration,
+                    extra_meta: [
+                      ["Envoyée le", l(invitation.created_at, format: :short)],
+                      ["Message", invitation.message_perso]
+                    ] %>
+            <% else %>
+              <div class="mensuration-admin-fiche">
+                <dl class="mensuration-admin-fiche__meta mb-0 pb-0 border-0">
+                  <%= mensuration_admin_meta_item("Envoyée le", l(invitation.created_at, format: :short)) %>
+                  <%= mensuration_admin_meta_item("Message", invitation.message_perso) %>
+                </dl>
+              </div>
+            <% end %>
+          </div>
         </div>
-
-        <% if mensuration.present? %>
-          <hr class="mt-2 mb-2 border-0 border-top border-secondary opacity-25">
-          <%= render "admin/mensurations/fiche", mensuration: mensuration %>
-        <% end %>
       </div>
     </div>
   </div>

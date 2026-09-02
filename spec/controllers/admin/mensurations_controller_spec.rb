@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe Admin::MensurationsController, type: :controller do
   let!(:invitation) do
-    MensurationInvitation.create!(email: "cliente@example.com", template: "femme", locale: "fr")
+    MensurationInvitation.create!(email: "cliente@example.com", nom: "Durand", template: "femme", locale: "fr")
   end
 
   def stub_staff_session
@@ -79,11 +79,12 @@ RSpec.describe Admin::MensurationsController, type: :controller do
         ActiveStorage::Current.url_options = { host: "http://admin.lvh.me" }
       end
 
-      it "redirige vers une URL de blob signée (jamais servie en direct)" do
+      it "sert la photo en inline, sans URL de téléchargement Cloudinary" do
         get :photo, params: { id: invitation.id }
 
-        expect(response).to have_http_status(:found)
-        expect(response.location).to be_present
+        expect(response).to have_http_status(:ok)
+        expect(response.media_type).to eq("image/jpeg")
+        expect(response.body).not_to include("image/download")
       end
 
       it "retourne 404 si aucune photo" do

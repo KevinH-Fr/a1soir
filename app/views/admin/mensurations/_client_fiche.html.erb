@@ -1,11 +1,2 @@
-<%# Fiche mensurations affichée dans le collapse de la carte client (admin/clients/_client). %>
-<%= render "admin/mensurations/fiche", mensuration: mensuration, hide_identity: true %>
-
-<div class="text-end pt-2">
-  <%# Supprime invitation + mesures + photo (purge), jamais la fiche client. %>
-  <%= button_to admin_mensuration_path(mensuration.mensuration_invitation), method: :delete,
-        class: "btn btn-sm btn-outline-danger",
-        form: { data: { turbo_confirm: "Supprimer les mensurations et la photo de #{mensuration.client&.full_name || mensuration.nom} ?" } } do %>
-    <i class="bi bi-trash me-1"></i>Supprimer les mensurations
-  <% end %>
-</div>
+<%# Fiche mensurations affichée dans le collapse de la carte client. %>
+<%= render "admin/mensurations/fiche", mensuration: mensuration, hide_identity: true, show_delete: true %>

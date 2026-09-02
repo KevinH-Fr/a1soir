@@ -3,10 +3,16 @@ fr:
     form:
       title_femme: "Formulaire de prise de mesures — Femmes"
       title_homme: "Formulaire de prise de mesures — Hommes"
-      intro: "Remplissez minutieusement ce formulaire. Merci pour votre temps."
-      required_hint: "* = à remplir impérativement"
+      intro: "Merci de remplir minutieusement."
+      required_hint: "* obligatoire"
       identity_title: "Vos coordonnées"
       measures_title: "Vos mesures"
+      mesures_title: "Vos mesures"
+      mesures_hint: "Votre stature, puis les tailles de vos vêtements."
+      tailles_title: "Vos tailles vêtement"
+      tailles_hint: "Les tailles indiquées dans vos vêtements — pas besoin de mètre."
+      corps_title: "Vos mensurations"
+      corps_hint: "Mesurez-vous sans chaussures, de haut en bas."
       photo_title: "Photo en pied"
       next: "Continuer"
       prev: "Retour"
@@ -14,11 +20,20 @@ fr:
       photo_hint: "Une photo de vous en pied (de la tête aux pieds) nous aide à mieux vous conseiller."
       submit: "Envoyer mes mesures"
       update: "Mettre à jour mes mesures"
-      delete: "Supprimer ma fiche"
+      delete: "Supprimer cette fiche"
       delete_confirm: "Supprimer définitivement vos mesures et votre photo ?"
       saved: "Merci ! Vos mesures ont bien été enregistrées."
+      thanks_title: "C’est enregistré"
+      thanks_body: "Vos mesures ont bien été transmises. Vous pouvez les consulter ou les modifier si besoin."
+      show_answers: "Voir et modifier mes réponses"
+      hide_answers: "Masquer mes réponses"
       deleted: "Votre fiche a été supprimée."
       already_completed: "Votre fiche est enregistrée. Pour la modifier ou la supprimer, validez à nouveau votre e-mail."
+    groups:
+      silhouette: "Silhouette"
+      longueurs: "Longueurs"
+      vetements: "Tailles vêtement"
+      preferences: "Préférence"
     otp:
       request_title: "Vérification de votre e-mail"
       request_hint: "Pour accéder au formulaire, nous envoyons un code à l'adresse e-mail à laquelle vous avez reçu ce lien."
@@ -48,79 +63,101 @@ fr:
     fields:
       hauteur:
         label: "Votre taille totale en cm, sans chaussures"
+        short: "Taille (cm)"
         admin: "Taille totale (cm), sans chaussures"
         hint: "ex : 168 pour 1m68"
       taille_robe_marque:
         label: "Votre taille en robe (vêtement) + marque"
+        short: "Taille robe + marque"
         admin: "Taille robe + marque"
         hint: "ex : T38, T42"
       hauteur_talons:
         label: "Votre hauteur de talons portés en cm"
+        short: "Hauteur talons (cm)"
         admin: "Hauteur talons (cm)"
         hint: "ex : 6 cm, 10 cm"
       taille_pantalon_jupe_marque:
         label: "Votre taille de pantalon ou jupe (vêtement) + marque"
+        short: "Taille pantalon/jupe + marque"
         admin: "Taille pantalon/jupe + marque"
         hint: "ex : T36, T46"
       preference_forme_robe:
         label: "Votre préférence de forme de robe"
+        short: "Forme de robe"
         admin: "Préférence forme robe"
         hint: "près du corps, évasée, manche, décolletée, etc."
       taille_veste_chemisier:
         label: "Votre taille de veste ou chemisier"
+        short: "Taille veste/chemisier"
         admin: "Taille veste/chemisier"
         hint: "ex : 36 ou 44"
       taille_soutien_gorge:
         label: "Votre taille de soutien-gorge"
+        short: "Taille soutien-gorge"
         admin: "Taille soutien-gorge"
         hint: "ex : 90D, 85B"
       tour_cou:
         label: "Votre tour de cou en cm"
+        short: "Tour de cou (cm)"
         admin: "Tour de cou (cm)"
       coupe_chemise:
         label: "Votre préférence de coupe chemise"
+        short: "Coupe chemise"
         admin: "Coupe chemise"
       taille_veste:
         label: "Votre taille de veste"
+        short: "Taille veste"
         admin: "Taille veste"
         hint: "ex : 48 ou 52"
       taille_chemise:
         label: "Votre taille de chemise"
+        short: "Taille chemise"
         admin: "Taille chemise"
         hint: "ex : 37-38 ou 45-46"
       tour_poitrine:
         label: "Votre tour de poitrine en cm"
+        short: "Tour de poitrine (cm)"
         admin: "Tour de poitrine (cm)"
       tour_taille:
         label: "Votre tour de taille en cm"
+        short: "Tour de taille (cm)"
         admin: "Tour de taille (cm)"
       tour_hanches:
         label: "Votre tour de hanches en cm"
+        short: "Tour de hanches (cm)"
         admin: "Tour de hanches (cm)"
       largeur_epaules:
         label: "Votre largeur d'épaules en cm"
+        short: "Largeur d'épaules (cm)"
         admin: "Largeur d'épaules (cm)"
       longueur_bras_ext:
         label: "Votre longueur extérieure de bras en cm"
+        short: "Longueur bras (cm)"
         admin: "Longueur bras ext. (cm)"
       longueur_jambe_ext:
         label: "Votre longueur de jambe extérieure en partant de la ceinture, en cm"
+        short: "Jambe extérieure (cm)"
         admin: "Longueur jambe ext. depuis ceinture (cm)"
       longueur_jambe_int:
         label: "Votre longueur de jambe intérieure en partant de l'entrejambe, en cm"
+        short: "Jambe intérieure (cm)"
         admin: "Longueur jambe int. depuis entrejambe (cm)"
       taille_pantalon_marque:
         label: "Votre taille de pantalon (vêtement) + marque"
+        short: "Taille pantalon + marque"
         admin: "Taille pantalon + marque"
         hint: "ex : T42, T56"
       tour_taille_ceinture:
         label: "Votre tour de taille au niveau de la ceinture de votre pantalon, en cm"
+        short: "Taille ceinture (cm)"
         admin: "Tour de taille ceinture (cm)"
       tour_hanches_pantalon:
         label: "Votre tour de hanches au niveau de la partie la plus large, en cm"
+        short: "Hanches pantalon (cm)"
         admin: "Tour de hanches (partie large) (cm)"
       pointure:
         label: "Votre taille de chaussures"
+        short: "Pointure"
         admin: "Pointure"
         hint: "taille française, US ou UK"
     choices:

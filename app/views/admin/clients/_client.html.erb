@@ -60,7 +60,7 @@
 
       <div class="collapse" id="<%= collapse_id %>">
         <div class="pt-2">
-          <div class="border-top border-secondary opacity-25 pt-2 pb-1">
+          <div class="border-top border-secondary border-opacity-25 pt-2 pb-1">
             <div class="d-flex flex-wrap gap-2 px-2">
               <%= field_with_label("type: ", client.propart, icon_class: "bi-tag") %>
               <%= field_with_label("commentaires: ", client.commentaires, icon_class: "bi-chat-left-text") %>
@@ -84,7 +84,7 @@
         <div class="collapse" id="<%= mensuration_collapse_id %>">
           <%# Padding interne, pas de margin sur le collapse (sinon tressautement à l’anim Bootstrap). %>
           <div class="pt-2">
-            <div class="border-top border-secondary opacity-25 pt-2 px-2 pb-1">
+            <div class="border-top border-secondary border-opacity-25 pt-2 px-2 pb-1">
               <%= render "admin/mensurations/client_fiche", mensuration: mensuration %>
             </div>
           </div>

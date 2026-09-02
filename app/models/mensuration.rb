@@ -27,18 +27,23 @@ class Mensuration < ApplicationRecord
     self.class.fields_for(template)
   end
 
+  # Volets du wizard (ordre YAML). Femme : un volet ; homme : tailles puis corps.
+  def fields_by_form_step
+    fields.group_by { |field| field["step"].presence || "mesures" }
+  end
+
   # Valeur saisie pour une clé de mesure (JSON à clés stables).
   def value_for(key)
     (measurements || {})[key.to_s]
   end
 
-  # Rattache au Client existant (mail + nom stricts, comme l'e-shop) sans toucher sa fiche ;
-  # sinon crée un client minimal depuis les coordonnées saisies.
+  # Rattache au Client dont l'e-mail a déjà été prouvé par OTP.
+  # Un changement de nom ne doit pas créer un second client ; une fiche déjà liée reste liée.
+  # La fiche client existante n'est jamais écrasée.
   def resolve_and_link_client!
     invitation = mensuration_invitation
-    client = Client.find_existing_for_public_contact(
-      email: invitation.email, nom: nom, prenom: prenom, use_prenom_nom_fallback: false
-    )
+    client = self.client || invitation.client ||
+             Client.find_existing_by_verified_email(invitation.email)
     client ||= Client.create!(
       intitule: template == "homme" ? "Monsieur" : "Madame",
       prenom: prenom, nom: nom, tel: telephone, mail: invitation.email,

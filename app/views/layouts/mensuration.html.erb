@@ -15,7 +15,7 @@
     <%= javascript_include_tag "mensuration", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body class="bg-black text-light d-flex flex-column min-vh-100">
+  <body class="bg-black text-light d-flex flex-column vh-100 overflow-hidden">
     <header class="py-3">
       <div class="container-fluid ps-2 pe-3">
         <%= link_to home_path, class: "d-inline-block" do %>
@@ -28,19 +28,20 @@
       </div>
     </header>
 
-    <main class="container flex-grow-1 py-4" style="max-width: 720px;">
-      <% flash.each do |key, value| %>
-        <% is_alert = key.to_s.in?(%w[alert error]) %>
-        <div class="mensuration-flash <%= "mensuration-flash--alert" if is_alert %> mb-3 mx-2" role="status">
-          <i class="bi bi-<%= is_alert ? "exclamation-triangle" : "info-circle" %> me-2 public-brand-color"></i>
-          <%= value %>
-        </div>
-      <% end %>
+    <div class="public-scroll flex-grow-1 overflow-auto d-flex flex-column">
+      <main class="container py-4 flex-grow-1" style="max-width: 720px;">
+        <% flash.each do |key, value| %>
+          <% is_alert = key.to_s.in?(%w[alert error]) %>
+          <div class="mensuration-flash <%= "mensuration-flash--alert" if is_alert %> mb-3 mx-2" role="status">
+            <i class="bi bi-<%= is_alert ? "exclamation-triangle" : "info-circle" %> me-2"></i>
+            <%= value %>
+          </div>
+        <% end %>
 
-      <%= yield %>
-    </main>
+        <%= yield %>
+      </main>
 
-    <footer class="public-site-footer mt-auto py-4">
+      <footer class="public-site-footer mt-auto py-4">
       <div class="container py-2">
         <div class="row g-4">
           <div class="col-12 col-md-4">
@@ -72,6 +73,7 @@
           </div>
         </div>
       </div>
-    </footer>
+      </footer>
+    </div>
   </body>
 </html>

@@ -19,7 +19,7 @@ module FormDesignHelper
   
           # Field rendering
           case field_type
-          when :text_field, :text_area
+          when :text_field, :text_area, :email_field
             concat(form.public_send(field_type, field, { class: "form-control" }.merge(options)))
           when :number_field
             concat(form.number_field(field, { class: "form-control", step: "any" }.merge(options)))

@@ -4,6 +4,7 @@ module Public
   # (Public::ApplicationController) — le client arrive ici uniquement via le lien reçu par mail.
   class MensurationsController < ActionController::Base
     layout "mensuration"
+    helper MensurationsHelper
 
     SESSION_KEY = "mensuration_auth".freeze
     SESSION_TTL = 2.hours
@@ -54,8 +55,9 @@ module Public
       if @mensuration.save
         @mensuration.resolve_and_link_client!
         @invitation.update!(status: "completed")
-        redirect_to mensuration_path(token: @invitation.token), notice: t("mensurations.form.saved")
+        redirect_to mensuration_path(token: @invitation.token)
       else
+        @editing = true
         flash.now[:alert] = @mensuration.errors.full_messages.to_sentence
         render :form, status: :unprocessable_entity
       end
@@ -125,14 +127,24 @@ module Public
     # ---- Params -------------------------------------------------------------
 
     def identity_params
-      params.fetch(:mensuration, {}).permit(:prenom, :nom, :telephone, :adresse, :cp, :ville, :date_evenement)
+      params.fetch(:mensuration, {}).permit(:prenom, :telephone, :adresse, :cp, :ville, :date_evenement)
     end
 
-    # Seules les clés déclarées dans le YAML du template sont conservées.
+    # Seules les clés du YAML du template ; les listes (choice) n'acceptent que les valeurs prévues.
     def measurements_params
-      allowed = Mensuration.fields_for(@invitation.template).map { |f| f["key"] }
+      fields = Mensuration.fields_for(@invitation.template)
+      allowed = fields.map { |f| f["key"] }
       raw = params.fetch(:measurements, {}).permit(*allowed)
-      raw.to_h.transform_values { |v| v.to_s.strip }.compact_blank
+      values = raw.to_h.transform_values { |v| v.to_s.strip }.compact_blank
+
+      fields.each do |field|
+        next unless field["input"] == "choice"
+
+        key = field["key"]
+        values.delete(key) unless field["choices"].include?(values[key])
+      end
+
+      values
     end
   end
 end

@@ -3,10 +3,16 @@ en:
     form:
       title_femme: "Measurement form — Women"
       title_homme: "Measurement form — Men"
-      intro: "Please fill in this form carefully. Thank you for your time."
-      required_hint: "* = required"
+      intro: "Please fill in carefully."
+      required_hint: "* required"
       identity_title: "Your details"
       measures_title: "Your measurements"
+      mesures_title: "Your measurements"
+      mesures_hint: "Your height, then your clothing sizes."
+      tailles_title: "Your clothing sizes"
+      tailles_hint: "The sizes on your garment labels — no tape measure needed."
+      corps_title: "Your measurements"
+      corps_hint: "Measure yourself without shoes, from top to bottom."
       photo_title: "Full-length photo"
       next: "Continue"
       prev: "Back"
@@ -14,11 +20,20 @@ en:
       photo_hint: "A full-length photo of you (head to toe) helps us advise you better."
       submit: "Send my measurements"
       update: "Update my measurements"
-      delete: "Delete my form"
+      delete: "Delete this form"
       delete_confirm: "Permanently delete your measurements and photo?"
       saved: "Thank you! Your measurements have been saved."
+      thanks_title: "All set"
+      thanks_body: "Your measurements have been sent. You can review or edit them if needed."
+      show_answers: "View and edit my answers"
+      hide_answers: "Hide my answers"
       deleted: "Your form has been deleted."
       already_completed: "Your form is saved. To edit or delete it, please verify your email again."
+    groups:
+      silhouette: "Silhouette"
+      longueurs: "Lengths"
+      vetements: "Clothing sizes"
+      preferences: "Preference"
     otp:
       request_title: "Email verification"
       request_hint: "To access the form, we send a code to the email address that received this link."
@@ -48,58 +63,80 @@ en:
     fields:
       hauteur:
         label: "Your total height in cm, without shoes"
+        short: "Height (cm)"
         hint: "e.g. 168 for 1.68 m"
       taille_robe_marque:
         label: "Your dress size (ready-to-wear) + brand"
+        short: "Dress size + brand"
         hint: "e.g. FR 38, FR 42"
       hauteur_talons:
         label: "Heel height you usually wear, in cm"
+        short: "Heel height (cm)"
         hint: "e.g. 6 cm, 10 cm"
       taille_pantalon_jupe_marque:
         label: "Your trousers or skirt size (ready-to-wear) + brand"
+        short: "Trousers/skirt size + brand"
         hint: "e.g. FR 36, FR 46"
       preference_forme_robe:
         label: "Your preferred dress shape"
+        short: "Dress shape"
         hint: "fitted, flared, sleeves, neckline, etc."
       taille_veste_chemisier:
         label: "Your jacket or blouse size"
+        short: "Jacket/blouse size"
         hint: "e.g. 36 or 44"
       taille_soutien_gorge:
         label: "Your bra size"
+        short: "Bra size"
         hint: "e.g. 90D, 85B"
       tour_cou:
         label: "Your neck size in cm"
+        short: "Neck (cm)"
       coupe_chemise:
         label: "Your preferred shirt fit"
+        short: "Shirt fit"
       taille_veste:
         label: "Your jacket size"
+        short: "Jacket size"
         hint: "e.g. 48 or 52"
       taille_chemise:
         label: "Your shirt size"
+        short: "Shirt size"
         hint: "e.g. 37-38 or 45-46"
       tour_poitrine:
         label: "Your chest size in cm"
+        short: "Chest (cm)"
       tour_taille:
         label: "Your waist size in cm"
+        short: "Waist (cm)"
       tour_hanches:
         label: "Your hip size in cm"
+        short: "Hips (cm)"
       largeur_epaules:
         label: "Your shoulder width in cm"
+        short: "Shoulders (cm)"
       longueur_bras_ext:
         label: "Your outer arm length in cm"
+        short: "Arm length (cm)"
       longueur_jambe_ext:
         label: "Your outer leg length starting from the waist, in cm"
+        short: "Outer leg (cm)"
       longueur_jambe_int:
         label: "Your inner leg length starting from the crotch, in cm"
+        short: "Inner leg (cm)"
       taille_pantalon_marque:
         label: "Your trousers size (ready-to-wear) + brand"
+        short: "Trousers size + brand"
         hint: "e.g. 42, 56"
       tour_taille_ceinture:
         label: "Your waist size at your trousers' belt, in cm"
+        short: "Belt waist (cm)"
       tour_hanches_pantalon:
         label: "Your hip size at the widest part, in cm"
+        short: "Trousers hips (cm)"
       pointure:
         label: "Your shoe size"
+        short: "Shoe size"
         hint: "French, US or UK size"
     choices:
       coupe_chemise:

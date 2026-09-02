@@ -1,40 +1,90 @@
-<%# Détail d'une fiche mensurations (partagé : hub Dimensions + fiche client). %>
+<%# Détail d'une fiche mensurations (hub Dimensions + collapse client). %>
 <% invitation = mensuration.mensuration_invitation %>
-<%# Sur la fiche client, identité = déjà la carte client (créée / rattachée à la save). %>
 <% hide_identity = local_assigns.fetch(:hide_identity, false) %>
+<% show_delete = local_assigns.fetch(:show_delete, false) %>
+<% extra_meta = local_assigns.fetch(:extra_meta, []) %>
+<% photo_modal_id = "photoMensuration#{mensuration.id}" %>
+<% photo_url = mensuration.photo_pied.attached? ? photo_admin_mensuration_path(invitation) : nil %>
+<% filled_fields = mensuration.fields.select { |field| mensuration.value_for(field["key"]).present? } %>
+<% groups = filled_fields.group_by { |field| field["group"].presence || "vetements" } %>
 
-<div class="d-flex flex-wrap gap-2 align-items-start">
-  <div class="flex-grow-1">
-    <div class="d-flex flex-wrap gap-1">
-      <% unless hide_identity %>
-        <%= field_with_label("Prénom: ", mensuration.prenom) %>
-        <%= field_with_label("Nom: ", mensuration.nom) %>
-        <%= field_with_label("E-mail: ", invitation.email) %>
-        <%= field_with_label("Téléphone: ", mensuration.telephone) %>
-        <%= field_with_label("Adresse: ", [mensuration.adresse, mensuration.cp, mensuration.ville].compact_blank.join(", ")) %>
-      <% end %>
-      <%= field_with_label("Événement: ", mensuration.date_evenement && l(mensuration.date_evenement)) %>
-      <%= field_with_label("Reçue le ", l(mensuration.updated_at.to_date), icon_class: "bi-calendar-check") %>
+<div class="mensuration-admin-fiche">
+  <dl class="mensuration-admin-fiche__meta">
+    <% extra_meta.each do |label, value| %>
+      <%= mensuration_admin_meta_item(label, value) %>
+    <% end %>
+    <% unless hide_identity %>
+      <%= mensuration_admin_meta_item("Prénom", mensuration.prenom) %>
+      <%= mensuration_admin_meta_item("Nom", mensuration.nom) %>
+      <%= mensuration_admin_meta_item("E-mail", invitation.email) %>
+      <%= mensuration_admin_meta_item("Téléphone", mensuration.telephone) %>
+      <%= mensuration_admin_meta_item("Adresse", [mensuration.adresse, mensuration.cp, mensuration.ville].compact_blank.join(", ")) %>
+    <% end %>
+    <%= mensuration_admin_meta_item("Événement", mensuration.date_evenement && l(mensuration.date_evenement)) %>
+    <%= mensuration_admin_meta_item("Reçue le", l(mensuration.updated_at.to_date)) %>
+  </dl>
 
-      <% mensuration.fields.each do |field| %>
-        <% value = mensuration.value_for(field["key"]) %>
-        <% next if value.blank? %>
-        <% display = if field["input"] == "choice"
-             t("mensurations.choices.#{field['key']}.#{value}", locale: :fr, default: value)
-           else
-             value
-           end %>
-        <%= field_with_label("#{t("mensurations.fields.#{field['key']}.admin", locale: :fr)}: ", display) %>
+  <% if photo_url || groups.any? %>
+    <div class="mensuration-admin-fiche__body">
+      <% if photo_url %>
+        <div class="mensuration-admin-fiche__photo">
+          <button type="button"
+                  class="btn p-0 border-0 bg-transparent d-block"
+                  data-bs-toggle="modal"
+                  data-bs-target="#<%= photo_modal_id %>"
+                  title="Agrandir la photo"
+                  aria-label="Agrandir la photo">
+            <img src="<%= photo_url %>"
+                 alt="Photo en pied"
+                 class="img-thumbnail">
+          </button>
+          <button type="button"
+                  class="btn btn-sm btn-outline-secondary mensuration-admin-fiche__photo-btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#<%= photo_modal_id %>">
+            <i class="bi bi-zoom-in me-1" aria-hidden="true"></i>Agrandir
+          </button>
+        </div>
       <% end %>
+
+      <div class="mensuration-admin-fiche__groups">
+        <% groups.each do |group, fields| %>
+          <section>
+            <h3 class="mensuration-admin-fiche__group-title"><%= t("mensurations.groups.#{group}", locale: :fr) %></h3>
+            <div class="mensuration-admin-fiche__grid">
+              <% fields.each do |field| %>
+                <%= mensuration_measure_chip(field, mensuration.value_for(field["key"])) %>
+              <% end %>
+            </div>
+          </section>
+        <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
 
-  <% if mensuration.photo_pied.attached? %>
-    <div class="flex-shrink-0">
-      <%# Proxy admin : URL signée courte régénérée à chaque affichage, jamais d'URL publique. %>
-      <%= link_to photo_admin_mensuration_path(invitation), target: "_blank", rel: "noopener", data: { turbo: false } do %>
-        <img src="<%= photo_admin_mensuration_path(invitation) %>" alt="Photo en pied" class="img-thumbnail d-block" style="max-height: 320px;">
+  <% if show_delete %>
+    <div class="mensuration-admin-fiche__footer">
+      <%= button_to admin_mensuration_path(invitation), method: :delete,
+            class: "btn btn-sm btn-outline-danger",
+            form: { data: { turbo_confirm: "Supprimer les mensurations et la photo de #{mensuration.client&.full_name || mensuration.nom} ?" } } do %>
+        <i class="bi bi-trash me-1"></i>Supprimer les mensurations
       <% end %>
     </div>
   <% end %>
 </div>
+
+<% if photo_url %>
+  <div class="modal fade" id="<%= photo_modal_id %>" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header py-2">
+          <h2 class="modal-title h6 mb-0">Photo en pied</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body p-2 text-center">
+          <img src="<%= photo_url %>" alt="Photo en pied" class="img-fluid rounded" style="max-height: 80vh;" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

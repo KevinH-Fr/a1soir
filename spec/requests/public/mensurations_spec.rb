@@ -97,10 +97,18 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect(mensuration.value_for("tour_cou")).to be_nil
       expect(mensuration.client.mail).to eq("cliente@example.com")
       expect(invitation.reload.status).to eq("completed")
+
+      follow_redirect!
+      expect(response.body).to include("mensuration-flash--success")
+      expect(response.body).to include(I18n.t("mensurations.form.thanks_title", locale: :fr))
+      expect(response.body).to include(I18n.t("mensurations.form.show_answers", locale: :fr))
+      expect(response.body).to include("d-none")
+      expect(response.body).to include("mensuration-delete-link")
+      expect(response.body).not_to include("btn-outline-danger")
     end
 
-    it "rattache au client existant si mail + nom correspondent" do
-      existing = Client.create!(nom: "Durand", mail: "cliente@example.com", tel: "0400000000")
+    it "rattache au client existant si l'e-mail correspond" do
+      existing = Client.create!(nom: "Martin", mail: "cliente@example.com", tel: "0400000000")
 
       post "/fr/m/#{invitation.token}", params: {
         mensuration: { prenom: "Anna", nom: "Durand" },
@@ -109,6 +117,18 @@ RSpec.describe "Public::Mensurations", type: :request do
 
       expect(Mensuration.last.client).to eq(existing)
       expect(existing.reload.tel).to eq("0400000000")
+      expect(existing.nom).to eq("Martin")
+    end
+
+    it "n'accepte pas un nom ou un e-mail envoyés dans le POST" do
+      post "/fr/m/#{invitation.token}", params: {
+        mensuration: { prenom: "Anna", nom: "Martin", email: "autre@example.com" },
+        measurements: { hauteur: "168" }
+      }
+
+      mensuration = Mensuration.last
+      expect(mensuration.nom).to eq("Durand")
+      expect(mensuration.client.mail).to eq("cliente@example.com")
     end
 
     it "supprime la fiche à la demande du client" do
@@ -127,7 +147,7 @@ RSpec.describe "Public::Mensurations", type: :request do
 
   describe "locale anglaise" do
     let!(:invitation_en) do
-      MensurationInvitation.create!(email: "client@example.com", template: "homme", locale: "en")
+      MensurationInvitation.create!(email: "client@example.com", nom: "Test", template: "homme", locale: "en")
     end
 
     it "sert le formulaire homme en anglais" do

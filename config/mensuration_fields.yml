@@ -1,63 +1,112 @@
 # Champs de mesures par template — extraits des PDF papier (docs/formulaire mesures *.pdf).
 # key    : clé stable du JSON measurements + clé i18n (mensurations.fields.<key>)
 # required : * sur le papier
+# step   : volet du wizard après les coordonnées (i18n mensurations.form.<step>_title)
+#          femme : un volet "mesures" ; homme : "tailles" (étiquettes) puis "corps" (mètre)
+# group  : sous-section visuelle dans le volet (i18n mensurations.groups.<group>)
 # zone   : numéro d'illustration du formulaire papier (slot visuel 2D, remplaçable par la 3D)
 # input  : text par défaut ; "choice" = liste de valeurs (i18n mensurations.choices.<key>)
 femme:
   - key: hauteur
     required: true
-  - key: taille_robe_marque
-    required: false
+    step: mesures
+    group: silhouette
   - key: hauteur_talons
     required: false
+    step: mesures
+    group: silhouette
+  - key: taille_robe_marque
+    required: false
+    step: mesures
+    group: vetements
+  - key: taille_soutien_gorge
+    required: true
+    step: mesures
+    group: vetements
   - key: taille_pantalon_jupe_marque
     required: false
+    step: mesures
+    group: vetements
+  - key: taille_veste_chemisier
+    required: true
+    step: mesures
+    group: vetements
   - key: preference_forme_robe
     required: false
     input: textarea
-  - key: taille_veste_chemisier
-    required: true
-  - key: taille_soutien_gorge
-    required: true
+    step: mesures
+    group: preferences
 homme:
-  - key: hauteur
+  - key: taille_veste
     required: true
-    zone: 1
-  - key: tour_cou
+    step: tailles
+    group: vetements
+  - key: taille_chemise
     required: true
-    zone: 0
+    step: tailles
+    group: vetements
   - key: coupe_chemise
     required: false
     input: choice
     choices: [slim, classique]
-  - key: taille_veste
+    step: tailles
+    group: vetements
+  - key: taille_pantalon_marque
+    required: false
+    step: tailles
+    group: vetements
+  - key: pointure
+    required: false
+    step: tailles
+    group: vetements
+  - key: hauteur
     required: true
-  - key: taille_chemise
+    zone: 1
+    step: corps
+    group: silhouette
+  - key: tour_cou
     required: true
-  - key: tour_poitrine
-    required: true
-    zone: 2
-  - key: tour_taille
-    required: true
-    zone: 3
-  - key: tour_hanches
-    required: true
-    zone: 4
+    zone: 0
+    step: corps
+    group: silhouette
   - key: largeur_epaules
     required: true
     zone: 5
+    step: corps
+    group: silhouette
+  - key: tour_poitrine
+    required: true
+    zone: 2
+    step: corps
+    group: silhouette
+  - key: tour_taille
+    required: true
+    zone: 3
+    step: corps
+    group: silhouette
+  - key: tour_taille_ceinture
+    required: false
+    step: corps
+    group: silhouette
+  - key: tour_hanches
+    required: true
+    zone: 4
+    step: corps
+    group: silhouette
+  - key: tour_hanches_pantalon
+    required: false
+    step: corps
+    group: silhouette
   - key: longueur_bras_ext
     required: true
     zone: 7
+    step: corps
+    group: longueurs
   - key: longueur_jambe_ext
     required: false
+    step: corps
+    group: longueurs
   - key: longueur_jambe_int
     required: false
-  - key: taille_pantalon_marque
-    required: false
-  - key: tour_taille_ceinture
-    required: false
-  - key: tour_hanches_pantalon
-    required: false
-  - key: pointure
-    required: false
+    step: corps
+    group: longueurs

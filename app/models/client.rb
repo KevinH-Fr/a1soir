@@ -85,6 +85,15 @@ class Client < ApplicationRecord
     nil
   end
 
+  # Invitation mensurations : l'e-mail est déjà vérifié par OTP. Un écart de nom
+  # ne doit pas créer un doublon (contrairement à l'e-shop, mail + nom).
+  def self.find_existing_by_verified_email(email)
+    m = normalize_mail_for_lookup(email)
+    return nil if m.blank?
+
+    where(mail: m).or(where(mail2: m)).order(:id).first
+  end
+
   def self.find_existing_from_demande(demande)
     email = demande.respond_to?(:email) ? demande.email : demande.mail
     find_existing_for_public_contact(

@@ -1,0 +1,22 @@
+<%# locals: field, mensuration %>
+<% key = field["key"] %>
+<% hint = t("mensurations.fields.#{key}.hint", default: "") %>
+<% caption = "#{t("mensurations.fields.#{key}.short")}#{" *" if field["required"]}" %>
+<div class="<%= field["input"] == "textarea" ? "col-12" : "col-6" %>">
+  <% case field["input"] %>
+  <% when "choice" %>
+    <%= mensuration_labeled_select "measurements[#{key}]",
+          options_for_select(field["choices"].map { |c| [t("mensurations.choices.#{key}.#{c}"), c] }, mensuration.value_for(key)),
+          caption,
+          include_blank: true,
+          title: hint.presence || t("mensurations.fields.#{key}.label") %>
+  <% when "textarea" %>
+    <%= mensuration_labeled_field "measurements[#{key}]", mensuration.value_for(key), caption,
+          type: :textarea, title: hint.presence || t("mensurations.fields.#{key}.label") %>
+  <% else %>
+    <%= mensuration_labeled_field "measurements[#{key}]", mensuration.value_for(key), caption,
+          required: field["required"],
+          placeholder: hint.presence,
+          title: hint.presence || t("mensurations.fields.#{key}.label") %>
+  <% end %>
+</div>

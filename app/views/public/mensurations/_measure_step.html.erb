@@ -1,0 +1,16 @@
+<%# locals: step_key, fields, mensuration %>
+<div class="d-none" data-form-wizard-target="step">
+  <h2 class="h6 mb-2 text-light"><%= t("mensurations.form.#{step_key}_title") %></h2>
+  <% hint = t("mensurations.form.#{step_key}_hint", default: "") %>
+  <% if hint.present? %>
+    <p class="text-light opacity-75 small mb-3"><%= hint %></p>
+  <% end %>
+  <% fields.group_by { |field| field["group"].presence || "vetements" }.each_with_index do |(group, group_fields), index| %>
+    <p class="small text-uppercase text-light opacity-50 mb-2 <%= "mt-3" if index.positive? %>"><%= t("mensurations.groups.#{group}") %></p>
+    <div class="row g-2">
+      <% group_fields.each do |field| %>
+        <%= render "public/mensurations/measure_field", field: field, mensuration: mensuration %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
