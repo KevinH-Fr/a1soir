@@ -52,6 +52,28 @@ RSpec.describe Mensuration, type: :model do
       )
     end
 
+    it "n'associe une région SVG qu'aux mensurations au mètre" do
+      clips = %w[full neck chest waist waist_belt hips hips_pant shoulders arm leg_ext leg_int]
+      figured = %w[hauteur tour_cou largeur_epaules tour_poitrine tour_taille tour_taille_ceinture
+                   tour_hanches tour_hanches_pantalon longueur_bras_ext longueur_jambe_ext longueur_jambe_int]
+      skip = %w[hauteur_talons taille_robe_marque taille_soutien_gorge taille_pantalon_jupe_marque
+                taille_veste_chemisier preference_forme_robe taille_veste taille_chemise coupe_chemise
+                taille_pantalon_marque pointure]
+
+      described_class.all_fields.each do |_template, fields|
+        fields.each do |field|
+          key = field["key"]
+          if figured.include?(key)
+            expect(clips).to include(field["clip"]), key
+          elsif skip.include?(key)
+            expect(field["clip"]).to be_blank, key
+          else
+            raise "clip attendu ou exclu pour #{key}"
+          end
+        end
+      end
+    end
+
     it "a un libellé i18n fr et en pour chaque champ" do
       keys = described_class.all_fields.values.flatten.map { |f| f["key"] }.uniq
 

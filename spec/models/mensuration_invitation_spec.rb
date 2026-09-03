@@ -34,6 +34,11 @@ RSpec.describe MensurationInvitation, type: :model do
     it "refuse un template inconnu" do
       expect(build_invitation(template: "enfant")).not_to be_valid
     end
+
+    it "exige un template homme ou femme" do
+      expect(build_invitation(template: nil)).not_to be_valid
+      expect(build_invitation(template: "")).not_to be_valid
+    end
   end
 
   describe "OTP" do

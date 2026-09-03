@@ -126,8 +126,19 @@ module Public
 
     # ---- Params -------------------------------------------------------------
 
+    # Nom : saisi une seule fois. S'il est déjà sur l'invitation ou la fiche, on ignore le POST.
+    helper_method :mensuration_nom_locked?
+
+    def mensuration_nom_locked?
+      return true if @invitation.nom.present?
+
+      @mensuration.persisted? && @mensuration.nom.present?
+    end
+
     def identity_params
-      params.fetch(:mensuration, {}).permit(:prenom, :telephone, :adresse, :cp, :ville, :date_evenement)
+      permitted = [:prenom, :telephone, :adresse, :cp, :ville, :date_evenement]
+      permitted << :nom unless mensuration_nom_locked?
+      params.fetch(:mensuration, {}).permit(*permitted)
     end
 
     # Seules les clés du YAML du template ; les listes (choice) n'acceptent que les valeurs prévues.

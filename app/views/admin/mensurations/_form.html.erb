@@ -15,7 +15,10 @@
 
     <div class="input-group input-group-sm my-1 px-1">
       <%= form.label :template, "Formulaire", class: "input-group-text" %>
-      <%= form.select :template, options_for_select([["Femme", "femme"], ["Homme", "homme"]], mensuration_invitation.template), {}, class: "form-select" %>
+      <%= form.select :template,
+            options_for_select([["Femme", "femme"], ["Homme", "homme"]], mensuration_invitation.template),
+            { include_blank: true },
+            class: "form-select", required: true %>
       <%= form.label :locale, "Langue", class: "input-group-text" %>
       <%= form.select :locale, options_for_select([["Français", "fr"], ["Anglais", "en"]], mensuration_invitation.locale), {}, class: "form-select" %>
     </div>

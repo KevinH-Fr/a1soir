@@ -12,23 +12,30 @@ en:
       tailles_title: "Your clothing sizes"
       tailles_hint: "The sizes on your garment labels — no tape measure needed."
       corps_title: "Your measurements"
-      corps_hint: "Measure yourself without shoes, from top to bottom."
+      corps_hint: "Stand upright, without shoes, looking at the horizon."
       photo_title: "Full-length photo"
+      measure_placeholder: "cm"
       next: "Continue"
       prev: "Back"
       step: "Step %{current} of %{total}"
       photo_hint: "A full-length photo of you (head to toe) helps us advise you better."
+      photo_limits: "JPEG, PNG or WebP — %{max_mb} MB max. — between %{min_px} and %{max_px} px."
       submit: "Send my measurements"
       update: "Update my measurements"
       delete: "Delete this form"
       delete_confirm: "Permanently delete your measurements and photo?"
       saved: "Thank you! Your measurements have been saved."
-      thanks_title: "All set"
+      thanks_title: "Your measurements have been saved"
       thanks_body: "Your measurements have been sent. You can review or edit them if needed."
       show_answers: "View and edit my answers"
       hide_answers: "Hide my answers"
       deleted: "Your form has been deleted."
       already_completed: "Your form is saved. To edit or delete it, please verify your email again."
+    photo:
+      invalid_format: "Please use a JPEG, PNG or WebP image."
+      too_large: "The photo is too large (%{max_mb} MB maximum)."
+      too_big: "The image is too big (%{max_px} px maximum)."
+      too_small: "The image is too small (%{min_px} px minimum)."
     groups:
       silhouette: "Silhouette"
       longueurs: "Lengths"
@@ -65,6 +72,7 @@ en:
         label: "Your total height in cm, without shoes"
         short: "Height (cm)"
         hint: "e.g. 168 for 1.68 m"
+        advice: "Stand upright, without shoes, looking at the horizon."
       taille_robe_marque:
         label: "Your dress size (ready-to-wear) + brand"
         short: "Dress size + brand"
@@ -121,9 +129,11 @@ en:
       longueur_jambe_ext:
         label: "Your outer leg length starting from the waist, in cm"
         short: "Outer leg (cm)"
+        advice: "Measure starting from the waistband."
       longueur_jambe_int:
         label: "Your inner leg length starting from the crotch, in cm"
         short: "Inner leg (cm)"
+        advice: "Measure starting from the crotch."
       taille_pantalon_marque:
         label: "Your trousers size (ready-to-wear) + brand"
         short: "Trousers size + brand"
@@ -131,9 +141,11 @@ en:
       tour_taille_ceinture:
         label: "Your waist size at your trousers' belt, in cm"
         short: "Belt waist (cm)"
+        advice: "Measure at your trouser waistband."
       tour_hanches_pantalon:
         label: "Your hip size at the widest part, in cm"
         short: "Trousers hips (cm)"
+        advice: "Measure at the widest part."
       pointure:
         label: "Your shoe size"
         short: "Shoe size"

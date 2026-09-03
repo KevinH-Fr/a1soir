@@ -1,12 +1,15 @@
 # Champ + petit libellé au-dessus (toujours visible une fois saisi).
 module MensurationsHelper
   CONTROL = "form-control form-control-sm bg-dark text-light border-secondary"
+  GROUP_CONTROL = "form-control form-control-sm text-light border-secondary"
   SELECT = "form-select form-select-sm bg-dark text-light border-secondary"
+  GROUP_SELECT = "form-select form-select-sm text-light border-secondary"
   LABEL = "form-label small text-light opacity-75 mb-1"
+  GROUP_LABEL = "input-group-text"
 
-  def mensuration_labeled_field(name, value, label, type: :text, **opts)
+  def mensuration_labeled_field(name, value, label, type: :text, layout: :group, **opts)
     id = opts.delete(:id).presence || (name.present? ? sanitize_to_id(name) : nil)
-    classes = [CONTROL, opts.delete(:class)].compact.join(" ")
+    classes = [(layout == :group ? GROUP_CONTROL : CONTROL), opts.delete(:class)].compact.join(" ")
     field_opts = opts.merge(id: id, class: classes)
 
     field = case type
@@ -16,16 +19,21 @@ module MensurationsHelper
             else text_field_tag(name, value, field_opts)
             end
 
+    return grouped_control(id, label, field) if layout == :group
+
     safe_join([label_tag(id, label, class: LABEL), field])
   end
 
-  def mensuration_labeled_select(name, option_tags, label, **opts)
+  def mensuration_labeled_select(name, option_tags, label, layout: :group, **opts)
     id = opts.delete(:id).presence || sanitize_to_id(name)
-    classes = [SELECT, opts.delete(:class)].compact.join(" ")
+    classes = [(layout == :group ? GROUP_SELECT : SELECT), opts.delete(:class)].compact.join(" ")
+
+    field = select_tag(name, option_tags, opts.merge(id: id, class: classes))
+    return grouped_control(id, label, field) if layout == :group
 
     safe_join([
       label_tag(id, label, class: LABEL),
-      select_tag(name, option_tags, opts.merge(id: id, class: classes))
+      field
     ])
   end
 
@@ -59,6 +67,14 @@ module MensurationsHelper
         content_tag(:dt, label),
         content_tag(:dd, value)
       ])
+    end
+  end
+
+  private
+
+  def grouped_control(id, label, field)
+    content_tag(:div, class: "input-group input-group-sm") do
+      safe_join([label_tag(id, label, class: GROUP_LABEL), field])
     end
   end
 end

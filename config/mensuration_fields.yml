@@ -4,11 +4,13 @@
 # step   : volet du wizard après les coordonnées (i18n mensurations.form.<step>_title)
 #          femme : un volet "mesures" ; homme : "tailles" (étiquettes) puis "corps" (mètre)
 # group  : sous-section visuelle dans le volet (i18n mensurations.groups.<group>)
-# zone   : numéro d'illustration du formulaire papier (slot visuel 2D, remplaçable par la 3D)
+# zone   : numéro d'illustration du formulaire papier
+# clip   : région SVG si la mesure se lit sur le mannequin (tours, longueurs, stature)
 # input  : text par défaut ; "choice" = liste de valeurs (i18n mensurations.choices.<key>)
 femme:
   - key: hauteur
     required: true
+    clip: full
     step: mesures
     group: silhouette
   - key: hauteur_talons
@@ -62,51 +64,62 @@ homme:
   - key: hauteur
     required: true
     zone: 1
+    clip: full
     step: corps
     group: silhouette
   - key: tour_cou
     required: true
     zone: 0
+    clip: neck
     step: corps
     group: silhouette
   - key: largeur_epaules
     required: true
     zone: 5
+    clip: shoulders
     step: corps
     group: silhouette
   - key: tour_poitrine
     required: true
     zone: 2
+    clip: chest
     step: corps
     group: silhouette
   - key: tour_taille
     required: true
     zone: 3
+    clip: waist
     step: corps
     group: silhouette
   - key: tour_taille_ceinture
     required: false
+    clip: waist_belt
     step: corps
     group: silhouette
   - key: tour_hanches
     required: true
     zone: 4
+    clip: hips
     step: corps
     group: silhouette
   - key: tour_hanches_pantalon
     required: false
+    clip: hips_pant
     step: corps
     group: silhouette
   - key: longueur_bras_ext
     required: true
     zone: 7
+    clip: arm
     step: corps
     group: longueurs
   - key: longueur_jambe_ext
     required: false
+    clip: leg_ext
     step: corps
     group: longueurs
   - key: longueur_jambe_int
     required: false
+    clip: leg_int
     step: corps
     group: longueurs

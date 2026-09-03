@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_09_02_001100) do
+ActiveRecord::Schema[7.2].define(version: 2026_09_03_130000) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -305,7 +305,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_02_001100) do
     t.string "email", null: false
     t.string "token", null: false
     t.datetime "expires_at", null: false
-    t.string "template", default: "femme", null: false
+    t.string "template", null: false
     t.string "locale", default: "fr", null: false
     t.string "prenom"
     t.string "nom"

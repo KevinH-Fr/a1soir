@@ -1,15 +1,40 @@
-<%# locals: step_key, fields, mensuration %>
+<%# locals: step_key, fields, mensuration, guided %>
+<% figured = fields.select { |field| field["clip"].present? } %>
+<% plain = fields.reject { |field| field["clip"].present? } %>
+<% hint = t("mensurations.form.#{step_key}_hint", default: "") %>
 <div class="d-none" data-form-wizard-target="step">
   <h2 class="h6 mb-2 text-light"><%= t("mensurations.form.#{step_key}_title") %></h2>
-  <% hint = t("mensurations.form.#{step_key}_hint", default: "") %>
-  <% if hint.present? %>
-    <p class="text-light opacity-75 small mb-3"><%= hint %></p>
+  <% if hint.present? && !(guided && figured.any?) %>
+    <%= render "public/mensurations/advice", text: hint, extra_class: "mb-3" %>
   <% end %>
-  <% fields.group_by { |field| field["group"].presence || "vetements" }.each_with_index do |(group, group_fields), index| %>
-    <p class="small text-uppercase text-light opacity-50 mb-2 <%= "mt-3" if index.positive? %>"><%= t("mensurations.groups.#{group}") %></p>
+
+      <% if guided && figured.any? %>
+    <div class="mensuration-guide" data-controller="measure-guide">
+      <div class="mensuration-guide__figure" data-measure-guide-target="figure">
+        <%= render "public/mensurations/figure_svg" %>
+      </div>
+      <div class="mensuration-guide__fields">
+        <% figured.each do |field| %>
+          <%= render "public/mensurations/measure_field",
+                field: field, mensuration: mensuration, guided: true %>
+        <% end %>
+        <% if plain.any? %>
+          <div class="mensuration-guide__field" data-measure-guide-target="field">
+            <div class="row g-2">
+              <% plain.each do |field| %>
+                <%= render "public/mensurations/measure_field",
+                      field: field, mensuration: mensuration, guided: false %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
     <div class="row g-2">
-      <% group_fields.each do |field| %>
-        <%= render "public/mensurations/measure_field", field: field, mensuration: mensuration %>
+      <% fields.each do |field| %>
+        <%= render "public/mensurations/measure_field",
+              field: field, mensuration: mensuration, guided: false %>
       <% end %>
     </div>
   <% end %>

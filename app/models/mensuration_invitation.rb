@@ -20,7 +20,7 @@ class MensurationInvitation < ApplicationRecord
   OTP_RESEND_INTERVAL = 60.seconds
 
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :template, inclusion: { in: TEMPLATES }
+  validates :template, presence: true, inclusion: { in: TEMPLATES }
   validates :locale, inclusion: { in: %w[fr en] }
   validates :status, inclusion: { in: STATUSES }
 

@@ -70,7 +70,7 @@ Sources : `docs/formulaire mesures femme.pdf`, `docs/formulaire mesures homme.pd
 - tour_hanches_pantalon
 - pointure (FR / US / UK)
 
-YAML : templates `femme` / `homme`, clés ci-dessus. Illustrations = numéros du papier. i18n fr/en. Slot visuel 2D (3D plus tard).
+YAML : templates `femme` / `homme`, clés ci-dessus. Illustrations = numéros du papier. i18n fr/en. Slot visuel 2D.
 
 Photo en pied : **en plus** des PDF (demande métier).
 
@@ -91,6 +91,12 @@ Même stockage qu’un produit (ActiveStorage → Cloudinary). **Pas** le helper
 - Formulaire : fichier + aperçu **local**. Le client ne relit pas la photo stockée.
 - Admin : `GET /admin/mensurations/:id/photo` (session staff) → URL Cloudinary **authenticated signée**, courte. Recharger la fiche = nouveau lien. L’admin n’expire pas.
 
+## Visuel guidé
+
+Silhouette SVG (`public/images/human_body.svg`) + règle qui se déplie sur la zone du champ (`clip` YAML).
+
+Même mapping `clip` : `full`, `neck`, `shoulders`, `chest`, `waist`, `hips`, `arm`, `leg` (`torso` / `feet` si un champ les utilise). **Pas** de mannequin sur les tailles vêtement, pointure, talons, préférence.
+
 ## Hors v1
 
-- Animation 3D (garder le slot par zone)
+- Deux silhouettes distinctes homme / femme (un seul dessin pour l’instant)

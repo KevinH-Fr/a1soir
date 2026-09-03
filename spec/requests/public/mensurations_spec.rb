@@ -62,6 +62,10 @@ RSpec.describe "Public::Mensurations", type: :request do
 
       get "/fr/m/#{invitation.token}"
       expect(response.body).to include(I18n.t("mensurations.form.title_femme", locale: :fr))
+      expect(response.body).to include("measure-guide")
+      expect(response.body).to include("/images/human_body.svg")
+      expect(response.body).to include('data-clip="full"')
+      expect(response.body).not_to include('data-clip="chest"')
     end
 
     it "refuse un mauvais code" do
@@ -105,6 +109,7 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect(response.body).to include("d-none")
       expect(response.body).to include("mensuration-delete-link")
       expect(response.body).not_to include("btn-outline-danger")
+      expect(response.body).to include("measure-guide")
     end
 
     it "rattache au client existant si l'e-mail correspond" do
@@ -120,7 +125,7 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect(existing.nom).to eq("Martin")
     end
 
-    it "n'accepte pas un nom ou un e-mail envoyés dans le POST" do
+    it "n'accepte pas un nom déjà connu ni un e-mail envoyés dans le POST" do
       post "/fr/m/#{invitation.token}", params: {
         mensuration: { prenom: "Anna", nom: "Martin", email: "autre@example.com" },
         measurements: { hauteur: "168" }
@@ -129,6 +134,22 @@ RSpec.describe "Public::Mensurations", type: :request do
       mensuration = Mensuration.last
       expect(mensuration.nom).to eq("Durand")
       expect(mensuration.client.mail).to eq("cliente@example.com")
+    end
+
+    it "accepte le nom s'il n'était pas encore renseigné, puis le verrouille" do
+      invitation.update!(nom: nil)
+
+      post "/fr/m/#{invitation.token}", params: {
+        mensuration: { prenom: "Anna", nom: "Durand" },
+        measurements: { hauteur: "168" }
+      }
+      expect(Mensuration.last.nom).to eq("Durand")
+
+      post "/fr/m/#{invitation.token}", params: {
+        mensuration: { prenom: "Anna", nom: "Martin" },
+        measurements: { hauteur: "168" }
+      }
+      expect(Mensuration.last.reload.nom).to eq("Durand")
     end
 
     it "supprime la fiche à la demande du client" do
@@ -157,6 +178,8 @@ RSpec.describe "Public::Mensurations", type: :request do
       get "/en/m/#{invitation_en.token}"
       expect(response.body).to include(I18n.t("mensurations.form.title_homme", locale: :en))
       expect(response.body).to include(I18n.t("mensurations.fields.tour_cou.label", locale: :en))
+      expect(response.body).to include("/images/human_body.svg")
+      expect(response.body).to include('data-clip="neck"')
     end
   end
 end

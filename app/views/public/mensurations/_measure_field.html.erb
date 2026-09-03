@@ -1,8 +1,13 @@
-<%# locals: field, mensuration %>
+<%# locals: field, mensuration, guided %>
 <% key = field["key"] %>
 <% hint = t("mensurations.fields.#{key}.hint", default: "") %>
+<% advice = t("mensurations.fields.#{key}.advice", default: "") %>
 <% caption = "#{t("mensurations.fields.#{key}.short")}#{" *" if field["required"]}" %>
-<div class="<%= field["input"] == "textarea" ? "col-12" : "col-6" %>">
+<div class="<%= guided ? "mensuration-guide__field" : (field["input"] == "textarea" ? "col-12" : "col-6") %>"
+     <% if guided %>
+       data-measure-guide-target="field"
+       <% if field["clip"].present? %>data-clip="<%= field["clip"] %>"<% end %>
+     <% end %>>
   <% case field["input"] %>
   <% when "choice" %>
     <%= mensuration_labeled_select "measurements[#{key}]",
@@ -16,7 +21,11 @@
   <% else %>
     <%= mensuration_labeled_field "measurements[#{key}]", mensuration.value_for(key), caption,
           required: field["required"],
-          placeholder: hint.presence,
-          title: hint.presence || t("mensurations.fields.#{key}.label") %>
+          placeholder: (guided && field["clip"].present? ? t("mensurations.form.measure_placeholder") : hint.presence),
+          title: hint.presence || t("mensurations.fields.#{key}.label"),
+          layout: :group %>
+  <% end %>
+  <% if guided && advice.present? %>
+    <%= render "public/mensurations/advice", text: advice, extra_class: "mensuration-guide__field-advice" %>
   <% end %>
 </div>

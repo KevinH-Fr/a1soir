@@ -2481,13 +2481,35 @@ section {
 }
 
 .mensuration-flash--success {
-  border: 1px solid rgba(40, 167, 69, 0.85);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.mensuration-flash--saved {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.65rem;
+  flex: 0 0 auto;
+  min-height: auto;
+  overflow: visible;
+}
+
+.mensuration-flash--saved p {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
 .mensuration-saved-icon {
   font-size: 1.25rem;
   color: #2fbf6b;
   line-height: 1.4;
+}
+
+.mensuration-flash--saved .mensuration-saved-icon {
+  font-size: 1.05rem;
+  line-height: 1;
 }
 
 .mensuration-delete-link {
@@ -2501,6 +2523,11 @@ section {
   line-height: 1.4;
   cursor: pointer;
   text-decoration: none;
+}
+
+.mensuration-form__delete {
+  margin: 0.55rem 0 0 auto;
+  text-align: right;
 }
 
 .mensuration-delete-link:hover {
@@ -2621,6 +2648,438 @@ section {
 @media (max-width: 575.98px) {
   .mensuration-admin-fiche__body {
     grid-template-columns: 1fr;
+  }
+}
+
+.mensuration-shell {
+  max-width: 1040px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.mensuration-layout header {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+.mensuration-layout .navbar-logo {
+  height: 22px;
+}
+
+@media (min-width: 768px) {
+  .mensuration-layout .navbar-logo {
+    height: 26px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .mensuration-layout .navbar-logo {
+    height: 28px;
+  }
+}
+
+.mensuration-layout .public-site-footer {
+  padding-top: 0.65rem !important;
+  padding-bottom: 0.65rem !important;
+}
+
+.mensuration-shell:has(.mensuration-otp) {
+  justify-content: center;
+  align-items: center;
+}
+
+.mensuration-shell:has(.mensuration-otp) .mensuration-flash {
+  width: 100%;
+  max-width: 28rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.mensuration-otp {
+  width: 100%;
+  max-width: 28rem;
+  flex: 0 0 auto;
+  padding: 2rem 1.75rem 1.75rem;
+  text-align: center;
+}
+
+.mensuration-otp__hint {
+  max-width: 24rem;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+.mensuration-otp__actions {
+  max-width: 22rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mensuration-otp .form-control {
+  min-height: 2.75rem;
+  font-size: 1.15rem;
+}
+
+.mensuration-flow {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.mensuration-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.mensuration-form form {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.mensuration-form__stage {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.mensuration-form__stage > [data-form-wizard-target="step"]:not(.d-none) {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.mensuration-form .row {
+  --bs-gutter-x: 0.5rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.mensuration-form .form-control,
+.mensuration-form .form-select {
+  max-width: 100%;
+}
+
+.mensuration-form__nav {
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  margin-top: 0.6rem !important;
+}
+
+.concept-card.mensuration-form > h1 {
+  margin-bottom: 0.35rem !important;
+}
+
+.concept-card.mensuration-form > p.small {
+  margin-bottom: 0.65rem !important;
+}
+
+.concept-card.mensuration-form .mensuration-form__progress {
+  margin-top: 0.55rem;
+  margin-bottom: 1rem;
+}
+
+.mensuration-form__identity-row {
+  margin-bottom: 0.7rem;
+}
+
+.mensuration-shell--guided [data-form-wizard-target="step"]:not(.d-none) > h2,
+.mensuration-shell--guided [data-form-wizard-target="step"]:not(.d-none) > p {
+  display: none;
+}
+
+.mensuration-form__stage .mensuration-guide:not(.mensuration-guide--plain) {
+  flex: 1 1 auto;
+  justify-content: flex-start;
+  min-height: 0;
+}
+
+.mensuration-guide {
+  --guide-col: min(26rem, 68vh);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.mensuration-guide--plain {
+  align-items: stretch;
+  gap: 0.55rem;
+}
+
+.mensuration-guide__field-advice {
+  width: 100%;
+  max-width: var(--guide-col);
+  margin-top: 0.35rem;
+}
+
+.mensuration-form__advice {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  font-weight: 500;
+}
+
+.mensuration-form__advice-icon {
+  flex-shrink: 0;
+  margin-top: 0.12rem;
+  font-size: 0.85rem;
+  opacity: 0.65;
+}
+
+.mensuration-guide__figure {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 10rem;
+  width: 100%;
+  max-width: var(--guide-col);
+  background: #efebe3;
+  border-radius: 4px;
+  padding: 0.45rem 0.6rem;
+}
+
+.mensuration-guide__fields {
+  flex-shrink: 0;
+  width: min(100%, var(--guide-col));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.mensuration-guide--plain .mensuration-guide__fields {
+  width: 100%;
+  align-items: stretch;
+}
+
+.mensuration-guide__field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 0.22rem;
+}
+
+.mensuration-guide__field .form-label {
+  margin-bottom: 0;
+  line-height: 1.25;
+}
+
+.mensuration-guide__field .input-group {
+  width: 100%;
+}
+
+.mensuration-form .input-group .form-control,
+.mensuration-form .input-group .form-select {
+  background-color: #3d3d3d !important;
+  border-left-color: rgba(255, 255, 255, 0.22);
+}
+
+.mensuration-form .input-group .form-control:focus,
+.mensuration-form .input-group .form-select:focus {
+  background-color: #454545 !important;
+  border-color: #8d8d8d;
+  box-shadow: none;
+}
+
+.mensuration-form .input-group .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.mensuration-guide__field[data-clip] .input-group .form-control {
+  text-align: center;
+}
+
+.mensuration-guide__field[data-clip] .input-group-text {
+  color: #fff;
+  font-weight: 600;
+}
+
+.mensuration-form .input-group-text {
+  background: #1c1c1c;
+  border-color: var(--bs-secondary);
+  color: rgba(255, 255, 255, 0.62);
+  padding: 0.25rem 0.55rem;
+  font-size: 0.75rem;
+  white-space: normal;
+  line-height: 1.2;
+  max-width: 46%;
+  text-align: left;
+}
+
+.mensuration-form .input-group:has(textarea) .input-group-text {
+  align-items: flex-start;
+  padding-top: 0.45rem;
+}
+
+.mensuration-figure {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.mensuration-figure-stack {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  height: auto;
+}
+
+.mensuration-figure-body,
+.mensuration-figure--overlay {
+  position: absolute;
+  top: 4%;
+  left: 6%;
+  width: 88%;
+  height: 92%;
+  object-fit: contain;
+}
+
+.mensuration-figure--overlay {
+  pointer-events: none;
+  overflow: visible;
+}
+
+.measure-ruler {
+  opacity: 0;
+}
+
+.measure-ruler.is-on {
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.measure-ruler__band {
+  fill: #c4a35a;
+  fill-opacity: 0.28;
+  stroke: none;
+}
+
+.measure-ruler.is-live .measure-ruler__band {
+  animation: mensuration-ruler-breathe 2.8s ease-in-out infinite;
+}
+
+.measure-ruler__spine {
+  fill: none;
+  stroke: #a17c32;
+  stroke-width: 1.15;
+  stroke-linecap: round;
+}
+
+.measure-ruler__marks,
+.measure-ruler__badge,
+.measure-ruler__label {
+  opacity: 0;
+}
+
+.measure-ruler.is-marked .measure-ruler__marks,
+.measure-ruler.is-marked .measure-ruler__badge,
+.measure-ruler.is-marked .measure-ruler__label {
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.measure-ruler__cap {
+  fill: none;
+  stroke: #8a6928;
+  stroke-width: 1.35;
+  stroke-linecap: round;
+}
+
+.measure-ruler__knob {
+  fill: #f7f1e4;
+  stroke: #8a6928;
+  stroke-width: 1.05;
+}
+
+.measure-ruler.is-live .measure-ruler__knob {
+  animation: mensuration-ruler-knob 2.8s ease-in-out infinite;
+}
+
+.measure-ruler__badge {
+  fill: #e8c96a;
+  stroke: #b08a3e;
+  stroke-width: 0.6;
+}
+
+.measure-ruler.is-live .measure-ruler__badge {
+  animation: mensuration-ruler-badge 2.8s ease-in-out infinite;
+}
+
+.measure-ruler__label {
+  fill: #3d3014;
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+}
+
+@keyframes mensuration-ruler-breathe {
+  0%, 100% { fill-opacity: 0.18; }
+  50% { fill-opacity: 0.42; }
+}
+
+@keyframes mensuration-ruler-knob {
+  0%, 100% { stroke: #8a6928; }
+  50% { stroke: #d4af60; }
+}
+
+@keyframes mensuration-ruler-badge {
+  0%, 100% { fill: #e8c96a; }
+  50% { fill: #f3dc86; }
+}
+
+@media (min-width: 768px) {
+  .mensuration-guide:not(.mensuration-guide--plain) {
+    --guide-col: min(26rem, 62vh);
+    gap: 0.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mensuration-shell {
+    transition: none;
+  }
+
+  .measure-ruler__clip,
+  .measure-ruler__band {
+    transition: none;
+  }
+
+  .measure-ruler.is-marked .measure-ruler__marks,
+  .measure-ruler.is-marked .measure-ruler__badge,
+  .measure-ruler.is-marked .measure-ruler__label {
+    transition: none;
+    opacity: 1;
+  }
+
+  .measure-ruler.is-live .measure-ruler__band,
+  .measure-ruler.is-live .measure-ruler__knob,
+  .measure-ruler.is-live .measure-ruler__badge {
+    animation: none;
   }
 }
 
@@ -3369,6 +3828,16 @@ body:has(#floating_reservation_btn.public-floating-bar) .scroll-to-top-btn {
 /* Concept Card Specific Styles */
 .concept-card {
   padding: 2rem;
+}
+
+.concept-card.mensuration-form,
+.concept-card.mensuration-saved-banner {
+  padding: 0.8rem 0.9rem 0.75rem;
+}
+
+.concept-card.mensuration-saved-banner {
+  flex: 0 0 auto;
+  align-self: stretch;
 }
 
 .concept-card-icon {

@@ -12,7 +12,10 @@ class Mensuration < ApplicationRecord
   validates :prenom, presence: true
   validate :photo_pied_must_be_image
 
-  MAX_PHOTO_BYTES = 15.megabytes
+  PHOTO_CONTENT_TYPES = %w[image/jpeg image/jpg image/png image/webp].freeze
+  MAX_PHOTO_BYTES = 8.megabytes
+  MAX_PHOTO_EDGE = 4000
+  MIN_PHOTO_EDGE = 400
 
   # Jeux de champs par template (femme/homme n'ont pas les mêmes mesures — cf. PDF papier).
   def self.fields_for(template)
@@ -59,11 +62,30 @@ class Mensuration < ApplicationRecord
   def photo_pied_must_be_image
     return unless photo_pied.attached?
 
-    unless photo_pied.content_type.to_s.start_with?("image/")
-      errors.add(:photo_pied, :invalid)
+    unless PHOTO_CONTENT_TYPES.include?(photo_pied.content_type.to_s)
+      errors.add(:photo_pied, I18n.t("mensurations.photo.invalid_format"))
+      return
     end
     if photo_pied.byte_size > MAX_PHOTO_BYTES
-      errors.add(:photo_pied, :too_large)
+      errors.add(:photo_pied, I18n.t("mensurations.photo.too_large", max_mb: MAX_PHOTO_BYTES / 1.megabyte))
+      return
     end
+
+    width, height = photo_dimensions
+    return if width.zero? || height.zero?
+
+    if [width, height].max > MAX_PHOTO_EDGE
+      errors.add(:photo_pied, I18n.t("mensurations.photo.too_big", max_px: MAX_PHOTO_EDGE))
+    elsif [width, height].min < MIN_PHOTO_EDGE
+      errors.add(:photo_pied, I18n.t("mensurations.photo.too_small", min_px: MIN_PHOTO_EDGE))
+    end
+  end
+
+  def photo_dimensions
+    blob = photo_pied.blob
+    blob.analyze unless blob.analyzed?
+    [blob.metadata["width"].to_i, blob.metadata["height"].to_i]
+  rescue StandardError
+    [0, 0]
   end
 end

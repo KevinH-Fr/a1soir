@@ -4,7 +4,7 @@
 <%= admin_collapse_nouveau collapse_id: "collapseNew",
       target_id: "new",
       inner_partial: "admin/mensurations/form",
-      mensuration_invitation: MensurationInvitation.new,
+      mensuration_invitation: MensurationInvitation.new(template: nil),
       index_collapse: true %>
 
 <div id="mensuration_invitations" class="<%= admin_list_stack_classes %>">
