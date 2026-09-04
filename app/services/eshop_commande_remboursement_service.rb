@@ -3,7 +3,16 @@
 # Annule une commande e-shop côté app : devis (stock), AvoirRemb remboursement.
 # Le remboursement bancaire reste manuel dans le Dashboard Stripe.
 class EshopCommandeRemboursementService
-  Result = Struct.new(:success, :error_key, :already_done, keyword_init: true) do
+  Result = Struct.new(
+    :success,
+    :error_key,
+    :already_done,
+    :montant,
+    :item_ids,
+    :include_shipping,
+    :full_refund,
+    keyword_init: true
+  ) do
     def success?
       success
     end
@@ -51,12 +60,14 @@ class EshopCommandeRemboursementService
     items = stripe_items.not_refunded.where(id: ids).to_a
     return failure(:no_items) if items.empty? && !include_shipping
 
+    shipping_euros = include_shipping ? shipping_left_euros : 0.to_d
     montant = items.sum { |item| line_amount_raw(item) }
-    montant += shipping_left_euros if include_shipping
+    montant += shipping_euros
     montant = [montant, remaining_euros].min
 
     return failure(:zero_amount) if montant <= 0 && @commande.avoir_rembs.remb_only.none?
 
+    full_refund = false
     ActiveRecord::Base.transaction do
       now = Time.current
       items.each do |item|
@@ -64,10 +75,18 @@ class EshopCommandeRemboursementService
         destroy_articles_for(item)
       end
       create_avoir!(montant) if montant.positive?
-      @commande.update!(devis: true) if stripe_items.not_refunded.reload.none?
+      full_refund = stripe_items.not_refunded.reload.none?
+      @commande.update!(devis: true) if full_refund
     end
 
-    Result.new(success: true, already_done: false)
+    Result.new(
+      success: true,
+      already_done: false,
+      montant: montant,
+      item_ids: items.map(&:id),
+      include_shipping: include_shipping && shipping_euros.positive?,
+      full_refund: full_refund
+    )
   end
 
   def destroy_articles_for(item)

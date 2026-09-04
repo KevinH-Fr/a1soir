@@ -1,6 +1,6 @@
 <p><%= I18n.t("stripe_payment_mailer.remboursement.body.greeting") %></p>
 
-<p><%= I18n.t("stripe_payment_mailer.remboursement.body.intro") %></p>
+<p><%= I18n.t(@full_refund ? "stripe_payment_mailer.remboursement.body.intro" : "stripe_payment_mailer.remboursement.body.intro_partial") %></p>
 
 <% if @payment.present? %>
   <table style="margin: 16px 0; border-collapse: collapse; font-size: 13px; color: #555;">
@@ -35,6 +35,11 @@
         — <%= I18n.t("stripe_payment_mailer.confirmation.body.quantity", n: item.quantity || 1) %>
       </p>
     <% end %>
+  <% end %>
+  <% if @include_shipping %>
+    <p style="margin: 8px 0; font-size: 14px;">
+      <%= I18n.t("stripe_payment_mailer.confirmation.body.shipping_label") %>
+    </p>
   <% end %>
 </div>
 

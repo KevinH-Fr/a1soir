@@ -74,15 +74,59 @@ RSpec.describe Admin::CommandesController, type: :controller do
     it "marks commande as remboursee, sends email and redirects" do
       post :rembourser_eshop, params: {
         id: eshop_commande.id,
-        stripe_payment_item_ids: [stripe_item.id]
+        stripe_payment_item_ids: [stripe_item.id],
+        notify_client: "1"
       }
 
       expect(response).to redirect_to(admin_commande_url(eshop_commande, host: "admin.lvh.me"))
       expect(eshop_commande.reload.remboursee_eshop?).to be(true)
-      expect(StripePaymentMailer).to have_received(:remboursement).with(an_instance_of(Commande))
+      expect(StripePaymentMailer).to have_received(:remboursement).with(
+        an_instance_of(Commande),
+        montant: 50.to_d,
+        stripe_payment_item_ids: [stripe_item.id],
+        include_shipping: false,
+        full_refund: true
+      )
       expect(mail_delivery).to have_received(:deliver_later)
       expect(flash[:admin_toasts]).to include(
         a_hash_including("message" => I18n.t("admin.toasts.commande.remboursee_ok"))
+      )
+    end
+
+    it "does not send email when notify_client is 0" do
+      post :rembourser_eshop, params: {
+        id: eshop_commande.id,
+        stripe_payment_item_ids: [stripe_item.id],
+        notify_client: "0"
+      }
+
+      expect(eshop_commande.reload.remboursee_eshop?).to be(true)
+      expect(StripePaymentMailer).not_to have_received(:remboursement)
+    end
+
+    it "sends email on a partial refund" do
+      produit_b = Produit.create!(nom: "Ctrl remb B", prixvente: 20, quantite: 2)
+      StripePaymentItem.create!(
+        stripe_payment: stripe_item.stripe_payment,
+        produit: produit_b,
+        quantity: 1,
+        unit_amount: 2000
+      )
+      stripe_item.stripe_payment.update!(amount: 7000)
+
+      post :rembourser_eshop, params: {
+        id: eshop_commande.id,
+        stripe_payment_item_ids: [stripe_item.id],
+        notify_client: "1"
+      }
+
+      expect(eshop_commande.reload.remboursee_eshop?).to be(false)
+      expect(StripePaymentMailer).to have_received(:remboursement).with(
+        an_instance_of(Commande),
+        montant: 50.to_d,
+        stripe_payment_item_ids: [stripe_item.id],
+        include_shipping: false,
+        full_refund: false
       )
     end
 

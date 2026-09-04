@@ -67,6 +67,9 @@ RSpec.describe EshopCommandeRemboursementService do
       commande.reload
       expect(commande.devis?).to be(true)
       expect(commande.remboursee_eshop?).to be(true)
+      expect(result.montant).to eq(65.0)
+      expect(result.full_refund).to be(true)
+      expect(result.item_ids).to eq([stripe_item.id])
 
       remb = commande.avoir_rembs.remb_only.sole
       expect(remb.montant).to eq(65.0)
@@ -150,6 +153,8 @@ RSpec.describe EshopCommandeRemboursementService do
       expect(commande.devis?).to be(false)
       expect(commande.remboursee_eshop?).to be(false)
       expect(commande.avoir_rembs.remb_only.sole.montant).to eq(60.0)
+      expect(result.montant).to eq(60.0)
+      expect(result.full_refund).to be(false)
 
       expect(produit.total_vendus_eshop).to eq(0)
       expect(produit_b.total_vendus_eshop).to eq(1)
@@ -180,6 +185,9 @@ RSpec.describe EshopCommandeRemboursementService do
       expect(commande.reload.devis?).to be(false)
       expect(commande.avoir_rembs.remb_only.count).to eq(1)
       expect(commande.avoir_rembs.remb_only.sole.montant).to eq(60.0)
+      expect(result.montant).to eq(60.0)
+      expect(result.full_refund).to be(false)
+      expect(result.item_ids).to eq([stripe_item.id])
     end
 
     it "creates one refund line including shipping when every remaining product is selected" do

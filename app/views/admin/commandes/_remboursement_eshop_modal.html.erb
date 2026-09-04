@@ -51,14 +51,18 @@
                 </span>
               </label>
             <% end %>
+            <p class="small text-muted mb-0 mt-3"><%= t("commandes.eshop_remboursement.email_question") %></p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
               <%= t("commandes.eshop_remboursement.cancel") %>
             </button>
-            <button type="submit" class="btn btn-danger">
-              <i class="bi bi-arrow-counterclockwise me-1"></i>
-              <%= t("commandes.eshop_remboursement.submit") %>
+            <button type="submit" name="notify_client" value="0" class="btn btn-outline-danger">
+              <%= t("commandes.eshop_remboursement.submit_without_email") %>
+            </button>
+            <button type="submit" name="notify_client" value="1" class="btn btn-danger">
+              <i class="bi bi-envelope me-1"></i>
+              <%= t("commandes.eshop_remboursement.submit_with_email") %>
             </button>
           </div>
         <% end %>

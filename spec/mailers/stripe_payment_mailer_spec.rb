@@ -242,6 +242,39 @@ RSpec.describe StripePaymentMailer, type: :mailer do
       expect(mail.html_part.body.encoded).to include("80")
     end
 
+    it "uses the refunded amount and only the selected items on a partial refund" do
+      produit_b = Produit.create!(
+        nom: "Pochette mailer test",
+        prixvente: 20,
+        stripe_price_id: "price_mailer_002",
+        eshop: true,
+        today_availability: true,
+        quantite: 1
+      )
+      item_b = StripePaymentItem.create!(
+        stripe_payment: payment,
+        produit: produit_b,
+        quantity: 1,
+        unit_amount: 2000
+      )
+      payment.update!(amount: 10000)
+
+      mail = described_class.remboursement(
+        commande,
+        montant: 20,
+        stripe_payment_item_ids: [item_b.id],
+        include_shipping: false,
+        full_refund: false
+      )
+
+      html = mail.html_part.body.encoded
+      expect(mail.subject).to eq(I18n.t("stripe_payment_mailer.remboursement.subject_partial"))
+      expect(html).to include("Pochette mailer test")
+      expect(html).not_to include("Robe mailer test")
+      expect(html).to include("20")
+      expect(html).to include(I18n.t("stripe_payment_mailer.remboursement.body.intro_partial"))
+    end
+
     context "when customer_email is blank" do
       before { payment.update_column(:customer_email, nil) }
 
