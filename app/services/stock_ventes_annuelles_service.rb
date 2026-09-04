@@ -79,6 +79,7 @@ class StockVentesAnnuellesService < ApplicationService
 
   def ventes_eshop(ventes)
     StripePaymentItem
+      .not_refunded
       .joins(:stripe_payment)
       .where(stripe_payments: { status: "paid", created_at: @from..@to })
       .pluck(:produit_id, :quantity, :unit_amount, "stripe_payments.created_at")

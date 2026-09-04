@@ -105,9 +105,24 @@ class Admin::ArticlesController < Admin::ApplicationController
 
   # DELETE /articles/1 or /articles/1.json
   def destroy
-
     @commande = @article.commande
-    @article.destroy!
+
+    if eshop_ligne_remboursable?(@commande)
+      result = EshopCommandeRemboursementService.new(@commande).call(article: @article)
+      unless result.success?
+        admin_push_domain_toast!(flash, :commande, :"remboursement_#{result.error_key}")
+        respond_to do |format|
+          format.turbo_stream { render turbo_stream: turbo_stream.prepend("flash", partial: "layouts/flash", locals: { flash: flash }) }
+          format.html { redirect_to admin_commande_url(@commande) }
+          format.json { render json: { error: result.error_key }, status: :unprocessable_entity }
+        end
+        return
+      end
+    else
+      @article.destroy!
+    end
+
+    @commande.reload
 
     respond_to do |format|
       admin_push_domain_toast!(flash.now, :article, :destroyed)
@@ -128,7 +143,7 @@ class Admin::ArticlesController < Admin::ApplicationController
 
       format.html do
         admin_push_domain_toast!(flash, :article, :destroyed)
-        redirect_to articles_url
+        redirect_to admin_commande_url(@commande)
       end
       format.json { head :no_content }
     end
@@ -138,6 +153,12 @@ class Admin::ArticlesController < Admin::ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_article
       @article = Article.find(params[:id])
+    end
+
+    def eshop_ligne_remboursable?(commande)
+      commande.eshop? &&
+        commande.stripe_payment&.status == "paid" &&
+        !commande.remboursee_eshop?
     end
 
     # Only allow a list of trusted parameters through.

@@ -15,7 +15,7 @@ class EshopCommandeRemboursementService
     @commande = commande
   end
 
-  def call
+  def call(article: nil, stripe_payment_item_ids: nil, include_shipping: false)
     return failure(:not_eshop) unless @commande.eshop?
 
     stripe_payment = @commande.stripe_payment
@@ -24,26 +24,91 @@ class EshopCommandeRemboursementService
 
     return Result.new(success: true, already_done: true) if @commande.remboursee_eshop?
 
-    montant = @commande.stripe_payment.amount.to_d / 100
-    return failure(:zero_amount) if montant <= 0
-
-    ActiveRecord::Base.transaction do
-      @commande.update!(devis: true)
-      @commande.avoir_rembs.create!(
-        type_avoir_remb: "remboursement",
-        montant: montant,
-        nature: NATURE_REMBOURSEMENT,
-        custom_date: Date.current
+    if article
+      refund_line!(article)
+    else
+      refund_selected_items!(
+        Array(stripe_payment_item_ids).reject(&:blank?),
+        include_shipping: include_shipping
       )
     end
-
-    Result.new(success: true, already_done: false)
   rescue ActiveRecord::RecordInvalid => e
     Rails.logger.error("EshopCommandeRemboursementService: #{e.message}")
     failure(:record_invalid)
   end
 
   private
+
+  def refund_line!(article)
+    item = matching_item(article)
+    return failure(:no_items) unless item
+
+    last = stripe_items.not_refunded.where.not(id: item.id).none?
+    refund_selected_items!([item.id], include_shipping: last)
+  end
+
+  def refund_selected_items!(ids, include_shipping: false)
+    items = stripe_items.not_refunded.where(id: ids).to_a
+    return failure(:no_items) if items.empty? && !include_shipping
+
+    montant = items.sum { |item| line_amount_raw(item) }
+    montant += shipping_left_euros if include_shipping
+    montant = [montant, remaining_euros].min
+
+    return failure(:zero_amount) if montant <= 0 && @commande.avoir_rembs.remb_only.none?
+
+    ActiveRecord::Base.transaction do
+      now = Time.current
+      items.each do |item|
+        item.update!(refunded_at: now)
+        destroy_articles_for(item)
+      end
+      create_avoir!(montant) if montant.positive?
+      @commande.update!(devis: true) if stripe_items.not_refunded.reload.none?
+    end
+
+    Result.new(success: true, already_done: false)
+  end
+
+  def destroy_articles_for(item)
+    @commande.articles.where(produit_id: item.produit_id).find_each(&:destroy!)
+  end
+
+  def matching_item(article)
+    return if article.produit_id.blank?
+
+    stripe_items.not_refunded.where(produit_id: article.produit_id).order(:id).first
+  end
+
+  def stripe_items
+    @commande.stripe_payment.stripe_payment_items
+  end
+
+  def line_amount_raw(item)
+    qty = item.quantity.presence || 1
+    (item.unit_amount.to_i * qty.to_i).to_d / 100
+  end
+
+  def shipping_left_euros
+    unrefunded_products = stripe_items.not_refunded.sum { |item| line_amount_raw(item) }
+    leftover = remaining_euros - unrefunded_products
+    leftover.positive? ? leftover : 0.to_d
+  end
+
+  def remaining_euros
+    paid = @commande.stripe_payment.amount.to_d / 100
+    already = @commande.avoir_rembs.remb_only.sum(:montant).to_d
+    paid - already
+  end
+
+  def create_avoir!(montant)
+    @commande.avoir_rembs.create!(
+      type_avoir_remb: "remboursement",
+      montant: montant,
+      nature: NATURE_REMBOURSEMENT,
+      custom_date: Date.current
+    )
+  end
 
   def failure(error_key)
     Result.new(success: false, error_key: error_key, already_done: false)

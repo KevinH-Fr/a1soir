@@ -53,6 +53,8 @@ fr:
         remboursement_stripe_not_paid: "Le paiement Stripe n'est pas au statut payé"
         remboursement_zero_amount: "Montant Stripe invalide pour le remboursement"
         remboursement_record_invalid: "Impossible d'enregistrer le remboursement"
+        remboursement_remaining_products: "Des produits sont encore sur la commande : retirez-les pour les rembourser. Ce bouton n'annule pas les produits restants."
+        remboursement_no_items: "Sélectionnez au moins un produit à rembourser"
       selection_produit:
         ensemble_introuvable: "Aucun ensemble correspondant trouvé."
         selection_ensemble_introuvable: "Ensemble sélectionné introuvable."
@@ -436,6 +438,14 @@ fr:
     eshop_remboursement:
       button: "Annuler / rembourser"
       confirm: "Annuler cette commande e-shop ? Le stock sera rétabli et un remboursement sera enregistré. Vous devrez ensuite effectuer le remboursement dans le Dashboard Stripe."
+      select_title: "Produits à rembourser"
+      select_hint: "Cochez les produits à retirer de la commande. Une seule ligne de remboursement sera créée pour le montant total."
+      item_detail: "Qté %{qty} — %{amount}"
+      shipping_label: "Frais de livraison"
+      shipping_hint: "Décochez si le colis part encore. Inclus par défaut avec une annulation totale."
+      submit: "Rembourser la sélection"
+      cancel: "Fermer"
+      article_actions_locked: "Pour retirer ou modifier un produit e-shop, utilisez Annuler / rembourser."
       badge: "Remboursée"
       badge_title: "Commande e-shop annulée (remboursement enregistré)"
       alert_title: "Remboursement à effectuer dans Stripe"

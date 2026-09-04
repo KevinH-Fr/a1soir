@@ -22,7 +22,8 @@ class Admin::AnalysesController < Admin::ApplicationController
       @stripePaymentsPaidFiltres = StripePayment.paid.all
     end
 
-    @total_stripe_eur = stripe_amount_eur(@stripePaymentsPaidFiltres)
+    @total_stripe_eur = stripe_amount_eur(@stripePaymentsPaidFiltres) -
+                        eshop_remboursements_eur(datedebut, datefin)
 
     # commandes :
     @nbTotal = @commandesFiltres.count
@@ -57,7 +58,8 @@ class Admin::AnalysesController < Admin::ApplicationController
     grouped_articles_jour = articles_timeline.group("DATE(articles.created_at)").order("DATE(articles.created_at)").sum("total")
     grouped_stripe_jour = @stripePaymentsPaidFiltres.group("DATE(stripe_payments.created_at)").order("DATE(stripe_payments.created_at)").sum(:amount)
     grouped_stripe_jour_eur = grouped_stripe_jour.transform_values { |cents| cents.to_d / 100 }
-    @groupedByDateTransactions = merge_grouped_by_day(grouped_articles_jour, grouped_stripe_jour_eur)
+    grouped_remb_jour_neg = eshop_remboursements_grouped_by_day(datedebut, datefin).transform_values { |montant| -montant.to_d }
+    @groupedByDateTransactions = merge_grouped_by_day(grouped_articles_jour, grouped_stripe_jour_eur, grouped_remb_jour_neg)
 
     # CA (prix boutique + Stripe comme moyen de paiement distinct)
     @totalPrixCaCb = @paiementsFiltres.only_prix.only_cb.sum(:montant).to_d
@@ -71,7 +73,7 @@ class Admin::AnalysesController < Admin::ApplicationController
     @totalCa = @paiementsFiltres.sum(:montant).to_d + @total_stripe_eur
 
     groupedByDateCaPaiements = @paiementsFiltres.group("DATE(created_at)").order("DATE(paiement_recus.created_at)").sum(:montant)
-    @groupedByDateCa = merge_grouped_by_day(groupedByDateCaPaiements, grouped_stripe_jour_eur)
+    @groupedByDateCa = merge_grouped_by_day(groupedByDateCaPaiements, grouped_stripe_jour_eur, grouped_remb_jour_neg)
 
     # Une ligne par profil : CA = paiements boutique (PaiementRecu) + Stripe rattachés aux commandes du profil.
     base_r, base_g, base_b = 208, 77, 123
@@ -91,7 +93,8 @@ class Admin::AnalysesController < Admin::ApplicationController
       commandes = @commandesFiltres.where(profile_id: profile.id)
       commandes_ids = commandes.pluck(:id)
       ca_paiements = @paiementsFiltres.only_prix.where(commande_id: commandes_ids).sum(:montant).to_d
-      ca_stripe = stripe_amount_eur(@stripePaymentsPaidFiltres.where(commande_id: commandes_ids))
+      ca_stripe = stripe_amount_eur(@stripePaymentsPaidFiltres.where(commande_id: commandes_ids)) -
+                  eshop_remboursements_eur(datedebut, datefin, commande_ids: commandes_ids)
       ca = ca_paiements + ca_stripe
 
       devis_count = commandesDevis.where(profile_id: profile.id).count
@@ -122,10 +125,36 @@ class Admin::AnalysesController < Admin::ApplicationController
     scope.sum(:amount).to_d / 100
   end
 
-  # Fusionne deux groupes DATE(...) => montant (BigDecimal), clés au format jj/mm/aaaa
-  def merge_grouped_by_day(hash_a, hash_b)
+  def eshop_remboursements_scope(datedebut, datefin)
+    rel = AvoirRemb.remb_only.joins(:commande).where(commandes: { eshop: true })
+    if datedebut.present? && datefin.present?
+      rel = rel.where(
+        "COALESCE(avoir_rembs.custom_date, DATE(avoir_rembs.created_at)) BETWEEN ? AND ?",
+        datedebut.to_date,
+        datefin.to_date
+      )
+    end
+    rel
+  end
+
+  def eshop_remboursements_eur(datedebut, datefin, commande_ids: nil)
+    rel = eshop_remboursements_scope(datedebut, datefin)
+    rel = rel.where(commande_id: commande_ids) if commande_ids
+    rel.sum(:montant).to_d
+  end
+
+  def eshop_remboursements_grouped_by_day(datedebut, datefin)
+    eshop_remboursements_scope(datedebut, datefin)
+      .group("COALESCE(avoir_rembs.custom_date, DATE(avoir_rembs.created_at))")
+      .sum(:montant)
+  end
+
+  # Fusionne des groupes DATE(...) => montant (BigDecimal), clés au format jj/mm/aaaa
+  def merge_grouped_by_day(*hashes)
     merged = Hash.new(0.to_d)
-    [hash_a, hash_b].each do |h|
+    hashes.each do |h|
+      next if h.blank?
+
       h.each do |date_key, amount|
         label = I18n.l(Date.parse(date_key.to_s), format: "%d/%m/%Y")
         merged[label] += amount.to_d

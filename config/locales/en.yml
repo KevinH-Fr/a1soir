@@ -54,6 +54,8 @@ en:
         remboursement_stripe_not_paid: "Stripe payment is not in paid status"
         remboursement_zero_amount: "Invalid Stripe amount for refund"
         remboursement_record_invalid: "Unable to record the refund"
+        remboursement_remaining_products: "Products are still on this order: remove them to refund those lines. This button does not refund remaining products."
+        remboursement_no_items: "Select at least one product to refund"
       selection_produit:
         ensemble_introuvable: "No matching outfit found."
         selection_ensemble_introuvable: "Selected outfit not found."
@@ -218,6 +220,14 @@ en:
     eshop_remboursement:
       button: "Cancel / refund"
       confirm: "Cancel this e-shop order? Stock will be restored and a refund will be recorded. You must then process the refund in the Stripe Dashboard."
+      select_title: "Products to refund"
+      select_hint: "Select the products to remove from the order. A single refund line will be created for the total amount."
+      item_detail: "Qty %{qty} — %{amount}"
+      shipping_label: "Shipping"
+      shipping_hint: "Uncheck if the parcel is still going out. Included by default for a full cancellation."
+      submit: "Refund selection"
+      cancel: "Close"
+      article_actions_locked: "To remove or change an e-shop product, use Cancel / refund."
       badge: "Refunded"
       badge_title: "E-shop order cancelled (refund recorded)"
       alert_title: "Refund to process in Stripe"

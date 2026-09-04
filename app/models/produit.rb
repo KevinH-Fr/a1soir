@@ -217,6 +217,7 @@ class Produit < ApplicationRecord
 
     # Stripe payments (only if marked as 'paid')
     total_quantite = StripePaymentItem
+    .not_refunded
     .joins(stripe_payment: :commande)
     .where(stripe_payments: { status: 'paid' }, produit_id: id)
     .merge(Commande.hors_devis)

@@ -216,6 +216,16 @@ module AdminFlashToast
         icon: "exclamation-triangle-fill",
         message_key: "admin.toasts.commande.remboursement_record_invalid",
       },
+      remboursement_remaining_products: {
+        variant: :warning,
+        icon: "exclamation-triangle-fill",
+        message_key: "admin.toasts.commande.remboursement_remaining_products",
+      },
+      remboursement_no_items: {
+        variant: :warning,
+        icon: "exclamation-triangle-fill",
+        message_key: "admin.toasts.commande.remboursement_no_items",
+      },
     },
     selection_produit: {
       ensemble_introuvable: {

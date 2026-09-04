@@ -49,9 +49,9 @@ RSpec.describe Admin::CommandesController, type: :controller do
     end
 
     let(:mail_delivery) { instance_double(ActionMailer::MessageDelivery, deliver_later: true) }
-
-    before do
-      StripePayment.create!(
+    let!(:produit) { Produit.create!(nom: "Ctrl remb", prixvente: 50, quantite: 2) }
+    let!(:stripe_item) do
+      payment = StripePayment.create!(
         commande: eshop_commande,
         stripe_payment_id: "pi_ctrl_#{SecureRandom.hex(6)}",
         amount: 5000,
@@ -59,11 +59,23 @@ RSpec.describe Admin::CommandesController, type: :controller do
         status: "paid",
         customer_email: "client-eshop@example.com"
       )
+      StripePaymentItem.create!(
+        stripe_payment: payment,
+        produit: produit,
+        quantity: 1,
+        unit_amount: 5000
+      )
+    end
+
+    before do
       allow(StripePaymentMailer).to receive(:remboursement).and_return(mail_delivery)
     end
 
     it "marks commande as remboursee, sends email and redirects" do
-      post :rembourser_eshop, params: { id: eshop_commande.id }
+      post :rembourser_eshop, params: {
+        id: eshop_commande.id,
+        stripe_payment_item_ids: [stripe_item.id]
+      }
 
       expect(response).to redirect_to(admin_commande_url(eshop_commande, host: "admin.lvh.me"))
       expect(eshop_commande.reload.remboursee_eshop?).to be(true)
@@ -75,8 +87,14 @@ RSpec.describe Admin::CommandesController, type: :controller do
     end
 
     it "does not send email when already remboursée" do
-      post :rembourser_eshop, params: { id: eshop_commande.id }
-      post :rembourser_eshop, params: { id: eshop_commande.id }
+      post :rembourser_eshop, params: {
+        id: eshop_commande.id,
+        stripe_payment_item_ids: [stripe_item.id]
+      }
+      post :rembourser_eshop, params: {
+        id: eshop_commande.id,
+        stripe_payment_item_ids: [stripe_item.id]
+      }
 
       expect(StripePaymentMailer).to have_received(:remboursement).once
       expect(flash[:admin_toasts]).to include(

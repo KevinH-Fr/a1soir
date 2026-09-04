@@ -1,0 +1,68 @@
+<%# locals: stripe_payment %>
+<% if @commande.eshop_remboursement_selection_possible? %>
+  <% refundable_items = stripe_payment.stripe_payment_items.not_refunded.includes(:produit) %>
+  <% modal_id = "modal-remboursement-#{@commande.id}" %>
+  <div class="mt-3 pt-2 border-top">
+    <div class="small text-muted fw-semibold mb-2" style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.02em;">Remboursement</div>
+    <button type="button"
+            class="btn btn-sm btn-outline-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#<%= modal_id %>">
+      <i class="bi bi-arrow-counterclockwise me-1"></i>
+      <%= t("commandes.eshop_remboursement.button") %>
+    </button>
+  </div>
+
+  <div class="modal fade" id="<%= modal_id %>" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <%= form_with url: rembourser_eshop_admin_commande_path(@commande), method: :post do %>
+          <div class="modal-header">
+            <h5 class="modal-title"><%= t("commandes.eshop_remboursement.select_title") %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <p class="small text-muted"><%= t("commandes.eshop_remboursement.select_hint") %></p>
+            <div class="d-flex flex-column gap-2">
+              <% refundable_items.each do |item| %>
+                <% qty = item.quantity.presence || 1 %>
+                <% line_eur = (item.unit_amount.to_i * qty.to_i).to_d / 100 %>
+                <label class="d-flex align-items-start gap-2 border rounded p-2 mb-0">
+                  <%= check_box_tag "stripe_payment_item_ids[]", item.id, true, id: "refund-item-#{item.id}" %>
+                  <span class="small">
+                    <span class="fw-semibold d-block"><%= item.produit&.nom.presence || "Produit ##{item.produit_id}" %></span>
+                    <span class="text-muted">
+                      <%= t("commandes.eshop_remboursement.item_detail", qty: qty, amount: custom_currency_format(line_eur)) %>
+                    </span>
+                  </span>
+                </label>
+              <% end %>
+            </div>
+            <% if stripe_payment.frais_livraison_centimes.to_i.positive? %>
+              <label class="d-flex align-items-start gap-2 border rounded p-2 mb-0 mt-3">
+                <%= hidden_field_tag "refund_shipping", "0" %>
+                <%= check_box_tag "refund_shipping", "1", true, id: "refund-shipping-#{@commande.id}" %>
+                <span class="small">
+                  <span class="fw-semibold d-block"><%= t("commandes.eshop_remboursement.shipping_label") %></span>
+                  <span class="text-muted">
+                    <%= custom_currency_format(stripe_payment.frais_livraison_centimes.to_d / 100) %>
+                    — <%= t("commandes.eshop_remboursement.shipping_hint") %>
+                  </span>
+                </span>
+              </label>
+            <% end %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+              <%= t("commandes.eshop_remboursement.cancel") %>
+            </button>
+            <button type="submit" class="btn btn-danger">
+              <i class="bi bi-arrow-counterclockwise me-1"></i>
+              <%= t("commandes.eshop_remboursement.submit") %>
+            </button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

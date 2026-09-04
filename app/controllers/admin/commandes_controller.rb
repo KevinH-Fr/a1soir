@@ -189,10 +189,15 @@ class Admin::CommandesController < Admin::ApplicationController
   end
 
   def rembourser_eshop
-    result = EshopCommandeRemboursementService.new(@commande).call
+    result = EshopCommandeRemboursementService.new(@commande).call(
+      stripe_payment_item_ids: params[:stripe_payment_item_ids],
+      include_shipping: ActiveModel::Type::Boolean.new.cast(params[:refund_shipping])
+    )
 
     if result.success?
-      StripePaymentMailer.remboursement(@commande).deliver_later unless result.already_done
+      if !result.already_done && @commande.reload.remboursee_eshop?
+        StripePaymentMailer.remboursement(@commande).deliver_later
+      end
       toast_key = result.already_done ? :remboursee_deja : :remboursee_ok
       admin_push_domain_toast!(flash, :commande, toast_key)
     else

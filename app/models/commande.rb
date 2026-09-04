@@ -58,6 +58,15 @@ class Commande < ApplicationRecord
     end
   end
 
+  # Bouton remboursement : il reste au moins une ligne Stripe non remboursée.
+  def eshop_remboursement_selection_possible?
+    return false unless eshop?
+    return false unless stripe_payment&.status == "paid"
+    return false if remboursee_eshop?
+
+    stripe_payment.stripe_payment_items.not_refunded.exists?
+  end
+
   def date_remboursement_eshop
     avoir_rembs.remb_only.order(custom_date: :desc, id: :desc).pick(:custom_date)
   end

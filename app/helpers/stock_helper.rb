@@ -51,6 +51,7 @@ module StockHelper
   
    # Stripe payments (only if marked as 'paid')
    total_quantite = StripePaymentItem
+   .not_refunded
    .joins(:stripe_payment)
    .where(stripe_payments: { status: 'paid' }, produit_id: produits)
    .count

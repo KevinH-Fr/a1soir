@@ -23,6 +23,7 @@ class InventaireCsvService
                                          .count
 
     vendus_eshop_map = StripePaymentItem
+                         .not_refunded
                          .joins(:stripe_payment)
                          .where(stripe_payments: { status: 'paid' })
                          .where('stripe_payment_items.created_at <= ?', @end_of_year)

@@ -110,6 +110,37 @@ RSpec.describe Produit do
         expect(result[:disponibles]).to eq(3)
       end
 
+      it "does not count refunded StripePaymentItems" do
+        eshop_commande = Commande.create!(
+          client: client,
+          profile: profile,
+          nom: "E-shop",
+          montant: 50,
+          devis: false,
+          type_locvente: "vente",
+          typeevent: Commande::EVENEMENTS_OPTIONS.first,
+          eshop: true
+        )
+        payment = StripePayment.create!(
+          commande: eshop_commande,
+          stripe_payment_id: "pi_test_avail_refunded",
+          status: "paid",
+          amount: 5000,
+          currency: "eur"
+        )
+        StripePaymentItem.create!(
+          stripe_payment: payment,
+          produit: produit,
+          quantity: 1,
+          unit_amount: 5000,
+          refunded_at: Time.current
+        )
+
+        result = produit.statut_disponibilite(today, today)
+        expect(result[:vendus_eshop]).to eq(0)
+        expect(result[:disponibles]).to eq(3)
+      end
+
       it "combines boutique and eshop sales" do
         commande = build_boutique_commande
         Article.create!(commande: commande, produit: produit, quantite: 1, locvente: "vente", prix: 50, total: 50)
