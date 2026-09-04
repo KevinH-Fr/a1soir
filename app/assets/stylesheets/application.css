@@ -625,10 +625,10 @@ body.bg-black .dropdown-item.fw-bold {
   box-sizing: border-box;
   height: 1.85rem;
   min-width: 1.85rem;
-  padding: 0 0.4rem 0.14rem;
-  background: rgba(0, 0, 0, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+  padding: 0 0.4rem;
+  background: rgba(30, 30, 30, 0.92);
+  border: none;
+  border-radius: 0.12rem;
   text-decoration: none;
   color: #fff;
 }
@@ -636,8 +636,8 @@ body.bg-black .dropdown-item.fw-bold {
 .listing-taille-pill:hover,
 .listing-taille-pill:focus-visible {
   color: #fff;
-  background: #111;
-  border-color: #fff;
+  background: rgba(45, 45, 45, 0.95);
+  border: none;
 }
 
 .listing-taille-pill-label {
