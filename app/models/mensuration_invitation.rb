@@ -1,7 +1,7 @@
 require "bcrypt"
 
 class MensurationInvitation < ApplicationRecord
-  # Lien public /m/:token — opaque, régénérable (regenerate_token) si l'admin renvoie l'invitation.
+  # Token interne /m/:token (session OTP). Le lien à partager est /mensurations.
   has_secure_token :token
 
   # Même forme qu'en base pour les recherches (aligné sur Client.normalizes :mail).
@@ -20,8 +20,8 @@ class MensurationInvitation < ApplicationRecord
   OTP_RESEND_INTERVAL = 60.seconds
 
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :template, presence: true, inclusion: { in: TEMPLATES }
-  validates :locale, inclusion: { in: %w[fr en] }
+  validates :template, inclusion: { in: TEMPLATES }, allow_nil: true
+  validates :locale, inclusion: { in: %w[fr en] }, allow_nil: true
   validates :status, inclusion: { in: STATUSES }
 
   before_validation :set_default_expiry, on: :create
@@ -43,11 +43,75 @@ class MensurationInvitation < ApplicationRecord
     !expired?
   end
 
-  # Renvoi admin : nouveau lien, nouvelle échéance, l'ancien token meurt.
-  def reissue!
-    regenerate_token
-    update!(expires_at: LINK_VALIDITY.from_now, status: mensuration.present? ? "completed" : "sent",
-            otp_digest: nil, otp_sent_at: nil, otp_attempts: 0)
+  def preferences_chosen?
+    locale.present? && template.present?
+  end
+
+  # Lien public unique (admin « Copier ») : hôte boutique, pas le sous-domaine admin.
+  def self.public_share_url
+    Rails.application.routes.url_helpers.mensuration_gate_url(
+      **public_form_url_options
+    )
+  end
+
+  # Reprise sur le même e-mail : on prolonge l'échéance, on ne crée pas de doublon.
+  def self.find_or_prepare_for_share!(email:, locale: nil, template: nil)
+    invitation = where(email: email).order(created_at: :desc, id: :desc).first
+    if invitation
+      invitation.prepare_for_share_start!(locale: locale, template: template)
+      invitation
+    else
+      create!(email: email, locale: locale, template: template)
+    end
+  end
+
+  # Invitation + fiche dans la même transaction (évite un genre divergent).
+  def apply_template!(template)
+    transaction do
+      update!(template: template)
+      mensuration&.apply_template!(template)
+    end
+  end
+
+  def sync_locale!(loc, persist_on_fiche: false)
+    loc = loc.to_s.presence_in(%w[fr en])
+    return if loc.blank? || locale == loc
+
+    transaction do
+      update!(locale: loc)
+      mensuration&.update!(locale: loc) if persist_on_fiche
+    end
+  end
+
+  def build_public_mensuration
+    build_mensuration(
+      template: template.presence || TEMPLATES.first,
+      locale: locale.presence || "fr",
+      prenom: prenom,
+      nom: nom
+    )
+  end
+
+  def deliver_otp!
+    return false unless otp_resend_allowed?
+
+    code = generate_otp!
+    MensurationMailer.otp_code(self, code).deliver_later
+    true
+  end
+
+  def clear_mensuration!
+    transaction do
+      mensuration&.destroy
+      update!(status: "verified")
+    end
+  end
+
+  def prepare_for_share_start!(locale:, template:)
+    attrs = { expires_at: LINK_VALIDITY.from_now }
+    attrs[:locale] = locale if locale.present?
+    attrs[:template] = template if template.present?
+    update!(attrs)
   end
 
   # Génère et stocke le code (hashé) ; retourne le code en clair pour l'e-mail uniquement.
@@ -79,15 +143,6 @@ class MensurationInvitation < ApplicationRecord
 
   def full_name
     [prenom, nom].compact_blank.join(" ").presence
-  end
-
-  # Lien public (mail + bouton copier admin) : toujours l'hôte boutique, jamais le sous-domaine admin.
-  def public_form_url
-    Rails.application.routes.url_helpers.mensuration_url(
-      token: token,
-      locale: locale,
-      **self.class.public_form_url_options
-    )
   end
 
   def self.public_form_url_options

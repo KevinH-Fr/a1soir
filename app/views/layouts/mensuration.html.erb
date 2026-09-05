@@ -3,7 +3,7 @@
   <head>
     <title>Autour D'Un Soir</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%# Page sur invitation : jamais indexée, jamais archivée. %>
+    <%# Lien privé : jamais indexé, jamais archivé, jamais suivi. %>
     <meta name="robots" content="noindex, nofollow, noarchive">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -13,18 +13,20 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "vendor/bootstrap-icons-used", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "mensuration", "data-turbo-track": "reload", type: "module" %>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous" defer></script>
   </head>
 
   <body class="mensuration-layout bg-black text-light d-flex flex-column vh-100 overflow-hidden">
     <header class="py-3">
-      <div class="container-fluid ps-2 pe-3">
-        <%= link_to home_path, class: "d-inline-block" do %>
+      <div class="container-fluid ps-2 pe-3 d-flex align-items-center justify-content-between">
+        <%= link_to home_path(locale: I18n.locale), class: "d-inline-block" do %>
           <%= image_tag "/images/a1soirlogo2.png",
                 class: "navbar-logo mb-0 px-2",
                 alt: "Autour d'un Soir",
                 width: 521,
                 height: 64 %>
         <% end %>
+        <%= render "public/mensurations/locale_switch" %>
       </div>
     </header>
 
@@ -32,9 +34,9 @@
       <main class="container py-3 flex-grow-1 mensuration-shell" data-mensuration-shell>
         <% flash.each do |key, value| %>
           <% is_alert = key.to_s.in?(%w[alert error]) %>
-          <div class="mensuration-flash <%= "mensuration-flash--alert" if is_alert %> mb-3 mx-2" role="status">
-            <i class="bi bi-<%= is_alert ? "exclamation-triangle" : "info-circle" %> me-2"></i>
-            <%= value %>
+          <div class="mensuration-flash <%= is_alert ? "mensuration-flash--alert" : "mensuration-flash--success" %> mb-3" role="status">
+            <i class="bi bi-<%= is_alert ? "exclamation-triangle" : "check-circle-fill" %> mensuration-flash__icon" aria-hidden="true"></i>
+            <span><%= value %></span>
           </div>
         <% end %>
 
@@ -69,7 +71,7 @@
 
           <div class="col-12 col-md-4">
             <h2 class="h6 text-uppercase mb-2 text-light"><%= t("mensurations.footer.boutique") %></h2>
-            <%= link_to t("mensurations.footer.visit_site"), home_path, class: "text-light text-decoration-none hover-link small" %>
+            <%= link_to t("mensurations.footer.visit_site"), home_path(locale: I18n.locale), class: "text-light text-decoration-none hover-link small" %>
           </div>
         </div>
       </div>

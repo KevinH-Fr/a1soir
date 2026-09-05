@@ -59,6 +59,14 @@ module MensurationsHelper
     end
   end
 
+  def mensuration_locale_switch_path(locale)
+    if @invitation&.token
+      mensuration_path(token: @invitation.token, locale: locale)
+    else
+      mensuration_gate_path(locale: locale)
+    end
+  end
+
   def mensuration_admin_meta_item(label, value)
     return if value.blank?
 

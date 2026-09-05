@@ -10,24 +10,20 @@ RSpec.describe Admin::MensurationsController, type: :controller do
   def stub_staff_session
     allow(controller).to receive(:authenticate_vendeur_or_admin!).and_return(true)
     allow(controller).to receive(:current_admin_user).and_return(
-      instance_double(User, admin?: true, vendeur?: false)
+      instance_double(User, admin?: true, vendeur?: false, role: "admin")
     )
   end
 
   before { @request.host = "admin.lvh.me" }
 
-  describe "POST #create" do
+  describe "GET #index" do
     before { stub_staff_session }
 
-    it "crée l'invitation et envoie le mail" do
-      mail = instance_double(ActionMailer::MessageDelivery, deliver_later: true)
-      expect(MensurationMailer).to receive(:invitation).and_return(mail)
+    it "prépare l'URL publique à copier" do
+      get :index
 
-      expect {
-        post :create, params: { mensuration_invitation: { email: "new@example.com", template: "homme", locale: "en" } }
-      }.to change(MensurationInvitation, :count).by(1)
-
-      expect(MensurationInvitation.last.token).to be_present
+      expect(response).to have_http_status(:ok)
+      expect(controller.instance_variable_get(:@share_url)).to eq(MensurationInvitation.public_share_url)
     end
   end
 
@@ -66,6 +62,8 @@ RSpec.describe Admin::MensurationsController, type: :controller do
 
     context "sans session staff" do
       it "ne sert pas la photo" do
+        allow(controller).to receive(:current_admin_user).and_return(nil)
+
         get :photo, params: { id: invitation.id }
 
         expect(response).not_to be_redirect

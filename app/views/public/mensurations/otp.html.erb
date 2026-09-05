@@ -2,9 +2,13 @@
 <% field_class = "form-control bg-dark text-light border-secondary text-center" %>
 
 <div class="concept-card mensuration-otp">
-  <h1 class="h5 mb-0 text-light"><%= t("mensurations.otp.request_title") %></h1>
-  <p class="text-light opacity-75 small my-4 mensuration-otp__hint">
-    <%= t("mensurations.otp.request_hint") %>
+  <%= render "public/mensurations/card_header" %>
+  <p class="mensuration-otp__hint">
+    <% if code_pending %>
+      <%= t("mensurations.otp.enter_hint", email: @invitation.email) %>
+    <% else %>
+      <%= t("mensurations.otp.request_hint") %>
+    <% end %>
   </p>
 
   <% if code_pending %>
@@ -24,10 +28,11 @@
       <%= f.submit t("mensurations.otp.verify"), class: "btn btn-light public-btn-border-radius w-100 py-2" %>
     <% end %>
 
-    <div class="mt-4">
+    <div class="mensuration-otp__resend">
       <%= button_to t("mensurations.otp.resend_code"), mensuration_otp_path(token: @invitation.token),
             method: :post,
             class: "btn btn-link btn-sm text-light opacity-50 p-0" %>
+      <p class="mensuration-otp__spam-hint"><%= t("mensurations.otp.spam_hint") %></p>
     </div>
   <% else %>
     <div class="mensuration-otp__actions">

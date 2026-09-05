@@ -12,7 +12,9 @@ module IndexModelHelper
     end
   end
 
-  def bandeau_entete(title, icon, counter, champs_recherche, search_path, card_class: "card m-2 shadow-sm", show_new_record_button: true)
+  def bandeau_entete(title, icon, counter, champs_recherche, search_path, card_class: "card m-2 shadow-sm", show_new_record_button: true, &block)
+    extra_actions = block ? capture(&block) : nil
+
     content_tag(:div, class: [card_class, "card-main-model-section"].compact.join(" ").squish) do
       concat(content_tag(:div, class: "card-header rounded bg-dark text-light d-flex justify-content-between align-items-center py-2") do
         concat(content_tag(:div, class: "d-flex align-items-center") do
@@ -40,6 +42,8 @@ module IndexModelHelper
                 concat(content_tag(:span, "Nouveau", class: "d-none d-md-inline"))
               end)
             end
+
+            concat(extra_actions) if extra_actions.present?
           end)
         end)
       end

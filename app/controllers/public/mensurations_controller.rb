@@ -1,38 +1,90 @@
 module Public
-  # Formulaire mensurations sur invitation (/m/:token).
-  # Hérite directement d'ActionController::Base : pas de panier ni de HTTP Basic boutique
-  # (Public::ApplicationController) — le client arrive ici uniquement via le lien reçu par mail.
+  # Formulaire mensurations : landing publique /mensurations, puis /m/:token (OTP).
+  # Hérite directement d'ActionController::Base : pas de panier ni de HTTP Basic boutique.
   class MensurationsController < ActionController::Base
     layout "mensuration"
     helper MensurationsHelper
 
     SESSION_KEY = "mensuration_auth".freeze
     SESSION_TTL = 2.hours
+    START_RATE_LIMIT = 5
+    START_RATE_WINDOW = 1.minute
 
     before_action :set_locale
-    before_action :set_invitation
+    before_action :deny_indexing
+    before_action :set_invitation, except: [:gate, :start]
+    before_action :sync_invitation_locale, except: [:gate, :start]
     before_action :load_footer_texte
-    before_action :require_otp_session, only: [:save, :destroy]
+    before_action :require_otp_session, only: [:save, :destroy, :update_template]
+
+    def gate
+      @email = ""
+      @form_locale = I18n.locale.to_s
+      render :gate
+    end
+
+    def start
+      @email = start_email
+      @form_locale = start_form_locale || I18n.locale.to_s.presence_in(%w[fr en])
+
+      unless RecaptchaVerifier.verify(params["g-recaptcha-response"], request.remote_ip)
+        flash.now[:alert] = t("mensurations.share.recaptcha_required")
+        render :gate, status: :unprocessable_entity
+        return
+      end
+
+      unless @email.present? && @form_locale.present?
+        flash.now[:alert] = t("mensurations.share.invalid")
+        render :gate, status: :unprocessable_entity
+        return
+      end
+
+      if share_start_rate_limited?(@email)
+        flash.now[:alert] = t("mensurations.share.rate_limited")
+        render :gate, status: :unprocessable_entity
+        return
+      end
+
+      invitation = MensurationInvitation.find_or_prepare_for_share!(
+        email: @email, locale: @form_locale
+      )
+
+      if invitation.deliver_otp!
+        redirect_to_invitation(invitation, notice: t("mensurations.otp.code_sent"))
+      else
+        redirect_to_invitation(invitation, alert: t("mensurations.otp.resend_wait"))
+      end
+    end
 
     # Page unique : demande de code tant que l'e-mail n'est pas vérifié, formulaire ensuite.
     def show
       if otp_session_valid?
-        @mensuration = @invitation.mensuration || build_mensuration
+        @mensuration = @invitation.mensuration || @invitation.build_public_mensuration
+        @wizard_index = wizard_start_index
         render :form
       else
         render :otp
       end
     end
 
-    def send_otp
-      unless @invitation.otp_resend_allowed?
-        redirect_to mensuration_path(token: @invitation.token), alert: t("mensurations.otp.resend_wait")
+    def update_template
+      template = params[:template].to_s.presence_in(MensurationInvitation::TEMPLATES)
+      unless template
+        redirect_to mensuration_path(token: @invitation.token),
+                    alert: t("mensurations.share.choose_preferences")
         return
       end
 
-      code = @invitation.generate_otp!
-      MensurationMailer.otp_code(@invitation, code).deliver_later
-      redirect_to mensuration_path(token: @invitation.token), notice: t("mensurations.otp.code_sent")
+      @invitation.apply_template!(template)
+      redirect_to mensuration_path(token: @invitation.token, resume: "identity")
+    end
+
+    def send_otp
+      if @invitation.deliver_otp!
+        redirect_to mensuration_path(token: @invitation.token), notice: t("mensurations.otp.code_sent")
+      else
+        redirect_to mensuration_path(token: @invitation.token), alert: t("mensurations.otp.resend_wait")
+      end
     end
 
     def verify_otp
@@ -46,38 +98,64 @@ module Public
     end
 
     def save
-      @mensuration = @invitation.mensuration || build_mensuration
-      @mensuration.assign_attributes(identity_params)
-      @mensuration.measurements = measurements_params
-      # Affectation (pas .attach) : l'upload n'est persisté qu'au save, après validation.
-      @mensuration.photo_pied = params[:photo_pied] if params[:photo_pied].present?
+      unless @invitation.preferences_chosen?
+        redirect_to mensuration_path(token: @invitation.token), alert: t("mensurations.share.choose_preferences")
+        return
+      end
 
-      if @mensuration.save
-        @mensuration.resolve_and_link_client!
-        @invitation.update!(status: "completed")
+      @mensuration = @invitation.mensuration || @invitation.build_public_mensuration
+      @mensuration.apply_public_input(
+        identity: identity_params,
+        measurements: permitted_measurements,
+        photo: params[:photo_pied]
+      )
+
+      if @mensuration.complete!
         redirect_to mensuration_path(token: @invitation.token)
       else
         @editing = true
+        @wizard_index = wizard_start_index
         flash.now[:alert] = @mensuration.errors.full_messages.to_sentence
         render :form, status: :unprocessable_entity
       end
     end
 
     def destroy
-      @invitation.mensuration&.destroy
-      @invitation.update!(status: "verified")
+      @invitation.clear_mensuration!
       redirect_to mensuration_path(token: @invitation.token), notice: t("mensurations.form.deleted")
     end
 
     private
 
     def set_locale
-      requested_locale = params[:locale]&.to_sym
-      I18n.locale = I18n.available_locales.include?(requested_locale) ? requested_locale : I18n.default_locale
+      requested = params[:locale].to_s
+      if %w[fr en].include?(requested)
+        session[:mensuration_locale] = requested
+        I18n.locale = requested.to_sym
+      elsif %w[fr en].include?(session[:mensuration_locale].to_s)
+        I18n.locale = session[:mensuration_locale].to_sym
+      else
+        I18n.locale = I18n.default_locale
+      end
+    end
+
+    def sync_invitation_locale
+      @invitation&.sync_locale!(I18n.locale, persist_on_fiche: otp_session_valid?)
+    end
+
+    def redirect_to_invitation(invitation, **flash)
+      redirect_to mensuration_path(token: invitation.token, locale: invitation.locale.presence || "fr"),
+                  **flash
     end
 
     def default_url_options
+      return {} if params[:token].blank?
+
       { locale: I18n.locale }
+    end
+
+    def deny_indexing
+      response.set_header("X-Robots-Tag", "noindex, nofollow, noarchive")
     end
 
     # Coordonnées boutique pour le pied de page (même source que le footer public).
@@ -98,13 +176,33 @@ module Public
       render "errors/not_found", layout: "error", status: :not_found
     end
 
-    def build_mensuration
-      @invitation.build_mensuration(
-        template: @invitation.template,
-        locale: @invitation.locale,
-        prenom: @invitation.prenom,
-        nom: @invitation.nom
-      )
+    def wizard_start_index
+      return 1 if params[:resume] == "identity"
+
+      0
+    end
+
+    def start_email
+      email = params[:email].to_s.strip.downcase.presence
+      return nil unless email&.match?(URI::MailTo::EMAIL_REGEXP)
+
+      email
+    end
+
+    def start_form_locale
+      params[:form_locale].to_s.presence_in(%w[fr en])
+    end
+
+    def share_start_rate_limited?(email)
+      keys = [share_rate_key("ip", request.remote_ip), share_rate_key("email", email)]
+      return true if keys.any? { |key| Rails.cache.read(key).to_i >= START_RATE_LIMIT }
+
+      keys.each { |key| Rails.cache.write(key, Rails.cache.read(key).to_i + 1, expires_in: START_RATE_WINDOW) }
+      false
+    end
+
+    def share_rate_key(kind, value)
+      "mensuration_share_start/#{kind}/#{value}"
     end
 
     # ---- Session courte après vérification OTP -----------------------------
@@ -141,21 +239,8 @@ module Public
       params.fetch(:mensuration, {}).permit(*permitted)
     end
 
-    # Seules les clés du YAML du template ; les listes (choice) n'acceptent que les valeurs prévues.
-    def measurements_params
-      fields = Mensuration.fields_for(@invitation.template)
-      allowed = fields.map { |f| f["key"] }
-      raw = params.fetch(:measurements, {}).permit(*allowed)
-      values = raw.to_h.transform_values { |v| v.to_s.strip }.compact_blank
-
-      fields.each do |field|
-        next unless field["input"] == "choice"
-
-        key = field["key"]
-        values.delete(key) unless field["choices"].include?(values[key])
-      end
-
-      values
+    def permitted_measurements
+      params.fetch(:measurements, {}).permit(*Mensuration.field_keys_for(@invitation.template))
     end
   end
 end

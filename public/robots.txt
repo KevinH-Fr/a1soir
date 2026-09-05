@@ -1,5 +1,6 @@
 User-agent: *
-# Formulaire mensurations sur invitation : privé, jamais référencé.
+# Formulaire mensurations : privé, jamais référencé ni proposé aux crawlers.
+Disallow: /mensurations
 Disallow: /fr/m/
 Disallow: /en/m/
 
@@ -12,21 +13,39 @@ Disallow: /en/m/
 
 Sitemap: https://a1soir.com/sitemap.xml.gz
 
-# Crawlers IA — contenu public autorisé
+# Crawlers IA — contenu public autorisé (hors formulaire mensurations)
 User-agent: GPTBot
+Disallow: /mensurations
+Disallow: /fr/m/
+Disallow: /en/m/
 Allow: /
 
 User-agent: OAI-SearchBot
+Disallow: /mensurations
+Disallow: /fr/m/
+Disallow: /en/m/
 Allow: /
 
 User-agent: ClaudeBot
+Disallow: /mensurations
+Disallow: /fr/m/
+Disallow: /en/m/
 Allow: /
 
 User-agent: Claude-Web
+Disallow: /mensurations
+Disallow: /fr/m/
+Disallow: /en/m/
 Allow: /
 
 User-agent: PerplexityBot
+Disallow: /mensurations
+Disallow: /fr/m/
+Disallow: /en/m/
 Allow: /
 
 User-agent: Google-Extended
+Disallow: /mensurations
+Disallow: /fr/m/
+Disallow: /en/m/
 Allow: /

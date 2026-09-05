@@ -7,11 +7,9 @@ export default class extends Controller {
   static values = {
     maxBytes: Number,
     maxEdge: Number,
-    minEdge: Number,
     msgFormat: String,
     msgWeight: String,
-    msgTooBig: String,
-    msgTooSmall: String
+    msgTooBig: String
   }
 
   disconnect() {
@@ -31,7 +29,7 @@ export default class extends Controller {
       this.reject(input, this.msgFormatValue)
       return
     }
-    if (file.size > this.maxBytesValue) {
+    if (this.maxBytesValue > 0 && file.size > this.maxBytesValue) {
       this.reject(input, this.msgWeightValue)
       return
     }
@@ -40,15 +38,9 @@ export default class extends Controller {
     const probe = new Image()
     probe.onload = () => {
       const longest = Math.max(probe.naturalWidth, probe.naturalHeight)
-      const shortest = Math.min(probe.naturalWidth, probe.naturalHeight)
-      if (longest > this.maxEdgeValue) {
+      if (this.maxEdgeValue > 0 && longest > this.maxEdgeValue) {
         URL.revokeObjectURL(url)
         this.reject(input, this.msgTooBigValue)
-        return
-      }
-      if (shortest < this.minEdgeValue) {
-        URL.revokeObjectURL(url)
-        this.reject(input, this.msgTooSmallValue)
         return
       }
       this.showPreview(url)

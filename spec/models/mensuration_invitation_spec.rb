@@ -35,9 +35,8 @@ RSpec.describe MensurationInvitation, type: :model do
       expect(build_invitation(template: "enfant")).not_to be_valid
     end
 
-    it "exige un template homme ou femme" do
-      expect(build_invitation(template: nil)).not_to be_valid
-      expect(build_invitation(template: "")).not_to be_valid
+    it "autorise une invitation sans template ni langue (choix après OTP)" do
+      expect(build_invitation(template: nil, locale: nil)).to be_valid
     end
   end
 
@@ -90,16 +89,103 @@ RSpec.describe MensurationInvitation, type: :model do
     end
   end
 
-  describe "#reissue!" do
-    it "invalide l'ancien token et repousse l'échéance" do
+  describe "#deliver_otp!" do
+    it "génère un code et enqueue l'e-mail" do
       invitation = build_invitation.tap(&:save!)
+
+      expect {
+        expect(invitation.deliver_otp!).to be(true)
+      }.to have_enqueued_job(ActionMailer::MailDeliveryJob)
+
+      expect(invitation.reload.otp_digest).to be_present
+    end
+
+    it "refuse un renvoi trop tôt" do
+      invitation = build_invitation.tap(&:save!)
+      invitation.generate_otp!
+
+      expect {
+        expect(invitation.deliver_otp!).to be(false)
+      }.not_to have_enqueued_job(ActionMailer::MailDeliveryJob)
+    end
+  end
+
+  describe "#sync_locale!" do
+    it "met à jour l'invitation et, si demandé, la fiche" do
+      invitation = build_invitation(locale: "fr").tap(&:save!)
+      invitation.create_mensuration!(
+        template: "femme", locale: "fr", prenom: "Anna", nom: "Durand"
+      )
+
+      invitation.sync_locale!("en", persist_on_fiche: true)
+
+      expect(invitation.reload.locale).to eq("en")
+      expect(invitation.mensuration.reload.locale).to eq("en")
+    end
+  end
+
+  describe "#clear_mensuration!" do
+    it "détruit la fiche et repasse l'invitation en verified" do
+      invitation = build_invitation.tap(&:save!)
+      invitation.create_mensuration!(
+        template: "femme", locale: "fr", prenom: "Anna", nom: "Durand"
+      )
+      invitation.update!(status: "completed")
+
+      invitation.clear_mensuration!
+
+      expect(invitation.reload.mensuration).to be_nil
+      expect(invitation.status).to eq("verified")
+    end
+  end
+
+  describe "#apply_template!" do
+    it "aligne l'invitation et la fiche, et retire les mesures incompatibles" do
+      invitation = build_invitation(template: "femme").tap(&:save!)
+      invitation.create_mensuration!(
+        template: "femme", locale: "fr", prenom: "Anna", nom: "Durand",
+        measurements: { "hauteur" => "168", "taille_soutien_gorge" => "90D" }
+      )
+
+      invitation.apply_template!("homme")
+
+      expect(invitation.reload.template).to eq("homme")
+      expect(invitation.mensuration.reload.template).to eq("homme")
+      expect(invitation.mensuration.value_for("hauteur")).to eq("168")
+      expect(invitation.mensuration.value_for("taille_soutien_gorge")).to be_nil
+    end
+  end
+
+  describe ".public_share_url" do
+    it "pointe vers /mensurations sur l'hôte boutique" do
+      expect(described_class.public_share_url).to include("/mensurations")
+      expect(described_class.public_share_url).not_to include("/fr/m")
+      expect(described_class.public_share_url).not_to match(%r{/m/})
+    end
+  end
+
+  describe ".find_or_prepare_for_share!" do
+    it "crée une invitation pour un nouvel e-mail" do
+      invitation = described_class.find_or_prepare_for_share!(
+        email: "nouveau@example.com", locale: "en", template: "homme"
+      )
+
+      expect(invitation).to be_persisted
+      expect(invitation.email).to eq("nouveau@example.com")
+      expect(invitation.template).to eq("homme")
+      expect(invitation.locale).to eq("en")
+    end
+
+    it "reprend la même invitation et prolonge l'échéance" do
+      invitation = build_invitation(template: "femme", locale: "fr").tap(&:save!)
       invitation.update!(expires_at: 1.day.ago)
-      old_token = invitation.token
 
-      invitation.reissue!
+      reused = described_class.find_or_prepare_for_share!(email: invitation.email)
 
-      expect(invitation.token).not_to eq(old_token)
-      expect(invitation).not_to be_expired
+      expect(reused.id).to eq(invitation.id)
+      expect(reused).not_to be_expired
+      expect(reused.template).to eq("femme")
+      expect(reused.locale).to eq("fr")
     end
   end
 end

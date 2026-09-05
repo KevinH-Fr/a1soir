@@ -64,6 +64,17 @@ RSpec.describe "Sitemap", type: :request do
     expect(body).to include("<loc>http://www.example.com/fr/categories</loc>")
   end
 
+  it "does not list the private mensurations form" do
+    get "/sitemap.xml.gz"
+    body = decompressed_body
+
+    expect(body).not_to include("/mensurations")
+    expect(body).not_to include("/fr/m</")
+    expect(body).not_to include("/en/m</")
+    expect(body).not_to include("/fr/m/")
+    expect(body).not_to include("/en/m/")
+  end
+
   it "excludes inactive or unavailable products" do
     Produit.create!(
       nom: "Hors sitemap inactif",

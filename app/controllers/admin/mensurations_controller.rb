@@ -1,29 +1,13 @@
-# Hub « Dimensions » : invitations mensurations et fiches reçues. :id = invitation.
+# Hub « Dimensions » : fiches mensurations reçues. :id = invitation.
 class Admin::MensurationsController < Admin::ApplicationController
-  before_action :set_invitation, only: [:resend, :destroy, :photo]
+  before_action :set_invitation, only: [:destroy, :photo]
 
   def index
     @q = MensurationInvitation.ransack(params[:q])
     scope = @q.result.includes(:client, :mensuration).order(created_at: :desc)
     @count_invitations = scope.count
     @invitations = scope
-  end
-
-  def create
-    @invitation = MensurationInvitation.new(invitation_params)
-    if @invitation.save
-      MensurationMailer.invitation(@invitation).deliver_later
-      redirect_to admin_mensurations_path, notice: "Invitation envoyée à #{@invitation.email}."
-    else
-      redirect_to admin_mensurations_path, alert: @invitation.errors.full_messages.to_sentence
-    end
-  end
-
-  # Nouveau lien + nouvelle échéance (l'ancien token est invalidé), puis renvoi du mail.
-  def resend
-    @invitation.reissue!
-    MensurationMailer.invitation(@invitation).deliver_later
-    redirect_to admin_mensurations_path, notice: "Invitation renvoyée à #{@invitation.email}."
+    @share_url = MensurationInvitation.public_share_url
   end
 
   # Supprime invitation + fiche + photo (purge ActiveStorage) — jamais le client.
@@ -48,10 +32,6 @@ class Admin::MensurationsController < Admin::ApplicationController
 
   def set_invitation
     @invitation = MensurationInvitation.find(params[:id])
-  end
-
-  def invitation_params
-    params.require(:mensuration_invitation).permit(:email, :prenom, :nom, :template, :locale, :message_perso)
   end
 
   def photo_bytes(blob)

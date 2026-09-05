@@ -1,11 +1,15 @@
 <%= bandeau_entete("Dimensions", "person-lines-fill", @count_invitations,
-        :email_or_nom_or_prenom_cont, admin_mensurations_path) %>
-
-<%= admin_collapse_nouveau collapse_id: "collapseNew",
-      target_id: "new",
-      inner_partial: "admin/mensurations/form",
-      mensuration_invitation: MensurationInvitation.new(template: nil),
-      index_collapse: true %>
+        :email_or_nom_or_prenom_cont, admin_mensurations_path,
+        show_new_record_button: false) do %>
+  <button type="button"
+          class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center flex-shrink-0"
+          data-controller="copy-url"
+          data-copy-url-text-value="<%= @share_url %>"
+          data-action="click->copy-url#copy">
+    <i class="bi bi-clipboard me-1" aria-hidden="true"></i>
+    <span data-copy-url-target="label">Copier le lien</span>
+  </button>
+<% end %>
 
 <div id="mensuration_invitations" class="<%= admin_list_stack_classes %>">
   <% @invitations.each do |invitation| %>

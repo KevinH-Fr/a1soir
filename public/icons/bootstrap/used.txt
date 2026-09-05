@@ -160,6 +160,7 @@ person-lines-fill
 person-lock
 person-plus
 person-plus-fill
+person-standing
 person-standing-dress
 person-vcard
 play-circle-fill

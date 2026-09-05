@@ -3,6 +3,12 @@
 <% hide_answers = saved && !@editing %>
 
 <div data-controller="form-wizard photo-preview<%= " form-reveal" if saved %>"
+     data-form-wizard-index-value="<%= @wizard_index.to_i %>"
+     data-photo-preview-max-bytes-value="<%= Mensuration::MAX_PHOTO_BYTES %>"
+     data-photo-preview-max-edge-value="<%= Mensuration::MAX_PHOTO_EDGE %>"
+     data-photo-preview-msg-format-value="<%= t("mensurations.photo.invalid_format") %>"
+     data-photo-preview-msg-weight-value="<%= t("mensurations.photo.too_large", max_mb: Mensuration::MAX_PHOTO_BYTES / 1.megabyte) %>"
+     data-photo-preview-msg-too-big-value="<%= t("mensurations.photo.too_big", max_px: Mensuration::MAX_PHOTO_EDGE) %>"
      class="mensuration-flow<%= " mensuration-flow--saved" if saved %>">
   <% if saved %>
     <div class="concept-card mensuration-saved-banner mensuration-flash--saved mx-1" role="status">
@@ -24,11 +30,13 @@
 
   <div class="concept-card mensuration-form mx-1 <%= "d-none" if hide_answers %>"
        <% if saved %>data-form-reveal-target="panel"<% end %>>
-    <h1 class="h5 mb-2 text-light"><%= t("mensurations.form.title_#{@invitation.template}") %></h1>
-    <p class="small mb-3 text-light">
-      <span class="opacity-75"><%= t("mensurations.form.intro") %></span>
-      <span class="opacity-50"><%= t("mensurations.form.required_hint") %></span>
-    </p>
+    <%= render "public/mensurations/card_header" %>
+    <% if @invitation.template.present? %>
+      <p class="small mb-3 text-light">
+        <span class="opacity-75"><%= t("mensurations.form.intro") %></span>
+        <span class="opacity-50"><%= t("mensurations.form.required_hint") %></span>
+      </p>
+    <% end %>
     <div class="mensuration-form__progress">
       <div class="small text-light opacity-75 mb-1"
            data-form-wizard-target="caption"
@@ -40,9 +48,27 @@
       </div>
     </div>
 
+    <% choice_class = "btn btn-outline-light public-btn-border-radius mensuration-form__template-btn" %>
+    <% current_template = @invitation.template.presence %>
+    <div class="mensuration-form__stage">
+      <div data-form-wizard-target="step" data-choice-step>
+        <h2 class="mensuration-form__template-lead"><%= t("mensurations.share.template_step") %></h2>
+        <div class="d-flex mensuration-form__template-choice">
+          <%= button_to t("mensurations.share.template_femme"),
+                mensuration_template_path(token: @invitation.token),
+                method: :post, params: { template: "femme" },
+                form: { class: "flex-fill" },
+                class: "#{choice_class}#{' is-selected btn-light text-dark' if current_template == 'femme'}" %>
+          <%= button_to t("mensurations.share.template_homme"),
+                mensuration_template_path(token: @invitation.token),
+                method: :post, params: { template: "homme" },
+                form: { class: "flex-fill" },
+                class: "#{choice_class}#{' is-selected btn-light text-dark' if current_template == 'homme'}" %>
+        </div>
+      </div>
+
     <%= form_with url: mensuration_save_path(token: @invitation.token), method: :post, local: true, multipart: true do |f| %>
-      <div class="mensuration-form__stage">
-      <div data-form-wizard-target="step">
+      <div data-form-wizard-target="step" class="d-none">
         <h2 class="h6 mb-2 text-light"><%= t("mensurations.form.identity_title") %></h2>
         <div class="row g-2 mensuration-form__identity-row">
           <div class="col-md-6">
@@ -91,10 +117,12 @@
         </div>
       </div>
 
-      <% @mensuration.fields_by_form_step.each do |step_key, step_fields| %>
-        <%= render "public/mensurations/measure_step",
-              step_key: step_key, fields: step_fields, mensuration: @mensuration,
-              guided: true %>
+      <% if @invitation.template.present? %>
+        <% @mensuration.fields_by_form_step.each do |step_key, step_fields| %>
+          <%= render "public/mensurations/measure_step",
+                step_key: step_key, fields: step_fields, mensuration: @mensuration,
+                guided: true %>
+        <% end %>
       <% end %>
 
       <div class="d-none" data-form-wizard-target="step">
@@ -106,9 +134,15 @@
         <% if @mensuration.photo_pied.attached? %>
           <p class="small text-light mb-2"><i class="bi bi-check-circle"></i> <%= @mensuration.photo_pied.filename %></p>
         <% end %>
-        <%= file_field_tag :photo_pied, accept: "image/*", class: field_class, data: { action: "change->photo-preview#preview" } %>
+        <%= file_field_tag :photo_pied, accept: "image/jpeg,image/png,image/webp", class: field_class,
+              data: { action: "change->photo-preview#preview" } %>
+        <p class="small text-light opacity-50 mt-2 mb-0">
+          <%= t("mensurations.form.photo_limits",
+                max_mb: Mensuration::MAX_PHOTO_BYTES / 1.megabyte,
+                max_px: Mensuration::MAX_PHOTO_EDGE) %>
+        </p>
+        <p class="small text-danger mt-2 mb-0 d-none" data-photo-preview-target="error"></p>
         <img data-photo-preview-target="image" class="img-thumbnail mt-2 d-none" style="max-height: 180px;" alt="">
-      </div>
       </div>
 
       <div class="d-flex align-items-center mt-3 gap-2 mensuration-form__nav">
@@ -140,6 +174,7 @@
               data: { "form-wizard-target": "submit" } %>
       </div>
     <% end %>
+    </div>
 
     <% if saved %>
       <%= button_to t("mensurations.form.delete"), mensuration_delete_path(token: @invitation.token), method: :delete,

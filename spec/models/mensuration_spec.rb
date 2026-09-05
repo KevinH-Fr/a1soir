@@ -141,6 +141,41 @@ RSpec.describe Mensuration, type: :model do
     end
   end
 
+  describe ".sanitize_measurements" do
+    it "ne garde que les clés du template et les choix prévus" do
+      cleaned = described_class.sanitize_measurements("femme", {
+        "hauteur" => " 168 ",
+        "tour_cou" => "40",
+        "coupe_chemise" => "inconnu"
+      })
+
+      expect(cleaned).to eq("hauteur" => "168")
+    end
+  end
+
+  describe "#complete!" do
+    it "enregistre la fiche, lie le client et marque l'invitation terminée" do
+      mensuration = build_mensuration
+      mensuration.apply_public_input(
+        identity: { prenom: "Jean", nom: "Dupont", ville: "Cannes" },
+        measurements: { "hauteur" => "180", "tour_cou" => "40" }
+      )
+
+      expect { mensuration.complete! }.to change(Client, :count).by(1)
+      expect(mensuration).to be_persisted
+      expect(invitation.reload.status).to eq("completed")
+      expect(mensuration.measurements).to eq("hauteur" => "180", "tour_cou" => "40")
+    end
+
+    it "ne persiste rien si la fiche est invalide" do
+      mensuration = build_mensuration(prenom: "")
+
+      expect(mensuration.complete!).to be(false)
+      expect(mensuration).not_to be_persisted
+      expect(invitation.reload.status).not_to eq("completed")
+    end
+  end
+
   describe "photo" do
     it "refuse un fichier non image" do
       mensuration = build_mensuration

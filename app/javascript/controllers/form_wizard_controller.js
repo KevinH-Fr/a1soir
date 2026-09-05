@@ -132,8 +132,10 @@ export default class extends Controller {
     const guide = this.currentGuide()
     const hidePrev = this.indexValue === 0 && (!guide || guide.atFirst)
 
+    const choiceStep = this.stepTargets[this.indexValue]?.hasAttribute("data-choice-step")
+
     if (this.hasPrevTarget) this.prevTarget.classList.toggle("d-none", hidePrev)
-    if (this.hasNextTarget) this.nextTarget.classList.toggle("d-none", last)
+    if (this.hasNextTarget) this.nextTarget.classList.toggle("d-none", last || choiceStep)
     if (this.hasSubmitTarget) this.submitTarget.classList.toggle("d-none", !last)
     if (this.hasFillTarget) this.fillTarget.classList.toggle("d-none", last)
     if (this.hasDestroyTarget) this.destroyTarget.classList.toggle("d-none", !last)

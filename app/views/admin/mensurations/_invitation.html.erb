@@ -1,6 +1,5 @@
 <% mensuration = invitation.mensuration %>
 <% collapse_id = "collapseInvitation#{dom_id(invitation)}" %>
-<% public_url = invitation.public_form_url %>
 <% status_label, status_icon =
      if invitation.expired? && mensuration.nil?
        ["Lien expiré", "bi-x-circle text-danger"]
@@ -9,7 +8,7 @@
      elsif invitation.status == "verified"
        ["E-mail vérifié", "bi-person-check text-info"]
      else
-       ["Invitée", "bi-envelope text-warning"]
+       ["En cours", "bi-hourglass-split text-warning"]
      end %>
 
 <div id="<%= dom_id invitation %>">
@@ -43,24 +42,6 @@
           </a>
 
           <div class="ms-auto d-flex align-items-center gap-1 flex-nowrap">
-            <button type="button"
-                    class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center"
-                    data-controller="copy-url"
-                    data-copy-url-text-value="<%= public_url %>"
-                    data-action="click->copy-url#copy"
-                    title="Copier le lien">
-              <i class="bi bi-clipboard"></i>
-              <span class="d-none d-lg-inline ms-1" data-copy-url-target="label">Copier</span>
-            </button>
-
-            <%= button_to resend_admin_mensuration_path(invitation), method: :post,
-                  class: "btn btn-sm btn-outline-primary d-inline-flex align-items-center",
-                  title: "Renvoyer le lien",
-                  form: { data: { turbo_confirm: "Renvoyer une invitation à #{invitation.email} ? L'ancien lien sera invalidé." } } do %>
-              <i class="bi bi-envelope-fill"></i>
-              <span class="d-none d-lg-inline ms-1">Renvoyer</span>
-            <% end %>
-
             <%= button_to admin_mensuration_path(invitation), method: :delete,
                   class: "btn btn-sm btn-danger d-inline-flex align-items-center",
                   title: "Supprimer",
@@ -79,14 +60,12 @@
               <%= render "admin/mensurations/fiche",
                     mensuration: mensuration,
                     extra_meta: [
-                      ["Envoyée le", l(invitation.created_at, format: :short)],
-                      ["Message", invitation.message_perso]
+                      ["Démarrée le", l(invitation.created_at, format: :short)]
                     ] %>
             <% else %>
               <div class="mensuration-admin-fiche">
                 <dl class="mensuration-admin-fiche__meta mb-0 pb-0 border-0">
-                  <%= mensuration_admin_meta_item("Envoyée le", l(invitation.created_at, format: :short)) %>
-                  <%= mensuration_admin_meta_item("Message", invitation.message_perso) %>
+                  <%= mensuration_admin_meta_item("Démarrée le", l(invitation.created_at, format: :short)) %>
                 </dl>
               </div>
             <% end %>

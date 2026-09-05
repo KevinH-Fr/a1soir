@@ -1,0 +1,36 @@
+<% field_class = "form-control mensuration-gate__email" %>
+<%= render "public/shared/recaptcha_script" %>
+
+<div class="concept-card mensuration-otp mensuration-gate" data-controller="share-gate">
+  <%= render "public/mensurations/card_header" %>
+  <div class="mensuration-gate__intro">
+    <p><%= t("mensurations.share.intro") %></p>
+    <p><%= t("mensurations.share.intro_email") %></p>
+  </div>
+
+  <%= form_with url: mensuration_start_path, method: :post, local: true,
+        html: { class: "mensuration-otp__actions", data: { action: "submit->share-gate#guard" } } do |f| %>
+    <%= f.hidden_field :form_locale, value: @form_locale.presence || I18n.locale, data: { share_gate_target: "locale" } %>
+
+    <%= f.email_field :email,
+          value: @email,
+          class: field_class,
+          required: true,
+          autocomplete: "email",
+          placeholder: t("mensurations.share.email_placeholder"),
+          "aria-label": t("mensurations.identity.email"),
+          data: { share_gate_target: "email", action: "input->share-gate#emailChanged change->share-gate#emailChanged" } %>
+    <p class="mensuration-gate__field-hint"><%= t("mensurations.share.hint_email") %></p>
+
+    <div class="mensuration-gate__captcha is-locked" data-share-gate-target="captchaSection">
+      <div class="mensuration-gate__captcha-lock" aria-hidden="true"></div>
+      <div data-share-gate-target="captcha" data-sitekey="<%= ENV['RECAPTCHA_SITE_KEY'] %>"></div>
+    </div>
+    <%= f.button type: :submit,
+          class: "btn btn-light public-btn-border-radius mensuration-gate__submit is-pending",
+          disabled: true,
+          data: { share_gate_target: "submit" } do %>
+      <%= t("mensurations.share.submit") %><i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>
+    <% end %>
+  <% end %>
+</div>

@@ -1,4 +1,6 @@
-# Mensurations — draft d’implémentation
+# Mensurations — draft d’implémentation (obsolète)
+
+> Flux actuel : lien unique `/mensurations`, captcha, e-mail, OTP. Voir [`docs/mensurations_evenement_groupe.md`](mensurations_evenement_groupe.md).
 
 Page publique **non référencée**. Accès par invitation admin (e-mail). Pas de fiche client obligatoire pour envoyer le lien.
 
@@ -9,8 +11,8 @@ Page publique **non référencée**. Accès par invitation admin (e-mail). Pas d
 | Qui | Quoi |
 |-----|------|
 | Admin | Titre **Dimensions** — inviter par mail à donner ses mensurations |
-| Client | Lien du mail `/fr/m/:token` (ou `/en/…`) |
-| SEO | Pas de menu public, pas de sitemap, `noindex`, `robots.txt` Disallow `/fr/m/` `/en/m/` |
+| Client | Lien unique `/mensurations` (puis OTP sur `/fr/m/:token` ou `/en/…`) |
+| SEO | Pas de menu public, pas de sitemap, `noindex`, `robots.txt` Disallow `/mensurations` `/fr/m/` `/en/m/` |
 
 Pas de gem à ajouter. Rails suffit : `has_secure_token` (lien, 7 jours), code e-mail 6 chiffres hashé (15 min, ~5 essais), session ~2 h. Modifier / supprimer = **nouveau code**.
 

@@ -3,6 +3,15 @@
 require "rails_helper"
 
 RSpec.describe "Routes mensurations", type: :routing do
+  it "route /mensurations vers la landing publique" do
+    expect(get: "/mensurations").to route_to(
+      controller: "public/mensurations", action: "gate"
+    )
+    expect(post: "/mensurations").to route_to(
+      controller: "public/mensurations", action: "start"
+    )
+  end
+
   it "route /fr/m/:token vers le formulaire (pas vers les pages SEO)" do
     expect(get: "/fr/m/abc123XYZ").to route_to(
       controller: "public/mensurations", action: "show", locale: "fr", token: "abc123XYZ"
@@ -18,6 +27,9 @@ RSpec.describe "Routes mensurations", type: :routing do
     )
     expect(delete: "/fr/m/abc123").to route_to(
       controller: "public/mensurations", action: "destroy", locale: "fr", token: "abc123"
+    )
+    expect(post: "/en/m/abc123/template").to route_to(
+      controller: "public/mensurations", action: "update_template", locale: "en", token: "abc123"
     )
   end
 end

@@ -1,0 +1,16 @@
+<div class="mensuration-locale-switch d-flex align-items-center gap-2">
+  <%= link_to mensuration_locale_switch_path(:fr),
+        class: "btn public-btn-border-radius d-inline-flex align-items-center gap-2 #{I18n.locale == :fr ? 'btn-light text-dark' : 'btn-outline-light'}",
+        aria: { current: (I18n.locale == :fr ? "true" : nil), label: t("mensurations.share.locale_fr") } do %>
+    <%= image_tag "/images/fr.webp", alt: "", width: 16, height: 16, class: "rounded-circle", style: "object-fit: cover;" %>
+    <span class="d-none d-sm-inline"><%= t("mensurations.share.locale_fr") %></span>
+    <span class="d-sm-none">FR</span>
+  <% end %>
+  <%= link_to mensuration_locale_switch_path(:en),
+        class: "btn public-btn-border-radius d-inline-flex align-items-center gap-2 #{I18n.locale == :en ? 'btn-light text-dark' : 'btn-outline-light'}",
+        aria: { current: (I18n.locale == :en ? "true" : nil), label: t("mensurations.share.locale_en") } do %>
+    <%= image_tag "/images/uk.webp", alt: "", width: 16, height: 16, class: "rounded-circle", style: "object-fit: cover;" %>
+    <span class="d-none d-sm-inline"><%= t("mensurations.share.locale_en") %></span>
+    <span class="d-sm-none">EN</span>
+  <% end %>
+</div>

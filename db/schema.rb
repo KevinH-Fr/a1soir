@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_09_03_130000) do
+ActiveRecord::Schema[7.2].define(version: 2026_09_05_114000) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -305,8 +305,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_03_130000) do
     t.string "email", null: false
     t.string "token", null: false
     t.datetime "expires_at", null: false
-    t.string "template", null: false
-    t.string "locale", default: "fr", null: false
+    t.string "template"
+    t.string "locale"
     t.string "prenom"
     t.string "nom"
     t.text "message_perso"
@@ -466,6 +466,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_03_130000) do
     t.integer "unit_amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "refunded_at"
     t.index ["produit_id"], name: "index_stripe_payment_items_on_produit_id"
     t.index ["stripe_payment_id"], name: "index_stripe_payment_items_on_stripe_payment_id"
   end

@@ -1,27 +1,12 @@
 class MensurationMailer < ApplicationMailer
   layout "mailer"
 
-  # Lien d'invitation vers /m/:token, dans la langue choisie à l'invitation.
-  def invitation(invitation)
-    @invitation = invitation
-    @url = invitation.public_form_url
-
-    I18n.with_locale(invitation.locale) do
-      attach_inline_logo
-
-      mail(to: invitation.email, subject: I18n.t("mensurations.mailer.invitation.subject")) do |format|
-        format.html { render template: "admin/mensuration_mailer/invitation", layout: "mailer" }
-        format.text { render template: "admin/mensuration_mailer/invitation" }
-      end
-    end
-  end
-
   # Code de vérification : reçu en clair ici uniquement, seul le hash est en base.
   def otp_code(invitation, code)
     @invitation = invitation
     @code = code
 
-    I18n.with_locale(invitation.locale) do
+    I18n.with_locale(@invitation.locale.presence || :fr) do
       attach_inline_logo
 
       mail(to: invitation.email, subject: I18n.t("mensurations.mailer.otp.subject")) do |format|

@@ -4,9 +4,11 @@ import FormWizardController from "./controllers/form_wizard_controller"
 import FormRevealController from "./controllers/form_reveal_controller"
 import PhotoPreviewController from "./controllers/photo_preview_controller"
 import MeasureGuideController from "./controllers/measure_guide_controller"
+import ShareGateController from "./controllers/share_gate_controller"
 
 application.register("otp-submit", OtpSubmitController)
 application.register("form-wizard", FormWizardController)
 application.register("form-reveal", FormRevealController)
 application.register("photo-preview", PhotoPreviewController)
 application.register("measure-guide", MeasureGuideController)
+application.register("share-gate", ShareGateController)
