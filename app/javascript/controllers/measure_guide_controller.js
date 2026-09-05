@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { ZONES, drawRuler, hideRuler, setRulerLabel } from "../mensuration/figure_zones"
 
 export default class extends Controller {
-  static targets = ["field", "figure", "ruler"]
+  static targets = ["field", "figure", "ruler", "title", "howto"]
   static values = { index: { type: Number, default: 0 } }
 
   connect() {
@@ -69,7 +69,21 @@ export default class extends Controller {
     this.fieldTargets.forEach((field, i) => {
       field.classList.toggle("d-none", i !== this.indexValue)
     })
+    this.syncCaption()
     this.highlight()
+  }
+
+  syncCaption() {
+    const field = this.fieldTargets[this.indexValue]
+    const title = field?.dataset.title || ""
+    const howto = field?.dataset.howto || ""
+
+    if (this.hasTitleTarget) this.titleTarget.textContent = title
+    if (this.hasHowtoTarget) {
+      this.howtoTarget.textContent = howto
+      this.howtoTarget.classList.toggle("d-none", !howto)
+    }
+    this.element.classList.toggle("mensuration-guide--howto", Boolean(howto))
   }
 
   highlight() {
@@ -106,7 +120,10 @@ export default class extends Controller {
   }
 
   measureLabel() {
+    const name = this.currentFieldRoot()?.dataset.ruler || ""
     const value = this.measureInput?.value?.toString().trim()
+    if (name && value) return `${name} · ${value} cm`
+    if (name) return `${name} · cm`
     return value ? `${value} cm` : "cm"
   }
 }

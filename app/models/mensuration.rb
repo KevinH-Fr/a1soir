@@ -8,9 +8,9 @@ class Mensuration < ApplicationRecord
 
   validates :template, inclusion: { in: MensurationInvitation::TEMPLATES }
   validates :locale, inclusion: { in: %w[fr en] }
-  validates :nom, presence: true
-  validates :prenom, presence: true
-  validate :photo_pied_must_be_image
+  validates :nom, presence: true, on: :complete
+  validates :prenom, presence: true, on: :complete
+  validate :photo_pied_must_be_image, on: :complete
 
   PHOTO_CONTENT_TYPES = %w[image/jpeg image/jpg image/png image/webp].freeze
   MAX_PHOTO_BYTES = 8.megabytes
@@ -76,9 +76,15 @@ class Mensuration < ApplicationRecord
     self.photo_pied = photo if photo.present?
   end
 
+  def save_draft!(wizard_index:)
+    self.draft_wizard_index = wizard_index
+    save(validate: false)
+  end
+
   def complete!
     transaction do
-      return false unless save
+      self.draft_wizard_index = nil
+      return false unless save(context: :complete)
 
       resolve_and_link_client!
       mensuration_invitation.update!(status: "completed")

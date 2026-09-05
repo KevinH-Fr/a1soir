@@ -215,6 +215,9 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect(response.body).to include("measure-guide")
       expect(response.body).to include("/images/human_body.svg")
       expect(response.body).to include('data-clip="full"')
+      expect(response.body).to include('data-measure-guide-target="title"')
+      expect(response.body).to include("data-title=\"#{I18n.t("mensurations.fields.hauteur.name", locale: :fr)}\"")
+      expect(response.body).to include('data-ruler="taille"')
       expect(response.body).not_to include('data-clip="chest"')
     end
 
@@ -265,7 +268,104 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect(invitation.mensuration.reload.template).to eq("homme")
       expect(invitation.mensuration.value_for("taille_soutien_gorge")).to be_nil
       expect(invitation.mensuration.value_for("hauteur")).to eq("168")
+      expect(response).to redirect_to("/fr/m/#{invitation.token}?edit=1&resume=identity")
+    end
+  end
+
+  describe "navigation Merci / édition" do
+    before { open_otp_session }
+
+    def save_mensuration
+      post "/fr/m/#{invitation.token}", params: {
+        mensuration: { prenom: "Anna", nom: "Durand" },
+        measurements: { hauteur: "168", taille_soutien_gorge: "90D" }
+      }
+    end
+
+    it "affiche la page Merci après enregistrement avec lien d'édition" do
+      save_mensuration
+      follow_redirect!
+
+      expect(response.body).to include("mensuration-form__thanks")
+      expect(response.body).to include(I18n.t("mensurations.form.thanks_title", locale: :fr))
+      expect(response.body).to include("edit=1")
+      expect(response.body).to include("resume=identity")
+      expect(response.body).to include("mensuration-delete-link")
+      expect(response.body).not_to include("form-reveal")
+      expect(response.body).not_to include(I18n.t("mensurations.form.hide_answers", locale: :fr))
+      expect(response.body).not_to include("measure-guide")
+    end
+
+    it "ouvre le wizard en édition avec retour vers Merci" do
+      save_mensuration
+
+      get "/fr/m/#{invitation.token}", params: { edit: 1, resume: "identity" }
+
+      expect(response.body).to include('data-form-wizard-target="home"')
+      expect(response.body).to include(%(href="/fr/m/#{invitation.token}"))
+      expect(response.body).to include('data-form-wizard-index-value="1"')
+      expect(response.body).to include('data-form-wizard-saved-value="true"')
+      expect(response.body).not_to include("mensuration-form__thanks")
+      expect(response.body).to include("measure-guide")
+    end
+
+    it "redirige le changement de template vers l'édition si la fiche est enregistrée" do
+      save_mensuration
+
+      post "/fr/m/#{invitation.token}/template", params: { template: "homme" }
+
+      expect(response).to redirect_to("/fr/m/#{invitation.token}?edit=1&resume=identity")
+    end
+
+    it "redirige le changement de template vers les coordonnées au premier envoi" do
+      post "/fr/m/#{invitation.token}/template", params: { template: "homme" }
+
       expect(response).to redirect_to("/fr/m/#{invitation.token}?resume=identity")
+    end
+  end
+
+  describe "brouillon" do
+    before { open_otp_session }
+
+    it "enregistre la progression à chaque étape sans finaliser" do
+      post "/fr/m/#{invitation.token}/draft", params: {
+        wizard_index: 2,
+        mensuration: { prenom: "Anna", nom: "Durand", telephone: "0611111111" },
+        measurements: { hauteur: "168" }
+      }
+
+      expect(response).to have_http_status(:no_content)
+      mensuration = invitation.reload.mensuration
+      expect(mensuration).to be_present
+      expect(mensuration.prenom).to eq("Anna")
+      expect(mensuration.draft_wizard_index).to eq(2)
+      expect(invitation.status).not_to eq("completed")
+      expect(Client.count).to eq(0)
+    end
+
+    it "reprend le wizard à la dernière étape sauvegardée" do
+      post "/fr/m/#{invitation.token}/draft", params: {
+        wizard_index: 2,
+        mensuration: { prenom: "Anna", nom: "Durand" },
+        measurements: { hauteur: "168" }
+      }
+
+      get "/fr/m/#{invitation.token}"
+
+      expect(response.body).to include('data-form-wizard-index-value="2"')
+      expect(response.body).to include('value="Anna"')
+      expect(response.body).not_to include("mensuration-form__thanks")
+    end
+
+    it "refuse le brouillon sans session OTP" do
+      reset!
+      post "/fr/m/#{invitation.token}/draft", params: {
+        wizard_index: 2,
+        mensuration: { prenom: "Anna", nom: "Durand" }
+      }
+
+      expect(response).to redirect_to("/fr/m/#{invitation.token}")
+      expect(Mensuration.count).to eq(0)
     end
   end
 
@@ -288,13 +388,15 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect(invitation.reload.status).to eq("completed")
 
       follow_redirect!
-      expect(response.body).to include("mensuration-flash--saved")
+      expect(response.body).to include("mensuration-card-header")
+      expect(response.body).to include("mensuration-form__thanks")
       expect(response.body).to include(I18n.t("mensurations.form.thanks_title", locale: :fr))
       expect(response.body).to include(I18n.t("mensurations.form.show_answers", locale: :fr))
-      expect(response.body).to include("d-none")
+      expect(response.body).to include("edit=1")
       expect(response.body).to include("mensuration-delete-link")
       expect(response.body).not_to include("btn-outline-danger")
-      expect(response.body).to include("measure-guide")
+      expect(response.body).not_to include("form-reveal")
+      expect(response.body).not_to include("measure-guide")
     end
 
     it "rattache au client existant si l'e-mail correspond" do
@@ -398,6 +500,9 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect(response.body).to include(I18n.t("mensurations.fields.tour_cou.label", locale: :en))
       expect(response.body).to include("/images/human_body.svg")
       expect(response.body).to include('data-clip="neck"')
+      expect(response.body).to include("data-title=\"#{I18n.t("mensurations.fields.tour_cou.name", locale: :en)}\"")
+      expect(response.body).to include('data-ruler="neck"')
+      expect(response.body).to include(I18n.t("mensurations.fields.tour_cou.advice", locale: :en))
     end
   end
 end

@@ -153,6 +153,23 @@ RSpec.describe Mensuration, type: :model do
     end
   end
 
+  describe "#save_draft!" do
+    it "persiste la fiche sans valider ni terminer l'invitation" do
+      mensuration = build_mensuration(prenom: nil, nom: nil)
+      mensuration.apply_public_input(
+        identity: { prenom: "Jean", telephone: "0611111111" },
+        measurements: { "hauteur" => "180" }
+      )
+
+      expect(mensuration.save_draft!(wizard_index: 2)).to be(true)
+      expect(mensuration).to be_persisted
+      expect(mensuration.draft_wizard_index).to eq(2)
+      expect(mensuration.prenom).to eq("Jean")
+      expect(invitation.reload.status).not_to eq("completed")
+      expect(Client.count).to eq(0)
+    end
+  end
+
   describe "#complete!" do
     it "enregistre la fiche, lie le client et marque l'invitation terminée" do
       mensuration = build_mensuration
@@ -181,7 +198,7 @@ RSpec.describe Mensuration, type: :model do
       mensuration = build_mensuration
       mensuration.photo_pied.attach(io: StringIO.new("plain"), filename: "notes.txt", content_type: "text/plain")
 
-      expect(mensuration).not_to be_valid
+      expect(mensuration).not_to be_valid(:complete)
     end
   end
 end

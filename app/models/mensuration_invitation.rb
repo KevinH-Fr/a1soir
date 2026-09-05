@@ -47,6 +47,10 @@ class MensurationInvitation < ApplicationRecord
     locale.present? && template.present?
   end
 
+  def completed?
+    status == "completed"
+  end
+
   # Lien public unique (admin « Copier ») : hôte boutique, pas le sous-domaine admin.
   def self.public_share_url
     Rails.application.routes.url_helpers.mensuration_gate_url(

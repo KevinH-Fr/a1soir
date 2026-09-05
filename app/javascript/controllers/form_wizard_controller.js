@@ -1,15 +1,20 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["step", "bar", "caption", "prev", "next", "submit", "fill", "destroy"]
-  static values = { index: { type: Number, default: 0 } }
+  static targets = ["step", "bar", "caption", "prev", "next", "submit", "fill", "home"]
+  static values = {
+    index: { type: Number, default: 0 },
+    saved: { type: Boolean, default: false },
+    draftUrl: String,
+    draftError: { type: String, default: "Could not save your progress." }
+  }
 
   connect() {
     this.enterFromPrev = false
     this.show()
   }
 
-  next() {
+  async next() {
     const guide = this.currentGuide()
     if (guide && !guide.atLast) {
       if (!guide.validateCurrent()) return
@@ -20,8 +25,11 @@ export default class extends Controller {
 
     if (!this.validateCurrent()) return
     if (this.indexValue < this.stepTargets.length - 1) {
+      const nextIndex = this.indexValue + 1
+      if (!(await this.persistDraft(nextIndex))) return
+
       this.enterFromPrev = false
-      this.indexValue++
+      this.indexValue = nextIndex
       this.show()
     }
   }
@@ -130,15 +138,18 @@ export default class extends Controller {
     const totalSteps = this.stepTargets.length
     const last = this.indexValue === totalSteps - 1
     const guide = this.currentGuide()
-    const hidePrev = this.indexValue === 0 && (!guide || guide.atFirst)
+    const startIndex = this.savedValue ? 1 : 0
+    const atStart = this.indexValue === startIndex && (!guide || guide.atFirst)
+    const showHome = this.savedValue && atStart
+    const hidePrev = showHome || (!this.savedValue && atStart)
 
     const choiceStep = this.stepTargets[this.indexValue]?.hasAttribute("data-choice-step")
 
+    if (this.hasHomeTarget) this.homeTarget.classList.toggle("d-none", !showHome)
     if (this.hasPrevTarget) this.prevTarget.classList.toggle("d-none", hidePrev)
     if (this.hasNextTarget) this.nextTarget.classList.toggle("d-none", last || choiceStep)
     if (this.hasSubmitTarget) this.submitTarget.classList.toggle("d-none", !last)
     if (this.hasFillTarget) this.fillTarget.classList.toggle("d-none", last)
-    if (this.hasDestroyTarget) this.destroyTarget.classList.toggle("d-none", !last)
 
     const { current, total } = this.progressUnits()
     const percent = Math.round((current / total) * 100)
@@ -156,6 +167,32 @@ export default class extends Controller {
       "mensuration-shell--guided",
       Boolean(guide?.figureVisible)
     )
+  }
+
+  async persistDraft(wizardIndex) {
+    if (!this.hasDraftUrlValue) return true
+
+    const form = this.element.querySelector("form")
+    if (!form) return true
+
+    const data = new FormData(form)
+    data.append("wizard_index", String(wizardIndex))
+
+    const token = document.querySelector('meta[name="csrf-token"]')?.content
+    const response = await fetch(this.draftUrlValue, {
+      method: "POST",
+      body: data,
+      headers: {
+        "X-CSRF-Token": token,
+        Accept: "application/json"
+      },
+      credentials: "same-origin"
+    })
+
+    if (response.ok) return true
+
+    window.alert(this.draftErrorValue)
+    return false
   }
 
   currentGuide() {

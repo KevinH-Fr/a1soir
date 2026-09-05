@@ -15,7 +15,7 @@ module Public
     before_action :set_invitation, except: [:gate, :start]
     before_action :sync_invitation_locale, except: [:gate, :start]
     before_action :load_footer_texte
-    before_action :require_otp_session, only: [:save, :destroy, :update_template]
+    before_action :require_otp_session, only: [:save, :draft, :destroy, :update_template]
 
     def gate
       @email = ""
@@ -60,6 +60,7 @@ module Public
     def show
       if otp_session_valid?
         @mensuration = @invitation.mensuration || @invitation.build_public_mensuration
+        @editing = @invitation.completed? && params[:edit].present?
         @wizard_index = wizard_start_index
         render :form
       else
@@ -76,7 +77,11 @@ module Public
       end
 
       @invitation.apply_template!(template)
-      redirect_to mensuration_path(token: @invitation.token, resume: "identity")
+      if @invitation.completed?
+        redirect_to mensuration_path(token: @invitation.token, edit: 1, resume: "identity")
+      else
+        redirect_to mensuration_path(token: @invitation.token, resume: "identity")
+      end
     end
 
     def send_otp
@@ -97,6 +102,31 @@ module Public
       end
     end
 
+    def draft
+      unless @invitation.preferences_chosen?
+        head :unprocessable_entity
+        return
+      end
+
+      wizard_index = params[:wizard_index].to_i
+      if wizard_index < 1
+        head :unprocessable_entity
+        return
+      end
+
+      @mensuration = @invitation.mensuration || @invitation.build_public_mensuration
+      @mensuration.apply_public_input(
+        identity: identity_params,
+        measurements: permitted_measurements
+      )
+
+      if @mensuration.save_draft!(wizard_index: wizard_index)
+        head :no_content
+      else
+        head :unprocessable_entity
+      end
+    end
+
     def save
       unless @invitation.preferences_chosen?
         redirect_to mensuration_path(token: @invitation.token), alert: t("mensurations.share.choose_preferences")
@@ -113,7 +143,7 @@ module Public
       if @mensuration.complete!
         redirect_to mensuration_path(token: @invitation.token)
       else
-        @editing = true
+        @editing = @invitation.completed? || params[:edit].present?
         @wizard_index = wizard_start_index
         flash.now[:alert] = @mensuration.errors.full_messages.to_sentence
         render :form, status: :unprocessable_entity
@@ -177,7 +207,14 @@ module Public
     end
 
     def wizard_start_index
+      if @invitation.completed?
+        return 1 if params[:resume] == "identity" || @editing
+
+        return 0
+      end
+
       return 1 if params[:resume] == "identity"
+      return @mensuration.draft_wizard_index if @mensuration&.draft_wizard_index.present?
 
       0
     end

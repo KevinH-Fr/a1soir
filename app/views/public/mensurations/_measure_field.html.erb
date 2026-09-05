@@ -2,11 +2,18 @@
 <% key = field["key"] %>
 <% hint = t("mensurations.fields.#{key}.hint", default: "") %>
 <% advice = t("mensurations.fields.#{key}.advice", default: "") %>
-<% caption = "#{t("mensurations.fields.#{key}.short")}#{" *" if field["required"]}" %>
+<% name = mensuration_field_caption(key) %>
+<% dock = guided && field["clip"].present? %>
+<% caption = "#{dock ? name : t("mensurations.fields.#{key}.short")}#{" *" if field["required"]}" %>
 <div class="<%= guided ? "mensuration-guide__field" : (field["input"] == "textarea" ? "col-12" : "col-6") %>"
      <% if guided %>
        data-measure-guide-target="field"
-       <% if field["clip"].present? %>data-clip="<%= field["clip"] %>"<% end %>
+       data-title="<%= name %>"
+       <% if advice.present? %>data-howto="<%= advice %>"<% end %>
+       <% if field["clip"].present? %>
+         data-clip="<%= field["clip"] %>"
+         <% if (ruler = mensuration_field_ruler(key)).present? %>data-ruler="<%= ruler %>"<% end %>
+       <% end %>
      <% end %>>
   <% case field["input"] %>
   <% when "choice" %>
@@ -21,11 +28,14 @@
   <% else %>
     <%= mensuration_labeled_field "measurements[#{key}]", mensuration.value_for(key), caption,
           required: field["required"],
-          placeholder: (guided && field["clip"].present? ? t("mensurations.form.measure_placeholder") : hint.presence),
+          placeholder: (dock ? mensuration_field_example(key) : hint.presence),
           title: hint.presence || t("mensurations.fields.#{key}.label"),
-          layout: :group %>
+          layout: :group,
+          class: ("mensuration-guide__value" if dock),
+          addon: (t("mensurations.form.measure_placeholder") if dock),
+          "aria-label" => caption %>
   <% end %>
-  <% if guided && advice.present? %>
+  <% if guided && !dock && advice.present? %>
     <%= render "public/mensurations/advice", text: advice, extra_class: "mensuration-guide__field-advice" %>
   <% end %>
 </div>

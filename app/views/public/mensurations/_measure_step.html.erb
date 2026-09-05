@@ -5,12 +5,16 @@
 <div class="d-none" data-form-wizard-target="step">
   <h2 class="h6 mb-2 text-light"><%= t("mensurations.form.#{step_key}_title") %></h2>
   <% if hint.present? && !(guided && figured.any?) %>
-    <%= render "public/mensurations/advice", text: hint, extra_class: "mb-3" %>
+    <%= render "public/mensurations/advice", text: hint, extra_class: "mb-3 mensuration-form__advice--quiet" %>
   <% end %>
 
-      <% if guided && figured.any? %>
+  <% if guided && figured.any? %>
     <div class="mensuration-guide" data-controller="measure-guide">
       <div class="mensuration-guide__figure" data-measure-guide-target="figure">
+        <div class="mensuration-guide__caption">
+          <h2 class="mensuration-guide__title" data-measure-guide-target="title"></h2>
+          <p class="mensuration-guide__howto d-none" data-measure-guide-target="howto"></p>
+        </div>
         <%= render "public/mensurations/figure_svg" %>
       </div>
       <div class="mensuration-guide__fields">

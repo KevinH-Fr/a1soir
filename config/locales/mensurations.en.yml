@@ -15,6 +15,7 @@ en:
       corps_hint: "Stand upright, without shoes, looking at the horizon."
       photo_title: "Full-length photo"
       measure_placeholder: "cm"
+      measure_ellipsis: "…"
       next: "Continue"
       prev: "Back"
       step: "Step %{current} of %{total}"
@@ -25,11 +26,11 @@ en:
       delete: "Delete this form"
       delete_confirm: "Permanently delete your measurements and photo?"
       saved: "Thank you! Your measurements have been saved."
-      thanks_title: "Your measurements have been saved"
-      thanks_body: "Your measurements have been sent. You can review or edit them if needed."
+      thanks_title: "Thank you, your measurements have been saved successfully"
       show_answers: "View and edit my answers"
       hide_answers: "Hide my answers"
       deleted: "Your form has been deleted."
+      draft_failed: "Could not save your progress. Please try again."
       already_completed: "Your form is saved. To edit or delete it, please verify your email again."
     photo:
       invalid_format: "Please use a JPEG, PNG or WebP image."
@@ -93,8 +94,11 @@ en:
     fields:
       hauteur:
         label: "Your total height in cm, without shoes"
+        name: "Height"
         short: "Height (cm)"
+        ruler: "height"
         hint: "e.g. 168 for 1.68 m"
+        example: "e.g. 168"
         advice: "Stand upright, without shoes, looking at the horizon."
       taille_robe_marque:
         label: "Your dress size (ready-to-wear) + brand"
@@ -122,7 +126,11 @@ en:
         hint: "e.g. 90D, 85B"
       tour_cou:
         label: "Your neck size in cm"
+        name: "Neck"
         short: "Neck (cm)"
+        ruler: "neck"
+        example: "e.g. 38"
+        advice: "Measure at the base of the neck."
       coupe_chemise:
         label: "Your preferred shirt fit"
         short: "Shirt fit"
@@ -136,26 +144,52 @@ en:
         hint: "e.g. 37-38 or 45-46"
       tour_poitrine:
         label: "Your chest size in cm"
+        name: "Chest"
         short: "Chest (cm)"
+        ruler: "chest"
+        example: "e.g. 90"
+        advice: "Measure horizontally at the fullest point."
       tour_taille:
         label: "Your waist size in cm"
+        name: "Waist"
         short: "Waist (cm)"
+        ruler: "waist"
+        example: "e.g. 70"
+        advice: "Measure at the natural waist, the narrowest point."
       tour_hanches:
         label: "Your hip size in cm"
+        name: "Hips"
         short: "Hips (cm)"
+        ruler: "hips"
+        example: "e.g. 96"
+        advice: "Measure at the widest point."
       largeur_epaules:
         label: "Your shoulder width in cm"
+        name: "Shoulders"
         short: "Shoulders (cm)"
+        ruler: "shoulders"
+        example: "e.g. 40"
+        advice: "Measure from one shoulder tip to the other."
       longueur_bras_ext:
         label: "Your outer arm length in cm"
+        name: "Arm length"
         short: "Arm length (cm)"
+        ruler: "arm"
+        example: "e.g. 60"
+        advice: "Measure from the shoulder to the wrist."
       longueur_jambe_ext:
         label: "Your outer leg length starting from the waist, in cm"
+        name: "Outer leg"
         short: "Outer leg (cm)"
+        ruler: "leg"
+        example: "e.g. 102"
         advice: "Measure starting from the waistband."
       longueur_jambe_int:
         label: "Your inner leg length starting from the crotch, in cm"
+        name: "Inner leg"
         short: "Inner leg (cm)"
+        ruler: "leg"
+        example: "e.g. 78"
         advice: "Measure starting from the crotch."
       taille_pantalon_marque:
         label: "Your trousers size (ready-to-wear) + brand"
@@ -163,11 +197,17 @@ en:
         hint: "e.g. 42, 56"
       tour_taille_ceinture:
         label: "Your waist size at your trousers' belt, in cm"
+        name: "Belt waist"
         short: "Belt waist (cm)"
+        ruler: "belt"
+        example: "e.g. 80"
         advice: "Measure at your trouser waistband."
       tour_hanches_pantalon:
         label: "Your hip size at the widest part, in cm"
+        name: "Trousers hips"
         short: "Trousers hips (cm)"
+        ruler: "hips"
+        example: "e.g. 98"
         advice: "Measure at the widest part."
       pointure:
         label: "Your shoe size"

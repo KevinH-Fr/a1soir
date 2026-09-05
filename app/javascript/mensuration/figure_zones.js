@@ -104,9 +104,10 @@ function knobOf(layout, which) {
 
 function placeLabel(nodes, layout, label) {
   const str = label || "cm"
-  const fs = 6.3
-  const padX = 3.6
-  const w = Math.max(18, str.length * 3.65) + padX * 2
+  const compact = str.length > 16
+  const fs = compact ? 5.4 : 6.3
+  const padX = compact ? 3.1 : 3.6
+  const w = Math.max(18, str.length * (compact ? 3.15 : 3.65)) + padX * 2
   const h = 10.2
   let x
   let y

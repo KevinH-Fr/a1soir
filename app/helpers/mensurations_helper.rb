@@ -7,8 +7,23 @@ module MensurationsHelper
   LABEL = "form-label small text-light opacity-75 mb-1"
   GROUP_LABEL = "input-group-text"
 
+  def mensuration_field_caption(key)
+    t("mensurations.fields.#{key}.name", default: "").presence ||
+      t("mensurations.fields.#{key}.short").to_s.sub(/\s*\(cm\)\s*\z/i, "")
+  end
+
+  def mensuration_field_ruler(key)
+    t("mensurations.fields.#{key}.ruler", default: "").presence
+  end
+
+  def mensuration_field_example(key)
+    t("mensurations.fields.#{key}.example", default: "").presence ||
+      t("mensurations.form.measure_ellipsis")
+  end
+
   def mensuration_labeled_field(name, value, label, type: :text, layout: :group, **opts)
     id = opts.delete(:id).presence || (name.present? ? sanitize_to_id(name) : nil)
+    addon = opts.delete(:addon)
     classes = [(layout == :group ? GROUP_CONTROL : CONTROL), opts.delete(:class)].compact.join(" ")
     field_opts = opts.merge(id: id, class: classes)
 
@@ -19,7 +34,7 @@ module MensurationsHelper
             else text_field_tag(name, value, field_opts)
             end
 
-    return grouped_control(id, label, field) if layout == :group
+    return grouped_control(id, label, field, suffix: addon) if layout == :group
 
     safe_join([label_tag(id, label, class: LABEL), field])
   end
@@ -80,9 +95,17 @@ module MensurationsHelper
 
   private
 
-  def grouped_control(id, label, field)
+  def grouped_control(id, label, field, suffix: nil)
     content_tag(:div, class: "input-group input-group-sm") do
-      safe_join([label_tag(id, label, class: GROUP_LABEL), field])
+      if suffix.present?
+        safe_join([
+          (label_tag(id, label, class: "visually-hidden") if label.present?),
+          field,
+          content_tag(:span, suffix, class: GROUP_LABEL, "aria-hidden": true)
+        ].compact)
+      else
+        safe_join([label_tag(id, label, class: GROUP_LABEL), field])
+      end
     end
   end
 end

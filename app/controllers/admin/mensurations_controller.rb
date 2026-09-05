@@ -4,7 +4,7 @@ class Admin::MensurationsController < Admin::ApplicationController
 
   def index
     @q = MensurationInvitation.ransack(params[:q])
-    scope = @q.result.includes(:client, :mensuration).order(created_at: :desc)
+    scope = @q.result.where(status: "completed").includes(:client, :mensuration).order(created_at: :desc)
     @count_invitations = scope.count
     @invitations = scope
     @share_url = MensurationInvitation.public_share_url

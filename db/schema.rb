@@ -337,6 +337,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_05_114000) do
     t.string "locale", default: "fr", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "draft_wizard_index"
     t.index ["client_id"], name: "index_mensurations_on_client_id"
     t.index ["mensuration_invitation_id"], name: "index_mensurations_on_mensuration_invitation_id", unique: true
   end
