@@ -31,5 +31,14 @@ RSpec.describe "Routes mensurations", type: :routing do
     expect(post: "/en/m/abc123/template").to route_to(
       controller: "public/mensurations", action: "update_template", locale: "en", token: "abc123"
     )
+    expect(delete: "/fr/m/abc123/template").to route_to(
+      controller: "public/mensurations", action: "reset_template", locale: "fr", token: "abc123"
+    )
+    expect(patch: "/fr/m/abc123/step").to route_to(
+      controller: "public/mensurations", action: "update_step", locale: "fr", token: "abc123"
+    )
+    expect(post: "/fr/m/abc123/complete").to route_to(
+      controller: "public/mensurations", action: "complete", locale: "fr", token: "abc123"
+    )
   end
 end

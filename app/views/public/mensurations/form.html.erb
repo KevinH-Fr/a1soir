@@ -1,10 +1,10 @@
-<% field_class = "form-control form-control-sm bg-dark text-light border-secondary" %>
 <% completed = @invitation.completed? %>
 <% editing = @editing == true %>
 <% thanks = completed && !editing %>
+<% field_class = "form-control form-control-sm bg-dark text-light border-secondary" %>
 
 <div class="mensuration-flow<%= " mensuration-flow--saved" if completed %>">
-  <div class="concept-card mensuration-form mx-1">
+  <div class="concept-card mensuration-form">
     <%= render "public/mensurations/card_header" %>
 
     <% if thanks %>
@@ -12,7 +12,7 @@
         <i class="bi bi-check-circle-fill mensuration-form__thanks-icon" aria-hidden="true"></i>
         <p class="mensuration-form__thanks-title"><%= t("mensurations.form.thanks_title") %></p>
         <%= link_to t("mensurations.form.show_answers"),
-              mensuration_path(token: @invitation.token, edit: 1, resume: "identity"),
+              mensuration_path(token: @invitation.token, edit: 1, step: Mensuration::Flow::IDENTITY),
               class: "btn btn-sm btn-outline-light public-btn-border-radius mensuration-form__thanks-action" %>
         <%= button_to t("mensurations.form.delete"), mensuration_delete_path(token: @invitation.token), method: :delete,
               class: "mensuration-delete-link",
@@ -22,38 +22,11 @@
               } %>
       </div>
     <% else %>
-      <div data-controller="form-wizard photo-preview"
-           data-form-wizard-index-value="<%= @wizard_index.to_i %>"
-           data-form-wizard-restore-guide-value="<%= @guide_index.present? %>"
-           data-form-wizard-guide-index-value="<%= @guide_index.to_i %>"
-           data-form-wizard-saved-value="<%= completed ? "true" : "false" %>"
-           data-form-wizard-draft-url-value="<%= mensuration_draft_path(token: @invitation.token) %>"
-           data-form-wizard-draft-error-value="<%= t("mensurations.form.draft_failed") %>"
-           data-photo-preview-max-bytes-value="<%= Mensuration::MAX_PHOTO_BYTES %>"
-           data-photo-preview-max-edge-value="<%= Mensuration::MAX_PHOTO_EDGE %>"
-           data-photo-preview-msg-format-value="<%= t("mensurations.photo.invalid_format") %>"
-           data-photo-preview-msg-weight-value="<%= t("mensurations.photo.too_large", max_mb: Mensuration::MAX_PHOTO_BYTES / 1.megabyte) %>"
-           data-photo-preview-msg-too-big-value="<%= t("mensurations.photo.too_big", max_px: Mensuration::MAX_PHOTO_EDGE) %>"
-           class="mensuration-form__body">
-        <% if @invitation.template.present? %>
-          <p class="small mb-3 text-light opacity-75"><%= t("mensurations.form.intro") %></p>
-        <% end %>
-        <div class="mensuration-form__progress<%= " d-none" if @invitation.template.blank? %>"
-             data-form-wizard-target="progress">
-          <div class="small text-light opacity-75 mb-1"
-               data-form-wizard-target="caption"
-               data-template="<%= t("mensurations.form.step") %>">
-            <%= t("mensurations.form.step", current: 1, total: 3) %>
-          </div>
-          <div class="progress mensuration-form__stitch-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33">
-            <div class="progress-bar mensuration-form__stitch-fill" data-form-wizard-target="bar" style="width: 33%;"></div>
-          </div>
-        </div>
-
-        <% choice_class = "btn btn-outline-light public-btn-border-radius mensuration-form__template-btn" %>
-        <% current_template = @invitation.template.presence %>
-        <div class="mensuration-form__stage">
-          <div data-form-wizard-target="step" data-choice-step>
+      <div class="mensuration-form__body">
+        <% if @invitation.template.blank? %>
+          <% choice_class = "btn btn-outline-light public-btn-border-radius mensuration-form__template-btn" %>
+          <% current_template = @invitation.template.presence %>
+          <div class="mensuration-form__stage">
             <h2 class="mensuration-form__template-lead"><%= t("mensurations.share.template_step") %></h2>
             <div class="d-flex mensuration-form__template-choice">
               <%= button_to t("mensurations.share.template_femme"),
@@ -68,122 +41,15 @@
                     class: "#{choice_class}#{' is-selected btn-light text-dark' if current_template == 'homme'}" %>
             </div>
           </div>
+        <% else %>
+          <div class="mensuration-form__stage">
+            <%= render "public/mensurations/progress_frame", flow: @flow, step: @step %>
 
-        <%= form_with url: mensuration_save_path(token: @invitation.token), method: :post, local: true, multipart: true do |f| %>
-          <div data-form-wizard-target="step" class="d-none mensuration-form__identity">
-            <h2 class="h6 mb-2 text-light"><%= t("mensurations.form.identity_title") %></h2>
-            <div class="row g-2 mensuration-form__identity-row">
-              <div class="col-md-6">
-                <%= mensuration_labeled_field "mensuration[prenom]", @mensuration.prenom,
-                      t("mensurations.identity.prenom"), required: true %>
-              </div>
-              <div class="col-md-6">
-                <% if mensuration_nom_locked? %>
-                  <%= mensuration_labeled_field nil, @mensuration.nom, t("mensurations.identity.nom"),
-                        disabled: true, id: "mensuration_nom", class: "opacity-75" %>
-                <% else %>
-                  <%= mensuration_labeled_field "mensuration[nom]", @mensuration.nom,
-                        t("mensurations.identity.nom"), required: true %>
-                <% end %>
-              </div>
-            </div>
-            <div class="row g-2 mensuration-form__identity-row">
-              <div class="col-md-6">
-                <%= mensuration_labeled_field nil, @invitation.email, t("mensurations.identity.email"),
-                      disabled: true, id: "mensuration_email", class: "opacity-75" %>
-              </div>
-              <div class="col-md-6">
-                <%= mensuration_labeled_field "mensuration[telephone]", @mensuration.telephone,
-                      t("mensurations.identity.telephone"), type: :tel %>
-              </div>
-            </div>
-            <div class="row g-2 mensuration-form__identity-row">
-              <div class="col-12">
-                <%= mensuration_labeled_field "mensuration[adresse]", @mensuration.adresse,
-                      t("mensurations.identity.adresse") %>
-              </div>
-              <div class="col-4">
-                <%= mensuration_labeled_field "mensuration[cp]", @mensuration.cp,
-                      t("mensurations.identity.cp") %>
-              </div>
-              <div class="col-8">
-                <%= mensuration_labeled_field "mensuration[ville]", @mensuration.ville,
-                      t("mensurations.identity.ville") %>
-              </div>
-            </div>
-            <div class="row g-2">
-              <div class="col-md-6">
-                <%= mensuration_labeled_field "mensuration[date_evenement]", @mensuration.date_evenement,
-                      t("mensurations.identity.date_evenement"), type: :date %>
-              </div>
-            </div>
-          </div>
-
-          <% if @invitation.template.present? %>
-            <% @mensuration.fields_by_form_step.each do |step_key, step_fields| %>
-              <%= render "public/mensurations/measure_step",
-                    step_key: step_key, fields: step_fields, mensuration: @mensuration,
-                    guided: true %>
-            <% end %>
-          <% end %>
-
-          <div class="d-none" data-form-wizard-target="step">
-            <h2 class="h6 mb-2 text-light"><%= t("mensurations.form.photo_title") %></h2>
-            <% photo_hint = t("mensurations.form.photo_hint", default: "") %>
-            <% if photo_hint.present? %>
-              <%= render "public/mensurations/advice", text: photo_hint, extra_class: "mb-2" %>
-            <% end %>
-            <% if @mensuration.photo_pied.attached? %>
-              <p class="small text-light mb-2"><i class="bi bi-check-circle"></i> <%= @mensuration.photo_pied.filename %></p>
-            <% end %>
-            <%= file_field_tag :photo_pied, accept: "image/jpeg,image/png,image/webp", class: field_class,
-                  data: { action: "change->photo-preview#preview" } %>
-            <p class="small text-light opacity-50 mt-2 mb-0">
-              <%= t("mensurations.form.photo_limits",
-                    max_mb: Mensuration::MAX_PHOTO_BYTES / 1.megabyte,
-                    max_px: Mensuration::MAX_PHOTO_EDGE) %>
-            </p>
-            <p class="small text-danger mt-2 mb-0 d-none" data-photo-preview-target="error"></p>
-            <img data-photo-preview-target="image" class="mensuration-form__photo-preview d-none" alt="">
-          </div>
-
-          <div class="d-flex align-items-center mt-3 gap-2 mensuration-form__nav">
-            <% if completed %>
-              <%= link_to mensuration_path(token: @invitation.token),
-                    class: "btn btn-sm btn-outline-light public-btn-border-radius d-none",
-                    data: { form_wizard_target: "home" } do %>
-                <i class="bi bi-arrow-left me-1"></i><%= t("mensurations.form.prev") %>
-              <% end %>
-            <% end %>
-            <button type="button"
-                    class="btn btn-sm btn-outline-light public-btn-border-radius d-none"
-                    data-form-wizard-target="prev"
-                    data-action="form-wizard#prev">
-              <i class="bi bi-arrow-left me-1"></i><%= t("mensurations.form.prev") %>
-            </button>
-
-            <% if Rails.env.development? %>
-              <button type="button"
-                      class="btn btn-sm btn-outline-secondary public-btn-border-radius"
-                      data-form-wizard-target="fill"
-                      data-action="form-wizard#fillStep">
-                Dev : remplir cette étape
-              </button>
-            <% end %>
-
-            <button type="button"
-                    class="btn btn-light public-btn-border-radius ms-auto px-4"
-                    data-form-wizard-target="next"
-                    data-action="form-wizard#next">
-              <%= t("mensurations.form.next") %><i class="bi bi-arrow-right ms-1"></i>
-            </button>
-
-            <%= submit_tag completed ? t("mensurations.form.update") : t("mensurations.form.submit"),
-                  class: "btn btn-light public-btn-border-radius ms-auto px-4 d-none",
-                  data: { "form-wizard-target": "submit" } %>
+            <%= render "public/mensurations/step_frame",
+                  step: @step, mensuration: @mensuration, invitation: @invitation,
+                  editing: editing, flow: @flow %>
           </div>
         <% end %>
-        </div>
       </div>
     <% end %>
   </div>

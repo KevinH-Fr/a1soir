@@ -31,15 +31,12 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
-# Switch the test database to WAL journal mode so that concurrent connections
-# (request specs open a second connection) do not deadlock each other.
-ActiveRecord::Base.connection.execute("PRAGMA journal_mode=WAL")
 
 RSpec.configure do |config|
   # Rails 7.1 fires after_commit callbacks in transactional tests. Several
   # models have after_commit hooks that call Produit#update_column during
-  # savepoint release, which can race with the next example's setup for the
-  # SQLite write lock. These callbacks are exercised in their own spec files.
+  # savepoint release, which can race with the next example's setup.
+  # These callbacks are exercised in their own spec files.
   config.before(:suite) do
     [
       [StripePaymentItem, :update_produit_availability_if_paid],

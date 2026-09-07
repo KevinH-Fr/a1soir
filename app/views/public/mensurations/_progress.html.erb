@@ -1,0 +1,11 @@
+<%# locals: flow, step %>
+<% percent = (flow.position(step).to_f / flow.total * 100).round %>
+<div class="mensuration-form__progress">
+  <div class="small text-light opacity-75 mb-1">
+    <%= t("mensurations.form.step", current: flow.position(step), total: flow.total) %>
+  </div>
+  <div class="progress mensuration-form__stitch-track" role="progressbar"
+       aria-valuemin="0" aria-valuemax="100" aria-valuenow="<%= percent %>">
+    <div class="progress-bar mensuration-form__stitch-fill" style="width: <%= percent %>%;"></div>
+  </div>
+</div>

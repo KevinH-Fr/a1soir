@@ -11,6 +11,9 @@ class Mensuration < ApplicationRecord
   validates :nom, presence: true, on: :complete
   validates :prenom, presence: true, on: :complete
   validate :photo_pied_must_be_image, on: :complete
+  validate :identity_step_fields, on: :identity_step
+  validate :measure_step_required_fields, on: :measure_step
+  validate :all_required_measurements, on: :complete
 
   PHOTO_CONTENT_TYPES = %w[image/jpeg image/jpg image/png image/webp].freeze
   MAX_PHOTO_BYTES = 8.megabytes
@@ -84,33 +87,46 @@ class Mensuration < ApplicationRecord
     update!(template: template, measurements: (measurements || {}).slice(*allowed))
   end
 
-  def apply_public_input(identity:, measurements:, photo: nil, merge: false)
+  def assign_identity(attrs)
     invitation = mensuration_invitation
     self.template = invitation.template
     self.locale = invitation.locale
 
-    identity_hash = identity.to_h.stringify_keys.compact_blank
+    identity_hash = attrs.to_h.stringify_keys.compact_blank
     assign_attributes(identity_hash) if identity_hash.present?
-
-    incoming = self.class.sanitize_measurements(template, measurements)
-    self.measurements = if merge
-                          (self.measurements || {}).merge(incoming)
-                        else
-                          incoming
-                        end
-    self.photo_pied = photo if photo.present?
   end
 
-  def save_draft!(wizard_index:, guide_index: nil)
-    self.draft_wizard_index = wizard_index
-    self.draft_guide_index = guide_index
+  def merge_measurements(raw)
+    incoming = self.class.sanitize_measurements(template, raw)
+    self.measurements = (measurements || {}).merge(incoming)
+  end
+
+  def save_step!(flow_step, identity: nil, measurements: nil, advance_to: nil)
+    invitation = mensuration_invitation
+    self.template = invitation.template
+    self.locale = invitation.locale
+
+    case flow_step.kind
+    when :identity
+      assign_identity(identity)
+    when :measure_clip, :measure_group
+      merge_measurements(measurements) if measurements.present?
+    end
+
+    @validating_step = flow_step
+    return false unless valid?(flow_step.validation_context)
+
+    self.draft_step = advance_to.presence || flow_step.key
     save(validate: false)
+  end
+
+  def apply_complete_input(photo: nil)
+    self.photo_pied = photo if photo.present?
   end
 
   def complete!
     transaction do
-      self.draft_wizard_index = nil
-      self.draft_guide_index = nil
+      self.draft_step = nil
       return false unless save(context: :complete)
 
       resolve_and_link_client!
@@ -120,8 +136,6 @@ class Mensuration < ApplicationRecord
   end
 
   # Rattache au Client dont l'e-mail a déjà été prouvé par OTP.
-  # Un changement de nom ne doit pas créer un second client ; une fiche déjà liée reste liée.
-  # La fiche client existante n'est jamais écrasée.
   def resolve_and_link_client!
     invitation = mensuration_invitation
     client = self.client || invitation.client ||
@@ -137,6 +151,35 @@ class Mensuration < ApplicationRecord
   end
 
   private
+
+  def identity_step_fields
+    errors.add(:prenom, :blank) if prenom.blank?
+    return if nom.present? || mensuration_invitation.nom.present?
+
+    errors.add(:nom, :blank)
+  end
+
+  def measure_step_required_fields
+    return unless @validating_step
+
+    validate_required_field_keys(@validating_step.field_keys)
+  end
+
+  def all_required_measurements
+    validate_required_field_keys(fields.select { |f| f["required"] }.map { |f| f["key"] })
+  end
+
+  def validate_required_field_keys(keys)
+    keys.each do |key|
+      field = fields.find { |f| f["key"] == key }
+      next unless field&.fetch("required", false)
+
+      if value_for(key).blank?
+        errors.add(:base, I18n.t("mensurations.form.required_field",
+                                 field: I18n.t("mensurations.fields.#{key}.short")))
+      end
+    end
+  end
 
   def photo_pied_must_be_image
     return unless photo_pied.attached?

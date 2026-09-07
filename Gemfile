@@ -21,7 +21,6 @@ group :development, :test do
 end
 
 group :development do
-  gem "sqlite3", "~> 1.4" # kept so switching back to the SQLite branch still bundles
   gem "web-console"
   gem "error_highlight", ">= 0.4.0", platforms: [:ruby]
 end

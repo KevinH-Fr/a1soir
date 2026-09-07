@@ -1,7 +1,3 @@
-# This branch uses PostgreSQL in development/test. The existing SQLite files
-# in storage/ (development.sqlite3, test.sqlite3) are left untouched; switch
-# back to the previous branch to use them again.
-
 default: &default
   adapter: postgresql
   encoding: unicode

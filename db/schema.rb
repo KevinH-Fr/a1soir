@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_09_07_160000) do
+ActiveRecord::Schema[7.2].define(version: 2026_09_07_180000) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -337,9 +340,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_07_160000) do
     t.string "locale", default: "fr", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "draft_wizard_index"
     t.datetime "admin_treated_at"
-    t.integer "draft_guide_index"
+    t.string "draft_step"
     t.index ["admin_treated_at"], name: "index_mensurations_on_admin_treated_at"
     t.index ["client_id"], name: "index_mensurations_on_client_id"
     t.index ["mensuration_invitation_id"], name: "index_mensurations_on_mensuration_invitation_id", unique: true
@@ -435,8 +437,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_07_160000) do
     t.index ["couleur_id"], name: "index_produits_on_couleur_id"
     t.index ["coup_de_coeur", "coup_de_coeur_position"], name: "index_produits_on_coup_de_coeur_and_coup_de_coeur_position"
     t.index ["fournisseur_id"], name: "index_produits_on_fournisseur_id"
-    t.index ["stripe_price_id"], name: "index_produits_on_stripe_price_id_unique", unique: true, where: "stripe_price_id IS NOT NULL"
-    t.index ["stripe_product_id"], name: "index_produits_on_stripe_product_id_unique", unique: true, where: "stripe_product_id IS NOT NULL"
+    t.index ["stripe_price_id"], name: "index_produits_on_stripe_price_id_unique", unique: true, where: "(stripe_price_id IS NOT NULL)"
+    t.index ["stripe_product_id"], name: "index_produits_on_stripe_product_id_unique", unique: true, where: "(stripe_product_id IS NOT NULL)"
     t.index ["taille_id"], name: "index_produits_on_taille_id"
     t.index ["today_availability"], name: "index_produits_on_today_availability"
     t.index ["type_produit_id"], name: "index_produits_on_type_produit_id"
@@ -500,7 +502,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_07_160000) do
     t.string "customer_phone"
     t.index ["commande_id"], name: "index_stripe_payments_on_commande_id"
     t.index ["produit_id"], name: "index_stripe_payments_on_produit_id"
-    t.index ["stripe_checkout_session_id"], name: "index_stripe_payments_on_stripe_checkout_session_id", unique: true, where: "stripe_checkout_session_id IS NOT NULL"
+    t.index ["stripe_checkout_session_id"], name: "index_stripe_payments_on_stripe_checkout_session_id", unique: true, where: "(stripe_checkout_session_id IS NOT NULL)"
   end
 
   create_table "tailles", force: :cascade do |t|

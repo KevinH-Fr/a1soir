@@ -193,7 +193,7 @@ RSpec.describe MensurationInvitation, type: :model do
       invitation = build_invitation(template: "homme", locale: "fr").tap(&:save!)
       invitation.create_mensuration!(
         template: "homme", locale: "fr", prenom: "Jean", nom: "Martin",
-        draft_wizard_index: 1
+        draft_step: "identity"
       )
 
       reused = described_class.find_or_prepare_for_share!(email: invitation.email)

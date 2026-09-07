@@ -1,6 +1,5 @@
 module Public
   # Formulaire mensurations : landing publique /mensurations, puis /m/:token (OTP).
-  # Hérite directement d'ActionController::Base : pas de panier ni de HTTP Basic boutique.
   class MensurationsController < ActionController::Base
     layout "mensuration"
     helper MensurationsHelper
@@ -15,7 +14,8 @@ module Public
     before_action :set_invitation, except: [:gate, :start]
     before_action :sync_invitation_locale, except: [:gate, :start]
     before_action :load_footer_texte
-    before_action :require_otp_session, only: [:save, :draft, :destroy, :update_template]
+    before_action :require_otp_session, only: [:update_step, :complete, :destroy, :update_template, :reset_template]
+    before_action :load_mensuration_flow, only: [:show, :update_step, :complete]
 
     def gate
       @email = ""
@@ -56,13 +56,10 @@ module Public
       end
     end
 
-    # Page unique : demande de code tant que l'e-mail n'est pas vérifié, formulaire ensuite.
     def show
       if otp_session_valid?
-        @mensuration = @invitation.mensuration || @invitation.build_public_mensuration
-        @editing = @invitation.completed? && params[:edit].present?
-        @wizard_index = wizard_start_index
-        @guide_index = @mensuration&.draft_guide_index
+        redirect_to canonical_step_url and return if step_url_correction_needed?
+
         render :form
       else
         render :otp
@@ -79,10 +76,20 @@ module Public
 
       @invitation.apply_template!(template)
       if @invitation.completed?
-        redirect_to mensuration_path(token: @invitation.token, edit: 1, resume: "identity")
+        redirect_to mensuration_path(token: @invitation.token, edit: 1, step: Mensuration::Flow::IDENTITY)
       else
-        redirect_to mensuration_path(token: @invitation.token, resume: "identity")
+        redirect_to mensuration_path(token: @invitation.token, step: Mensuration::Flow::IDENTITY)
       end
+    end
+
+    def reset_template
+      if @invitation.completed?
+        redirect_to mensuration_path(token: @invitation.token)
+        return
+      end
+
+      @invitation.update!(template: nil)
+      redirect_to mensuration_path(token: @invitation.token)
     end
 
     def send_otp
@@ -103,53 +110,55 @@ module Public
       end
     end
 
-    def draft
-      unless @invitation.preferences_chosen?
-        head :unprocessable_entity
-        return
-      end
-
-      wizard_index = params[:wizard_index].to_i
-      if wizard_index < 1
-        head :unprocessable_entity
-        return
-      end
-
-      @mensuration = @invitation.mensuration || @invitation.build_public_mensuration
-      @mensuration.apply_public_input(
-        identity: identity_params,
-        measurements: permitted_measurements,
-        merge: true
-      )
-
-      if @mensuration.save_draft!(wizard_index: wizard_index, guide_index: draft_guide_index_param)
-        head :no_content
-      else
-        head :unprocessable_entity
-      end
-    end
-
-    def save
+    def update_step
       unless @invitation.preferences_chosen?
         redirect_to mensuration_path(token: @invitation.token), alert: t("mensurations.share.choose_preferences")
         return
       end
 
-      @mensuration = @invitation.mensuration || @invitation.build_public_mensuration
-      @mensuration.apply_public_input(
-        identity: identity_params,
-        measurements: permitted_measurements,
-        photo: params[:photo_pied]
-      )
+      @step = @flow.step(params[:step])
+
+      if params[:direction] == "back"
+        target_step = @flow.previous(@step) || @step
+        respond_to do |format|
+          format.turbo_stream { render_step_transition(target_step) }
+          format.html { redirect_to mensuration_path(token: @invitation.token, step: target_step.key) }
+        end
+        return
+      end
+
+      unless @mensuration.save_step!(@step, identity: identity_params, measurements: permitted_measurements,
+                                     advance_to: @flow.next(@step)&.key)
+        render_step_errors
+        return
+      end
+
+      next_step = @flow.next(@step)
+      respond_to do |format|
+        format.turbo_stream { render_step_transition(next_step) }
+        format.html do
+          redirect_to mensuration_path(token: @invitation.token, step: next_step&.key || @step.key)
+        end
+      end
+    end
+
+    def complete
+      unless @invitation.preferences_chosen?
+        redirect_to mensuration_path(token: @invitation.token), alert: t("mensurations.share.choose_preferences")
+        return
+      end
+
+      @step = @flow.step(Mensuration::Flow::PHOTO)
+      @mensuration.apply_complete_input(photo: params[:photo_pied])
 
       if @mensuration.complete!
-        redirect_to mensuration_path(token: @invitation.token)
+        redirect_to mensuration_path(token: @invitation.token), status: :see_other
       else
-        @editing = @invitation.completed? || params[:edit].present?
-        @wizard_index = wizard_start_index
-        @guide_index = @mensuration&.draft_guide_index
-        flash.now[:alert] = @mensuration.errors.full_messages.to_sentence
-        render :form, status: :unprocessable_entity
+        @mensuration.reload if @mensuration.persisted?
+        redirect_to mensuration_path(
+          token: @invitation.token,
+          **{ step: Mensuration::Flow::PHOTO, edit: (@editing ? 1 : nil) }.compact
+        ), alert: @mensuration.errors.full_messages.to_sentence
       end
     end
 
@@ -159,6 +168,88 @@ module Public
     end
 
     private
+
+    def load_mensuration_flow
+      return unless otp_session_valid?
+
+      @mensuration = @invitation.mensuration || @invitation.build_public_mensuration
+      return unless @invitation.template.present?
+
+      @editing = editing_request?
+      return if @invitation.completed? && !@editing
+
+      @flow = Mensuration::Flow.new(@invitation, @mensuration)
+      @step = resolve_step
+    end
+
+    def editing_request?
+      return true if params[:edit].present?
+
+      @invitation.completed? && action_name.in?(%w[update_step complete])
+    end
+
+    def resolve_step
+      key = if params[:resume] == "identity"
+              Mensuration::Flow::IDENTITY
+            elsif params[:step].present?
+              params[:step]
+            end
+
+      requested = @flow.step(key)
+      return requested if step_reachable?(requested)
+
+      @flow.step(@mensuration.draft_step)
+    end
+
+    def step_reachable?(step)
+      return true if editing_request?
+      return step.first? if @mensuration.draft_step.blank?
+
+      resume = @flow.step(@mensuration.draft_step)
+      step.position <= resume.position
+    end
+
+    def step_url_correction_needed?
+      return false unless @flow
+      return false if @invitation.completed? && !@editing
+
+      params[:step].blank? || (!editing_request? && @flow.step(params[:step]).key != @step.key)
+    end
+
+    def canonical_step_url
+      options = { step: @step.key }
+      options[:edit] = 1 if @editing
+      mensuration_path(token: @invitation.token, **options)
+    end
+
+    def render_step_transition(step)
+      @step = step
+      render turbo_stream: [
+        turbo_stream.replace("mensuration_step", partial: "public/mensurations/step_frame", locals: step_locals),
+        turbo_stream.replace("mensuration_progress", partial: "public/mensurations/progress_frame",
+                              locals: { flow: @flow, step: @step })
+      ]
+    end
+
+    def render_step_errors
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("mensuration_step",
+                                                    partial: "public/mensurations/step_frame",
+                                                    locals: step_locals),
+                 status: :unprocessable_entity
+        end
+        format.html { render :form, status: :unprocessable_entity }
+      end
+    end
+
+    def step_partial
+      "public/mensurations/steps/#{ @step.partial }"
+    end
+
+    def step_locals
+      { step: @step, mensuration: @mensuration, invitation: @invitation, editing: @editing, flow: @flow }
+    end
 
     def set_locale
       requested = params[:locale].to_s
@@ -191,7 +282,6 @@ module Public
       response.set_header("X-Robots-Tag", "noindex, nofollow, noarchive")
     end
 
-    # Coordonnées boutique pour le pied de page (même source que le footer public).
     def load_footer_texte
       texte = Texte.last
       return unless texte
@@ -200,32 +290,11 @@ module Public
       @footer_texte_contact = texte.contact&.to_plain_text.presence
     end
 
-    # 404 boutique (même page qu'un token inconnu ou expiré). Render direct :
-    # en local, raise RecordNotFound affiche la page d'erreur Rails, pas la 404.
     def set_invitation
       @invitation = MensurationInvitation.find_by(token: params[:token])
       return if @invitation&.usable?
 
       render "errors/not_found", layout: "error", status: :not_found
-    end
-
-    def draft_guide_index_param
-      return nil unless params.key?(:guide_index)
-
-      params[:guide_index].to_i
-    end
-
-    def wizard_start_index
-      if @invitation.completed?
-        return 1 if params[:resume] == "identity" || @editing
-
-        return 0
-      end
-
-      return 1 if params[:resume] == "identity"
-      return @mensuration.draft_wizard_index if @mensuration&.draft_wizard_index.present?
-
-      0
     end
 
     def start_email
@@ -251,8 +320,6 @@ module Public
       "mensuration_share_start/#{kind}/#{value}"
     end
 
-    # ---- Session courte après vérification OTP -----------------------------
-
     def open_otp_session
       session[SESSION_KEY] = { "id" => @invitation.id, "exp" => SESSION_TTL.from_now.to_i }
     end
@@ -268,9 +335,6 @@ module Public
       redirect_to mensuration_path(token: @invitation.token), alert: t("mensurations.otp.session_expired")
     end
 
-    # ---- Params -------------------------------------------------------------
-
-    # Nom : saisi une seule fois. S'il est déjà sur l'invitation ou la fiche, on ignore le POST.
     helper_method :mensuration_nom_locked?
 
     def mensuration_nom_locked?

@@ -1,7 +1,12 @@
 <%# Silhouette + règle calée sur la zone (clip YAML). viewBox = human_body.svg %>
 <div class="mensuration-figure-stack">
-  <img src="/images/human_body.svg" alt="" class="mensuration-figure-body" draggable="false">
+  <%= image_tag "/images/human_body.svg",
+        alt: "",
+        class: "mensuration-figure-body",
+        draggable: false,
+        width: 206,
+        height: 206 %>
   <svg class="mensuration-figure mensuration-figure--overlay" viewBox="0 0 206.326 206.326" aria-hidden="true">
-    <g class="measure-ruler" data-measure-guide-target="ruler"></g>
+    <g class="measure-ruler" data-figure-ruler-target="ruler"></g>
   </svg>
 </div>

@@ -80,8 +80,7 @@ seed_mensuration!(
   ville: "Cannes",
   template: "femme",
   locale: "fr",
-  draft_wizard_index: 1,
-  draft_guide_index: 0,
+  draft_step: "mesures.hauteur",
   measurements: {
     "hauteur" => "168",
     "hauteur_talons" => "8"
@@ -120,8 +119,7 @@ seed_mensuration!(
   date_evenement: 2.months.from_now.to_date,
   template: "femme",
   locale: "fr",
-  draft_wizard_index: nil,
-  draft_guide_index: nil,
+  draft_step: nil,
   admin_treated_at: nil,
   measurements: {
     "hauteur" => "168",
@@ -166,8 +164,7 @@ seed_mensuration!(
   date_evenement: 6.weeks.from_now.to_date,
   template: "homme",
   locale: "fr",
-  draft_wizard_index: nil,
-  draft_guide_index: nil,
+  draft_step: nil,
   admin_treated_at: 1.day.ago,
   measurements: {
     "taille_veste" => "50",
@@ -206,8 +203,7 @@ seed_mensuration!(
   nom: "Cole",
   template: "homme",
   locale: "en",
-  draft_wizard_index: 1,
-  draft_guide_index: 0,
+  draft_step: "tailles",
   measurements: {
     "taille_veste" => "52",
     "taille_chemise" => "42",

@@ -1,0 +1,35 @@
+<%# locals: step, mensuration, invitation, editing, flow (optional) %>
+<% flow ||= Mensuration::Flow.new(invitation, mensuration) %>
+<div class="d-flex align-items-center mt-3 gap-2 mensuration-form__nav" data-controller="dev-fill">
+  <% if editing && step.first? %>
+    <%= link_to mensuration_path(token: invitation.token),
+          data: { turbo_frame: "_top" },
+          class: "btn btn-sm btn-outline-light public-btn-border-radius" do %>
+      <i class="bi bi-arrow-left me-1"></i><%= t("mensurations.form.prev") %>
+    <% end %>
+  <% elsif !editing && step.first? %>
+    <%= link_to mensuration_template_reset_path(token: invitation.token),
+          data: { turbo_method: :delete, turbo_frame: "_top" },
+          class: "btn btn-sm btn-outline-light public-btn-border-radius" do %>
+      <i class="bi bi-arrow-left me-1"></i><%= t("mensurations.form.prev") %>
+    <% end %>
+  <% elsif !step.first? %>
+    <button type="submit" name="direction" value="back" formnovalidate
+            class="btn btn-sm btn-outline-light public-btn-border-radius">
+      <i class="bi bi-arrow-left me-1"></i><%= t("mensurations.form.prev") %>
+    </button>
+  <% end %>
+
+  <% if Rails.env.development? %>
+    <button type="button"
+            class="btn btn-sm btn-outline-secondary public-btn-border-radius"
+            data-action="dev-fill#fill">
+      Dev : fill
+    </button>
+  <% end %>
+
+  <button type="submit" name="direction" value="next"
+          class="btn btn-light public-btn-border-radius ms-auto px-4">
+    <%= t("mensurations.form.next") %><i class="bi bi-arrow-right ms-1"></i>
+  </button>
+</div>

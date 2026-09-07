@@ -31,7 +31,7 @@ RSpec.describe Admin::MensurationsController, type: :controller do
       Mensuration.create!(
         mensuration_invitation: draft_invitation,
         template: "femme", locale: "fr", prenom: "B", nom: "Rouillon",
-        draft_wizard_index: 1
+        draft_step: "identity"
       )
       invitation.update!(status: "completed")
       Mensuration.create!(

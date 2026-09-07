@@ -16,6 +16,7 @@ en:
       measure_placeholder: "cm"
       measure_ellipsis: "…"
       next: "Continue"
+      required_field: "%{field} is required"
       prev: "Back"
       step: "Step %{current} of %{total}"
       photo_hint: "A full-length photo of you (head to toe) helps us advise you better."
@@ -90,6 +91,7 @@ en:
       telephone: "Phone"
       adresse: "Address"
       cp: "Postcode"
+      cp_short: "ZIP"
       ville: "City"
       date_evenement: "Date of event"
     fields:

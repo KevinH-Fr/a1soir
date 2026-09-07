@@ -1,0 +1,27 @@
+<%# locals: step, mensuration, invitation, editing %>
+<%= form_with url: mensuration_step_path(token: invitation.token), method: :patch do %>
+  <%= hidden_field_tag :step, step.key %>
+
+  <div class="mensuration-form__step-content">
+    <h2 class="h6 mb-2 text-light"><%= t(step.title_key) %></h2>
+    <% step_hint = step.hint_key && t(step.hint_key, default: "") %>
+    <% if step_hint.present? %>
+      <%= render "public/mensurations/advice", text: step_hint, extra_class: "mb-3 mensuration-form__advice--quiet" %>
+    <% end %>
+
+    <% if mensuration.errors.any? %>
+      <div class="alert alert-danger py-2 small" role="alert">
+        <%= mensuration.errors.full_messages.to_sentence %>
+      </div>
+    <% end %>
+
+    <div class="row g-2">
+      <% step.fields.each do |field| %>
+        <%= render "public/mensurations/measure_field", field: field, mensuration: mensuration %>
+      <% end %>
+    </div>
+  </div>
+
+  <%= render "public/mensurations/steps/nav", step: step, mensuration: mensuration,
+        invitation: invitation, editing: editing %>
+<% end %>

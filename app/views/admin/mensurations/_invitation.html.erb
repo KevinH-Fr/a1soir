@@ -90,8 +90,8 @@
           <div class="border-top border-secondary border-opacity-25 pt-2 px-2 pb-1">
             <% if mensuration.present? %>
               <% extra_meta = [["Démarrée le", l(invitation.created_at, format: :short)]] %>
-              <% if in_progress && mensuration.draft_wizard_index.present? %>
-                <% extra_meta << ["Progression", "Étape #{mensuration.draft_wizard_index.to_i + 1}"] %>
+              <% if in_progress && mensuration.draft_step.present? %>
+                <% extra_meta << ["Progression", mensuration.draft_step] %>
               <% end %>
               <%= render "admin/mensurations/fiche",
                     mensuration: mensuration,

@@ -16,6 +16,7 @@ fr:
       measure_placeholder: "cm"
       measure_ellipsis: "…"
       next: "Continuer"
+      required_field: "%{field} est obligatoire"
       prev: "Retour"
       step: "Étape %{current} sur %{total}"
       photo_hint: "Une photo de vous en pied (de la tête aux pieds) nous aide à mieux vous conseiller."
@@ -90,6 +91,7 @@ fr:
       telephone: "Téléphone"
       adresse: "Adresse"
       cp: "Code postal"
+      cp_short: "CP"
       ville: "Ville"
       date_evenement: "Date de l'événement"
     fields:

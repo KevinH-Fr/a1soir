@@ -49,8 +49,9 @@ Rails.application.routes.draw do
       post 'm/:token/otp', to: 'mensurations#send_otp', as: :mensuration_otp
       post 'm/:token/verify', to: 'mensurations#verify_otp', as: :mensuration_verify
       post 'm/:token/template', to: 'mensurations#update_template', as: :mensuration_template
-      post 'm/:token/draft', to: 'mensurations#draft', as: :mensuration_draft
-      post 'm/:token', to: 'mensurations#save', as: :mensuration_save
+      delete 'm/:token/template', to: 'mensurations#reset_template', as: :mensuration_template_reset
+      patch 'm/:token/step', to: 'mensurations#update_step', as: :mensuration_step
+      post 'm/:token/complete', to: 'mensurations#complete', as: :mensuration_complete
       delete 'm/:token', to: 'mensurations#destroy', as: :mensuration_delete
 
       get ':slug', to: 'seo_pages#show', as: :seo_page,

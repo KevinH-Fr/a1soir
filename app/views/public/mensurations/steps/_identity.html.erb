@@ -1,0 +1,71 @@
+<%# locals: step, mensuration, invitation, editing %>
+<%= form_with url: mensuration_step_path(token: invitation.token), method: :patch do %>
+  <%= hidden_field_tag :step, step.key %>
+
+  <div class="mensuration-form__step-content">
+    <p class="small mb-3 text-light opacity-75"><%= t("mensurations.form.intro") %></p>
+
+    <h2 class="h6 mb-2 text-light"><%= t(step.title_key) %></h2>
+
+    <% if mensuration.errors.any? %>
+      <div class="alert alert-danger py-2 small" role="alert">
+        <%= mensuration.errors.full_messages.to_sentence %>
+      </div>
+    <% end %>
+
+    <div class="mensuration-form__identity">
+    <div class="row g-2 mensuration-form__identity-row">
+      <div class="col-md-6">
+        <%= mensuration_labeled_field "mensuration[prenom]", mensuration.prenom,
+              t("mensurations.identity.prenom"), required: true %>
+      </div>
+      <div class="col-md-6">
+        <% if mensuration_nom_locked? %>
+          <%= mensuration_labeled_field nil, mensuration.nom, t("mensurations.identity.nom"),
+                disabled: true, id: "mensuration_nom", class: "opacity-75" %>
+        <% else %>
+          <%= mensuration_labeled_field "mensuration[nom]", mensuration.nom,
+                t("mensurations.identity.nom"), required: true %>
+        <% end %>
+      </div>
+    </div>
+    <div class="row g-2 mensuration-form__identity-row">
+      <div class="col-md-6">
+        <%= mensuration_labeled_field nil, invitation.email, t("mensurations.identity.email"),
+              disabled: true, id: "mensuration_email", class: "opacity-75" %>
+      </div>
+      <div class="col-md-6">
+        <%= mensuration_labeled_field "mensuration[telephone]", mensuration.telephone,
+              t("mensurations.identity.telephone"), type: :tel %>
+      </div>
+    </div>
+    <div class="row g-2 mensuration-form__identity-row">
+      <div class="col-12">
+        <%= mensuration_labeled_field "mensuration[adresse]", mensuration.adresse,
+              t("mensurations.identity.adresse") %>
+      </div>
+    </div>
+    <div class="row g-2 mensuration-form__identity-row">
+      <div class="col-12 mensuration-form__identity-address-row">
+        <div>
+          <%= mensuration_labeled_field "mensuration[cp]", mensuration.cp,
+                t("mensurations.identity.cp_short"), title: t("mensurations.identity.cp") %>
+        </div>
+        <div>
+          <%= mensuration_labeled_field "mensuration[ville]", mensuration.ville,
+                t("mensurations.identity.ville") %>
+        </div>
+      </div>
+    </div>
+    <div class="row g-2">
+      <div class="col-md-6">
+        <%= mensuration_labeled_field "mensuration[date_evenement]", mensuration.date_evenement,
+              t("mensurations.identity.date_evenement"), type: :date %>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <%= render "public/mensurations/steps/nav", step: step, mensuration: mensuration,
+        invitation: invitation, editing: editing %>
+<% end %>

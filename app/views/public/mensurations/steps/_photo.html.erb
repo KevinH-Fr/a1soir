@@ -1,0 +1,54 @@
+<%# locals: step, mensuration, invitation, editing, flow %>
+<% field_class = "form-control form-control-sm bg-dark text-light border-secondary" %>
+<% previous = flow.previous(step) %>
+
+<%= form_with url: mensuration_complete_path(token: invitation.token), method: :post,
+      multipart: true,
+      data: {
+        turbo_frame: "_top",
+        controller: "photo-preview",
+        photo_preview_max_bytes_value: Mensuration::MAX_PHOTO_BYTES,
+        photo_preview_max_edge_value: Mensuration::MAX_PHOTO_EDGE,
+        photo_preview_msg_format_value: t("mensurations.photo.invalid_format"),
+        photo_preview_msg_weight_value: t("mensurations.photo.too_large", max_mb: Mensuration::MAX_PHOTO_BYTES / 1.megabyte),
+        photo_preview_msg_too_big_value: t("mensurations.photo.too_big", max_px: Mensuration::MAX_PHOTO_EDGE)
+      } do %>
+  <div class="mensuration-form__step-content">
+    <h2 class="h6 mb-2 text-light"><%= t(step.title_key) %></h2>
+    <% photo_hint = t("mensurations.form.photo_hint", default: "") %>
+    <% if photo_hint.present? %>
+      <%= render "public/mensurations/advice", text: photo_hint, extra_class: "mb-2" %>
+    <% end %>
+
+    <% if mensuration.errors.any? %>
+      <div class="alert alert-danger py-2 small" role="alert">
+        <%= mensuration.errors.full_messages.to_sentence %>
+      </div>
+    <% end %>
+
+    <% if mensuration.photo_pied.attached? %>
+      <p class="small text-light mb-2"><i class="bi bi-check-circle"></i> <%= mensuration.photo_pied.filename %></p>
+    <% end %>
+    <%= file_field_tag :photo_pied, accept: "image/jpeg,image/png,image/webp", class: field_class,
+          data: { action: "change->photo-preview#preview" } %>
+    <p class="small text-light opacity-50 mt-2 mb-0">
+      <%= t("mensurations.form.photo_limits",
+            max_mb: Mensuration::MAX_PHOTO_BYTES / 1.megabyte,
+            max_px: Mensuration::MAX_PHOTO_EDGE) %>
+    </p>
+    <p class="small text-danger mt-2 mb-0 d-none" data-photo-preview-target="error"></p>
+    <img data-photo-preview-target="image" class="mensuration-form__photo-preview d-none" alt="">
+  </div>
+
+  <div class="d-flex align-items-center mt-3 gap-2 mensuration-form__nav">
+      <% if previous %>
+      <%= link_to mensuration_path(token: invitation.token, **{ step: previous.key, edit: (editing ? 1 : nil) }.compact),
+            data: { turbo_frame: "_top" },
+            class: "btn btn-sm btn-outline-light public-btn-border-radius" do %>
+        <i class="bi bi-arrow-left me-1"></i><%= t("mensurations.form.prev") %>
+      <% end %>
+    <% end %>
+    <%= submit_tag (editing ? t("mensurations.form.update") : t("mensurations.form.submit")),
+          class: "btn btn-light public-btn-border-radius ms-auto px-4" %>
+  </div>
+<% end %>

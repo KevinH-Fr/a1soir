@@ -2537,9 +2537,9 @@ section {
 .mensuration-form__body {
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   min-width: 0;
-  min-height: 0;
+  overflow: visible;
 }
 
 .mensuration-delete-link {
@@ -2682,15 +2682,16 @@ section {
 }
 
 .mensuration-shell {
+  width: 100%;
   max-width: 1040px;
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
   justify-content: center;
   align-items: center;
   min-height: auto;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding: 0.5rem clamp(0.75rem, 3vw, 1.25rem) 0.5rem;
 }
 
 .mensuration-layout header {
@@ -2738,8 +2739,56 @@ section {
 }
 
 .mensuration-layout .public-site-footer {
-  padding-top: 0.65rem !important;
-  padding-bottom: 0.65rem !important;
+  flex-shrink: 0;
+}
+
+.mensuration-site-footer .container {
+  padding-inline: clamp(0.75rem, 3vw, 1.25rem);
+}
+
+.mensuration-site-footer__item {
+  min-width: 0;
+}
+
+.mensuration-site-footer__icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.mensuration-site-footer__link {
+  min-width: 0;
+}
+
+.mensuration-site-footer__text {
+  line-height: 1.55;
+  min-width: 0;
+  word-break: break-word;
+}
+
+.mensuration-site-footer__external {
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: 0.75rem;
+  opacity: 0.75;
+}
+
+@media (max-width: 575.98px) {
+  .mensuration-site-footer .container {
+    padding-top: 0.85rem !important;
+    padding-bottom: 0.85rem !important;
+  }
+
+  .mensuration-site-footer h2.h6 {
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .mensuration-site-footer .row {
+    --bs-gutter-y: 0.85rem;
+  }
 }
 
 .mensuration-shell > .mensuration-flash {
@@ -2762,6 +2811,7 @@ section {
 .mensuration-otp {
   width: 100%;
   max-width: 30rem;
+  margin-inline: auto;
   flex: 0 0 auto;
   padding: 2.5rem 2rem 2.25rem;
   text-align: center;
@@ -2771,33 +2821,33 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.95rem;
+  gap: 0.7rem;
   max-width: 22rem;
-  margin: 0 auto 1.65rem;
+  margin: 0 auto 1rem;
   text-align: left;
 }
 
 .concept-card-icon.mensuration-card-header__icon {
-  width: 3.85rem;
-  height: 3.85rem;
+  width: 3.1rem;
+  height: 3.1rem;
   margin: 0;
   flex-shrink: 0;
   color: rgba(255, 255, 255, 0.9);
 }
 
 .mensuration-card-header__ruler {
-  width: 1.85rem;
-  height: 1.85rem;
+  width: 1.5rem;
+  height: 1.5rem;
   display: block;
 }
 
 .mensuration-card-header__title {
   margin: 0;
   color: #fff;
-  font-size: 1.28rem;
+  font-size: 1.1rem;
   font-weight: 500;
   letter-spacing: 0.01em;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
 .mensuration-gate__intro,
@@ -2939,6 +2989,7 @@ section {
   flex: 0 1 auto;
   width: 100%;
   max-width: 36rem;
+  margin-inline: auto;
   min-width: 0;
   min-height: 0;
   transition: max-width 0.28s ease;
@@ -2954,69 +3005,56 @@ section {
   flex: 0 0 auto;
   width: 100%;
   min-width: 0;
-  min-height: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
-.mensuration-shell:not(.mensuration-shell--guided) .mensuration-form {
-  min-height: min(40rem, calc(100dvh - 11rem));
+turbo-frame#mensuration_progress {
+  flex: 0 0 auto;
+  display: block;
+}
+
+turbo-frame#mensuration_step {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
+  overflow: visible;
+}
+
+turbo-frame#mensuration_step > form {
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: visible;
+}
+
+.mensuration-form__step-content {
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: visible;
+  padding: 0.15rem 0;
+}
+
+.mensuration-form__step-content > h2 {
+  flex-shrink: 0;
 }
 
 .mensuration-form form {
   display: flex;
   flex-direction: column;
-  flex: 0 0 auto;
+  flex: 0 1 auto;
   width: 100%;
   min-width: 0;
-  min-height: 0;
-}
-
-.mensuration-shell:not(.mensuration-shell--guided) .mensuration-form form {
-  flex: 1 1 auto;
 }
 
 .mensuration-form__stage {
-  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
   min-width: 0;
-  min-height: 0;
   overflow: visible;
-  display: flex;
-  flex-direction: column;
-}
-
-.mensuration-shell:not(.mensuration-shell--guided) .mensuration-form__stage {
-  flex: 1 1 auto;
-}
-
-.mensuration-form__stage > [data-form-wizard-target="step"]:not(.d-none) {
-  flex: 0 0 auto;
-  min-width: 0;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.mensuration-shell:not(.mensuration-shell--guided) .mensuration-form__stage > [data-form-wizard-target="step"]:not(.d-none),
-.mensuration-shell:not(.mensuration-shell--guided) .mensuration-form form > [data-form-wizard-target="step"]:not(.d-none) {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* Le choix Femme/Homme est hors du <form> : sans ça le formulaire le comprime à 0. */
-.mensuration-form__stage > [data-choice-step]:not(.d-none) {
-  flex: 0 0 auto;
-  min-height: auto;
-}
-
-.mensuration-shell:not(.mensuration-shell--guided) .mensuration-form__stage > [data-choice-step]:not(.d-none) {
-  flex: 1 1 auto;
-  justify-content: center;
-}
-
-.mensuration-form__stage:has(> [data-choice-step]:not(.d-none)) > form {
-  display: none;
 }
 
 .mensuration-form__template-lead {
@@ -3076,17 +3114,20 @@ section {
 .mensuration-form__nav {
   flex-shrink: 0;
   flex-wrap: wrap;
-  margin-top: 1rem !important;
+  margin-top: 0.75rem !important;
   padding-top: 0.85rem;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .mensuration-shell:not(.mensuration-shell--guided) .mensuration-form__nav {
-  margin-top: auto !important;
+  margin-top: 0.75rem !important;
 }
 
 .concept-card.mensuration-form > .mensuration-card-header {
-  margin-bottom: 1.35rem;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: none;
+  margin: 0 0 0.85rem;
 }
 
 .concept-card.mensuration-form > p.small {
@@ -3094,8 +3135,8 @@ section {
 }
 
 .concept-card.mensuration-form .mensuration-form__progress {
-  margin-top: 1.35rem;
-  margin-bottom: 1.65rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
 }
 
 .mensuration-form__progress .small {
@@ -3128,15 +3169,153 @@ section {
   margin-bottom: 0.7rem;
 }
 
-.mensuration-shell--guided [data-form-wizard-target="step"]:not(.d-none):not([data-choice-step]) > h2,
-.mensuration-shell--guided [data-form-wizard-target="step"]:not(.d-none):not([data-choice-step]) > p {
-  display: none;
+.mensuration-form__identity {
+  container-type: inline-size;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
-.mensuration-form__stage .mensuration-guide:not(.mensuration-guide--plain) {
-  flex: 0 0 auto;
-  justify-content: flex-start;
+.mensuration-form__identity-address-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.mensuration-form__identity-address-row > * {
+  min-width: 0;
+}
+
+.mensuration-form__identity .input-group {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.mensuration-form__identity .input-group > .form-control {
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+@container (min-width: 28rem) {
+  .mensuration-form__identity-address-row {
+    grid-template-columns: minmax(0, 5.75rem) minmax(0, 1fr);
+  }
+}
+
+.mensuration-form__stage .mensuration-guide:not(.mensuration-guide--plain):not(.mensuration-guide--howto) {
+  flex: 0 1 auto;
+  justify-content: center;
   min-height: 0;
+  max-height: 100%;
+  width: 100%;
+}
+
+/* Guided measure clip card — grille 3 zones (caption | silhouette | champ) */
+.mensuration-form__step-content .mensuration-guide--howto {
+  --guide-card-h: clamp(26rem, 58dvh, 38rem);
+  --guide-col: min(20rem, 88vw);
+  --guide-pad-x: clamp(0.65rem, 2vw, 0.85rem);
+  --guide-pad-caption: clamp(0.85rem, 2.5dvh, 1.35rem);
+  --guide-pad-field: clamp(0.85rem, 2.5dvh, 1.35rem);
+  flex: 1 1 auto;
+  gap: 0;
+  width: 100%;
+  max-width: var(--guide-col);
+  margin-inline: auto;
+  min-height: 0;
+}
+
+.mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__figure {
+  display: grid;
+  grid-template-rows: auto minmax(11rem, 1fr) auto;
+  height: var(--guide-card-h);
+  width: 100%;
+  max-width: var(--guide-col);
+  padding: var(--guide-pad-caption) var(--guide-pad-x) var(--guide-pad-field);
+  background:
+    linear-gradient(to top, rgba(92, 68, 32, 0.2) 0%, transparent 46%),
+    #e4d9c8;
+  container-type: inline-size;
+}
+
+.mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__caption {
+  display: block;
+  position: static;
+  text-align: center;
+  pointer-events: none;
+  min-height: 0;
+}
+
+.mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__howto {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__figure-stage {
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__fields {
+  position: static;
+  transform: none;
+  width: 100%;
+  max-width: none;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__field {
+  align-items: center;
+  width: 100%;
+}
+
+.mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__field .input-group {
+  width: auto;
+  min-width: 9.5rem;
+  max-width: 12rem;
+  margin-inline: auto;
+}
+
+.mensuration-form__step-content .mensuration-guide--howto .input-group .form-control {
+  text-align: center;
+}
+
+.mensuration-form__step-content .mensuration-guide--howto .mensuration-figure-stack {
+  position: relative;
+  width: 100%;
+  max-height: 100%;
+  aspect-ratio: 1;
+  height: auto;
+  margin: 0 auto;
+}
+
+.mensuration-form__step-content .mensuration-guide--howto .mensuration-figure-body,
+.mensuration-form__step-content .mensuration-guide--howto .mensuration-figure--overlay {
+  object-fit: contain;
+}
+
+@container (max-width: 17rem) {
+  .mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__howto {
+    font-size: 0.92rem;
+  }
+
+  .mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__figure {
+    --guide-pad-caption: clamp(0.65rem, 2dvh, 1rem);
+  }
+}
+
+turbo-frame#mensuration_step.mensuration-step--guided .mensuration-form__step-content > h2.h6 {
+  display: none;
 }
 
 .mensuration-guide {
@@ -3207,7 +3386,7 @@ section {
   pointer-events: none;
 }
 
-.mensuration-guide:not(.mensuration-guide--plain) .mensuration-guide__caption {
+.mensuration-guide:not(.mensuration-guide--plain):not(.mensuration-guide--howto) .mensuration-guide__caption {
   display: block;
 }
 
@@ -3234,18 +3413,14 @@ section {
   gap: 0;
 }
 
-.mensuration-guide:not(.mensuration-guide--plain) .mensuration-guide__figure {
+.mensuration-guide:not(.mensuration-guide--plain):not(.mensuration-guide--howto) .mensuration-guide__figure {
   padding: 2.45rem 0.55rem 3.5rem;
   background:
     linear-gradient(to top, rgba(92, 68, 32, 0.2) 0%, transparent 46%),
     #e4d9c8;
 }
 
-.mensuration-guide--howto:not(.mensuration-guide--plain) .mensuration-guide__figure {
-  padding-top: 3.55rem;
-}
-
-.mensuration-guide:not(.mensuration-guide--plain) .mensuration-guide__fields {
+.mensuration-guide:not(.mensuration-guide--plain):not(.mensuration-guide--howto) .mensuration-guide__fields {
   position: absolute;
   left: 50%;
   bottom: 0.5rem;
@@ -4287,12 +4462,12 @@ body:has(#floating_reservation_btn.public-floating-bar) .scroll-to-top-btn {
 }
 
 .concept-card.mensuration-form {
-  padding-top: 1.65rem;
+  padding-top: 1.25rem;
 }
 
 @media (min-width: 768px) {
   .concept-card.mensuration-form {
-    padding: 1.85rem 1.45rem 1.25rem;
+    padding: 1.45rem 1.45rem 1.25rem;
   }
 }
 

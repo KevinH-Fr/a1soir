@@ -100,10 +100,9 @@ RSpec.describe Mensuration, type: :model do
 
       expect(mensuration.reload.client).to eq(existing)
       expect(invitation.reload.client).to eq(existing)
-      # La fiche client existante n'est pas modifiée.
       expect(existing.reload.tel).to eq("0600000000")
       expect(existing.ville).to eq("Nice")
-      expect(existing.prenom).to eq("Jean-Existant")
+      expect(existing.prenom).to eq("Jean Existant")
     end
 
     it "crée un client si aucun compte n'a cet e-mail" do
@@ -153,61 +152,54 @@ RSpec.describe Mensuration, type: :model do
     end
   end
 
-  describe "#apply_public_input" do
-    it "fusionne les mesures en mode brouillon" do
-      mensuration = build_mensuration
-      mensuration.measurements = { "hauteur" => "168" }
-      mensuration.apply_public_input(
-        identity: { prenom: "Anna" },
-        measurements: { "taille_soutien_gorge" => "90D" },
-        merge: true
-      )
-
-      expect(mensuration.measurements).to eq("hauteur" => "168", "taille_soutien_gorge" => "90D")
-      expect(mensuration.prenom).to eq("Anna")
-    end
-
-    it "remplace les mesures sans fusion" do
-      mensuration = build_mensuration
-      mensuration.measurements = { "hauteur" => "168" }
-      mensuration.apply_public_input(
-        identity: { prenom: "Anna" },
-        measurements: { "taille_soutien_gorge" => "90D" }
-      )
-
-      expect(mensuration.measurements).to eq("taille_soutien_gorge" => "90D")
-    end
-  end
-
-  describe "#save_draft!" do
-    it "persiste la fiche sans valider ni terminer l'invitation" do
+  describe "#save_step!" do
+    it "persiste l'identité sans terminer l'invitation" do
       mensuration = build_mensuration(prenom: nil, nom: nil)
-      mensuration.apply_public_input(
-        identity: { prenom: "Jean", telephone: "0611111111" },
-        measurements: { "hauteur" => "180" }
-      )
+      step = Mensuration::Flow.new(invitation, mensuration).step("identity")
 
-      expect(mensuration.save_draft!(wizard_index: 2)).to be(true)
+      expect(mensuration.save_step!(step, identity: { prenom: "Jean", telephone: "0611111111" },
+                                    advance_to: "mesures.hauteur")).to be(true)
       expect(mensuration).to be_persisted
-      expect(mensuration.draft_wizard_index).to eq(2)
+      expect(mensuration.draft_step).to eq("mesures.hauteur")
       expect(mensuration.prenom).to eq("Jean")
       expect(invitation.reload.status).not_to eq("completed")
       expect(Client.count).to eq(0)
+    end
+
+    it "fusionne les mesures partielles" do
+      invitation_f = MensurationInvitation.create!(email: "f@example.com", template: "femme", locale: "fr")
+      mensuration = build_mensuration(mensuration_invitation: invitation_f, template: "femme")
+      mensuration.measurements = { "hauteur" => "168" }
+      step = Mensuration::Flow.new(invitation_f, mensuration).step("mesures.vetements")
+
+      mensuration.save_step!(step, measurements: { "taille_soutien_gorge" => "90D" }, advance_to: "photo")
+
+      expect(mensuration.measurements).to eq("hauteur" => "168", "taille_soutien_gorge" => "90D")
+    end
+
+    it "refuse une étape mesure sans champ obligatoire" do
+      invitation_f = MensurationInvitation.create!(email: "f@example.com", template: "femme", locale: "fr")
+      mensuration = build_mensuration(mensuration_invitation: invitation_f, template: "femme", measurements: {})
+      step = Mensuration::Flow.new(invitation_f, mensuration).step("mesures.hauteur")
+
+      expect(mensuration.save_step!(step, measurements: { "hauteur" => "" }, advance_to: "mesures.vetements")).to be(false)
+      expect(mensuration.errors).not_to be_empty
     end
   end
 
   describe "#complete!" do
     it "enregistre la fiche, lie le client et marque l'invitation terminée" do
-      mensuration = build_mensuration
-      mensuration.apply_public_input(
-        identity: { prenom: "Jean", nom: "Dupont", ville: "Cannes" },
-        measurements: { "hauteur" => "180", "tour_cou" => "40" }
+      invitation_f = MensurationInvitation.create!(email: "f@example.com", template: "femme", locale: "fr", nom: "Dupont")
+      mensuration = build_mensuration(
+        mensuration_invitation: invitation_f, template: "femme",
+        measurements: { "hauteur" => "168", "taille_soutien_gorge" => "90D", "taille_veste_chemisier" => "38" }
       )
+      mensuration.assign_identity(prenom: "Jean", nom: "Dupont", ville: "Cannes")
 
       expect { mensuration.complete! }.to change(Client, :count).by(1)
       expect(mensuration).to be_persisted
-      expect(invitation.reload.status).to eq("completed")
-      expect(mensuration.measurements).to eq("hauteur" => "180", "tour_cou" => "40")
+      expect(invitation_f.reload.status).to eq("completed")
+      expect(mensuration.draft_step).to be_nil
     end
 
     it "ne persiste rien si la fiche est invalide" do
@@ -235,7 +227,7 @@ RSpec.describe Mensuration, type: :model do
       Mensuration.create!(
         mensuration_invitation: draft_invitation,
         template: "femme", locale: "fr", prenom: "B", nom: "Rouillon",
-        draft_wizard_index: 1
+        draft_step: "identity"
       )
 
       expect(described_class.pending_admin_received).to contain_exactly(pending)
