@@ -1,7 +1,7 @@
 <%# locals: field, mensuration %>
 <% key = field["key"] %>
-<% hint = t("mensurations.fields.#{key}.hint", default: "") %>
-<% advice = t("mensurations.fields.#{key}.advice", default: "") %>
+<% hint = mensuration_field_hint(key) %>
+<% advice = mensuration_field_advice(key) %>
 <% caption = t("mensurations.fields.#{key}.short") %>
 <div class="<%= field["input"] == "textarea" ? "col-12" : "col-12 col-md-6" %>">
   <% case field["input"] %>

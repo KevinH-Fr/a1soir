@@ -3,11 +3,7 @@
   <%= hidden_field_tag :step, step.key %>
 
   <div class="mensuration-form__step-content">
-    <h2 class="h6 mb-2 text-light"><%= t(step.title_key) %></h2>
-    <% step_hint = step.hint_key && t(step.hint_key, default: "") %>
-    <% if step_hint.present? %>
-      <%= render "public/mensurations/advice", text: step_hint, extra_class: "mb-3 mensuration-form__advice--quiet" %>
-    <% end %>
+    <%= render "public/mensurations/step_heading", step: step %>
 
     <% if mensuration.errors.any? %>
       <div class="alert alert-danger py-2 small" role="alert">

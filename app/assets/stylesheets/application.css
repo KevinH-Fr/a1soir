@@ -2852,7 +2852,7 @@ section {
   max-width: 30rem;
   margin-inline: auto;
   flex: 0 0 auto;
-  padding: 2.5rem 2rem 2.25rem;
+  padding: 1.5rem 1.15rem 1.35rem;
   text-align: center;
 }
 
@@ -2867,8 +2867,8 @@ section {
 }
 
 .concept-card-icon.mensuration-card-header__icon {
-  width: 3.1rem;
-  height: 3.1rem;
+  width: 2.45rem;
+  height: 2.45rem;
   margin: 0;
   flex-shrink: 0;
   color: rgba(255, 255, 255, 0.9);
@@ -3027,15 +3027,23 @@ section {
   flex-direction: column;
   flex: 0 1 auto;
   width: 100%;
-  max-width: 36rem;
+  max-width: 38rem;
   margin-inline: auto;
   min-width: 0;
   min-height: 0;
   transition: max-width 0.28s ease;
 }
 
-.mensuration-shell--guided .mensuration-flow {
-  max-width: 36rem;
+@media (min-width: 768px) {
+  .mensuration-flow {
+    max-width: min(40rem, 94vw);
+  }
+}
+
+@media (min-width: 992px) {
+  .mensuration-flow {
+    max-width: min(42rem, 90vw);
+  }
 }
 
 .mensuration-form {
@@ -3048,31 +3056,22 @@ section {
 }
 
 turbo-frame#mensuration_progress {
-  flex: 0 0 auto;
   display: block;
 }
 
 turbo-frame#mensuration_step {
-  display: flex;
-  flex-direction: column;
-  flex: 0 1 auto;
-  overflow: visible;
+  display: block;
 }
 
 turbo-frame#mensuration_step > form {
-  flex: 0 1 auto;
   display: flex;
   flex-direction: column;
   width: 100%;
-  overflow: visible;
 }
 
 .mensuration-form__step-content {
-  flex: 0 1 auto;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  overflow: visible;
   padding: 0.15rem 0;
 }
 
@@ -3083,7 +3082,6 @@ turbo-frame#mensuration_step > form {
 .mensuration-form form {
   display: flex;
   flex-direction: column;
-  flex: 0 1 auto;
   width: 100%;
   min-width: 0;
 }
@@ -3094,6 +3092,52 @@ turbo-frame#mensuration_step > form {
   flex: 0 1 auto;
   min-width: 0;
   overflow: visible;
+}
+
+@media (min-width: 768px) {
+  .mensuration-form__stage--wizard {
+    --mensuration-stage-min-h: clamp(36rem, 70dvh, 50rem);
+    display: flex;
+    flex-direction: column;
+    min-height: var(--mensuration-stage-min-h);
+  }
+
+  .mensuration-form__stage--wizard turbo-frame#mensuration_step {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .mensuration-form__stage--wizard turbo-frame#mensuration_step > form {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mensuration-form__stage--wizard .mensuration-form__step-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  .mensuration-form__stage--wizard .mensuration-form__nav {
+    margin-top: auto !important;
+    padding-top: 0.65rem;
+  }
+
+  @media (orientation: landscape) {
+    .mensuration-form__stage--wizard {
+      --mensuration-stage-min-h: clamp(32rem, 84dvh, 46rem);
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .mensuration-form__stage--wizard {
+    --mensuration-stage-min-h: clamp(38rem, 68dvh, 52rem);
+  }
 }
 
 .mensuration-form__template-lead {
@@ -3153,20 +3197,16 @@ turbo-frame#mensuration_step > form {
 .mensuration-form__nav {
   flex-shrink: 0;
   flex-wrap: wrap;
-  margin-top: 0.75rem !important;
-  padding-top: 0.85rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.mensuration-shell:not(.mensuration-shell--guided) .mensuration-form__nav {
-  margin-top: 0.75rem !important;
+  gap: 0.5rem;
+  margin-top: 1.1rem !important;
+  padding-top: 0.35rem;
 }
 
 .concept-card.mensuration-form > .mensuration-card-header {
   justify-content: flex-start;
   width: 100%;
   max-width: none;
-  margin: 0 0 0.85rem;
+  margin: 0 0 0.65rem;
 }
 
 .concept-card.mensuration-form > p.small {
@@ -3174,34 +3214,82 @@ turbo-frame#mensuration_step > form {
 }
 
 .concept-card.mensuration-form .mensuration-form__progress {
+  --stitch-period: 6px;
+  --stitch-dash: 2px;
+  --stitch-track: rgba(255, 255, 255, 0.2);
+  --stitch-fill: rgba(255, 255, 255, 0.92);
+  flex: 0 0 auto;
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0;
 }
 
-.mensuration-form__progress .small {
-  margin-bottom: 0.75rem !important;
+.mensuration-form__progress-hint-slot {
+  margin-top: 0.35rem;
+}
+
+.mensuration-form__progress-hint {
+  margin-top: 0;
+}
+
+.mensuration-form__progress-step {
+  margin-bottom: 0.55rem !important;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.48) !important;
 }
 
 .mensuration-form__stitch-track {
-  height: 4px;
+  --bs-progress-height: 2px;
+  height: 2px;
+  margin-bottom: 0.15rem;
   background: repeating-linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.14) 0 4px,
-    transparent 4px 8px
+    var(--stitch-track) 0 var(--stitch-dash),
+    transparent var(--stitch-dash) var(--stitch-period)
   );
   border-radius: 0;
   overflow: hidden;
 }
 
+.mensuration-form__stitch-track.progress {
+  background-color: transparent;
+}
+
 .mensuration-form__stitch-fill {
+  height: 2px;
   background-color: transparent !important;
   background-image: repeating-linear-gradient(
     90deg,
-    rgba(255, 255, 255, 1) 0 4px,
-    transparent 4px 8px
+    var(--stitch-fill) 0 var(--stitch-dash),
+    transparent var(--stitch-dash) var(--stitch-period)
   );
   border-radius: 0;
-  transition: width 0.35s ease;
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+}
+
+.mensuration-form__stitch-fill::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: -1px;
+  width: 1px;
+  height: 7px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.95) 45%,
+    rgba(255, 255, 255, 0.55) 100%
+  );
+  transform: rotate(14deg);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+}
+
+.mensuration-form__stitch-track[aria-valuenow="0"] .mensuration-form__stitch-fill::after {
+  opacity: 0;
 }
 
 .mensuration-form__identity-row {
@@ -3245,71 +3333,62 @@ turbo-frame#mensuration_step > form {
 }
 
 .mensuration-form__stage .mensuration-guide:not(.mensuration-guide--plain):not(.mensuration-guide--howto) {
-  flex: 0 1 auto;
   justify-content: center;
-  min-height: 0;
-  max-height: 100%;
   width: 100%;
 }
 
-/* Guided measure clip card — grille 3 zones (caption | silhouette | champ) */
+/* Card beige — étapes mesure SVG (responsive, hauteur selon l’écran) */
 .mensuration-form__step-content .mensuration-guide--howto {
-  --guide-card-h: clamp(26rem, 58dvh, 38rem);
-  --guide-col: min(20rem, 88vw);
-  --guide-pad-x: clamp(0.65rem, 2vw, 0.85rem);
-  --guide-pad-caption: clamp(0.85rem, 2.5dvh, 1.35rem);
-  --guide-pad-field: clamp(0.85rem, 2.5dvh, 1.35rem);
-  flex: 1 1 auto;
-  gap: 0;
+  --guide-col: min(100%, 26rem);
+  --guide-figure-size: min(clamp(13.5rem, 82vw, 24rem), calc(100dvh - 19rem));
   width: 100%;
   max-width: var(--guide-col);
   margin-inline: auto;
-  min-height: 0;
 }
 
 .mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__figure {
   display: grid;
-  grid-template-rows: auto minmax(11rem, 1fr) auto;
-  height: var(--guide-card-h);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 0.4rem;
   width: 100%;
-  max-width: var(--guide-col);
-  padding: var(--guide-pad-caption) var(--guide-pad-x) var(--guide-pad-field);
+  padding: clamp(0.7rem, 2.6vw, 1.15rem) clamp(0.7rem, 3vw, 1.15rem) clamp(0.55rem, 2vw, 0.85rem);
   background:
     linear-gradient(to top, rgba(92, 68, 32, 0.2) 0%, transparent 46%),
     #e4d9c8;
+  border-radius: 4px;
   container-type: inline-size;
 }
 
 .mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__caption {
   display: block;
   position: static;
+  inset: auto;
+  z-index: auto;
   text-align: center;
   pointer-events: none;
-  min-height: 0;
+}
+
+.mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__title {
+  font-size: clamp(1.12rem, 4.4vw, 1.28rem);
 }
 
 .mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__howto {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
+  font-size: clamp(0.94rem, 3.7vw, 1.05rem);
 }
 
 .mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__figure-stage {
-  display: grid;
-  place-items: center;
-  align-self: stretch;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   min-height: 0;
-  overflow: hidden;
+  margin: 0.15rem 0 0.25rem;
 }
 
 .mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__fields {
   position: static;
   transform: none;
   width: 100%;
-  max-width: none;
-  flex-shrink: 0;
   align-items: center;
 }
 
@@ -3319,42 +3398,53 @@ turbo-frame#mensuration_step > form {
 }
 
 .mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__field .input-group {
-  width: auto;
-  min-width: 9.5rem;
-  max-width: 12rem;
+  width: min(100%, 14.5rem);
+  min-width: 0;
   margin-inline: auto;
 }
 
 .mensuration-form__step-content .mensuration-guide--howto .input-group .form-control {
   text-align: center;
+  font-size: 1.05rem;
+  min-height: 2.35rem;
+}
+
+.mensuration-form__step-content .mensuration-guide--howto .input-group-text {
+  font-size: 0.82rem;
+  padding: 0.35rem 0.65rem;
 }
 
 .mensuration-form__step-content .mensuration-guide--howto .mensuration-figure-stack {
-  position: relative;
-  width: 100%;
-  max-height: 100%;
-  aspect-ratio: 1;
-  height: auto;
-  margin: 0 auto;
+  width: var(--guide-figure-size);
+  max-width: 100%;
+  margin-inline: auto;
 }
 
-.mensuration-form__step-content .mensuration-guide--howto .mensuration-figure-body,
-.mensuration-form__step-content .mensuration-guide--howto .mensuration-figure--overlay {
-  object-fit: contain;
+@media (min-width: 480px) {
+  .mensuration-form__step-content .mensuration-guide--howto {
+    --guide-col: min(100%, 28rem);
+    --guide-figure-size: min(clamp(16rem, 64vw, 26rem), calc(100dvh - 17rem));
+  }
+}
+
+@media (min-width: 768px) {
+  .mensuration-form__stage--wizard .mensuration-form__step-content .mensuration-guide--howto {
+    --guide-col: min(100%, 32rem);
+    --guide-figure-size: min(20rem, calc(var(--mensuration-stage-min-h, 36rem) - 12rem));
+  }
+}
+
+@media (min-width: 992px) {
+  .mensuration-form__stage--wizard .mensuration-form__step-content .mensuration-guide--howto {
+    --guide-col: min(100%, 34rem);
+    --guide-figure-size: min(22rem, calc(var(--mensuration-stage-min-h, 38rem) - 12rem));
+  }
 }
 
 @container (max-width: 17rem) {
   .mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__howto {
-    font-size: 0.92rem;
+    font-size: 0.88rem;
   }
-
-  .mensuration-form__step-content .mensuration-guide--howto .mensuration-guide__figure {
-    --guide-pad-caption: clamp(0.65rem, 2dvh, 1rem);
-  }
-}
-
-turbo-frame#mensuration_step.mensuration-step--guided .mensuration-form__step-content > h2.h6 {
-  display: none;
 }
 
 .mensuration-guide {
@@ -3618,10 +3708,10 @@ turbo-frame#mensuration_step.mensuration-step--guided .mensuration-form__step-co
 .mensuration-figure-body,
 .mensuration-figure--overlay {
   position: absolute;
-  top: 4%;
-  left: 6%;
-  width: 88%;
-  height: 92%;
+  top: 1%;
+  left: 3%;
+  width: 94%;
+  height: 98%;
   object-fit: contain;
 }
 
@@ -3652,7 +3742,7 @@ turbo-frame#mensuration_step.mensuration-step--guided .mensuration-form__step-co
 .measure-ruler__spine {
   fill: none;
   stroke: #a17c32;
-  stroke-width: 1.15;
+  stroke-width: 1.55;
   stroke-linecap: round;
 }
 
@@ -3672,14 +3762,14 @@ turbo-frame#mensuration_step.mensuration-step--guided .mensuration-form__step-co
 .measure-ruler__cap {
   fill: none;
   stroke: #8a6928;
-  stroke-width: 1.35;
+  stroke-width: 1.8;
   stroke-linecap: round;
 }
 
 .measure-ruler__knob {
   fill: #f7f1e4;
   stroke: #8a6928;
-  stroke-width: 1.05;
+  stroke-width: 1.4;
 }
 
 .measure-ruler.is-live .measure-ruler__knob {
@@ -3689,7 +3779,7 @@ turbo-frame#mensuration_step.mensuration-step--guided .mensuration-form__step-co
 .measure-ruler__badge {
   fill: #e8c96a;
   stroke: #b08a3e;
-  stroke-width: 0.6;
+  stroke-width: 0.85;
 }
 
 .measure-ruler.is-live .measure-ruler__badge {
@@ -3720,8 +3810,8 @@ turbo-frame#mensuration_step.mensuration-step--guided .mensuration-form__step-co
 }
 
 @media (min-width: 768px) {
-  .mensuration-guide:not(.mensuration-guide--plain) {
-    --guide-col: min(22rem, 52vh);
+  .mensuration-guide:not(.mensuration-guide--plain):not(.mensuration-guide--howto) {
+    --guide-col: min(24rem, 100%);
   }
 }
 
@@ -4497,16 +4587,12 @@ body:has(#floating_reservation_btn.public-floating-bar) .scroll-to-top-btn {
 }
 
 .concept-card.mensuration-form {
-  padding: 1.15rem 1.2rem 1.1rem;
-}
-
-.concept-card.mensuration-form {
-  padding-top: 1.25rem;
+  padding: 0.7rem 0.8rem 0.5rem;
 }
 
 @media (min-width: 768px) {
   .concept-card.mensuration-form {
-    padding: 1.45rem 1.45rem 1.25rem;
+    padding: 0.85rem 0.95rem 0.6rem;
   }
 }
 

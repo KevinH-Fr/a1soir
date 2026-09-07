@@ -34,12 +34,29 @@ class Mensuration::Flow::Step
         return "mensurations.form.identity_title" if kind == :identity
         return "mensurations.form.photo_title" if kind == :photo
 
+        step_key = "mensurations.form.#{i18n_slug}_title"
+        return step_key if I18n.exists?(step_key)
+
         "mensurations.form.#{form_step_key}_title"
       end
 
       def hint_key
-        return nil if kind == :identity || kind == :photo
+        return nil if kind.in?(%i[identity measure_clip])
+        return "mensurations.form.photo_hint" if kind == :photo
+
+        step_key = "mensurations.form.#{i18n_slug}_hint"
+        return step_key if I18n.exists?(step_key)
 
         "mensurations.form.#{form_step_key}_hint"
+      end
+
+      def shows_heading?
+        kind != :measure_clip
+      end
+
+      private
+
+      def i18n_slug
+        key.tr(".", "_")
       end
     end

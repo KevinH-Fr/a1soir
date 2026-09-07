@@ -1,11 +1,18 @@
 <%# locals: flow, step %>
 <% percent = (flow.position(step).to_f / flow.total * 100).round %>
+<% step_hint = mensuration_step_hint(step) %>
 <div class="mensuration-form__progress">
-  <div class="small text-light opacity-75 mb-1">
+  <div class="mensuration-form__progress-step small text-light text-end">
     <%= t("mensurations.form.step", current: flow.position(step), total: flow.total) %>
   </div>
   <div class="progress mensuration-form__stitch-track" role="progressbar"
        aria-valuemin="0" aria-valuemax="100" aria-valuenow="<%= percent %>">
     <div class="progress-bar mensuration-form__stitch-fill" style="width: <%= percent %>%;"></div>
+  </div>
+  <div class="mensuration-form__progress-hint-slot">
+    <% if step_hint.present? %>
+      <%= render "public/mensurations/advice", text: step_hint,
+            extra_class: "mensuration-form__progress-hint mensuration-form__advice--quiet" %>
+    <% end %>
   </div>
 </div>

@@ -1,6 +1,6 @@
 <%# locals: step, mensuration, invitation, editing, flow (optional) %>
 <% flow ||= Mensuration::Flow.new(invitation, mensuration) %>
-<div class="d-flex align-items-center mt-3 gap-2 mensuration-form__nav" data-controller="dev-fill">
+<div class="d-flex align-items-center gap-2 mensuration-form__nav" data-controller="dev-fill">
   <% if editing && step.first? %>
     <%= link_to mensuration_path(token: invitation.token),
           data: { turbo_frame: "_top" },

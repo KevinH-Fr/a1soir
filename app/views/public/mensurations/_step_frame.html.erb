@@ -1,9 +1,7 @@
 <%# locals: step, mensuration, invitation, editing, flow %>
 <%= turbo_frame_tag "mensuration_step",
-      class: (step.kind == :measure_clip ? "mensuration-step--guided" : nil),
       data: {
-        mensuration_step: step.key,
-        controller: "mensuration-step-url"
+        mensuration_step: step.key
       } do %>
   <%= render "public/mensurations/steps/#{ step.partial }",
         step: step, mensuration: mensuration, invitation: invitation, editing: editing, flow: flow %>

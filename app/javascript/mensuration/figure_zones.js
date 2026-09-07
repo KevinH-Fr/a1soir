@@ -1,23 +1,23 @@
 const NS = "http://www.w3.org/2000/svg"
-const THICK = 8
+const THICK = 11
 const FOLD_MS = 220
 const UNFOLD_MS = 780
 const REDUCED = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches
 
 export const ZONES = {
-  full: { axis: "v", x: 76, y: 4.2, length: 197.9, thick: 5 },
-  neck: { axis: "h", x: 95.6, y: 27.5, length: 15.1, thick: 6 },
+  full: { axis: "v", x: 76, y: 4.2, length: 197.9, thick: 7 },
+  neck: { axis: "h", x: 95.6, y: 27.5, length: 15.1, thick: 8 },
   shoulders: { axis: "h", x: 78.9, y: 36, length: 48.7 },
-  chest: { axis: "h", x: 85.5, y: 55, length: 35.5, thick: 7 },
+  chest: { axis: "h", x: 85.5, y: 55, length: 35.5, thick: 9 },
   torso: { axis: "h", x: 75.3, y: 60, length: 55.7 },
-  waist: { axis: "h", x: 84, y: 88, length: 38.5, thick: 7 },
-  waist_belt: { axis: "h", x: 83.5, y: 95, length: 39.5, thick: 7 },
-  hips: { axis: "h", x: 81, y: 104, length: 44.5, thick: 7 },
-  hips_pant: { axis: "h", x: 80.5, y: 111, length: 45.5, thick: 7 },
-  arm: { axis: "v", x: 136, y: 36, length: 72, thick: 6 },
-  leg: { axis: "v", x: 121, y: 88, length: 110, thick: 6 },
-  leg_ext: { axis: "v", x: 121, y: 88, length: 110, thick: 6 },
-  leg_int: { axis: "v", x: 109, y: 118, length: 80, thick: 6 },
+  waist: { axis: "h", x: 84, y: 88, length: 38.5, thick: 9 },
+  waist_belt: { axis: "h", x: 83.5, y: 95, length: 39.5, thick: 9 },
+  hips: { axis: "h", x: 81, y: 104, length: 44.5, thick: 9 },
+  hips_pant: { axis: "h", x: 80.5, y: 111, length: 45.5, thick: 9 },
+  arm: { axis: "v", x: 136, y: 36, length: 72, thick: 8 },
+  leg: { axis: "v", x: 121, y: 88, length: 110, thick: 8 },
+  leg_ext: { axis: "v", x: 121, y: 88, length: 110, thick: 8 },
+  leg_int: { axis: "v", x: 109, y: 118, length: 80, thick: 8 },
   feet: { axis: "h", x: 89.9, y: 198, length: 26.5 }
 }
 
@@ -86,7 +86,7 @@ function spineOf(layout) {
 }
 
 function capOf(layout, which) {
-  const span = layout.thick + 5
+  const span = layout.thick + 6.5
   if (layout.vertical) {
     const y = which === 0 ? layout.y : layout.y + layout.h
     return { x1: layout.cx - span / 2, y1: y, x2: layout.cx + span / 2, y2: y }
@@ -105,22 +105,22 @@ function knobOf(layout, which) {
 function placeLabel(nodes, layout, label) {
   const str = label || "cm"
   const compact = str.length > 16
-  const fs = compact ? 5.4 : 6.3
-  const padX = compact ? 3.1 : 3.6
-  const w = Math.max(18, str.length * (compact ? 3.15 : 3.65)) + padX * 2
-  const h = 10.2
+  const fs = compact ? 7.2 : 8.4
+  const padX = compact ? 4.1 : 4.8
+  const w = Math.max(24, str.length * (compact ? 4.15 : 4.85)) + padX * 2
+  const h = 13.6
   let x
   let y
   if (layout.vertical) {
     const left = layout.cx < 103
-    x = left ? layout.x - w - 5 : layout.x + layout.w + 5
-    if (x < 1) x = layout.x + layout.w + 5
-    if (x + w > 205) x = layout.x - w - 5
+    x = left ? layout.x - w - 6 : layout.x + layout.w + 6
+    if (x < 1) x = layout.x + layout.w + 6
+    if (x + w > 205) x = layout.x - w - 6
     y = layout.cy - h / 2
   } else {
     x = layout.cx - w / 2
-    y = layout.y - h - 4.5
-    if (y < 1) y = layout.y + layout.h + 4.5
+    y = layout.y - h - 5.5
+    if (y < 1) y = layout.y + layout.h + 5.5
     if (x < 1) x = 1
     if (x + w > 205) x = 205 - w
   }
@@ -149,8 +149,8 @@ function ensureStructure(ruler) {
   const marks = el("g", { class: "measure-ruler__marks" })
   marks.append(el("line", { class: "measure-ruler__cap" }))
   marks.append(el("line", { class: "measure-ruler__cap" }))
-  marks.append(el("circle", { class: "measure-ruler__knob", r: 2.2 }))
-  marks.append(el("circle", { class: "measure-ruler__knob", r: 2.2 }))
+  marks.append(el("circle", { class: "measure-ruler__knob", r: 3.1 }))
+  marks.append(el("circle", { class: "measure-ruler__knob", r: 3.1 }))
 
   ruler.append(
     defs,

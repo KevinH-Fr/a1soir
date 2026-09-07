@@ -18,11 +18,14 @@ RSpec.describe Mensuration::Flow do
     it "navigue entre les étapes" do
       identity = flow.step("identity")
       hauteur = flow.step("mesures.hauteur")
+      vetements = flow.step("mesures.vetements")
 
       expect(flow.next(identity).key).to eq("mesures.hauteur")
       expect(flow.previous(hauteur).key).to eq("identity")
       expect(flow.position(hauteur)).to eq(2)
       expect(flow.total).to eq(4)
+      expect(hauteur.title_key).to eq("mensurations.form.mesures_hauteur_title")
+      expect(vetements.title_key).to eq("mensurations.form.mesures_vetements_title")
     end
   end
 

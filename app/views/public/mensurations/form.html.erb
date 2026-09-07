@@ -3,7 +3,14 @@
 <% thanks = completed && !editing %>
 <% field_class = "form-control form-control-sm bg-dark text-light border-secondary" %>
 
-<div class="mensuration-flow<%= " mensuration-flow--saved" if completed %>">
+<div class="mensuration-flow<%= " mensuration-flow--saved" if completed %>"
+     <% unless thanks %>
+     <% if @invitation&.template.present? %>
+     data-controller="mensuration-step-url"
+     data-mensuration-step-url-editing-value="<%= editing %>"
+     data-action="turbo:submit-end@document->mensuration-step-url#syncAfterSubmit"
+     <% end %>
+     <% end %>>
   <div class="concept-card mensuration-form">
     <%= render "public/mensurations/card_header" %>
 
@@ -42,7 +49,7 @@
             </div>
           </div>
         <% else %>
-          <div class="mensuration-form__stage">
+          <div class="mensuration-form__stage mensuration-form__stage--wizard">
             <%= render "public/mensurations/progress_frame", flow: @flow, step: @step %>
 
             <%= render "public/mensurations/step_frame",

@@ -14,11 +14,7 @@
         photo_preview_msg_too_big_value: t("mensurations.photo.too_big", max_px: Mensuration::MAX_PHOTO_EDGE)
       } do %>
   <div class="mensuration-form__step-content">
-    <h2 class="h6 mb-2 text-light"><%= t(step.title_key) %></h2>
-    <% photo_hint = t("mensurations.form.photo_hint", default: "") %>
-    <% if photo_hint.present? %>
-      <%= render "public/mensurations/advice", text: photo_hint, extra_class: "mb-2" %>
-    <% end %>
+    <%= render "public/mensurations/step_heading", step: step %>
 
     <% if mensuration.errors.any? %>
       <div class="alert alert-danger py-2 small" role="alert">
@@ -40,7 +36,7 @@
     <img data-photo-preview-target="image" class="mensuration-form__photo-preview d-none" alt="">
   </div>
 
-  <div class="d-flex align-items-center mt-3 gap-2 mensuration-form__nav">
+  <div class="d-flex align-items-center gap-2 mensuration-form__nav">
       <% if previous %>
       <%= link_to mensuration_path(token: invitation.token, **{ step: previous.key, edit: (editing ? 1 : nil) }.compact),
             data: { turbo_frame: "_top" },

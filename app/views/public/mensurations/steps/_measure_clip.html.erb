@@ -1,21 +1,15 @@
 <%# locals: step, mensuration, invitation, editing %>
 <% field = step.fields.first %>
 <% key = field["key"] %>
-<% hint = t("mensurations.fields.#{key}.hint", default: "") %>
-<% advice = t("mensurations.fields.#{key}.advice", default: "") %>
 <% name = mensuration_field_caption(key) %>
 <% ruler = mensuration_field_ruler(key) %>
+<% advice = mensuration_field_advice(key) %>
+<% hint = mensuration_field_hint(key) || t("mensurations.fields.#{key}.label", default: "") %>
 
 <%= form_with url: mensuration_step_path(token: invitation.token), method: :patch do %>
   <%= hidden_field_tag :step, step.key %>
 
   <div class="mensuration-form__step-content">
-    <h2 class="h6 mb-2 text-light"><%= t(step.title_key) %></h2>
-    <% step_hint = step.hint_key && t(step.hint_key, default: "") %>
-    <% if step_hint.present? %>
-      <%= render "public/mensurations/advice", text: step_hint, extra_class: "mb-3 mensuration-form__advice--quiet" %>
-    <% end %>
-
     <% if mensuration.errors.any? %>
       <div class="alert alert-danger py-2 small" role="alert">
         <%= mensuration.errors.full_messages.to_sentence %>
@@ -41,7 +35,7 @@
             <%= mensuration_labeled_field "measurements[#{key}]", mensuration.value_for(key), name,
                   required: field["required"],
                   placeholder: mensuration_field_example(key),
-                  title: hint.presence || t("mensurations.fields.#{key}.label"),
+                  title: hint,
                   layout: :group,
                   class: "mensuration-guide__value",
                   addon: t("mensurations.form.measure_placeholder"),

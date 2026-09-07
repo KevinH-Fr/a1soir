@@ -17,7 +17,7 @@
   </head>
 
   <body class="mensuration-layout bg-black text-light d-flex flex-column vh-100 overflow-hidden">
-    <header class="py-3">
+    <header class="py-2">
       <div class="container-fluid ps-2 pe-3 d-flex align-items-center justify-content-between">
         <%= link_to home_path(locale: I18n.locale), class: "d-inline-block" do %>
           <%= image_tag "/images/a1soirlogo2.png",
@@ -31,7 +31,7 @@
     </header>
 
     <div class="public-scroll flex-grow-1 overflow-auto d-flex flex-column">
-      <main class="public-content mensuration-shell flex-grow-1<%= " mensuration-shell--guided" if @step&.kind == :measure_clip %>" data-mensuration-shell>
+      <main class="public-content mensuration-shell flex-grow-1">
         <% flash.each do |key, value| %>
           <% is_alert = key.to_s.in?(%w[alert error]) %>
           <div class="mensuration-flash <%= is_alert ? "mensuration-flash--alert" : "mensuration-flash--success" %> mb-3" role="status">

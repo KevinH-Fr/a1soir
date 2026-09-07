@@ -21,6 +21,21 @@ module MensurationsHelper
       t("mensurations.form.measure_ellipsis")
   end
 
+  def mensuration_field_hint(key)
+    t("mensurations.fields.#{key}.hint", default: "").presence
+  end
+
+  def mensuration_field_advice(key)
+    t("mensurations.fields.#{key}.advice", default: "").presence
+  end
+
+  def mensuration_step_hint(step)
+    key = step.hint_key
+    return if key.blank?
+
+    t(key, default: "").presence
+  end
+
   def mensuration_labeled_field(name, value, label, type: :text, layout: :group, **opts)
     id = opts.delete(:id).presence || (name.present? ? sanitize_to_id(name) : nil)
     addon = opts.delete(:addon)

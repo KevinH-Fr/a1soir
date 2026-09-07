@@ -120,6 +120,7 @@ module Public
 
       if params[:direction] == "back"
         target_step = @flow.previous(@step) || @step
+        @mensuration.update_column(:draft_step, target_step.key) if @mensuration.persisted?
         respond_to do |format|
           format.turbo_stream { render_step_transition(target_step) }
           format.html { redirect_to mensuration_path(token: @invitation.token, step: target_step.key) }
@@ -224,6 +225,7 @@ module Public
 
     def render_step_transition(step)
       @step = step
+      response.set_header("X-Mensuration-Step", @step.key)
       render turbo_stream: [
         turbo_stream.replace("mensuration_step", partial: "public/mensurations/step_frame", locals: step_locals),
         turbo_stream.replace("mensuration_progress", partial: "public/mensurations/progress_frame",

@@ -478,6 +478,7 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect(response.body).to include(I18n.t("mensurations.form.identity_title", locale: :fr))
       expect(response.body).to include("turbo-frame id=\"mensuration_progress\"")
       expect(response.body).to include(I18n.t("mensurations.form.step", current: 1, total: 4, locale: :fr))
+      expect(invitation.reload.mensuration.draft_step).to eq("identity")
     end
 
     it "cumule les mesures au fil des sauvegardes" do
