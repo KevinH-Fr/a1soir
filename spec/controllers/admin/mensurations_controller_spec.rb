@@ -25,6 +25,78 @@ RSpec.describe Admin::MensurationsController, type: :controller do
       expect(response).to have_http_status(:ok)
       expect(controller.instance_variable_get(:@share_url)).to eq(MensurationInvitation.public_share_url)
     end
+
+    it "n'affiche que les fiches reçues" do
+      draft_invitation = MensurationInvitation.create!(email: "brouillon@example.com", template: "femme", locale: "fr")
+      Mensuration.create!(
+        mensuration_invitation: draft_invitation,
+        template: "femme", locale: "fr", prenom: "B", nom: "Rouillon",
+        draft_wizard_index: 1
+      )
+      invitation.update!(status: "completed")
+      Mensuration.create!(
+        mensuration_invitation: invitation,
+        template: "femme", locale: "fr", prenom: "Anna", nom: "Durand"
+      )
+
+      get :index
+
+      expect(controller.instance_variable_get(:@invitations)).to contain_exactly(invitation)
+    end
+
+    it "recherche par e-mail, nom de fiche ou nom de client" do
+      invitation.update!(status: "completed", email: "unique@example.com")
+      Mensuration.create!(
+        mensuration_invitation: invitation,
+        template: "femme", locale: "fr", prenom: "Anna", nom: "Durand"
+      )
+
+      other = MensurationInvitation.create!(email: "autre@example.com", template: "femme", locale: "fr", status: "completed")
+      Mensuration.create!(
+        mensuration_invitation: other,
+        template: "femme", locale: "fr", prenom: "Marie", nom: "Martin"
+      )
+
+      client_invitation = MensurationInvitation.create!(email: "client@example.com", template: "femme", locale: "fr", status: "completed")
+      client = Client.create!(nom: "Bernard", prenom: "Paul", mail: "client@example.com")
+      Mensuration.create!(
+        mensuration_invitation: client_invitation, client: client,
+        template: "femme", locale: "fr", prenom: "Paul", nom: "Bernard"
+      )
+
+      get :index, params: { q: { Admin::MensurationsController::SEARCH_FIELDS => "unique" } }
+      expect(controller.instance_variable_get(:@invitations)).to contain_exactly(invitation)
+
+      get :index, params: { q: { Admin::MensurationsController::SEARCH_FIELDS => "Durand" } }
+      expect(controller.instance_variable_get(:@invitations)).to contain_exactly(invitation)
+
+      get :index, params: { q: { Admin::MensurationsController::SEARCH_FIELDS => "Bernard" } }
+      expect(controller.instance_variable_get(:@invitations)).to contain_exactly(client_invitation)
+    end
+  end
+
+  describe "PATCH #mark_treated" do
+    before { stub_staff_session }
+
+    it "marque la fiche comme traitée" do
+      mensuration = Mensuration.create!(
+        mensuration_invitation: invitation,
+        template: "femme", locale: "fr", prenom: "Anna", nom: "Durand"
+      )
+
+      patch :mark_treated, params: { id: invitation.id }
+
+      expect(response).to redirect_to(admin_mensurations_path)
+      expect(mensuration.reload.admin_treated?).to be(true)
+      expect(Mensuration.pending_admin_received.count).to eq(0)
+    end
+
+    it "refuse sans fiche mensurations" do
+      patch :mark_treated, params: { id: invitation.id }
+
+      expect(response).to redirect_to(admin_mensurations_path)
+      expect(flash[:alert]).to eq("Aucune fiche à traiter.")
+    end
   end
 
   describe "DELETE #destroy" do

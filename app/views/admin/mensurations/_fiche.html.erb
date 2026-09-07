@@ -22,6 +22,9 @@
     <% end %>
     <%= mensuration_admin_meta_item("Événement", mensuration.date_evenement && l(mensuration.date_evenement)) %>
     <%= mensuration_admin_meta_item("Reçue le", l(mensuration.updated_at.to_date)) %>
+    <% if mensuration.admin_treated? %>
+      <%= mensuration_admin_meta_item("Traitée le", l(mensuration.admin_treated_at.to_date)) %>
+    <% end %>
   </dl>
 
   <% if photo_url || groups.any? %>

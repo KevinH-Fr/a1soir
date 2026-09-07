@@ -16,6 +16,23 @@ class Mensuration < ApplicationRecord
   MAX_PHOTO_BYTES = 8.megabytes
   MAX_PHOTO_EDGE = 4000
 
+  scope :pending_admin, -> { where(admin_treated_at: nil) }
+  scope :pending_admin_received, -> {
+    pending_admin.joins(:mensuration_invitation).merge(MensurationInvitation.admin_received)
+  }
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[nom prenom]
+  end
+
+  def admin_treated?
+    admin_treated_at.present?
+  end
+
+  def mark_admin_treated!
+    update!(admin_treated_at: Time.current)
+  end
+
   # Jeux de champs par template (femme/homme n'ont pas les mêmes mesures — cf. PDF papier).
   def self.fields_for(template)
     all_fields.fetch(template.to_s, [])

@@ -5,6 +5,7 @@ class MensurationMailer < ApplicationMailer
   def otp_code(invitation, code)
     @invitation = invitation
     @code = code
+    @form_url = invitation.public_form_url
 
     I18n.with_locale(@invitation.locale.presence || :fr) do
       attach_inline_logo

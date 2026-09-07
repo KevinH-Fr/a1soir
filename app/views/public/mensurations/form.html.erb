@@ -38,6 +38,7 @@
             <span class="opacity-75"><%= t("mensurations.form.intro") %></span>
             <span class="opacity-50"><%= t("mensurations.form.required_hint") %></span>
           </p>
+          <p class="small text-light opacity-50 mb-3"><%= t("mensurations.form.resume_hint") %></p>
         <% end %>
         <div class="mensuration-form__progress">
           <div class="small text-light opacity-75 mb-1"
@@ -45,8 +46,8 @@
                data-template="<%= t("mensurations.form.step") %>">
             <%= t("mensurations.form.step", current: 1, total: 3) %>
           </div>
-          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33" style="height: 3px; background: rgba(255, 255, 255, 0.12);">
-            <div class="progress-bar bg-light" data-form-wizard-target="bar" style="width: 33%;"></div>
+          <div class="progress mensuration-form__stitch-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33">
+            <div class="progress-bar mensuration-form__stitch-fill" data-form-wizard-target="bar" style="width: 33%;"></div>
           </div>
         </div>
 

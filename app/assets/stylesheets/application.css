@@ -3102,6 +3102,28 @@ section {
   margin-bottom: 0.75rem !important;
 }
 
+.mensuration-form__stitch-track {
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.14) 0 4px,
+    transparent 4px 8px
+  );
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.mensuration-form__stitch-fill {
+  background-color: transparent !important;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1) 0 4px,
+    transparent 4px 8px
+  );
+  border-radius: 0;
+  transition: width 0.35s ease;
+}
+
 .mensuration-form__identity-row {
   margin-bottom: 0.7rem;
 }

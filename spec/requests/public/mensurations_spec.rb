@@ -309,6 +309,26 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect(response.body).to include("measure-guide")
     end
 
+    it "met à jour la fiche déjà enregistrée sans recréer le client" do
+      save_mensuration
+      mensuration = invitation.reload.mensuration
+      client = mensuration.client
+
+      post "/fr/m/#{invitation.token}", params: {
+        mensuration: { prenom: "Anna", nom: "Durand", telephone: "0699999999" },
+        measurements: { hauteur: "170", taille_soutien_gorge: "95D" }
+      }
+
+      expect(response).to redirect_to("/fr/m/#{invitation.token}")
+      mensuration.reload
+      expect(mensuration.telephone).to eq("0699999999")
+      expect(mensuration.value_for("hauteur")).to eq("170")
+      expect(mensuration.value_for("taille_soutien_gorge")).to eq("95D")
+      expect(mensuration.client).to eq(client)
+      expect(Client.count).to eq(1)
+      expect(invitation.reload.status).to eq("completed")
+    end
+
     it "redirige le changement de template vers l'édition si la fiche est enregistrée" do
       save_mensuration
 
@@ -357,6 +377,23 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect(response.body).not_to include("mensuration-form__thanks")
     end
 
+    it "cumule les mesures au fil des sauvegardes sur la même étape" do
+      post "/fr/m/#{invitation.token}/draft", params: {
+        wizard_index: 2,
+        mensuration: { prenom: "Anna", nom: "Durand" },
+        measurements: { hauteur: "168" }
+      }
+      post "/fr/m/#{invitation.token}/draft", params: {
+        wizard_index: 2,
+        mensuration: { prenom: "Anna", nom: "Durand" },
+        measurements: { hauteur: "168", taille_soutien_gorge: "90D" }
+      }
+
+      mensuration = invitation.reload.mensuration
+      expect(mensuration.draft_wizard_index).to eq(2)
+      expect(mensuration.measurements).to eq("hauteur" => "168", "taille_soutien_gorge" => "90D")
+    end
+
     it "refuse le brouillon sans session OTP" do
       reset!
       post "/fr/m/#{invitation.token}/draft", params: {
@@ -366,6 +403,117 @@ RSpec.describe "Public::Mensurations", type: :request do
 
       expect(response).to redirect_to("/fr/m/#{invitation.token}")
       expect(Mensuration.count).to eq(0)
+    end
+
+    it "permet de reprendre un brouillon après une nouvelle vérification OTP" do
+      post "/fr/m/#{invitation.token}/draft", params: {
+        wizard_index: 2,
+        mensuration: { prenom: "Anna", nom: "Durand" },
+        measurements: { hauteur: "168" }
+      }
+
+      reset!
+      get "/fr/m/#{invitation.token}"
+      expect(response.body).to include(I18n.t("mensurations.otp.code_label", locale: :fr))
+
+      open_otp_session
+      get "/fr/m/#{invitation.token}"
+
+      expect(response.body).to include('data-form-wizard-index-value="2"')
+      expect(response.body).to include('value="Anna"')
+      expect(response.body).to include(I18n.t("mensurations.form.resume_hint", locale: :fr))
+    end
+
+    it "retrouve la même invitation via la landing après brouillon" do
+      post "/fr/m/#{invitation.token}/draft", params: {
+        wizard_index: 2,
+        mensuration: { prenom: "Anna", nom: "Durand" },
+        measurements: { hauteur: "168" }
+      }
+
+      reset!
+      allow(RecaptchaVerifier).to receive(:verify).and_return(true)
+      expect {
+        post "/mensurations", params: {
+          email: invitation.email, form_locale: "fr",
+          "g-recaptcha-response" => "ok"
+        }
+      }.not_to change(MensurationInvitation, :count)
+
+      expect(response).to redirect_to("/fr/m/#{invitation.token}")
+      open_otp_session
+      get "/fr/m/#{invitation.token}"
+
+      expect(response.body).to include('data-form-wizard-index-value="2"')
+      expect(invitation.reload.mensuration.measurements).to eq("hauteur" => "168")
+    end
+  end
+
+  describe "session OTP expirée" do
+    include ActiveSupport::Testing::TimeHelpers
+
+    it "refuse la sauvegarde et renvoie vers la page OTP" do
+      travel_to Time.zone.local(2026, 6, 1, 12, 0, 0) do
+        open_otp_session
+        travel 3.hours
+
+        post "/fr/m/#{invitation.token}", params: {
+          mensuration: { prenom: "Anna", nom: "Durand" },
+          measurements: { hauteur: "168" }
+        }
+
+        expect(response).to redirect_to("/fr/m/#{invitation.token}")
+        expect(Mensuration.count).to eq(0)
+
+        follow_redirect!
+        expect(response.body).to include(I18n.t("mensurations.otp.session_expired", locale: :fr))
+        expect(response.body).to include(I18n.t("mensurations.otp.code_label", locale: :fr))
+      end
+    end
+  end
+
+  describe "parcours homme" do
+    let!(:invitation_homme) do
+      MensurationInvitation.create!(
+        email: "homme@example.com", template: "homme", locale: "fr",
+        prenom: "Jean", nom: "Martin"
+      )
+    end
+
+    before do
+      code = invitation_homme.generate_otp!
+      post "/fr/m/#{invitation_homme.token}/verify", params: { code: code }
+    end
+
+    it "enregistre tailles vêtement et mensurations au mètre" do
+      get "/fr/m/#{invitation_homme.token}"
+      expect(response.body).to include('data-clip="neck"')
+
+      expect {
+        post "/fr/m/#{invitation_homme.token}", params: {
+          mensuration: { prenom: "Jean", nom: "Martin", telephone: "0612345678" },
+          measurements: {
+            taille_veste: "50",
+            taille_chemise: "41",
+            hauteur: "182",
+            tour_cou: "40"
+          }
+        }
+      }.to change(Mensuration, :count).by(1).and change(Client, :count).by(1)
+
+      mensuration = invitation_homme.reload.mensuration
+      expect(mensuration.template).to eq("homme")
+      expect(mensuration.measurements).to eq(
+        "taille_veste" => "50",
+        "taille_chemise" => "41",
+        "hauteur" => "182",
+        "tour_cou" => "40"
+      )
+      expect(mensuration.value_for("taille_soutien_gorge")).to be_nil
+      expect(invitation_homme.status).to eq("completed")
+
+      follow_redirect!
+      expect(response.body).to include("mensuration-form__thanks")
     end
   end
 

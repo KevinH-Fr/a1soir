@@ -202,6 +202,7 @@ Rails.application.routes.draw do
       # Dimensions : fiches mensurations. :id = invitation. Lien public copié depuis l'index.
       resources :mensurations, only: [:index, :destroy] do
         member do
+          patch :mark_treated
           # La photo client ne sort jamais en URL Cloudinary publique : proxy admin authentifié.
           get :photo
         end

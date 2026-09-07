@@ -18,6 +18,7 @@ export default class extends Controller {
     const guide = this.currentGuide()
     if (guide && !guide.atLast) {
       if (!guide.validateCurrent()) return
+      if (!(await this.persistDraft(this.indexValue))) return
       guide.nextField()
       this.updateChrome()
       return

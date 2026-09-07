@@ -193,6 +193,31 @@ RSpec.describe Mensuration, type: :model do
     end
   end
 
+  describe "admin_treated" do
+    it "compte les fiches reçues non traitées pour le badge admin" do
+      treated = build_mensuration
+      treated.save!
+      treated.mark_admin_treated!
+
+      pending = build_mensuration(mensuration_invitation: MensurationInvitation.create!(
+        email: "autre@example.com", template: "femme", locale: "fr"
+      ))
+      pending.save!
+      pending.mensuration_invitation.update!(status: "completed")
+
+      draft_invitation = MensurationInvitation.create!(email: "brouillon@example.com", template: "femme", locale: "fr")
+      Mensuration.create!(
+        mensuration_invitation: draft_invitation,
+        template: "femme", locale: "fr", prenom: "B", nom: "Rouillon",
+        draft_wizard_index: 1
+      )
+
+      expect(described_class.pending_admin_received).to contain_exactly(pending)
+      expect(described_class.pending_admin).to include(draft_invitation.mensuration)
+      expect(treated.admin_treated?).to be(true)
+    end
+  end
+
   describe "photo" do
     it "refuse un fichier non image" do
       mensuration = build_mensuration

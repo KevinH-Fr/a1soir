@@ -31,6 +31,7 @@ fr:
       hide_answers: "Masquer mes réponses"
       deleted: "Votre fiche a été supprimée."
       draft_failed: "Impossible d'enregistrer votre progression. Réessayez."
+      resume_hint: "Vous pouvez fermer cette page et revenir plus tard via le lien reçu par e-mail ou en ressaisissant la même adresse sur la page Mensurations."
       already_completed: "Votre fiche est enregistrée. Pour la modifier ou la supprimer, validez à nouveau votre e-mail."
     photo:
       invalid_format: "Utilisez une image JPEG, PNG ou WebP."
@@ -55,6 +56,8 @@ fr:
       too_many_attempts: "Trop d'essais. Demandez un nouveau code."
       resend_wait: "Patientez une minute avant de redemander un code."
       session_expired: "Votre session a expiré. Validez à nouveau votre e-mail."
+      resume_hint: "Vous pouvez fermer cette page et revenir plus tard via le lien dans votre e-mail ou en ressaisissant la même adresse sur"
+      resume_gate_link: "la page Mensurations"
     share:
       welcome: "Espace mensurations"
       title: "Vos mensurations"
@@ -244,4 +247,6 @@ fr:
         subject: "Votre code de vérification — Autour d'un Soir"
         body: "Voici votre code de vérification :"
         validity: "Ce code est valable 15 minutes."
+        resume_link: "Pour reprendre votre formulaire plus tard :"
+        resume_hint: "Conservez ce lien : vous pourrez revenir à tout moment et demander un nouveau code si besoin."
         ignore: "Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail."

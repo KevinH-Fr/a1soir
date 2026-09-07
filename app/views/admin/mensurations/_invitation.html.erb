@@ -1,15 +1,8 @@
 <% mensuration = invitation.mensuration %>
 <% collapse_id = "collapseInvitation#{dom_id(invitation)}" %>
-<% status_label, status_icon =
-     if invitation.expired? && mensuration.nil?
-       ["Lien expiré", "bi-x-circle text-danger"]
-     elsif mensuration.present?
-       ["Fiche reçue", "bi-check-circle text-success"]
-     elsif invitation.status == "verified"
-       ["E-mail vérifié", "bi-person-check text-info"]
-     else
-       ["En cours", "bi-hourglass-split text-warning"]
-     end %>
+<% received = invitation.completed? %>
+<% in_progress = mensuration.present? && !received %>
+<% treated = mensuration&.admin_treated? %>
 
 <div id="<%= dom_id invitation %>">
   <div class="card mx-2 light-beige-colored shadow-sm">
@@ -18,12 +11,43 @@
         <div class="d-flex flex-wrap align-items-center">
           <%= custom_badge("", "", "", "fw-bold", invitation.email) %>
           <%= custom_badge("", "", "", "", invitation.full_name) if invitation.full_name.present? %>
-          <div class="badge lighter-beige-colored fw-normal m-1 fs-6 shadow-sm text-dark text-break d-inline-flex align-items-center" style="white-space: normal;">
-            <i class="bi <%= status_icon %> me-1"></i>
-            <%= status_label %>
-          </div>
+          <% if invitation.expired? && mensuration.nil? %>
+            <div class="badge lighter-beige-colored fw-normal m-1 fs-6 shadow-sm text-dark text-break d-inline-flex align-items-center" style="white-space: normal;">
+              <i class="bi bi-x-circle text-danger me-1"></i>
+              Lien expiré
+            </div>
+          <% elsif received %>
+            <% if treated %>
+              <div class="badge lighter-beige-colored fw-normal m-1 fs-6 shadow-sm text-dark text-break d-inline-flex align-items-center" style="white-space: normal;">
+                <i class="bi bi-check-circle-fill text-success me-1"></i>
+                Fiche traitée
+              </div>
+            <% else %>
+              <div class="badge lighter-beige-colored fw-normal m-1 fs-6 shadow-sm text-dark text-break d-inline-flex align-items-center" style="white-space: normal;">
+                <i class="bi bi-check-circle text-success me-1"></i>
+                Fiche reçue
+              </div>
+            <% end %>
+          <% elsif in_progress %>
+            <div class="badge lighter-beige-colored fw-normal m-1 fs-6 shadow-sm text-dark text-break d-inline-flex align-items-center" style="white-space: normal;">
+              <i class="bi bi-hourglass-split text-warning me-1"></i>
+              En cours
+            </div>
+          <% elsif invitation.status == "verified" %>
+            <div class="badge lighter-beige-colored fw-normal m-1 fs-6 shadow-sm text-dark text-break d-inline-flex align-items-center" style="white-space: normal;">
+              <i class="bi bi-person-check text-info me-1"></i>
+              E-mail vérifié
+            </div>
+          <% else %>
+            <div class="badge lighter-beige-colored fw-normal m-1 fs-6 shadow-sm text-dark text-break d-inline-flex align-items-center" style="white-space: normal;">
+              <i class="bi bi-hourglass-split text-warning me-1"></i>
+              En cours
+            </div>
+          <% end %>
           <%= custom_badge("", "", "", "", "#{invitation.template.capitalize} · #{invitation.locale.upcase}") %>
-          <%= custom_badge("fa-clock", "", "", "", invitation.expired? ? "expiré" : "jusqu'au #{l(invitation.expires_at.to_date)}") %>
+          <% unless mensuration.present? %>
+            <%= custom_badge("fa-clock", "", "", "", invitation.expired? ? "expiré" : "jusqu'au #{l(invitation.expires_at.to_date)}") %>
+          <% end %>
           <% if invitation.client.present? %>
             <%= link_to admin_client_path(invitation.client), class: "text-decoration-none" do %>
               <%= custom_badge("fa-user", "", "", "", invitation.client.full_name) %>
@@ -42,6 +66,14 @@
           </a>
 
           <div class="ms-auto d-flex align-items-center gap-1 flex-nowrap">
+            <% if received && !treated %>
+              <%= button_to mark_treated_admin_mensuration_path(invitation), method: :patch,
+                    class: "btn btn-sm btn-outline-success d-inline-flex align-items-center",
+                    title: "Marquer comme traitée" do %>
+                <i class="bi bi-check2"></i>
+                <span class="d-none d-lg-inline ms-1">Marquer traitée</span>
+              <% end %>
+            <% end %>
             <%= button_to admin_mensuration_path(invitation), method: :delete,
                   class: "btn btn-sm btn-danger d-inline-flex align-items-center",
                   title: "Supprimer",
@@ -57,11 +89,13 @@
         <div class="pt-2">
           <div class="border-top border-secondary border-opacity-25 pt-2 px-2 pb-1">
             <% if mensuration.present? %>
+              <% extra_meta = [["Démarrée le", l(invitation.created_at, format: :short)]] %>
+              <% if in_progress && mensuration.draft_wizard_index.present? %>
+                <% extra_meta << ["Progression", "Étape #{mensuration.draft_wizard_index.to_i + 1}"] %>
+              <% end %>
               <%= render "admin/mensurations/fiche",
                     mensuration: mensuration,
-                    extra_meta: [
-                      ["Démarrée le", l(invitation.created_at, format: :short)]
-                    ] %>
+                    extra_meta: extra_meta %>
             <% else %>
               <div class="mensuration-admin-fiche">
                 <dl class="mensuration-admin-fiche__meta mb-0 pb-0 border-0">

@@ -1,13 +1,28 @@
 # Hub « Dimensions » : fiches mensurations reçues. :id = invitation.
 class Admin::MensurationsController < Admin::ApplicationController
-  before_action :set_invitation, only: [:destroy, :photo]
+  SEARCH_FIELDS = :email_or_nom_or_prenom_or_mensuration_nom_or_mensuration_prenom_or_client_nom_or_client_prenom_cont
+
+  before_action :set_invitation, only: [:destroy, :photo, :mark_treated]
 
   def index
-    @q = MensurationInvitation.ransack(params[:q])
-    scope = @q.result.where(status: "completed").includes(:client, :mensuration).order(created_at: :desc)
+    search_params = params.permit(q: [SEARCH_FIELDS])
+    @q = MensurationInvitation.ransack(search_params[:q])
+    scope = @q.result(distinct: true).merge(MensurationInvitation.admin_received)
+              .includes(:client, :mensuration).order(created_at: :desc)
     @count_invitations = scope.count
     @invitations = scope
     @share_url = MensurationInvitation.public_share_url
+  end
+
+  def mark_treated
+    mensuration = @invitation.mensuration
+    unless mensuration
+      redirect_back fallback_location: admin_mensurations_path, alert: "Aucune fiche à traiter."
+      return
+    end
+
+    mensuration.mark_admin_treated!
+    redirect_back fallback_location: admin_mensurations_path, notice: "Fiche marquée comme traitée."
   end
 
   # Supprime invitation + fiche + photo (purge ActiveStorage) — jamais le client.

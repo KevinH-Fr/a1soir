@@ -30,9 +30,9 @@ class MensurationInvitation < ApplicationRecord
     %w[email nom prenom status template locale created_at expires_at]
   end
 
-  # La recherche admin ne porte que sur des attributs, aucune association exposée.
+  # Recherche admin : e-mail invitation + identité fiche + client lié.
   def self.ransackable_associations(_auth_object = nil)
-    []
+    %w[mensuration client]
   end
 
   def expired?
@@ -49,6 +49,17 @@ class MensurationInvitation < ApplicationRecord
 
   def completed?
     status == "completed"
+  end
+
+  scope :admin_received, -> { where(status: "completed") }
+  scope :admin_in_progress, -> { joins(:mensuration).where.not(status: "completed") }
+
+  def public_form_url
+    Rails.application.routes.url_helpers.mensuration_url(
+      token: token,
+      locale: locale.presence || "fr",
+      **self.class.public_form_url_options
+    )
   end
 
   # Lien public unique (admin « Copier ») : hôte boutique, pas le sous-domaine admin.
