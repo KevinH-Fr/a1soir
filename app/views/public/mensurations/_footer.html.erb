@@ -1,35 +1,35 @@
 <footer class="public-site-footer mensuration-site-footer mt-auto">
   <div class="container py-3 py-md-4">
-    <div class="row g-3 g-md-4">
+    <div class="mensuration-site-footer__row">
       <% if @footer_texte_adresse.present? %>
-        <div class="col-12 col-md-4">
+        <div class="mensuration-site-footer__col">
           <h2 class="h6 text-uppercase mb-2 text-light"><%= t("mensurations.footer.address") %></h2>
-          <div class="mensuration-site-footer__item d-flex align-items-start text-light">
-            <i class="bi bi-geo-alt-fill mensuration-site-footer__icon me-2" aria-hidden="true"></i>
+          <div class="mensuration-site-footer__item">
+            <i class="bi bi-geo-alt-fill mensuration-site-footer__icon" aria-hidden="true"></i>
             <%= link_to "https://www.google.com/maps/search/?api=1&query=#{CGI.escape("autour d'un soir 06400 cannes")}",
                   target: "_blank", rel: "noopener noreferrer",
-                  class: "text-light text-decoration-none hover-link d-flex align-items-start mensuration-site-footer__link" do %>
+                  class: "text-light text-decoration-none hover-link mensuration-site-footer__link" do %>
               <p class="small mb-0 fw-bold mensuration-site-footer__text"><%= @footer_texte_adresse %></p>
-              <i class="bi bi-box-arrow-up-right mensuration-site-footer__external ms-2" aria-hidden="true"></i>
+              <i class="bi bi-box-arrow-up-right mensuration-site-footer__external" aria-hidden="true"></i>
             <% end %>
           </div>
         </div>
       <% end %>
 
       <% if @footer_texte_contact.present? %>
-        <div class="col-12 col-sm-6 col-md-4">
+        <div class="mensuration-site-footer__col">
           <h2 class="h6 text-uppercase mb-2 text-light"><%= t("mensurations.footer.contact") %></h2>
-          <div class="mensuration-site-footer__item d-flex align-items-start text-light">
-            <i class="bi bi-telephone-fill mensuration-site-footer__icon me-2" aria-hidden="true"></i>
+          <div class="mensuration-site-footer__item">
+            <i class="bi bi-telephone-fill mensuration-site-footer__icon" aria-hidden="true"></i>
             <p class="small mb-0 fw-bold mensuration-site-footer__text"><%= @footer_texte_contact %></p>
           </div>
         </div>
       <% end %>
 
-      <div class="col-12 col-sm-6 col-md-4">
+      <div class="mensuration-site-footer__col">
         <h2 class="h6 text-uppercase mb-2 text-light"><%= t("mensurations.footer.boutique") %></h2>
-        <div class="mensuration-site-footer__item d-flex align-items-start text-light">
-          <i class="bi bi-bag mensuration-site-footer__icon me-2" aria-hidden="true"></i>
+        <div class="mensuration-site-footer__item">
+          <i class="bi bi-bag mensuration-site-footer__icon" aria-hidden="true"></i>
           <%= link_to t("mensurations.footer.visit_site"), home_path(locale: I18n.locale),
                 class: "text-light text-decoration-none hover-link small fw-bold mensuration-site-footer__text" %>
         </div>
