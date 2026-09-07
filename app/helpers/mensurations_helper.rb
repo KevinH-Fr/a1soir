@@ -26,6 +26,7 @@ module MensurationsHelper
     addon = opts.delete(:addon)
     classes = [(layout == :group ? GROUP_CONTROL : CONTROL), opts.delete(:class)].compact.join(" ")
     field_opts = opts.merge(id: id, class: classes)
+    field_opts[:data] = (field_opts[:data] || {}).merge(initial_value: value) if value.present?
 
     field = case type
             when :tel then telephone_field_tag(name, value, field_opts)
@@ -39,11 +40,13 @@ module MensurationsHelper
     safe_join([label_tag(id, label, class: LABEL), field])
   end
 
-  def mensuration_labeled_select(name, option_tags, label, layout: :group, **opts)
+  def mensuration_labeled_select(name, option_tags, label, layout: :group, selected_value: nil, **opts)
     id = opts.delete(:id).presence || sanitize_to_id(name)
     classes = [(layout == :group ? GROUP_SELECT : SELECT), opts.delete(:class)].compact.join(" ")
 
-    field = select_tag(name, option_tags, opts.merge(id: id, class: classes))
+    field_opts = opts.merge(id: id, class: classes)
+    field_opts[:data] = (field_opts[:data] || {}).merge(initial_value: selected_value) if selected_value.present?
+    field = select_tag(name, option_tags, field_opts)
     return grouped_control(id, label, field) if layout == :group
 
     safe_join([

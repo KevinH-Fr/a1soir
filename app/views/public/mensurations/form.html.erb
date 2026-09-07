@@ -24,6 +24,8 @@
     <% else %>
       <div data-controller="form-wizard photo-preview"
            data-form-wizard-index-value="<%= @wizard_index.to_i %>"
+           data-form-wizard-restore-guide-value="<%= @guide_index.present? %>"
+           data-form-wizard-guide-index-value="<%= @guide_index.to_i %>"
            data-form-wizard-saved-value="<%= completed ? "true" : "false" %>"
            data-form-wizard-draft-url-value="<%= mensuration_draft_path(token: @invitation.token) %>"
            data-form-wizard-draft-error-value="<%= t("mensurations.form.draft_failed") %>"
@@ -34,13 +36,10 @@
            data-photo-preview-msg-too-big-value="<%= t("mensurations.photo.too_big", max_px: Mensuration::MAX_PHOTO_EDGE) %>"
            class="mensuration-form__body">
         <% if @invitation.template.present? %>
-          <p class="small mb-3 text-light">
-            <span class="opacity-75"><%= t("mensurations.form.intro") %></span>
-            <span class="opacity-50"><%= t("mensurations.form.required_hint") %></span>
-          </p>
-          <p class="small text-light opacity-50 mb-3"><%= t("mensurations.form.resume_hint") %></p>
+          <p class="small mb-3 text-light opacity-75"><%= t("mensurations.form.intro") %></p>
         <% end %>
-        <div class="mensuration-form__progress">
+        <div class="mensuration-form__progress<%= " d-none" if @invitation.template.blank? %>"
+             data-form-wizard-target="progress">
           <div class="small text-light opacity-75 mb-1"
                data-form-wizard-target="caption"
                data-template="<%= t("mensurations.form.step") %>">
@@ -76,7 +75,7 @@
             <div class="row g-2 mensuration-form__identity-row">
               <div class="col-md-6">
                 <%= mensuration_labeled_field "mensuration[prenom]", @mensuration.prenom,
-                      "#{t('mensurations.identity.prenom')} *", required: true %>
+                      t("mensurations.identity.prenom"), required: true %>
               </div>
               <div class="col-md-6">
                 <% if mensuration_nom_locked? %>
@@ -84,7 +83,7 @@
                         disabled: true, id: "mensuration_nom", class: "opacity-75" %>
                 <% else %>
                   <%= mensuration_labeled_field "mensuration[nom]", @mensuration.nom,
-                        "#{t('mensurations.identity.nom')} *", required: true %>
+                        t("mensurations.identity.nom"), required: true %>
                 <% end %>
               </div>
             </div>

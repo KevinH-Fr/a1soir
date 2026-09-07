@@ -125,8 +125,8 @@ RSpec.describe MensurationInvitation, type: :model do
   end
 
   describe "#clear_mensuration!" do
-    it "détruit la fiche et repasse l'invitation en verified" do
-      invitation = build_invitation.tap(&:save!)
+    it "détruit la fiche, repasse l'invitation en verified et réinitialise le type de formulaire" do
+      invitation = build_invitation(template: "femme").tap(&:save!)
       invitation.create_mensuration!(
         template: "femme", locale: "fr", prenom: "Anna", nom: "Durand"
       )
@@ -136,6 +136,7 @@ RSpec.describe MensurationInvitation, type: :model do
 
       expect(invitation.reload.mensuration).to be_nil
       expect(invitation.status).to eq("verified")
+      expect(invitation.template).to be_nil
     end
   end
 
@@ -184,8 +185,20 @@ RSpec.describe MensurationInvitation, type: :model do
 
       expect(reused.id).to eq(invitation.id)
       expect(reused).not_to be_expired
-      expect(reused.template).to eq("femme")
+      expect(reused.template).to be_nil
       expect(reused.locale).to eq("fr")
+    end
+
+    it "conserve le type de formulaire si un brouillon existe" do
+      invitation = build_invitation(template: "homme", locale: "fr").tap(&:save!)
+      invitation.create_mensuration!(
+        template: "homme", locale: "fr", prenom: "Jean", nom: "Martin",
+        draft_wizard_index: 1
+      )
+
+      reused = described_class.find_or_prepare_for_share!(email: invitation.email)
+
+      expect(reused.template).to eq("homme")
     end
   end
 end

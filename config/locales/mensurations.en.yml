@@ -4,7 +4,6 @@ en:
       title_femme: "Measurement form — Women"
       title_homme: "Measurement form — Men"
       intro: "Please fill in carefully."
-      required_hint: "* required"
       identity_title: "Your details"
       measures_title: "Your measurements"
       mesures_title: "Your measurements"
@@ -31,7 +30,6 @@ en:
       hide_answers: "Hide my answers"
       deleted: "Your form has been deleted."
       draft_failed: "Could not save your progress. Please try again."
-      resume_hint: "You can close this page and come back later via the link in your email or by re-entering the same address on the Measurements page."
       already_completed: "Your form is saved. To edit or delete it, please verify your email again."
     photo:
       invalid_format: "Please use a JPEG, PNG or WebP image."

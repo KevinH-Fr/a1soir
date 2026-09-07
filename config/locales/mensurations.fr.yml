@@ -4,7 +4,6 @@ fr:
       title_femme: "Formulaire de prise de mesures — Femmes"
       title_homme: "Formulaire de prise de mesures — Hommes"
       intro: "Merci de remplir minutieusement."
-      required_hint: "* obligatoire"
       identity_title: "Vos coordonnées"
       measures_title: "Vos mesures"
       mesures_title: "Vos mesures"
@@ -31,7 +30,6 @@ fr:
       hide_answers: "Masquer mes réponses"
       deleted: "Votre fiche a été supprimée."
       draft_failed: "Impossible d'enregistrer votre progression. Réessayez."
-      resume_hint: "Vous pouvez fermer cette page et revenir plus tard via le lien reçu par e-mail ou en ressaisissant la même adresse sur la page Mensurations."
       already_completed: "Votre fiche est enregistrée. Pour la modifier ou la supprimer, validez à nouveau votre e-mail."
     photo:
       invalid_format: "Utilisez une image JPEG, PNG ou WebP."

@@ -221,6 +221,22 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect(response.body).not_to include('data-clip="chest"')
     end
 
+    it "n'affiche aucun type de formulaire présélectionné sur une fiche vierge" do
+      virgin = MensurationInvitation.create!(email: "vierge@example.com", locale: "fr")
+      code = virgin.generate_otp!
+      post "/fr/m/#{virgin.token}/verify", params: { code: code }
+
+      get "/fr/m/#{virgin.token}"
+
+      expect(virgin.reload.template).to be_nil
+      expect(response.body).to include(I18n.t("mensurations.share.template_femme", locale: :fr))
+      expect(response.body).to include(I18n.t("mensurations.share.template_homme", locale: :fr))
+      expect(response.body).to include('data-form-wizard-target="progress"')
+      expect(response.body).to match(/class="mensuration-form__progress d-none"/)
+      expect(response.body).not_to include("is-selected")
+      expect(response.body).not_to include("measure-guide")
+    end
+
     it "refuse un mauvais code" do
       invitation.generate_otp!
       post "/fr/m/#{invitation.token}/verify", params: { code: "000000" }
@@ -363,6 +379,24 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect(Client.count).to eq(0)
     end
 
+    it "reprend le champ guidé et les mesures après rechargement" do
+      post "/fr/m/#{invitation.token}/draft", params: {
+        wizard_index: 2,
+        guide_index: 1,
+        mensuration: { prenom: "Anna", nom: "Durand" },
+        measurements: { hauteur: "168", hauteur_talons: "8" }
+      }
+
+      get "/fr/m/#{invitation.token}"
+
+      expect(response.body).to include('data-form-wizard-index-value="2"')
+      expect(response.body).to include('data-form-wizard-restore-guide-value="true"')
+      expect(response.body).to include('data-form-wizard-guide-index-value="1"')
+      expect(response.body).to include('value="168"')
+      expect(response.body).to include('value="8"')
+      expect(invitation.reload.mensuration.draft_guide_index).to eq(1)
+    end
+
     it "reprend le wizard à la dernière étape sauvegardée" do
       post "/fr/m/#{invitation.token}/draft", params: {
         wizard_index: 2,
@@ -385,8 +419,9 @@ RSpec.describe "Public::Mensurations", type: :request do
       }
       post "/fr/m/#{invitation.token}/draft", params: {
         wizard_index: 2,
+        guide_index: 1,
         mensuration: { prenom: "Anna", nom: "Durand" },
-        measurements: { hauteur: "168", taille_soutien_gorge: "90D" }
+        measurements: { taille_soutien_gorge: "90D" }
       }
 
       mensuration = invitation.reload.mensuration
@@ -421,7 +456,6 @@ RSpec.describe "Public::Mensurations", type: :request do
 
       expect(response.body).to include('data-form-wizard-index-value="2"')
       expect(response.body).to include('value="Anna"')
-      expect(response.body).to include(I18n.t("mensurations.form.resume_hint", locale: :fr))
     end
 
     it "retrouve la même invitation via la landing après brouillon" do
@@ -598,6 +632,7 @@ RSpec.describe "Public::Mensurations", type: :request do
       }.to change(Mensuration, :count).by(-1)
 
       expect(invitation.reload.status).to eq("verified")
+      expect(invitation.template).to be_nil
     end
 
     it "attache une photo en pied JPEG" do

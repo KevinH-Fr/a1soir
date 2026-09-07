@@ -1,6 +1,6 @@
 # Champs de mesures par template — extraits des PDF papier (docs/formulaire mesures *.pdf).
 # key    : clé stable du JSON measurements + clé i18n (mensurations.fields.<key>)
-# required : * sur le papier
+# required : obligatoire pour finaliser (validation wizard + soumission)
 # step   : volet du wizard après les coordonnées (i18n mensurations.form.<step>_title)
 #          femme : un volet "mesures" ; homme : "tailles" (étiquettes) puis "corps" (mètre)
 # group  : sous-section visuelle dans le volet (i18n mensurations.groups.<group>)

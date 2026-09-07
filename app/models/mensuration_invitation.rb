@@ -118,14 +118,18 @@ class MensurationInvitation < ApplicationRecord
   def clear_mensuration!
     transaction do
       mensuration&.destroy
-      update!(status: "verified")
+      update!(status: "verified", template: nil)
     end
   end
 
   def prepare_for_share_start!(locale:, template:)
     attrs = { expires_at: LINK_VALIDITY.from_now }
     attrs[:locale] = locale if locale.present?
-    attrs[:template] = template if template.present?
+    if template.present?
+      attrs[:template] = template
+    elsif mensuration.nil?
+      attrs[:template] = nil
+    end
     update!(attrs)
   end
 

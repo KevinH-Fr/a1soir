@@ -1,12 +1,14 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["step", "bar", "caption", "prev", "next", "submit", "fill", "home"]
+  static targets = ["step", "bar", "caption", "prev", "next", "submit", "fill", "home", "progress"]
   static values = {
     index: { type: Number, default: 0 },
     saved: { type: Boolean, default: false },
     draftUrl: String,
-    draftError: { type: String, default: "Could not save your progress." }
+    draftError: { type: String, default: "Could not save your progress." },
+    guideIndex: { type: Number, default: 0 },
+    restoreGuide: { type: Boolean, default: false }
   }
 
   connect() {
@@ -18,7 +20,8 @@ export default class extends Controller {
     const guide = this.currentGuide()
     if (guide && !guide.atLast) {
       if (!guide.validateCurrent()) return
-      if (!(await this.persistDraft(this.indexValue))) return
+      const nextGuideIndex = guide.indexValue + 1
+      if (!(await this.persistDraft(this.indexValue, nextGuideIndex))) return
       guide.nextField()
       this.updateChrome()
       return
@@ -27,23 +30,31 @@ export default class extends Controller {
     if (!this.validateCurrent()) return
     if (this.indexValue < this.stepTargets.length - 1) {
       const nextIndex = this.indexValue + 1
-      if (!(await this.persistDraft(nextIndex))) return
+      const nextStep = this.stepTargets[nextIndex]
+      const hasGuide = Boolean(nextStep?.querySelector("[data-controller~='measure-guide']"))
+      const guideIndex = hasGuide ? 0 : undefined
+      if (!(await this.persistDraft(nextIndex, guideIndex))) return
 
       this.enterFromPrev = false
+      this.restoreGuideValue = false
       this.indexValue = nextIndex
       this.show()
     }
   }
 
   prev() {
+    const form = this.element.querySelector("form")
     const guide = this.currentGuide()
     if (guide && !guide.atFirst) {
+      guide.stashFieldValues()
       guide.prevField()
       this.updateChrome()
       return
     }
 
     if (this.indexValue > 0) {
+      if (form) this.stashSavedValues(form)
+      guide?.stashFieldValues()
       this.enterFromPrev = true
       this.indexValue--
       this.show()
@@ -124,12 +135,19 @@ export default class extends Controller {
   show() {
     this.stepTargets.forEach((step, i) => {
       step.classList.toggle("d-none", i !== this.indexValue)
+      if (i === this.indexValue) this.restoreStepValues(step)
     })
 
     const guide = this.currentGuide()
     if (guide) {
-      if (this.enterFromPrev) guide.enterFromEnd()
-      else guide.enterFromStart()
+      if (this.enterFromPrev) {
+        guide.enterFromEnd()
+      } else if (this.restoreGuideValue) {
+        guide.indexValue = Math.min(this.guideIndexValue, guide.fieldTargets.length - 1)
+        guide.showField()
+      } else {
+        guide.enterFromStart()
+      }
     }
 
     this.updateChrome()
@@ -146,6 +164,7 @@ export default class extends Controller {
 
     const choiceStep = this.stepTargets[this.indexValue]?.hasAttribute("data-choice-step")
 
+    if (this.hasProgressTarget) this.progressTarget.classList.toggle("d-none", choiceStep)
     if (this.hasHomeTarget) this.homeTarget.classList.toggle("d-none", !showHome)
     if (this.hasPrevTarget) this.prevTarget.classList.toggle("d-none", hidePrev)
     if (this.hasNextTarget) this.nextTarget.classList.toggle("d-none", last || choiceStep)
@@ -170,7 +189,7 @@ export default class extends Controller {
     )
   }
 
-  async persistDraft(wizardIndex) {
+  async persistDraft(wizardIndex, guideIndex = undefined) {
     if (!this.hasDraftUrlValue) return true
 
     const form = this.element.querySelector("form")
@@ -178,6 +197,7 @@ export default class extends Controller {
 
     const data = new FormData(form)
     data.append("wizard_index", String(wizardIndex))
+    if (guideIndex !== undefined) data.append("guide_index", String(guideIndex))
 
     const token = document.querySelector('meta[name="csrf-token"]')?.content
     const response = await fetch(this.draftUrlValue, {
@@ -190,10 +210,37 @@ export default class extends Controller {
       credentials: "same-origin"
     })
 
-    if (response.ok) return true
+    if (response.ok) {
+      this.stashSavedValues(form)
+      const guide = this.currentGuide()
+      guide?.stashFieldValues()
+      return true
+    }
 
     window.alert(this.draftErrorValue)
     return false
+  }
+
+  restoreStepValues(step) {
+    if (!step) return
+
+    step.querySelectorAll("input, textarea, select").forEach((el) => {
+      const saved = el.dataset.initialValue
+      if (saved == null || saved === "") return
+      if (el.disabled) return
+      if (el.tagName === "SELECT") {
+        if (!el.value) el.value = saved
+      } else if (!el.value?.trim()) {
+        el.value = saved
+      }
+    })
+  }
+
+  stashSavedValues(root) {
+    root.querySelectorAll("input, textarea, select").forEach((el) => {
+      if (!el.name || el.disabled) return
+      if (el.value) el.dataset.initialValue = el.value
+    })
   }
 
   currentGuide() {

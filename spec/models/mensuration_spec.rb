@@ -153,6 +153,32 @@ RSpec.describe Mensuration, type: :model do
     end
   end
 
+  describe "#apply_public_input" do
+    it "fusionne les mesures en mode brouillon" do
+      mensuration = build_mensuration
+      mensuration.measurements = { "hauteur" => "168" }
+      mensuration.apply_public_input(
+        identity: { prenom: "Anna" },
+        measurements: { "taille_soutien_gorge" => "90D" },
+        merge: true
+      )
+
+      expect(mensuration.measurements).to eq("hauteur" => "168", "taille_soutien_gorge" => "90D")
+      expect(mensuration.prenom).to eq("Anna")
+    end
+
+    it "remplace les mesures sans fusion" do
+      mensuration = build_mensuration
+      mensuration.measurements = { "hauteur" => "168" }
+      mensuration.apply_public_input(
+        identity: { prenom: "Anna" },
+        measurements: { "taille_soutien_gorge" => "90D" }
+      )
+
+      expect(mensuration.measurements).to eq("taille_soutien_gorge" => "90D")
+    end
+  end
+
   describe "#save_draft!" do
     it "persiste la fiche sans valider ni terminer l'invitation" do
       mensuration = build_mensuration(prenom: nil, nom: nil)

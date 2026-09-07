@@ -62,6 +62,7 @@ module Public
         @mensuration = @invitation.mensuration || @invitation.build_public_mensuration
         @editing = @invitation.completed? && params[:edit].present?
         @wizard_index = wizard_start_index
+        @guide_index = @mensuration&.draft_guide_index
         render :form
       else
         render :otp
@@ -117,10 +118,11 @@ module Public
       @mensuration = @invitation.mensuration || @invitation.build_public_mensuration
       @mensuration.apply_public_input(
         identity: identity_params,
-        measurements: permitted_measurements
+        measurements: permitted_measurements,
+        merge: true
       )
 
-      if @mensuration.save_draft!(wizard_index: wizard_index)
+      if @mensuration.save_draft!(wizard_index: wizard_index, guide_index: draft_guide_index_param)
         head :no_content
       else
         head :unprocessable_entity
@@ -145,6 +147,7 @@ module Public
       else
         @editing = @invitation.completed? || params[:edit].present?
         @wizard_index = wizard_start_index
+        @guide_index = @mensuration&.draft_guide_index
         flash.now[:alert] = @mensuration.errors.full_messages.to_sentence
         render :form, status: :unprocessable_entity
       end
@@ -204,6 +207,12 @@ module Public
       return if @invitation&.usable?
 
       render "errors/not_found", layout: "error", status: :not_found
+    end
+
+    def draft_guide_index_param
+      return nil unless params.key?(:guide_index)
+
+      params[:guide_index].to_i
     end
 
     def wizard_start_index

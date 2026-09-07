@@ -4,7 +4,7 @@
 <% advice = t("mensurations.fields.#{key}.advice", default: "") %>
 <% name = mensuration_field_caption(key) %>
 <% dock = guided && field["clip"].present? %>
-<% caption = "#{dock ? name : t("mensurations.fields.#{key}.short")}#{" *" if field["required"]}" %>
+<% caption = dock ? name : t("mensurations.fields.#{key}.short") %>
 <div class="<%= guided ? "mensuration-guide__field" : (field["input"] == "textarea" ? "col-12" : "col-6") %>"
      <% if guided %>
        data-measure-guide-target="field"
@@ -20,6 +20,7 @@
     <%= mensuration_labeled_select "measurements[#{key}]",
           options_for_select(field["choices"].map { |c| [t("mensurations.choices.#{key}.#{c}"), c] }, mensuration.value_for(key)),
           caption,
+          selected_value: mensuration.value_for(key),
           include_blank: true,
           title: hint.presence || t("mensurations.fields.#{key}.label") %>
   <% when "textarea" %>

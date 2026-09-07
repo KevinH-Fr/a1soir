@@ -7,7 +7,6 @@ export default class extends Controller {
 
   connect() {
     this.onMeasureInput = () => this.refreshRulerLabel()
-    this.showField()
   }
 
   disconnect() {
@@ -68,9 +67,33 @@ export default class extends Controller {
   showField() {
     this.fieldTargets.forEach((field, i) => {
       field.classList.toggle("d-none", i !== this.indexValue)
+      if (i === this.indexValue) this.restoreFieldValues(field)
     })
     this.syncCaption()
     this.highlight()
+  }
+
+  restoreFieldValues(field) {
+    if (!field) return
+
+    field.querySelectorAll("input, textarea, select").forEach((el) => {
+      const saved = el.dataset.initialValue
+      if (saved == null || saved === "") return
+      if (el.tagName === "SELECT") {
+        if (!el.value) el.value = saved
+      } else if (!el.value?.trim()) {
+        el.value = saved
+      }
+    })
+  }
+
+  stashFieldValues() {
+    this.fieldTargets.forEach((field) => {
+      field.querySelectorAll("input, textarea, select").forEach((el) => {
+        if (!el.name) return
+        if (el.value) el.dataset.initialValue = el.value
+      })
+    })
   }
 
   syncCaption() {

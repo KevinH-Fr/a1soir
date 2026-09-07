@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_09_06_100000) do
+ActiveRecord::Schema[7.2].define(version: 2026_09_07_160000) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -339,6 +339,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_06_100000) do
     t.datetime "updated_at", null: false
     t.integer "draft_wizard_index"
     t.datetime "admin_treated_at"
+    t.integer "draft_guide_index"
     t.index ["admin_treated_at"], name: "index_mensurations_on_admin_treated_at"
     t.index ["client_id"], name: "index_mensurations_on_client_id"
     t.index ["mensuration_invitation_id"], name: "index_mensurations_on_mensuration_invitation_id", unique: true

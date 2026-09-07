@@ -84,23 +84,33 @@ class Mensuration < ApplicationRecord
     update!(template: template, measurements: (measurements || {}).slice(*allowed))
   end
 
-  def apply_public_input(identity:, measurements:, photo: nil)
+  def apply_public_input(identity:, measurements:, photo: nil, merge: false)
     invitation = mensuration_invitation
     self.template = invitation.template
     self.locale = invitation.locale
-    assign_attributes(identity)
-    self.measurements = self.class.sanitize_measurements(template, measurements)
+
+    identity_hash = identity.to_h.stringify_keys.compact_blank
+    assign_attributes(identity_hash) if identity_hash.present?
+
+    incoming = self.class.sanitize_measurements(template, measurements)
+    self.measurements = if merge
+                          (self.measurements || {}).merge(incoming)
+                        else
+                          incoming
+                        end
     self.photo_pied = photo if photo.present?
   end
 
-  def save_draft!(wizard_index:)
+  def save_draft!(wizard_index:, guide_index: nil)
     self.draft_wizard_index = wizard_index
+    self.draft_guide_index = guide_index
     save(validate: false)
   end
 
   def complete!
     transaction do
       self.draft_wizard_index = nil
+      self.draft_guide_index = nil
       return false unless save(context: :complete)
 
       resolve_and_link_client!
