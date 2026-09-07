@@ -21,7 +21,7 @@ group :development, :test do
 end
 
 group :development do
-  gem "sqlite3", "~> 1.4"
+  gem "sqlite3", "~> 1.4" # kept so switching back to the SQLite branch still bundles
   gem "web-console"
   gem "error_highlight", ">= 0.4.0", platforms: [:ruby]
 end
@@ -29,12 +29,9 @@ end
 group :test do
   gem "capybara"
   gem "selenium-webdriver"
-  
 end
 
-group :production do
-  gem 'pg', '~> 1.4', '>= 1.4.1'
-end
+gem "pg", "~> 1.4", ">= 1.4.1"
 
 gem "devise", "~> 4.9"
 gem "ferrum"
