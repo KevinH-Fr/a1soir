@@ -37,8 +37,9 @@ class Admin::MensurationsController < Admin::ApplicationController
     blob = @invitation.mensuration&.photo_pied&.blob
     raise ActiveRecord::RecordNotFound unless blob
 
-    send_data photo_bytes(blob),
-              type: blob.content_type.presence || "image/jpeg",
+    body = photo_bytes(blob)
+    send_data body,
+              type: image_content_type(body, blob.content_type),
               disposition: :inline,
               filename: blob.filename.to_s
   end
@@ -49,24 +50,46 @@ class Admin::MensurationsController < Admin::ApplicationController
     @invitation = MensurationInvitation.find(params[:id])
   end
 
+  # Cloudinary peut servir un autre format que l'extension du fichier (ex. PNG vs .jpg),
+  # et blob.download vérifie le checksum (IntegrityError). On lit via le service d'abord.
   def photo_bytes(blob)
-    return blob.download unless blob.service_name == "cloudinary"
+    body = download_from_service(blob)
+    return body if image_bytes?(body)
+    return blob.download unless cloudinary_blob?(blob)
 
-    ext = blob.filename.extension_without_delimiter.presence || "jpg"
+    cloudinary_photo_bytes(blob) || raise(ActiveRecord::RecordNotFound)
+  end
+
+  def download_from_service(blob)
+    blob.service.download(blob.key)
+  rescue StandardError
+    nil
+  end
+
+  def cloudinary_blob?(blob)
+    blob.service_name == "cloudinary"
+  end
+
+  def cloudinary_photo_bytes(blob)
+    ext = blob.filename.extension_without_delimiter.presence
+    formats = [nil, ext, "png", "jpg", "webp"].uniq
     %w[upload authenticated].each do |delivery_type|
-      url = Cloudinary::Utils.cloudinary_url(
-        blob.key.to_s,
-        resource_type: :image,
-        type: delivery_type,
-        sign_url: true,
-        secure: true,
-        format: ext
-      )
-      body = Cloudinary::Downloader.download(url)
-      return body if image_bytes?(body)
+      formats.each do |format|
+        url = Cloudinary::Utils.cloudinary_url(
+          blob.key.to_s,
+          resource_type: :image,
+          type: delivery_type,
+          sign_url: true,
+          secure: true,
+          **{ format: format }.compact
+        )
+        body = download_cloudinary_url(url)
+        return body if image_bytes?(body)
+      end
     end
 
-    # Dernier recours : l'API download (non affichable en <img>) lue côté serveur.
+    return unless ext
+
     download_url = Cloudinary::Utils.private_download_url(
       blob.key.to_s,
       ext,
@@ -74,10 +97,14 @@ class Admin::MensurationsController < Admin::ApplicationController
       type: "authenticated",
       expires_at: 10.minutes.from_now.to_i
     )
-    body = Cloudinary::Downloader.download(download_url)
-    return body if image_bytes?(body)
+    body = download_cloudinary_url(download_url)
+    body if image_bytes?(body)
+  end
 
-    raise ActiveRecord::RecordNotFound
+  def download_cloudinary_url(url)
+    Cloudinary::Downloader.download(url)
+  rescue StandardError
+    nil
   end
 
   def image_bytes?(body)
@@ -85,5 +112,15 @@ class Admin::MensurationsController < Admin::ApplicationController
 
     head = body.b[0, 12]
     head.start_with?("\xFF\xD8".b, "\x89PNG".b, "GIF8".b, "RIFF".b)
+  end
+
+  def image_content_type(body, fallback)
+    head = body.to_s.b[0, 12]
+    return "image/jpeg" if head.start_with?("\xFF\xD8".b)
+    return "image/png" if head.start_with?("\x89PNG".b)
+    return "image/gif" if head.start_with?("GIF8".b)
+    return "image/webp" if head.start_with?("RIFF".b)
+
+    fallback.presence || "image/jpeg"
   end
 end

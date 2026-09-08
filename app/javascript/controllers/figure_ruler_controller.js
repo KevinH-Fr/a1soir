@@ -7,6 +7,16 @@ export default class extends Controller {
 
   connect() {
     this.paint()
+    this.focusInput()
+  }
+
+  focusInput() {
+    if (!this.hasInputTarget) return
+
+    const field = this.inputTarget
+    requestAnimationFrame(() => {
+      field.focus({ preventScroll: true })
+    })
   }
 
   input() {

@@ -73,6 +73,7 @@ en:
       locale_en: "English"
       template_step: "Please choose the type of form"
       template_hint: "Please choose the type of form"
+      template_switch_hint: "If you switch forms, measurements that no longer apply will be removed."
       template_label: "Form"
       template_femme: "Women"
       template_homme: "Men"

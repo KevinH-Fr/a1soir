@@ -371,16 +371,37 @@ RSpec.describe "Public::Mensurations", type: :request do
       post "/fr/m/#{invitation.token}/template", params: { template: "homme" }
       get "/fr/m/#{invitation.token}", params: { step: "identity" }
 
-      expect(response.body).to include(mensuration_template_reset_path(token: invitation.token, locale: "fr"))
-      expect(response.body).to include('data-turbo-method="delete"')
+      expect(response.body).to include("choose=1")
+      expect(invitation.reload.template).to eq("homme")
 
-      delete "/fr/m/#{invitation.token}/template"
+      get "/fr/m/#{invitation.token}", params: { choose: 1 }
 
-      expect(response).to redirect_to("/fr/m/#{invitation.token}")
-      expect(invitation.reload.template).to be_nil
-      follow_redirect!
       expect(response.body).to include(I18n.t("mensurations.share.template_femme", locale: :fr))
       expect(response.body).to include(I18n.t("mensurations.share.template_homme", locale: :fr))
+      expect(response.body).to include("is-selected")
+      expect(invitation.reload.template).to eq("homme")
+    end
+
+    it "permet de changer de formulaire après enregistrement, sans supprimer la fiche" do
+      save_mensuration
+
+      get "/fr/m/#{invitation.token}", params: { edit: 1, step: "identity" }
+      expect(response.body).to include("choose=1")
+
+      get "/fr/m/#{invitation.token}", params: { edit: 1, choose: 1 }
+      expect(response.body).to include(I18n.t("mensurations.share.template_femme", locale: :fr))
+      expect(response.body).to include(I18n.t("mensurations.share.template_switch_hint", locale: :fr))
+      expect(invitation.reload.template).to eq("femme")
+      expect(invitation.status).to eq("completed")
+
+      post "/fr/m/#{invitation.token}/template", params: { template: "homme" }
+
+      expect(response).to redirect_to("/fr/m/#{invitation.token}?edit=1&step=identity")
+      expect(invitation.reload.template).to eq("homme")
+      expect(invitation.status).to eq("completed")
+      expect(invitation.mensuration.reload.template).to eq("homme")
+      expect(invitation.mensuration.value_for("hauteur")).to eq("168")
+      expect(invitation.mensuration.value_for("taille_soutien_gorge")).to be_nil
     end
   end
 
@@ -789,6 +810,7 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect(response.body).to include('mensuration-guide__figure-stage')
       expect(response.body).to include("/images/human_body.svg")
       expect(response.body).to include('data-figure-ruler-clip-value="neck"')
+      expect(response.body).to include("autofocus")
       expect(response.body).to include(I18n.t("mensurations.fields.tour_cou.advice", locale: :en))
     end
   end

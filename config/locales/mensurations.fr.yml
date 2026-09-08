@@ -73,6 +73,7 @@ fr:
       locale_en: "English"
       template_step: "Merci de choisir le type de formulaire"
       template_hint: "Merci de choisir le type de formulaire"
+      template_switch_hint: "En changeant de formulaire, les mesures qui ne s'appliquent plus sont retirées."
       template_label: "Formulaire"
       template_femme: "Femme"
       template_homme: "Homme"

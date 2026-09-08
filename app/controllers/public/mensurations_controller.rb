@@ -83,13 +83,9 @@ module Public
     end
 
     def reset_template
-      if @invitation.completed?
-        redirect_to mensuration_path(token: @invitation.token)
-        return
-      end
-
-      @invitation.update!(template: nil)
-      redirect_to mensuration_path(token: @invitation.token)
+      opts = { choose: 1 }
+      opts[:edit] = 1 if @invitation.completed?
+      redirect_to mensuration_path(token: @invitation.token, **opts)
     end
 
     def send_otp
@@ -174,9 +170,9 @@ module Public
       return unless otp_session_valid?
 
       @mensuration = @invitation.mensuration || @invitation.build_public_mensuration
-      return unless @invitation.template.present?
-
       @editing = editing_request?
+      return if params[:choose].present?
+      return unless @invitation.template.present?
       return if @invitation.completed? && !@editing
 
       @flow = Mensuration::Flow.new(@invitation, @mensuration)
@@ -212,6 +208,7 @@ module Public
 
     def step_url_correction_needed?
       return false unless @flow
+      return false if params[:choose].present?
       return false if @invitation.completed? && !@editing
 
       params[:step].blank? || (!editing_request? && @flow.step(params[:step]).key != @step.key)

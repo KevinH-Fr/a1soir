@@ -1,15 +1,9 @@
 <%# locals: step, mensuration, invitation, editing, flow (optional) %>
 <% flow ||= Mensuration::Flow.new(invitation, mensuration) %>
 <div class="d-flex align-items-center gap-2 mensuration-form__nav" data-controller="dev-fill">
-  <% if editing && step.first? %>
-    <%= link_to mensuration_path(token: invitation.token),
+  <% if step.first? %>
+    <%= link_to mensuration_path(token: invitation.token, **{ choose: 1, edit: (editing ? 1 : nil) }.compact),
           data: { turbo_frame: "_top" },
-          class: "btn btn-sm btn-outline-light public-btn-border-radius" do %>
-      <i class="bi bi-arrow-left me-1"></i><%= t("mensurations.form.prev") %>
-    <% end %>
-  <% elsif !editing && step.first? %>
-    <%= link_to mensuration_template_reset_path(token: invitation.token),
-          data: { turbo_method: :delete, turbo_frame: "_top" },
           class: "btn btn-sm btn-outline-light public-btn-border-radius" do %>
       <i class="bi bi-arrow-left me-1"></i><%= t("mensurations.form.prev") %>
     <% end %>

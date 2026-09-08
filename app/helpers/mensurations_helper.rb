@@ -69,7 +69,7 @@ module MensurationsHelper
     ])
   end
 
-  # Pastille admin : libellé court + valeur mise en avant.
+  # Ligne admin : libellé court à gauche, valeur à droite.
   def mensuration_measure_chip(field, value)
     key = field["key"]
     display = if field["input"] == "choice"
@@ -77,7 +77,7 @@ module MensurationsHelper
               else
                 value
               end
-    short = t("mensurations.fields.#{key}.short", locale: :fr)
+    short = mensuration_field_caption(key)
     full = t("mensurations.fields.#{key}.admin", locale: :fr)
     wide = field["input"] == "textarea"
 
@@ -104,8 +104,8 @@ module MensurationsHelper
 
     content_tag(:div, class: "mensuration-admin-fiche__meta-item") do
       safe_join([
-        content_tag(:dt, label),
-        content_tag(:dd, value)
+        content_tag(:span, label, class: "mensuration-admin-fiche__meta-label"),
+        content_tag(:span, value, class: "mensuration-admin-fiche__meta-value")
       ])
     end
   end

@@ -9,7 +9,7 @@
 <% groups = filled_fields.group_by { |field| field["group"].presence || "vetements" } %>
 
 <div class="mensuration-admin-fiche">
-  <dl class="mensuration-admin-fiche__meta">
+  <div class="mensuration-admin-fiche__meta">
     <% extra_meta.each do |label, value| %>
       <%= mensuration_admin_meta_item(label, value) %>
     <% end %>
@@ -25,34 +25,29 @@
     <% if mensuration.admin_treated? %>
       <%= mensuration_admin_meta_item("Traitée le", l(mensuration.admin_treated_at.to_date)) %>
     <% end %>
-  </dl>
+  </div>
 
   <% if photo_url || groups.any? %>
     <div class="mensuration-admin-fiche__body">
       <% if photo_url %>
         <div class="mensuration-admin-fiche__photo">
           <button type="button"
-                  class="btn p-0 border-0 bg-transparent d-block"
+                  class="mensuration-admin-fiche__photo-trigger"
                   data-bs-toggle="modal"
                   data-bs-target="#<%= photo_modal_id %>"
                   title="Agrandir la photo"
                   aria-label="Agrandir la photo">
-            <img src="<%= photo_url %>"
-                 alt="Photo en pied"
-                 class="img-thumbnail">
-          </button>
-          <button type="button"
-                  class="btn btn-sm btn-outline-secondary mensuration-admin-fiche__photo-btn"
-                  data-bs-toggle="modal"
-                  data-bs-target="#<%= photo_modal_id %>">
-            <i class="bi bi-zoom-in me-1" aria-hidden="true"></i>Agrandir
+            <img src="<%= photo_url %>" alt="Photo en pied">
+            <span class="mensuration-admin-fiche__photo-zoom" aria-hidden="true">
+              <i class="bi bi-zoom-in"></i>
+            </span>
           </button>
         </div>
       <% end %>
 
       <div class="mensuration-admin-fiche__groups">
         <% groups.each do |group, fields| %>
-          <section>
+          <section class="mensuration-admin-fiche__group">
             <h3 class="mensuration-admin-fiche__group-title"><%= t("mensurations.groups.#{group}", locale: :fr) %></h3>
             <div class="mensuration-admin-fiche__grid">
               <% fields.each do |field| %>

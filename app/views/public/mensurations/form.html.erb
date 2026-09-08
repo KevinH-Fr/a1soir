@@ -1,10 +1,10 @@
 <% completed = @invitation.completed? %>
 <% editing = @editing == true %>
-<% thanks = completed && !editing %>
-<% field_class = "form-control form-control-sm bg-dark text-light border-secondary" %>
+<% choosing = params[:choose].present? || @invitation.template.blank? %>
+<% thanks = completed && !editing && !choosing %>
 
 <div class="mensuration-flow<%= " mensuration-flow--saved" if completed %>"
-     <% unless thanks %>
+     <% unless thanks || choosing %>
      <% if @invitation&.template.present? %>
      data-controller="mensuration-step-url"
      data-mensuration-step-url-editing-value="<%= editing %>"
@@ -30,24 +30,8 @@
       </div>
     <% else %>
       <div class="mensuration-form__body">
-        <% if @invitation.template.blank? %>
-          <% choice_class = "btn btn-outline-light public-btn-border-radius mensuration-form__template-btn" %>
-          <% current_template = @invitation.template.presence %>
-          <div class="mensuration-form__stage">
-            <h2 class="mensuration-form__template-lead"><%= t("mensurations.share.template_step") %></h2>
-            <div class="d-flex mensuration-form__template-choice">
-              <%= button_to t("mensurations.share.template_femme"),
-                    mensuration_template_path(token: @invitation.token),
-                    method: :post, params: { template: "femme" },
-                    form: { class: "flex-fill" },
-                    class: "#{choice_class}#{' is-selected btn-light text-dark' if current_template == 'femme'}" %>
-              <%= button_to t("mensurations.share.template_homme"),
-                    mensuration_template_path(token: @invitation.token),
-                    method: :post, params: { template: "homme" },
-                    form: { class: "flex-fill" },
-                    class: "#{choice_class}#{' is-selected btn-light text-dark' if current_template == 'homme'}" %>
-            </div>
-          </div>
+        <% if choosing %>
+          <%= render "public/mensurations/template_choice", invitation: @invitation %>
         <% else %>
           <div class="mensuration-form__stage mensuration-form__stage--wizard">
             <%= render "public/mensurations/progress_frame", flow: @flow, step: @step %>

@@ -49,9 +49,11 @@
             <%= custom_badge("fa-clock", "", "", "", invitation.expired? ? "expiré" : "jusqu'au #{l(invitation.expires_at.to_date)}") %>
           <% end %>
           <% if invitation.client.present? %>
-            <%= link_to admin_client_path(invitation.client), class: "text-decoration-none" do %>
-              <%= custom_badge("fa-user", "", "", "", invitation.client.full_name) %>
-            <% end %>
+            <div data-turbo="false">
+              <%= link_to admin_client_path(invitation.client), class: "text-decoration-none" do %>
+                <%= custom_badge("fa-user", "", "", "", invitation.client.full_name) %>
+              <% end %>
+            </div>
           <% end %>
         </div>
 
@@ -98,9 +100,9 @@
                     extra_meta: extra_meta %>
             <% else %>
               <div class="mensuration-admin-fiche">
-                <dl class="mensuration-admin-fiche__meta mb-0 pb-0 border-0">
+                <div class="mensuration-admin-fiche__meta mb-0 pb-0 border-0">
                   <%= mensuration_admin_meta_item("Démarrée le", l(invitation.created_at, format: :short)) %>
-                </dl>
+                </div>
               </div>
             <% end %>
           </div>
