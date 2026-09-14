@@ -1,0 +1,26 @@
+<% totals = analyses_equipe_kpi_totals %>
+<% top = analyses_equipe_top_ca_row %>
+<div class="row row-cols-2 row-cols-lg-4 g-2 g-sm-3">
+  <%= render "kpi_card",
+        title: "CA équipe",
+        value: "#{analyses_donut_amount_label(totals[:ca])} €",
+        trend_metric: :equipe_ca,
+        hint: "#{totals[:vendeurs]} vendeur#{totals[:vendeurs] > 1 ? "s" : ""}" %>
+
+  <%= render "kpi_card",
+        title: "Commandes",
+        value: totals[:commandes],
+        trend_metric: :equipe_commandes,
+        hint: "Sur la période filtrée" %>
+
+  <%= render "kpi_card",
+        title: "Devis",
+        value: totals[:devis],
+        trend_metric: :equipe_devis,
+        hint: "Créés sur la période" %>
+
+  <%= render "kpi_card",
+        title: (totals[:vendeurs] == 1 ? "Vendeur" : "Meilleur CA"),
+        value: (top ? "#{analyses_donut_amount_label(top[:ca])} €" : "—"),
+        hint: (top ? top[:profile] : nil) %>
+</div>

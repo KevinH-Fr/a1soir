@@ -206,17 +206,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_04_140000) do
     t.index ["demande_rdv_id"], name: "index_demande_cabine_essayages_on_demande_rdv_id"
   end
 
-  create_table "demande_rdv", force: :cascade do |t|
-    t.string "nom"
-    t.string "email"
-    t.string "telephone"
-    t.text "commentaire"
-    t.datetime "date_rdv"
-    t.string "statut"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "demande_rdvs", force: :cascade do |t|
     t.string "nom"
     t.string "email"
@@ -299,46 +288,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_04_140000) do
     t.index ["client_id"], name: "index_meetings_on_client_id"
     t.index ["commande_id"], name: "index_meetings_on_commande_id"
     t.index ["demande_rdv_id"], name: "index_meetings_on_demande_rdv_id"
-  end
-
-  create_table "mensuration_invitations", force: :cascade do |t|
-    t.string "email", null: false
-    t.string "token", null: false
-    t.datetime "expires_at", null: false
-    t.string "template", null: false
-    t.string "locale", default: "fr", null: false
-    t.string "prenom"
-    t.string "nom"
-    t.text "message_perso"
-    t.string "otp_digest"
-    t.datetime "otp_sent_at"
-    t.integer "otp_attempts", default: 0, null: false
-    t.string "status", default: "sent", null: false
-    t.integer "client_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["client_id"], name: "index_mensuration_invitations_on_client_id"
-    t.index ["email"], name: "index_mensuration_invitations_on_email"
-    t.index ["token"], name: "index_mensuration_invitations_on_token", unique: true
-  end
-
-  create_table "mensurations", force: :cascade do |t|
-    t.integer "mensuration_invitation_id", null: false
-    t.integer "client_id"
-    t.string "prenom"
-    t.string "nom"
-    t.string "telephone"
-    t.string "adresse"
-    t.string "cp"
-    t.string "ville"
-    t.date "date_evenement"
-    t.json "measurements", default: {}, null: false
-    t.string "template", null: false
-    t.string "locale", default: "fr", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["client_id"], name: "index_mensurations_on_client_id"
-    t.index ["mensuration_invitation_id"], name: "index_mensurations_on_mensuration_invitation_id", unique: true
   end
 
   create_table "messages", force: :cascade do |t|
@@ -505,18 +454,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_04_140000) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "texte_produits", force: :cascade do |t|
-    t.integer "texte_id", null: false
-    t.integer "produit_id", null: false
-    t.integer "position", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["produit_id"], name: "index_texte_produits_on_produit_id"
-    t.index ["texte_id", "position"], name: "index_texte_produits_on_texte_id_and_position"
-    t.index ["texte_id", "produit_id"], name: "index_texte_produits_on_texte_id_and_produit_id", unique: true
-    t.index ["texte_id"], name: "index_texte_produits_on_texte_id"
-  end
-
   create_table "textes", force: :cascade do |t|
     t.string "titre"
     t.datetime "created_at", null: false
@@ -580,9 +517,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_04_140000) do
   add_foreign_key "meetings", "clients"
   add_foreign_key "meetings", "commandes"
   add_foreign_key "meetings", "demande_rdvs"
-  add_foreign_key "mensuration_invitations", "clients"
-  add_foreign_key "mensurations", "clients"
-  add_foreign_key "mensurations", "mensuration_invitations"
   add_foreign_key "paiement_recus", "commandes"
   add_foreign_key "paiements", "commandes"
   add_foreign_key "produits", "categorie_produits"
@@ -596,6 +530,4 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_04_140000) do
   add_foreign_key "stripe_payment_items", "stripe_payments"
   add_foreign_key "stripe_payments", "commandes"
   add_foreign_key "stripe_payments", "produits"
-  add_foreign_key "texte_produits", "produits"
-  add_foreign_key "texte_produits", "textes"
 end

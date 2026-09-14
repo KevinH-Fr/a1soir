@@ -1,0 +1,101 @@
+<div id="analyses_filters_inner" class="d-flex flex-column flex-grow-1 min-h-0">
+  <div class="offcanvas-body flex-grow-1 overflow-auto d-flex flex-column gap-4 pb-0">
+    <section aria-labelledby="analysesFiltersContextHeading">
+      <h3 class="small text-body-secondary text-uppercase fw-semibold mb-2" id="analysesFiltersContextHeading">
+        Contexte
+      </h3>
+      <div class="d-flex flex-column gap-3">
+        <% if analyses_visibility_show?(:filter_profile_dropdown) %>
+          <div class="w-100 analyses-filter-field">
+            <%= analyses_filter_dropdown(
+                  label: "Profil",
+                  icon: "bi bi-person",
+                  param_key: :filter_profile,
+                  collection: @profiles_for_filter,
+                  model: Profile,
+                  all_label: "Tous les profils"
+                ) %>
+          </div>
+        <% end %>
+
+        <div>
+          <p class="small text-body-secondary mb-1">Canal</p>
+          <%= analyses_filter_toggle_group(
+                aria_label: "Canal boutique ou e-shop",
+                param_key: :filter_eshop,
+                options: [["Tous canaux", nil], ["Boutique", "false"], ["E-shop", "true"]]
+              ) %>
+        </div>
+
+        <div>
+          <p class="small text-body-secondary mb-1">Location / vente</p>
+          <%= analyses_filter_toggle_group(
+                aria_label: "Location ou vente",
+                param_key: :filter_locvente,
+                options: [["Loc / vente", nil], ["Location", "location"], ["Vente", "vente"]]
+              ) %>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="analysesFiltersCatalogHeading">
+      <h3 class="small text-body-secondary text-uppercase fw-semibold mb-2" id="analysesFiltersCatalogHeading">
+        Catalogue
+      </h3>
+      <div class="row g-2">
+        <div class="col-12 analyses-filter-field">
+          <%= analyses_filter_dropdown(
+                label: "Type",
+                icon: "bi bi-tag",
+                param_key: :filter_type_produit,
+                collection: @type_produits,
+                model: TypeProduit,
+                all_label: "Tous les types"
+              ) %>
+        </div>
+        <div class="col-12 analyses-filter-field">
+          <%= analyses_filter_dropdown(
+                label: "Catégorie",
+                icon: "bi bi-layers",
+                param_key: :filter_categorie,
+                collection: @categorie_produits,
+                model: CategorieProduit,
+                all_label: "Toutes les catégories"
+              ) %>
+        </div>
+        <div class="col-12 analyses-filter-field">
+          <%= analyses_filter_dropdown(
+                label: "Taille",
+                icon: "bi bi-rulers",
+                param_key: :filter_taille,
+                collection: @tailles,
+                model: Taille,
+                all_label: "Toutes les tailles"
+              ) %>
+        </div>
+        <div class="col-12 analyses-filter-field">
+          <%= analyses_filter_dropdown(
+                label: "Couleur",
+                icon: "bi bi-palette",
+                param_key: :filter_couleur,
+                collection: @couleurs,
+                model: Couleur,
+                all_label: "Toutes les couleurs"
+              ) %>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="border-top p-3 bg-body d-flex flex-wrap gap-2 mt-auto">
+    <% if analyses_active_filters_count.positive? %>
+      <%= link_to "Effacer tout",
+                  analyses_clear_filters_path,
+                  class: "btn btn-sm btn-outline-danger",
+                  data: { turbo_stream: true } %>
+    <% end %>
+    <button type="button" class="btn btn-sm btn-secondary ms-auto" data-bs-dismiss="offcanvas">
+      Fermer
+    </button>
+  </div>
+</div>

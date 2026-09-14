@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Specs du dashboard Analyses : période par défaut, CA Stripe net, métriques du dataset fixe.
 require "rails_helper"
 
 RSpec.describe Admin::AnalysesController, type: :controller do
@@ -24,6 +25,16 @@ RSpec.describe Admin::AnalysesController, type: :controller do
   end
 
   describe "GET #index" do
+    it "redirects to default 30-day period when dates are missing" do
+      travel_to Time.zone.local(2026, 3, 15, 12, 0, 0) do
+        debut, fin = Date.current - 29, Date.current
+
+        get :index
+
+        expect(response).to redirect_to(admin_analyses_index_path(debut: debut, fin: fin))
+      end
+    end
+
     it "nets Stripe CA by eshop remboursements" do
       commande = Commande.create!(
         client: client,
@@ -49,11 +60,101 @@ RSpec.describe Admin::AnalysesController, type: :controller do
         custom_date: Date.current
       )
 
-      get :index
+      get :index, params: { debut: Date.current, fin: Date.current, vue: "synthese" }
 
       expect(response).to have_http_status(:ok)
       expect(assigns(:total_stripe_eur)).to eq(45.to_d)
       expect(assigns(:totalPrixCaStripe)).to eq(45.to_d)
+    end
+
+    context "with analyses dashboard dataset" do
+      before { AnalysesDashboardDataset.seed! }
+
+      let(:period) { AnalysesDashboardDataset.period_params }
+
+      it "returns baseline metrics for the fixed period on synthese vue" do
+        expected = AnalysesDashboardDataset.expected_baseline
+
+        get :index, params: period.merge(vue: "synthese")
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("analyses-chart-synthese-mixed")
+        expect(response.body).to include('id="analysesFiltersOffcanvas"')
+        expect(response.body).to include('data-bs-target="#analysesFiltersOffcanvas"')
+        expect(response.body).not_to include("bi-filter-circle")
+        expect(assigns(:nbTotal)).to eq(expected[:nb_total_commandes])
+        expect(assigns(:nbTotalArticles)).to eq(expected[:nb_total_articles])
+        expect(assigns(:total_stripe_eur)).to eq(expected[:total_stripe_eur])
+        expect(assigns(:totalPrixCa)).to eq(expected[:total_prix_ca])
+        expect(assigns(:totalPrixCaCb)).to eq(expected[:total_prix_ca_cb])
+        expect(assigns(:totalPrixCaEspeces)).to eq(expected[:total_prix_ca_especes])
+        expect(assigns(:analyses_ca_mode)).to eq(:paiements)
+      end
+
+      it "returns transaction metrics on ca vue" do
+        expected = AnalysesDashboardDataset.expected_baseline
+
+        get :index, params: period.merge(vue: "ca")
+
+        expect(response).to have_http_status(:ok)
+        expect(assigns(:totalTransactionsLoc)).to eq(expected[:total_transactions_loc])
+        expect(response.body).to include("analyses-chart-ca-timeline")
+        expect(response.body).to include("analyses-chart-ca_payment_modes_doughnut")
+      end
+
+      it "filters by profile on synthese vue" do
+        data = AnalysesDashboardDataset.data
+
+        get :index, params: period.merge(filter_profile: data[:profile_a].id)
+
+        expect(assigns(:nbTotal)).to eq(2)
+      end
+
+      it "switches to line-based CA when filtering by product type" do
+        data = AnalysesDashboardDataset.data
+
+        get :index, params: period.merge(filter_type_produit: data[:type_robe].id, vue: "synthese")
+
+        expect(assigns(:analyses_ca_mode)).to eq(:lignes)
+        expect(assigns(:totalPrixCaCb)).to eq(0.to_d)
+        # Boutique robes (100 + 40) + Stripe robe (60) − remboursement e-shop (20) = 180
+        expect(assigns(:totalPrixCa)).to eq(180.to_d)
+        expect(assigns(:totalPrixCaStripe)).to eq(40.to_d)
+      end
+
+      it "counts e-shop Stripe lines as vente articles" do
+        get :index, params: period.merge(filter_eshop: "true", vue: "synthese")
+
+        expect(assigns(:nbTotalArticles)).to eq(2)
+        expect(assigns(:nbVente)).to eq(2)
+        expect(assigns(:nbLoc)).to eq(0)
+        expect(assigns(:totalPrixCaStripe)).to eq(80.to_d)
+      end
+
+      it "excludes e-shop Stripe lines when filtering location" do
+        get :index, params: period.merge(filter_locvente: "location", vue: "synthese")
+
+        expect(assigns(:nbVente)).to eq(0)
+        expect(assigns(:nbLoc)).to eq(2)
+        expect(assigns(:nbTotalArticles)).to eq(2)
+        expect(assigns(:total_stripe_eur)).to eq(0.to_d)
+      end
+
+      it "filters location articles only" do
+        get :index, params: period.merge(filter_locvente: "location", vue: "ca")
+
+        expect(assigns(:analyses_ca_mode)).to eq(:lignes)
+        expect(assigns(:totalTransactionsLoc)).to eq(140.to_d)
+        expect(assigns(:totalTransactionsVente)).to eq(0.to_d)
+      end
+
+      it "filters by profile on equipe vue" do
+        data = AnalysesDashboardDataset.data
+
+        get :index, params: period.merge(vue: "equipe", filter_profile: data[:profile_a].id)
+
+        expect(assigns(:stats_par_profile).size).to eq(1)
+      end
     end
   end
 end

@@ -1,0 +1,59 @@
+<% stats = (@stats_par_profile || []).sort_by { |r| [-r[:ca].to_d, -r[:commandes].to_i] } %>
+<% total_ca = stats.sum { |r| r[:ca].to_d } %>
+
+<div class="analyses-equipe-table">
+  <div class="d-flex align-items-baseline justify-content-between gap-2 mb-2">
+    <h3 class="h6 fw-semibold mb-0">Classement vendeurs</h3>
+    <span class="small text-body-secondary"><%= stats.size %> profil<%= stats.size > 1 ? "s" : "" %></span>
+  </div>
+
+  <% if stats.blank? %>
+    <p class="small text-muted mb-0">Aucun vendeur sur cette période.</p>
+  <% else %>
+    <div class="table-responsive analyses-equipe-table__wrap">
+      <table class="table analyses-equipe-table__table align-middle mb-0">
+        <thead>
+          <tr>
+            <th scope="col" class="analyses-equipe-table__rank">#</th>
+            <th scope="col">Vendeur</th>
+            <th scope="col" class="text-end">Cmd</th>
+            <th scope="col" class="text-end">Devis</th>
+            <th scope="col" class="text-end">CA</th>
+            <th scope="col" class="text-end d-none d-md-table-cell">Panier</th>
+            <th scope="col" class="text-end d-none d-lg-table-cell">Part</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% stats.each_with_index do |row, index| %>
+            <% commandes = row[:commandes].to_i %>
+            <% ca = row[:ca].to_d %>
+            <% panier = commandes.positive? ? (ca / commandes) : nil %>
+            <% part = total_ca.positive? ? ((ca / total_ca) * 100) : 0 %>
+            <tr>
+              <td class="analyses-equipe-table__rank">
+                <span class="analyses-equipe-table__rank-badge"><%= index + 1 %></span>
+              </td>
+              <td>
+                <span class="d-inline-flex align-items-center gap-2 min-w-0">
+                  <span class="analyses-equipe-table__dot" style="--equipe-dot: <%= row[:couleur].presence || "rgb(184, 74, 107)" %>"></span>
+                  <span class="fw-semibold text-truncate"><%= row[:profile] %></span>
+                </span>
+              </td>
+              <td class="text-end analyses-equipe-table__num"><%= commandes %></td>
+              <td class="text-end analyses-equipe-table__num"><%= row[:devis] %></td>
+              <td class="text-end analyses-equipe-table__num fw-semibold">
+                <%= number_to_currency(ca, unit: "€", format: "%n %u", precision: 0) %>
+              </td>
+              <td class="text-end analyses-equipe-table__num d-none d-md-table-cell">
+                <%= panier ? number_to_currency(panier, unit: "€", format: "%n %u", precision: 0) : "—" %>
+              </td>
+              <td class="text-end analyses-equipe-table__num d-none d-lg-table-cell">
+                <%= number_with_precision(part, precision: 0) %>%
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>

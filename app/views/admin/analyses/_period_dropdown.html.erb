@@ -1,0 +1,48 @@
+<% selected_range = analyses_period_selected_range %>
+<div class="dropdown">
+  <button type="button"
+          class="analyses-period-trigger dropdown-toggle"
+          id="analysesPeriodDropdown"
+          data-bs-toggle="dropdown"
+          data-bs-auto-close="outside"
+          aria-expanded="false"
+          aria-label="Choisir la période d'analyse">
+    <span class="d-inline-flex align-items-center gap-2 min-w-0">
+      <i class="bi bi-calendar3 flex-shrink-0" aria-hidden="true"></i>
+      <span class="text-truncate"><%= analyses_period_preset_label %></span>
+    </span>
+  </button>
+  <ul class="dropdown-menu shadow-sm"
+      style="min-width: min(100vw - 2rem, 18rem)"
+      aria-labelledby="analysesPeriodDropdown">
+    <% analyses_quick_period_presets.each do |label, range| %>
+      <% debut, fin = range %>
+      <% active = selected_range == [debut, fin] %>
+      <li>
+        <%= link_to label,
+                    admin_analyses_index_path(analyses_period_params(debut: debut, fin: fin)),
+                    class: class_names("dropdown-item", active: active) %>
+      </li>
+    <% end %>
+    <li><hr class="dropdown-divider"></li>
+    <li class="px-3 py-2">
+      <p class="small fw-semibold text-body-secondary mb-2">Plage personnalisée</p>
+      <%= form_tag url_for, method: :get, class: "d-flex flex-column gap-2" do %>
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          <%= date_field_tag :debut, params[:debut],
+                             class: "form-control form-control-sm flex-grow-1",
+                             aria: { label: "Date de début" } %>
+          <span class="text-body-secondary small" aria-hidden="true">→</span>
+          <%= date_field_tag :fin, params[:fin],
+                             class: "form-control form-control-sm flex-grow-1",
+                             aria: { label: "Date de fin" } %>
+        </div>
+        <%= hidden_field_tag :vue, analyses_vue %>
+        <% analyses_filter_params(include_dates: false).except(:vue).each do |key, value| %>
+          <%= hidden_field_tag key, value if value.present? %>
+        <% end %>
+        <%= submit_tag "Appliquer", class: "btn btn-primary btn-sm w-100" %>
+      <% end %>
+    </li>
+  </ul>
+</div>

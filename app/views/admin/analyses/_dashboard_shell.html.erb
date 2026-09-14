@@ -1,0 +1,21 @@
+<div class="container-fluid px-0 px-md-2 py-2 analyses-dashboard" id="analyses_dashboard">
+  <div class="card analyses-dashboard__surface border border-secondary-subtle shadow-sm rounded-3 overflow-hidden">
+    <div class="row g-0 h-100">
+      <%= render "dashboard_sidebar" %>
+
+      <main class="col-12 col-lg-9 min-w-0 d-flex flex-column analyses-dashboard__pane">
+        <div class="d-lg-none flex-shrink-0 sticky-top z-1 border-bottom border-secondary-subtle">
+          <%= render "dashboard_header" %>
+        </div>
+
+        <div class="p-2 p-sm-3 flex-grow-1 analyses-dashboard__scroll">
+          <%= render "vue_heading" %>
+
+          <div class="d-flex flex-column gap-3">
+            <%= render "vue_#{analyses_vue}" %>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>

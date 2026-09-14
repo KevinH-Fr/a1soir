@@ -1,0 +1,632 @@
+/* Dashboard Analyses — complète Bootstrap (utilitaires absents de BS 5.3). */
+
+.min-w-0 {
+  min-width: 0;
+}
+
+.min-h-0 {
+  min-height: 0;
+}
+
+/* Une seule surface : même fond beige des deux côtés, séparés uniquement
+   par le border-end du volet. */
+.analyses-dashboard__surface {
+  --bs-card-bg: var(--light-beige-color);
+  background-color: var(--light-beige-color);
+}
+
+/* À partir de lg, le dashboard occupe la hauteur restante sous la navbar admin
+   (60px) et chaque colonne défile indépendamment. En dessous, la page défile
+   normalement : un scroll interne est pénible sur mobile.
+   2rem = marge basse de .admin-content + padding de .main du layout. */
+@media (min-width: 992px) {
+  /* Le wrapper admin plafonne à 1000px, trop étroit pour deux colonnes. */
+  .page-max-widthed:has(.analyses-dashboard) {
+    max-width: 1400px;
+  }
+
+  .analyses-dashboard {
+    height: calc(100dvh - 60px - 2rem);
+  }
+
+  .analyses-dashboard__surface,
+  .analyses-dashboard__surface > .row,
+  .analyses-dashboard__pane {
+    height: 100%;
+  }
+
+  .analyses-dashboard__scroll {
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+}
+
+/* Couleurs de section (nav + titre contenu) — une teinte par vue. */
+.analyses-tone--synthese {
+  --analyses-tone: #0d6efd;
+  --analyses-tone-rgb: 13, 110, 253;
+}
+
+.analyses-tone--ca {
+  --analyses-tone: #198754;
+  --analyses-tone-rgb: 25, 135, 84;
+}
+
+.analyses-tone--catalogue {
+  --analyses-tone: #b8860b;
+  --analyses-tone-rgb: 184, 134, 11;
+}
+
+.analyses-tone--equipe {
+  --analyses-tone: #b84a6b;
+  --analyses-tone-rgb: 184, 74, 107;
+}
+
+.analyses-tone__icon,
+.analyses-tone__label {
+  color: var(--analyses-tone);
+}
+
+.analyses-tone__badge {
+  color: var(--analyses-tone);
+  background-color: rgba(var(--analyses-tone-rgb), 0.12);
+  border: 1px solid rgba(var(--analyses-tone-rgb), 0.28);
+}
+
+/* Navigation sections : état actif teinté par section. */
+.analyses-nav {
+  --bs-nav-link-color: var(--bs-body-color);
+  --bs-nav-link-hover-color: var(--bs-body-color);
+}
+
+.analyses-nav .nav-link {
+  border: 1px solid transparent;
+  font-weight: 400;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+
+.analyses-nav .nav-link:hover {
+  background-color: rgba(var(--analyses-tone-rgb), 0.08);
+}
+
+.analyses-nav .nav-link:not(.active) .analyses-tone__icon {
+  color: var(--analyses-tone);
+  opacity: 0.9;
+}
+
+.analyses-nav .nav-link:not(.active) .analyses-tone__label {
+  color: var(--bs-body-color);
+}
+
+.analyses-nav .nav-link.active {
+  color: var(--analyses-tone);
+  background-color: rgba(var(--analyses-tone-rgb), 0.12);
+  border-color: rgba(var(--analyses-tone-rgb), 0.3);
+}
+
+.analyses-nav .nav-link.active .analyses-tone__icon,
+.analyses-nav .nav-link.active .analyses-tone__label {
+  color: var(--analyses-tone);
+}
+
+.analyses-nav .nav-link.active .analyses-tone__label {
+  font-weight: 600;
+}
+
+.analyses-nav__hint {
+  font-weight: 400;
+  color: var(--bs-secondary-color);
+  opacity: 0.9;
+}
+
+.analyses-nav .nav-link.active .analyses-nav__hint {
+  color: var(--bs-secondary-color);
+  opacity: 0.85;
+}
+
+/* En-tête de vue : pastille d'icône de taille fixe. */
+.analyses-heading__icon {
+  width: 2.75rem;
+  height: 2.75rem;
+}
+
+/* Bandeau de contexte : défilement horizontal sans barre visible. */
+.analyses-header__chips {
+  scrollbar-width: none;
+}
+
+.analyses-header__chips::-webkit-scrollbar {
+  display: none;
+}
+
+.analyses-chip__value {
+  max-width: 9rem;
+}
+
+/* Libellés du volet (Période / Filtres / Sections). */
+.analyses-sidebar__label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+  margin-bottom: 0;
+}
+
+.analyses-sidebar__clear {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--bs-secondary-color);
+  text-decoration: none;
+}
+
+.analyses-sidebar__clear:hover {
+  color: var(--bs-danger);
+}
+
+/* Période : déclencheur plein largeur + plage de dates active. */
+.analyses-period-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.analyses-period-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  max-width: 100%;
+  padding: 0.4rem 0.65rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--bs-body-color);
+  text-align: left;
+  background-color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.analyses-filter-field .analyses-period-trigger {
+  display: flex;
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+}
+
+.analyses-period-trigger:hover,
+.analyses-period-trigger:focus-visible {
+  background-color: #fff;
+  border-color: rgba(0, 0, 0, 0.14);
+}
+
+.analyses-period-trigger::after {
+  margin-left: 0.5rem;
+}
+
+.analyses-period-panel__dates {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.65rem;
+  background-color: rgba(255, 255, 255, 0.55);
+  border: 1px dashed rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+}
+
+.analyses-period-panel__date {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.analyses-period-panel__date:last-child {
+  text-align: right;
+}
+
+.analyses-period-panel__date-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+}
+
+.analyses-period-panel__date-value {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--bs-body-color);
+  line-height: 1.2;
+}
+
+.analyses-period-panel__sep {
+  color: var(--bs-secondary-color);
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* Filtres : déclencheur + chips. */
+.analyses-filters-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--bs-body-color);
+  text-align: left;
+  background-color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.analyses-filters-trigger:hover,
+.analyses-filters-trigger:focus-visible {
+  background-color: #fff;
+  border-color: rgba(0, 0, 0, 0.14);
+}
+
+.analyses-filters-trigger__count {
+  flex-shrink: 0;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  padding: 0 0.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #fff;
+  background-color: var(--bs-primary);
+}
+
+.analyses-filters-trigger__plus {
+  flex-shrink: 0;
+  opacity: 0.45;
+  font-size: 0.9rem;
+}
+
+.analyses-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  max-width: 100%;
+  padding: 0.2rem 0.45rem 0.2rem 0.55rem;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: var(--bs-body-color);
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+}
+
+.analyses-chip:hover {
+  background-color: #fff;
+  border-color: rgba(220, 53, 69, 0.35);
+  color: var(--bs-body-color);
+}
+
+.analyses-chip__label {
+  color: var(--bs-secondary-color);
+  font-weight: 400;
+}
+
+.analyses-chip__value {
+  max-width: 7.5rem;
+  font-weight: 600;
+}
+
+.analyses-chip__x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.1rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  line-height: 1;
+  color: var(--bs-secondary-color);
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.analyses-chip:hover .analyses-chip__x {
+  color: #fff;
+  background-color: var(--bs-danger);
+}
+
+/* Filtres offcanvas / volet : dropdowns pleine largeur (pas de variante BS). */
+.analyses-filter-field .dropdown,
+.analyses-filter-field__dropdown {
+  width: 100%;
+}
+
+.analyses-filter-field .dropdown > .btn,
+.analyses-filter-field__dropdown .dropdown > .btn {
+  width: 100%;
+  justify-content: space-between;
+}
+
+/* Listes longues (couleurs, tailles) : le menu ne déborde pas de l'offcanvas. */
+.analyses-filter-field .dropdown-menu {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* Doughnuts : bornés en largeur, la hauteur suit l'aspect ratio Chart.js
+   (pas de max-height sur le canvas, qui déformerait le rendu). */
+.analyses-chart--compact {
+  max-width: 20rem;
+}
+
+/* KPI cards — compactes, alignées à gauche, accent teinté par section. */
+.analyses-kpi {
+  --analyses-kpi-accent: var(--analyses-tone-rgb, 108, 117, 125);
+  padding: 0.85rem 1rem;
+  background-color: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 0.5rem;
+  border-left: 3px solid rgba(var(--analyses-kpi-accent), 0.85);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.analyses-kpi__title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+  line-height: 1.2;
+}
+
+.analyses-kpi__value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--bs-body-color);
+  font-variant-numeric: tabular-nums;
+}
+
+.analyses-kpi__value-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.analyses-kpi__value-row .analyses-kpi__value {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.analyses-kpi__value-row .analyses-kpi__trend {
+  flex: 0 0 auto;
+  margin-top: 0;
+}
+
+.analyses-kpi__hint {
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: var(--bs-secondary-color);
+}
+
+.analyses-kpi__trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1rem;
+  margin-top: 0.4rem;
+  padding: 0.05rem 0.35rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  line-height: 1.3;
+  width: fit-content;
+}
+
+.analyses-kpi__trend .bi {
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+.analyses-kpi__trend--up {
+  color: #146c43;
+  background-color: rgba(25, 135, 84, 0.12);
+}
+
+.analyses-kpi__trend--down {
+  color: #b02a37;
+  background-color: rgba(220, 53, 69, 0.12);
+}
+
+.analyses-kpi__trend--neutral {
+  color: var(--bs-secondary-color);
+  background-color: rgba(108, 117, 125, 0.1);
+}
+
+/* Tableau top produits catalogue. */
+.analyses-catalog-top__table-wrap {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.72);
+  overflow: hidden;
+}
+
+.analyses-catalog-top__table {
+  --bs-table-bg: transparent;
+  --bs-table-hover-bg: rgba(var(--analyses-tone-rgb, 184, 134, 11), 0.06);
+  margin-bottom: 0;
+  font-size: 0.875rem;
+}
+
+.analyses-catalog-top__table > :not(caption) > * > * {
+  padding: 0.65rem 0.75rem;
+  border-bottom-color: rgba(0, 0, 0, 0.05);
+  vertical-align: middle;
+}
+
+.analyses-catalog-top__table thead th {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+  background-color: rgba(255, 255, 255, 0.55);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+.analyses-catalog-top__table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.analyses-catalog-top__rank {
+  width: 2.5rem;
+  text-align: center;
+}
+
+.analyses-catalog-top__rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--analyses-tone, #b8860b);
+  background-color: rgba(var(--analyses-tone-rgb, 184, 134, 11), 0.12);
+}
+
+.analyses-catalog-top__product {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  color: inherit;
+}
+
+.analyses-catalog-top__product:hover .analyses-catalog-top__name {
+  color: var(--analyses-tone, #b8860b);
+}
+
+.analyses-catalog-top__thumb {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.4rem;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.analyses-catalog-top__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.analyses-catalog-top__name {
+  font-weight: 600;
+  color: var(--bs-body-color);
+  line-height: 1.25;
+}
+
+.analyses-catalog-top__meta {
+  margin-top: 0.1rem;
+  font-size: 0.75rem;
+  color: var(--bs-secondary-color);
+  line-height: 1.25;
+}
+
+.analyses-catalog-top__num {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Chart équipe : conteneur compact (l’aspectRatio Chart.js gère la hauteur). */
+.analyses-chart--equipe {
+  max-width: 100%;
+}
+
+.analyses-chart--equipe-timeline {
+  max-width: 100%;
+  min-height: 18rem;
+}
+
+/* Tableau classement vendeurs. */
+.analyses-equipe-table__wrap {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.72);
+  overflow: hidden;
+}
+
+.analyses-equipe-table__table {
+  --bs-table-bg: transparent;
+  --bs-table-hover-bg: rgba(var(--analyses-tone-rgb, 184, 74, 107), 0.06);
+  margin-bottom: 0;
+  font-size: 0.875rem;
+}
+
+.analyses-equipe-table__table > :not(caption) > * > * {
+  padding: 0.6rem 0.7rem;
+  border-bottom-color: rgba(0, 0, 0, 0.05);
+}
+
+.analyses-equipe-table__table thead th {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+  background-color: rgba(255, 255, 255, 0.55);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+.analyses-equipe-table__table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.analyses-equipe-table__rank {
+  width: 2.5rem;
+  text-align: center;
+}
+
+.analyses-equipe-table__rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--analyses-tone, #b84a6b);
+  background-color: rgba(var(--analyses-tone-rgb, 184, 74, 107), 0.12);
+}
+
+.analyses-equipe-table__dot {
+  flex-shrink: 0;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background-color: var(--equipe-dot);
+}
+
+.analyses-equipe-table__num {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}

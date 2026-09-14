@@ -1,0 +1,8 @@
+<% messages = analyses_visibility&.pinned_filter_messages %>
+<% if messages.present? %>
+  <div class="px-2 pt-2">
+    <% messages.each do |msg| %>
+      <%= analyses_info_alert(msg[:label]) %>
+    <% end %>
+  </div>
+<% end %>

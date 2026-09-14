@@ -1,0 +1,22 @@
+<% if analyses_visibility_show?(:kpi) %>
+  <%= render_analyses_kpi_section %>
+<% end %>
+
+<%= render "section_ca_tab" %>
+
+<% if analyses_visibility_show?(:transactions_section) %>
+  <%= render_dashboard_section("Transactions", "bi bi-arrow-left-right", []) do %>
+    <div class="row g-3 align-items-center">
+      <div class="col-lg-5">
+        <p class="small text-body-secondary mb-2">Répartition location / vente</p>
+        <div class="d-flex justify-content-center">
+          <%= render_analyses_chart(:transactions_doughnut, extra_class: "analyses-chart--compact", aria_label: "Répartition des transactions location et vente") %>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <p class="small text-body-secondary mb-2">Évolution des transactions</p>
+        <%= render_analyses_chart(:transactions_timeline, aria_label: "Évolution des transactions") %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

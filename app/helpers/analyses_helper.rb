@@ -1,5 +1,25 @@
+# Helpers UI du dashboard Analyses : onglets, URLs de filtres, rendu des sections graphiques.
 module AnalysesHelper
-  # Texte central des donuts CA / transactions : entier, séparateur de milliers (affichage uniquement).
+  ANALYSES_FILTER_KEYS = (
+    Admin::ProduitListingFilters::ADMIN_PRODUIT_FILTER_KEYS +
+    %i[filter_profile filter_locvente filter_eshop debut fin vue]
+  ).freeze
+
+  ANALYSES_TABS = [
+    { vue: "synthese", label: "Synthèse", icon: "graph-up-arrow", tone: "synthese",
+      description: "Vue d'ensemble de l'activité" },
+    { vue: "ca", label: "Chiffre d'affaires", icon: "cash-stack", tone: "ca",
+      description: "Encaissements et transactions" },
+    { vue: "catalogue", label: "Catalogue", icon: "bag", tone: "catalogue",
+      description: "Produits et répartitions" },
+    { vue: "equipe", label: "Équipe", icon: "people-fill", tone: "equipe",
+      description: "Performance par vendeur" }
+  ].freeze
+
+  def analyses_chart_box_classes(*extras)
+    class_names("w-100 mx-auto", *extras)
+  end
+
   def analyses_donut_amount_label(amount)
     number_with_delimiter(amount.to_d.round, delimiter: " ")
   end
@@ -8,28 +28,270 @@ module AnalysesHelper
     analyses_donut_amount_label(montant_ht_depuis_ttc(ttc_amount))
   end
 
-  def render_dashboard_section(title, icon_name = nil, partials)
-    content_tag(:div, class: "card m-2 my-4 shadow-sm") do
-      concat(content_tag(:div, class: "card-header bg-secondary text-light py-1") do
-        concat(content_tag(:div, class: "d-flex align-items-center gap-2") do
-          concat(content_tag(:i, "", class: "bi bi-#{icon_name}")) if icon_name.present?
-          concat(content_tag(:span, title, class: "fw-bold"))
-        end)
-      end)
-  
-      concat(content_tag(:div, class: "card-body p-0 light-beige-colored") do
-        concat(content_tag(:div, class: "row p-2") do
-          partials.each do |partial|
-            concat(content_tag(:div, class: "col-sm-4 my-2") do
-              render partial
-            end)
-          end
-        end)
-      end)
+  def analyses_filter_params(exclude: nil, include_dates: true)
+    keys = ANALYSES_FILTER_KEYS.dup
+    keys -= %i[debut fin] unless include_dates
+    keys -= [exclude.to_sym] if exclude.present?
+    request.query_parameters.symbolize_keys.slice(*keys)
+  end
+
+  def analyses_active_filters_count
+    filter_keys = Admin::ProduitListingFilters::ADMIN_PRODUIT_FILTER_KEYS + %i[filter_profile filter_locvente filter_eshop]
+    filter_keys.count { |k| params[k].present? }
+  end
+
+  def analyses_ca_mode_lignes?
+    @analyses_ca_mode == :lignes
+  end
+
+  def analyses_vue
+    @analyses_vue.presence || Analyses::DashboardVisibility.normalize_vue(params[:vue])
+  end
+
+  def analyses_tabs
+    ANALYSES_TABS
+  end
+
+  def analyses_vue_meta
+    ANALYSES_TABS.find { |tab| tab[:vue] == analyses_vue } || ANALYSES_TABS.first
+  end
+
+  def analyses_visibility
+    @analyses_visibility
+  end
+
+  def analyses_visibility_show?(widget)
+    analyses_visibility&.show?(widget)
+  end
+
+  def analyses_tab_path(vue, **extra)
+    base = analyses_filter_params(include_dates: true).merge(vue: vue, **extra)
+    base.delete(:filter_profile) if vue.to_s == "equipe"
+    admin_analyses_index_path(base)
+  end
+
+  def analyses_path_without_filter(filter_key)
+    analyses_tab_path(analyses_vue, filter_key => nil)
+  end
+
+  def analyses_chart_config(key)
+    Analyses::ChartPayloads.new(self).build(key)
+  end
+
+  def render_analyses_chart(key, chart_id: nil, aria_label: nil, extra_class: nil)
+    config = analyses_chart_config(key)
+    return "" if config.blank?
+
+    render(
+      partial: "admin/analyses/chart_canvas",
+      locals: {
+        chart_id: chart_id || "analyses-chart-#{key}",
+        config: config,
+        aria_label: aria_label,
+        extra_class: extra_class
+      }
+    )
+  end
+
+  def default_analyses_period
+    today = Date.current
+    [today - 29, today]
+  end
+
+  def analyses_toolbar_label(icon, text)
+    tag.span(class: "small text-secondary text-uppercase fw-semibold lh-sm text-nowrap") do
+      safe_join([
+        tag.i(class: "bi #{icon} me-1 opacity-75", aria: { hidden: true }),
+        text
+      ])
     end
   end
 
-  # True when the current URL dates are not exactly one of the quick presets (custom range).
+  def analyses_info_alert(message, extra_class: nil)
+    tag.div(class: class_names("alert alert-info py-1 px-2 mb-2 small text-dark", extra_class), role: "status") do
+      safe_join([
+        tag.i(class: "bi bi-info-circle me-1", aria: { hidden: true }),
+        message
+      ])
+    end
+  end
+
+  def analyses_filter_dropdown(label:, icon:, param_key:, collection:, model:, all_label:)
+    filter_base = analyses_filter_params(include_dates: true).merge(vue: analyses_vue)
+    content_tag(:div, class: "min-w-0 analyses-filter-field__dropdown") do
+      filter_dropdown(
+        label: label,
+        icon: icon,
+        param_key: param_key,
+        collection: collection,
+        model: model,
+        current_params: filter_base.except(param_key),
+        all_label: all_label,
+        columns: 2,
+        id_suffix: "analyses",
+        always_show_label: true,
+        link_data: { turbo_stream: true }
+      )
+    end
+  end
+
+  def analyses_filter_toggle_group(aria_label:, param_key:, options:)
+    tag.div(class: "btn-group btn-group-sm w-100 flex-wrap", role: "group", aria: { label: aria_label }) do
+      safe_join(
+        options.map do |label, value|
+          active = params[param_key].to_s == value.to_s || (value.nil? && params[param_key].blank?)
+          link_to label,
+                  admin_analyses_index_path(
+                    analyses_period_params(debut: params[:debut], fin: params[:fin]).merge(param_key => value)
+                  ),
+                  class: class_names(
+                    "btn flex-fill",
+                    active ? "btn-primary" : "btn-outline-secondary"
+                  ),
+                  data: { turbo_stream: true }
+        end
+      )
+    end
+  end
+
+  def analyses_active_filter_chips
+    chips = []
+    if params[:filter_profile].present?
+      profile = Profile.find_by(id: params[:filter_profile])
+      label = profile&.full_name.presence || profile&.prenom || "Profil ##{params[:filter_profile]}"
+      chips << { key: :filter_profile, label: "Vendeur", value: label }
+    end
+    if params[:filter_eshop].present?
+      value = { "true" => "E-shop", "false" => "Boutique" }[params[:filter_eshop].to_s] || params[:filter_eshop]
+      chips << { key: :filter_eshop, label: "Canal", value: value }
+    end
+    if params[:filter_locvente].present?
+      chips << { key: :filter_locvente, label: "Mode", value: params[:filter_locvente].to_s.capitalize }
+    end
+    if params[:filter_type_produit].present?
+      type = TypeProduit.find_by(id: params[:filter_type_produit])
+      chips << { key: :filter_type_produit, label: "Type", value: type&.nom || params[:filter_type_produit] }
+    end
+    if params[:filter_categorie].present?
+      cat = CategorieProduit.find_by(id: params[:filter_categorie])
+      chips << { key: :filter_categorie, label: "Catégorie", value: cat&.nom || params[:filter_categorie] }
+    end
+    if params[:filter_couleur].present?
+      couleur = Couleur.find_by(id: params[:filter_couleur])
+      chips << { key: :filter_couleur, label: "Couleur", value: couleur&.nom || params[:filter_couleur] }
+    end
+    if params[:filter_taille].present?
+      taille = Taille.find_by(id: params[:filter_taille])
+      chips << { key: :filter_taille, label: "Taille", value: taille&.nom || params[:filter_taille] }
+    end
+    chips
+  end
+
+  def render_analyses_kpi_section
+    partial = case analyses_vue
+              when "ca" then "kpi_summary_ca"
+              when "catalogue" then "kpi_summary_catalogue"
+              when "equipe" then "kpi_summary_equipe"
+              else "kpi_summary"
+              end
+    content_tag(:div, class: "analyses-tone analyses-tone--#{analyses_vue_meta[:tone]}") do
+      safe_join([
+        analyses_kpi_comparison_caption,
+        render("admin/analyses/#{partial}")
+      ].compact)
+    end
+  end
+
+  def analyses_kpi_comparison_caption
+    label = @analyses_kpi_trend_period_label
+    return if label.blank?
+
+    content_tag(:div, class: "d-flex justify-content-end mb-2") do
+      content_tag(
+        :span,
+        "Évolution #{label}",
+        class: "badge rounded-pill text-bg-light border text-body-secondary fw-normal analyses-kpi-comparison"
+      )
+    end
+  end
+
+  def analyses_catalog_kpi_quantite
+    analyses_line_metrics.quantites
+  end
+
+  def analyses_catalog_kpi_ca_lignes
+    analyses_line_metrics.ca_lignes
+  end
+
+  def analyses_catalog_kpi_produits_count
+    analyses_line_metrics.produits_count
+  end
+
+  def analyses_line_metrics
+    @line_metrics ||= Analyses::LineMetrics.new(
+      articles_scope: @articlesFiltres,
+      stripe_items_scope: @stripePaymentItemsFiltres || StripePaymentItem.none
+    )
+  end
+
+  def analyses_catalog_top_product_label
+    top = @catalog_top_products&.first
+    return "—" unless top
+
+    name = top[:produit]&.nom.presence || "Produit ##{top[:produit_id]}"
+    truncate(name, length: 28)
+  end
+
+  def analyses_equipe_kpi_totals
+    stats = @stats_par_profile || []
+    {
+      ca: stats.sum { |r| r[:ca].to_d },
+      commandes: stats.sum { |r| r[:commandes].to_i },
+      devis: stats.sum { |r| r[:devis].to_i },
+      vendeurs: stats.size
+    }
+  end
+
+  def analyses_equipe_top_ca_row
+    (@stats_par_profile || []).max_by { |r| r[:ca].to_d }
+  end
+
+  def analyses_ca_panier_moyen
+    return nil if @nbTotal.blank? || @nbTotal.to_i.zero?
+
+    (@totalPrixCa.to_d / @nbTotal.to_d).round(2)
+  end
+
+  def analyses_kpi_trend(metric_key)
+    @analyses_kpi_trends&.dig(metric_key.to_sym)
+  end
+
+  def render_analyses_kpi_trend(metric_key)
+    trend = analyses_kpi_trend(metric_key)
+    return "" if trend.blank?
+
+    render partial: "admin/analyses/kpi_trend", locals: { trend: trend }
+  end
+
+  def render_dashboard_section(title, icon_name = nil, partials = [], header_notice: nil, partial_wrapper: "col-sm-4 my-2", &block)
+    content_tag(:section, class: "bg-white bg-opacity-75 rounded-2 border border-secondary-subtle p-2 p-sm-3 mb-0") do
+      concat(content_tag(:div, class: "d-flex flex-wrap align-items-center gap-2 border-bottom border-secondary-subtle pb-2 mb-2") do
+        concat(content_tag(:i, "", class: "bi #{icon_name} text-secondary")) if icon_name.present?
+        concat(content_tag(:h2, title, class: "h6 mb-0 fw-semibold text-body"))
+      end)
+      concat(analyses_info_alert(header_notice)) if header_notice.present?
+      if block
+        concat(capture(&block))
+      else
+        concat(content_tag(:div, class: "row g-2 g-sm-3") do
+          partials.each do |partial|
+            concat(content_tag(:div, class: partial_wrapper) { render partial })
+          end
+        end)
+      end
+    end
+  end
+
   def custom_period_filter_open?
     selected = [parse_date(params[:debut]), parse_date(params[:fin])]
     return false if selected.any?(&:nil?)
@@ -55,22 +317,69 @@ module AnalysesHelper
     )
   end
 
+  def analyses_period_selected_range
+    [parse_date(params[:debut]), parse_date(params[:fin])]
+  end
+
+  def analyses_period_preset_label
+    selected = analyses_period_selected_range
+    return "Période" if selected.any?(&:nil?)
+
+    match = quick_period_definitions.find { |_label, range| range == selected }
+    return match.first if match
+
+    "Personnalisée"
+  end
+
+  def analyses_period_range_text
+    debut, fin = analyses_period_selected_range
+    return nil if debut.nil? || fin.nil?
+
+    if debut == fin
+      debut.strftime("%d/%m/%Y")
+    else
+      "#{debut.strftime("%d/%m/%Y")} – #{fin.strftime("%d/%m/%Y")}"
+    end
+  end
+
+  def analyses_clear_filters_path
+    # Ne garder que la vue et la période — analyses_period_params reprendrait
+    # autrement tous les filtres actifs (bug « Effacer tout »).
+    admin_analyses_index_path(
+      vue: analyses_vue,
+      debut: params[:debut],
+      fin: params[:fin]
+    )
+  end
+
+  def analyses_quick_period_presets
+    quick_period_definitions
+  end
+
+  def analyses_period_params(debut:, fin:, **extra)
+    analyses_filter_params(include_dates: false)
+      .merge(vue: analyses_vue)
+      .merge(extra)
+      .merge(debut: debut.to_date, fin: fin.to_date)
+  end
+
   private
 
-  def preset_button_link(label, debut, fin, selected_range, base_params)
+  def preset_button_link(label, debut, fin, selected_range, _base_params)
     is_active = selected_range == [debut, fin]
     variant = is_active ? "primary" : "outline-secondary"
     link_to label,
-            url_for(params: base_params.merge(debut: debut, fin: fin)),
+            admin_analyses_index_path(analyses_period_params(debut: debut, fin: fin)),
             class: "btn btn-sm btn-#{variant}"
   end
 
   def quick_period_definitions
-    today = Date.today
+    today = Date.current
     prev_month = today.prev_month
+    default_debut, default_fin = default_analyses_period
     [
       ["Aujourd'hui", [today, today]],
-      ["30 jours", [today - 29, today]],
+      ["30 jours", [default_debut, default_fin]],
       ["Mois précédent", [prev_month.beginning_of_month, prev_month.end_of_month]],
       ["Mois courant", [today.beginning_of_month, today.end_of_month]]
     ]
@@ -84,4 +393,3 @@ module AnalysesHelper
     Date.parse(value.to_s) rescue nil
   end
 end
-  

@@ -1,0 +1,73 @@
+<% chips = analyses_active_filter_chips %>
+<% filters_count = analyses_active_filters_count %>
+<% period_text = analyses_period_range_text %>
+<% debut, fin = analyses_period_selected_range %>
+
+<aside class="col-lg-3 d-none d-lg-flex flex-column border-end border-secondary-subtle analyses-dashboard__pane"
+       aria-label="Contrôles et sections">
+  <div class="p-3 border-bottom border-secondary-subtle flex-shrink-0">
+    <p class="analyses-sidebar__label mb-2">Période</p>
+
+    <div class="analyses-period-panel">
+      <div class="analyses-filter-field">
+        <%= render "period_dropdown" %>
+      </div>
+
+      <% if debut.present? && fin.present? %>
+        <div class="analyses-period-panel__dates" aria-label="Dates actives">
+          <div class="analyses-period-panel__date">
+            <span class="analyses-period-panel__date-label">Début</span>
+            <span class="analyses-period-panel__date-value"><%= debut.strftime("%d/%m/%Y") %></span>
+          </div>
+          <span class="analyses-period-panel__sep" aria-hidden="true">→</span>
+          <div class="analyses-period-panel__date">
+            <span class="analyses-period-panel__date-label">Fin</span>
+            <span class="analyses-period-panel__date-value"><%= fin.strftime("%d/%m/%Y") %></span>
+          </div>
+        </div>
+      <% elsif period_text.present? %>
+        <p class="small text-body-secondary mb-0 mt-2"><%= period_text %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="p-3 border-bottom border-secondary-subtle flex-shrink-0">
+    <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+      <p class="analyses-sidebar__label mb-0">Filtres</p>
+      <% if filters_count.positive? %>
+        <%= link_to "Effacer", analyses_clear_filters_path,
+                    class: "analyses-sidebar__clear",
+                    data: { turbo_stream: true } %>
+      <% end %>
+    </div>
+
+    <button type="button"
+            class="analyses-filters-trigger"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#analysesFiltersOffcanvas"
+            aria-controls="analysesFiltersOffcanvas">
+      <span class="d-inline-flex align-items-center gap-2 min-w-0">
+        <i class="bi bi-funnel flex-shrink-0" aria-hidden="true"></i>
+        <span class="text-truncate"><%= filters_count.positive? ? "Modifier les filtres" : "Ajouter un filtre" %></span>
+      </span>
+      <% if filters_count.positive? %>
+        <span class="analyses-filters-trigger__count"><%= filters_count %></span>
+      <% else %>
+        <i class="bi bi-plus-lg analyses-filters-trigger__plus" aria-hidden="true"></i>
+      <% end %>
+    </button>
+
+    <% if chips.any? %>
+      <div class="d-flex flex-wrap gap-1 mt-2">
+        <% chips.each do |chip| %>
+          <%= render "filter_chip", chip: chip %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="p-2 flex-grow-1 analyses-dashboard__scroll">
+    <p class="analyses-sidebar__label mb-2 px-1">Sections</p>
+    <%= render "section_nav" %>
+  </div>
+</aside>

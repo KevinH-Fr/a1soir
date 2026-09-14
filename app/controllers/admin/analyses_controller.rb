@@ -1,53 +1,110 @@
-class Admin::AnalysesController < Admin::ApplicationController
+# frozen_string_literal: true
 
-  #before_action :authenticate_admin!
+# Dashboard admin Analyses : filtres, onglets (synthèse / CA / catalogue / équipe)
+# et délégation des calculs aux services Analyses::*.
+class Admin::AnalysesController < Admin::ApplicationController
+  include Admin::ProduitListingFilters
+
+  before_action :redirect_to_default_period, only: :index
 
   def index
-    datedebut = DateTime.parse(params[:debut]) if params[:debut].present?
-    datefin = DateTime.parse(params[:fin]) if params[:fin].present?
-    @datedebut = DateTime.parse(params[:debut]) if params[:debut].present?
-    @datefin = DateTime.parse(params[:fin]) if params[:fin].present?
+    filter_params = analyses_filter_params
+    scopes = Analyses::DashboardScopes.call(filter_params)
 
-    if datedebut.present? && datefin.present?
-      @commandesFiltres = Commande.hors_devis.filtredatedebut(datedebut).filtredatefin(datefin)
-      @articlesFiltres = Article.joins(:commande).merge(Commande.hors_devis).filtredatedebut(datedebut).filtredatefin(datefin)
-      @sousArticlesFiltres = Sousarticle.filtredatedebut(datedebut).filtredatefin(datefin)
-      @paiementsFiltres = PaiementRecu.filtredatedebut(datedebut).filtredatefin(datefin)
-      @stripePaymentsPaidFiltres = StripePayment.paid.filtredatedebut(datedebut).filtredatefin(datefin)
-    else
-      @commandesFiltres = Commande.hors_devis.all
-      @articlesFiltres = Article.joins(:commande).merge(Commande.hors_devis).all
-      @sousArticlesFiltres = Sousarticle.all
-      @paiementsFiltres = PaiementRecu.all
-      @stripePaymentsPaidFiltres = StripePayment.paid.all
+    datedebut = scopes[:datedebut]
+    datefin = scopes[:datefin]
+    @datedebut = datedebut
+    @datefin = datefin
+
+    @commandesFiltres = scopes[:commandes_filtres]
+    @articlesFiltres = scopes[:articles_filtres]
+    @sousArticlesFiltres = scopes[:sous_articles_filtres]
+    @paiementsFiltres = scopes[:paiements_filtres]
+    @stripePaymentsPaidFiltres = scopes[:stripe_payments_paid_filtres]
+    @stripePaymentItemsFiltres = scopes[:stripe_payment_items_filtres]
+    @product_dimension_filtered = scopes[:product_dimension_filtered]
+    @analyses_ca_mode = @product_dimension_filtered ? :lignes : :paiements
+    @line_metrics = Analyses::LineMetrics.new(
+      articles_scope: @articlesFiltres,
+      stripe_items_scope: @stripePaymentItemsFiltres
+    )
+
+    stripe_totals = Analyses::StripeTotals.new(
+      datedebut: datedebut,
+      datefin: datefin,
+      stripe_payments_scope: @stripePaymentsPaidFiltres,
+      filtered_produits: scopes[:filtered_produits],
+      product_dimension_filtered: @product_dimension_filtered
+    )
+    @total_stripe_eur = stripe_totals.total_eur
+
+    @analyses_vue = Analyses::DashboardVisibility.normalize_vue(params[:vue])
+    @analyses_visibility = Analyses::DashboardVisibility.new(
+      filter_params,
+      ca_mode: @analyses_ca_mode,
+      vue: @analyses_vue
+    )
+
+    Analyses::DashboardPresenter.new(
+      self,
+      scopes: scopes,
+      filter_params: filter_params,
+      stripe_totals: stripe_totals
+    ).call(vue: @analyses_vue)
+
+    kpi_trends = Analyses::KpiTrends.call(filter_params: filter_params, vue: @analyses_vue)
+    @analyses_kpi_trends = kpi_trends[:trends]
+    @analyses_kpi_trend_period_label = kpi_trends[:period_label]
+
+    load_filter_collections
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
     end
+  end
 
-    @total_stripe_eur = stripe_amount_eur(@stripePaymentsPaidFiltres) -
-                        eshop_remboursements_eur(datedebut, datefin)
+  private
 
-    # commandes :
+  def redirect_to_default_period
+    return if params[:debut].present? && params[:fin].present?
+
+    debut, fin = helpers.default_analyses_period
+    redirect_to admin_analyses_index_path(request.query_parameters.symbolize_keys.merge(debut: debut, fin: fin))
+  end
+
+  def analyses_filter_params
+    params.permit(
+      :debut, :fin, :vue,
+      :filter_profile, :filter_locvente, :filter_eshop,
+      *Admin::ProduitListingFilters::ADMIN_PRODUIT_FILTER_KEYS
+    )
+  end
+
+  def assign_commande_metrics
     @nbTotal = @commandesFiltres.count
     @nbRetire = @commandesFiltres.retire.count
     @nbNonRetire = @commandesFiltres.non_retire.count
     @nbRendu = @commandesFiltres.rendu.count
+    @nbDevisPeriode = devis_dans_periode(@datedebut, @datefin).count
 
-    groupedByDate = @commandesFiltres.group("DATE(created_at)").order("DATE(commandes.created_at)").count("created_at")
-    @groupedByDate = groupedByDate.transform_keys do |date|
+    grouped_by_date = @commandesFiltres.group("DATE(created_at)").order("DATE(commandes.created_at)").count("created_at")
+    @groupedByDate = grouped_by_date.transform_keys do |date|
       I18n.l(Date.parse(date.to_s), format: "%d/%m/%Y")
     end
+  end
 
-    # articles :
-    @nbTotalArticles = @articlesFiltres.count
-    @nbLoc = @articlesFiltres.location_only.count
-    @nbVente = @articlesFiltres.vente_only.count
+  def assign_article_metrics
+    @nbTotalArticles = @line_metrics.lignes_count
+    @nbLoc = @line_metrics.loc_lignes_count
+    @nbVente = @line_metrics.vente_lignes_count
 
-    groupedByDateArticles = @articlesFiltres.group("DATE(articles.created_at)").order("DATE(articles.created_at)").sum("quantite")
-    @groupedByDateArticles = groupedByDateArticles.transform_keys do |date|
+    @groupedByDateArticles = @line_metrics.quantites_by_day.transform_keys do |date|
       I18n.l(Date.parse(date.to_s), format: "%d/%m/%Y")
     end
+  end
 
-    # transactions : location / vente (prix articles + sous-articles). Vente inclut l’e-shop via Stripe
-    # (les lignes article des commandes eshop sont exclues du cumul vente pour éviter le double comptage).
+  def assign_transaction_metrics(stripe_totals, datedebut, datefin)
     @totalTransactionsLoc = @articlesFiltres.location_only.sum(:prix).to_d + @sousArticlesFiltres.location_only.sum(:prix).to_d
     articles_vente_hors_eshop = @articlesFiltres.where(commandes: { eshop: [false, nil] }).vente_only.sum(:prix).to_d
     sous_vente_hors_eshop = @sousArticlesFiltres.joins(article: :commande).merge(Commande.hors_devis).where(commandes: { eshop: [false, nil] }).vente_only.sum(:prix).to_d
@@ -56,12 +113,20 @@ class Admin::AnalysesController < Admin::ApplicationController
 
     articles_timeline = @articlesFiltres.where(commandes: { eshop: [false, nil] })
     grouped_articles_jour = articles_timeline.group("DATE(articles.created_at)").order("DATE(articles.created_at)").sum("total")
-    grouped_stripe_jour = @stripePaymentsPaidFiltres.group("DATE(stripe_payments.created_at)").order("DATE(stripe_payments.created_at)").sum(:amount)
-    grouped_stripe_jour_eur = grouped_stripe_jour.transform_values { |cents| cents.to_d / 100 }
-    grouped_remb_jour_neg = eshop_remboursements_grouped_by_day(datedebut, datefin).transform_values { |montant| -montant.to_d }
+    grouped_stripe_jour_eur = stripe_totals.grouped_by_day_eur
+    grouped_remb_jour_neg = eshop_remboursements_grouped_by_day(datedebut, datefin, product_dimension_filtered: @product_dimension_filtered, stripe_scope: @stripePaymentsPaidFiltres).transform_values { |montant| -montant.to_d }
     @groupedByDateTransactions = merge_grouped_by_day(grouped_articles_jour, grouped_stripe_jour_eur, grouped_remb_jour_neg)
+  end
 
-    # CA (prix boutique + Stripe comme moyen de paiement distinct)
+  def assign_ca_metrics(stripe_totals, datedebut, datefin)
+    if @analyses_ca_mode == :lignes
+      assign_ca_metrics_from_lines(stripe_totals, datedebut, datefin)
+    else
+      assign_ca_metrics_from_paiements(stripe_totals, datedebut, datefin)
+    end
+  end
+
+  def assign_ca_metrics_from_paiements(stripe_totals, datedebut, datefin)
     @totalPrixCaCb = @paiementsFiltres.only_prix.only_cb.sum(:montant).to_d
     @totalPrixCaEspeces = @paiementsFiltres.only_prix.only_espece.sum(:montant).to_d
     @totalPrixCaCheque = @paiementsFiltres.only_prix.only_cheque.sum(:montant).to_d
@@ -69,63 +134,132 @@ class Admin::AnalysesController < Admin::ApplicationController
     @totalPrixCaStripe = @total_stripe_eur
     @totalPrixCaBoutique = @totalPrixCaCb + @totalPrixCaEspeces + @totalPrixCaCheque + @totalPrixCaVirement
     @totalPrixCa = @totalPrixCaBoutique + @totalPrixCaStripe
-
     @totalCa = @paiementsFiltres.sum(:montant).to_d + @total_stripe_eur
 
-    groupedByDateCaPaiements = @paiementsFiltres.group("DATE(created_at)").order("DATE(paiement_recus.created_at)").sum(:montant)
-    @groupedByDateCa = merge_grouped_by_day(groupedByDateCaPaiements, grouped_stripe_jour_eur, grouped_remb_jour_neg)
+    grouped_by_date_ca_paiements = @paiementsFiltres.group("DATE(created_at)").order("DATE(paiement_recus.created_at)").sum(:montant)
+    grouped_stripe_jour_eur = stripe_totals.grouped_by_day_eur
+    grouped_remb_jour_neg = eshop_remboursements_grouped_by_day(datedebut, datefin, product_dimension_filtered: @product_dimension_filtered, stripe_scope: @stripePaymentsPaidFiltres).transform_values { |montant| -montant.to_d }
+    @groupedByDateCa = merge_grouped_by_day(grouped_by_date_ca_paiements, grouped_stripe_jour_eur, grouped_remb_jour_neg)
+  end
 
-    # Une ligne par profil : CA = paiements boutique (PaiementRecu) + Stripe rattachés aux commandes du profil.
-    base_r, base_g, base_b = 208, 77, 123
-    target_r, target_g, target_b = 245, 190, 210
+  def assign_ca_metrics_from_lines(stripe_totals, datedebut, datefin)
+    boutique_lines = @articlesFiltres.where(commandes: { eshop: [false, nil] }).sum(:prix).to_d +
+                     @sousArticlesFiltres.joins(article: :commande).where(commandes: { eshop: [false, nil] }).sum(:prix).to_d
+    @totalPrixCaCb = 0.to_d
+    @totalPrixCaEspeces = 0.to_d
+    @totalPrixCaCheque = 0.to_d
+    @totalPrixCaVirement = 0.to_d
+    @totalPrixCaStripe = @total_stripe_eur
+    @totalPrixCaBoutique = boutique_lines
+    @totalPrixCa = boutique_lines + @total_stripe_eur
+    @totalCa = @totalPrixCa
 
-    # Exclut le profil admin (Profile::ADMIN_PROFILE_ID) des stats affichées par profil.
-    profiles = Profile.for_analyses_charts.includes(commandes: [:paiement_recus, :articles])
-    total = profiles.size
+    grouped_articles_jour = @articlesFiltres.where(commandes: { eshop: [false, nil] }).group("DATE(articles.created_at)").order("DATE(articles.created_at)").sum("total")
+    grouped_stripe_jour_eur = stripe_totals.grouped_by_day_eur
+    grouped_remb_jour_neg = eshop_remboursements_grouped_by_day(datedebut, datefin, product_dimension_filtered: @product_dimension_filtered, stripe_scope: @stripePaymentsPaidFiltres).transform_values { |montant| -montant.to_d }
+    @groupedByDateCa = merge_grouped_by_day(grouped_articles_jour, grouped_stripe_jour_eur, grouped_remb_jour_neg)
+  end
 
-    if datedebut.present? && datefin.present?
-      commandesDevis = Commande.est_devis.filtredatedebut(datedebut).filtredatefin(datefin)
-    else
-      commandesDevis = Commande.est_devis.all
-    end
+  def assign_profile_stats(datedebut, datefin, stripe_totals, filter_params)
+    profiles = Profile.for_analyses_charts.order(:prenom, :nom)
+    profiles = profiles.where(id: filter_params[:filter_profile]) if filter_params[:filter_profile].present?
+    profiles = profiles.includes(commandes: [:paiement_recus, :articles])
+
+    commandes_devis = if datedebut.present? && datefin.present?
+                        Commande.est_devis.filtredatedebut(datedebut).filtredatefin(datefin)
+                      else
+                        Commande.est_devis.all
+                      end
 
     @stats_par_profile = profiles.map.with_index do |profile, index|
       commandes = @commandesFiltres.where(profile_id: profile.id)
       commandes_ids = commandes.pluck(:id)
-      ca_paiements = @paiementsFiltres.only_prix.where(commande_id: commandes_ids).sum(:montant).to_d
-      ca_stripe = stripe_amount_eur(@stripePaymentsPaidFiltres.where(commande_id: commandes_ids)) -
-                  eshop_remboursements_eur(datedebut, datefin, commande_ids: commandes_ids)
+      ca_paiements = if @analyses_ca_mode == :lignes
+                       ligne_ca_for_commandes(commandes_ids)
+                     else
+                       @paiementsFiltres.only_prix.where(commande_id: commandes_ids).sum(:montant).to_d
+                     end
+      ca_stripe = stripe_totals.total_eur(commande_ids: commandes_ids)
       ca = ca_paiements + ca_stripe
 
-      devis_count = commandesDevis.where(profile_id: profile.id).count
-
-      ratio = index.to_f / [total - 1, 1].max
-
-      r = (base_r + (target_r - base_r) * ratio).round
-      g = (base_g + (target_g - base_g) * ratio).round
-      b = (base_b + (target_b - base_b) * ratio).round
-
-      couleur = "rgb(#{r}, #{g}, #{b})"
-
+      devis_count = commandes_devis.where(profile_id: profile.id).count
       label = profile.full_name.presence || profile.prenom.presence || "Profil ##{profile.id}"
 
       {
         profile: label,
+        profile_id: profile.id,
         commandes: commandes.count,
         devis: devis_count,
         ca: ca,
-        couleur: couleur
+        couleur: Analyses::ChartPayloads.equipe_pastel_color(index),
+        ca_by_day: profile_ca_by_day(commandes_ids, datedebut, datefin)
       }
     end
   end
 
-  private
+  def profile_ca_by_day(commandes_ids, datedebut, datefin)
+    return {} if commandes_ids.blank?
 
-  def stripe_amount_eur(scope)
-    scope.sum(:amount).to_d / 100
+    boutique =
+      if @analyses_ca_mode == :lignes
+        @articlesFiltres
+          .where(commande_id: commandes_ids)
+          .joins(:commande)
+          .where(commandes: { eshop: [false, nil] })
+          .group("DATE(articles.created_at)")
+          .sum(:prix)
+      else
+        @paiementsFiltres.only_prix
+          .where(commande_id: commandes_ids)
+          .group("DATE(paiement_recus.created_at)")
+          .sum(:montant)
+      end
+
+    stripe = @stripePaymentsPaidFiltres
+               .where(commande_id: commandes_ids)
+               .group("DATE(stripe_payments.created_at)")
+               .sum(:amount)
+               .transform_values { |cents| cents.to_d / 100 }
+
+    remb = eshop_remboursements_scope(
+             datedebut,
+             datefin,
+             product_dimension_filtered: false
+           )
+             .where(commande_id: commandes_ids)
+             .group("COALESCE(avoir_rembs.custom_date, DATE(avoir_rembs.created_at))")
+             .sum(:montant)
+             .transform_values { |montant| -montant.to_d }
+
+    merge_grouped_by_day(boutique, stripe, remb)
   end
 
-  def eshop_remboursements_scope(datedebut, datefin)
+  def ligne_ca_for_commandes(commandes_ids)
+    articles = @articlesFiltres.where(commande_id: commandes_ids).joins(:commande).where(commandes: { eshop: [false, nil] }).sum(:prix).to_d
+    sous = @sousArticlesFiltres.joins(article: :commande).where(commandes: { id: commandes_ids, eshop: [false, nil] }).sum(:prix).to_d
+    articles + sous
+  end
+
+  def assign_catalog_stats
+    stats = Analyses::CatalogStats.call(
+      @articlesFiltres,
+      stripe_items_scope: @stripePaymentItemsFiltres
+    )
+    @catalog_top_products = stats[:top_products]
+    @catalog_by_type = stats[:by_type]
+    @catalog_by_categorie = stats[:by_categorie]
+    @catalog_categorie_notice = stats[:categorie_attribution_notice]
+  end
+
+  def load_filter_collections
+    @profiles_for_filter = Profile.for_analyses_charts.order(:prenom, :nom)
+    @categorie_produits = CategorieProduit.order(:nom)
+    @type_produits = TypeProduit.order(:nom)
+    @couleurs = Couleur.order(:nom)
+    @tailles = Taille.order(:nom)
+  end
+
+  def eshop_remboursements_scope(datedebut, datefin, product_dimension_filtered: false, stripe_scope: nil)
     rel = AvoirRemb.remb_only.joins(:commande).where(commandes: { eshop: true })
     if datedebut.present? && datefin.present?
       rel = rel.where(
@@ -134,22 +268,26 @@ class Admin::AnalysesController < Admin::ApplicationController
         datefin.to_date
       )
     end
+    if product_dimension_filtered && stripe_scope
+      rel = rel.where(commande_id: stripe_scope.select(:commande_id))
+    end
     rel
   end
 
-  def eshop_remboursements_eur(datedebut, datefin, commande_ids: nil)
-    rel = eshop_remboursements_scope(datedebut, datefin)
-    rel = rel.where(commande_id: commande_ids) if commande_ids
-    rel.sum(:montant).to_d
-  end
-
-  def eshop_remboursements_grouped_by_day(datedebut, datefin)
-    eshop_remboursements_scope(datedebut, datefin)
+  def eshop_remboursements_grouped_by_day(datedebut, datefin, product_dimension_filtered: false, stripe_scope: nil)
+    eshop_remboursements_scope(datedebut, datefin, product_dimension_filtered: product_dimension_filtered, stripe_scope: stripe_scope)
       .group("COALESCE(avoir_rembs.custom_date, DATE(avoir_rembs.created_at))")
       .sum(:montant)
   end
 
-  # Fusionne des groupes DATE(...) => montant (BigDecimal), clés au format jj/mm/aaaa
+  def devis_dans_periode(datedebut, datefin)
+    scope = Commande.est_devis
+    if datedebut.present? && datefin.present?
+      scope = scope.filtredatedebut(datedebut).filtredatefin(datefin)
+    end
+    scope
+  end
+
   def merge_grouped_by_day(*hashes)
     merged = Hash.new(0.to_d)
     hashes.each do |h|

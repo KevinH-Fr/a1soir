@@ -1,0 +1,35 @@
+<% if analyses_visibility_show?(:kpi) %>
+  <%= render_analyses_kpi_section %>
+<% end %>
+
+<% if analyses_visibility_show?(:profiles_section) %>
+  <% header_notice = analyses_visibility_show?(:profiles_comparison) ? nil : "Un seul vendeur sélectionné — comparaison multi-vendeurs masquée." %>
+  <%= render_dashboard_section("Équipe", "bi bi-people-fill", [], header_notice: header_notice) do %>
+    <% if analyses_visibility_show?(:profiles_comparison) %>
+      <div class="row g-3 align-items-start mb-3">
+        <div class="col-lg-5">
+          <p class="small text-body-secondary mb-2">Répartition du CA par vendeur</p>
+          <div class="analyses-chart--equipe">
+            <%= render_analyses_chart(:profiles_grouped, chart_id: "analyses-chart-profiles-grouped", aria_label: "CA par vendeur") %>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <%= render "equipe_ranking_table" %>
+        </div>
+      </div>
+
+      <p class="small text-body-secondary mb-2">Évolution du CA par vendeur <span class="text-body-tertiary">— cliquer une légende pour masquer / afficher une courbe</span></p>
+      <div class="analyses-chart--equipe-timeline">
+        <%= render_analyses_chart(:profiles_ca_timeline, chart_id: "analyses-chart-profiles-timeline", aria_label: "Évolution du CA par vendeur") %>
+      </div>
+    <% else %>
+      <%= render "equipe_ranking_table" %>
+      <% if (@stats_par_profile || []).any? { |r| r[:ca_by_day].present? } %>
+        <p class="small text-body-secondary mb-2 mt-3">Évolution du CA</p>
+        <div class="analyses-chart--equipe-timeline">
+          <%= render_analyses_chart(:profiles_ca_timeline, chart_id: "analyses-chart-profiles-timeline", aria_label: "Évolution du CA du vendeur") %>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

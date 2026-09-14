@@ -22,7 +22,7 @@ require 'rspec/rails'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Rails.root.glob('spec/support/**/*.rb').sort.each { |f| require f }
+Rails.root.glob("spec/support/**/*.rb").sort.each { |f| require f }
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
@@ -36,6 +36,8 @@ end
 ActiveRecord::Base.connection.execute("PRAGMA journal_mode=WAL")
 
 RSpec.configure do |config|
+  config.include ActiveSupport::Testing::TimeHelpers
+
   # Rails 7.1 fires after_commit callbacks in transactional tests. Several
   # models have after_commit hooks that call Produit#update_column during
   # savepoint release, which can race with the next example's setup for the

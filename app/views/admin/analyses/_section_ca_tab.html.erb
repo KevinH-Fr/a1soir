@@ -1,0 +1,24 @@
+<% if analyses_visibility_show?(:ca_section) %>
+  <% ca_notice = analyses_ca_mode_lignes? ? "CA basé sur les montants des lignes articles (filtre produit actif), pas sur les encaissements CB/espèces." : nil %>
+  <%= render_dashboard_section("Chiffre d'affaires", "bi bi-cash", [], header_notice: ca_notice) do %>
+    <div class="row g-3 align-items-center">
+      <% if analyses_visibility_show?(:ca_pie_payment_modes) %>
+        <div class="col-lg-5">
+          <p class="small text-body-secondary mb-2">Répartition par mode de paiement</p>
+          <div class="d-flex justify-content-center">
+            <%= render_analyses_chart(:ca_payment_modes_doughnut, extra_class: "analyses-chart--compact", aria_label: "Répartition du CA par mode de paiement") %>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <p class="small text-body-secondary mb-2">Évolution du CA</p>
+          <%= render_analyses_chart(:ca_timeline, chart_id: "analyses-chart-ca-timeline", aria_label: "Évolution du chiffre d'affaires par jour") %>
+        </div>
+      <% else %>
+        <div class="col-12">
+          <p class="small text-body-secondary mb-2">Évolution du CA</p>
+          <%= render_analyses_chart(:ca_timeline, chart_id: "analyses-chart-ca-timeline", aria_label: "Évolution du chiffre d'affaires par jour") %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

@@ -1,0 +1,61 @@
+<div class="analyses-catalog-top">
+  <div class="d-flex align-items-baseline justify-content-between gap-2 mb-2">
+    <h3 class="h6 fw-semibold mb-0">Produits les plus demandés</h3>
+    <span class="small text-body-secondary">Top <%= @catalog_top_products&.size.to_i %></span>
+  </div>
+  <p class="small text-body-secondary mb-3">
+    Quantités et montants des lignes sur la période filtrée.
+  </p>
+
+  <% if @catalog_top_products.blank? %>
+    <p class="small text-muted mb-0">Aucune ligne article sur cette période.</p>
+  <% else %>
+    <div class="table-responsive analyses-catalog-top__table-wrap">
+      <table class="table analyses-catalog-top__table align-middle mb-0">
+        <thead>
+          <tr>
+            <th scope="col" class="analyses-catalog-top__rank">#</th>
+            <th scope="col">Produit</th>
+            <th scope="col" class="text-end">Qté</th>
+            <th scope="col" class="text-end">CA lignes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @catalog_top_products.each_with_index do |row, index| %>
+            <% produit = row[:produit] %>
+            <% meta = [produit.couleur&.nom, produit.taille&.nom, produit.type_produit&.nom].compact %>
+            <tr>
+              <td class="analyses-catalog-top__rank">
+                <span class="analyses-catalog-top__rank-badge"><%= index + 1 %></span>
+              </td>
+              <td>
+                <%= link_to admin_produit_path(produit),
+                            class: "analyses-catalog-top__product text-decoration-none" do %>
+                  <span class="analyses-catalog-top__thumb">
+                    <%= cloudinary_attachment_image(
+                          produit.default_image,
+                          width: 96,
+                          html_width: 40,
+                          alt: produit.nom,
+                          class: "analyses-catalog-top__img"
+                        ) %>
+                  </span>
+                  <span class="min-w-0">
+                    <span class="analyses-catalog-top__name d-block text-truncate"><%= produit.nom %></span>
+                    <% if meta.any? %>
+                      <span class="analyses-catalog-top__meta d-block text-truncate"><%= meta.join(" · ") %></span>
+                    <% end %>
+                  </span>
+                <% end %>
+              </td>
+              <td class="text-end analyses-catalog-top__num fw-semibold"><%= row[:quantite] %></td>
+              <td class="text-end analyses-catalog-top__num">
+                <%= number_to_currency(row[:ca_lignes], unit: "€", format: "%n %u", precision: 0) %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>

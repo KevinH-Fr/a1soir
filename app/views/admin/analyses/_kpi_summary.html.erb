@@ -1,0 +1,37 @@
+<% ca_hint = capture do %>
+  <% if analyses_ca_mode_lignes? %>
+    Montants des articles
+  <% else %>
+    Boutique <%= analyses_donut_amount_label(@totalPrixCaBoutique) %> €
+    <span class="mx-1">·</span>
+    Stripe <%= analyses_donut_amount_label(@totalPrixCaStripe) %> €
+  <% end %>
+<% end %>
+
+<div class="row row-cols-2 row-cols-lg-4 g-2 g-sm-3">
+  <%= render "kpi_card",
+        title: "CA TTC",
+        value: "#{analyses_donut_amount_label(@totalPrixCa)} €",
+        badge: (analyses_ca_mode_lignes? ? "articles" : nil),
+        trend_metric: :ca,
+        hint: ca_hint,
+        hint_class: (analyses_ca_mode_lignes? ? nil : "lh-sm") %>
+
+  <%= render "kpi_card",
+        title: "Commandes",
+        value: @nbTotal,
+        trend_metric: :commandes,
+        hint: "#{@nbRetire} retirées · #{@nbNonRetire} en cours · #{@nbRendu} rendues" %>
+
+  <%= render "kpi_card",
+        title: "Articles",
+        value: @nbTotalArticles,
+        trend_metric: :articles_lignes,
+        hint: (analyses_visibility_show?(:articles_locvente_split) ? "#{@nbLoc} loc. · #{@nbVente} vente" : nil) %>
+
+  <%= render "kpi_card",
+        title: "Devis",
+        value: @nbDevisPeriode,
+        trend_metric: :devis,
+        hint: "Sur la période affichée" %>
+</div>

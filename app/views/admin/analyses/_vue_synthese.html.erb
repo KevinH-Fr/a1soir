@@ -1,0 +1,50 @@
+<% if analyses_visibility_show?(:kpi) %>
+  <%= render_analyses_kpi_section %>
+<% end %>
+
+<% ca_notice = analyses_ca_mode_lignes? ? "CA basé sur les montants des lignes articles (filtre produit actif), pas sur les encaissements CB/espèces." : nil %>
+<%= render_dashboard_section("Activité & chiffre d'affaires", "bi bi-graph-up-arrow", [], header_notice: ca_notice) do %>
+  <div class="row g-3 align-items-center">
+    <% if analyses_visibility_show?(:ca_pie_payment_modes) %>
+      <div class="col-lg-5">
+        <p class="small text-body-secondary mb-2">Répartition par mode de paiement</p>
+        <div class="d-flex justify-content-center">
+          <%= render_analyses_chart(:ca_payment_modes_doughnut, extra_class: "analyses-chart--compact", aria_label: "Répartition du CA par mode de paiement") %>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <p class="small text-body-secondary mb-2">Évolution CA & commandes</p>
+        <%= render_analyses_chart(:synthese_timeline_mixed, chart_id: "analyses-chart-synthese-mixed", aria_label: "Évolution du CA et des commandes par jour") %>
+      </div>
+    <% else %>
+      <div class="col-12">
+        <p class="small text-body-secondary mb-2">Évolution CA & commandes</p>
+        <%= render_analyses_chart(:synthese_timeline_mixed, chart_id: "analyses-chart-synthese-mixed", aria_label: "Évolution du CA et des commandes par jour") %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<% if analyses_visibility_show?(:articles_section) %>
+  <%= render_dashboard_section("Articles", "bi bi-person-standing-dress", []) do %>
+    <div class="row g-3 align-items-center">
+      <% if analyses_visibility_show?(:articles_locvente_split) %>
+        <div class="col-lg-5">
+          <p class="small text-body-secondary mb-2">Répartition location / vente</p>
+          <div class="d-flex justify-content-center">
+            <%= render_analyses_chart(:articles_locvente_doughnut, extra_class: "analyses-chart--compact", aria_label: "Répartition location et vente") %>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <p class="small text-body-secondary mb-2">Évolution des quantités</p>
+          <%= render_analyses_chart(:articles_timeline, aria_label: "Évolution des quantités articles") %>
+        </div>
+      <% else %>
+        <div class="col-12">
+          <p class="small text-body-secondary mb-2">Évolution des quantités</p>
+          <%= render_analyses_chart(:articles_timeline, aria_label: "Évolution des quantités articles") %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

@@ -25,8 +25,14 @@ module ProduitsFiltersHelper
   end
 
   def filter_dropdown(label:, icon:, param_key:, collection: nil, model: nil, current_params: {}, all_label: nil, columns: nil,
-                      always_show_label: false, id_suffix: nil)
+                      always_show_label: false, id_suffix: nil, link_data: {})
     selected_value = params[param_key]
+    item_opts = ->(**html) do
+      if link_data.present?
+        html[:data] = (html[:data] || {}).merge(link_data)
+      end
+      html
+    end
     selected_label =
     if selected_value.present? && model
       case param_key
@@ -101,7 +107,7 @@ module ProduitsFiltersHelper
                   link_to(
                     option[:label],
                     url_for(current_params.merge(param_key => option[:value])),
-                    class: produits_filter_dropdown_item_class(active)
+                    **item_opts.call(class: produits_filter_dropdown_item_class(active))
                   )
                 end
               )
@@ -114,7 +120,7 @@ module ProduitsFiltersHelper
                 link_to(
                   "Tous",
                   url_for(current_params.merge(param_key => nil)),
-                  class: produits_filter_dropdown_item_class(selected_value.blank?)
+                  **item_opts.call(class: produits_filter_dropdown_item_class(selected_value.blank?))
                 )
               end
             )
@@ -124,7 +130,7 @@ module ProduitsFiltersHelper
                 link_to(
                   "NA",
                   url_for(current_params.merge(param_key => "na")),
-                  class: produits_filter_dropdown_item_class(selected_value == "na")
+                  **item_opts.call(class: produits_filter_dropdown_item_class(selected_value == "na"))
                 )
               end
             )
@@ -137,7 +143,7 @@ module ProduitsFiltersHelper
                   link_to(
                     label.html_safe,
                     url_for(current_params.merge(param_key => prix)),
-                    class: produits_filter_dropdown_item_class(active)
+                    **item_opts.call(class: produits_filter_dropdown_item_class(active))
                   )
                 end
               )
@@ -149,7 +155,7 @@ module ProduitsFiltersHelper
                 link_to(
                   all_label || "Tous",
                   url_for(current_params.merge(param_key => nil)),
-                  class: produits_filter_dropdown_item_class(selected_value.blank?)
+                  **item_opts.call(class: produits_filter_dropdown_item_class(selected_value.blank?))
                 )
               end
             )
@@ -160,7 +166,7 @@ module ProduitsFiltersHelper
                   link_to(
                     "NA",
                     url_for(current_params.merge(param_key => "na")),
-                    class: produits_filter_dropdown_item_class(selected_value == "na")
+                    **item_opts.call(class: produits_filter_dropdown_item_class(selected_value == "na"))
                   )
                 end
               )
@@ -176,8 +182,7 @@ module ProduitsFiltersHelper
                   link_to(
                     display,
                     url_for(current_params.merge(param_key => item)),
-                    class: produits_filter_dropdown_item_class(active),
-                    title: nom
+                    **item_opts.call(class: produits_filter_dropdown_item_class(active), title: nom)
                   )
                 end
               )
@@ -194,7 +199,7 @@ module ProduitsFiltersHelper
                   link_to(
                     option[:label],
                     url_for(current_params.merge(param_key => option[:value])),
-                    class: produits_filter_dropdown_item_class(active)
+                    **item_opts.call(class: produits_filter_dropdown_item_class(active))
                   )
                 end
               )

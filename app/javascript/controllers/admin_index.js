@@ -32,3 +32,6 @@ application.register("qr-code", QrCodeController)
 
 import NavbarOutsideCloseController from "./navbar_outside_close_controller"
 application.register("navbar-outside-close", NavbarOutsideCloseController)
+
+import AnalysesFiltersController from "./analyses_filters_controller"
+application.register("analyses-filters", AnalysesFiltersController)

@@ -1,0 +1,121 @@
+# frozen_string_literal: true
+
+module Analyses
+  # Agrège lignes boutique (articles hors e-shop) + lignes Stripe e-shop (toujours vente).
+  # Évite le double comptage : les articles liés à une commande e-shop sont ignorés.
+  class LineMetrics
+    def initialize(articles_scope:, stripe_items_scope: StripePaymentItem.none)
+      @articles_scope = articles_scope
+      @stripe_items_scope = stripe_items_scope
+    end
+
+    def boutique_articles
+      @boutique_articles ||= @articles_scope.where(
+        commande_id: Commande.where(eshop: [false, nil]).select(:id)
+      )
+    end
+
+    def stripe_items
+      @stripe_items_scope
+    end
+
+    def lignes_count
+      boutique_articles.count + stripe_items.count
+    end
+
+    def loc_lignes_count
+      boutique_articles.merge(Article.location_only).count
+    end
+
+    def vente_lignes_count
+      boutique_articles.merge(Article.vente_only).count + stripe_items.count
+    end
+
+    def quantites
+      boutique_articles.sum(:quantite).to_i + stripe_items.sum(:quantity).to_i
+    end
+
+    def ca_lignes
+      boutique_articles.sum(:prix).to_d + stripe_ca_lignes
+    end
+
+    def produits_count
+      (
+        boutique_articles.distinct.pluck(:produit_id) +
+        stripe_items.distinct.pluck(:produit_id)
+      ).uniq.size
+    end
+
+    def quantites_by_day
+      article_days = boutique_articles
+                     .group(Arel.sql("DATE(articles.created_at)"))
+                     .order(Arel.sql("DATE(articles.created_at)"))
+                     .sum(:quantite)
+                     .transform_values(&:to_i)
+
+      stripe_days = stripe_items_for_aggregation
+                    .joins(:stripe_payment)
+                    .group(Arel.sql("DATE(stripe_payments.created_at)"))
+                    .order(Arel.sql("DATE(stripe_payments.created_at)"))
+                    .sum(:quantity)
+                    .transform_values(&:to_i)
+
+      merge_day_ints(article_days, stripe_days)
+    end
+
+    def stripe_ca_lignes
+      return 0.to_d if stripe_items_empty?
+
+      stripe_items_for_aggregation
+        .sum(Arel.sql("stripe_payment_items.quantity * stripe_payment_items.unit_amount"))
+        .to_d / 100
+    end
+
+    def aggregate_by_produit
+      quantites = Hash.new(0)
+      ca = Hash.new(0.to_d)
+
+      boutique_articles.group(:produit_id).sum(:quantite).each do |produit_id, q|
+        quantites[produit_id] += q.to_i
+      end
+      boutique_articles.group(:produit_id).sum(:prix).each do |produit_id, amount|
+        ca[produit_id] += amount.to_d
+      end
+
+      unless stripe_items_empty?
+        items = stripe_items_for_aggregation
+        items.group(:produit_id).sum(:quantity).each do |produit_id, q|
+          quantites[produit_id] += q.to_i
+        end
+        items.group(:produit_id)
+             .sum(Arel.sql("stripe_payment_items.quantity * stripe_payment_items.unit_amount"))
+             .each do |produit_id, cents|
+          ca[produit_id] += cents.to_d / 100
+        end
+      end
+
+      { quantites: quantites, ca_lignes: ca }
+    end
+
+    private
+
+    def stripe_items_empty?
+      !stripe_items.exists?
+    end
+
+    # Scope plat pour éviter les doubles JOIN hérités de DashboardScopes.
+    def stripe_items_for_aggregation
+      StripePaymentItem.where(id: stripe_items.reselect(:id))
+    end
+
+    def merge_day_ints(*hashes)
+      merged = Hash.new(0)
+      hashes.each do |h|
+        next if h.blank?
+
+        h.each { |date_key, value| merged[date_key] += value.to_i }
+      end
+      merged.sort_by { |k, _| Date.parse(k.to_s) }.to_h
+    end
+  end
+end
