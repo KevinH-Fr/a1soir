@@ -143,7 +143,7 @@ module AnalysesHelper
   end
 
   def analyses_filter_toggle_group(aria_label:, param_key:, options:)
-    tag.div(class: "analyses-seg", role: "group", aria: { label: aria_label }) do
+    tag.div(class: "btn-group btn-group-sm w-100", role: "group", aria: { label: aria_label }) do
       safe_join(
         options.map do |label, value|
           active = params[param_key].to_s == value.to_s || (value.nil? && params[param_key].blank?)
@@ -151,7 +151,10 @@ module AnalysesHelper
                   admin_analyses_index_path(
                     analyses_period_params(debut: params[:debut], fin: params[:fin]).merge(param_key => value)
                   ),
-                  class: class_names("analyses-seg__btn", "analyses-seg__btn--active" => active),
+                  class: class_names(
+                    "btn flex-fill",
+                    active ? "btn-secondary" : "btn-outline-secondary"
+                  ),
                   data: { turbo_stream: true }
         end
       )
@@ -273,6 +276,22 @@ module AnalysesHelper
     return nil if @nbTotal.blank? || @nbTotal.to_i.zero?
 
     (@totalPrixCa.to_d / @nbTotal.to_d).round(2)
+  end
+
+  # Hints CA boutique / Stripe partagés (synthèse + onglet CA).
+  def analyses_ca_channel_hints
+    if analyses_ca_mode_lignes?
+      return { hint: "Montants des articles", hint2: nil }
+    end
+
+    ca_total = @totalPrixCa.to_d
+    boutique_pct = ca_total.positive? ? ((@totalPrixCaBoutique.to_d / ca_total) * 100).round : nil
+    stripe_pct = ca_total.positive? ? ((@totalPrixCaStripe.to_d / ca_total) * 100).round : nil
+
+    {
+      hint: "Boutique #{analyses_donut_amount_label(@totalPrixCaBoutique)} €#{boutique_pct ? " · #{boutique_pct} %" : ""}",
+      hint2: "Stripe #{analyses_donut_amount_label(@totalPrixCaStripe)} €#{stripe_pct ? " · #{stripe_pct} %" : ""}"
+    }
   end
 
   # Lignes articles (boutique + Stripe) / commande — nil si aucune commande.

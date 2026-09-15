@@ -91,11 +91,11 @@
     <% if analyses_active_filters_count.positive? %>
       <%= link_to "Effacer tout",
                   analyses_clear_filters_path,
-                  class: "analyses-filters-panel__clear",
+                  class: "btn btn-sm btn-link text-secondary text-decoration-none px-0",
                   data: { turbo_stream: true } %>
     <% end %>
     <button type="button"
-            class="analyses-filters-panel__done ms-auto"
+            class="btn btn-sm btn-outline-secondary ms-auto"
             data-bs-dismiss="offcanvas">
       Terminé
     </button>

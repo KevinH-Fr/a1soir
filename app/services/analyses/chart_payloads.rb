@@ -56,6 +56,7 @@ module Analyses
       when :synthese_timeline_mixed then synthese_timeline_mixed
       when :ca_payment_modes_doughnut then ca_payment_modes_doughnut
       when :ca_timeline then ca_timeline
+      when :ca_transactions_timeline then ca_transactions_timeline
       when :ca_ratios_timeline then ca_ratios_timeline
       when :articles_timeline then articles_timeline
       when :articles_locvente_doughnut then articles_locvente_doughnut
@@ -162,6 +163,46 @@ module Analyses
     def ca_timeline
       labels, values = series_from_day_hash(h.instance_variable_get(:@groupedByDateCa))
       line_chart("CA (€)", labels, values, BLUE)
+    end
+
+    # CA encaissé + transactions (€) — même axe, deux courbes.
+    def ca_transactions_timeline
+      ca_hash = h.instance_variable_get(:@groupedByDateCa) || {}
+      tx_hash = h.instance_variable_get(:@groupedByDateTransactions) || {}
+      labels = aligned_day_labels(ca_hash, tx_hash)
+
+      {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [
+            line_dataset(
+              "CA encaissé (€)",
+              values_for_labels(labels, ca_hash, integer: true),
+              BLUE,
+              fill: true
+            ),
+            line_dataset(
+              "Transactions (€)",
+              values_for_labels(labels, tx_hash, integer: true),
+              GREEN,
+              fill: false,
+              border_dash: [5, 4],
+              tension: 0.35
+            )
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: { legend: legend_options },
+          scales: {
+            x: axis_x,
+            y: axis_y(title: "€")
+          }
+        }
+      }
     end
 
     # Panier moyen (€) + articles (qté) / commande, jour par jour.
@@ -481,23 +522,9 @@ module Analyses
         type: "line",
         data: {
           labels: labels,
-          datasets: [{
-            label: title,
-            data: values.map { |v| v.nil? ? nil : v.to_d.round.to_i },
-            borderColor: color,
-            backgroundColor: rgba_fill(color, 0.08),
-            borderWidth: 2.25,
-            borderCapStyle: "round",
-            borderJoinStyle: "round",
-            fill: true,
-            tension: 0.4,
-            pointRadius: 0,
-            pointHoverRadius: 4,
-            pointHitRadius: 10,
-            pointBackgroundColor: color,
-            pointBorderColor: "#fff",
-            pointBorderWidth: 1.5
-          }]
+          datasets: [
+            line_dataset(title, values.map { |v| v.nil? ? nil : v.to_d.round.to_i }, color, fill: true)
+          ]
         },
         options: {
           responsive: true,
@@ -515,6 +542,28 @@ module Analyses
           }
         }
       }
+    end
+
+    def line_dataset(label, data, color, fill: false, border_dash: nil, tension: 0.4)
+      {
+        label: label,
+        data: data,
+        borderColor: color,
+        backgroundColor: rgba_fill(color, fill ? 0.08 : 0.0),
+        borderWidth: fill ? 2.25 : 2,
+        borderDash: border_dash,
+        borderCapStyle: "round",
+        borderJoinStyle: "round",
+        fill: fill,
+        tension: tension,
+        spanGaps: true,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        pointHitRadius: 10,
+        pointBackgroundColor: color,
+        pointBorderColor: "#fff",
+        pointBorderWidth: 1.5
+      }.compact
     end
 
     def mixed_timeline_options(left_title:, right_title:)

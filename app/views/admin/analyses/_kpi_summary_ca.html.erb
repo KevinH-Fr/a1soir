@@ -1,14 +1,4 @@
-<% if analyses_ca_mode_lignes? %>
-  <% ca_hint = "Montants des articles" %>
-  <% ca_hint2 = nil %>
-<% else %>
-  <% ca_total = @totalPrixCa.to_d %>
-  <% boutique_pct = ca_total.positive? ? ((@totalPrixCaBoutique.to_d / ca_total) * 100).round : nil %>
-  <% stripe_pct = ca_total.positive? ? ((@totalPrixCaStripe.to_d / ca_total) * 100).round : nil %>
-  <% ca_hint = "Boutique #{analyses_donut_amount_label(@totalPrixCaBoutique)} €#{boutique_pct ? " · #{boutique_pct} %" : ""}" %>
-  <% ca_hint2 = "Stripe #{analyses_donut_amount_label(@totalPrixCaStripe)} €#{stripe_pct ? " · #{stripe_pct} %" : ""}" %>
-<% end %>
-
+<% ca_hints = analyses_ca_channel_hints %>
 <% panier = analyses_ca_panier_moyen %>
 <% art_par_cmd = analyses_articles_par_commande %>
 
@@ -18,8 +8,8 @@
         value: "#{analyses_donut_amount_label(@totalPrixCa)} €",
         badge: (analyses_ca_mode_lignes? ? "articles" : nil),
         trend_metric: :ca,
-        hint: ca_hint,
-        hint2: ca_hint2 %>
+        hint: ca_hints[:hint],
+        hint2: ca_hints[:hint2] %>
 
   <%= render "kpi_card",
         title: "Transactions TTC",

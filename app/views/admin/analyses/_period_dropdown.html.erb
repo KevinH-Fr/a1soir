@@ -45,7 +45,7 @@
         <% analyses_filter_params(include_dates: false).except(:vue).each do |key, value| %>
           <%= hidden_field_tag key, value if value.present? %>
         <% end %>
-        <%= submit_tag "Appliquer", class: "analyses-period-menu__apply" %>
+        <%= submit_tag "Appliquer", class: "btn btn-sm btn-outline-secondary w-100" %>
       <% end %>
     </li>
   </ul>

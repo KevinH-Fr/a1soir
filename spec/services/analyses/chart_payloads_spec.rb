@@ -55,6 +55,18 @@ RSpec.describe Analyses::ChartPayloads do
     expect(config[:data][:labels]).to eq(%w[05/03/2026 06/03/2026])
   end
 
+  it "builds CA + transactions dual timeline on the same euro axis" do
+    config = payloads.build(:ca_transactions_timeline)
+    expect(config[:type]).to eq("line")
+    expect(config[:data][:labels]).to eq(%w[05/03/2026 06/03/2026])
+    ca, tx = config[:data][:datasets]
+    expect(ca[:label]).to eq("CA encaissé (€)")
+    expect(ca[:data]).to eq([150, 80])
+    expect(tx[:label]).to eq("Transactions (€)")
+    expect(tx[:data]).to eq([120, 0])
+    expect(config[:options][:scales][:y1]).to be_nil
+  end
+
   it "builds CA ratios timeline with panier moyen and articles per commande" do
     config = payloads.build(:ca_ratios_timeline)
     expect(config[:type]).to eq("line")
