@@ -3,31 +3,33 @@
 module Analyses
   class KpiTrends < ApplicationService
     METRICS_BY_VUE = {
-      "synthese" => %i[ca commandes articles_lignes devis],
+      "synthese" => %i[ca commandes articles_lignes],
       "ca" => %i[ca transactions commandes stripe],
       "catalogue" => %i[quantites ca_lignes produits],
       "equipe" => %i[equipe_ca equipe_commandes equipe_devis]
     }.freeze
 
-    def self.call(filter_params:, vue:)
-      new(filter_params: filter_params, vue: vue).call
+    def self.call(filter_params:, vue:, current: nil)
+      new(filter_params: filter_params, vue: vue, current: current).call
     end
 
-    def initialize(filter_params:, vue:)
+    def initialize(filter_params:, vue:, current: nil)
       @filter_params = filter_params.to_h.symbolize_keys
       @vue = DashboardVisibility.normalize_vue(vue)
+      @current = current
     end
 
     def call
       range = ComparisonPeriod.previous_range(@filter_params[:debut], @filter_params[:fin])
       return { trends: {}, period_label: nil } if range.nil?
 
-      current = KpiSnapshot.call(@filter_params)
+      metrics = METRICS_BY_VUE.fetch(@vue, [])
+      current = @current || KpiSnapshot.call(@filter_params, metrics: metrics)
       reference = KpiSnapshot.call(
-        @filter_params.merge(debut: range[:debut], fin: range[:fin])
+        @filter_params.merge(debut: range[:debut], fin: range[:fin]),
+        metrics: metrics
       )
 
-      metrics = METRICS_BY_VUE.fetch(@vue, [])
       trends = metrics.index_with do |key|
         build_trend(current[key], reference[key], range[:label])
       end

@@ -1,12 +1,17 @@
-<% ca_hint = capture do %>
-  <% if analyses_ca_mode_lignes? %>
-    Montants des articles
-  <% else %>
-    Boutique <%= analyses_donut_amount_label(@totalPrixCaBoutique) %> €
-    <span class="mx-1">·</span>
-    Stripe <%= analyses_donut_amount_label(@totalPrixCaStripe) %> €
-  <% end %>
+<% if analyses_ca_mode_lignes? %>
+  <% ca_hint = "Montants des articles" %>
+  <% ca_hint2 = nil %>
+<% else %>
+  <% ca_total = @totalPrixCa.to_d %>
+  <% boutique_pct = ca_total.positive? ? ((@totalPrixCaBoutique.to_d / ca_total) * 100).round : nil %>
+  <% stripe_pct = ca_total.positive? ? ((@totalPrixCaStripe.to_d / ca_total) * 100).round : nil %>
+  <% ca_hint = "Boutique #{analyses_donut_amount_label(@totalPrixCaBoutique)} €#{boutique_pct ? " · #{boutique_pct} %" : ""}" %>
+  <% ca_hint2 = "Stripe #{analyses_donut_amount_label(@totalPrixCaStripe)} €#{stripe_pct ? " · #{stripe_pct} %" : ""}" %>
 <% end %>
+
+<% top = @synthese_top_profile %>
+<% panier = analyses_ca_panier_moyen %>
+<% art_par_cmd = analyses_articles_par_commande %>
 
 <div class="row row-cols-2 row-cols-lg-4 g-2 g-sm-3">
   <%= render "kpi_card",
@@ -15,23 +20,25 @@
         badge: (analyses_ca_mode_lignes? ? "articles" : nil),
         trend_metric: :ca,
         hint: ca_hint,
-        hint_class: (analyses_ca_mode_lignes? ? nil : "lh-sm") %>
+        hint2: ca_hint2 %>
 
   <%= render "kpi_card",
         title: "Commandes",
         value: @nbTotal,
         trend_metric: :commandes,
-        hint: "#{@nbRetire} retirées · #{@nbNonRetire} en cours · #{@nbRendu} rendues" %>
+        hint: "#{@nbNonRetire} en cours · #{@nbDevisPeriode} devis",
+        hint2: (panier ? "Panier moy. #{analyses_donut_amount_label(panier)} €" : nil) %>
 
   <%= render "kpi_card",
         title: "Articles",
         value: @nbTotalArticles,
         trend_metric: :articles_lignes,
-        hint: (analyses_visibility_show?(:articles_locvente_split) ? "#{@nbLoc} loc. · #{@nbVente} vente" : nil) %>
+        hint: (art_par_cmd ? "#{art_par_cmd} art. / commande" : nil),
+        hint2: (analyses_visibility_show?(:articles_locvente_split) ? "#{@nbLoc} locations · #{@nbVente} ventes" : nil) %>
 
   <%= render "kpi_card",
-        title: "Devis",
-        value: @nbDevisPeriode,
-        trend_metric: :devis,
-        hint: "Sur la période affichée" %>
+        title: "Top vendeur",
+        value: (top ? top[:profile] : "—"),
+        hint: (top ? "#{analyses_donut_amount_label(top[:ca])} €" : "Aucun CA sur la période"),
+        hint2: (top ? "#{top[:commandes]} commandes · #{top[:articles].to_i} articles" : nil) %>
 </div>

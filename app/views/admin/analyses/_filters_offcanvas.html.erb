@@ -1,10 +1,17 @@
-<div class="offcanvas offcanvas-end d-flex flex-column"
+<div class="offcanvas offcanvas-end d-flex flex-column analyses-filters-panel"
      style="--bs-offcanvas-width: min(100%, 22rem)"
      tabindex="-1"
      id="analysesFiltersOffcanvas"
      aria-labelledby="analysesFiltersOffcanvasLabel">
-  <div class="offcanvas-header border-bottom flex-shrink-0">
-    <h2 class="offcanvas-title h6 mb-0 fw-bold" id="analysesFiltersOffcanvasLabel">Filtres</h2>
+  <div class="offcanvas-header analyses-filters-panel__header flex-shrink-0">
+    <div class="d-flex align-items-center gap-2 min-w-0">
+      <span class="analyses-filters-panel__header-icon" aria-hidden="true">
+        <i class="bi bi-sliders"></i>
+      </span>
+      <h2 class="offcanvas-title analyses-filters-panel__title mb-0" id="analysesFiltersOffcanvasLabel">
+        Filtres
+      </h2>
+    </div>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
   </div>
 

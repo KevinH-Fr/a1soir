@@ -1,7 +1,7 @@
 <% if analyses_visibility_show?(:ca_section) %>
   <% ca_notice = analyses_ca_mode_lignes? ? "CA basé sur les montants des lignes articles (filtre produit actif), pas sur les encaissements CB/espèces." : nil %>
   <%= render_dashboard_section("Chiffre d'affaires", "bi bi-cash", [], header_notice: ca_notice) do %>
-    <div class="row g-3 align-items-center">
+    <div class="row g-3 align-items-stretch">
       <% if analyses_visibility_show?(:ca_pie_payment_modes) %>
         <div class="col-lg-5">
           <p class="small text-body-secondary mb-2">Répartition par mode de paiement</p>
@@ -11,14 +11,27 @@
         </div>
         <div class="col-lg-7">
           <p class="small text-body-secondary mb-2">Évolution du CA</p>
-          <%= render_analyses_chart(:ca_timeline, chart_id: "analyses-chart-ca-timeline", aria_label: "Évolution du chiffre d'affaires par jour") %>
+          <%= render_analyses_chart(:ca_timeline, chart_id: "analyses-chart-ca-timeline", extra_class: "analyses-chart--fill analyses-chart--timeline", aria_label: "Évolution du chiffre d'affaires par jour") %>
         </div>
       <% else %>
         <div class="col-12">
           <p class="small text-body-secondary mb-2">Évolution du CA</p>
-          <%= render_analyses_chart(:ca_timeline, chart_id: "analyses-chart-ca-timeline", aria_label: "Évolution du chiffre d'affaires par jour") %>
+          <%= render_analyses_chart(:ca_timeline, chart_id: "analyses-chart-ca-timeline", extra_class: "analyses-chart--fill analyses-chart--timeline", aria_label: "Évolution du chiffre d'affaires par jour") %>
         </div>
       <% end %>
+    </div>
+
+    <div class="mt-3">
+      <p class="small text-body-secondary mb-2">
+        Panier moyen &amp; articles / commande
+        <span class="text-body-tertiary">— jours sans commande exclus</span>
+      </p>
+      <%= render_analyses_chart(
+            :ca_ratios_timeline,
+            chart_id: "analyses-chart-ca-ratios",
+            extra_class: "analyses-chart--fill analyses-chart--timeline",
+            aria_label: "Évolution du panier moyen et des articles par commande"
+          ) %>
     </div>
   <% end %>
 <% end %>

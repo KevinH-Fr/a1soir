@@ -14,13 +14,36 @@ const centerTextPlugin = {
     ctx.save()
     ctx.textAlign = "center"
     ctx.textBaseline = "middle"
-    ctx.font = "bold 12px sans-serif"
-    ctx.fillStyle = "#212529"
+
     if (lines.length === 1) {
+      ctx.font = "600 13px system-ui, sans-serif"
+      ctx.fillStyle = "#334155"
       ctx.fillText(lines[0], x, y)
+    } else if (lines.length === 2 && /TTC|HT/.test(String(lines[0]))) {
+      // Montant TTC (fort) puis montant HT (discret)
+      ctx.font = "700 13px system-ui, sans-serif"
+      ctx.fillStyle = "#1e293b"
+      ctx.fillText(lines[0], x, y - 8)
+      ctx.font = "500 11px system-ui, sans-serif"
+      ctx.fillStyle = "#64748b"
+      ctx.fillText(lines[1], x, y + 10)
+    } else if (lines.length === 2) {
+      // Valeur forte + libellé discret (ex. total + "articles")
+      ctx.font = "700 16px system-ui, sans-serif"
+      ctx.fillStyle = "#1e293b"
+      ctx.fillText(lines[0], x, y - 8)
+      ctx.font = "500 10px system-ui, sans-serif"
+      ctx.fillStyle = "#64748b"
+      ctx.fillText(lines[1], x, y + 10)
     } else {
-      ctx.fillText(lines[0], x, y - 7)
-      ctx.fillText(lines[1], x, y + 7)
+      ctx.font = "700 13px system-ui, sans-serif"
+      ctx.fillStyle = "#1e293b"
+      ctx.fillText(lines[0], x, y - 10)
+      ctx.font = "500 11px system-ui, sans-serif"
+      ctx.fillStyle = "#64748b"
+      lines.slice(1).forEach((line, i) => {
+        ctx.fillText(line, x, y + 6 + (i * 12))
+      })
     }
     ctx.restore()
   }
@@ -67,6 +90,24 @@ function axisLooksLikeMoney(config) {
   })
 }
 
+function applyTooltipStyle(config) {
+  config.options.plugins.tooltip = {
+    ...(config.options.plugins.tooltip || {}),
+    backgroundColor: "rgba(255, 255, 255, 0.97)",
+    titleColor: "#1e293b",
+    bodyColor: "#475569",
+    borderColor: "rgba(15, 23, 42, 0.08)",
+    borderWidth: 1,
+    cornerRadius: 8,
+    padding: 10,
+    displayColors: true,
+    boxPadding: 4,
+    titleFont: { size: 11, weight: "600" },
+    bodyFont: { size: 12, weight: "500" },
+    caretSize: 5
+  }
+}
+
 function buildConfig(raw) {
   const config = JSON.parse(JSON.stringify(raw))
   const centerLines = config._centerText
@@ -82,9 +123,10 @@ function buildConfig(raw) {
 
   roundDatasetValues(config)
   applyIntegerAxisTicks(config)
+  applyTooltipStyle(config)
 
   const moneyDoughnut = Array.isArray(centerLines) &&
-    centerLines.some((line) => /€|HT:|TTC:/.test(String(line)))
+    centerLines.some((line) => /€|HT|TTC/.test(String(line)))
   const moneyAxes = axisLooksLikeMoney(config)
   const moneyDataset = (config.data?.datasets || []).some((dataset) =>
     /€|CA/.test(String(dataset.label || ""))
@@ -94,9 +136,11 @@ function buildConfig(raw) {
   // Les barres catalogue / quantités → entiers sans €.
   const quantityBar = config.type === "bar" && !moneyAxes && !moneyDataset
 
+  const existingTooltip = config.options.plugins.tooltip
   config.options.plugins.tooltip = {
-    ...(config.options.plugins.tooltip || {}),
+    ...existingTooltip,
     callbacks: {
+      ...(existingTooltip.callbacks || {}),
       label(context) {
         const datasetLabel = context.dataset?.label || ""
         const sliceLabel = context.label || ""
@@ -111,7 +155,15 @@ function buildConfig(raw) {
           return name ? `${name}: ${formatInteger(value)}` : formatInteger(value)
         }
 
-        if (moneyChart || moneyDoughnut) {
+        // Ratios non monétaires (ex. art. / commande) même si un axe € existe.
+        if (/art\.|articles\s*\/|qté|quantit/i.test(datasetLabel)) {
+          const formatted = Number(value).toLocaleString("fr-FR", {
+            maximumFractionDigits: 1
+          })
+          return datasetLabel ? `${datasetLabel}: ${formatted}` : formatted
+        }
+
+        if (moneyChart || moneyDoughnut || /€|panier|CA/i.test(datasetLabel)) {
           const name = config.type === "doughnut" ? sliceLabel : datasetLabel
           return name ? `${name}: ${formatEuro(value)}` : formatEuro(value)
         }
@@ -143,6 +195,10 @@ export function mountAnalysesCharts(root = document) {
     try {
       const raw = JSON.parse(canvas.dataset.analysesChart)
       const config = buildConfig(raw)
+      // Parent .analyses-chart-box porte la hauteur ; Chart.js doit le respecter.
+      if (config.options?.maintainAspectRatio === false) {
+        config.options.resizeDelay = 0
+      }
       canvas._analysesChart = new Chart(canvas, config)
     } catch (e) {
       console.error("Analyses chart mount failed", e)

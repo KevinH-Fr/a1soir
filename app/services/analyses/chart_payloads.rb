@@ -2,21 +2,27 @@
 
 module Analyses
   class ChartPayloads
-    # Palette alignée sur les teintes de section (bleu / vert / or / rose + neutres).
-    BLUE = "rgb(59, 111, 216)".freeze
-    GREEN = "rgb(42, 157, 106)".freeze
-    GOLD = "rgb(184, 134, 11)".freeze
-    ROSE = "rgb(184, 74, 107)".freeze
+    # Palette adoucie (pro / admin) — une teinte dominante + neutres slate.
+    BLUE = "rgb(74, 111, 165)".freeze # bleu désaturé
+    GREEN = "rgb(74, 138, 110)".freeze
+    GOLD = "rgb(168, 132, 58)".freeze
+    ROSE = "rgb(168, 96, 118)".freeze
     SLATE = "rgb(100, 116, 139)".freeze
     SLATE_SOFT = "rgb(148, 163, 184)".freeze
-    INDIGO = "rgb(99, 102, 241)".freeze
+    SLATE_MUTED = "rgb(176, 184, 196)".freeze
 
+    # Modes de paiement : bleu / vert / gris / jaune / bleu Stripe — pastels adoucis.
     PAYMENT_LABELS = %w[CB Espèces Chèque Virement Stripe].freeze
-    PAYMENT_COLORS = [BLUE, GREEN, SLATE_SOFT, GOLD, INDIGO].freeze
+    PAYMENT_COLORS = [
+      "rgb(130, 170, 220)",  # CB — bleu pastel
+      "rgb(130, 186, 158)",  # Espèces — vert pastel
+      "rgb(176, 184, 196)",  # Chèque — gris doux
+      "rgb(220, 192, 118)",  # Virement — jaune pastel
+      "rgb(96, 148, 230)"    # Stripe — bleu un peu plus vif, toujours doux
+    ].freeze
 
-    LOC_VENTE_COLORS = [SLATE_SOFT, BLUE].freeze
-    TRANSACTIONS_COLORS = [GREEN, "rgb(30, 120, 80)"].freeze
-    DOUGHNUT_BORDER = "rgb(255, 255, 255)".freeze
+    LOC_VENTE_COLORS = [SLATE_MUTED, BLUE].freeze
+    TRANSACTIONS_COLORS = [GREEN, "rgb(58, 118, 92)"].freeze
 
     # Pastels distincts (teintes espacées) pour lignes / barres multi-vendeurs.
     EQUIPE_PASTEL_COLORS = [
@@ -34,6 +40,9 @@ module Analyses
       "rgb(204, 158, 148)"  # corail pâle
     ].freeze
 
+    GRID_COLOR = "rgba(15, 23, 42, 0.04)".freeze
+    TICK_COLOR = "rgb(100, 116, 139)".freeze
+
     def self.equipe_pastel_color(index)
       EQUIPE_PASTEL_COLORS[index % EQUIPE_PASTEL_COLORS.length]
     end
@@ -47,6 +56,7 @@ module Analyses
       when :synthese_timeline_mixed then synthese_timeline_mixed
       when :ca_payment_modes_doughnut then ca_payment_modes_doughnut
       when :ca_timeline then ca_timeline
+      when :ca_ratios_timeline then ca_ratios_timeline
       when :articles_timeline then articles_timeline
       when :articles_locvente_doughnut then articles_locvente_doughnut
       when :transactions_doughnut then transactions_doughnut
@@ -82,11 +92,18 @@ module Analyses
               data: ca_values,
               yAxisID: "y",
               borderColor: BLUE,
-              backgroundColor: rgba_fill(BLUE, 0.12),
+              backgroundColor: rgba_fill(BLUE, 0.08),
+              borderWidth: 2.25,
+              borderCapStyle: "round",
+              borderJoinStyle: "round",
               fill: true,
-              tension: 0.35,
-              pointRadius: 2,
+              tension: 0.4,
+              pointRadius: 0,
               pointHoverRadius: 4,
+              pointHitRadius: 10,
+              pointBackgroundColor: BLUE,
+              pointBorderColor: "#fff",
+              pointBorderWidth: 1.5,
               order: 1
             },
             {
@@ -94,9 +111,13 @@ module Analyses
               label: "Commandes",
               data: cmd_values,
               yAxisID: "y1",
-              backgroundColor: rgba_fill(ROSE, 0.55),
-              borderRadius: 3,
+              backgroundColor: rgba_fill(SLATE, 0.28),
+              hoverBackgroundColor: rgba_fill(SLATE, 0.42),
+              borderRadius: 6,
+              borderSkipped: false,
               borderWidth: 0,
+              barPercentage: 0.55,
+              categoryPercentage: 0.7,
               order: 2
             }
           ]
@@ -121,15 +142,16 @@ module Analyses
           datasets: [{
             data: values,
             backgroundColor: PAYMENT_COLORS,
-            borderColor: DOUGHNUT_BORDER,
-            borderWidth: 2,
-            hoverOffset: 4
+            borderWidth: 0,
+            borderRadius: 4,
+            hoverOffset: 6,
+            spacing: 2
           }]
         },
         options: doughnut_options,
         _centerText: [
-          "HT: #{h.analyses_donut_ht_label(h.instance_variable_get(:@totalPrixCa))} €",
-          "TTC: #{h.analyses_donut_amount_label(h.instance_variable_get(:@totalPrixCa))} €"
+          "#{h.analyses_donut_amount_label(h.instance_variable_get(:@totalPrixCa))} € TTC",
+          "#{h.analyses_donut_ht_label(h.instance_variable_get(:@totalPrixCa))} € HT"
         ]
       }
     end
@@ -137,6 +159,77 @@ module Analyses
     def ca_timeline
       labels, values = series_from_day_hash(h.instance_variable_get(:@groupedByDateCa))
       line_chart("CA (€)", labels, values, BLUE)
+    end
+
+    # Panier moyen (€) + articles (qté) / commande, jour par jour.
+    def ca_ratios_timeline
+      ca_hash = h.instance_variable_get(:@groupedByDateCa) || {}
+      cmd_hash = h.instance_variable_get(:@groupedByDate) || {}
+      art_hash = h.instance_variable_get(:@groupedByDateArticles) || {}
+      labels = aligned_day_labels(ca_hash, cmd_hash, art_hash)
+
+      panier_values = labels.map do |day|
+        cmds = cmd_hash.fetch(day, 0).to_i
+        next nil if cmds.zero?
+
+        (ca_hash.fetch(day, 0).to_d / cmds).round.to_i
+      end
+
+      art_per_cmd_values = labels.map do |day|
+        cmds = cmd_hash.fetch(day, 0).to_i
+        next nil if cmds.zero?
+
+        (art_hash.fetch(day, 0).to_d / cmds).round(1)
+      end
+
+      {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Panier moyen (€)",
+              data: panier_values,
+              yAxisID: "y",
+              borderColor: BLUE,
+              backgroundColor: rgba_fill(BLUE, 0.08),
+              borderWidth: 2.25,
+              borderCapStyle: "round",
+              borderJoinStyle: "round",
+              fill: true,
+              tension: 0.4,
+              spanGaps: true,
+              pointRadius: 0,
+              pointHoverRadius: 4,
+              pointHitRadius: 10,
+              pointBackgroundColor: BLUE,
+              pointBorderColor: "#fff",
+              pointBorderWidth: 1.5
+            },
+            {
+              label: "Art. / commande",
+              data: art_per_cmd_values,
+              yAxisID: "y1",
+              borderColor: GOLD,
+              backgroundColor: rgba_fill(GOLD, 0.06),
+              borderWidth: 2,
+              borderDash: [5, 4],
+              borderCapStyle: "round",
+              borderJoinStyle: "round",
+              fill: false,
+              tension: 0.35,
+              spanGaps: true,
+              pointRadius: 0,
+              pointHoverRadius: 4,
+              pointHitRadius: 10,
+              pointBackgroundColor: GOLD,
+              pointBorderColor: "#fff",
+              pointBorderWidth: 1.5
+            }
+          ]
+        },
+        options: mixed_timeline_options(left_title: "Panier moyen (€)", right_title: "Art. / commande")
+      }
     end
 
     def articles_timeline
@@ -152,17 +245,21 @@ module Analyses
       {
         type: "doughnut",
         data: {
-          labels: %w[location vente],
+          labels: %w[Locations Ventes],
           datasets: [{
             data: values,
             backgroundColor: LOC_VENTE_COLORS,
-            borderColor: DOUGHNUT_BORDER,
-            borderWidth: 2,
-            hoverOffset: 4
+            borderWidth: 0,
+            borderRadius: 4,
+            hoverOffset: 6,
+            spacing: 2
           }]
         },
         options: doughnut_options,
-        _centerText: ["total #{h.instance_variable_get(:@nbTotalArticles)}"]
+        _centerText: [
+          h.instance_variable_get(:@nbTotalArticles).to_s,
+          "articles"
+        ]
       }
     end
 
@@ -173,19 +270,20 @@ module Analyses
       {
         type: "doughnut",
         data: {
-          labels: %w[location vente],
+          labels: %w[Locations Ventes],
           datasets: [{
             data: [loc.round.to_i, vente.round.to_i],
             backgroundColor: TRANSACTIONS_COLORS,
-            borderColor: DOUGHNUT_BORDER,
-            borderWidth: 2,
-            hoverOffset: 4
+            borderWidth: 0,
+            borderRadius: 4,
+            hoverOffset: 6,
+            spacing: 2
           }]
         },
         options: doughnut_options,
         _centerText: [
-          "HT: #{h.analyses_donut_ht_label(ttc)} €",
-          "TTC: #{h.analyses_donut_amount_label(ttc)} €"
+          "#{h.analyses_donut_amount_label(ttc)} € TTC",
+          "#{h.analyses_donut_ht_label(ttc)} € HT"
         ]
       }
     end
@@ -201,9 +299,6 @@ module Analyses
       labels = stats.flat_map { |row| (row[:ca_by_day] || {}).keys }
                     .uniq
                     .sort_by { |day| Date.strptime(day.to_s, "%d/%m/%Y") }
-      series_count = [stats.length, 1].max
-      # Plus de séries → un peu plus de hauteur pour séparer les courbes.
-      aspect = [[2.2 - (series_count * 0.06), 1.55].max, 2.2].min
 
       {
         type: "line",
@@ -213,64 +308,38 @@ module Analyses
             color = row[:couleur].presence || ROSE
             {
               label: row[:profile],
-              # nil (pas 0) les jours sans CA : évite les zigzags trompeurs.
               data: labels.map { |day|
                 value = row.dig(:ca_by_day, day)
                 value.nil? ? nil : value.to_d.round.to_i
               },
               borderColor: color,
               backgroundColor: rgba_fill(color, 0.1),
-              borderWidth: 2.5,
+              borderWidth: 2.25,
               borderCapStyle: "round",
               borderJoinStyle: "round",
               fill: false,
-              tension: 0.25,
+              tension: 0.35,
               spanGaps: true,
-              pointRadius: 3.5,
-              pointHoverRadius: 6,
+              pointRadius: 0,
+              pointHoverRadius: 4,
               pointHitRadius: 10,
               pointBackgroundColor: color,
               pointBorderColor: "#fff",
-              pointBorderWidth: 2
+              pointBorderWidth: 1.5
             }
           end
         },
         options: {
           responsive: true,
-          maintainAspectRatio: true,
-          aspectRatio: aspect,
+          maintainAspectRatio: false,
           interaction: { mode: "nearest", axis: "x", intersect: false },
           plugins: {
-            legend: {
-              display: true,
-              position: "bottom",
-              labels: {
-                usePointStyle: true,
-                pointStyle: "circle",
-                padding: 14,
-                boxWidth: 10,
-                boxHeight: 10,
-                font: { size: 12 }
-              }
-            },
+            legend: legend_options,
             title: { display: false }
           },
           scales: {
-            x: {
-              ticks: {
-                maxRotation: 45,
-                minRotation: 0,
-                autoSkip: true,
-                maxTicksLimit: 14
-              },
-              grid: { display: false }
-            },
-            y: {
-              beginAtZero: true,
-              title: { display: true, text: "CA (€)" },
-              ticks: { precision: 0 },
-              grid: { color: "rgba(0, 0, 0, 0.06)" }
-            }
+            x: axis_x,
+            y: axis_y(title: "CA (€)")
           }
         }
       }
@@ -279,9 +348,6 @@ module Analyses
     def profiles_grouped
       stats = (h.instance_variable_get(:@stats_par_profile) || []).sort_by { |r| -r[:ca].to_f }
       labels = stats.map { |row| row[:profile] }
-      n = [labels.length, 1].max
-      # Plus de vendeurs → un peu plus haut, mais plafonné pour rester compact.
-      aspect = [[2.8 - (n * 0.12), 1.6].max, 2.8].min
 
       {
         type: "bar",
@@ -291,7 +357,8 @@ module Analyses
             label: "CA (€)",
             data: stats.map { |r| r[:ca].to_d.round.to_i },
             backgroundColor: stats.map { |r| r[:couleur].presence || rgba_fill(ROSE, 0.85) },
-            borderRadius: 4,
+            borderRadius: 6,
+            borderSkipped: false,
             borderWidth: 0,
             barPercentage: 0.7,
             categoryPercentage: 0.8
@@ -300,20 +367,17 @@ module Analyses
         options: {
           indexAxis: "y",
           responsive: true,
-          maintainAspectRatio: true,
-          aspectRatio: aspect,
+          maintainAspectRatio: false,
           plugins: {
             legend: { display: false },
             title: { display: false }
           },
           scales: {
-            x: {
-              beginAtZero: true,
-              title: { display: true, text: "CA (€)" },
-              ticks: { precision: 0 }
-            },
+            x: axis_y(title: "CA (€)").merge(beginAtZero: true),
             y: {
-              ticks: { autoSkip: false }
+              ticks: { autoSkip: false, color: TICK_COLOR, font: { size: 11 } },
+              grid: { display: false },
+              border: { display: false }
             }
           }
         }
@@ -328,8 +392,6 @@ module Analyses
              end
       labels = rows.map { |r| r[:label] }
       values = rows.map { |r| r[:quantite].to_i }
-      n = [labels.length, 1].max
-      aspect = [[2.4 - (n * 0.08), 1.6].max, 2.4].min
 
       {
         type: "bar",
@@ -338,28 +400,38 @@ module Analyses
           datasets: [{
             data: values,
             backgroundColor: catalog_bar_colors(values.length),
-            borderRadius: 4,
+            borderRadius: 6,
+            borderSkipped: false,
             borderWidth: 0
           }]
         },
         options: {
           indexAxis: "y",
           responsive: true,
-          maintainAspectRatio: true,
-          aspectRatio: aspect,
+          maintainAspectRatio: false,
           plugins: {
             legend: { display: false },
             title: { display: false }
           },
           scales: {
-            x: { beginAtZero: true, ticks: { precision: 0 } }
+            x: {
+              beginAtZero: true,
+              ticks: { precision: 0, color: TICK_COLOR, font: { size: 11 } },
+              grid: { color: GRID_COLOR, drawBorder: false },
+              border: { display: false }
+            },
+            y: {
+              ticks: { color: TICK_COLOR, font: { size: 11 } },
+              grid: { display: false },
+              border: { display: false }
+            }
           }
         }
       }
     end
 
     def line_chart(title, labels, values, color, integer_ticks: false)
-      y_ticks = { precision: 0 }
+      y_ticks = { precision: 0, color: TICK_COLOR, font: { size: 11 } }
       {
         type: "line",
         data: {
@@ -368,25 +440,32 @@ module Analyses
             label: title,
             data: values.map { |v| v.nil? ? nil : v.to_d.round.to_i },
             borderColor: color,
-            backgroundColor: rgba_fill(color, 0.14),
+            backgroundColor: rgba_fill(color, 0.08),
+            borderWidth: 2.25,
+            borderCapStyle: "round",
+            borderJoinStyle: "round",
             fill: true,
-            tension: 0.35,
-            pointRadius: 2,
+            tension: 0.4,
+            pointRadius: 0,
             pointHoverRadius: 4,
+            pointHitRadius: 10,
             pointBackgroundColor: color,
             pointBorderColor: "#fff",
-            pointBorderWidth: 1
+            pointBorderWidth: 1.5
           }]
         },
         options: {
           responsive: true,
-          maintainAspectRatio: true,
-          aspectRatio: 2.4,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
           plugins: { legend: { display: false } },
           scales: {
+            x: axis_x,
             y: {
               beginAtZero: true,
-              ticks: y_ticks
+              ticks: y_ticks,
+              grid: { color: GRID_COLOR, drawBorder: false },
+              border: { display: false }
             }
           }
         }
@@ -396,26 +475,27 @@ module Analyses
     def mixed_timeline_options(left_title:, right_title:)
       {
         responsive: true,
-        maintainAspectRatio: true,
-        aspectRatio: 2.4,
+        maintainAspectRatio: false,
         interaction: { mode: "index", intersect: false },
         plugins: {
-          legend: { display: true, position: "bottom" }
+          legend: legend_options
         },
         scales: {
-          y: {
-            type: "linear",
-            position: "left",
-            beginAtZero: true,
-            title: { display: true, text: left_title }
-          },
+          x: axis_x,
+          y: axis_y(title: left_title),
           y1: {
             type: "linear",
             position: "right",
             beginAtZero: true,
             grid: { drawOnChartArea: false },
-            title: { display: true, text: right_title },
-            ticks: { precision: 0 }
+            border: { display: false },
+            title: {
+              display: true,
+              text: right_title,
+              color: TICK_COLOR,
+              font: { size: 11, weight: "500" }
+            },
+            ticks: { precision: 0, color: TICK_COLOR, font: { size: 11 } }
           }
         }
       }
@@ -426,8 +506,62 @@ module Analyses
         responsive: true,
         maintainAspectRatio: true,
         aspectRatio: 1,
-        cutout: "55%",
-        plugins: { legend: { position: "bottom" } }
+        cutout: "70%",
+        plugins: {
+          legend: legend_options.merge(position: "bottom")
+        }
+      }
+    end
+
+    def legend_options
+      {
+        display: true,
+        position: "bottom",
+        labels: {
+          usePointStyle: true,
+          pointStyle: "circle",
+          padding: 16,
+          boxWidth: 8,
+          boxHeight: 8,
+          color: TICK_COLOR,
+          font: { size: 11, weight: "500" }
+        }
+      }
+    end
+
+    def axis_x
+      {
+        ticks: {
+          maxRotation: 0,
+          minRotation: 0,
+          autoSkip: true,
+          maxTicksLimit: 8,
+          color: TICK_COLOR,
+          font: { size: 10 }
+        },
+        grid: { display: false },
+        border: { display: false }
+      }
+    end
+
+    def axis_y(title: nil)
+      {
+        type: "linear",
+        position: "left",
+        beginAtZero: true,
+        border: { display: false },
+        title: if title
+                 {
+                   display: true,
+                   text: title,
+                   color: TICK_COLOR,
+                   font: { size: 11, weight: "500" }
+                 }
+               else
+                 { display: false }
+               end,
+        ticks: { precision: 0, color: TICK_COLOR, font: { size: 11 } },
+        grid: { color: GRID_COLOR, drawBorder: false }
       }
     end
 
@@ -451,7 +585,13 @@ module Analyses
     end
 
     def catalog_bar_colors(count)
-      base = [GOLD, "rgb(201, 162, 39)", "rgb(166, 124, 20)", SLATE_SOFT, SLATE]
+      base = [
+        "rgb(168, 132, 58)",
+        "rgb(184, 152, 86)",
+        "rgb(148, 124, 72)",
+        SLATE_SOFT,
+        SLATE
+      ]
       Array.new(count) { |i| base[i % base.length] }
     end
 

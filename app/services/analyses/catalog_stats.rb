@@ -3,7 +3,8 @@
 module Analyses
   # Stats catalogue : top produits et répartitions type / catégorie (une catégorie par produit).
   class CatalogStats < ApplicationService
-    TOP_LIMIT = 15
+    TOP_LIMIT = 10
+    CHART_TOP_LIMIT = 5
     SANS_CATEGORIE_LABEL = "Sans catégorie"
     SANS_TYPE_LABEL = "Sans type"
     # Une vente / location compte une seule fois : catégorie = première liée au produit (nom A→Z, puis id).
@@ -11,17 +12,18 @@ module Analyses
       "Répartition par catégorie : une seule catégorie par produit — la première par ordre alphabétique du nom " \
       "(pas de double comptage pour les produits multi-catégories)."
 
-    def initialize(articles_scope, stripe_items_scope: StripePaymentItem.none, limit: TOP_LIMIT)
+    def initialize(articles_scope, stripe_items_scope: StripePaymentItem.none, limit: TOP_LIMIT, chart_limit: CHART_TOP_LIMIT)
       @line_metrics = LineMetrics.new(
         articles_scope: articles_scope,
         stripe_items_scope: stripe_items_scope
       )
       @limit = limit
+      @chart_limit = chart_limit
     end
 
     # ApplicationService.call ignore les kwargs Ruby 3 — overload explicite.
-    def self.call(articles_scope, stripe_items_scope: StripePaymentItem.none, limit: TOP_LIMIT)
-      new(articles_scope, stripe_items_scope: stripe_items_scope, limit: limit).call
+    def self.call(articles_scope, stripe_items_scope: StripePaymentItem.none, limit: TOP_LIMIT, chart_limit: CHART_TOP_LIMIT)
+      new(articles_scope, stripe_items_scope: stripe_items_scope, limit: limit, chart_limit: chart_limit).call
     end
 
     def call
@@ -75,7 +77,7 @@ module Analyses
         buckets[label][:ca_lignes] += row[:ca_lignes]
       end
 
-      buckets.values.sort_by { |b| [-b[:quantite], -b[:ca_lignes]] }
+      buckets.values.sort_by { |b| [-b[:quantite], -b[:ca_lignes]] }.first(@chart_limit)
     end
 
     def rollup_by_categorie(by_produit)
@@ -90,7 +92,7 @@ module Analyses
         buckets[label][:ca_lignes] += row[:ca_lignes]
       end
 
-      buckets.values.sort_by { |b| [-b[:quantite], -b[:ca_lignes]] }
+      buckets.values.sort_by { |b| [-b[:quantite], -b[:ca_lignes]] }.first(@chart_limit)
     end
 
     def primary_categories_for(produit_ids)

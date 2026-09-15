@@ -17,7 +17,29 @@ module AnalysesHelper
   ].freeze
 
   def analyses_chart_box_classes(*extras)
-    class_names("w-100 mx-auto", *extras)
+    class_names("w-100 mx-auto analyses-chart-box", *extras)
+  end
+
+  def analyses_equipe_bars_height_rem(profile_count)
+    n = [profile_count.to_i, 1].max
+    # ~2.1rem par barre + marge axes ; plafonné pour le responsive.
+    [[10 + (n * 2.1), 12].max, 26].min.round(1)
+  end
+
+  def render_analyses_chart(key, chart_id: nil, aria_label: nil, extra_class: nil, box_style: nil)
+    config = analyses_chart_config(key)
+    return "" if config.blank?
+
+    render(
+      partial: "admin/analyses/chart_canvas",
+      locals: {
+        chart_id: chart_id || "analyses-chart-#{key}",
+        config: config,
+        aria_label: aria_label,
+        extra_class: extra_class,
+        box_style: box_style
+      }
+    )
   end
 
   def analyses_donut_amount_label(amount)
@@ -78,21 +100,6 @@ module AnalysesHelper
     Analyses::ChartPayloads.new(self).build(key)
   end
 
-  def render_analyses_chart(key, chart_id: nil, aria_label: nil, extra_class: nil)
-    config = analyses_chart_config(key)
-    return "" if config.blank?
-
-    render(
-      partial: "admin/analyses/chart_canvas",
-      locals: {
-        chart_id: chart_id || "analyses-chart-#{key}",
-        config: config,
-        aria_label: aria_label,
-        extra_class: extra_class
-      }
-    )
-  end
-
   def default_analyses_period
     today = Date.current
     [today - 29, today]
@@ -136,7 +143,7 @@ module AnalysesHelper
   end
 
   def analyses_filter_toggle_group(aria_label:, param_key:, options:)
-    tag.div(class: "btn-group btn-group-sm w-100 flex-wrap", role: "group", aria: { label: aria_label }) do
+    tag.div(class: "analyses-seg", role: "group", aria: { label: aria_label }) do
       safe_join(
         options.map do |label, value|
           active = params[param_key].to_s == value.to_s || (value.nil? && params[param_key].blank?)
@@ -144,10 +151,7 @@ module AnalysesHelper
                   admin_analyses_index_path(
                     analyses_period_params(debut: params[:debut], fin: params[:fin]).merge(param_key => value)
                   ),
-                  class: class_names(
-                    "btn flex-fill",
-                    active ? "btn-primary" : "btn-outline-secondary"
-                  ),
+                  class: class_names("analyses-seg__btn", "analyses-seg__btn--active" => active),
                   data: { turbo_stream: true }
         end
       )
@@ -242,6 +246,15 @@ module AnalysesHelper
     truncate(name, length: 28)
   end
 
+  # Part des quantités concentrée sur le top 3 (nil si pas de volume).
+  def analyses_catalog_top3_share_pct
+    total = analyses_catalog_kpi_quantite.to_i
+    return nil if total.zero?
+
+    top_qty = (@catalog_top_products || []).first(3).sum { |r| r[:quantite].to_i }
+    ((top_qty * 100.0) / total).round
+  end
+
   def analyses_equipe_kpi_totals
     stats = @stats_par_profile || []
     {
@@ -260,6 +273,15 @@ module AnalysesHelper
     return nil if @nbTotal.blank? || @nbTotal.to_i.zero?
 
     (@totalPrixCa.to_d / @nbTotal.to_d).round(2)
+  end
+
+  # Lignes articles (boutique + Stripe) / commande — nil si aucune commande.
+  def analyses_articles_par_commande
+    return nil if @nbTotal.blank? || @nbTotal.to_i.zero?
+
+    articles = @nbTotalArticles
+    articles = analyses_line_metrics.lignes_count if articles.nil?
+    (articles.to_d / @nbTotal.to_d).round(1)
   end
 
   def analyses_kpi_trend(metric_key)

@@ -2,9 +2,22 @@
 
 module Analyses
   # Agrégats KPI pour une fenêtre de dates + filtres (sans séries temporelles).
+  # `metrics:` limite les clés calculées (évite p.ex. equipe_totals hors onglet équipe).
   class KpiSnapshot < ApplicationService
-    def initialize(filter_params)
+    ALL_METRICS = %i[
+      ca commandes articles_lignes devis
+      transactions stripe
+      quantites ca_lignes produits
+      equipe_ca equipe_commandes equipe_devis
+    ].freeze
+
+    def self.call(filter_params, metrics: nil)
+      new(filter_params, metrics: metrics).call
+    end
+
+    def initialize(filter_params, metrics: nil)
       @filter_params = filter_params.to_h.symbolize_keys
+      @metrics = metrics&.map(&:to_sym)
       @scopes = DashboardScopes.call(@filter_params)
       @datedebut = @scopes[:datedebut]
       @datefin = @scopes[:datefin]
@@ -17,7 +30,6 @@ module Analyses
         filtered_produits: @scopes[:filtered_produits],
         product_dimension_filtered: @product_dimension_filtered
       )
-      @stripe_eur = @stripe_totals.total_eur
     end
 
     def call
@@ -25,43 +37,66 @@ module Analyses
       articles = @scopes[:articles_filtres]
       sous_articles = @scopes[:sous_articles_filtres]
       paiements = @scopes[:paiements_filtres]
-      line_metrics = LineMetrics.new(
-        articles_scope: articles,
-        stripe_items_scope: @scopes[:stripe_payment_items_filtres]
-      )
+      result = {}
 
-      total_prix_ca = ca_total(articles, sous_articles, paiements)
-      transactions = transaction_totals(articles, sous_articles)
+      result[:ca] = ca_total(articles, sous_articles, paiements) if need?(:ca)
+      result[:commandes] = commandes.count if need?(:commandes)
+      result[:devis] = devis_count if need?(:devis)
+      result[:stripe] = stripe_eur if need?(:stripe)
 
-      {
-        ca: total_prix_ca,
-        commandes: commandes.count,
-        articles_lignes: line_metrics.lignes_count,
-        devis: devis_count,
-        transactions: transactions[:total],
-        stripe: @stripe_eur,
-        quantites: line_metrics.quantites,
-        ca_lignes: line_metrics.ca_lignes,
-        produits: line_metrics.produits_count,
-        equipe_ca: equipe_totals[:ca],
-        equipe_commandes: equipe_totals[:commandes],
-        equipe_devis: equipe_totals[:devis]
-      }
+      if need_any?(:articles_lignes, :quantites, :ca_lignes, :produits)
+        line_metrics = LineMetrics.new(
+          articles_scope: articles,
+          stripe_items_scope: @scopes[:stripe_payment_items_filtres]
+        )
+        result[:articles_lignes] = line_metrics.lignes_count if need?(:articles_lignes)
+        result[:quantites] = line_metrics.quantites if need?(:quantites)
+        result[:ca_lignes] = line_metrics.ca_lignes if need?(:ca_lignes)
+        result[:produits] = line_metrics.produits_count if need?(:produits)
+      end
+
+      if need?(:transactions)
+        result[:transactions] = transaction_totals(articles, sous_articles)[:total]
+      end
+
+      if need_any?(:equipe_ca, :equipe_commandes, :equipe_devis)
+        totals = equipe_totals
+        result[:equipe_ca] = totals[:ca] if need?(:equipe_ca)
+        result[:equipe_commandes] = totals[:commandes] if need?(:equipe_commandes)
+        result[:equipe_devis] = totals[:devis] if need?(:equipe_devis)
+      end
+
+      result
     end
 
     private
+
+    def need?(key)
+      needed_metrics.include?(key)
+    end
+
+    def need_any?(*keys)
+      keys.any? { |key| need?(key) }
+    end
+
+    def needed_metrics
+      @needed_metrics ||= (@metrics.presence || ALL_METRICS)
+    end
+
+    def stripe_eur
+      @stripe_eur ||= @stripe_totals.total_eur
+    end
 
     def ca_total(articles, sous_articles, paiements)
       if @ca_mode == :lignes
         boutique = articles.where(commandes: { eshop: [false, nil] }).sum(:prix).to_d +
                    sous_articles.joins(article: :commande).where(commandes: { eshop: [false, nil] }).sum(:prix).to_d
-        boutique + @stripe_eur
+        boutique + stripe_eur
       else
-        boutique = paiements.only_prix.only_cb.sum(:montant).to_d +
-                   paiements.only_prix.only_espece.sum(:montant).to_d +
-                   paiements.only_prix.only_cheque.sum(:montant).to_d +
-                   paiements.only_prix.only_virement.sum(:montant).to_d
-        boutique + @stripe_eur
+        boutique = paiements.only_prix
+                            .where(moyen: ["carte bleue", "espèces", "chèque", "virement"])
+                            .sum(:montant).to_d
+        boutique + stripe_eur
       end
     end
 
@@ -69,7 +104,7 @@ module Analyses
       loc = articles.location_only.sum(:prix).to_d + sous_articles.location_only.sum(:prix).to_d
       articles_vente_hors_eshop = articles.where(commandes: { eshop: [false, nil] }).vente_only.sum(:prix).to_d
       sous_vente_hors_eshop = sous_articles.joins(article: :commande).merge(Commande.hors_devis).where(commandes: { eshop: [false, nil] }).vente_only.sum(:prix).to_d
-      vente = articles_vente_hors_eshop + sous_vente_hors_eshop + @stripe_eur
+      vente = articles_vente_hors_eshop + sous_vente_hors_eshop + stripe_eur
       { total: loc + vente, loc: loc, vente: vente }
     end
 

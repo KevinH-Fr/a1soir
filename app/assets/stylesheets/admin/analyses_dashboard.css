@@ -16,17 +16,20 @@
 }
 
 /* À partir de lg, le dashboard occupe la hauteur restante sous la navbar admin
-   (60px) et chaque colonne défile indépendamment. En dessous, la page défile
-   normalement : un scroll interne est pénible sur mobile.
-   2rem = marge basse de .admin-content + padding de .main du layout. */
+   (60px). Marge basse volontairement faible pour coller au viewport. */
 @media (min-width: 992px) {
   /* Le wrapper admin plafonne à 1000px, trop étroit pour deux colonnes. */
   .page-max-widthed:has(.analyses-dashboard) {
     max-width: 1400px;
   }
 
+  /* mb + main.p-2 (haut/bas) : rester dans le viewport sans scroll page. */
+  .admin-content:has(.analyses-dashboard) {
+    margin-bottom: 0.25rem !important;
+  }
+
   .analyses-dashboard {
-    height: calc(100dvh - 60px - 2rem);
+    height: calc(100dvh - 60px - 1.25rem);
   }
 
   .analyses-dashboard__surface,
@@ -256,68 +259,80 @@
   justify-content: space-between;
   gap: 0.5rem;
   width: 100%;
-  padding: 0.55rem 0.75rem;
-  font-size: 0.875rem;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--bs-body-color);
   text-align: left;
   background-color: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 0.45rem;
+  box-shadow: none;
 }
 
 .analyses-filters-trigger:hover,
 .analyses-filters-trigger:focus-visible {
   background-color: #fff;
-  border-color: rgba(0, 0, 0, 0.14);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+.analyses-filters-trigger i.bi-funnel {
+  opacity: 0.55;
+  font-size: 0.9em;
 }
 
 .analyses-filters-trigger__count {
   flex-shrink: 0;
-  min-width: 1.35rem;
-  height: 1.35rem;
-  padding: 0 0.35rem;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.3rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: #fff;
-  background-color: var(--bs-primary);
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--bs-body-color);
+  background-color: rgba(13, 110, 253, 0.12);
+  border: 1px solid rgba(13, 110, 253, 0.18);
 }
 
 .analyses-filters-trigger__plus {
   flex-shrink: 0;
-  opacity: 0.45;
-  font-size: 0.9rem;
+  opacity: 0.4;
+  font-size: 0.85rem;
 }
 
 .analyses-chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.28rem;
   max-width: 100%;
-  padding: 0.2rem 0.45rem 0.2rem 0.55rem;
-  font-size: 0.75rem;
-  line-height: 1.3;
+  padding: 0.18rem 0.4rem 0.18rem 0.5rem;
+  font-size: 0.72rem;
+  line-height: 1.25;
   color: var(--bs-body-color);
   text-decoration: none;
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 0.4rem;
 }
 
 .analyses-chip:hover {
   background-color: #fff;
-  border-color: rgba(220, 53, 69, 0.35);
+  border-color: rgba(220, 53, 69, 0.3);
   color: var(--bs-body-color);
 }
 
 .analyses-chip__label {
   color: var(--bs-secondary-color);
   font-weight: 400;
+}
+
+.analyses-chip__label::after {
+  content: "·";
+  margin-left: 0.2rem;
+  opacity: 0.45;
 }
 
 .analyses-chip__value {
@@ -329,14 +344,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1rem;
-  height: 1rem;
-  margin-left: 0.1rem;
+  width: 0.95rem;
+  height: 0.95rem;
+  margin-left: 0.05rem;
   border-radius: 999px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   line-height: 1;
   color: var(--bs-secondary-color);
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: transparent;
 }
 
 .analyses-chip:hover .analyses-chip__x {
@@ -354,18 +369,228 @@
 .analyses-filter-field__dropdown .dropdown > .btn {
   width: 100%;
   justify-content: space-between;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--bs-body-color);
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 0.45rem;
+  box-shadow: none;
+}
+
+.analyses-filter-field .dropdown > .btn:hover,
+.analyses-filter-field .dropdown > .btn:focus-visible,
+.analyses-filter-field__dropdown .dropdown > .btn:hover,
+.analyses-filter-field__dropdown .dropdown > .btn:focus-visible {
+  background-color: #fff;
+  border-color: rgba(0, 0, 0, 0.12);
+  color: var(--bs-body-color);
+}
+
+.analyses-filter-field .dropdown > .btn i,
+.analyses-filter-field__dropdown .dropdown > .btn i {
+  opacity: 0.55;
+  font-size: 0.9em;
 }
 
 /* Listes longues (couleurs, tailles) : le menu ne déborde pas de l'offcanvas. */
 .analyses-filter-field .dropdown-menu {
   max-height: 60vh;
   overflow-y: auto;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  padding: 0.35rem;
+}
+
+.analyses-filter-field .dropdown-item {
+  border-radius: 0.35rem;
+  font-size: 0.8125rem;
+  padding: 0.4rem 0.65rem;
+}
+
+/* Panneau filtres (offcanvas). */
+.analyses-filters-panel {
+  background-color: var(--light-beige-color);
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.analyses-filters-panel__header {
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background-color: rgba(255, 255, 255, 0.45);
+}
+
+.analyses-filters-panel__header-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.4rem;
+  color: var(--bs-secondary-color);
+  background-color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  font-size: 0.85rem;
+}
+
+.analyses-filters-panel__title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--bs-body-color);
+}
+
+.analyses-filters-panel__body {
+  padding: 0 !important;
+}
+
+.analyses-filters-panel__section {
+  padding: 1.1rem 1.15rem 1.2rem;
+}
+
+.analyses-filters-panel__section + .analyses-filters-panel__section {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.analyses-filters-panel__section-title {
+  margin: 0 0 0.85rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bs-secondary-color);
+}
+
+.analyses-filters-panel__field-label {
+  margin: 0 0 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--bs-secondary-color);
+}
+
+.analyses-filters-panel__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.15rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  background-color: rgba(255, 255, 255, 0.55);
+}
+
+.analyses-filters-panel__clear {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--bs-secondary-color);
+  text-decoration: none;
+}
+
+.analyses-filters-panel__clear:hover {
+  color: var(--bs-danger);
+}
+
+.analyses-filters-panel__done {
+  padding: 0.35rem 0.9rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--bs-body-color);
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.4rem;
+}
+
+.analyses-filters-panel__done:hover,
+.analyses-filters-panel__done:focus-visible {
+  background-color: #fff;
+  border-color: rgba(0, 0, 0, 0.16);
+}
+
+/* Segmented controls (canal / locvente). */
+.analyses-seg {
+  display: flex;
+  width: 100%;
+  padding: 0.18rem;
+  gap: 0.15rem;
+  background-color: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 0.5rem;
+}
+
+.analyses-seg__btn {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0.4rem 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  color: var(--bs-secondary-color);
+  background: transparent;
+  border: 0;
+  border-radius: 0.38rem;
+  transition: background-color 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.analyses-seg__btn:hover {
+  color: var(--bs-body-color);
+  background-color: rgba(255, 255, 255, 0.45);
+}
+
+.analyses-seg__btn--active {
+  color: var(--bs-body-color);
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  font-weight: 600;
+}
+
+.analyses-seg__btn--active:hover {
+  color: var(--bs-body-color);
+  background-color: #fff;
 }
 
 /* Doughnuts : bornés en largeur, la hauteur suit l'aspect ratio Chart.js
    (pas de max-height sur le canvas, qui déformerait le rendu). */
 .analyses-chart--compact {
   max-width: 20rem;
+}
+
+/* Conteneur Chart.js (maintainAspectRatio: false) : hauteur sur CE bloc, pas un parent externe. */
+.analyses-chart-box.analyses-chart--fill {
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.analyses-chart-box.analyses-chart--fill canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100%;
+}
+
+/* Line / timelines : remplit la largeur dispo, hauteur alignée sur le doughnut compact. */
+.analyses-chart--timeline {
+  height: 20rem;
+  max-height: min(20rem, 55vh);
+}
+
+.analyses-chart--equipe-timeline {
+  height: 22rem;
+  max-height: min(22rem, 60vh);
+}
+
+.analyses-chart--equipe-bars {
+  height: var(--analyses-chart-height, 16rem);
+  max-height: min(var(--analyses-chart-height, 16rem), 50vh);
+}
+
+.analyses-chart--catalog-bars {
+  height: var(--analyses-chart-height, 16rem);
+  max-height: min(var(--analyses-chart-height, 16rem), 45vh);
 }
 
 /* KPI cards — compactes, alignées à gauche, accent teinté par section. */
@@ -414,11 +639,21 @@
   margin-top: 0;
 }
 
-.analyses-kpi__hint {
+.analyses-kpi__hints {
   margin-top: 0.35rem;
+  min-height: calc(2 * 0.75rem * 1.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.05rem;
+}
+
+.analyses-kpi__hint {
+  margin-top: 0;
   font-size: 0.75rem;
   line-height: 1.3;
   color: var(--bs-secondary-color);
+  min-height: calc(0.75rem * 1.3);
 }
 
 .analyses-kpi__trend {
@@ -455,11 +690,27 @@
 }
 
 /* Tableau top produits catalogue. */
+.analyses-catalog-top__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(var(--analyses-tone-rgb, 184, 134, 11), 1);
+  background-color: rgba(var(--analyses-tone-rgb, 184, 134, 11), 0.12);
+  border: 1px solid rgba(var(--analyses-tone-rgb, 184, 134, 11), 0.2);
+}
+
 .analyses-catalog-top__table-wrap {
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 0.5rem;
   background-color: rgba(255, 255, 255, 0.72);
-  overflow: hidden;
+  max-height: min(24rem, 55vh);
+  overflow-y: auto;
+  overflow-x: auto;
 }
 
 .analyses-catalog-top__table {
@@ -476,13 +727,17 @@
 }
 
 .analyses-catalog-top__table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--bs-secondary-color);
-  background-color: rgba(255, 255, 255, 0.55);
+  background-color: rgba(255, 255, 255, 0.96);
   border-bottom-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
 }
 
 .analyses-catalog-top__table tbody tr:last-child > * {
@@ -553,16 +808,6 @@
 .analyses-catalog-top__num {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-}
-
-/* Chart équipe : conteneur compact (l’aspectRatio Chart.js gère la hauteur). */
-.analyses-chart--equipe {
-  max-width: 100%;
-}
-
-.analyses-chart--equipe-timeline {
-  max-width: 100%;
-  min-height: 18rem;
 }
 
 /* Tableau classement vendeurs. */

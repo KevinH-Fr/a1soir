@@ -14,8 +14,9 @@
       <% end %>
     </div>
 
-    <% if local_assigns[:hint].present? %>
-      <div class="<%= class_names("analyses-kpi__hint", local_assigns[:hint_class]) %>"><%= hint %></div>
-    <% end %>
+    <div class="analyses-kpi__hints">
+      <div class="analyses-kpi__hint text-truncate"><%= local_assigns[:hint].presence || "&nbsp;".html_safe %></div>
+      <div class="analyses-kpi__hint text-truncate"><%= local_assigns[:hint2].presence || "&nbsp;".html_safe %></div>
+    </div>
   </div>
 </div>

@@ -5,7 +5,10 @@ require "rails_helper"
 RSpec.describe Analyses::KpiTrends do
   describe "trend math" do
     it "computes signed percentage change" do
-      trends = described_class.new(filter_params: { debut: "2026-03-10", fin: "2026-03-11", vue: "synthese" })
+      trends = described_class.new(
+        filter_params: { debut: "2026-03-10", fin: "2026-03-11" },
+        vue: "synthese"
+      )
       trend = trends.send(:build_trend, 150, 100, "vs 2 j. préc.")
 
       expect(trend[:signed_pct]).to eq(50.0)
@@ -14,11 +17,39 @@ RSpec.describe Analyses::KpiTrends do
     end
 
     it "returns neutral when previous is zero" do
-      trends = described_class.new(filter_params: { debut: "2026-03-10", fin: "2026-03-11", vue: "synthese" })
+      trends = described_class.new(
+        filter_params: { debut: "2026-03-10", fin: "2026-03-11" },
+        vue: "synthese"
+      )
       trend = trends.send(:build_trend, 10, 0, "vs veille")
 
       expect(trend[:pct]).to be_nil
       expect(trend[:direction]).to eq(:neutral)
+    end
+  end
+
+  describe ".call with current metrics" do
+    it "reuses provided current values and only snapshots the comparison period" do
+      current = { ca: 200, commandes: 4, articles_lignes: 8 }
+      reference = { ca: 100, commandes: 2, articles_lignes: 4 }
+
+      expect(Analyses::KpiSnapshot).to receive(:call).once do |params, metrics:|
+        expect(params[:debut]).to eq(Date.new(2026, 3, 8))
+        expect(params[:fin]).to eq(Date.new(2026, 3, 9))
+        expect(metrics).to eq(%i[ca commandes articles_lignes])
+        reference
+      end
+
+      result = described_class.call(
+        filter_params: { debut: "2026-03-10", fin: "2026-03-11" },
+        vue: "synthese",
+        current: current
+      )
+
+      expect(result[:period_label]).to eq("vs 2 j. préc.")
+      expect(result[:trends][:ca][:signed_pct]).to eq(100.0)
+      expect(result[:trends][:commandes][:signed_pct]).to eq(100.0)
+      expect(result[:trends]).not_to have_key(:devis)
     end
   end
 end

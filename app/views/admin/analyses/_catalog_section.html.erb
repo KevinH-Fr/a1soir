@@ -1,23 +1,54 @@
 <%= render_dashboard_section("Catalogue", "bi bi-bag", []) do %>
   <% show_type = analyses_visibility_show?(:catalog_by_type) %>
   <% show_cat = analyses_visibility_show?(:catalog_by_categorie) %>
+  <% show_locvente = analyses_visibility_show?(:articles_locvente_split) %>
+  <% chart_count = [show_locvente, show_type, show_cat].count(true) %>
+  <% chart_col = case chart_count
+                 when 1 then "col-12"
+                 when 2 then "col-lg-6"
+                 else "col-lg-4"
+                 end %>
+  <% type_count = (@catalog_by_type || []).size %>
+  <% cat_count = (@catalog_by_categorie || []).size %>
 
-  <%= render "catalog_top_products" %>
-
-  <% if show_type || show_cat %>
-    <div class="row g-3 mt-1">
+  <% if chart_count.positive? %>
+    <div class="row g-3 mb-3 align-items-stretch">
+      <% if show_locvente %>
+        <div class="<%= chart_col %>">
+          <p class="small text-body-secondary mb-2">Répartition location / vente</p>
+          <div class="d-flex justify-content-center">
+            <%= render_analyses_chart(
+                  :articles_locvente_doughnut,
+                  extra_class: "analyses-chart--compact",
+                  aria_label: "Répartition location et vente"
+                ) %>
+          </div>
+        </div>
+      <% end %>
       <% if show_type %>
-        <div class="<%= show_cat ? "col-lg-6" : "col-12" %>">
-          <p class="small text-body-secondary mb-2">Quantités par type</p>
-          <%= render_analyses_chart(:catalog_types_horizontal, aria_label: "Quantités par type de produit") %>
+        <div class="<%= chart_col %>">
+          <p class="small text-body-secondary mb-2">Quantités par type <span class="text-body-tertiary">— top 5</span></p>
+          <%= render_analyses_chart(
+                :catalog_types_horizontal,
+                extra_class: "analyses-chart--fill analyses-chart--catalog-bars",
+                box_style: "--analyses-chart-height: #{analyses_equipe_bars_height_rem(type_count)}rem",
+                aria_label: "Quantités par type de produit"
+              ) %>
         </div>
       <% end %>
       <% if show_cat %>
-        <div class="<%= show_type ? "col-lg-6" : "col-12" %>">
-          <p class="small text-body-secondary mb-2">Quantités par catégorie</p>
-          <%= render_analyses_chart(:catalog_categories_horizontal, aria_label: "Quantités par catégorie") %>
+        <div class="<%= chart_col %>">
+          <p class="small text-body-secondary mb-2">Quantités par catégorie <span class="text-body-tertiary">— top 5</span></p>
+          <%= render_analyses_chart(
+                :catalog_categories_horizontal,
+                extra_class: "analyses-chart--fill analyses-chart--catalog-bars",
+                box_style: "--analyses-chart-height: #{analyses_equipe_bars_height_rem(cat_count)}rem",
+                aria_label: "Quantités par catégorie"
+              ) %>
         </div>
       <% end %>
     </div>
   <% end %>
+
+  <%= render "catalog_top_products" %>
 <% end %>

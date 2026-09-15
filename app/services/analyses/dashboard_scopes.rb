@@ -89,9 +89,10 @@ module Analyses
     def apply_locvente_filter(articles)
       case @filter_params[:filter_locvente].to_s
       when "location"
-        articles.merge(Article.location_only)
+        # where explicite : merge(location_only/vente_only) peut écraser un locvente déjà posé
+        articles.where(locvente: "location")
       when "vente"
-        articles.merge(Article.vente_only)
+        articles.where(locvente: "vente")
       else
         articles
       end

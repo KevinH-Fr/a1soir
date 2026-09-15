@@ -58,7 +58,7 @@
     </button>
 
     <% if chips.any? %>
-      <div class="d-flex flex-wrap gap-1 mt-2">
+      <div class="d-flex flex-wrap gap-1 mt-2 analyses-sidebar__chips">
         <% chips.each do |chip| %>
           <%= render "filter_chip", chip: chip %>
         <% end %>

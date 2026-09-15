@@ -79,7 +79,7 @@ module Analyses
       if dimension_pinned?(:categorie) && @vue == "catalogue"
         messages << { key: :filter_categorie, label: "Catégorie filtrée — graphique par catégorie masqué." }
       end
-      if dimension_pinned?(:locvente) && @vue == "synthese"
+      if dimension_pinned?(:locvente) && @vue.in?(%w[synthese catalogue])
         messages << { key: :filter_locvente, label: "Location / vente filtré — répartition loc/vente masquée." }
       end
       if dimension_pinned?(:profile) && @vue == "equipe"

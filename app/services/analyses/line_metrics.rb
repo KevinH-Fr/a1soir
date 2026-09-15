@@ -20,27 +20,27 @@ module Analyses
     end
 
     def lignes_count
-      boutique_articles.count + stripe_items.count
+      @lignes_count ||= boutique_articles.count + stripe_items.count
     end
 
     def loc_lignes_count
-      boutique_articles.merge(Article.location_only).count
+      @loc_lignes_count ||= boutique_articles.where(locvente: "location").count
     end
 
     def vente_lignes_count
-      boutique_articles.merge(Article.vente_only).count + stripe_items.count
+      @vente_lignes_count ||= boutique_articles.where(locvente: "vente").count + stripe_items.count
     end
 
     def quantites
-      boutique_articles.sum(:quantite).to_i + stripe_items.sum(:quantity).to_i
+      @quantites ||= boutique_articles.sum(:quantite).to_i + stripe_items.sum(:quantity).to_i
     end
 
     def ca_lignes
-      boutique_articles.sum(:prix).to_d + stripe_ca_lignes
+      @ca_lignes ||= boutique_articles.sum(:prix).to_d + stripe_ca_lignes
     end
 
     def produits_count
-      (
+      @produits_count ||= (
         boutique_articles.distinct.pluck(:produit_id) +
         stripe_items.distinct.pluck(:produit_id)
       ).uniq.size

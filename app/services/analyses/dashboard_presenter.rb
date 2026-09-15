@@ -33,10 +33,12 @@ module Analyses
       c.send(:assign_commande_metrics)
       c.send(:assign_article_metrics)
       c.send(:assign_ca_metrics, @stripe_totals, @datedebut, @datefin)
+      c.send(:assign_synthese_top_profile, @datedebut, @datefin, @stripe_totals, @filter_params)
     end
 
     def assign_ca_tab
       c.send(:assign_commande_metrics)
+      c.send(:assign_article_metrics)
       c.send(:assign_ca_metrics, @stripe_totals, @datedebut, @datefin)
       c.send(:assign_transaction_metrics, @stripe_totals, @datedebut, @datefin)
     end

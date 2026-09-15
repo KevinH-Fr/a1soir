@@ -1,5 +1,5 @@
-<%# locals: chart_id, config, extra_class: nil %>
-<div class="<%= analyses_chart_box_classes(extra_class) %>">
+<%# locals: chart_id, config, extra_class: nil, box_style: nil, aria_label: nil %>
+<div class="<%= analyses_chart_box_classes(extra_class) %>"<% if local_assigns[:box_style].present? %> style="<%= box_style %>"<% end %>>
   <canvas
     id="<%= chart_id %>"
     data-analyses-chart="<%= config.to_json %>"

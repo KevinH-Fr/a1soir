@@ -1,12 +1,16 @@
-<% ca_hint = capture do %>
-  <% if analyses_ca_mode_lignes? %>
-    Montants des articles
-  <% else %>
-    Boutique <%= analyses_donut_amount_label(@totalPrixCaBoutique) %> €
-    <span class="mx-1">·</span>
-    Stripe <%= analyses_donut_amount_label(@totalPrixCaStripe) %> €
-  <% end %>
+<% if analyses_ca_mode_lignes? %>
+  <% ca_hint = "Montants des articles" %>
+  <% ca_hint2 = nil %>
+<% else %>
+  <% ca_total = @totalPrixCa.to_d %>
+  <% boutique_pct = ca_total.positive? ? ((@totalPrixCaBoutique.to_d / ca_total) * 100).round : nil %>
+  <% stripe_pct = ca_total.positive? ? ((@totalPrixCaStripe.to_d / ca_total) * 100).round : nil %>
+  <% ca_hint = "Boutique #{analyses_donut_amount_label(@totalPrixCaBoutique)} €#{boutique_pct ? " · #{boutique_pct} %" : ""}" %>
+  <% ca_hint2 = "Stripe #{analyses_donut_amount_label(@totalPrixCaStripe)} €#{stripe_pct ? " · #{stripe_pct} %" : ""}" %>
 <% end %>
+
+<% panier = analyses_ca_panier_moyen %>
+<% art_par_cmd = analyses_articles_par_commande %>
 
 <div class="row row-cols-2 row-cols-lg-4 g-2 g-sm-3">
   <%= render "kpi_card",
@@ -15,23 +19,26 @@
         badge: (analyses_ca_mode_lignes? ? "articles" : nil),
         trend_metric: :ca,
         hint: ca_hint,
-        hint_class: (analyses_ca_mode_lignes? ? nil : "lh-sm") %>
+        hint2: ca_hint2 %>
 
   <%= render "kpi_card",
         title: "Transactions TTC",
         value: "#{analyses_donut_amount_label(@totalTransactions)} €",
         trend_metric: :transactions,
-        hint: "Loc #{analyses_donut_amount_label(@totalTransactionsLoc)} € · Vente #{analyses_donut_amount_label(@totalTransactionsVente)} €" %>
+        hint: "Loc #{analyses_donut_amount_label(@totalTransactionsLoc)} €",
+        hint2: "Vente #{analyses_donut_amount_label(@totalTransactionsVente)} €" %>
 
   <%= render "kpi_card",
         title: "Commandes",
         value: @nbTotal,
         trend_metric: :commandes,
-        hint: (analyses_ca_panier_moyen ? "Panier moy. #{analyses_donut_amount_label(analyses_ca_panier_moyen)} €" : nil) %>
+        hint: (panier ? "Panier moy. #{analyses_donut_amount_label(panier)} €" : nil),
+        hint2: (art_par_cmd ? "#{art_par_cmd} art. / commande" : nil) %>
 
   <%= render "kpi_card",
         title: "Stripe",
         value: "#{analyses_donut_amount_label(@totalPrixCaStripe)} €",
         trend_metric: :stripe,
-        hint: "E-shop (net remboursements)" %>
+        hint: "E-shop",
+        hint2: "Net remboursements" %>
 </div>

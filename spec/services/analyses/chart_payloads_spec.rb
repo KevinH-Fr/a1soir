@@ -55,6 +55,17 @@ RSpec.describe Analyses::ChartPayloads do
     expect(config[:data][:labels]).to eq(%w[05/03/2026 06/03/2026])
   end
 
+  it "builds CA ratios timeline with panier moyen and articles per commande" do
+    config = payloads.build(:ca_ratios_timeline)
+    expect(config[:type]).to eq("line")
+    expect(config[:data][:labels]).to eq(%w[05/03/2026 06/03/2026])
+    panier, art = config[:data][:datasets]
+    expect(panier[:label]).to eq("Panier moyen (€)")
+    expect(panier[:data]).to eq([75, 80]) # 150/2, 80/1
+    expect(art[:label]).to eq("Art. / commande")
+    expect(art[:data]).to eq([1.5, 0.0]) # 3/2, 0 articles le 06
+  end
+
   it "builds payment modes doughnut with center text metadata" do
     config = payloads.build(:ca_payment_modes_doughnut)
     expect(config[:type]).to eq("doughnut")
@@ -80,6 +91,6 @@ RSpec.describe Analyses::ChartPayloads do
     # Jour sans CA → nil + spanGaps (pas de plongée à 0).
     expect(config[:data][:datasets].second[:data]).to eq([nil, 50])
     expect(config[:data][:datasets].second[:spanGaps]).to be(true)
-    expect(config[:data][:datasets].first[:borderWidth]).to eq(2.5)
+    expect(config[:data][:datasets].first[:borderWidth]).to eq(2.25)
   end
 end

@@ -4,6 +4,8 @@
 require "rails_helper"
 
 RSpec.describe Admin::AnalysesController, type: :controller do
+  render_views
+
   let(:client) do
     Client.create!(
       nom: "Analyse",
@@ -18,9 +20,10 @@ RSpec.describe Admin::AnalysesController, type: :controller do
 
   before do
     @request.host = "admin.lvh.me"
+    AdminParameter.create!(tx_tva: 20) if AdminParameter.none?
     allow(controller).to receive(:authenticate_vendeur_or_admin!).and_return(true)
     allow(controller).to receive(:current_admin_user).and_return(
-      instance_double(User, admin?: true, vendeur?: false)
+      instance_double(User, admin?: true, vendeur?: false, role: "admin")
     )
   end
 

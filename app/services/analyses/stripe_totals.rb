@@ -14,6 +14,10 @@ module Analyses
     def total_eur(commande_ids: nil)
       return 0.to_d if commande_ids&.empty?
 
+      if commande_ids.nil?
+        return @total_eur if defined?(@total_eur)
+      end
+
       gross = if @product_dimension_filtered
                 stripe_items_eur(commande_ids: commande_ids)
               else
@@ -21,19 +25,21 @@ module Analyses
                 scope = scope.where(commande_id: commande_ids) unless commande_ids.nil?
                 scope.sum(:amount).to_d / 100
               end
-      gross - remboursements_eur(commande_ids: commande_ids)
+      result = gross - remboursements_eur(commande_ids: commande_ids)
+      @total_eur = result if commande_ids.nil?
+      result
     end
 
     def grouped_by_day_eur
-      if @product_dimension_filtered
-        grouped_stripe_items_by_day
-      else
-        @stripe_payments_scope
-          .group("DATE(stripe_payments.created_at)")
-          .order("DATE(stripe_payments.created_at)")
-          .sum(:amount)
-          .transform_values { |cents| cents.to_d / 100 }
-      end
+      @grouped_by_day_eur ||= if @product_dimension_filtered
+                                grouped_stripe_items_by_day
+                              else
+                                @stripe_payments_scope
+                                  .group("DATE(stripe_payments.created_at)")
+                                  .order("DATE(stripe_payments.created_at)")
+                                  .sum(:amount)
+                                  .transform_values { |cents| cents.to_d / 100 }
+                              end
     end
 
     private
