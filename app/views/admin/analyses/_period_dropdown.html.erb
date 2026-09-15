@@ -1,5 +1,5 @@
 <% selected_range = analyses_period_selected_range %>
-<div class="dropdown">
+<div class="dropdown analyses-period-dropdown">
   <button type="button"
           class="analyses-period-trigger dropdown-toggle"
           id="analysesPeriodDropdown"
@@ -8,11 +8,13 @@
           aria-expanded="false"
           aria-label="Choisir la période d'analyse">
     <span class="d-inline-flex align-items-center gap-2 min-w-0">
-      <i class="bi bi-calendar3 flex-shrink-0" aria-hidden="true"></i>
+      <span class="analyses-period-trigger__icon" aria-hidden="true">
+        <i class="bi bi-calendar3"></i>
+      </span>
       <span class="text-truncate"><%= analyses_period_preset_label %></span>
     </span>
   </button>
-  <ul class="dropdown-menu shadow-sm"
+  <ul class="dropdown-menu analyses-period-menu shadow-sm"
       style="min-width: min(100vw - 2rem, 18rem)"
       aria-labelledby="analysesPeriodDropdown">
     <% analyses_quick_period_presets.each do |label, range| %>
@@ -21,27 +23,29 @@
       <li>
         <%= link_to label,
                     admin_analyses_index_path(analyses_period_params(debut: debut, fin: fin)),
-                    class: class_names("dropdown-item", active: active) %>
+                    class: class_names("dropdown-item analyses-period-menu__item", "analyses-period-menu__item--active" => active) %>
       </li>
     <% end %>
-    <li><hr class="dropdown-divider"></li>
-    <li class="px-3 py-2">
-      <p class="small fw-semibold text-body-secondary mb-2">Plage personnalisée</p>
-      <%= form_tag url_for, method: :get, class: "d-flex flex-column gap-2" do %>
-        <div class="d-flex flex-wrap align-items-center gap-2">
+    <li><hr class="dropdown-divider analyses-period-menu__divider"></li>
+    <li class="analyses-period-menu__custom">
+      <p class="analyses-period-menu__custom-label">Plage personnalisée</p>
+      <%= form_tag url_for, method: :get, class: "analyses-period-menu__form" do %>
+        <div class="analyses-period-menu__fields">
           <%= date_field_tag :debut, params[:debut],
-                             class: "form-control form-control-sm flex-grow-1",
+                             class: "form-control form-control-sm analyses-period-menu__date",
                              aria: { label: "Date de début" } %>
-          <span class="text-body-secondary small" aria-hidden="true">→</span>
+          <span class="analyses-period-menu__arrow" aria-hidden="true">
+            <i class="bi bi-arrow-right"></i>
+          </span>
           <%= date_field_tag :fin, params[:fin],
-                             class: "form-control form-control-sm flex-grow-1",
+                             class: "form-control form-control-sm analyses-period-menu__date",
                              aria: { label: "Date de fin" } %>
         </div>
         <%= hidden_field_tag :vue, analyses_vue %>
         <% analyses_filter_params(include_dates: false).except(:vue).each do |key, value| %>
           <%= hidden_field_tag key, value if value.present? %>
         <% end %>
-        <%= submit_tag "Appliquer", class: "btn btn-primary btn-sm w-100" %>
+        <%= submit_tag "Appliquer", class: "analyses-period-menu__apply" %>
       <% end %>
     </li>
   </ul>

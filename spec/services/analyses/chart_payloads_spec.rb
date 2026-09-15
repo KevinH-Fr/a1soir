@@ -27,8 +27,8 @@ RSpec.describe Analyses::ChartPayloads do
         { profile: "Bob", commandes: 1, devis: 0, ca: 50.to_d, couleur: "rgb(59, 111, 216)",
           ca_by_day: { "06/03/2026" => 50 } }
       ],
-      :@catalog_by_type => [{ label: "Robe", quantite: 4 }],
-      :@catalog_by_categorie => [{ label: "cat", quantite: 2 }]
+      :@catalog_by_type => [{ label: "Robe", quantite: 4, ca_lignes: 120.to_d }],
+      :@catalog_by_categorie => [{ label: "cat", quantite: 2, ca_lignes: 50.to_d }]
     }
     Object.new.tap do |obj|
       data.each do |key, value|
@@ -92,5 +92,18 @@ RSpec.describe Analyses::ChartPayloads do
     expect(config[:data][:datasets].second[:data]).to eq([nil, 50])
     expect(config[:data][:datasets].second[:spanGaps]).to be(true)
     expect(config[:data][:datasets].first[:borderWidth]).to eq(2.25)
+  end
+
+  it "builds catalog dual-axis bars with quantite and CA" do
+    config = payloads.build(:catalog_types_bars)
+    expect(config[:type]).to eq("bar")
+    expect(config[:options][:indexAxis]).to eq("y")
+    qty, ca = config[:data][:datasets]
+    expect(qty[:label]).to eq("Quantité")
+    expect(qty[:data]).to eq([4])
+    expect(qty[:xAxisID]).to eq("x")
+    expect(ca[:label]).to eq("CA (€)")
+    expect(ca[:data]).to eq([120])
+    expect(ca[:xAxisID]).to eq("x1")
   end
 end

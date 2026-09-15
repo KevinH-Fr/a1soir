@@ -27,23 +27,27 @@
       <% end %>
       <% if show_type %>
         <div class="<%= chart_col %>">
-          <p class="small text-body-secondary mb-2">Quantités par type <span class="text-body-tertiary">— top 5</span></p>
+          <p class="small text-body-secondary mb-2">
+            Par type <span class="text-body-tertiary">— top 5 · qté & CA</span>
+          </p>
           <%= render_analyses_chart(
-                :catalog_types_horizontal,
+                :catalog_types_bars,
                 extra_class: "analyses-chart--fill analyses-chart--catalog-bars",
-                box_style: "--analyses-chart-height: #{analyses_equipe_bars_height_rem(type_count)}rem",
-                aria_label: "Quantités par type de produit"
+                box_style: "--analyses-chart-height: #{analyses_equipe_bars_height_rem([type_count, 3].max)}rem",
+                aria_label: "Quantités et CA par type de produit"
               ) %>
         </div>
       <% end %>
       <% if show_cat %>
         <div class="<%= chart_col %>">
-          <p class="small text-body-secondary mb-2">Quantités par catégorie <span class="text-body-tertiary">— top 5</span></p>
+          <p class="small text-body-secondary mb-2">
+            Par catégorie <span class="text-body-tertiary">— top 5 · qté & CA</span>
+          </p>
           <%= render_analyses_chart(
-                :catalog_categories_horizontal,
+                :catalog_categories_bars,
                 extra_class: "analyses-chart--fill analyses-chart--catalog-bars",
-                box_style: "--analyses-chart-height: #{analyses_equipe_bars_height_rem(cat_count)}rem",
-                aria_label: "Quantités par catégorie"
+                box_style: "--analyses-chart-height: #{analyses_equipe_bars_height_rem([cat_count, 3].max)}rem",
+                aria_label: "Quantités et CA par catégorie"
               ) %>
         </div>
       <% end %>

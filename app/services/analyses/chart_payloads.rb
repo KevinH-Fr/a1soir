@@ -63,8 +63,11 @@ module Analyses
       when :transactions_timeline then transactions_timeline
       when :profiles_grouped then profiles_grouped
       when :profiles_ca_timeline then profiles_ca_timeline
-      when :catalog_types_horizontal then catalog_horizontal(:type)
-      when :catalog_categories_horizontal then catalog_horizontal(:categorie)
+      when :catalog_types_bars then catalog_qty_ca_bars(:type)
+      when :catalog_categories_bars then catalog_qty_ca_bars(:categorie)
+      # Alias (doughnut / anciennes barres qty seule).
+      when :catalog_types_doughnut, :catalog_types_horizontal then catalog_qty_ca_bars(:type)
+      when :catalog_categories_doughnut, :catalog_categories_horizontal then catalog_qty_ca_bars(:categorie)
       else
         nil
       end
@@ -384,46 +387,88 @@ module Analyses
       }
     end
 
-    def catalog_horizontal(kind)
+    def catalog_qty_ca_bars(kind)
       rows = if kind == :type
                h.instance_variable_get(:@catalog_by_type) || []
              else
                h.instance_variable_get(:@catalog_by_categorie) || []
              end
       labels = rows.map { |r| r[:label] }
-      values = rows.map { |r| r[:quantite].to_i }
+      quantities = rows.map { |r| r[:quantite].to_i }
+      ca_values = rows.map { |r| r[:ca_lignes].to_d.round.to_i }
 
+      # Deux métriques ≠ unités → barres groupées + double axe (recommandé Chart.js),
+      # plutôt qu'un doughnut concentrique trompeur.
       {
         type: "bar",
         data: {
           labels: labels,
-          datasets: [{
-            data: values,
-            backgroundColor: catalog_bar_colors(values.length),
-            borderRadius: 6,
-            borderSkipped: false,
-            borderWidth: 0
-          }]
+          datasets: [
+            {
+              label: "Quantité",
+              data: quantities,
+              xAxisID: "x",
+              backgroundColor: rgba_fill(BLUE, 0.72),
+              hoverBackgroundColor: rgba_fill(BLUE, 0.88),
+              borderRadius: 5,
+              borderSkipped: false,
+              borderWidth: 0,
+              barPercentage: 0.85,
+              categoryPercentage: 0.7
+            },
+            {
+              label: "CA (€)",
+              data: ca_values,
+              xAxisID: "x1",
+              backgroundColor: rgba_fill(GOLD, 0.65),
+              hoverBackgroundColor: rgba_fill(GOLD, 0.82),
+              borderRadius: 5,
+              borderSkipped: false,
+              borderWidth: 0,
+              barPercentage: 0.85,
+              categoryPercentage: 0.7
+            }
+          ]
         },
         options: {
           indexAxis: "y",
           responsive: true,
           maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
           plugins: {
-            legend: { display: false },
-            title: { display: false }
+            legend: legend_options
           },
           scales: {
-            x: {
-              beginAtZero: true,
-              ticks: { precision: 0, color: TICK_COLOR, font: { size: 11 } },
-              grid: { color: GRID_COLOR, drawBorder: false },
-              border: { display: false }
-            },
             y: {
               ticks: { color: TICK_COLOR, font: { size: 11 } },
               grid: { display: false },
               border: { display: false }
+            },
+            x: {
+              position: "top",
+              beginAtZero: true,
+              ticks: { precision: 0, color: BLUE, font: { size: 10 } },
+              grid: { color: GRID_COLOR, drawBorder: false },
+              border: { display: false },
+              title: {
+                display: true,
+                text: "Quantité",
+                color: TICK_COLOR,
+                font: { size: 10, weight: "500" }
+              }
+            },
+            x1: {
+              position: "bottom",
+              beginAtZero: true,
+              ticks: { precision: 0, color: GOLD, font: { size: 10 } },
+              grid: { drawOnChartArea: false },
+              border: { display: false },
+              title: {
+                display: true,
+                text: "CA (€)",
+                color: TICK_COLOR,
+                font: { size: 10, weight: "500" }
+              }
             }
           }
         }
@@ -582,17 +627,6 @@ module Analyses
         value = hash.fetch(label, 0)
         integer ? value.to_i : value.to_d.round.to_i
       end
-    end
-
-    def catalog_bar_colors(count)
-      base = [
-        "rgb(168, 132, 58)",
-        "rgb(184, 152, 86)",
-        "rgb(148, 124, 72)",
-        SLATE_SOFT,
-        SLATE
-      ]
-      Array.new(count) { |i| base[i % base.length] }
     end
 
     def rgba_fill(rgb, alpha = 0.15)
