@@ -24,7 +24,7 @@
 
   <%= render "kpi_card",
         title: "Top produit",
-        value: (top ? top[:quantite] : "—"),
-        hint: (top ? analyses_catalog_top_product_label : "Aucune ligne"),
+        value: (top ? analyses_catalog_top_product_label : "—"),
+        hint: (top ? "#{top[:qte_loc].to_i} locations · #{top[:qte_vente].to_i} ventes" : "Aucune ligne"),
         hint2: (top ? "#{analyses_donut_amount_label(top[:ca_lignes])} € CA" : nil) %>
 </div>

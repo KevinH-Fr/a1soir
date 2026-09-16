@@ -4,12 +4,12 @@
 <div class="analyses-locvente-twins">
   <div class="analyses-locvente-twins__charts">
     <div class="analyses-locvente-twin">
-      <%= analyses_chart_heading("Quantités", extra_class: "analyses-chart-heading--center analyses-chart-heading--compact") %>
+      <%= analyses_chart_heading("Quantités articles", extra_class: "analyses-chart-heading--center analyses-chart-heading--compact") %>
       <%= render_analyses_chart(
             :locvente_qty_doughnut,
             chart_id: local_assigns[:qty_chart_id],
             extra_class: "analyses-chart--compact analyses-chart--twin",
-            aria_label: "Répartition location et vente en quantité"
+            aria_label: "Répartition location et vente en quantités d'articles"
           ) %>
     </div>
     <div class="analyses-locvente-twin">

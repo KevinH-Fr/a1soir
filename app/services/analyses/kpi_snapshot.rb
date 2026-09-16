@@ -50,7 +50,7 @@ module Analyses
           articles_scope: articles,
           stripe_items_scope: @scopes[:stripe_payment_items_filtres]
         )
-        result[:articles_lignes] = line_metrics.lignes_count if need?(:articles_lignes)
+        result[:articles_lignes] = line_metrics.quantites if need?(:articles_lignes)
         result[:quantites] = line_metrics.quantites if need?(:quantites)
         result[:ca_lignes] = line_metrics.ca_lignes if need?(:ca_lignes)
         result[:produits] = line_metrics.produits_count if need?(:produits)

@@ -67,6 +67,8 @@ RSpec.describe Analyses::LineMetrics do
     expect(metrics.vente_lignes_count).to eq(2) # 1 boutique vente + 1 stripe
     expect(metrics.loc_lignes_count).to eq(1)
     expect(metrics.quantites).to eq(6) # 2+1 boutique + 3 stripe
+    expect(metrics.loc_quantites).to eq(1)
+    expect(metrics.vente_quantites).to eq(5) # 2 boutique + 3 stripe
     expect(metrics.ca_lignes).to eq(145.to_d) # 40+30 + (3*25)
     expect(metrics.loc_ca_lignes).to eq(30.to_d)
     expect(metrics.vente_ca_lignes).to eq(115.to_d) # 40 + 75

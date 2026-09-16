@@ -21,7 +21,7 @@
       <% if show_channels %>
         <div class="<%= show_payment ? "col-lg-6" : "col-12" %>">
           <%= analyses_chart_card do %>
-            <%= analyses_chart_heading("Boutique & e-shop (CA €)") %>
+            <%= analyses_chart_heading("Boutique & e-shop (CA €)", meta: analyses_ca_channels_meta) %>
             <%= render_analyses_chart(
                   :ca_channels_timeline,
                   chart_id: "analyses-chart-ca-channels-synthese",

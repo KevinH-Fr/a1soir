@@ -138,7 +138,8 @@ function tooltipLabel(context, tooltipKind) {
   const value = parsedValue(context)
   if (value == null || Number.isNaN(Number(value))) return datasetLabel || sliceLabel
 
-  const isMoneyLabel = /€|CA|panier|boutique|e-shop|stripe|encaiss|transaction/i.test(datasetLabel)
+  const isPctLabel = /\(%\)|part\s+e-shop|taux\s+d['’]?encaissement/i.test(datasetLabel)
+  const isMoneyLabel = /€|CA|panier|boutique|e-shop|stripe|encaiss|transaction|non encaissé/i.test(datasetLabel) && !isPctLabel
   const isQtyLabel = /quantit|commandes|^articles$|art\.|articles\s*\//i.test(datasetLabel)
 
   if (tooltipKind === "locvente_qty" || tooltipKind === "locvente_money") {
@@ -146,6 +147,23 @@ function tooltipLabel(context, tooltipKind) {
     const body = tooltipKind === "locvente_money" ? formatEuro(value) : formatInteger(value)
     const name = sliceLabel || datasetLabel
     return name ? `${name}: ${body} · ${pct}%` : `${body} · ${pct}%`
+  }
+
+  if (tooltipKind === "channels_money") {
+    const idx = context.dataIndex
+    const datasets = context.chart?.data?.datasets || []
+    const dayTotal = datasets.reduce((sum, ds) => {
+      const v = Number(ds?.data?.[idx])
+      return sum + (Number.isFinite(v) ? v : 0)
+    }, 0)
+    const pct = dayTotal > 0 ? Math.round((Number(value) / dayTotal) * 100) : 0
+    const name = datasetLabel || "Canal"
+    return `${name}: ${formatEuro(value)} · ${pct} % du jour`
+  }
+
+  if (isPctLabel) {
+    const formatted = Number(value).toLocaleString("fr-FR", { maximumFractionDigits: 1 })
+    return datasetLabel ? `${datasetLabel}: ${formatted} %` : `${formatted} %`
   }
 
   if (tooltipKind === "money" || (tooltipKind === "mixed" && isMoneyLabel)) {

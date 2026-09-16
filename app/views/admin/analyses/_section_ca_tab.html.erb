@@ -15,26 +15,44 @@
           <% end %>
         </div>
         <div class="col-lg-7">
+          <% if show_channels %>
+            <%= analyses_chart_card do %>
+              <%= analyses_chart_heading("Boutique & e-shop (CA €)", meta: analyses_ca_channels_meta) %>
+              <%= render_analyses_chart(
+                    :ca_channels_timeline,
+                    chart_id: "analyses-chart-ca-channels",
+                    extra_class: "analyses-chart--fill analyses-chart--timeline",
+                    aria_label: "Évolution du CA boutique et e-shop"
+                  ) %>
+            <% end %>
+          <% else %>
+            <%= analyses_chart_card do %>
+              <%= analyses_chart_heading("CA & transactions", meta: analyses_ca_transactions_meta) %>
+              <%= render_analyses_chart(
+                    :ca_transactions_timeline,
+                    chart_id: "analyses-chart-ca-transactions",
+                    extra_class: "analyses-chart--fill analyses-chart--timeline",
+                    aria_label: "Évolution du CA encaissé et des transactions par jour"
+                  ) %>
+            <% end %>
+          <% end %>
+        </div>
+      <% elsif show_channels %>
+        <div class="col-12">
           <%= analyses_chart_card do %>
-            <%= analyses_chart_heading(
-                  "CA & transactions",
-                  meta: analyses_ca_mode_lignes? ? "CA = lignes · Transactions = lignes" : "CA = encaissements · Transactions = lignes"
-                ) %>
+            <%= analyses_chart_heading("Boutique & e-shop (CA €)", meta: analyses_ca_channels_meta) %>
             <%= render_analyses_chart(
-                  :ca_transactions_timeline,
-                  chart_id: "analyses-chart-ca-transactions",
+                  :ca_channels_timeline,
+                  chart_id: "analyses-chart-ca-channels",
                   extra_class: "analyses-chart--fill analyses-chart--timeline",
-                  aria_label: "Évolution du CA encaissé et des transactions par jour"
+                  aria_label: "Évolution du CA boutique et e-shop"
                 ) %>
           <% end %>
         </div>
       <% else %>
         <div class="col-12">
           <%= analyses_chart_card do %>
-            <%= analyses_chart_heading(
-                  "CA & transactions",
-                  meta: analyses_ca_mode_lignes? ? "CA = lignes · Transactions = lignes" : "CA = encaissements · Transactions = lignes"
-                ) %>
+            <%= analyses_chart_heading("CA & transactions", meta: analyses_ca_transactions_meta) %>
             <%= render_analyses_chart(
                   :ca_transactions_timeline,
                   chart_id: "analyses-chart-ca-transactions",
@@ -48,12 +66,12 @@
 
     <% if show_channels %>
       <%= analyses_chart_card do %>
-        <%= analyses_chart_heading("Boutique & e-shop (CA €)") %>
+        <%= analyses_chart_heading("CA & transactions", meta: analyses_ca_transactions_meta) %>
         <%= render_analyses_chart(
-              :ca_channels_timeline,
-              chart_id: "analyses-chart-ca-channels",
+              :ca_transactions_timeline,
+              chart_id: "analyses-chart-ca-transactions",
               extra_class: "analyses-chart--fill analyses-chart--timeline",
-              aria_label: "Évolution du CA boutique et e-shop"
+              aria_label: "Évolution du CA encaissé et des transactions par jour"
             ) %>
       <% end %>
     <% end %>
@@ -62,7 +80,7 @@
       <% if show_tx_doughnut %>
         <div class="col-12 col-lg-6 min-w-0">
           <%= analyses_chart_card(extra_class: "analyses-chart-card--flush-center") do %>
-            <%= analyses_chart_heading("Location / vente", meta: "Transactions · lignes") %>
+            <%= analyses_chart_heading("Location / vente", meta: "Quantités articles · Transactions (€)") %>
             <div class="flex-grow-1 d-flex align-items-center w-100">
               <%= render "admin/analyses/locvente_twin_doughnuts",
                     euro_key: :transactions_euro_doughnut,

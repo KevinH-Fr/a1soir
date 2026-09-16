@@ -78,6 +78,12 @@ begin
       type_locvente = types_commande.sample(random: rng)
       articles = build_articles.call(type_locvente)
       montant = articles.sum { |a| a[:total] }
+      # ~1 commande sur 4 : paiement partiel pour écart CA / transactions.
+      paye = if rng.rand < 0.25
+               [(montant * rng.rand(0.4..0.75)).round, 10].max
+             else
+               montant
+             end
 
       Seeds::Helpers.upsert_demo_commande!(
         nom: format("Volume boutique J-%03d #%d", days_ago, slot + 1),
@@ -88,7 +94,7 @@ begin
         statutarticles: statuts.sample(random: rng),
         articles: articles,
         paiements: [
-          { typepaiement: "prix", montant: montant, moyen: moyens.sample(random: rng) }
+          { typepaiement: "prix", montant: paye, moyen: moyens.sample(random: rng) }
         ]
       )
       boutique_count += 1

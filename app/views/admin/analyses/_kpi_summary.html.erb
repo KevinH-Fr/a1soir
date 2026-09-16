@@ -17,7 +17,7 @@
         value: @nbTotal,
         trend_metric: :commandes,
         hint: "#{@nbNonRetire} en cours · #{@nbDevisPeriode} devis",
-        hint2: (panier ? "Panier moyenne #{analyses_donut_amount_label(panier)} €" : nil) %>
+        hint2: (panier ? "Panier moyen #{analyses_donut_amount_label(panier)} €" : nil) %>
 
   <%= render "kpi_card",
         title: "Articles",

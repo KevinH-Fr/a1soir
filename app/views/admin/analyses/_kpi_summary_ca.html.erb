@@ -2,6 +2,7 @@
 <% panier = analyses_ca_panier_moyen %>
 <% art_par_cmd = analyses_articles_par_commande %>
 <% remb = analyses_remboursements_eshop %>
+<% eshop = analyses_eshop_counts %>
 
 <div class="row row-cols-2 row-cols-lg-4 g-2 g-sm-3">
   <%= render "kpi_card",
@@ -16,23 +17,23 @@
         title: "Transactions TTC",
         value: "#{analyses_donut_amount_label(@totalTransactions)} €",
         trend_metric: :transactions,
-        hint: "Loc #{analyses_donut_amount_label(@totalTransactionsLoc)} €",
+        hint: "Location #{analyses_donut_amount_label(@totalTransactionsLoc)} €",
         hint2: "Vente #{analyses_donut_amount_label(@totalTransactionsVente)} €" %>
 
   <%= render "kpi_card",
         title: "Commandes",
         value: @nbTotal,
         trend_metric: :commandes,
-        hint: [
-          (panier ? "Panier moyenne #{analyses_donut_amount_label(panier)} €" : nil),
-          (art_par_cmd ? "#{art_par_cmd} articles / cmd" : nil)
-        ].compact.join(" · ").presence,
-        hint2: ("#{@nbDevisPeriode} devis" if @nbDevisPeriode.to_i.positive?) %>
+        hint: (panier ? "Panier moyen #{analyses_donut_amount_label(panier)} €" : nil),
+        hint2: [
+          (art_par_cmd ? "#{art_par_cmd} articles / commande" : nil),
+          ("#{@nbDevisPeriode} devis" if @nbDevisPeriode.to_i.positive?)
+        ].compact.join(" · ").presence %>
 
   <%= render "kpi_card",
         title: "E-shop",
         value: "#{analyses_donut_amount_label(@totalPrixCaStripe)} €",
         trend_metric: :stripe,
-        hint: "E-shop net",
+        hint: "#{eshop[:commandes]} commandes · #{eshop[:articles]} articles",
         hint2: (remb.positive? ? "Remb. #{analyses_donut_amount_label(remb)} €" : "Sans remboursement") %>
 </div>

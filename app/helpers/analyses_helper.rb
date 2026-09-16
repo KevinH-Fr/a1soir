@@ -272,7 +272,7 @@ module AnalysesHelper
     return "—" unless top
 
     name = top[:produit]&.nom.presence || "Produit ##{top[:produit_id]}"
-    truncate(name, length: 28)
+    truncate(name, length: 36)
   end
 
   # Part des quantités concentrée sur le top 3 (nil si pas de volume).
@@ -326,16 +326,53 @@ module AnalysesHelper
     }
   end
 
+  def analyses_ca_transactions_meta
+    ca = @totalPrixCa.to_d
+    tx = @totalTransactions.to_d
+    parts = [
+      "CA #{analyses_donut_amount_label(ca)} €",
+      "Transactions #{analyses_donut_amount_label(tx)} €"
+    ]
+    if tx.positive?
+      gap = (tx - ca).round
+      parts << "Écart #{analyses_donut_amount_label(gap)} €" if gap != 0
+    end
+    parts.join(" · ")
+  end
+
+  def analyses_ca_channels_meta
+    boutique = @totalPrixCaBoutique.to_d
+    eshop = @totalPrixCaStripe.to_d
+    total = boutique + eshop
+    return "Aucun CA sur la période" if total <= 0
+
+    b_pct = ((boutique / total) * 100).round
+    e_pct = ((eshop / total) * 100).round
+    [
+      "Total #{analyses_donut_amount_label(total)} €",
+      "Boutique #{analyses_donut_amount_label(boutique)} € (#{b_pct} %)",
+      "E-shop #{analyses_donut_amount_label(eshop)} € (#{e_pct} %)"
+    ].join(" · ")
+  end
+
   def analyses_remboursements_eshop
     @totalRemboursementsEshop.to_d
   end
 
-  # Lignes articles (boutique + Stripe) / commande — nil si aucune commande.
+  def analyses_eshop_counts
+    items = @stripePaymentItemsFiltres || StripePaymentItem.none
+    {
+      commandes: (@commandesFiltres || Commande.none).where(eshop: true).count,
+      articles: items.sum(:quantity).to_i
+    }
+  end
+
+  # Articles (somme des quantités) / commande — nil si aucune commande.
   def analyses_articles_par_commande
     return nil if @nbTotal.blank? || @nbTotal.to_i.zero?
 
     articles = @nbTotalArticles
-    articles = analyses_line_metrics.lignes_count if articles.nil?
+    articles = analyses_line_metrics.quantites if articles.nil?
     (articles.to_d / @nbTotal.to_d).round(1)
   end
 

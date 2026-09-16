@@ -39,10 +39,25 @@ Seeds::Helpers.upsert_demo_commande!(
     { produit: robe_cocktail, locvente: "location", prix: 60, total: 60 },
     { produit: costume, locvente: "vente", prix: 90, total: 90 }
   ],
+  # Lignes 150 €, encaissé 90 € → écart visible CA vs transactions.
   paiements: [
-    { typepaiement: "prix", montant: 80, moyen: "carte bleue" },
-    { typepaiement: "prix", montant: 70, moyen: "espèces" }
+    { typepaiement: "prix", montant: 90, moyen: "carte bleue" }
   ]
+)
+
+# Lignes 200 € sans encaissement → transactions sans CA.
+Seeds::Helpers.upsert_demo_commande!(
+  nom: "Commande seed non soldée",
+  client: client_martin,
+  profile: profile_paul,
+  days_ago: offsets["Commande seed non soldée"],
+  type_locvente: "vente",
+  statutarticles: "non-retiré",
+  articles: [
+    { produit: costume, locvente: "vente", prix: 120, total: 120 },
+    { produit: robe_cocktail, locvente: "vente", prix: 80, total: 80 }
+  ],
+  paiements: []
 )
 
 Seeds::Helpers.upsert_demo_commande!(
@@ -337,8 +352,7 @@ Seeds::Helpers.upsert_demo_commande!(
     { produit: costume, locvente: "vente", prix: 120, total: 120 }
   ],
   paiements: [
-    { typepaiement: "prix", montant: 100, moyen: "carte bleue" },
-    { typepaiement: "prix", montant: 90, moyen: "espèces" }
+    { typepaiement: "prix", montant: 100, moyen: "carte bleue" }
   ]
 )
 

@@ -117,7 +117,14 @@
   font-weight: 600;
 }
 
+.analyses-nav .analyses-tone__label {
+  margin-bottom: 0.2rem;
+}
+
 .analyses-nav__hint {
+  margin-top: 0.15rem;
+  font-size: 0.7rem;
+  line-height: 1.25;
   font-weight: 400;
   color: var(--bs-secondary-color);
   opacity: 0.9;
@@ -132,6 +139,13 @@
 .analyses-heading__icon {
   width: 2.75rem;
   height: 2.75rem;
+}
+
+.analyses-heading__subtitle {
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: var(--bs-secondary-color);
 }
 
 /* Bandeau de contexte : défilement horizontal sans barre visible. */
@@ -591,8 +605,8 @@
 }
 
 .analyses-chart-heading__meta {
-  margin-top: 0.15rem;
-  font-size: 0.7rem;
+  margin-top: 0.35rem;
+  font-size: 0.65rem;
   font-weight: 500;
   line-height: 1.3;
   color: #94a3b8;
@@ -1015,22 +1029,80 @@
 }
 
 .analyses-catalog-top__rank {
-  width: 2.5rem;
+  width: 2rem;
   text-align: center;
 }
 
-.analyses-catalog-top__rank-badge {
+.analyses-catalog-top__rank-num {
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--bs-secondary-color);
+}
+
+.analyses-catalog-top__col-split {
+  min-width: 10rem;
+  width: 22%;
+}
+
+.analyses-catalog-top__split-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+
+.analyses-catalog-top__swatch {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+.analyses-catalog-top__swatch--loc {
+  background-color: rgb(176, 184, 196);
+}
+
+.analyses-catalog-top__swatch--vente {
+  background-color: rgb(74, 111, 165);
+}
+
+.analyses-catalog-top__stack-track {
+  display: flex;
+  width: 100%;
+  min-width: 7rem;
+  height: 1.35rem;
+  border-radius: 0.3rem;
+  overflow: hidden;
+  background-color: rgba(15, 23, 42, 0.06);
+}
+
+.analyses-catalog-top__stack-seg {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 1.5rem;
-  height: 1.5rem;
-  padding: 0 0.35rem;
-  border-radius: 999px;
+  height: 100%;
+  min-width: 0;
+  padding: 0 0.25rem;
   font-size: 0.7rem;
-  font-weight: 700;
-  color: var(--analyses-tone, #b8860b);
-  background-color: rgba(var(--analyses-tone-rgb, 184, 134, 11), 0.12);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: #fff;
+  overflow: hidden;
+}
+
+.analyses-catalog-top__stack-seg--loc {
+  background-color: rgb(176, 184, 196);
+  color: #3f4650;
+}
+
+.analyses-catalog-top__stack-seg--vente {
+  background-color: rgb(74, 111, 165);
+}
+
+.analyses-catalog-top__ca {
+  font-weight: 600;
 }
 
 .analyses-catalog-top__product {

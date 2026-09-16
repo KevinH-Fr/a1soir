@@ -105,6 +105,8 @@ RSpec.describe Admin::AnalysesController, type: :controller do
 
         expect(response).to have_http_status(:ok)
         expect(assigns(:totalTransactionsLoc)).to eq(expected[:total_transactions_loc])
+        expect(assigns(:totalTransactions)).to eq(expected[:total_transactions])
+        expect(assigns(:totalPrixCa)).to be < assigns(:totalTransactions)
         expect(response.body).to include("analyses-chart-ca-transactions")
         expect(response.body).to include("analyses-chart-ca_payment_modes_doughnut")
       end
@@ -162,8 +164,8 @@ RSpec.describe Admin::AnalysesController, type: :controller do
         get :index, params: period.merge(filter_locvente: "location", vue: "synthese")
 
         expect(assigns(:nbVente)).to eq(0)
-        expect(assigns(:nbLoc)).to eq(2)
-        expect(assigns(:nbTotalArticles)).to eq(2)
+        expect(assigns(:nbLoc)).to eq(3)
+        expect(assigns(:nbTotalArticles)).to eq(3)
         expect(assigns(:total_stripe_eur)).to eq(0.to_d)
       end
 

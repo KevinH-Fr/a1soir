@@ -22,7 +22,7 @@ RSpec.describe Analyses::ChartPayloads do
       :@totalTransactionsLoc => 100.to_d,
       :@totalTransactionsVente => 50.to_d,
       :@totalTransactions => 150.to_d,
-      :@groupedByDateTransactions => { "05/03/2026" => 120 },
+      :@groupedByDateTransactions => { "05/03/2026" => 200, "06/03/2026" => 0 },
       :@groupedByDateCaBoutique => { "05/03/2026" => 100, "06/03/2026" => 50 },
       :@groupedByDateCaEshop => { "05/03/2026" => 50, "06/03/2026" => 30 },
       :@stats_par_profile => [
@@ -69,18 +69,21 @@ RSpec.describe Analyses::ChartPayloads do
     expect(ca[:label]).to eq("CA encaissé (€)")
     expect(ca[:data]).to eq([150, 80])
     expect(tx[:label]).to eq("Transactions (€)")
-    expect(tx[:data]).to eq([120, 0])
+    expect(tx[:data]).to eq([200, 0])
     expect(config[:options][:scales][:y1]).to be_nil
   end
 
   it "builds boutique / e-shop channels timeline" do
     config = payloads.build(:ca_channels_timeline)
     expect(config[:type]).to eq("line")
+    expect(config[:_tooltip]).to eq("channels_money")
     boutique, eshop = config[:data][:datasets]
-    expect(boutique[:label]).to eq("Boutique")
+    expect(boutique[:label]).to eq("Boutique (€)")
     expect(boutique[:data]).to eq([100, 50])
-    expect(eshop[:label]).to eq("E-shop")
+    expect(eshop[:label]).to eq("E-shop (€)")
     expect(eshop[:data]).to eq([50, 30])
+    expect(eshop[:borderDash]).to eq([5, 4])
+    expect(config[:options][:scales][:y][:stacked]).to be_nil
   end
 
   it "builds CA ratios timeline with panier moyen and articles per commande" do
@@ -172,7 +175,7 @@ RSpec.describe Analyses::ChartPayloads do
     expect(config[:data][:labels]).to eq(%w[Location Vente])
     expect(config[:data][:datasets].size).to eq(1)
     expect(config[:data][:datasets].first[:data]).to eq([2, 1])
-    expect(config[:_centerText]).to include("3", "articles")
+    expect(config[:_centerText]).to include("3", "qté articles")
   end
 
   it "builds articles loc/vente CA doughnut" do

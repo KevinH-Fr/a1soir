@@ -22,6 +22,7 @@ module Seeds
     # Jours avant aujourd'hui (Hors période / Hors période seed > 30 → hors fenêtre par défaut).
     DEMO_COMMANDE_OFFSETS = {
       "Commande seed boutique mixte" => 2,
+      "Commande seed non soldée" => 3,
       "Commande seed location Paul" => 9,
       "Commande seed vente Marie" => 6,
       "Commande seed eshop stripe" => 4,

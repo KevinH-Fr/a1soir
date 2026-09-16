@@ -24,7 +24,7 @@
       <% if show_locvente %>
         <div class="<%= locvente_col %>">
           <%= analyses_chart_card(extra_class: "analyses-chart-card--flush-center") do %>
-            <%= analyses_chart_heading("Location / vente") %>
+            <%= analyses_chart_heading("Location / vente", meta: "Quantités articles · CA lignes") %>
             <%= render "admin/analyses/locvente_twin_doughnuts",
                   euro_key: :articles_locvente_ca_doughnut,
                   euro_title: "CA (€)",

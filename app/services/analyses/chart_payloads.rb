@@ -15,6 +15,10 @@ module Analyses
     SERIES_COMMANDES = "rgb(168, 148, 196)".freeze  # commandes (lavande) — tranche CA bleu / articles sauge
     SERIES_ARTICLES = "rgb(122, 168, 148)".freeze   # articles (sauge)
     SERIES_ESHOP = "rgb(224, 124, 64)".freeze       # canal e-shop / Stripe — orange, distinct du bleu boutique
+    SERIES_TOTAL = "rgb(71, 85, 105)".freeze        # total multi-séries (slate)
+    # Catalogue type / catégorie — distinct du gris+bleu loc/vente à côté.
+    SERIES_CATALOG_QTY = "rgb(168, 148, 196)".freeze  # lavande
+    SERIES_CATALOG_CA = "rgb(196, 148, 100)".freeze   # ambre doux
 
     # Modes de paiement : bleu / vert / gris / jaune / orange Stripe — pastels adoucis.
     PAYMENT_LABELS = %w[CB Espèces Chèque Virement Stripe].freeze
@@ -182,7 +186,7 @@ module Analyses
       }
     end
 
-    # CA encaissé + transactions (€) — même axe, deux courbes.
+    # CA encaissé + transactions (€) — deux courbes, même axe.
     def ca_transactions_timeline
       ca_hash = h.instance_variable_get(:@groupedByDateCa) || {}
       tx_hash = h.instance_variable_get(:@groupedByDateTransactions) || {}
@@ -223,7 +227,7 @@ module Analyses
       }
     end
 
-    # Boutique vs e-shop (€) — même axe, deux courbes.
+    # Boutique vs e-shop (€) — deux courbes, même axe.
     def ca_channels_timeline
       boutique_hash = h.instance_variable_get(:@groupedByDateCaBoutique) || {}
       eshop_hash = h.instance_variable_get(:@groupedByDateCaEshop) || {}
@@ -235,13 +239,13 @@ module Analyses
           labels: labels,
           datasets: [
             line_dataset(
-              "Boutique",
+              "Boutique (€)",
               values_for_labels(labels, boutique_hash, integer: true),
               SERIES_CA,
               fill: true
             ),
             line_dataset(
-              "E-shop",
+              "E-shop (€)",
               values_for_labels(labels, eshop_hash, integer: true),
               SERIES_ESHOP,
               fill: false,
@@ -257,10 +261,10 @@ module Analyses
           plugins: { legend: legend_options },
           scales: {
             x: axis_x,
-            y: axis_y
+            y: axis_y(title: "CA (€)")
           }
         },
-        _tooltip: "money"
+        _tooltip: "channels_money"
       }
     end
 
@@ -343,7 +347,7 @@ module Analyses
         tooltip: "locvente_qty",
         center_text: [
           h.instance_variable_get(:@nbTotalArticles).to_s,
-          "articles"
+          "qté articles"
         ]
       )
     end
@@ -595,8 +599,8 @@ module Analyses
               label: "Quantité",
               data: quantities,
               xAxisID: "x",
-              backgroundColor: rgba_fill(SERIES_QTY, 0.72),
-              hoverBackgroundColor: rgba_fill(SERIES_QTY, 0.88),
+              backgroundColor: rgba_fill(SERIES_CATALOG_QTY, 0.72),
+              hoverBackgroundColor: rgba_fill(SERIES_CATALOG_QTY, 0.88),
               borderRadius: 5,
               borderSkipped: false,
               borderWidth: 0,
@@ -607,8 +611,8 @@ module Analyses
               label: "CA (€)",
               data: ca_values,
               xAxisID: "x1",
-              backgroundColor: rgba_fill(SERIES_CA, 0.72),
-              hoverBackgroundColor: rgba_fill(SERIES_CA, 0.88),
+              backgroundColor: rgba_fill(SERIES_CATALOG_CA, 0.72),
+              hoverBackgroundColor: rgba_fill(SERIES_CATALOG_CA, 0.88),
               borderRadius: 5,
               borderSkipped: false,
               borderWidth: 0,
@@ -634,7 +638,7 @@ module Analyses
             x: {
               position: "top",
               beginAtZero: true,
-              ticks: { precision: 0, color: SERIES_QTY, font: { size: 10 } },
+              ticks: { precision: 0, color: SERIES_CATALOG_QTY, font: { size: 10 } },
               grid: { color: GRID_COLOR, drawBorder: false },
               border: { display: false },
               title: {
@@ -647,7 +651,7 @@ module Analyses
             x1: {
               position: "bottom",
               beginAtZero: true,
-              ticks: { precision: 0, color: SERIES_CA, font: { size: 10 } },
+              ticks: { precision: 0, color: SERIES_CATALOG_CA, font: { size: 10 } },
               grid: { drawOnChartArea: false },
               border: { display: false },
               title: {

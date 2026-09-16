@@ -121,14 +121,7 @@ module AnalysesDashboardDataset
         created_at: t_in_period,
         updated_at: t_in_period
       )
-      PaiementRecu.create!(
-        commande: commande_boutique,
-        typepaiement: "prix",
-        montant: 70,
-        moyen: "espèces",
-        created_at: t_in_period,
-        updated_at: t_in_period
-      )
+      # Volontairement pas de 2e paiement : lignes 150 €, encaissé 80 € → écart CA vs transactions.
 
       commande_boutique_same_day = Commande.create!(
         client: client,
@@ -198,7 +191,7 @@ module AnalysesDashboardDataset
       Article.create!(
         commande: commande_location_a,
         produit: produit_robe,
-        quantite: 1,
+        quantite: 2,
         prix: 40,
         total: 40,
         locvente: "location",
@@ -272,16 +265,18 @@ module AnalysesDashboardDataset
     end
 
     # Totaux attendus pour la période fixe (hors profil admin des charts).
-    # nb_total_articles = 5 lignes boutique + 2 StripePaymentItems e-shop.
+    # nb_total_articles = sommes des qté : boutique (1+1+1+1+2) + Stripe (1+1) = 8.
+    # CA (295) < transactions (365) : Boutique A partiellement encaissée (lignes 150, payé 80).
     def expected_baseline
       {
         nb_total_commandes: 5,
-        nb_total_articles: 7,
+        nb_total_articles: 8,
         total_transactions_loc: 140.to_d,
+        total_transactions: 365.to_d,
         total_stripe_eur: 80.to_d,
-        total_prix_ca: 365.to_d,
+        total_prix_ca: 295.to_d,
         total_prix_ca_cb: 110.to_d,
-        total_prix_ca_especes: 70.to_d
+        total_prix_ca_especes: 0.to_d
       }
     end
   end

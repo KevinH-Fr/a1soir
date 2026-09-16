@@ -31,16 +31,26 @@ module Analyses
       @vente_lignes_count ||= boutique_articles.where(locvente: "vente").count + stripe_items.count
     end
 
+    # Nb d'articles = somme des quantités (pas le nombre de lignes).
+    def quantites
+      @quantites ||= boutique_articles.sum(:quantite).to_i + stripe_items.sum(:quantity).to_i
+    end
+
+    def loc_quantites
+      @loc_quantites ||= boutique_articles.where(locvente: "location").sum(:quantite).to_i
+    end
+
+    def vente_quantites
+      @vente_quantites ||= boutique_articles.where(locvente: "vente").sum(:quantite).to_i +
+                           stripe_items.sum(:quantity).to_i
+    end
+
     def loc_ca_lignes
       @loc_ca_lignes ||= boutique_articles.where(locvente: "location").sum(:prix).to_d
     end
 
     def vente_ca_lignes
       @vente_ca_lignes ||= boutique_articles.where(locvente: "vente").sum(:prix).to_d + stripe_ca_lignes
-    end
-
-    def quantites
-      @quantites ||= boutique_articles.sum(:quantite).to_i + stripe_items.sum(:quantity).to_i
     end
 
     def ca_lignes

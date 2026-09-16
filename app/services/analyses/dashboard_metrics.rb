@@ -103,9 +103,10 @@ module Analyses
     end
 
     def assign_article_metrics
-      ivar_set(:nbTotalArticles, line_metrics.lignes_count)
-      ivar_set(:nbLoc, line_metrics.loc_lignes_count)
-      ivar_set(:nbVente, line_metrics.vente_lignes_count)
+      # Nb d'articles = sommes des quantités (ligne × qté), pas le count de lignes.
+      ivar_set(:nbTotalArticles, line_metrics.quantites)
+      ivar_set(:nbLoc, line_metrics.loc_quantites)
+      ivar_set(:nbVente, line_metrics.vente_quantites)
       ivar_set(:caLocArticles, line_metrics.loc_ca_lignes)
       ivar_set(:caVenteArticles, line_metrics.vente_ca_lignes)
 
@@ -281,7 +282,7 @@ module Analyses
       LineMetrics.new(
         articles_scope: articles_filtres.where(commande_id: commandes_ids),
         stripe_items_scope: stripe_scope
-      ).lignes_count
+      ).quantites
     end
 
     def profile_ca_by_day(commandes_ids, datedebut, datefin)
