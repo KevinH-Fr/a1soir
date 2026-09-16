@@ -1217,3 +1217,82 @@
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
+
+.analyses-equipe-table__metric {
+  min-width: 5.5rem;
+  width: 7.5rem;
+}
+
+.analyses-equipe-table__empty {
+  display: block;
+  text-align: center;
+  color: var(--bs-secondary-color);
+  font-variant-numeric: tabular-nums;
+}
+
+.analyses-equipe-bar {
+  --equipe-bar-color: var(--analyses-tone, #b84a6b);
+  --equipe-bar-width: 0%;
+  position: relative;
+  display: block;
+  height: 1.55rem;
+  border-radius: 0.35rem;
+  background-color: rgba(15, 23, 42, 0.045);
+  overflow: hidden;
+}
+
+.analyses-equipe-bar__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  background-color: var(--equipe-bar-color);
+  opacity: 0.28;
+  border-radius: inherit;
+  pointer-events: none;
+  animation: analyses-equipe-bar-fill 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.analyses-equipe-table__table tbody tr:nth-child(1) .analyses-equipe-bar__fill { animation-delay: 0.02s; }
+.analyses-equipe-table__table tbody tr:nth-child(2) .analyses-equipe-bar__fill { animation-delay: 0.07s; }
+.analyses-equipe-table__table tbody tr:nth-child(3) .analyses-equipe-bar__fill { animation-delay: 0.12s; }
+.analyses-equipe-table__table tbody tr:nth-child(4) .analyses-equipe-bar__fill { animation-delay: 0.17s; }
+.analyses-equipe-table__table tbody tr:nth-child(5) .analyses-equipe-bar__fill { animation-delay: 0.22s; }
+.analyses-equipe-table__table tbody tr:nth-child(6) .analyses-equipe-bar__fill { animation-delay: 0.27s; }
+.analyses-equipe-table__table tbody tr:nth-child(7) .analyses-equipe-bar__fill { animation-delay: 0.32s; }
+.analyses-equipe-table__table tbody tr:nth-child(8) .analyses-equipe-bar__fill { animation-delay: 0.37s; }
+.analyses-equipe-table__table tbody tr:nth-child(n+9) .analyses-equipe-bar__fill { animation-delay: 0.42s; }
+
+@keyframes analyses-equipe-bar-fill {
+  to { width: var(--equipe-bar-width); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .analyses-equipe-bar__fill {
+    animation: none;
+    width: var(--equipe-bar-width);
+  }
+}
+
+.analyses-equipe-bar__label {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  padding: 0 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: #1e293b;
+  white-space: nowrap;
+}
+
+@media (max-width: 991.98px) {
+  .analyses-equipe-table__metric {
+    min-width: 4.75rem;
+    width: 6.25rem;
+  }
+}
+

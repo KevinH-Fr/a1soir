@@ -4,9 +4,8 @@
 
 <% if analyses_visibility_show?(:profiles_section) %>
   <% header_notice = analyses_visibility_show?(:profiles_comparison) ? nil : "Un seul vendeur sélectionné — comparaison multi-vendeurs masquée." %>
-  <% profile_count = (@stats_par_profile || []).size %>
   <% show_comparison = analyses_visibility_show?(:profiles_comparison) %>
-  <% show_timeline = show_comparison || (@stats_par_profile || []).any? { |r| r[:ca_by_day].present? } %>
+  <% show_timeline = (@stats_par_profile || []).any? { |r| r[:ca_by_day].present? } %>
 
   <% if header_notice.present? %>
     <%= analyses_info_alert(header_notice, extra_class: "mb-3") %>
@@ -18,21 +17,16 @@
         <%= analyses_chart_card do %>
           <%= analyses_chart_heading(show_comparison ? "CA par vendeur" : "CA vendeur") %>
           <%= render_analyses_chart(
-                :profiles_grouped,
-                chart_id: "analyses-chart-profiles-bars",
-                extra_class: "analyses-chart--fill analyses-chart--equipe-bars",
-                box_style: "--analyses-chart-height: #{analyses_equipe_bars_height_rem(profile_count)}rem",
-                aria_label: show_comparison ? "CA par vendeur" : "CA du vendeur"
+                :profiles_ca_doughnut,
+                chart_id: "analyses-chart-profiles-ca-doughnut",
+                extra_class: "analyses-chart--compact",
+                aria_label: show_comparison ? "Répartition du CA par vendeur" : "CA du vendeur"
               ) %>
         <% end %>
       </div>
       <div class="col-lg-7 min-w-0">
         <%= analyses_chart_card do %>
-          <% ranking_count = (@stats_par_profile || []).size %>
-          <%= analyses_chart_heading(
-                "Classement vendeurs",
-                meta: "#{ranking_count} profil#{ranking_count > 1 ? "s" : ""}"
-              ) %>
+          <%= analyses_chart_heading("Classement vendeurs") %>
           <%= render "equipe_ranking_table" %>
         <% end %>
       </div>
@@ -40,11 +34,9 @@
 
     <% if show_timeline %>
       <%= analyses_chart_card do %>
-        <% if show_comparison %>
-          <%= analyses_chart_heading("CA par vendeur dans le temps", meta: "Cliquer une légende pour masquer une courbe") %>
-        <% else %>
-          <%= analyses_chart_heading("CA dans le temps") %>
-        <% end %>
+        <%= analyses_chart_heading(
+              show_comparison ? "Évolution du CA par vendeur" : "Évolution du CA"
+            ) %>
         <%= render_analyses_chart(
               :profiles_ca_timeline,
               chart_id: "analyses-chart-profiles-timeline",

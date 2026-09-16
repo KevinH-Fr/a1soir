@@ -1,6 +1,6 @@
 <% top = @catalog_top_products&.first %>
 <% top3_share = analyses_catalog_top3_share_pct %>
-<div class="row row-cols-2 row-cols-lg-4 g-2 g-sm-3">
+<div class="row row-cols-1 row-cols-lg-4 g-2 g-sm-3">
   <%= render "kpi_card",
         title: "Quantités",
         value: analyses_catalog_kpi_quantite,

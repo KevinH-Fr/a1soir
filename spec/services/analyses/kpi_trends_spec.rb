@@ -59,5 +59,36 @@ RSpec.describe Analyses::KpiTrends do
       expect(result[:trends][:top_vendeur_ca][:signed_pct]).to eq(50.0)
       expect(result[:trends]).not_to have_key(:devis)
     end
+
+    it "computes equipe trends including top vendeur CA" do
+      current = {
+        equipe_ca: 300,
+        equipe_commandes: 6,
+        equipe_devis: 4,
+        top_vendeur_ca: 180,
+        top_vendeur_profile_id: 7
+      }
+      reference = {
+        equipe_ca: 200,
+        equipe_commandes: 4,
+        equipe_devis: 2,
+        top_vendeur_ca: 120
+      }
+
+      expect(Analyses::KpiSnapshot).to receive(:call).once do |params, metrics:|
+        expect(params[:top_vendeur_profile_id]).to eq(7)
+        expect(metrics).to eq(%i[equipe_ca equipe_commandes equipe_devis top_vendeur_ca])
+        reference
+      end
+
+      result = described_class.call(
+        filter_params: { debut: "2026-03-10", fin: "2026-03-11" },
+        vue: "equipe",
+        current: current
+      )
+
+      expect(result[:trends][:equipe_devis][:signed_pct]).to eq(100.0)
+      expect(result[:trends][:top_vendeur_ca][:signed_pct]).to eq(50.0)
+    end
   end
 end

@@ -1,5 +1,12 @@
 <% stats = (@stats_par_profile || []).sort_by { |r| [-r[:ca].to_d, -r[:commandes].to_i] } %>
 <% total_ca = stats.sum { |r| r[:ca].to_d } %>
+<% total_cmd = stats.sum { |r| r[:commandes].to_i } %>
+<% total_devis = stats.sum { |r| r[:devis].to_i } %>
+<% paniers = stats.filter_map { |r|
+     cmd = r[:commandes].to_i
+     cmd.positive? ? (r[:ca].to_d / cmd) : nil
+   } %>
+<% max_panier = paniers.max.to_d %>
 
 <div class="analyses-equipe-table">
   <% if stats.blank? %>
@@ -11,11 +18,12 @@
           <tr>
             <th scope="col" class="analyses-equipe-table__rank">#</th>
             <th scope="col">Vendeur</th>
-            <th scope="col" class="text-end">Cmd</th>
-            <th scope="col" class="text-end">CA</th>
-            <th scope="col" class="text-end">Panier</th>
-            <th scope="col" class="text-end">Conv.</th>
-            <th scope="col" class="text-end">Part</th>
+            <th scope="col" class="analyses-equipe-table__metric">Cmd</th>
+            <th scope="col" class="analyses-equipe-table__metric">Devis</th>
+            <th scope="col" class="analyses-equipe-table__metric">CA</th>
+            <th scope="col" class="analyses-equipe-table__metric">Panier</th>
+            <th scope="col" class="analyses-equipe-table__metric">Conv.</th>
+            <th scope="col" class="analyses-equipe-table__metric">Part</th>
           </tr>
         </thead>
         <tbody>
@@ -23,40 +31,79 @@
             <% commandes = row[:commandes].to_i %>
             <% devis = row[:devis].to_i %>
             <% ca = row[:ca].to_d %>
+            <% color = row[:couleur].presence || "rgb(184, 74, 107)" %>
             <% part = total_ca.positive? ? ((ca / total_ca) * 100) : 0 %>
             <% panier = commandes.positive? ? (ca / commandes) : nil %>
             <% conv_base = commandes + devis %>
             <% conv = conv_base.positive? ? ((commandes.to_d / conv_base) * 100) : nil %>
+            <% cmd_pct = total_cmd.positive? ? ((commandes.to_d / total_cmd) * 100) : 0 %>
+            <% devis_pct = total_devis.positive? ? ((devis.to_d / total_devis) * 100) : 0 %>
+            <% panier_pct = (panier && max_panier.positive?) ? ((panier / max_panier) * 100) : 0 %>
             <tr>
               <td class="analyses-equipe-table__rank">
                 <span class="analyses-equipe-table__rank-badge"><%= index + 1 %></span>
               </td>
               <td>
                 <span class="d-inline-flex align-items-center gap-2 min-w-0">
-                  <span class="analyses-equipe-table__dot" style="--equipe-dot: <%= row[:couleur].presence || "rgb(184, 74, 107)" %>"></span>
+                  <span class="analyses-equipe-table__dot" style="--equipe-dot: <%= color %>"></span>
                   <span class="fw-semibold text-truncate"><%= row[:profile] %></span>
                 </span>
               </td>
-              <td class="text-end analyses-equipe-table__num"><%= commandes %></td>
-              <td class="text-end analyses-equipe-table__num fw-semibold">
-                <%= number_to_currency(ca, unit: "€", format: "%n %u", precision: 0) %>
+              <td class="analyses-equipe-table__metric">
+                <%= analyses_equipe_share_bar(
+                      commandes.to_s,
+                      cmd_pct,
+                      color: color,
+                      title: "#{commandes} cmd · #{number_with_precision(cmd_pct, precision: 0)}% de l'équipe"
+                    ) %>
               </td>
-              <td class="text-end analyses-equipe-table__num">
+              <td class="analyses-equipe-table__metric">
+                <%= analyses_equipe_share_bar(
+                      devis.to_s,
+                      devis_pct,
+                      color: color,
+                      title: "#{devis} devis · #{number_with_precision(devis_pct, precision: 0)}% de l'équipe"
+                    ) %>
+              </td>
+              <td class="analyses-equipe-table__metric">
+                <%= analyses_equipe_share_bar(
+                      number_to_currency(ca, unit: "€", format: "%n %u", precision: 0),
+                      part,
+                      color: color,
+                      title: "#{number_to_currency(ca, unit: "€", format: "%n %u", precision: 0)} · #{number_with_precision(part, precision: 0)}% du CA"
+                    ) %>
+              </td>
+              <td class="analyses-equipe-table__metric">
                 <% if panier %>
-                  <%= number_to_currency(panier, unit: "€", format: "%n %u", precision: 0) %>
+                  <%= analyses_equipe_share_bar(
+                        number_to_currency(panier, unit: "€", format: "%n %u", precision: 0),
+                        panier_pct,
+                        color: color,
+                        title: "Panier moyen vs max équipe"
+                      ) %>
                 <% else %>
-                  —
+                  <span class="analyses-equipe-table__empty">—</span>
                 <% end %>
               </td>
-              <td class="text-end analyses-equipe-table__num">
+              <td class="analyses-equipe-table__metric">
                 <% if conv %>
-                  <%= number_with_precision(conv, precision: 0) %>%
+                  <%= analyses_equipe_share_bar(
+                        "#{number_with_precision(conv, precision: 0)}%",
+                        conv,
+                        color: color,
+                        title: "Conversion commandes / (cmd + devis)"
+                      ) %>
                 <% else %>
-                  —
+                  <span class="analyses-equipe-table__empty">—</span>
                 <% end %>
               </td>
-              <td class="text-end analyses-equipe-table__num">
-                <%= number_with_precision(part, precision: 0) %>%
+              <td class="analyses-equipe-table__metric">
+                <%= analyses_equipe_share_bar(
+                      "#{number_with_precision(part, precision: 0)}%",
+                      part,
+                      color: color,
+                      title: "Part du CA équipe"
+                    ) %>
               </td>
             </tr>
           <% end %>

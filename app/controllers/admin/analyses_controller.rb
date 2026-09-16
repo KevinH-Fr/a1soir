@@ -112,10 +112,13 @@ class Admin::AnalysesController < Admin::ApplicationController
       }
     when "equipe"
       stats = @stats_par_profile || []
+      top = stats.max_by { |r| r[:ca].to_d }
       {
         equipe_ca: stats.sum { |r| r[:ca].to_d },
         equipe_commandes: stats.sum { |r| r[:commandes].to_i },
-        equipe_devis: stats.sum { |r| r[:devis].to_i }
+        equipe_devis: stats.sum { |r| r[:devis].to_i },
+        top_vendeur_ca: top&.dig(:ca).to_d,
+        top_vendeur_profile_id: top&.dig(:profile_id)
       }
     else
       top = @synthese_top_profile

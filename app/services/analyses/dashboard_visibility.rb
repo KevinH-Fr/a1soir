@@ -80,9 +80,6 @@ module Analyses
       if dimension_pinned?(:locvente) && @vue == "catalogue"
         messages << { key: :filter_locvente, label: "Location / vente filtré — répartition loc/vente masquée." }
       end
-      if dimension_pinned?(:eshop) && @vue.in?(%w[synthese ca])
-        messages << { key: :filter_eshop, label: "Canal filtré — évolution boutique / e-shop masquée." }
-      end
       if dimension_pinned?(:profile) && @vue == "equipe"
         messages << { key: :filter_profile, label: "Vendeur filtré — comparaison multi-vendeurs masquée." }
       end

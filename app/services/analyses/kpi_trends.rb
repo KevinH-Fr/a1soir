@@ -6,7 +6,7 @@ module Analyses
       "synthese" => %i[ca commandes articles_lignes top_vendeur_ca],
       "ca" => %i[ca transactions commandes stripe],
       "catalogue" => %i[quantites ca_lignes produits],
-      "equipe" => %i[equipe_ca equipe_commandes equipe_devis]
+      "equipe" => %i[equipe_ca equipe_commandes equipe_devis top_vendeur_ca]
     }.freeze
 
     def self.call(filter_params:, vue:, current: nil)

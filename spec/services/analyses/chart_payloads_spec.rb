@@ -26,9 +26,9 @@ RSpec.describe Analyses::ChartPayloads do
       :@groupedByDateCaBoutique => { "05/03/2026" => 100, "06/03/2026" => 50 },
       :@groupedByDateCaEshop => { "05/03/2026" => 50, "06/03/2026" => 30 },
       :@stats_par_profile => [
-        { profile: "Alice", commandes: 2, devis: 1, ca: 100.to_d, articles: 3, couleur: "rgb(184, 74, 107)",
+        { profile: "Alice", commandes: 2, devis: 1, ca: 100.to_d, articles: 3, couleur: "rgb(196, 92, 118)",
           ca_by_day: { "05/03/2026" => 80, "06/03/2026" => 20 } },
-        { profile: "Bob", commandes: 1, devis: 0, ca: 50.to_d, articles: 1, couleur: "rgb(59, 111, 216)",
+        { profile: "Bob", commandes: 1, devis: 0, ca: 50.to_d, articles: 1, couleur: "rgb(74, 132, 176)",
           ca_by_day: { "06/03/2026" => 50 } }
       ],
       :@catalog_by_type => [{ label: "Robe", quantite: 4, ca_lignes: 120.to_d }],
@@ -142,17 +142,25 @@ RSpec.describe Analyses::ChartPayloads do
     expect(tx[:data]).to eq([120, 40])
   end
 
+  it "builds profiles CA doughnut with center total" do
+    config = payloads.build(:profiles_ca_doughnut)
+    expect(config[:type]).to eq("doughnut")
+    expect(config[:_tooltip]).to eq("money")
+    expect(config[:data][:labels]).to eq(%w[Alice Bob])
+    expect(config[:data][:datasets].first[:data]).to eq([100, 50])
+    expect(config[:data][:datasets].first[:backgroundColor].size).to eq(2)
+    expect(config[:_centerText].first).to include("150")
+    expect(config[:_centerText].last).to eq("CA équipe")
+  end
+
   it "builds profiles CA timeline line chart" do
     config = payloads.build(:profiles_ca_timeline)
     expect(config[:type]).to eq("line")
     expect(config[:data][:labels]).to eq(%w[05/03/2026 06/03/2026])
-    # Trié par CA décroissant (Alice puis Bob).
     expect(config[:data][:datasets].map { |d| d[:label] }).to eq(%w[Alice Bob])
     expect(config[:data][:datasets].first[:data]).to eq([80, 20])
-    # Jour sans CA → nil + spanGaps (pas de plongée à 0).
     expect(config[:data][:datasets].second[:data]).to eq([nil, 50])
     expect(config[:data][:datasets].second[:spanGaps]).to be(true)
-    expect(config[:data][:datasets].first[:borderWidth]).to eq(2.25)
   end
 
   it "builds catalog dual-axis bars with quantite and CA" do

@@ -171,6 +171,10 @@ function tooltipLabel(context, tooltipKind) {
     const name = context.chart?.config?.type === "doughnut"
       ? (sliceLabel || datasetLabel)
       : datasetLabel
+    if (context.chart?.config?.type === "doughnut") {
+      const pct = slicePercent(value, context.dataset?.data)
+      return name ? `${name}: ${formatEuro(value)} · ${pct}%` : `${formatEuro(value)} · ${pct}%`
+    }
     return name ? `${name}: ${formatEuro(value)}` : formatEuro(value)
   }
 
@@ -197,6 +201,7 @@ function buildConfig(raw) {
   const config = JSON.parse(JSON.stringify(raw))
   const tooltipKind = config._tooltip || "mixed"
   delete config._tooltip
+  delete config._grain
 
   config.options = config.options || {}
   config.options.plugins = config.options.plugins || {}

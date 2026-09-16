@@ -32,20 +32,20 @@ module Analyses
 
     LOC_VENTE_COLORS = [SLATE_MUTED, BLUE].freeze
 
-    # Pastels distincts (teintes espacées) pour lignes / barres multi-vendeurs.
+    # Teintes assez soutenues pour rester lisibles en courbes superposées.
     EQUIPE_PASTEL_COLORS = [
-      "rgb(214, 132, 154)", # rose
-      "rgb(122, 168, 196)", # bleu ciel
-      "rgb(142, 186, 148)", # vert sauge
-      "rgb(212, 168, 118)", # pêche
-      "rgb(168, 148, 196)", # lavande
-      "rgb(122, 186, 178)", # menthe
-      "rgb(196, 148, 132)", # terracotta doux
-      "rgb(148, 158, 204)", # pervenche
-      "rgb(196, 186, 122)", # beurre
-      "rgb(186, 148, 168)", # mauve
-      "rgb(132, 178, 186)", # bleu gris
-      "rgb(204, 158, 148)"  # corail pâle
+      "rgb(196, 92, 118)",  # rose
+      "rgb(74, 132, 176)",  # bleu
+      "rgb(74, 148, 110)",  # vert
+      "rgb(196, 132, 74)",  # ambre
+      "rgb(132, 108, 176)", # lavande
+      "rgb(64, 158, 148)",  # menthe
+      "rgb(176, 108, 92)",  # terracotta
+      "rgb(100, 116, 184)", # pervenche
+      "rgb(168, 148, 64)",  # olive
+      "rgb(168, 96, 140)",  # mauve
+      "rgb(80, 148, 164)",  # bleu gris
+      "rgb(184, 112, 104)"  # corail
     ].freeze
 
     GRID_COLOR = "rgba(15, 23, 42, 0.04)".freeze
@@ -71,6 +71,7 @@ module Analyses
       when :transactions_euro_doughnut then transactions_euro_doughnut
       when :profiles_grouped then profiles_grouped
       when :profiles_ca_transactions then profiles_ca_transactions
+      when :profiles_ca_doughnut then profiles_ca_doughnut
       when :profiles_ca_timeline then profiles_ca_timeline
       when :catalog_types_bars then catalog_qty_ca_bars(:type)
       when :catalog_categories_bars then catalog_qty_ca_bars(:categorie)
@@ -411,55 +412,40 @@ module Analyses
       }
     end
 
-    def profiles_ca_timeline
-      stats = (h.instance_variable_get(:@stats_par_profile) || []).sort_by { |r| -r[:ca].to_f }
-      labels = stats.flat_map { |row| (row[:ca_by_day] || {}).keys }
-                    .uniq
-                    .sort_by { |day| Date.strptime(day.to_s, "%d/%m/%Y") }
+    def profiles_ca_doughnut
+      stats = (h.instance_variable_get(:@stats_par_profile) || [])
+                .sort_by { |r| [-r[:ca].to_d, -r[:commandes].to_i] }
+                .select { |r| r[:ca].to_d.positive? }
+      labels = stats.map { |r| r[:profile] }
+      values = stats.map { |r| r[:ca].to_d.round.to_i }
+      colors = stats.each_with_index.map do |row, index|
+        row[:couleur].presence || self.class.equipe_pastel_color(index)
+      end
+      total = values.sum
+      ring_border = "rgb(255, 255, 255)"
 
       {
-        type: "line",
+        type: "doughnut",
         data: {
           labels: labels,
-          datasets: stats.map do |row|
-            color = row[:couleur].presence || ROSE
-            {
-              label: row[:profile],
-              data: labels.map { |day|
-                value = row.dig(:ca_by_day, day)
-                value.nil? ? nil : value.to_d.round.to_i
-              },
-              borderColor: color,
-              backgroundColor: rgba_fill(color, 0.1),
-              borderWidth: 2.25,
-              borderCapStyle: "round",
-              borderJoinStyle: "round",
-              fill: false,
-              tension: 0.35,
-              spanGaps: true,
-              pointRadius: 0,
-              pointHoverRadius: 4,
-              pointHitRadius: 10,
-              pointBackgroundColor: color,
-              pointBorderColor: "#fff",
-              pointBorderWidth: 1.5
-            }
-          end
+          datasets: [{
+            data: values,
+            backgroundColor: colors,
+            borderWidth: 2,
+            borderColor: ring_border,
+            hoverBorderWidth: 2,
+            hoverBorderColor: ring_border,
+            borderRadius: 4,
+            hoverOffset: 6,
+            spacing: 2
+          }]
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          interaction: { mode: "nearest", axis: "x", intersect: false },
-          plugins: {
-            legend: legend_options,
-            title: { display: false }
-          },
-          scales: {
-            x: axis_x,
-            y: axis_y(title: "CA (€)")
-          }
-        },
-        _tooltip: "money"
+        options: doughnut_options.merge(cutout: "62%"),
+        _tooltip: "money",
+        _centerText: [
+          "#{h.analyses_donut_amount_label(total)} €",
+          (stats.size > 1 ? "CA équipe" : "CA vendeur")
+        ]
       }
     end
 
@@ -572,6 +558,55 @@ module Analyses
               grid: { display: false },
               border: { display: false }
             }
+          }
+        },
+        _tooltip: "money"
+      }
+    end
+
+    def profiles_ca_timeline
+      stats = (h.instance_variable_get(:@stats_par_profile) || []).sort_by { |r| -r[:ca].to_f }
+      labels = stats.flat_map { |row| (row[:ca_by_day] || {}).keys }
+                    .uniq
+                    .sort_by { |day| Date.strptime(day.to_s, "%d/%m/%Y") }
+
+      {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: stats.each_with_index.map do |row, index|
+            color = row[:couleur].presence || self.class.equipe_pastel_color(index)
+            {
+              label: row[:profile],
+              data: labels.map { |day|
+                value = row.dig(:ca_by_day, day)
+                value.nil? ? nil : value.to_d.round.to_i
+              },
+              borderColor: color,
+              backgroundColor: rgba_fill(color, 0.1),
+              borderWidth: 2.25,
+              borderCapStyle: "round",
+              borderJoinStyle: "round",
+              fill: false,
+              tension: 0.35,
+              spanGaps: true,
+              pointRadius: 0,
+              pointHoverRadius: 4,
+              pointHitRadius: 10,
+              pointBackgroundColor: color,
+              pointBorderColor: "#fff",
+              pointBorderWidth: 1.5
+            }
+          end
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "nearest", axis: "x", intersect: false },
+          plugins: { legend: legend_options },
+          scales: {
+            x: axis_x,
+            y: axis_y(title: "CA (€)")
           }
         },
         _tooltip: "money"

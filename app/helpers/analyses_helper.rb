@@ -26,6 +26,26 @@ module AnalysesHelper
     [[10 + (n * 2.1), 12].max, 26].min.round(1)
   end
 
+  # Barre de part : remplissage = valeur / ensemble (0–100), libellé centré dessus.
+  def analyses_equipe_share_bar(label, pct, color: nil, title: nil)
+    width = [[pct.to_f, 0].max, 100].min.round(1)
+    style = []
+    style << "--equipe-bar-color: #{color}" if color.present?
+    style << "--equipe-bar-width: #{width}%"
+
+    content_tag(
+      :div,
+      class: "analyses-equipe-bar",
+      style: style.join("; ").presence,
+      title: title.presence || label
+    ) do
+      safe_join([
+        content_tag(:div, "", class: "analyses-equipe-bar__fill", "aria-hidden": true),
+        content_tag(:span, label, class: "analyses-equipe-bar__label")
+      ])
+    end
+  end
+
   def render_analyses_chart(key, chart_id: nil, aria_label: nil, extra_class: nil, box_style: nil)
     config = analyses_chart_config(key)
     return "" if config.blank?
@@ -286,11 +306,21 @@ module AnalysesHelper
 
   def analyses_equipe_kpi_totals
     stats = @stats_par_profile || []
+    ca = stats.sum { |r| r[:ca].to_d }
+    commandes = stats.sum { |r| r[:commandes].to_i }
+    devis = stats.sum { |r| r[:devis].to_i }
+    articles = stats.sum { |r| r[:articles].to_i }
+    conv_base = commandes + devis
+
     {
-      ca: stats.sum { |r| r[:ca].to_d },
-      commandes: stats.sum { |r| r[:commandes].to_i },
-      devis: stats.sum { |r| r[:devis].to_i },
-      vendeurs: stats.size
+      ca: ca,
+      commandes: commandes,
+      devis: devis,
+      articles: articles,
+      vendeurs: stats.size,
+      panier: (commandes.positive? ? (ca / commandes).round(2) : nil),
+      articles_par_commande: (commandes.positive? ? (articles.to_d / commandes).round(1) : nil),
+      conversion_pct: (conv_base.positive? ? ((commandes.to_d / conv_base) * 100).round : nil)
     }
   end
 
@@ -445,9 +475,12 @@ module AnalysesHelper
     default_debut, default_fin = default_analyses_period
     [
       ["Aujourd'hui", [today, today]],
+      ["Hier", [today - 1.day, today - 1.day]],
+      ["7 jours", [today - 6.days, today]],
       ["30 jours", [default_debut, default_fin]],
-      ["Mois précédent", [prev_month.beginning_of_month, prev_month.end_of_month]],
-      ["Mois courant", [today.beginning_of_month, today.end_of_month]]
+      ["3 mois", [today - 89.days, today]],
+      ["Mois courant", [today.beginning_of_month, today.end_of_month]],
+      ["Mois précédent", [prev_month.beginning_of_month, prev_month.end_of_month]]
     ]
   end
 

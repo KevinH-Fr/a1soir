@@ -212,12 +212,13 @@ module Analyses
 
       ivar_set(:stats_par_profile, profiles.map.with_index do |profile, index|
         row = profile_kpi_row(profile, stripe_totals)
+        commande_ids = row[:commande_ids]
         row.merge(
           devis: commandes_devis.where(profile_id: profile.id).count,
-          articles: profile_articles_lignes_count(row[:commande_ids]),
-          transactions: profile_transactions(row[:commande_ids], stripe_totals),
+          articles: profile_articles_lignes_count(commande_ids),
+          transactions: profile_transactions(commande_ids, stripe_totals),
           couleur: ChartPayloads.equipe_pastel_color(index),
-          ca_by_day: profile_ca_by_day(row[:commande_ids], datedebut, datefin)
+          ca_by_day: profile_ca_by_day(commande_ids, datedebut, datefin)
         ).except(:commande_ids)
       end)
     end
