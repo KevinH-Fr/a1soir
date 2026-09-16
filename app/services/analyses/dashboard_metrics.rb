@@ -15,7 +15,9 @@ module Analyses
         assign_commande_metrics
         assign_article_metrics
         assign_ca_metrics(stripe_totals, datedebut, datefin)
-        assign_synthese_top_profile(datedebut, datefin, stripe_totals, filter_params)
+        assign_catalog_stats
+        assign_profile_stats(datedebut, datefin, stripe_totals, filter_params)
+        assign_synthese_top_profile_from_stats
       when "ca"
         assign_commande_metrics
         assign_article_metrics
@@ -104,6 +106,8 @@ module Analyses
       ivar_set(:nbTotalArticles, line_metrics.lignes_count)
       ivar_set(:nbLoc, line_metrics.loc_lignes_count)
       ivar_set(:nbVente, line_metrics.vente_lignes_count)
+      ivar_set(:caLocArticles, line_metrics.loc_ca_lignes)
+      ivar_set(:caVenteArticles, line_metrics.vente_ca_lignes)
 
       ivar_set(:groupedByDateArticles, line_metrics.quantites_by_day.transform_keys do |date|
         I18n.l(Date.parse(date.to_s), format: "%d/%m/%Y")
@@ -152,13 +156,19 @@ module Analyses
       ivar_set(:totalPrixCa, boutique + total_stripe_eur)
       ivar_set(:totalCa, paiements_filtres.sum(:montant).to_d + total_stripe_eur)
 
-      grouped_by_date_ca_paiements = paiements_filtres.group("DATE(created_at)").order("DATE(paiement_recus.created_at)").sum(:montant)
+      grouped_by_date_ca_paiements = paiements_filtres.only_prix
+                                                    .group("DATE(created_at)")
+                                                    .order("DATE(paiement_recus.created_at)")
+                                                    .sum(:montant)
+      remb_neg = eshop_remboursements_by_day_neg(datedebut, datefin)
+      ivar_set(:groupedByDateCaBoutique, merge_grouped_by_day(grouped_by_date_ca_paiements))
+      ivar_set(:groupedByDateCaEshop, merge_grouped_by_day(stripe_totals.grouped_by_day_eur, remb_neg))
       ivar_set(
         :groupedByDateCa,
         merge_grouped_by_day(
           grouped_by_date_ca_paiements,
           stripe_totals.grouped_by_day_eur,
-          eshop_remboursements_by_day_neg(datedebut, datefin)
+          remb_neg
         )
       )
     end
@@ -176,12 +186,15 @@ module Analyses
       ivar_set(:totalCa, boutique_lines + total_stripe_eur)
 
       grouped_articles_jour = articles_filtres.where(commandes: { eshop: [false, nil] }).group("DATE(articles.created_at)").order("DATE(articles.created_at)").sum("total")
+      remb_neg = eshop_remboursements_by_day_neg(datedebut, datefin)
+      ivar_set(:groupedByDateCaBoutique, merge_grouped_by_day(grouped_articles_jour))
+      ivar_set(:groupedByDateCaEshop, merge_grouped_by_day(stripe_totals.grouped_by_day_eur, remb_neg))
       ivar_set(
         :groupedByDateCa,
         merge_grouped_by_day(
           grouped_articles_jour,
           stripe_totals.grouped_by_day_eur,
-          eshop_remboursements_by_day_neg(datedebut, datefin)
+          remb_neg
         )
       )
     end
@@ -200,23 +213,38 @@ module Analyses
         row = profile_kpi_row(profile, stripe_totals)
         row.merge(
           devis: commandes_devis.where(profile_id: profile.id).count,
+          articles: profile_articles_lignes_count(row[:commande_ids]),
+          transactions: profile_transactions(row[:commande_ids], stripe_totals),
           couleur: ChartPayloads.equipe_pastel_color(index),
           ca_by_day: profile_ca_by_day(row[:commande_ids], datedebut, datefin)
         ).except(:commande_ids)
       end)
     end
 
-    def assign_synthese_top_profile(_datedebut, _datefin, stripe_totals, filter_params)
-      profiles = Profile.for_analyses_charts.order(:prenom, :nom)
-      profiles = profiles.where(id: filter_params[:filter_profile]) if filter_params[:filter_profile].present?
+    def profile_transactions(commandes_ids, stripe_totals)
+      return 0.to_d if commandes_ids.blank?
 
-      rows = profiles.map { |profile| profile_kpi_row(profile, stripe_totals) }
-      top = rows.max_by { |r| r[:ca].to_d }
+      loc = articles_filtres.location_only.where(commande_id: commandes_ids).sum(:prix).to_d +
+            sous_articles_filtres.location_only.where(articles: { commande_id: commandes_ids }).sum(:prix).to_d
+      vente_articles = articles_filtres
+                         .joins(:commande)
+                         .where(commande_id: commandes_ids, commandes: { eshop: [false, nil] })
+                         .vente_only
+                         .sum(:prix).to_d
+      vente_sous = sous_articles_filtres
+                     .vente_only
+                     .joins(article: :commande)
+                     .where(articles: { commande_id: commandes_ids }, commandes: { eshop: [false, nil] })
+                     .sum(:prix).to_d
+
+      loc + vente_articles + vente_sous + stripe_totals.total_eur(commande_ids: commandes_ids)
+    end
+
+    def assign_synthese_top_profile_from_stats
+      top = Array(ivar(:stats_par_profile)).max_by { |row| row[:ca].to_d }
       ivar_set(
         :synthese_top_profile,
-        if top
-          top.merge(articles: profile_articles_lignes_count(top[:commande_ids])).except(:commande_ids)
-        end
+        top&.slice(:profile, :profile_id, :commandes, :ca, :articles)
       )
     end
 

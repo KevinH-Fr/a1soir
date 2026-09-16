@@ -6,7 +6,7 @@ module Admin
     extend ActiveSupport::Concern
 
     ADMIN_PRODUIT_FILTER_KEYS = %i[
-      filter_taille filter_couleur filter_categorie filter_type_produit
+      filter_taille filter_couleur filter_categorie filter_type_produit filter_fournisseur
     ].freeze
 
     def apply_taille_filter(scope, value)
@@ -89,6 +89,7 @@ module Admin
       scope = apply_couleur_filter(scope, filter_params[:filter_couleur])
       scope = apply_categorie_filter(scope, filter_params[:filter_categorie])
       scope = apply_type_produit_filter(scope, filter_params[:filter_type_produit])
+      scope = apply_fournisseur_filter(scope, filter_params[:filter_fournisseur])
       scope
     end
 

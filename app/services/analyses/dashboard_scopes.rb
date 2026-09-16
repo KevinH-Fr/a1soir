@@ -64,7 +64,19 @@ module Analyses
       if @filter_params[:filter_profile].present?
         scope = scope.where(profile_id: @filter_params[:filter_profile])
       end
+      scope = apply_propart_filter(scope)
       apply_eshop_filter(scope)
+    end
+
+    def apply_propart_filter(commandes)
+      case @filter_params[:filter_propart].to_s
+      when "particulier", "professionnel"
+        commandes.where(
+          client_id: Client.where(propart: @filter_params[:filter_propart].to_s).select(:id)
+        )
+      else
+        commandes
+      end
     end
 
     def scoped_articles(datedebut, datefin, commandes)

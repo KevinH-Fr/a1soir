@@ -36,8 +36,16 @@ module AnalysesDashboardDataset
 
       type_robe = TypeProduit.create!(nom: "Robe dataset #{SecureRandom.hex(2)}")
       type_costume = TypeProduit.create!(nom: "Costume dataset #{SecureRandom.hex(2)}")
+      fournisseur = Fournisseur.create!(nom: "Fournisseur dataset #{SecureRandom.hex(2)}")
 
-      produit_robe = Produit.create!(nom: "Robe test", prixvente: 50, prixlocation: 100, quantite: 5, type_produit_id: type_robe.id)
+      produit_robe = Produit.create!(
+        nom: "Robe test",
+        prixvente: 50,
+        prixlocation: 100,
+        quantite: 5,
+        type_produit_id: type_robe.id,
+        fournisseur_id: fournisseur.id
+      )
       produit_costume = Produit.create!(nom: "Costume test", prixvente: 40, quantite: 5, type_produit_id: type_costume.id)
 
       t_day1 = Time.zone.local(2026, 3, 2, 10, 0, 0)
@@ -253,6 +261,7 @@ module AnalysesDashboardDataset
         profile_b: profile_b,
         type_robe: type_robe,
         type_costume: type_costume,
+        fournisseur: fournisseur,
         produit_robe: produit_robe,
         produit_costume: produit_costume
       }

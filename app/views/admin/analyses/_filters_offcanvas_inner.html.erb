@@ -28,6 +28,15 @@
         </div>
 
         <div class="analyses-filters-panel__field">
+          <p class="analyses-filters-panel__field-label">Type de client</p>
+          <%= analyses_filter_toggle_group(
+                aria_label: "Client particulier ou professionnel",
+                param_key: :filter_propart,
+                options: [["Tous", nil], ["Particulier", "particulier"], ["Pro", "professionnel"]]
+              ) %>
+        </div>
+
+        <div class="analyses-filters-panel__field">
           <p class="analyses-filters-panel__field-label">Location / vente</p>
           <%= analyses_filter_toggle_group(
                 aria_label: "Location ou vente",
@@ -61,6 +70,16 @@
                 collection: @categorie_produits,
                 model: CategorieProduit,
                 all_label: "Toutes les catégories"
+              ) %>
+        </div>
+        <div class="analyses-filter-field">
+          <%= analyses_filter_dropdown(
+                label: "Fournisseur",
+                icon: "bi bi-truck",
+                param_key: :filter_fournisseur,
+                collection: @fournisseurs,
+                model: Fournisseur,
+                all_label: "Tous les fournisseurs"
               ) %>
         </div>
         <div class="analyses-filter-field">

@@ -3,7 +3,7 @@
 module Analyses
   class KpiTrends < ApplicationService
     METRICS_BY_VUE = {
-      "synthese" => %i[ca commandes articles_lignes],
+      "synthese" => %i[ca commandes articles_lignes top_vendeur_ca],
       "ca" => %i[ca transactions commandes stripe],
       "catalogue" => %i[quantites ca_lignes produits],
       "equipe" => %i[equipe_ca equipe_commandes equipe_devis]
@@ -25,10 +25,14 @@ module Analyses
 
       metrics = METRICS_BY_VUE.fetch(@vue, [])
       current = @current || KpiSnapshot.call(@filter_params, metrics: metrics)
-      reference = KpiSnapshot.call(
-        @filter_params.merge(debut: range[:debut], fin: range[:fin]),
-        metrics: metrics
-      )
+
+      ref_params = @filter_params.merge(debut: range[:debut], fin: range[:fin])
+      if metrics.include?(:top_vendeur_ca)
+        profile_id = current[:top_vendeur_profile_id].presence || @filter_params[:top_vendeur_profile_id]
+        ref_params = ref_params.merge(top_vendeur_profile_id: profile_id)
+      end
+
+      reference = KpiSnapshot.call(ref_params, metrics: metrics)
 
       trends = metrics.index_with do |key|
         build_trend(current[key], reference[key], range[:label])

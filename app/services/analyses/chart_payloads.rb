@@ -7,22 +7,26 @@ module Analyses
     GREEN = "rgb(74, 138, 110)".freeze
     GOLD = "rgb(168, 132, 58)".freeze
     ROSE = "rgb(168, 96, 118)".freeze
-    SLATE = "rgb(100, 116, 139)".freeze
-    SLATE_SOFT = "rgb(148, 163, 184)".freeze
     SLATE_MUTED = "rgb(176, 184, 196)".freeze
 
-    # Modes de paiement : bleu / vert / gris / jaune / bleu Stripe — pastels adoucis.
+    # Séries récurrentes — même métrique = même couleur d’un chart à l’autre.
+    SERIES_CA = BLUE
+    SERIES_QTY = "rgb(148, 163, 184)".freeze       # quantités catalogue
+    SERIES_COMMANDES = "rgb(168, 148, 196)".freeze  # commandes (lavande) — tranche CA bleu / articles sauge
+    SERIES_ARTICLES = "rgb(122, 168, 148)".freeze   # articles (sauge)
+    SERIES_ESHOP = "rgb(224, 124, 64)".freeze       # canal e-shop / Stripe — orange, distinct du bleu boutique
+
+    # Modes de paiement : bleu / vert / gris / jaune / orange Stripe — pastels adoucis.
     PAYMENT_LABELS = %w[CB Espèces Chèque Virement Stripe].freeze
     PAYMENT_COLORS = [
       "rgb(130, 170, 220)",  # CB — bleu pastel
       "rgb(130, 186, 158)",  # Espèces — vert pastel
       "rgb(176, 184, 196)",  # Chèque — gris doux
       "rgb(220, 192, 118)",  # Virement — jaune pastel
-      "rgb(96, 148, 230)"    # Stripe — bleu un peu plus vif, toujours doux
+      SERIES_ESHOP           # Stripe — orange, aligné canal e-shop
     ].freeze
 
     LOC_VENTE_COLORS = [SLATE_MUTED, BLUE].freeze
-    TRANSACTIONS_COLORS = [GREEN, "rgb(58, 118, 92)"].freeze
 
     # Pastels distincts (teintes espacées) pour lignes / barres multi-vendeurs.
     EQUIPE_PASTEL_COLORS = [
@@ -55,20 +59,17 @@ module Analyses
       case key.to_sym
       when :synthese_timeline_mixed then synthese_timeline_mixed
       when :ca_payment_modes_doughnut then ca_payment_modes_doughnut
-      when :ca_timeline then ca_timeline
       when :ca_transactions_timeline then ca_transactions_timeline
+      when :ca_channels_timeline then ca_channels_timeline
       when :ca_ratios_timeline then ca_ratios_timeline
-      when :articles_timeline then articles_timeline
-      when :articles_locvente_doughnut then articles_locvente_doughnut
-      when :transactions_doughnut then transactions_doughnut
-      when :transactions_timeline then transactions_timeline
+      when :locvente_qty_doughnut then locvente_qty_doughnut
+      when :articles_locvente_ca_doughnut then articles_locvente_ca_doughnut
+      when :transactions_euro_doughnut then transactions_euro_doughnut
       when :profiles_grouped then profiles_grouped
+      when :profiles_ca_transactions then profiles_ca_transactions
       when :profiles_ca_timeline then profiles_ca_timeline
       when :catalog_types_bars then catalog_qty_ca_bars(:type)
       when :catalog_categories_bars then catalog_qty_ca_bars(:categorie)
-      # Alias (doughnut / anciennes barres qty seule).
-      when :catalog_types_doughnut, :catalog_types_horizontal then catalog_qty_ca_bars(:type)
-      when :catalog_categories_doughnut, :catalog_categories_horizontal then catalog_qty_ca_bars(:categorie)
       else
         nil
       end
@@ -81,10 +82,15 @@ module Analyses
     end
 
     def synthese_timeline_mixed
-      labels = aligned_day_labels(h.instance_variable_get(:@groupedByDateCa), h.instance_variable_get(:@groupedByDate))
-      ca_values = values_for_labels(labels, h.instance_variable_get(:@groupedByDateCa), integer: true)
-      cmd_values = values_for_labels(labels, h.instance_variable_get(:@groupedByDate), integer: true)
+      ca_hash = h.instance_variable_get(:@groupedByDateCa) || {}
+      cmd_hash = h.instance_variable_get(:@groupedByDate) || {}
+      art_hash = h.instance_variable_get(:@groupedByDateArticles) || {}
+      labels = aligned_day_labels(ca_hash, cmd_hash, art_hash)
+      ca_values = values_for_labels(labels, ca_hash, integer: true)
+      cmd_values = values_for_labels(labels, cmd_hash, integer: true)
+      art_values = values_for_labels(labels, art_hash, integer: true)
 
+      # CA = ligne hero (SERIES_CA) · commandes / articles = barres contrastées.
       {
         type: "bar",
         data: {
@@ -95,9 +101,9 @@ module Analyses
               label: "CA (€)",
               data: ca_values,
               yAxisID: "y",
-              borderColor: BLUE,
-              backgroundColor: rgba_fill(BLUE, 0.08),
-              borderWidth: 2.25,
+              borderColor: SERIES_CA,
+              backgroundColor: rgba_fill(SERIES_CA, 0.06),
+              borderWidth: 2.5,
               borderCapStyle: "round",
               borderJoinStyle: "round",
               fill: true,
@@ -105,28 +111,43 @@ module Analyses
               pointRadius: 0,
               pointHoverRadius: 4,
               pointHitRadius: 10,
-              pointBackgroundColor: BLUE,
+              pointBackgroundColor: SERIES_CA,
               pointBorderColor: "#fff",
               pointBorderWidth: 1.5,
-              order: 1
+              order: 2
             },
             {
               type: "bar",
               label: "Commandes",
               data: cmd_values,
               yAxisID: "y1",
-              backgroundColor: rgba_fill(SLATE, 0.28),
-              hoverBackgroundColor: rgba_fill(SLATE, 0.42),
-              borderRadius: 6,
-              borderSkipped: false,
+              backgroundColor: rgba_fill(SERIES_COMMANDES, 0.72),
+              hoverBackgroundColor: rgba_fill(SERIES_COMMANDES, 0.88),
               borderWidth: 0,
-              barPercentage: 0.55,
-              categoryPercentage: 0.7,
-              order: 2
+              borderRadius: { topLeft: 3, topRight: 3, bottomLeft: 0, bottomRight: 0 },
+              borderSkipped: false,
+              barPercentage: 0.9,
+              categoryPercentage: 0.75,
+              order: 1
+            },
+            {
+              type: "bar",
+              label: "Articles",
+              data: art_values,
+              yAxisID: "y1",
+              backgroundColor: rgba_fill(SERIES_ARTICLES, 0.72),
+              hoverBackgroundColor: rgba_fill(SERIES_ARTICLES, 0.88),
+              borderWidth: 0,
+              borderRadius: { topLeft: 3, topRight: 3, bottomLeft: 0, bottomRight: 0 },
+              borderSkipped: false,
+              barPercentage: 0.9,
+              categoryPercentage: 0.75,
+              order: 1
             }
           ]
         },
-        options: mixed_timeline_options(left_title: "CA (€)", right_title: "Commandes")
+        options: mixed_timeline_options(left_title: "CA (€)", right_title: "Nombre"),
+        _tooltip: "mixed"
       }
     end
 
@@ -153,16 +174,12 @@ module Analyses
           }]
         },
         options: doughnut_options,
+        _tooltip: "money",
         _centerText: [
           "#{h.analyses_donut_amount_label(h.instance_variable_get(:@totalPrixCa))} € TTC",
           "#{h.analyses_donut_ht_label(h.instance_variable_get(:@totalPrixCa))} € HT"
         ]
       }
-    end
-
-    def ca_timeline
-      labels, values = series_from_day_hash(h.instance_variable_get(:@groupedByDateCa))
-      line_chart("CA (€)", labels, values, BLUE)
     end
 
     # CA encaissé + transactions (€) — même axe, deux courbes.
@@ -179,7 +196,7 @@ module Analyses
             line_dataset(
               "CA encaissé (€)",
               values_for_labels(labels, ca_hash, integer: true),
-              BLUE,
+              SERIES_CA,
               fill: true
             ),
             line_dataset(
@@ -201,7 +218,49 @@ module Analyses
             x: axis_x,
             y: axis_y(title: "€")
           }
-        }
+        },
+        _tooltip: "money"
+      }
+    end
+
+    # Boutique vs e-shop (€) — même axe, deux courbes.
+    def ca_channels_timeline
+      boutique_hash = h.instance_variable_get(:@groupedByDateCaBoutique) || {}
+      eshop_hash = h.instance_variable_get(:@groupedByDateCaEshop) || {}
+      labels = aligned_day_labels(boutique_hash, eshop_hash)
+
+      {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [
+            line_dataset(
+              "Boutique",
+              values_for_labels(labels, boutique_hash, integer: true),
+              SERIES_CA,
+              fill: true
+            ),
+            line_dataset(
+              "E-shop",
+              values_for_labels(labels, eshop_hash, integer: true),
+              SERIES_ESHOP,
+              fill: false,
+              border_dash: [5, 4],
+              tension: 0.35
+            )
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: { legend: legend_options },
+          scales: {
+            x: axis_x,
+            y: axis_y
+          }
+        },
+        _tooltip: "money"
       }
     end
 
@@ -272,70 +331,80 @@ module Analyses
             }
           ]
         },
-        options: mixed_timeline_options(left_title: "Panier moyen (€)", right_title: "Art. / commande")
+        options: mixed_timeline_options(left_title: "Panier moyen (€)", right_title: "Art. / commande"),
+        _tooltip: "mixed"
       }
     end
 
-    def articles_timeline
-      labels, values = series_from_day_hash(h.instance_variable_get(:@groupedByDateArticles), integer: true)
-      line_chart("Quantité d'articles", labels, values, SLATE, integer_ticks: true)
-    end
-
-    def articles_locvente_doughnut
-      values = [
-        h.instance_variable_get(:@nbLoc).to_i,
-        h.instance_variable_get(:@nbVente).to_i
-      ]
-      {
-        type: "doughnut",
-        data: {
-          labels: %w[Locations Ventes],
-          datasets: [{
-            data: values,
-            backgroundColor: LOC_VENTE_COLORS,
-            borderWidth: 0,
-            borderRadius: 4,
-            hoverOffset: 6,
-            spacing: 2
-          }]
-        },
-        options: doughnut_options,
-        _centerText: [
+    def locvente_qty_doughnut
+      loc_vente_doughnut(
+        data: [h.instance_variable_get(:@nbLoc).to_i, h.instance_variable_get(:@nbVente).to_i],
+        colors: LOC_VENTE_COLORS,
+        tooltip: "locvente_qty",
+        center_text: [
           h.instance_variable_get(:@nbTotalArticles).to_s,
           "articles"
         ]
-      }
+      )
     end
 
-    def transactions_doughnut
+    def articles_locvente_ca_doughnut
+      loc_ca = h.instance_variable_get(:@caLocArticles).to_d.round.to_i
+      vente_ca = h.instance_variable_get(:@caVenteArticles).to_d.round.to_i
+      total_ca = loc_ca + vente_ca
+
+      loc_vente_doughnut(
+        data: [loc_ca, vente_ca],
+        colors: LOC_VENTE_COLORS,
+        tooltip: "locvente_money",
+        center_text: [
+          "#{h.analyses_donut_amount_label(total_ca)} €",
+          "CA lignes"
+        ]
+      )
+    end
+
+    def transactions_euro_doughnut
       loc = h.instance_variable_get(:@totalTransactionsLoc).to_d
       vente = h.instance_variable_get(:@totalTransactionsVente).to_d
       ttc = h.instance_variable_get(:@totalTransactions).to_d
+
+      loc_vente_doughnut(
+        data: [loc.round.to_i, vente.round.to_i],
+        colors: LOC_VENTE_COLORS,
+        tooltip: "locvente_money",
+        center_text: [
+          "#{h.analyses_donut_amount_label(ttc)} € TTC",
+          "#{h.analyses_donut_ht_label(ttc)} € HT"
+        ]
+      )
+    end
+
+    # Doughnut Location / Vente (une métrique : qté ou €).
+    def loc_vente_doughnut(data:, colors:, tooltip:, center_text:)
+      slice_labels = %w[Location Vente]
+      ring_border = "rgb(255, 255, 255)"
+
       {
         type: "doughnut",
         data: {
-          labels: %w[Locations Ventes],
+          labels: slice_labels,
           datasets: [{
-            data: [loc.round.to_i, vente.round.to_i],
-            backgroundColor: TRANSACTIONS_COLORS,
-            borderWidth: 0,
+            data: data,
+            backgroundColor: colors,
+            borderWidth: 2,
+            borderColor: ring_border,
+            hoverBorderWidth: 2,
+            hoverBorderColor: ring_border,
             borderRadius: 4,
             hoverOffset: 6,
             spacing: 2
           }]
         },
-        options: doughnut_options,
-        _centerText: [
-          "#{h.analyses_donut_amount_label(ttc)} € TTC",
-          "#{h.analyses_donut_ht_label(ttc)} € HT"
-        ]
+        options: doughnut_options.merge(cutout: "62%"),
+        _tooltip: tooltip,
+        _centerText: center_text
       }
-    end
-
-    def transactions_timeline
-      hash = h.instance_variable_get(:@groupedByDateTransactions)
-      labels, values = series_from_day_hash(hash)
-      line_chart("Transactions (€)", labels, values, GREEN)
     end
 
     def profiles_ca_timeline
@@ -385,13 +454,19 @@ module Analyses
             x: axis_x,
             y: axis_y(title: "CA (€)")
           }
-        }
+        },
+        _tooltip: "money"
       }
     end
 
     def profiles_grouped
-      stats = (h.instance_variable_get(:@stats_par_profile) || []).sort_by { |r| -r[:ca].to_f }
-      labels = stats.map { |row| row[:profile] }
+      stats = (h.instance_variable_get(:@stats_par_profile) || [])
+                .sort_by { |r| [-r[:ca].to_d, -r[:commandes].to_i] }
+      labels = stats.map { |r| r[:profile] }
+      values = stats.map { |r| r[:ca].to_d.round.to_i }
+      colors = stats.each_with_index.map do |row, index|
+        row[:couleur].presence || self.class.equipe_pastel_color(index)
+      end
 
       {
         type: "bar",
@@ -399,32 +474,103 @@ module Analyses
           labels: labels,
           datasets: [{
             label: "CA (€)",
-            data: stats.map { |r| r[:ca].to_d.round.to_i },
-            backgroundColor: stats.map { |r| r[:couleur].presence || rgba_fill(ROSE, 0.85) },
-            borderRadius: 6,
+            data: values,
+            backgroundColor: colors.map { |c| rgba_fill(c, 0.75) },
+            hoverBackgroundColor: colors.map { |c| rgba_fill(c, 0.9) },
+            borderRadius: 5,
             borderSkipped: false,
             borderWidth: 0,
-            barPercentage: 0.7,
-            categoryPercentage: 0.8
+            barPercentage: 0.72,
+            categoryPercentage: 0.78
           }]
         },
         options: {
           indexAxis: "y",
           responsive: true,
           maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            title: { display: false }
-          },
+          plugins: { legend: { display: false } },
           scales: {
-            x: axis_y(title: "CA (€)").merge(beginAtZero: true),
+            x: {
+              beginAtZero: true,
+              border: { display: false },
+              title: {
+                display: true,
+                text: "CA (€)",
+                color: TICK_COLOR,
+                font: { size: 11, weight: "500" }
+              },
+              ticks: { precision: 0, color: TICK_COLOR, font: { size: 11 } },
+              grid: { color: GRID_COLOR, drawBorder: false }
+            },
             y: {
-              ticks: { autoSkip: false, color: TICK_COLOR, font: { size: 11 } },
+              ticks: { color: TICK_COLOR, font: { size: 11, weight: "500" } },
               grid: { display: false },
               border: { display: false }
             }
           }
-        }
+        },
+        _tooltip: "money"
+      }
+    end
+
+    # Synthèse : CA (encaissements) + transactions (lignes) par vendeur, même axe €.
+    def profiles_ca_transactions
+      stats = (h.instance_variable_get(:@stats_par_profile) || [])
+                .sort_by { |r| [-r[:ca].to_d, -r[:transactions].to_d] }
+      labels = stats.map { |r| r[:profile] }
+      ca_values = stats.map { |r| r[:ca].to_d.round.to_i }
+      tx_values = stats.map { |r| r[:transactions].to_d.round.to_i }
+
+      {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "CA (€)",
+              data: ca_values,
+              backgroundColor: rgba_fill(SERIES_CA, 0.75),
+              hoverBackgroundColor: rgba_fill(SERIES_CA, 0.9),
+              borderWidth: 0,
+              borderRadius: 4,
+              borderSkipped: false,
+              barPercentage: 0.85,
+              categoryPercentage: 0.7
+            },
+            {
+              label: "Transactions (€)",
+              data: tx_values,
+              backgroundColor: rgba_fill(GREEN, 0.65),
+              hoverBackgroundColor: rgba_fill(GREEN, 0.82),
+              borderWidth: 0,
+              borderRadius: 4,
+              borderSkipped: false,
+              barPercentage: 0.85,
+              categoryPercentage: 0.7
+            }
+          ]
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: { legend: legend_options },
+          scales: {
+            x: {
+              beginAtZero: true,
+              border: { display: false },
+              ticks: { precision: 0, color: TICK_COLOR, font: { size: 11 } },
+              grid: { color: GRID_COLOR, drawBorder: false }
+            },
+            y: {
+              ticks: { color: TICK_COLOR, font: { size: 11, weight: "500" } },
+              grid: { display: false },
+              border: { display: false }
+            }
+          }
+        },
+        _tooltip: "money"
       }
     end
 
@@ -449,8 +595,8 @@ module Analyses
               label: "Quantité",
               data: quantities,
               xAxisID: "x",
-              backgroundColor: rgba_fill(BLUE, 0.72),
-              hoverBackgroundColor: rgba_fill(BLUE, 0.88),
+              backgroundColor: rgba_fill(SERIES_QTY, 0.72),
+              hoverBackgroundColor: rgba_fill(SERIES_QTY, 0.88),
               borderRadius: 5,
               borderSkipped: false,
               borderWidth: 0,
@@ -461,8 +607,8 @@ module Analyses
               label: "CA (€)",
               data: ca_values,
               xAxisID: "x1",
-              backgroundColor: rgba_fill(GOLD, 0.65),
-              hoverBackgroundColor: rgba_fill(GOLD, 0.82),
+              backgroundColor: rgba_fill(SERIES_CA, 0.72),
+              hoverBackgroundColor: rgba_fill(SERIES_CA, 0.88),
               borderRadius: 5,
               borderSkipped: false,
               borderWidth: 0,
@@ -488,7 +634,7 @@ module Analyses
             x: {
               position: "top",
               beginAtZero: true,
-              ticks: { precision: 0, color: BLUE, font: { size: 10 } },
+              ticks: { precision: 0, color: SERIES_QTY, font: { size: 10 } },
               grid: { color: GRID_COLOR, drawBorder: false },
               border: { display: false },
               title: {
@@ -501,7 +647,7 @@ module Analyses
             x1: {
               position: "bottom",
               beginAtZero: true,
-              ticks: { precision: 0, color: GOLD, font: { size: 10 } },
+              ticks: { precision: 0, color: SERIES_CA, font: { size: 10 } },
               grid: { drawOnChartArea: false },
               border: { display: false },
               title: {
@@ -512,35 +658,8 @@ module Analyses
               }
             }
           }
-        }
-      }
-    end
-
-    def line_chart(title, labels, values, color, integer_ticks: false)
-      y_ticks = { precision: 0, color: TICK_COLOR, font: { size: 11 } }
-      {
-        type: "line",
-        data: {
-          labels: labels,
-          datasets: [
-            line_dataset(title, values.map { |v| v.nil? ? nil : v.to_d.round.to_i }, color, fill: true)
-          ]
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          interaction: { mode: "index", intersect: false },
-          plugins: { legend: { display: false } },
-          scales: {
-            x: axis_x,
-            y: {
-              beginAtZero: true,
-              ticks: y_ticks,
-              grid: { color: GRID_COLOR, drawBorder: false },
-              border: { display: false }
-            }
-          }
-        }
+        _tooltip: "mixed"
       }
     end
 
@@ -595,14 +714,14 @@ module Analyses
       }
     end
 
-    def doughnut_options
+    def doughnut_options(legend: true)
       {
         responsive: true,
         maintainAspectRatio: true,
         aspectRatio: 1,
         cutout: "70%",
         plugins: {
-          legend: legend_options.merge(position: "bottom")
+          legend: legend ? legend_options.merge(position: "bottom") : { display: false }
         }
       }
     end
@@ -614,7 +733,7 @@ module Analyses
         labels: {
           usePointStyle: true,
           pointStyle: "circle",
-          padding: 16,
+          padding: 10,
           boxWidth: 8,
           boxHeight: 8,
           color: TICK_COLOR,
@@ -657,14 +776,6 @@ module Analyses
         ticks: { precision: 0, color: TICK_COLOR, font: { size: 11 } },
         grid: { color: GRID_COLOR, drawBorder: false }
       }
-    end
-
-    def series_from_day_hash(hash, integer: false)
-      return [[], []] if hash.blank?
-
-      sorted = hash.sort_by { |day, _| Date.strptime(day.to_s, "%d/%m/%Y") }
-      values = sorted.map { |_, v| integer ? v.to_i : v.to_d.round.to_i }
-      [sorted.map(&:first), values]
     end
 
     def aligned_day_labels(*hashes)

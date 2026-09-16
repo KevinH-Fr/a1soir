@@ -1,9 +1,18 @@
-<%# locals: chart_id, config, extra_class: nil, box_style: nil, aria_label: nil %>
+<%# locals: chart_id, config, extra_class: nil, box_style: nil, aria_label: nil, center_lines: nil %>
 <div class="<%= analyses_chart_box_classes(extra_class) %>"<% if local_assigns[:box_style].present? %> style="<%= box_style %>"<% end %>>
-  <canvas
-    id="<%= chart_id %>"
-    data-analyses-chart="<%= config.to_json %>"
-    role="img"
-    aria-label="<%= local_assigns[:aria_label] || "Graphique" %>"
-  ></canvas>
+  <div class="analyses-chart-plot">
+    <canvas
+      id="<%= chart_id %>"
+      data-analyses-chart="<%= config.to_json %>"
+      role="img"
+      aria-label="<%= local_assigns[:aria_label] || "Graphique" %>"
+    ></canvas>
+    <% if local_assigns[:center_lines].present? %>
+      <div class="analyses-donut-center" aria-hidden="true">
+        <% center_lines.each_with_index do |line, index| %>
+          <span class="analyses-donut-center__line analyses-donut-center__line--<%= index %>"><%= line %></span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>

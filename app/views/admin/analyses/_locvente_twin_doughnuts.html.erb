@@ -1,0 +1,25 @@
+<%# locals: euro_key, euro_title:, euro_aria: %>
+<% euro_title = local_assigns.fetch(:euro_title, "CA (€)") %>
+<% euro_aria = local_assigns.fetch(:euro_aria, "Répartition location et vente en euros") %>
+<div class="analyses-locvente-twins">
+  <div class="analyses-locvente-twins__charts">
+    <div class="analyses-locvente-twin">
+      <%= analyses_chart_heading("Quantités", extra_class: "analyses-chart-heading--center analyses-chart-heading--compact") %>
+      <%= render_analyses_chart(
+            :locvente_qty_doughnut,
+            chart_id: local_assigns[:qty_chart_id],
+            extra_class: "analyses-chart--compact analyses-chart--twin",
+            aria_label: "Répartition location et vente en quantité"
+          ) %>
+    </div>
+    <div class="analyses-locvente-twin">
+      <%= analyses_chart_heading(euro_title, extra_class: "analyses-chart-heading--center analyses-chart-heading--compact") %>
+      <%= render_analyses_chart(
+            euro_key,
+            chart_id: local_assigns[:euro_chart_id],
+            extra_class: "analyses-chart--compact analyses-chart--twin",
+            aria_label: euro_aria
+          ) %>
+    </div>
+  </div>
+</div>

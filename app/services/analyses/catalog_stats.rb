@@ -42,6 +42,8 @@ module Analyses
       aggregates = @line_metrics.aggregate_by_produit
       quantites = aggregates[:quantites]
       ca_lignes = aggregates[:ca_lignes]
+      qte_loc = aggregates[:qte_loc] || {}
+      qte_vente = aggregates[:qte_vente] || {}
 
       produit_ids = (quantites.keys + ca_lignes.keys).uniq
       produits = Produit.where(id: produit_ids)
@@ -56,6 +58,8 @@ module Analyses
           produit_id: produit_id,
           produit: produit,
           quantite: quantites.fetch(produit_id, 0).to_i,
+          qte_loc: qte_loc.fetch(produit_id, 0).to_i,
+          qte_vente: qte_vente.fetch(produit_id, 0).to_i,
           ca_lignes: ca_lignes.fetch(produit_id, 0.to_d)
         }
       end

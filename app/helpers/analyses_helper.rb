@@ -2,7 +2,7 @@
 module AnalysesHelper
   ANALYSES_FILTER_KEYS = (
     Admin::ProduitListingFilters::ADMIN_PRODUIT_FILTER_KEYS +
-    %i[filter_profile filter_locvente filter_eshop debut fin vue]
+    %i[filter_profile filter_locvente filter_eshop filter_propart debut fin vue]
   ).freeze
 
   ANALYSES_TABS = [
@@ -30,6 +30,9 @@ module AnalysesHelper
     config = analyses_chart_config(key)
     return "" if config.blank?
 
+    # Métadonnées UI (pas pour Chart.js) — texte central HTML.
+    center_lines = Array(config.delete(:_centerText)).presence
+
     render(
       partial: "admin/analyses/chart_canvas",
       locals: {
@@ -37,7 +40,8 @@ module AnalysesHelper
         config: config,
         aria_label: aria_label,
         extra_class: extra_class,
-        box_style: box_style
+        box_style: box_style,
+        center_lines: center_lines
       }
     )
   end
@@ -58,7 +62,8 @@ module AnalysesHelper
   end
 
   def analyses_active_filters_count
-    filter_keys = Admin::ProduitListingFilters::ADMIN_PRODUIT_FILTER_KEYS + %i[filter_profile filter_locvente filter_eshop]
+    filter_keys = Admin::ProduitListingFilters::ADMIN_PRODUIT_FILTER_KEYS +
+                  %i[filter_profile filter_locvente filter_eshop filter_propart]
     filter_keys.count { |k| params[k].present? }
   end
 
@@ -105,13 +110,19 @@ module AnalysesHelper
     [today - 29, today]
   end
 
-  def analyses_toolbar_label(icon, text)
-    tag.span(class: "small text-secondary text-uppercase fw-semibold lh-sm text-nowrap") do
-      safe_join([
-        tag.i(class: "bi #{icon} me-1 opacity-75", aria: { hidden: true }),
-        text
-      ])
+  def analyses_chart_heading(title, meta: nil, extra_class: nil)
+    tag.div(class: class_names("analyses-chart-heading", extra_class)) do
+      parts = [tag.p(title, class: "analyses-chart-heading__title mb-0")]
+      if meta.present?
+        parts << tag.p(meta, class: "analyses-chart-heading__meta mb-0")
+      end
+      safe_join(parts)
     end
+  end
+
+  # Card légère autour d'un chart (sans titre de section global).
+  def analyses_chart_card(extra_class: nil, &block)
+    tag.div(class: class_names("analyses-chart-card", extra_class), &block)
   end
 
   def analyses_info_alert(message, extra_class: nil)
@@ -172,6 +183,13 @@ module AnalysesHelper
       value = { "true" => "E-shop", "false" => "Boutique" }[params[:filter_eshop].to_s] || params[:filter_eshop]
       chips << { key: :filter_eshop, label: "Canal", value: value }
     end
+    if params[:filter_propart].present?
+      value = {
+        "particulier" => "Particulier",
+        "professionnel" => "Professionnel"
+      }[params[:filter_propart].to_s] || params[:filter_propart]
+      chips << { key: :filter_propart, label: "Client", value: value }
+    end
     if params[:filter_locvente].present?
       chips << { key: :filter_locvente, label: "Mode", value: params[:filter_locvente].to_s.capitalize }
     end
@@ -182,6 +200,14 @@ module AnalysesHelper
     if params[:filter_categorie].present?
       cat = CategorieProduit.find_by(id: params[:filter_categorie])
       chips << { key: :filter_categorie, label: "Catégorie", value: cat&.nom || params[:filter_categorie] }
+    end
+    if params[:filter_fournisseur].present?
+      fournisseur = Fournisseur.find_by(id: params[:filter_fournisseur])
+      chips << {
+        key: :filter_fournisseur,
+        label: "Fournisseur",
+        value: params[:filter_fournisseur].to_s == "na" ? "NA" : (fournisseur&.nom || params[:filter_fournisseur])
+      }
     end
     if params[:filter_couleur].present?
       couleur = Couleur.find_by(id: params[:filter_couleur])
@@ -280,18 +306,28 @@ module AnalysesHelper
 
   # Hints CA boutique / Stripe partagés (synthèse + onglet CA).
   def analyses_ca_channel_hints
+    remb = analyses_remboursements_eshop
+
     if analyses_ca_mode_lignes?
-      return { hint: "Montants des articles", hint2: nil }
+      hint2 = remb.positive? ? "Remb. e-shop #{analyses_donut_amount_label(remb)} €" : nil
+      return { hint: "Montants des articles", hint2: hint2 }
     end
 
     ca_total = @totalPrixCa.to_d
     boutique_pct = ca_total.positive? ? ((@totalPrixCaBoutique.to_d / ca_total) * 100).round : nil
     stripe_pct = ca_total.positive? ? ((@totalPrixCaStripe.to_d / ca_total) * 100).round : nil
 
+    hint2 = "E-shop #{analyses_donut_amount_label(@totalPrixCaStripe)} €#{stripe_pct ? " · #{stripe_pct} %" : ""}"
+    hint2 = "#{hint2} · remb. #{analyses_donut_amount_label(remb)} €" if remb.positive?
+
     {
       hint: "Boutique #{analyses_donut_amount_label(@totalPrixCaBoutique)} €#{boutique_pct ? " · #{boutique_pct} %" : ""}",
-      hint2: "Stripe #{analyses_donut_amount_label(@totalPrixCaStripe)} €#{stripe_pct ? " · #{stripe_pct} %" : ""}"
+      hint2: hint2
     }
+  end
+
+  def analyses_remboursements_eshop
+    @totalRemboursementsEshop.to_d
   end
 
   # Lignes articles (boutique + Stripe) / commande — nil si aucune commande.
@@ -311,51 +347,11 @@ module AnalysesHelper
     trend = analyses_kpi_trend(metric_key)
     return "" if trend.blank?
 
-    render partial: "admin/analyses/kpi_trend", locals: { trend: trend }
-  end
-
-  def render_dashboard_section(title, icon_name = nil, partials = [], header_notice: nil, partial_wrapper: "col-sm-4 my-2", &block)
-    content_tag(:section, class: "bg-white bg-opacity-75 rounded-2 border border-secondary-subtle p-2 p-sm-3 mb-0") do
-      concat(content_tag(:div, class: "d-flex flex-wrap align-items-center gap-2 border-bottom border-secondary-subtle pb-2 mb-2") do
-        concat(content_tag(:i, "", class: "bi #{icon_name} text-secondary")) if icon_name.present?
-        concat(content_tag(:h2, title, class: "h6 mb-0 fw-semibold text-body"))
-      end)
-      concat(analyses_info_alert(header_notice)) if header_notice.present?
-      if block
-        concat(capture(&block))
-      else
-        concat(content_tag(:div, class: "row g-2 g-sm-3") do
-          partials.each do |partial|
-            concat(content_tag(:div, class: partial_wrapper) { render partial })
-          end
-        end)
-      end
-    end
-  end
-
-  def custom_period_filter_open?
-    selected = [parse_date(params[:debut]), parse_date(params[:fin])]
-    return false if selected.any?(&:nil?)
-
-    quick_period_ranges.none? { |range| range == selected }
-  end
-
-  def date_range_filter_today_button(base_params:)
-    selected_range = [parse_date(params[:debut]), parse_date(params[:fin])]
-    label, range = quick_period_definitions.first
-    debut, fin = range
-    preset_button_link(label, debut, fin, selected_range, base_params)
-  end
-
-  def date_range_filter_range_presets_buttons(base_params:)
-    selected_range = [parse_date(params[:debut]), parse_date(params[:fin])]
-    safe_join(
-      quick_period_definitions.drop(1).map do |label, range|
-        debut, fin = range
-        preset_button_link(label, debut, fin, selected_range, base_params)
-      end,
-      ""
-    )
+    render partial: "admin/analyses/kpi_trend",
+           locals: {
+             trend: trend,
+             value_label: (metric_key.to_sym == :top_vendeur_ca ? "CA" : nil)
+           }
   end
 
   def analyses_period_selected_range
@@ -406,14 +402,6 @@ module AnalysesHelper
 
   private
 
-  def preset_button_link(label, debut, fin, selected_range, _base_params)
-    is_active = selected_range == [debut, fin]
-    variant = is_active ? "primary" : "outline-secondary"
-    link_to label,
-            admin_analyses_index_path(analyses_period_params(debut: debut, fin: fin)),
-            class: "btn btn-sm btn-#{variant}"
-  end
-
   def quick_period_definitions
     today = Date.current
     prev_month = today.prev_month
@@ -424,10 +412,6 @@ module AnalysesHelper
       ["Mois précédent", [prev_month.beginning_of_month, prev_month.end_of_month]],
       ["Mois courant", [today.beginning_of_month, today.end_of_month]]
     ]
-  end
-
-  def quick_period_ranges
-    quick_period_definitions.map(&:last)
   end
 
   def parse_date(value)

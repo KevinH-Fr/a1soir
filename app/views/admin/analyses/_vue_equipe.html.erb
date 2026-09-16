@@ -5,42 +5,53 @@
 <% if analyses_visibility_show?(:profiles_section) %>
   <% header_notice = analyses_visibility_show?(:profiles_comparison) ? nil : "Un seul vendeur sélectionné — comparaison multi-vendeurs masquée." %>
   <% profile_count = (@stats_par_profile || []).size %>
-  <%= render_dashboard_section("Équipe", "bi bi-people-fill", [], header_notice: header_notice) do %>
-    <% if analyses_visibility_show?(:profiles_comparison) %>
-      <div class="row g-3 align-items-stretch mb-3">
-        <div class="col-lg-5">
-          <p class="small text-body-secondary mb-2">Répartition du CA par vendeur</p>
+  <% show_comparison = analyses_visibility_show?(:profiles_comparison) %>
+  <% show_timeline = show_comparison || (@stats_par_profile || []).any? { |r| r[:ca_by_day].present? } %>
+
+  <% if header_notice.present? %>
+    <%= analyses_info_alert(header_notice, extra_class: "mb-3") %>
+  <% end %>
+
+  <div class="analyses-chart-stack">
+    <div class="row g-3 align-items-stretch">
+      <div class="col-lg-5 min-w-0">
+        <%= analyses_chart_card do %>
+          <%= analyses_chart_heading(show_comparison ? "CA par vendeur" : "CA vendeur") %>
           <%= render_analyses_chart(
                 :profiles_grouped,
-                chart_id: "analyses-chart-profiles-grouped",
+                chart_id: "analyses-chart-profiles-bars",
                 extra_class: "analyses-chart--fill analyses-chart--equipe-bars",
                 box_style: "--analyses-chart-height: #{analyses_equipe_bars_height_rem(profile_count)}rem",
-                aria_label: "CA par vendeur"
+                aria_label: show_comparison ? "CA par vendeur" : "CA du vendeur"
               ) %>
-        </div>
-        <div class="col-lg-7">
-          <%= render "equipe_ranking_table" %>
-        </div>
+        <% end %>
       </div>
+      <div class="col-lg-7 min-w-0">
+        <%= analyses_chart_card do %>
+          <% ranking_count = (@stats_par_profile || []).size %>
+          <%= analyses_chart_heading(
+                "Classement vendeurs",
+                meta: "#{ranking_count} profil#{ranking_count > 1 ? "s" : ""}"
+              ) %>
+          <%= render "equipe_ranking_table" %>
+        <% end %>
+      </div>
+    </div>
 
-      <p class="small text-body-secondary mb-2">Évolution du CA par vendeur <span class="text-body-tertiary">— cliquer une légende pour masquer / afficher une courbe</span></p>
-      <%= render_analyses_chart(
-            :profiles_ca_timeline,
-            chart_id: "analyses-chart-profiles-timeline",
-            extra_class: "analyses-chart--fill analyses-chart--equipe-timeline",
-            aria_label: "Évolution du CA par vendeur"
-          ) %>
-    <% else %>
-      <%= render "equipe_ranking_table" %>
-      <% if (@stats_par_profile || []).any? { |r| r[:ca_by_day].present? } %>
-        <p class="small text-body-secondary mb-2 mt-3">Évolution du CA</p>
+    <% if show_timeline %>
+      <%= analyses_chart_card do %>
+        <% if show_comparison %>
+          <%= analyses_chart_heading("CA par vendeur dans le temps", meta: "Cliquer une légende pour masquer une courbe") %>
+        <% else %>
+          <%= analyses_chart_heading("CA dans le temps") %>
+        <% end %>
         <%= render_analyses_chart(
               :profiles_ca_timeline,
               chart_id: "analyses-chart-profiles-timeline",
               extra_class: "analyses-chart--fill analyses-chart--equipe-timeline",
-              aria_label: "Évolution du CA du vendeur"
+              aria_label: show_comparison ? "Évolution du CA par vendeur" : "Évolution du CA du vendeur"
             ) %>
       <% end %>
     <% end %>
-  <% end %>
+  </div>
 <% end %>

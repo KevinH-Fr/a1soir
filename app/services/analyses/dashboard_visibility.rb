@@ -42,26 +42,24 @@ module Analyses
       case widget.to_sym
       when :kpi
         VUES.include?(@vue)
-      when :commandes_section
-        @vue == "synthese"
       when :articles_locvente_split
         !dimension_pinned?(:locvente)
-      when :articles_section
-        @vue == "synthese"
       when :transactions_section
         @vue == "ca"
       when :ca_section
         @vue == "ca"
+      when :ca_channels_timeline
+        @vue.in?(%w[synthese ca]) && !dimension_pinned?(:eshop)
       when :ca_pie_payment_modes
         @ca_mode == :paiements
       when :catalog_section
         @vue == "catalogue"
       when :catalog_by_type
-        !dimension_pinned?(:type_produit)
+        !dimension_pinned?(:type_produit) && @vue.in?(%w[synthese catalogue])
       when :catalog_by_categorie
-        !dimension_pinned?(:categorie)
+        !dimension_pinned?(:categorie) && @vue == "catalogue"
       when :profiles_section
-        @vue == "equipe"
+        @vue.in?(%w[synthese equipe])
       when :profiles_comparison
         !dimension_pinned?(:profile)
       when :filter_profile_dropdown
@@ -73,14 +71,17 @@ module Analyses
 
     def pinned_filter_messages
       messages = []
-      if dimension_pinned?(:type_produit) && @vue == "catalogue"
+      if dimension_pinned?(:type_produit) && @vue.in?(%w[synthese catalogue])
         messages << { key: :filter_type_produit, label: "Type produit filtré — graphique par type masqué." }
       end
       if dimension_pinned?(:categorie) && @vue == "catalogue"
         messages << { key: :filter_categorie, label: "Catégorie filtrée — graphique par catégorie masqué." }
       end
-      if dimension_pinned?(:locvente) && @vue.in?(%w[synthese catalogue])
+      if dimension_pinned?(:locvente) && @vue == "catalogue"
         messages << { key: :filter_locvente, label: "Location / vente filtré — répartition loc/vente masquée." }
+      end
+      if dimension_pinned?(:eshop) && @vue.in?(%w[synthese ca])
+        messages << { key: :filter_eshop, label: "Canal filtré — évolution boutique / e-shop masquée." }
       end
       if dimension_pinned?(:profile) && @vue == "equipe"
         messages << { key: :filter_profile, label: "Vendeur filtré — comparaison multi-vendeurs masquée." }

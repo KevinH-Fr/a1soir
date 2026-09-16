@@ -30,13 +30,20 @@ RSpec.describe Analyses::KpiTrends do
 
   describe ".call with current metrics" do
     it "reuses provided current values and only snapshots the comparison period" do
-      current = { ca: 200, commandes: 4, articles_lignes: 8 }
-      reference = { ca: 100, commandes: 2, articles_lignes: 4 }
+      current = {
+        ca: 200,
+        commandes: 4,
+        articles_lignes: 8,
+        top_vendeur_ca: 120,
+        top_vendeur_profile_id: 42
+      }
+      reference = { ca: 100, commandes: 2, articles_lignes: 4, top_vendeur_ca: 80 }
 
       expect(Analyses::KpiSnapshot).to receive(:call).once do |params, metrics:|
         expect(params[:debut]).to eq(Date.new(2026, 3, 8))
         expect(params[:fin]).to eq(Date.new(2026, 3, 9))
-        expect(metrics).to eq(%i[ca commandes articles_lignes])
+        expect(params[:top_vendeur_profile_id]).to eq(42)
+        expect(metrics).to eq(%i[ca commandes articles_lignes top_vendeur_ca])
         reference
       end
 
@@ -49,6 +56,7 @@ RSpec.describe Analyses::KpiTrends do
       expect(result[:period_label]).to eq("vs 2 j. préc.")
       expect(result[:trends][:ca][:signed_pct]).to eq(100.0)
       expect(result[:trends][:commandes][:signed_pct]).to eq(100.0)
+      expect(result[:trends][:top_vendeur_ca][:signed_pct]).to eq(50.0)
       expect(result[:trends]).not_to have_key(:devis)
     end
   end

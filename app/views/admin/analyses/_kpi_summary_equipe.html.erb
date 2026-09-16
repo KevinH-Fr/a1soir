@@ -24,7 +24,7 @@
 
   <%= render "kpi_card",
         title: (totals[:vendeurs] == 1 ? "Vendeur" : "Meilleur CA"),
-        value: (top ? "#{analyses_donut_amount_label(top[:ca])} €" : "—"),
-        hint: (top ? top[:profile] : nil),
-        hint2: (top ? "#{top[:commandes]} commandes" : nil) %>
+        value: (top ? top[:profile] : "—"),
+        hint: (top ? "#{analyses_donut_amount_label(top[:ca])} €" : "Aucun CA sur la période"),
+        hint2: (top ? "#{top[:commandes]} commandes · #{top[:articles].to_i} articles" : nil) %>
 </div>

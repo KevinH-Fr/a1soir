@@ -578,10 +578,238 @@
   font-size: 0.75rem;
 }
 
-/* Doughnuts : bornés en largeur, la hauteur suit l'aspect ratio Chart.js
-   (pas de max-height sur le canvas, qui déformerait le rendu). */
+.analyses-chart-heading {
+  margin-bottom: 0.65rem;
+}
+
+.analyses-chart-heading__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #334155;
+  letter-spacing: -0.01em;
+}
+
+.analyses-chart-heading__meta {
+  margin-top: 0.15rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #94a3b8;
+}
+
+.analyses-chart-heading--center {
+  text-align: center;
+}
+
+.analyses-chart-heading--compact {
+  margin-bottom: 0.35rem;
+}
+
+.analyses-chart-heading--compact .analyses-chart-heading__title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.analyses-chart-card {
+  height: 100%;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 0.5rem;
+}
+
+/* Paire synthèse catalogue / équipe : même hauteur de plot. */
+.analyses-chart-card--stretch {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.analyses-chart-card--stretch .analyses-chart-heading {
+  flex: 0 0 auto;
+}
+
+.analyses-chart-card--stretch .analyses-chart-heading__meta {
+  min-height: calc(0.7rem * 1.3 * 2);
+}
+
+.analyses-chart-card--stretch .analyses-chart-box.analyses-chart--fill {
+  flex: 0 0 auto;
+  width: 100%;
+  height: var(--analyses-chart-height, 16rem);
+  max-height: min(var(--analyses-chart-height, 16rem), 40vh);
+}
+
+.analyses-chart-card--flush-center {
+  display: flex;
+  flex-direction: column;
+}
+
+.analyses-chart-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+/* Doughnuts : bornés en largeur ; aspect-ratio réserve la place avant le montage
+   différé (IntersectionObserver) pour éviter un saut de layout. */
 .analyses-chart--compact {
   max-width: 20rem;
+  aspect-ratio: auto;
+}
+
+.analyses-chart--twin {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.analyses-locvente-twins {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  /* Doughnuts + légendes Chart.js — aligne ~timeline. */
+  min-height: 21rem;
+}
+
+.analyses-locvente-twins__charts {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.75rem 1rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.analyses-locvente-twin {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: min(13.5rem, calc(50% - 0.5rem));
+}
+
+@media (max-width: 419px) {
+  .analyses-locvente-twins {
+    min-height: 0;
+  }
+
+  .analyses-locvente-twins__charts {
+    flex-wrap: wrap;
+  }
+
+  .analyses-locvente-twin {
+    flex-basis: 100%;
+    max-width: 11rem;
+  }
+}
+
+.analyses-chart-box {
+  position: relative;
+}
+
+.analyses-chart-plot {
+  position: relative;
+  width: 100%;
+}
+
+.analyses-chart--compact .analyses-chart-plot {
+  aspect-ratio: 1;
+}
+
+.analyses-chart--twin .analyses-donut-center {
+  padding: 0.35rem;
+}
+
+.analyses-chart--twin .analyses-donut-center__line--0 {
+  font-size: 0.95rem;
+}
+
+.analyses-chart--twin .analyses-donut-center__line--1,
+.analyses-chart--twin .analyses-donut-center__line--2 {
+  font-size: 0.68rem;
+}
+
+.analyses-locvente-twin .small {
+  font-size: 0.75rem;
+}
+
+.analyses-donut-center {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  /* Légende Chart.js (padding 10) en bas → centrer sur le trou du doughnut. */
+  bottom: 12%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  text-align: center;
+  padding: 0.5rem;
+  line-height: 1.15;
+}
+
+.analyses-donut-center__line {
+  display: block;
+  max-width: 85%;
+}
+
+.analyses-donut-center__line--0 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.analyses-donut-center__line--1 {
+  margin-top: 0.15rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.analyses-donut-center__line--2 {
+  margin-top: 0.2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+/* TTC/HT : première ligne un peu plus compacte */
+.analyses-donut-center:has(.analyses-donut-center__line--1:nth-child(2):last-child) .analyses-donut-center__line--0 {
+  font-size: 0.82rem;
+}
+
+.analyses-chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.65rem 1rem;
+  margin-top: 0.65rem;
+  padding: 0 0.25rem;
+}
+
+.analyses-chart-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.analyses-chart-legend__swatch {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 /* Conteneur Chart.js (maintainAspectRatio: false) : hauteur sur CE bloc, pas un parent externe. */
@@ -590,6 +818,10 @@
   max-width: 100%;
   position: relative;
   overflow: hidden;
+}
+
+.analyses-chart-box.analyses-chart--fill .analyses-chart-plot {
+  height: 100%;
 }
 
 .analyses-chart-box.analyses-chart--fill canvas {
@@ -617,7 +849,7 @@
 
 .analyses-chart--catalog-bars {
   height: var(--analyses-chart-height, 16rem);
-  max-height: min(var(--analyses-chart-height, 16rem), 45vh);
+  max-height: min(var(--analyses-chart-height, 16rem), 50vh);
 }
 
 /* KPI cards — compactes, alignées à gauche, accent teinté par section. */
@@ -667,20 +899,31 @@
 }
 
 .analyses-kpi__hints {
-  margin-top: 0.35rem;
-  min-height: calc(2 * 0.75rem * 1.3);
+  margin-top: 0.45rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.22);
+  min-height: calc(2 * 0.72rem * 1.35);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 0.05rem;
+  gap: 0.12rem;
 }
 
 .analyses-kpi__hint {
   margin-top: 0;
-  font-size: 0.75rem;
-  line-height: 1.3;
-  color: var(--bs-secondary-color);
-  min-height: calc(0.75rem * 1.3);
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: #64748b;
+  font-variant-numeric: tabular-nums;
+  min-height: calc(0.72rem * 1.35);
+}
+
+.analyses-kpi__hint:nth-child(2) {
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: #94a3b8;
 }
 
 .analyses-kpi__trend {

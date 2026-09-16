@@ -9,6 +9,7 @@ module Analyses
       transactions stripe
       quantites ca_lignes produits
       equipe_ca equipe_commandes equipe_devis
+      top_vendeur_ca
     ].freeze
 
     def self.call(filter_params, metrics: nil)
@@ -65,6 +66,8 @@ module Analyses
         result[:equipe_commandes] = totals[:commandes] if need?(:equipe_commandes)
         result[:equipe_devis] = totals[:devis] if need?(:equipe_devis)
       end
+
+      result[:top_vendeur_ca] = profile_ca(@filter_params[:top_vendeur_profile_id]) if need?(:top_vendeur_ca)
 
       result
     end
@@ -152,6 +155,30 @@ module Analyses
       end
 
       { ca: ca, commandes: commandes, devis: devis }
+    end
+
+    # CA d'un vendeur (même logique que l'agrégat équipe, un seul profil).
+    def profile_ca(profile_id)
+      return 0.to_d if profile_id.blank?
+
+      ids = @scopes[:commandes_filtres].where(profile_id: profile_id).pluck(:id)
+      return 0.to_d if ids.blank?
+
+      ca_paiements = if @ca_mode == :lignes
+                       @scopes[:articles_filtres]
+                         .where(commande_id: ids)
+                         .joins(:commande)
+                         .where(commandes: { eshop: [false, nil] })
+                         .sum(:prix).to_d +
+                       @scopes[:sous_articles_filtres]
+                         .joins(article: :commande)
+                         .where(commandes: { id: ids, eshop: [false, nil] })
+                         .sum(:prix).to_d
+                     else
+                       @scopes[:paiements_filtres].only_prix.where(commande_id: ids).sum(:montant).to_d
+                     end
+
+      ca_paiements + @stripe_totals.total_eur(commande_ids: ids)
     end
   end
 end

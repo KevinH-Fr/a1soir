@@ -27,6 +27,13 @@ RSpec.describe Analyses::DashboardVisibility do
     expect(visibility.show?(:catalog_by_categorie)).to be(true)
   end
 
+  it "shows catalog type and equipe previews on synthese" do
+    synth = described_class.new({}, ca_mode: :paiements, vue: "synthese")
+    expect(synth.show?(:catalog_by_type)).to be(true)
+    expect(synth.show?(:profiles_section)).to be(true)
+    expect(synth.show?(:catalog_by_categorie)).to be(false)
+  end
+
   it "shows KPI on every analyses vue" do
     expect(described_class.new({}, ca_mode: :paiements, vue: "synthese").show?(:kpi)).to be(true)
     expect(described_class.new({}, ca_mode: :paiements, vue: "ca").show?(:kpi)).to be(true)
@@ -39,5 +46,12 @@ RSpec.describe Analyses::DashboardVisibility do
     synth = described_class.new({}, ca_mode: :paiements, vue: "synthese")
     expect(ca.show?(:ca_section)).to be(true)
     expect(synth.show?(:ca_section)).to be(false)
+  end
+
+  it "shows channel timeline unless eshop is pinned" do
+    open = described_class.new({}, ca_mode: :paiements, vue: "ca")
+    pinned = described_class.new({ filter_eshop: "true" }, ca_mode: :paiements, vue: "ca")
+    expect(open.show?(:ca_channels_timeline)).to be(true)
+    expect(pinned.show?(:ca_channels_timeline)).to be(false)
   end
 end

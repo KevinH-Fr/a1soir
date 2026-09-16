@@ -1,6 +1,7 @@
 <% ca_hints = analyses_ca_channel_hints %>
 <% panier = analyses_ca_panier_moyen %>
 <% art_par_cmd = analyses_articles_par_commande %>
+<% remb = analyses_remboursements_eshop %>
 
 <div class="row row-cols-2 row-cols-lg-4 g-2 g-sm-3">
   <%= render "kpi_card",
@@ -22,13 +23,16 @@
         title: "Commandes",
         value: @nbTotal,
         trend_metric: :commandes,
-        hint: (panier ? "Panier moy. #{analyses_donut_amount_label(panier)} €" : nil),
-        hint2: (art_par_cmd ? "#{art_par_cmd} art. / commande" : nil) %>
+        hint: [
+          (panier ? "Panier moyenne #{analyses_donut_amount_label(panier)} €" : nil),
+          (art_par_cmd ? "#{art_par_cmd} articles / cmd" : nil)
+        ].compact.join(" · ").presence,
+        hint2: ("#{@nbDevisPeriode} devis" if @nbDevisPeriode.to_i.positive?) %>
 
   <%= render "kpi_card",
-        title: "Stripe",
+        title: "E-shop",
         value: "#{analyses_donut_amount_label(@totalPrixCaStripe)} €",
         trend_metric: :stripe,
-        hint: "E-shop",
-        hint2: "Net remboursements" %>
+        hint: "E-shop net",
+        hint2: (remb.positive? ? "Remb. #{analyses_donut_amount_label(remb)} €" : "Sans remboursement") %>
 </div>

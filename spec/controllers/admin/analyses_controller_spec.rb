@@ -82,6 +82,10 @@ RSpec.describe Admin::AnalysesController, type: :controller do
 
         expect(response).to have_http_status(:ok)
         expect(response.body).to include("analyses-chart-synthese-mixed")
+        expect(response.body).to include("analyses-chart-synthese-catalog-types")
+        expect(response.body).to include("analyses-chart-synthese-profiles-bars")
+        expect(assigns(:catalog_by_type)).to be_present
+        expect(assigns(:stats_par_profile)).to be_present
         expect(response.body).to include('id="analysesFiltersOffcanvas"')
         expect(response.body).to include('data-bs-target="#analysesFiltersOffcanvas"')
         expect(response.body).not_to include("bi-filter-circle")
@@ -101,7 +105,7 @@ RSpec.describe Admin::AnalysesController, type: :controller do
 
         expect(response).to have_http_status(:ok)
         expect(assigns(:totalTransactionsLoc)).to eq(expected[:total_transactions_loc])
-        expect(response.body).to include("analyses-chart-ca-timeline")
+        expect(response.body).to include("analyses-chart-ca-transactions")
         expect(response.body).to include("analyses-chart-ca_payment_modes_doughnut")
       end
 
@@ -123,6 +127,26 @@ RSpec.describe Admin::AnalysesController, type: :controller do
         # Boutique robes (100 + 40) + Stripe robe (60) − remboursement e-shop (20) = 180
         expect(assigns(:totalPrixCa)).to eq(180.to_d)
         expect(assigns(:totalPrixCaStripe)).to eq(40.to_d)
+      end
+
+      it "filters by fournisseur like other product dimensions" do
+        data = AnalysesDashboardDataset.data
+
+        get :index, params: period.merge(filter_fournisseur: data[:fournisseur].id, vue: "synthese")
+
+        expect(assigns(:analyses_ca_mode)).to eq(:lignes)
+        expect(response.body).to include("Fournisseur")
+        # Même périmètre que le filtre type robe (produit_robe uniquement).
+        expect(assigns(:totalPrixCa)).to eq(180.to_d)
+      end
+
+      it "filters by client type particulier / professionnel" do
+        get :index, params: period.merge(filter_propart: "particulier", vue: "synthese")
+        expect(assigns(:nbTotal)).to eq(AnalysesDashboardDataset.expected_baseline[:nb_total_commandes])
+
+        get :index, params: period.merge(filter_propart: "professionnel", vue: "synthese")
+        expect(assigns(:nbTotal)).to eq(0)
+        expect(response.body).to include("Type de client")
       end
 
       it "counts e-shop Stripe lines as vente articles" do

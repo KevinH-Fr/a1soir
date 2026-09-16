@@ -1,14 +1,4 @@
 <div class="analyses-catalog-top">
-  <div class="mb-2">
-    <h3 class="h6 fw-semibold mb-0 d-inline-flex align-items-center flex-wrap gap-2">
-      Produits les plus demandés
-      <span class="analyses-catalog-top__badge">Top <%= Analyses::CatalogStats::TOP_LIMIT %></span>
-    </h3>
-  </div>
-  <p class="small text-body-secondary mb-3">
-    Quantités et montants des lignes sur la période filtrée.
-  </p>
-
   <% if @catalog_top_products.blank? %>
     <p class="small text-muted mb-0">Aucune ligne article sur cette période.</p>
   <% else %>
@@ -19,6 +9,8 @@
             <th scope="col" class="analyses-catalog-top__rank">#</th>
             <th scope="col">Produit</th>
             <th scope="col" class="text-end">Qté</th>
+            <th scope="col" class="text-end d-none d-md-table-cell">Loc</th>
+            <th scope="col" class="text-end d-none d-md-table-cell">Vente</th>
             <th scope="col" class="text-end">CA lignes</th>
           </tr>
         </thead>
@@ -51,6 +43,8 @@
                 <% end %>
               </td>
               <td class="text-end analyses-catalog-top__num fw-semibold"><%= row[:quantite] %></td>
+              <td class="text-end analyses-catalog-top__num d-none d-md-table-cell"><%= row[:qte_loc].to_i %></td>
+              <td class="text-end analyses-catalog-top__num d-none d-md-table-cell"><%= row[:qte_vente].to_i %></td>
               <td class="text-end analyses-catalog-top__num">
                 <%= number_to_currency(row[:ca_lignes], unit: "€", format: "%n %u", precision: 0) %>
               </td>

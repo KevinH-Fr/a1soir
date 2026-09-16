@@ -30,6 +30,20 @@ module Analyses
       result
     end
 
+    # Total remboursements e-shop sur la période (montant positif).
+    def remboursements_total_eur(commande_ids: nil)
+      return 0.to_d if commande_ids&.empty?
+
+      if commande_ids.nil?
+        return @remboursements_total_eur if defined?(@remboursements_total_eur)
+
+        @remboursements_total_eur = remboursements_eur
+        return @remboursements_total_eur
+      end
+
+      remboursements_eur(commande_ids: commande_ids)
+    end
+
     def grouped_by_day_eur
       @grouped_by_day_eur ||= if @product_dimension_filtered
                                 grouped_stripe_items_by_day

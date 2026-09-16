@@ -17,18 +17,19 @@
         value: @nbTotal,
         trend_metric: :commandes,
         hint: "#{@nbNonRetire} en cours · #{@nbDevisPeriode} devis",
-        hint2: (panier ? "Panier moy. #{analyses_donut_amount_label(panier)} €" : nil) %>
+        hint2: (panier ? "Panier moyenne #{analyses_donut_amount_label(panier)} €" : nil) %>
 
   <%= render "kpi_card",
         title: "Articles",
         value: @nbTotalArticles,
         trend_metric: :articles_lignes,
-        hint: (art_par_cmd ? "#{art_par_cmd} art. / commande" : nil),
+        hint: (art_par_cmd ? "#{art_par_cmd} articles / commande" : nil),
         hint2: (analyses_visibility_show?(:articles_locvente_split) ? "#{@nbLoc} locations · #{@nbVente} ventes" : nil) %>
 
   <%= render "kpi_card",
         title: "Top vendeur",
         value: (top ? top[:profile] : "—"),
+        trend_metric: :top_vendeur_ca,
         hint: (top ? "#{analyses_donut_amount_label(top[:ca])} €" : "Aucun CA sur la période"),
         hint2: (top ? "#{top[:commandes]} commandes · #{top[:articles].to_i} articles" : nil) %>
 </div>

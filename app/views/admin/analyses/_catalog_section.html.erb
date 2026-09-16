@@ -1,58 +1,73 @@
-<%= render_dashboard_section("Catalogue", "bi bi-bag", []) do %>
-  <% show_type = analyses_visibility_show?(:catalog_by_type) %>
-  <% show_cat = analyses_visibility_show?(:catalog_by_categorie) %>
-  <% show_locvente = analyses_visibility_show?(:articles_locvente_split) %>
-  <% chart_count = [show_locvente, show_type, show_cat].count(true) %>
-  <% chart_col = case chart_count
-                 when 1 then "col-12"
-                 when 2 then "col-lg-6"
-                 else "col-lg-4"
-                 end %>
-  <% type_count = (@catalog_by_type || []).size %>
-  <% cat_count = (@catalog_by_categorie || []).size %>
+<% show_type = analyses_visibility_show?(:catalog_by_type) %>
+<% show_cat = analyses_visibility_show?(:catalog_by_categorie) %>
+<% show_locvente = analyses_visibility_show?(:articles_locvente_split) %>
+<% chart_count = [show_locvente, show_type, show_cat].count(true) %>
+<% chart_col = case chart_count
+               when 1 then "col-12"
+               when 2 then "col-lg-6"
+               else "col-lg-4"
+               end %>
+<% locvente_col = if !show_locvente
+                    nil
+                  elsif chart_count == 1
+                    "col-12 col-md-8 col-lg-6"
+                  else
+                    "col-12 col-lg-6 min-w-0"
+                  end %>
+<% bars_col = (show_locvente && chart_count >= 3) ? "col-12 col-sm-6 col-lg-3 min-w-0" : "#{chart_col} min-w-0" %>
+<% type_count = (@catalog_by_type || []).size %>
+<% cat_count = (@catalog_by_categorie || []).size %>
 
+<div class="analyses-chart-stack">
   <% if chart_count.positive? %>
-    <div class="row g-3 mb-3 align-items-stretch">
+    <div class="row g-3 align-items-stretch">
       <% if show_locvente %>
-        <div class="<%= chart_col %>">
-          <p class="small text-body-secondary mb-2">Répartition location / vente</p>
-          <div class="d-flex justify-content-center">
-            <%= render_analyses_chart(
-                  :articles_locvente_doughnut,
-                  extra_class: "analyses-chart--compact",
-                  aria_label: "Répartition location et vente"
-                ) %>
-          </div>
+        <div class="<%= locvente_col %>">
+          <%= analyses_chart_card(extra_class: "analyses-chart-card--flush-center") do %>
+            <%= analyses_chart_heading("Location / vente") %>
+            <%= render "admin/analyses/locvente_twin_doughnuts",
+                  euro_key: :articles_locvente_ca_doughnut,
+                  euro_title: "CA (€)",
+                  euro_aria: "Répartition location et vente du CA articles",
+                  qty_chart_id: "analyses-chart-locvente-qty-catalogue",
+                  euro_chart_id: "analyses-chart-locvente-ca-catalogue" %>
+          <% end %>
         </div>
       <% end %>
       <% if show_type %>
-        <div class="<%= chart_col %>">
-          <p class="small text-body-secondary mb-2">
-            Par type <span class="text-body-tertiary">— top 5 · qté & CA</span>
-          </p>
-          <%= render_analyses_chart(
-                :catalog_types_bars,
-                extra_class: "analyses-chart--fill analyses-chart--catalog-bars",
-                box_style: "--analyses-chart-height: #{analyses_equipe_bars_height_rem([type_count, 3].max)}rem",
-                aria_label: "Quantités et CA par type de produit"
-              ) %>
+        <div class="<%= bars_col %>">
+          <%= analyses_chart_card do %>
+            <%= analyses_chart_heading("Par type", meta: "Top 5 · quantité & CA") %>
+            <%= render_analyses_chart(
+                  :catalog_types_bars,
+                  extra_class: "analyses-chart--fill analyses-chart--catalog-bars",
+                  box_style: "--analyses-chart-height: #{analyses_equipe_bars_height_rem([type_count, 3].max)}rem",
+                  aria_label: "Quantités et CA par type de produit"
+                ) %>
+          <% end %>
         </div>
       <% end %>
       <% if show_cat %>
-        <div class="<%= chart_col %>">
-          <p class="small text-body-secondary mb-2">
-            Par catégorie <span class="text-body-tertiary">— top 5 · qté & CA</span>
-          </p>
-          <%= render_analyses_chart(
-                :catalog_categories_bars,
-                extra_class: "analyses-chart--fill analyses-chart--catalog-bars",
-                box_style: "--analyses-chart-height: #{analyses_equipe_bars_height_rem([cat_count, 3].max)}rem",
-                aria_label: "Quantités et CA par catégorie"
-              ) %>
+        <div class="<%= bars_col %>">
+          <%= analyses_chart_card do %>
+            <%= analyses_chart_heading("Par catégorie", meta: "Top 5 · quantité & CA") %>
+            <%= render_analyses_chart(
+                  :catalog_categories_bars,
+                  extra_class: "analyses-chart--fill analyses-chart--catalog-bars",
+                  box_style: "--analyses-chart-height: #{analyses_equipe_bars_height_rem([cat_count, 3].max)}rem",
+                  aria_label: "Quantités et CA par catégorie"
+                ) %>
+          <% end %>
         </div>
       <% end %>
     </div>
   <% end %>
 
-  <%= render "catalog_top_products" %>
-<% end %>
+  <%= analyses_chart_card do %>
+    <%= analyses_chart_heading(
+          "Produits les plus demandés",
+          meta: "Top #{Analyses::CatalogStats::TOP_LIMIT} · quantités et montants des lignes"
+        ) %>
+    <%= render "catalog_top_products" %>
+  <% end %>
+</div>

@@ -68,6 +68,14 @@ RSpec.describe Analyses::LineMetrics do
     expect(metrics.loc_lignes_count).to eq(1)
     expect(metrics.quantites).to eq(6) # 2+1 boutique + 3 stripe
     expect(metrics.ca_lignes).to eq(145.to_d) # 40+30 + (3*25)
+    expect(metrics.loc_ca_lignes).to eq(30.to_d)
+    expect(metrics.vente_ca_lignes).to eq(115.to_d) # 40 + 75
+  end
+
+  it "aggregates loc / vente quantities per product" do
+    agg = metrics.aggregate_by_produit
+    expect(agg[:qte_loc][produit.id]).to eq(1)
+    expect(agg[:qte_vente][produit.id]).to eq(5) # 2 boutique vente + 3 stripe
   end
 
   it "does not double-count when stripe scope is empty" do

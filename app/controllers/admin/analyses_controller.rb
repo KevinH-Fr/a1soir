@@ -37,6 +37,7 @@ class Admin::AnalysesController < Admin::ApplicationController
       product_dimension_filtered: @product_dimension_filtered
     )
     @total_stripe_eur = stripe_totals.total_eur
+    @totalRemboursementsEshop = stripe_totals.remboursements_total_eur
 
     @analyses_vue = Analyses::DashboardVisibility.normalize_vue(params[:vue])
     @analyses_visibility = Analyses::DashboardVisibility.new(
@@ -79,7 +80,7 @@ class Admin::AnalysesController < Admin::ApplicationController
   def analyses_filter_params
     params.permit(
       :debut, :fin, :vue,
-      :filter_profile, :filter_locvente, :filter_eshop,
+      :filter_profile, :filter_locvente, :filter_eshop, :filter_propart,
       *Admin::ProduitListingFilters::ADMIN_PRODUIT_FILTER_KEYS
     )
   end
@@ -90,6 +91,7 @@ class Admin::AnalysesController < Admin::ApplicationController
     @type_produits = TypeProduit.order(:nom)
     @couleurs = Couleur.order(:nom)
     @tailles = Taille.order(:nom)
+    @fournisseurs = Fournisseur.order(:nom)
   end
 
   # Réutilise les ivars de l'onglet pour éviter un 2e KpiSnapshot sur la période courante.
@@ -116,10 +118,13 @@ class Admin::AnalysesController < Admin::ApplicationController
         equipe_devis: stats.sum { |r| r[:devis].to_i }
       }
     else
+      top = @synthese_top_profile
       {
         ca: @totalPrixCa,
         commandes: @nbTotal,
-        articles_lignes: @nbTotalArticles
+        articles_lignes: @nbTotalArticles,
+        top_vendeur_ca: top&.dig(:ca).to_d,
+        top_vendeur_profile_id: top&.dig(:profile_id)
       }
     end
   end
