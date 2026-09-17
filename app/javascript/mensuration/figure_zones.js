@@ -18,6 +18,7 @@ export const ZONES = {
   leg: { axis: "v", x: 121, y: 88, length: 110, thick: 6 },
   leg_ext: { axis: "v", x: 121, y: 88, length: 110, thick: 6 },
   leg_int: { axis: "v", x: 109, y: 118, length: 80, thick: 6 },
+  thigh: { axis: "h", x: 98, y: 128, length: 28, thick: 7 },
   feet: { axis: "h", x: 89.9, y: 198, length: 26.5 }
 }
 

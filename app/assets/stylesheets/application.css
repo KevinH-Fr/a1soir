@@ -2849,9 +2849,56 @@ section {
   margin-right: auto;
 }
 
+.mensuration-otp__digits {
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+  margin: 0 auto 1.1rem;
+}
+
+.mensuration-otp__digit {
+  width: 2.65rem;
+  height: 3.15rem;
+  padding: 0;
+  text-align: center;
+  font-size: 1.35rem;
+  font-weight: 400;
+  font-family: inherit;
+  line-height: 1;
+  color: #f5f5f5;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.35rem;
+  caret-color: #fff;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.mensuration-otp__digit:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.mensuration-otp__digit:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.12);
+}
+
 .mensuration-otp .form-control {
   min-height: 2.75rem;
   font-size: 1.15rem;
+}
+
+@media (max-width: 400px) {
+  .mensuration-otp__digits {
+    gap: 0.35rem;
+  }
+
+  .mensuration-otp__digit {
+    width: 2.35rem;
+    height: 2.85rem;
+    font-size: 1.2rem;
+  }
 }
 
 .mensuration-otp .mensuration-gate__email {

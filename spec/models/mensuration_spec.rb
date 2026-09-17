@@ -23,10 +23,10 @@ RSpec.describe Mensuration, type: :model do
       femme = described_class.fields_for("femme").map { |f| f["key"] }
       homme = described_class.fields_for("homme").map { |f| f["key"] }
 
-      expect(femme).to include("taille_soutien_gorge")
-      expect(homme).not_to include("taille_soutien_gorge")
-      expect(homme).to include("tour_cou", "longueur_jambe_ext", "longueur_jambe_int")
-      expect(femme).not_to include("tour_cou")
+      expect(femme).to include("taille_soutien_gorge", "tour_cou", "taille_sous_poitrine", "tour_cuisse")
+      expect(homme).not_to include("taille_soutien_gorge", "taille_sous_poitrine", "tour_hanches")
+      expect(homme).to include("tour_cou", "longueur_jambe_ext", "longueur_jambe_int", "tour_cuisse",
+                               "tour_hanches_pantalon")
     end
 
     it "sépare les tailles étiquette et les mensurations au mètre pour l'homme" do
@@ -38,24 +38,30 @@ RSpec.describe Mensuration, type: :model do
         %w[taille_veste taille_chemise coupe_chemise taille_pantalon_marque pointure]
       )
       expect(steps["corps"].map { |f| f["key"] }).to start_with("hauteur", "tour_cou", "largeur_epaules")
-      expect(steps["corps"].map { |f| f["key"] }).to include("tour_taille_ceinture", "tour_hanches_pantalon")
+      expect(steps["corps"].map { |f| f["key"] }).to include("tour_taille_ceinture", "tour_hanches_pantalon",
+                                                              "tour_cuisse")
+      expect(steps["corps"].map { |f| f["key"] }).not_to include("tour_hanches")
     end
 
-    it "garde un seul volet de mesures pour la femme, robe avant le reste" do
+    it "sépare tailles de vêtement et mensurations pour la femme" do
       femme = described_class.new(template: "femme")
       steps = femme.fields_by_form_step
-      clothes = steps["mesures"].select { |f| f["group"] == "vetements" }.map { |f| f["key"] }
+      clothes = steps["tailles"].select { |f| f["group"] == "vetements" }.map { |f| f["key"] }
 
-      expect(steps.keys).to eq(%w[mesures])
+      expect(steps.keys).to eq(%w[tailles corps])
+      expect(steps["tailles"].map { |f| f["key"] }).to start_with("hauteur")
       expect(clothes).to eq(
         %w[taille_robe_marque taille_soutien_gorge taille_pantalon_jupe_marque taille_veste_chemisier]
       )
+      expect(steps["corps"].map { |f| f["key"] }).to start_with("tour_poitrine", "taille_sous_poitrine")
+      expect(steps["corps"].map { |f| f["key"] }).to include("tour_cou", "tour_cuisse")
     end
 
     it "n'associe une région SVG qu'aux mensurations au mètre" do
-      clips = %w[full neck chest waist waist_belt hips hips_pant shoulders arm leg_ext leg_int]
-      figured = %w[hauteur tour_cou largeur_epaules tour_poitrine tour_taille tour_taille_ceinture
-                   tour_hanches tour_hanches_pantalon longueur_bras_ext longueur_jambe_ext longueur_jambe_int]
+      clips = %w[full neck chest torso waist waist_belt hips hips_pant shoulders arm leg_ext leg_int thigh]
+      figured = %w[hauteur tour_cou largeur_epaules tour_poitrine taille_sous_poitrine tour_taille
+                   tour_taille_ceinture tour_hanches tour_hanches_pantalon longueur_bras_ext
+                   longueur_jambe_ext longueur_jambe_int tour_cuisse]
       skip = %w[hauteur_talons taille_robe_marque taille_soutien_gorge taille_pantalon_jupe_marque
                 taille_veste_chemisier preference_forme_robe taille_veste taille_chemise coupe_chemise
                 taille_pantalon_marque pointure]
@@ -90,7 +96,7 @@ RSpec.describe Mensuration, type: :model do
   describe "#resolve_and_link_client!" do
     it "rattache au client existant (même e-mail) sans écraser sa fiche" do
       existing = Client.create!(
-        nom: "Dupont", prenom: "Jean-Existant", mail: "jean@example.com",
+        nom: "Dupont", prenom: "Jean Existant", mail: "jean@example.com",
         tel: "0600000000", ville: "Nice"
       )
 
@@ -103,7 +109,7 @@ RSpec.describe Mensuration, type: :model do
       # La fiche client existante n'est pas modifiée.
       expect(existing.reload.tel).to eq("0600000000")
       expect(existing.ville).to eq("Nice")
-      expect(existing.prenom).to eq("Jean-Existant")
+      expect(existing.prenom).to eq("Jean Existant")
     end
 
     it "crée un client si aucun compte n'a cet e-mail" do
@@ -145,7 +151,7 @@ RSpec.describe Mensuration, type: :model do
     it "ne garde que les clés du template et les choix prévus" do
       cleaned = described_class.sanitize_measurements("femme", {
         "hauteur" => " 168 ",
-        "tour_cou" => "40",
+        "taille_veste" => "50",
         "coupe_chemise" => "inconnu"
       })
 
@@ -154,8 +160,23 @@ RSpec.describe Mensuration, type: :model do
   end
 
   describe "#apply_public_input" do
+    let(:invitation_femme) do
+      MensurationInvitation.create!(email: "anna@example.com", nom: "Durand", template: "femme", locale: "fr")
+    end
+
+    def build_femme_mensuration(attrs = {})
+      described_class.new({
+        mensuration_invitation: invitation_femme,
+        template: "femme",
+        locale: "fr",
+        prenom: "Anna",
+        nom: "Durand",
+        measurements: { "hauteur" => "168" }
+      }.merge(attrs))
+    end
+
     it "fusionne les mesures en mode brouillon" do
-      mensuration = build_mensuration
+      mensuration = build_femme_mensuration
       mensuration.measurements = { "hauteur" => "168" }
       mensuration.apply_public_input(
         identity: { prenom: "Anna" },
@@ -168,7 +189,7 @@ RSpec.describe Mensuration, type: :model do
     end
 
     it "remplace les mesures sans fusion" do
-      mensuration = build_mensuration
+      mensuration = build_femme_mensuration
       mensuration.measurements = { "hauteur" => "168" }
       mensuration.apply_public_input(
         identity: { prenom: "Anna" },

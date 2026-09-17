@@ -206,17 +206,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_07_160000) do
     t.index ["demande_rdv_id"], name: "index_demande_cabine_essayages_on_demande_rdv_id"
   end
 
-  create_table "demande_rdv", force: :cascade do |t|
-    t.string "nom"
-    t.string "email"
-    t.string "telephone"
-    t.text "commentaire"
-    t.datetime "date_rdv"
-    t.string "statut"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "demande_rdvs", force: :cascade do |t|
     t.string "nom"
     t.string "email"
@@ -509,18 +498,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_07_160000) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "texte_produits", force: :cascade do |t|
-    t.integer "texte_id", null: false
-    t.integer "produit_id", null: false
-    t.integer "position", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["produit_id"], name: "index_texte_produits_on_produit_id"
-    t.index ["texte_id", "position"], name: "index_texte_produits_on_texte_id_and_position"
-    t.index ["texte_id", "produit_id"], name: "index_texte_produits_on_texte_id_and_produit_id", unique: true
-    t.index ["texte_id"], name: "index_texte_produits_on_texte_id"
-  end
-
   create_table "textes", force: :cascade do |t|
     t.string "titre"
     t.datetime "created_at", null: false
@@ -600,6 +577,4 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_07_160000) do
   add_foreign_key "stripe_payment_items", "stripe_payments"
   add_foreign_key "stripe_payments", "commandes"
   add_foreign_key "stripe_payments", "produits"
-  add_foreign_key "texte_produits", "produits"
-  add_foreign_key "texte_produits", "textes"
 end

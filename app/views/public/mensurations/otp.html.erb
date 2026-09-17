@@ -1,5 +1,4 @@
 <% code_pending = @invitation.otp_sent_at.present? && @invitation.otp_sent_at > MensurationInvitation::OTP_VALIDITY.ago %>
-<% field_class = "form-control bg-dark text-light border-secondary text-center" %>
 
 <div class="concept-card mensuration-otp">
   <%= render "public/mensurations/card_header" %>
@@ -12,18 +11,29 @@
   </p>
 
   <% if code_pending %>
-    <%= form_with url: mensuration_verify_path(token: @invitation.token), method: :post, local: true, html: { class: "mensuration-otp__actions" } do |f| %>
-      <div class="mb-3">
-        <%= f.text_field :code,
-              class: field_class,
-              inputmode: "numeric",
-              autocomplete: "one-time-code",
-              maxlength: 6,
-              required: true,
-              autofocus: true,
-              placeholder: t("mensurations.otp.code_label"),
-              "aria-label": t("mensurations.otp.code_label"),
-              data: { controller: "otp-submit", action: "input->otp-submit#check" } %>
+    <%= form_with url: mensuration_verify_path(token: @invitation.token), method: :post, local: true,
+          html: {
+            class: "mensuration-otp__actions",
+            data: {
+              controller: "otp-submit",
+              otp_submit_length_value: 6,
+              action: "submit->otp-submit#prepareSubmit"
+            }
+          } do |f| %>
+      <%= f.hidden_field :code, value: "", data: { otp_submit_target: "hidden" }, autocomplete: "off" %>
+      <div class="mensuration-otp__digits" role="group" aria-label="<%= t("mensurations.otp.code_label") %>">
+        <% 6.times do |i| %>
+          <input type="text"
+                 class="mensuration-otp__digit"
+                 inputmode="numeric"
+                 pattern="[0-9]*"
+                 maxlength="1"
+                 autocomplete="<%= i.zero? ? "one-time-code" : "off" %>"
+                 aria-label="<%= t("mensurations.otp.digit_label", position: i + 1, length: 6) %>"
+                 data-otp-submit-target="digit"
+                 data-action="input->otp-submit#input keydown->otp-submit#keydown paste->otp-submit#paste"
+                 <%= "autofocus" if i.zero? %>>
+        <% end %>
       </div>
       <%= f.submit t("mensurations.otp.verify"), class: "btn btn-light public-btn-border-radius w-100 py-2" %>
     <% end %>

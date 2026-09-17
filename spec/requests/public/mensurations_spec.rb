@@ -218,7 +218,8 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect(response.body).to include('data-measure-guide-target="title"')
       expect(response.body).to include("data-title=\"#{I18n.t("mensurations.fields.hauteur.name", locale: :fr)}\"")
       expect(response.body).to include('data-ruler="taille"')
-      expect(response.body).not_to include('data-clip="chest"')
+      expect(response.body).to include('data-clip="chest"')
+      expect(response.body).to include('data-clip="thigh"')
     end
 
     it "n'affiche aucun type de formulaire présélectionné sur une fiche vierge" do
@@ -501,7 +502,7 @@ RSpec.describe "Public::Mensurations", type: :request do
 
         follow_redirect!
         expect(response.body).to include(I18n.t("mensurations.otp.session_expired", locale: :fr))
-        expect(response.body).to include(I18n.t("mensurations.otp.code_label", locale: :fr))
+        expect(response.body).to include(I18n.t("mensurations.otp.send_code", locale: :fr))
       end
     end
   end
@@ -558,14 +559,16 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect {
         post "/fr/m/#{invitation.token}", params: {
           mensuration: { prenom: "Anna", nom: "Durand", telephone: "0611111111", ville: "Cannes" },
-          measurements: { hauteur: "168", taille_soutien_gorge: "90D", tour_cou: "40" }
+          measurements: { hauteur: "168", taille_soutien_gorge: "90D", taille_veste: "50", tour_cou: "40" }
         }
       }.to change(Mensuration, :count).by(1).and change(Client, :count).by(1)
 
       mensuration = Mensuration.last
-      expect(mensuration.measurements).to eq("hauteur" => "168", "taille_soutien_gorge" => "90D")
-      # tour_cou est un champ homme : ignoré sur une invitation femme.
-      expect(mensuration.value_for("tour_cou")).to be_nil
+      expect(mensuration.measurements).to eq(
+        "hauteur" => "168", "taille_soutien_gorge" => "90D", "tour_cou" => "40"
+      )
+      # taille_veste est un champ homme : ignoré sur une invitation femme.
+      expect(mensuration.value_for("taille_veste")).to be_nil
       expect(mensuration.client.mail).to eq("cliente@example.com")
       expect(invitation.reload.status).to eq("completed")
 
