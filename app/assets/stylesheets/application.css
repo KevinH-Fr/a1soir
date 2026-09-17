@@ -3230,6 +3230,7 @@ section {
 }
 
 .mensuration-guide__figure {
+  --mensuration-paper: #f3ebe0;
   position: relative;
   display: flex;
   flex: 0 0 auto;
@@ -3238,7 +3239,7 @@ section {
   align-items: center;
   width: 100%;
   max-width: var(--guide-col);
-  background: #efebe3;
+  background: var(--mensuration-paper);
   border-radius: 4px;
   padding: 0.45rem 0.6rem;
 }
@@ -3283,9 +3284,7 @@ section {
 
 .mensuration-guide:not(.mensuration-guide--plain) .mensuration-guide__figure {
   padding: 2.45rem 0.55rem 3.5rem;
-  background:
-    linear-gradient(to top, rgba(92, 68, 32, 0.2) 0%, transparent 46%),
-    #e4d9c8;
+  background: var(--mensuration-paper);
 }
 
 .mensuration-guide--howto:not(.mensuration-guide--plain) .mensuration-guide__figure {
@@ -3435,121 +3434,68 @@ section {
   padding-top: 0.45rem;
 }
 
-.mensuration-figure {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
 .mensuration-figure-stack {
+  --mensuration-paper: #f3ebe0;
   position: relative;
   width: 100%;
-  aspect-ratio: 1;
+  max-height: min(52vh, 28rem);
+  aspect-ratio: 340 / 1305;
   height: auto;
+  margin: 0 auto;
+  background: var(--mensuration-paper);
+  overflow: hidden;
 }
 
-.mensuration-figure-body,
-.mensuration-figure--overlay {
-  position: absolute;
-  top: 4%;
-  left: 6%;
-  width: 88%;
-  height: 92%;
-  object-fit: contain;
+.mensuration-figure-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(52vh, 28rem);
+  background: var(--mensuration-paper);
+  overflow: hidden;
 }
 
-.mensuration-figure--overlay {
-  pointer-events: none;
-  overflow: visible;
-}
-
-.measure-ruler {
+.mensuration-figure-stack #measurements .measurement {
   opacity: 0;
+  pointer-events: none;
 }
 
-.measure-ruler.is-on {
-  opacity: 1;
-  transition: opacity 0.2s ease;
-}
-
-.measure-ruler__band {
-  fill: #c4a35a;
-  fill-opacity: 0.28;
+.mensuration-figure-stack #measurements .hit-area,
+.mensuration-figure-stack #measurements .hit-area-line,
+.mensuration-figure-stack #measurements .hit-area-path {
+  fill: none;
   stroke: none;
-}
-
-.measure-ruler.is-live .measure-ruler__band {
-  animation: mensuration-ruler-breathe 2.8s ease-in-out infinite;
-}
-
-.measure-ruler__spine {
-  fill: none;
-  stroke: #a17c32;
-  stroke-width: 1.15;
-  stroke-linecap: round;
-}
-
-.measure-ruler__marks,
-.measure-ruler__badge,
-.measure-ruler__label {
-  opacity: 0;
-}
-
-.measure-ruler.is-marked .measure-ruler__marks,
-.measure-ruler.is-marked .measure-ruler__badge,
-.measure-ruler.is-marked .measure-ruler__label {
-  opacity: 1;
-  transition: opacity 0.4s ease;
-}
-
-.measure-ruler__cap {
-  fill: none;
-  stroke: #8a6928;
-  stroke-width: 1.35;
-  stroke-linecap: round;
-}
-
-.measure-ruler__knob {
-  fill: #f7f1e4;
-  stroke: #8a6928;
-  stroke-width: 1.05;
-}
-
-.measure-ruler.is-live .measure-ruler__knob {
-  animation: mensuration-ruler-knob 2.8s ease-in-out infinite;
-}
-
-.measure-ruler__badge {
-  fill: #e8c96a;
-  stroke: #b08a3e;
-  stroke-width: 0.6;
-}
-
-.measure-ruler.is-live .measure-ruler__badge {
-  animation: mensuration-ruler-badge 2.8s ease-in-out infinite;
-}
-
-.measure-ruler__label {
-  fill: #3d3014;
-  font-family: inherit;
-  font-weight: 700;
-  letter-spacing: 0.08em;
   pointer-events: none;
 }
 
-@keyframes mensuration-ruler-breathe {
-  0%, 100% { fill-opacity: 0.18; }
-  50% { fill-opacity: 0.42; }
+.mensuration-figure-stack #measurements .guide-arrow,
+.mensuration-figure-stack #measurements .helper {
+  fill: none;
+  stroke: #2a241c;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 7 5;
+  vector-effect: non-scaling-stroke;
 }
 
-@keyframes mensuration-ruler-knob {
-  0%, 100% { stroke: #8a6928; }
-  50% { stroke: #d4af60; }
+.mensuration-figure-stack #measurements .helper {
+  stroke-width: 1.6;
+  stroke-dasharray: 4 4;
+  opacity: 0.85;
 }
 
-@keyframes mensuration-ruler-badge {
-  0%, 100% { fill: #e8c96a; }
-  50% { fill: #f3dc86; }
+.mensuration-figure-stack #measurements .measurement.is-active {
+  opacity: 1;
+}
+
+.mensuration-figure-stack #measurements .measurement.is-active.is-animating .guide-arrow {
+  animation: mensuration-guide-flash 1.1s ease-in-out 0.85s 2;
+}
+
+@keyframes mensuration-guide-flash {
+  0%, 100% { stroke: #2a241c; opacity: 1; }
+  50% { stroke: #5c4420; opacity: 0.4; }
 }
 
 @media (min-width: 768px) {
@@ -3563,21 +3509,7 @@ section {
     transition: none;
   }
 
-  .measure-ruler__clip,
-  .measure-ruler__band {
-    transition: none;
-  }
-
-  .measure-ruler.is-marked .measure-ruler__marks,
-  .measure-ruler.is-marked .measure-ruler__badge,
-  .measure-ruler.is-marked .measure-ruler__label {
-    transition: none;
-    opacity: 1;
-  }
-
-  .measure-ruler.is-live .measure-ruler__band,
-  .measure-ruler.is-live .measure-ruler__knob,
-  .measure-ruler.is-live .measure-ruler__badge {
+  .mensuration-figure-stack #measurements .measurement.is-active.is-animating .guide-arrow {
     animation: none;
   }
 }

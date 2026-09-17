@@ -9,7 +9,9 @@
   <% end %>
 
   <% if guided && figured.any? %>
-    <div class="mensuration-guide" data-controller="measure-guide">
+    <div class="mensuration-guide"
+         data-controller="measure-guide"
+         data-measure-guide-template-value="<%= mensuration.template %>">
       <div class="mensuration-guide__figure" data-measure-guide-target="figure">
         <div class="mensuration-guide__caption">
           <h2 class="mensuration-guide__title" data-measure-guide-target="title"></h2>
