@@ -2,17 +2,13 @@
 # key    : clé stable du JSON measurements + clé i18n (mensurations.fields.<key>)
 # required : obligatoire pour finaliser (validation wizard + soumission)
 # step   : volet du wizard après les coordonnées (i18n mensurations.form.<step>_title)
-#          femme / homme : "tailles" (étiquettes + stature femme) puis "corps" (mètre)
+#          femme : "tailles" (étiquettes vêtement) puis "corps" (stature + mètre)
+#          homme : "tailles" (étiquettes) puis "corps" (stature + mètre)
 # group  : sous-section visuelle dans le volet (i18n mensurations.groups.<group>)
 # zone   : numéro d'illustration du formulaire papier
 # clip   : région SVG si la mesure se lit sur le mannequin (tours, longueurs, stature)
 # input  : text par défaut ; "choice" = liste de valeurs (i18n mensurations.choices.<key>)
 femme:
-  - key: hauteur
-    required: true
-    clip: full
-    step: tailles
-    group: silhouette
   - key: taille_robe_marque
     required: false
     step: tailles
@@ -38,6 +34,11 @@ femme:
     input: textarea
     step: tailles
     group: preferences
+  - key: hauteur
+    required: true
+    clip: full
+    step: corps
+    group: silhouette
   - key: tour_poitrine
     required: true
     clip: chest

@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["step", "bar", "caption", "prev", "next", "submit", "fill", "home", "progress"]
+  static targets = ["step", "bar", "caption", "prev", "next", "submit", "fill", "home", "progress", "form"]
   static values = {
     index: { type: Number, default: 0 },
     saved: { type: Boolean, default: false },
@@ -14,6 +14,12 @@ export default class extends Controller {
   connect() {
     this.enterFromPrev = false
     this.show()
+  }
+
+  formElement() {
+    if (this.hasFormTarget) return this.formTarget
+    // Évite le <form> des button_to Femme/Homme (premier form du DOM).
+    return this.element.querySelector("form[data-form-wizard-target='form']")
   }
 
   async next() {
@@ -42,21 +48,33 @@ export default class extends Controller {
     }
   }
 
-  prev() {
-    const form = this.element.querySelector("form")
+  async prev() {
     const guide = this.currentGuide()
     if (guide && !guide.atFirst) {
-      guide.stashFieldValues()
+      const prevGuideIndex = guide.indexValue - 1
+      if (!(await this.persistDraft(this.indexValue, prevGuideIndex))) return
       guide.prevField()
       this.updateChrome()
       return
     }
 
     if (this.indexValue > 0) {
-      if (form) this.stashSavedValues(form)
-      guide?.stashFieldValues()
+      const prevIndex = this.indexValue - 1
+      const prevStep = this.stepTargets[prevIndex]
+      const prevGuideEl = prevStep?.querySelector("[data-controller~='measure-guide']")
+      let guideIndex = undefined
+      if (prevGuideEl) {
+        const fieldCount = prevGuideEl.querySelectorAll("[data-measure-guide-target='field']").length
+        guideIndex = Math.max(fieldCount - 1, 0)
+      }
+
+      // Index 0 = choix template : on enregistre quand même les saisies (min. identité).
+      const draftIndex = Math.max(prevIndex, 1)
+      if (!(await this.persistDraft(draftIndex, prevIndex >= 1 ? guideIndex : undefined))) return
+
       this.enterFromPrev = true
-      this.indexValue--
+      this.restoreGuideValue = false
+      this.indexValue = prevIndex
       this.show()
     }
   }
@@ -192,7 +210,7 @@ export default class extends Controller {
   async persistDraft(wizardIndex, guideIndex = undefined) {
     if (!this.hasDraftUrlValue) return true
 
-    const form = this.element.querySelector("form")
+    const form = this.formElement()
     if (!form) return true
 
     const data = new FormData(form)
@@ -239,6 +257,7 @@ export default class extends Controller {
   stashSavedValues(root) {
     root.querySelectorAll("input, textarea, select").forEach((el) => {
       if (!el.name || el.disabled) return
+      if (el.type === "file") return
       if (el.value) el.dataset.initialValue = el.value
     })
   }
@@ -254,7 +273,10 @@ export default class extends Controller {
     let current = 0
     let total = 0
 
+    // Le choix Femme/Homme reste navigable, mais hors compteur (c'est une porte, pas une saisie).
     this.stepTargets.forEach((step, i) => {
+      if (step.hasAttribute("data-choice-step")) return
+
       const guideEl = step.querySelector("[data-controller~='measure-guide']")
       const count = guideEl
         ? guideEl.querySelectorAll("[data-measure-guide-target='field']").length

@@ -4,7 +4,7 @@
 <% thanks = completed && !editing %>
 
 <div class="mensuration-flow<%= " mensuration-flow--saved" if completed %>">
-  <div class="concept-card mensuration-form mx-1">
+  <div class="mensuration-form mx-1">
     <%= render "public/mensurations/card_header" %>
 
     <% if thanks %>
@@ -35,9 +35,6 @@
            data-photo-preview-msg-weight-value="<%= t("mensurations.photo.too_large", max_mb: Mensuration::MAX_PHOTO_BYTES / 1.megabyte) %>"
            data-photo-preview-msg-too-big-value="<%= t("mensurations.photo.too_big", max_px: Mensuration::MAX_PHOTO_EDGE) %>"
            class="mensuration-form__body">
-        <% if @invitation.template.present? %>
-          <p class="small mb-3 text-light opacity-75"><%= t("mensurations.form.intro") %></p>
-        <% end %>
         <div class="mensuration-form__progress<%= " d-none" if @invitation.template.blank? %>"
              data-form-wizard-target="progress">
           <div class="small text-light opacity-75 mb-1"
@@ -54,6 +51,7 @@
         <% current_template = @invitation.template.presence %>
         <div class="mensuration-form__stage">
           <div data-form-wizard-target="step" data-choice-step>
+            <p class="small mb-2 text-light opacity-75 text-center"><%= t("mensurations.form.intro") %></p>
             <h2 class="mensuration-form__template-lead"><%= t("mensurations.share.template_step") %></h2>
             <div class="d-flex mensuration-form__template-choice">
               <%= button_to t("mensurations.share.template_femme"),
@@ -69,10 +67,11 @@
             </div>
           </div>
 
-        <%= form_with url: mensuration_save_path(token: @invitation.token), method: :post, local: true, multipart: true do |f| %>
+        <%= form_with url: mensuration_save_path(token: @invitation.token), method: :post, local: true, multipart: true,
+              data: { form_wizard_target: "form" } do |f| %>
           <div data-form-wizard-target="step" class="d-none mensuration-form__identity">
-            <h2 class="h6 mb-2 text-light"><%= t("mensurations.form.identity_title") %></h2>
-            <div class="row g-2 mensuration-form__identity-row">
+            <h2 class="h6 mb-3 pb-1 text-light border-bottom border-secondary"><%= t("mensurations.form.identity_title") %></h2>
+            <div class="row g-3 mensuration-form__identity-row">
               <div class="col-md-6">
                 <%= mensuration_labeled_field "mensuration[prenom]", @mensuration.prenom,
                       t("mensurations.identity.prenom"), required: true %>
@@ -87,7 +86,7 @@
                 <% end %>
               </div>
             </div>
-            <div class="row g-2 mensuration-form__identity-row">
+            <div class="row g-3 mensuration-form__identity-row">
               <div class="col-md-6">
                 <%= mensuration_labeled_field nil, @invitation.email, t("mensurations.identity.email"),
                       disabled: true, id: "mensuration_email", class: "opacity-75" %>
@@ -97,7 +96,7 @@
                       t("mensurations.identity.telephone"), type: :tel %>
               </div>
             </div>
-            <div class="row g-2 mensuration-form__identity-row">
+            <div class="row g-3 mensuration-form__identity-row">
               <div class="col-12">
                 <%= mensuration_labeled_field "mensuration[adresse]", @mensuration.adresse,
                       t("mensurations.identity.adresse") %>
@@ -111,7 +110,7 @@
                       t("mensurations.identity.ville") %>
               </div>
             </div>
-            <div class="row g-2">
+            <div class="row g-3">
               <div class="col-md-6">
                 <%= mensuration_labeled_field "mensuration[date_evenement]", @mensuration.date_evenement,
                       t("mensurations.identity.date_evenement"), type: :date %>
@@ -120,15 +119,18 @@
           </div>
 
           <% if @invitation.template.present? %>
-            <% @mensuration.fields_by_form_step.each do |step_key, step_fields| %>
+            <% measure_wizard_base = 2 %>
+            <% @mensuration.fields_by_form_step.each_with_index do |(step_key, step_fields), i| %>
+              <% wizard_i = measure_wizard_base + i %>
               <%= render "public/mensurations/measure_step",
                     step_key: step_key, fields: step_fields, mensuration: @mensuration,
-                    guided: true %>
+                    guided: true,
+                    guide_index: (wizard_i == @wizard_index.to_i ? @guide_index.to_i : 0) %>
             <% end %>
           <% end %>
 
           <div class="d-none" data-form-wizard-target="step">
-            <h2 class="h6 mb-2 text-light"><%= t("mensurations.form.photo_title") %></h2>
+            <h2 class="h6 mb-3 pb-1 text-light border-bottom border-secondary"><%= t("mensurations.form.photo_title") %></h2>
             <% photo_hint = t("mensurations.form.photo_hint", default: "") %>
             <% if photo_hint.present? %>
               <%= render "public/mensurations/advice", text: photo_hint, extra_class: "mb-2" %>

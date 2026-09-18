@@ -1,10 +1,10 @@
-# Champ + petit libellé au-dessus (toujours visible une fois saisi).
+# Champ + libellé : stack moderne par défaut ; group réservé au dock SVG (suffixe cm).
 module MensurationsHelper
-  CONTROL = "form-control form-control-sm bg-dark text-light border-secondary"
-  GROUP_CONTROL = "form-control form-control-sm text-light border-secondary"
-  SELECT = "form-select form-select-sm bg-dark text-light border-secondary"
+  CONTROL = "form-control bg-dark text-light border-secondary mensuration-field__control"
+  GROUP_CONTROL = "form-control form-control-sm border-secondary mensuration-guide__value"
+  SELECT = "form-select bg-dark text-light border-secondary mensuration-field__control"
   GROUP_SELECT = "form-select form-select-sm text-light border-secondary"
-  LABEL = "form-label small text-light opacity-75 mb-1"
+  LABEL = "mensuration-field__label"
   GROUP_LABEL = "input-group-text"
 
   def mensuration_field_caption(key)
@@ -21,7 +21,7 @@ module MensurationsHelper
       t("mensurations.form.measure_ellipsis")
   end
 
-  def mensuration_labeled_field(name, value, label, type: :text, layout: :group, **opts)
+  def mensuration_labeled_field(name, value, label, type: :text, layout: :stack, **opts)
     id = opts.delete(:id).presence || (name.present? ? sanitize_to_id(name) : nil)
     addon = opts.delete(:addon)
     classes = [(layout == :group ? GROUP_CONTROL : CONTROL), opts.delete(:class)].compact.join(" ")
@@ -37,10 +37,10 @@ module MensurationsHelper
 
     return grouped_control(id, label, field, suffix: addon) if layout == :group
 
-    safe_join([label_tag(id, label, class: LABEL), field])
+    stacked_control(id, label, field)
   end
 
-  def mensuration_labeled_select(name, option_tags, label, layout: :group, selected_value: nil, **opts)
+  def mensuration_labeled_select(name, option_tags, label, layout: :stack, selected_value: nil, **opts)
     id = opts.delete(:id).presence || sanitize_to_id(name)
     classes = [(layout == :group ? GROUP_SELECT : SELECT), opts.delete(:class)].compact.join(" ")
 
@@ -49,10 +49,7 @@ module MensurationsHelper
     field = select_tag(name, option_tags, field_opts)
     return grouped_control(id, label, field) if layout == :group
 
-    safe_join([
-      label_tag(id, label, class: LABEL),
-      field
-    ])
+    stacked_control(id, label, field)
   end
 
   # Pastille admin : libellé court + valeur mise en avant.
@@ -98,8 +95,17 @@ module MensurationsHelper
 
   private
 
+  def stacked_control(id, label, field)
+    content_tag(:div, class: "mensuration-field") do
+      safe_join([
+        (label_tag(id, label, class: LABEL) if label.present? && id.present?),
+        field
+      ].compact)
+    end
+  end
+
   def grouped_control(id, label, field, suffix: nil)
-    content_tag(:div, class: "input-group input-group-sm") do
+    content_tag(:div, class: "input-group input-group-sm mensuration-field--dock") do
       if suffix.present?
         safe_join([
           (label_tag(id, label, class: "visually-hidden") if label.present?),

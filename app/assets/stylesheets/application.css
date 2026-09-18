@@ -2763,7 +2763,7 @@ section {
   width: 100%;
   max-width: 30rem;
   flex: 0 0 auto;
-  padding: 2.5rem 2rem 2.25rem;
+  padding: 1.5rem 0.75rem 1.25rem;
   text-align: center;
 }
 
@@ -2771,33 +2771,16 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.95rem;
-  max-width: 22rem;
-  margin: 0 auto 1.65rem;
-  text-align: left;
-}
-
-.concept-card-icon.mensuration-card-header__icon {
-  width: 3.85rem;
-  height: 3.85rem;
-  margin: 0;
-  flex-shrink: 0;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.mensuration-card-header__ruler {
-  width: 1.85rem;
-  height: 1.85rem;
-  display: block;
+  margin: 0 auto 1.15rem;
+  text-align: center;
 }
 
 .mensuration-card-header__title {
   margin: 0;
   color: #fff;
-  font-size: 1.28rem;
   font-weight: 500;
   letter-spacing: 0.01em;
-  line-height: 1.25;
+  line-height: 1.3;
 }
 
 .mensuration-gate__intro,
@@ -3003,6 +2986,13 @@ section {
   min-width: 0;
   min-height: 0;
   overflow: hidden;
+  padding: 1.15rem 0.35rem 1.1rem;
+}
+
+@media (min-width: 768px) {
+  .mensuration-form {
+    padding: 1.35rem 0.5rem 1.15rem;
+  }
 }
 
 .mensuration-shell:not(.mensuration-shell--guided) .mensuration-form {
@@ -3132,17 +3122,17 @@ section {
   margin-top: auto !important;
 }
 
-.concept-card.mensuration-form > .mensuration-card-header {
-  margin-bottom: 1.35rem;
+.mensuration-form > .mensuration-card-header {
+  margin-bottom: 1.15rem;
 }
 
-.concept-card.mensuration-form > p.small {
+.mensuration-form > p.small {
   margin-bottom: 0.65rem !important;
 }
 
-.concept-card.mensuration-form .mensuration-form__progress {
-  margin-top: 1.35rem;
-  margin-bottom: 1.65rem;
+.mensuration-form .mensuration-form__progress {
+  margin-top: 1.15rem;
+  margin-bottom: 1.35rem;
 }
 
 .mensuration-form__progress .small {
@@ -3172,7 +3162,7 @@ section {
 }
 
 .mensuration-form__identity-row {
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.85rem;
 }
 
 .mensuration-shell--guided [data-form-wizard-target="step"]:not(.d-none):not([data-choice-step]) > h2,
@@ -3266,7 +3256,7 @@ section {
   font-weight: 500;
   letter-spacing: 0.01em;
   line-height: 1.25;
-  color: #2a241c;
+  color: #1a1612;
 }
 
 .mensuration-guide__howto {
@@ -3274,7 +3264,7 @@ section {
   font-family: "Cormorant Garamond", Georgia, serif;
   font-size: 0.98rem;
   line-height: 1.35;
-  color: #5a4e3e;
+  color: #3a3228;
 }
 
 .mensuration-guide:not(.mensuration-guide--plain) {
@@ -3288,7 +3278,104 @@ section {
 }
 
 .mensuration-guide--howto:not(.mensuration-guide--plain) .mensuration-guide__figure {
-  padding-top: 3.55rem;
+  padding-top: 4rem;
+}
+
+/* Étapes SVG : 3 bandes (progress / figure / nav), header page masqué. */
+.mensuration-shell--guided {
+  --guide-col: min(22rem, 56vw);
+}
+
+.mensuration-shell--guided .mensuration-form > .mensuration-card-header {
+  display: none;
+}
+
+.mensuration-shell--guided .mensuration-form {
+  padding: 0.65rem 0.5rem 0.55rem;
+}
+
+.mensuration-shell--guided .mensuration-form .mensuration-form__progress {
+  width: 100%;
+  max-width: var(--guide-col);
+  margin: 0 auto 0.85rem;
+}
+
+.mensuration-shell--guided .mensuration-form__progress .small {
+  margin-bottom: 0.35rem !important;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  opacity: 0.55;
+  text-align: center;
+}
+
+.mensuration-shell--guided .mensuration-form__stitch-track {
+  height: 3px;
+}
+
+.mensuration-shell--guided .mensuration-guide:not(.mensuration-guide--plain) {
+  --guide-col: inherit;
+}
+
+.mensuration-shell--guided .mensuration-guide:not(.mensuration-guide--plain) .mensuration-guide__figure {
+  padding: 2.15rem 0.5rem 2.85rem;
+}
+
+.mensuration-shell--guided .mensuration-guide--howto:not(.mensuration-guide--plain) .mensuration-guide__figure {
+  padding-top: 3.35rem;
+}
+
+.mensuration-shell--guided .mensuration-guide__title {
+  font-size: 1.05rem;
+}
+
+.mensuration-shell--guided .mensuration-guide__howto {
+  margin-top: 0.2rem;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+.mensuration-shell--guided .mensuration-guide:not(.mensuration-guide--plain) .mensuration-guide__fields {
+  bottom: 0.45rem;
+}
+
+.mensuration-shell--guided .mensuration-form__nav {
+  margin-top: 0.75rem !important;
+  padding-top: 0.65rem;
+}
+
+.mensuration-shell--guided .mensuration-figure-stack,
+.mensuration-shell--guided .mensuration-figure-svg {
+  max-height: min(52vh, 26rem);
+}
+
+@media (min-width: 768px) {
+  .mensuration-shell--guided {
+    --guide-col: min(19.5rem, 46dvh);
+  }
+
+  .mensuration-shell--guided .mensuration-form {
+    padding: 0.5rem 0.35rem 0.45rem;
+  }
+
+  .mensuration-shell--guided .mensuration-form .mensuration-form__progress {
+    margin-bottom: 0.9rem;
+  }
+
+  .mensuration-shell--guided .mensuration-figure-stack,
+  .mensuration-shell--guided .mensuration-figure-svg {
+    max-height: min(48dvh, 24rem, calc(100dvh - 13rem));
+  }
+}
+
+@media (min-width: 768px) and (min-height: 860px) {
+  .mensuration-shell--guided {
+    --guide-col: min(21rem, 50dvh);
+  }
+
+  .mensuration-shell--guided .mensuration-figure-stack,
+  .mensuration-shell--guided .mensuration-figure-svg {
+    max-height: min(52dvh, 26rem, calc(100dvh - 12.5rem));
+  }
 }
 
 .mensuration-guide:not(.mensuration-guide--plain) .mensuration-guide__fields {
@@ -3304,7 +3391,7 @@ section {
 .mensuration-guide:not(.mensuration-guide--plain) .mensuration-guide__field-advice {
   max-width: none;
   margin-top: 0.4rem;
-  color: #5a4e3e;
+  color: #3a3228;
   justify-content: center;
 }
 
@@ -3313,45 +3400,67 @@ section {
   opacity: 0.7;
 }
 
-.mensuration-guide:not(.mensuration-guide--plain) .input-group {
+.mensuration-guide:not(.mensuration-guide--plain) .input-group,
+.mensuration-guide:not(.mensuration-guide--plain) .input-group.mensuration-field--dock {
   border: 1px solid rgba(161, 124, 50, 0.55);
   border-radius: 3px;
   overflow: hidden;
   box-shadow: 0 1px 0 rgba(42, 36, 28, 0.08);
 }
 
-.mensuration-guide:not(.mensuration-guide--plain) .input-group-text {
+.mensuration-guide:not(.mensuration-guide--plain) .input-group-text,
+.mensuration-guide:not(.mensuration-guide--plain) .mensuration-field--dock .input-group-text {
   background: #2a241c;
   border-color: transparent;
   color: #e8dcc4;
   max-width: none;
   flex: 0 0 auto;
   white-space: nowrap;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .mensuration-guide:not(.mensuration-guide--plain) .mensuration-guide__field[data-clip] .input-group-text {
   color: #f3e6c8;
+  font-weight: 600;
 }
 
 .mensuration-guide:not(.mensuration-guide--plain) .input-group .form-control,
-.mensuration-guide:not(.mensuration-guide--plain) .input-group .form-select {
+.mensuration-guide:not(.mensuration-guide--plain) .input-group .form-select,
+.mensuration-guide:not(.mensuration-guide--plain) .mensuration-field--dock .form-control,
+.mensuration-guide:not(.mensuration-guide--plain) .mensuration-field--dock .form-select {
   color-scheme: light;
+  min-height: auto;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: center;
   background-color: #fffdf8 !important;
   border-color: transparent;
   border-left-color: rgba(42, 36, 28, 0.1);
+  border-radius: 0;
   color: #2a241c !important;
+  box-shadow: none;
 }
 
-.mensuration-guide:not(.mensuration-guide--plain) .input-group .form-control::placeholder {
+.mensuration-guide:not(.mensuration-guide--plain) .input-group .form-control::placeholder,
+.mensuration-guide:not(.mensuration-guide--plain) .mensuration-field--dock .form-control::placeholder {
   color: rgba(42, 36, 28, 0.38);
   font-weight: 400;
 }
 
+.mensuration-guide:not(.mensuration-guide--plain) .input-group .form-control:hover,
+.mensuration-guide:not(.mensuration-guide--plain) .mensuration-field--dock .form-control:hover,
 .mensuration-guide:not(.mensuration-guide--plain) .input-group .form-control:focus,
-.mensuration-guide:not(.mensuration-guide--plain) .input-group .form-select:focus {
+.mensuration-guide:not(.mensuration-guide--plain) .input-group .form-select:focus,
+.mensuration-guide:not(.mensuration-guide--plain) .mensuration-field--dock .form-control:focus,
+.mensuration-guide:not(.mensuration-guide--plain) .mensuration-field--dock .form-select:focus {
   background-color: #fffaf0 !important;
   border-color: transparent;
   box-shadow: none;
+  color: #2a241c !important;
 }
 
 .mensuration-guide__fields {
@@ -3376,62 +3485,91 @@ section {
   gap: 0.22rem;
 }
 
-.mensuration-guide__field .form-label {
+.mensuration-guide__field .form-label,
+.mensuration-guide__field .mensuration-field__label {
   margin-bottom: 0;
   line-height: 1.25;
 }
 
-.mensuration-guide__field .input-group {
+.mensuration-guide__field .input-group,
+.mensuration-guide__field .mensuration-field {
   width: 100%;
 }
 
-.mensuration-form .input-group .form-control,
-.mensuration-form .input-group .form-select {
-  background-color: #3d3d3d !important;
-  border-left-color: rgba(255, 255, 255, 0.22);
+/* Champs stack (identité, tailles, etc.) */
+.mensuration-field {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  width: 100%;
 }
 
-.mensuration-form .input-group .form-control:focus,
-.mensuration-form .input-group .form-select:focus {
-  background-color: #454545 !important;
-  border-color: #8d8d8d;
+.mensuration-field__label {
+  margin: 0;
+  padding: 0;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.48);
+  line-height: 1.3;
+}
+
+.mensuration-form .mensuration-field__control,
+.mensuration-form .mensuration-field .form-control,
+.mensuration-form .mensuration-field .form-select {
+  min-height: 2.55rem;
+  padding: 0.55rem 0.8rem;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  color: #f3f3f3 !important;
+  background-color: rgba(255, 255, 255, 0.045) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.4rem;
   box-shadow: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.mensuration-form .input-group .form-control::placeholder {
-  color: rgba(255, 255, 255, 0.55);
+.mensuration-form .mensuration-field textarea.mensuration-field__control,
+.mensuration-form .mensuration-field textarea.form-control {
+  min-height: 4.25rem;
+  resize: vertical;
+}
+
+.mensuration-form .mensuration-field__control:hover,
+.mensuration-form .mensuration-field .form-control:hover,
+.mensuration-form .mensuration-field .form-select:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+.mensuration-form .mensuration-field__control:focus,
+.mensuration-form .mensuration-field .form-control:focus,
+.mensuration-form .mensuration-field .form-select:focus {
+  color: #fff !important;
+  background-color: rgba(255, 255, 255, 0.075) !important;
+  border-color: rgba(255, 255, 255, 0.42);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.07);
+}
+
+.mensuration-form .mensuration-field__control::placeholder,
+.mensuration-form .mensuration-field .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.32);
+}
+
+.mensuration-form .mensuration-field .form-control:disabled,
+.mensuration-form .mensuration-field .form-select:disabled {
+  opacity: 0.55;
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+.mensuration-form__identity .mensuration-field {
+  margin-bottom: 0;
 }
 
 .mensuration-guide__field[data-clip] .input-group .form-control {
   text-align: center;
-}
-
-.mensuration-guide__field[data-clip] .input-group-text {
-  color: #fff;
-  font-weight: 600;
-}
-
-.mensuration-form .input-group-text {
-  background: #1c1c1c;
-  border-color: var(--bs-secondary);
-  color: rgba(255, 255, 255, 0.62);
-  padding: 0.25rem 0.55rem;
-  font-size: 0.75rem;
-  white-space: normal;
-  line-height: 1.2;
-  max-width: 46%;
-  text-align: left;
-}
-
-.mensuration-form .mensuration-form__identity .input-group-text {
-  white-space: nowrap;
-  max-width: none;
-  flex: 0 0 auto;
-}
-
-.mensuration-form .input-group:has(textarea) .input-group-text {
-  align-items: flex-start;
-  padding-top: 0.45rem;
 }
 
 .mensuration-figure-stack {
@@ -3472,30 +3610,24 @@ section {
 .mensuration-figure-stack #measurements .helper {
   fill: none;
   stroke: #2a241c;
-  stroke-width: 2.4;
+  stroke-width: 1.25;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 7 5;
+  stroke-dasharray: 4 3.5;
   vector-effect: non-scaling-stroke;
+  marker: none;
+  marker-start: none;
+  marker-end: none;
 }
 
 .mensuration-figure-stack #measurements .helper {
-  stroke-width: 1.6;
-  stroke-dasharray: 4 4;
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
   opacity: 0.85;
 }
 
 .mensuration-figure-stack #measurements .measurement.is-active {
   opacity: 1;
-}
-
-.mensuration-figure-stack #measurements .measurement.is-active.is-animating .guide-arrow {
-  animation: mensuration-guide-flash 1.1s ease-in-out 0.85s 2;
-}
-
-@keyframes mensuration-guide-flash {
-  0%, 100% { stroke: #2a241c; opacity: 1; }
-  50% { stroke: #5c4420; opacity: 0.4; }
 }
 
 @media (min-width: 768px) {
@@ -3504,14 +3636,36 @@ section {
   }
 }
 
+/* Mobile / écrans bas : scroll OK ; progress reste alignée sur le papier. */
+@media (max-width: 767.98px), (max-height: 699px) {
+  .mensuration-shell--guided .mensuration-form .mensuration-form__progress {
+    margin-bottom: 1rem;
+  }
+
+  .mensuration-shell--guided .mensuration-figure-stack,
+  .mensuration-shell--guided .mensuration-figure-svg {
+    max-height: min(52vh, 26rem);
+  }
+
+  .mensuration-shell--guided .mensuration-guide:not(.mensuration-guide--plain) .mensuration-guide__figure {
+    padding: 2.25rem 0.5rem 3.1rem;
+  }
+
+  .mensuration-shell--guided .mensuration-guide--howto:not(.mensuration-guide--plain) .mensuration-guide__figure {
+    padding-top: 3.45rem;
+  }
+
+  .mensuration-shell--guided .mensuration-form__nav {
+    margin-top: 0.85rem !important;
+    padding-top: 0.7rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mensuration-shell {
     transition: none;
   }
 
-  .mensuration-figure-stack #measurements .measurement.is-active.is-animating .guide-arrow {
-    animation: none;
-  }
 }
 
 .mensuration-form .form-control,
@@ -3719,7 +3873,7 @@ section {
 
 
 .info-card:hover,
-.concept-card:hover:not(.mensuration-form):not(.mensuration-otp) {
+.concept-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
 }
@@ -4259,20 +4413,6 @@ body:has(#floating_reservation_btn.public-floating-bar) .scroll-to-top-btn {
 /* Concept Card Specific Styles */
 .concept-card {
   padding: 2rem;
-}
-
-.concept-card.mensuration-form {
-  padding: 1.15rem 1.2rem 1.1rem;
-}
-
-.concept-card.mensuration-form {
-  padding-top: 1.65rem;
-}
-
-@media (min-width: 768px) {
-  .concept-card.mensuration-form {
-    padding: 1.85rem 1.45rem 1.25rem;
-  }
 }
 
 .concept-card-icon {

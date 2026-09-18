@@ -1,6 +1,6 @@
 <% code_pending = @invitation.otp_sent_at.present? && @invitation.otp_sent_at > MensurationInvitation::OTP_VALIDITY.ago %>
 
-<div class="concept-card mensuration-otp">
+<div class="mensuration-otp">
   <%= render "public/mensurations/card_header" %>
   <p class="mensuration-otp__hint">
     <% if code_pending %>

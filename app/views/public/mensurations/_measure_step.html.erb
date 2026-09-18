@@ -1,9 +1,10 @@
-<%# locals: step_key, fields, mensuration, guided %>
+<%# locals: step_key, fields, mensuration, guided, guide_index %>
 <% figured = fields.select { |field| field["clip"].present? } %>
 <% plain = fields.reject { |field| field["clip"].present? } %>
 <% hint = t("mensurations.form.#{step_key}_hint", default: "") %>
+<% guide_index = local_assigns.fetch(:guide_index, 0).to_i %>
 <div class="d-none" data-form-wizard-target="step">
-  <h2 class="h6 mb-2 text-light"><%= t("mensurations.form.#{step_key}_title") %></h2>
+  <h2 class="h6 mb-3 pb-1 text-light border-bottom border-secondary"><%= t("mensurations.form.#{step_key}_title") %></h2>
   <% if hint.present? && !(guided && figured.any?) %>
     <%= render "public/mensurations/advice", text: hint, extra_class: "mb-3 mensuration-form__advice--quiet" %>
   <% end %>
@@ -11,7 +12,8 @@
   <% if guided && figured.any? %>
     <div class="mensuration-guide"
          data-controller="measure-guide"
-         data-measure-guide-template-value="<%= mensuration.template %>">
+         data-measure-guide-template-value="<%= mensuration.template %>"
+         data-measure-guide-index-value="<%= guide_index %>">
       <div class="mensuration-guide__figure" data-measure-guide-target="figure">
         <div class="mensuration-guide__caption">
           <h2 class="mensuration-guide__title" data-measure-guide-target="title"></h2>
@@ -20,12 +22,15 @@
         <%= render "public/mensurations/figure_svg" %>
       </div>
       <div class="mensuration-guide__fields">
-        <% figured.each do |field| %>
+        <% figured.each_with_index do |field, i| %>
           <%= render "public/mensurations/measure_field",
-                field: field, mensuration: mensuration, guided: true %>
+                field: field, mensuration: mensuration, guided: true,
+                hidden: i != guide_index %>
         <% end %>
         <% if plain.any? %>
-          <div class="mensuration-guide__field" data-measure-guide-target="field">
+          <% plain_index = figured.size %>
+          <div class="mensuration-guide__field<%= " d-none" if plain_index != guide_index %>"
+               data-measure-guide-target="field">
             <div class="row g-2">
               <% plain.each do |field| %>
                 <%= render "public/mensurations/measure_field",
@@ -37,7 +42,7 @@
       </div>
     </div>
   <% else %>
-    <div class="row g-2">
+    <div class="row g-3">
       <% fields.each do |field| %>
         <%= render "public/mensurations/measure_field",
               field: field, mensuration: mensuration, guided: false %>

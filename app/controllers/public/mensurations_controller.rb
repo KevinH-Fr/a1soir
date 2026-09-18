@@ -81,7 +81,10 @@ module Public
       if @invitation.completed?
         redirect_to mensuration_path(token: @invitation.token, edit: 1, resume: "identity")
       else
-        redirect_to mensuration_path(token: @invitation.token, resume: "identity")
+        # Position en base (pas ?resume= dans l'URL) : un F5 doit reprendre le brouillon, pas l'identité.
+        mensuration = @invitation.mensuration || @invitation.build_public_mensuration
+        mensuration.save_draft!(wizard_index: 1, guide_index: nil)
+        redirect_to mensuration_path(token: @invitation.token)
       end
     end
 
@@ -222,8 +225,11 @@ module Public
         return 0
       end
 
+      # Le brouillon prime sur ?resume=identity (URL sticky après choix Femme/Homme).
+      draft = @mensuration&.draft_wizard_index
+      return draft if draft.present?
+
       return 1 if params[:resume] == "identity"
-      return @mensuration.draft_wizard_index if @mensuration&.draft_wizard_index.present?
 
       0
     end

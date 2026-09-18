@@ -270,7 +270,8 @@ RSpec.describe "Public::Mensurations", type: :request do
       post "/fr/m/#{invitation.token}/template", params: { template: "homme" }
 
       expect(invitation.reload.template).to eq("homme")
-      expect(response).to redirect_to("/fr/m/#{invitation.token}?resume=identity")
+      expect(response).to redirect_to("/fr/m/#{invitation.token}")
+      expect(invitation.mensuration.reload.draft_wizard_index).to eq(1)
     end
 
     it "permet de changer le formulaire une fois la fiche enregistrée" do
@@ -357,7 +358,24 @@ RSpec.describe "Public::Mensurations", type: :request do
     it "redirige le changement de template vers les coordonnées au premier envoi" do
       post "/fr/m/#{invitation.token}/template", params: { template: "homme" }
 
-      expect(response).to redirect_to("/fr/m/#{invitation.token}?resume=identity")
+      expect(response).to redirect_to("/fr/m/#{invitation.token}")
+      expect(invitation.mensuration.reload.draft_wizard_index).to eq(1)
+    end
+
+    it "au rechargement, reprend le brouillon même si ?resume=identity reste dans l'URL" do
+      post "/fr/m/#{invitation.token}/template", params: { template: "femme" }
+      post "/fr/m/#{invitation.token}/draft", params: {
+        wizard_index: 3,
+        guide_index: 1,
+        mensuration: { prenom: "Anna", nom: "Durand" },
+        measurements: { tour_poitrine: "90" }
+      }
+
+      get "/fr/m/#{invitation.token}", params: { resume: "identity" }
+
+      expect(response.body).to include('data-form-wizard-index-value="3"')
+      expect(response.body).to include('data-form-wizard-guide-index-value="1"')
+      expect(response.body).to include('data-form-wizard-restore-guide-value="true"')
     end
   end
 
@@ -368,7 +386,7 @@ RSpec.describe "Public::Mensurations", type: :request do
       post "/fr/m/#{invitation.token}/draft", params: {
         wizard_index: 2,
         mensuration: { prenom: "Anna", nom: "Durand", telephone: "0611111111" },
-        measurements: { hauteur: "168" }
+        measurements: { taille_soutien_gorge: "90D" }
       }
 
       expect(response).to have_http_status(:no_content)
@@ -382,27 +400,36 @@ RSpec.describe "Public::Mensurations", type: :request do
 
     it "reprend le champ guidé et les mesures après rechargement" do
       post "/fr/m/#{invitation.token}/draft", params: {
-        wizard_index: 2,
+        wizard_index: 3,
         guide_index: 1,
         mensuration: { prenom: "Anna", nom: "Durand" },
-        measurements: { hauteur: "168", hauteur_talons: "8" }
+        measurements: { hauteur: "168", tour_poitrine: "90" }
       }
 
       get "/fr/m/#{invitation.token}"
 
-      expect(response.body).to include('data-form-wizard-index-value="2"')
+      expect(response.body).to include('data-form-wizard-index-value="3"')
       expect(response.body).to include('data-form-wizard-restore-guide-value="true"')
       expect(response.body).to include('data-form-wizard-guide-index-value="1"')
+      expect(response.body).to include('data-measure-guide-index-value="1"')
       expect(response.body).to include('value="168"')
-      expect(response.body).to include('value="8"')
+      expect(response.body).to include('value="90"')
       expect(invitation.reload.mensuration.draft_guide_index).to eq(1)
+
+      doc = Nokogiri::HTML(response.body)
+      guide = doc.at_css('[data-measure-guide-index-value="1"]')
+      expect(guide).to be_present
+      fields = guide.css('[data-measure-guide-target="field"]')
+      expect(fields.length).to be >= 2
+      expect(fields[0]["class"]).to include("d-none")
+      expect(fields[1]["class"].to_s).not_to include("d-none")
     end
 
     it "reprend le wizard à la dernière étape sauvegardée" do
       post "/fr/m/#{invitation.token}/draft", params: {
         wizard_index: 2,
         mensuration: { prenom: "Anna", nom: "Durand" },
-        measurements: { hauteur: "168" }
+        measurements: { taille_soutien_gorge: "90D" }
       }
 
       get "/fr/m/#{invitation.token}"
@@ -416,7 +443,7 @@ RSpec.describe "Public::Mensurations", type: :request do
       post "/fr/m/#{invitation.token}/draft", params: {
         wizard_index: 2,
         mensuration: { prenom: "Anna", nom: "Durand" },
-        measurements: { hauteur: "168" }
+        measurements: { taille_soutien_gorge: "90D" }
       }
       post "/fr/m/#{invitation.token}/draft", params: {
         wizard_index: 2,
@@ -427,7 +454,7 @@ RSpec.describe "Public::Mensurations", type: :request do
 
       mensuration = invitation.reload.mensuration
       expect(mensuration.draft_wizard_index).to eq(2)
-      expect(mensuration.measurements).to eq("hauteur" => "168", "taille_soutien_gorge" => "90D")
+      expect(mensuration.measurements).to eq("taille_soutien_gorge" => "90D")
     end
 
     it "refuse le brouillon sans session OTP" do

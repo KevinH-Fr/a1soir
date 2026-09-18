@@ -49,11 +49,14 @@ RSpec.describe Mensuration, type: :model do
       clothes = steps["tailles"].select { |f| f["group"] == "vetements" }.map { |f| f["key"] }
 
       expect(steps.keys).to eq(%w[tailles corps])
-      expect(steps["tailles"].map { |f| f["key"] }).to start_with("hauteur")
+      expect(steps["tailles"].map { |f| f["key"] }).to eq(
+        %w[taille_robe_marque taille_soutien_gorge hauteur_talons taille_pantalon_jupe_marque
+           taille_veste_chemisier preference_forme_robe]
+      )
       expect(clothes).to eq(
         %w[taille_robe_marque taille_soutien_gorge taille_pantalon_jupe_marque taille_veste_chemisier]
       )
-      expect(steps["corps"].map { |f| f["key"] }).to start_with("tour_poitrine", "taille_sous_poitrine")
+      expect(steps["corps"].map { |f| f["key"] }).to start_with("hauteur", "tour_poitrine", "taille_sous_poitrine")
       expect(steps["corps"].map { |f| f["key"] }).to include("tour_cou", "tour_cuisse")
     end
 
