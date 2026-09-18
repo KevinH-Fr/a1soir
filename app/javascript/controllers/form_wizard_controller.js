@@ -103,6 +103,13 @@ export default class extends Controller {
 
     if (el.type === "date") {
       el.value = "2026-12-15"
+    } else if (el.type === "number") {
+      const min = el.min === "" ? -Infinity : Number(el.min)
+      const max = el.max === "" ? Infinity : Number(el.max)
+      let preferred = 80
+      if (name.includes("hauteur_talons")) preferred = 8
+      else if (name.includes("hauteur")) preferred = 168
+      el.value = String(Math.min(max, Math.max(min, preferred)))
     } else if (el.tagName === "SELECT") {
       const option = [...el.options].find((o) => o.value)
       if (option) el.value = option.value
@@ -140,10 +147,12 @@ export default class extends Controller {
     const guide = this.currentGuide()
     if (guide) return guide.validateCurrent()
 
-    const fields = this.stepTargets[this.indexValue].querySelectorAll("[required]")
-    for (const field of fields) {
-      if (!field.checkValidity()) {
-        field.reportValidity()
+    const step = this.stepTargets[this.indexValue]
+    if (!step) return true
+    for (const input of step.querySelectorAll("input, select, textarea")) {
+      if (input.disabled) continue
+      if (!input.checkValidity()) {
+        input.reportValidity()
         return false
       }
     }

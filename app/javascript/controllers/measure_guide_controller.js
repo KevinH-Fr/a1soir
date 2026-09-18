@@ -10,6 +10,17 @@ const GUIDE_REPLAY_PAUSE = 4
 const GUIDE_DRAW_SPEED = 250
 const GUIDE_DRAW_MIN = 0.9
 const GUIDE_END_R = 4.4
+
+function reportFieldValidity(root) {
+  for (const input of root.querySelectorAll("input, select, textarea")) {
+    if (input.disabled) continue
+    if (!input.checkValidity()) {
+      input.reportValidity()
+      return false
+    }
+  }
+  return true
+}
 // Recalage visuel sur la planche 1122×1402 (ellipse → cx/cy/rx ; ligne → x/y).
 const GUIDE_TWEAKS = {
   femme: {
@@ -98,14 +109,7 @@ export default class extends Controller {
   validateCurrent() {
     const field = this.fieldTargets[this.indexValue]
     if (!field) return true
-
-    for (const input of field.querySelectorAll("[required]")) {
-      if (!input.checkValidity()) {
-        input.reportValidity()
-        return false
-      }
-    }
-    return true
+    return reportFieldValidity(field)
   }
 
   currentFieldRoot() {

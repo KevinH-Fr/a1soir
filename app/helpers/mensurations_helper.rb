@@ -21,6 +21,20 @@ module MensurationsHelper
       t("mensurations.form.measure_ellipsis")
   end
 
+  def mensuration_measure_input_opts(field)
+    if field["input"] == "cm"
+      {
+        type: :number,
+        min: field["min"],
+        max: field["max"],
+        step: field["increment"].presence || 0.5,
+        inputmode: "decimal"
+      }.compact
+    else
+      { maxlength: field["maxlength"].presence || 40 }
+    end
+  end
+
   def mensuration_labeled_field(name, value, label, type: :text, layout: :stack, **opts)
     id = opts.delete(:id).presence || (name.present? ? sanitize_to_id(name) : nil)
     addon = opts.delete(:addon)
@@ -31,6 +45,7 @@ module MensurationsHelper
     field = case type
             when :tel then telephone_field_tag(name, value, field_opts)
             when :date then date_field_tag(name, value, field_opts)
+            when :number then number_field_tag(name, value, field_opts)
             when :textarea then text_area_tag(name, value, field_opts.merge(rows: opts[:rows] || 2))
             else text_field_tag(name, value, field_opts)
             end

@@ -1,106 +1,154 @@
 # Champs de mesures par template — liste métier (coordonnées / tailles / mensurations).
-# key    : clé stable du JSON measurements + clé i18n (mensurations.fields.<key>)
-# required : obligatoire pour finaliser (validation wizard + soumission)
-# step   : volet du wizard après les coordonnées (i18n mensurations.form.<step>_title)
-#          femme : "tailles" (étiquettes vêtement) puis "corps" (stature + mètre)
-#          homme : "tailles" (étiquettes) puis "corps" (stature + mètre)
-# group  : sous-section visuelle dans le volet (i18n mensurations.groups.<group>)
-# zone   : numéro d'illustration du formulaire papier
-# clip   : région SVG si la mesure se lit sur le mannequin (tours, longueurs, stature)
-# input  : text par défaut ; "choice" = liste de valeurs (i18n mensurations.choices.<key>)
+# key        : clé stable du JSON measurements + clé i18n (mensurations.fields.<key>)
+# required   : obligatoire pour finaliser (validation wizard + soumission)
+# step       : volet du wizard après les coordonnées (i18n mensurations.form.<step>_title)
+# group      : sous-section visuelle dans le volet (i18n mensurations.groups.<group>)
+# zone       : numéro d'illustration du formulaire papier
+# clip       : région SVG si la mesure se lit sur le mannequin (tours, longueurs, stature)
+# input      : text par défaut ; cm | choice | textarea
+# min / max  : bornes cm très larges (écarter 1, 999… pas les tailles réelles)
+# increment  : pas HTML des champs cm (défaut 0.5)
+# maxlength  : longueur max (text / textarea)
 femme:
   - key: taille_robe_marque
     required: false
+    maxlength: 40
     step: tailles
     group: vetements
   - key: taille_soutien_gorge
     required: true
+    maxlength: 20
     step: tailles
     group: vetements
   - key: hauteur_talons
     required: false
+    input: cm
+    min: 0
+    max: 30
+    increment: 0.5
     step: tailles
     group: silhouette
   - key: taille_pantalon_jupe_marque
     required: false
+    maxlength: 40
     step: tailles
     group: vetements
   - key: taille_veste_chemisier
     required: true
+    maxlength: 20
     step: tailles
     group: vetements
   - key: preference_forme_robe
     required: false
     input: textarea
+    maxlength: 400
     step: tailles
     group: preferences
   - key: hauteur
     required: true
+    input: cm
+    min: 80
+    max: 250
     clip: full
     step: corps
     group: silhouette
   - key: tour_poitrine
     required: true
+    input: cm
+    min: 40
+    max: 250
     clip: chest
     step: corps
     group: silhouette
   - key: taille_sous_poitrine
     required: false
+    input: cm
+    min: 30
+    max: 220
     clip: torso
     step: corps
     group: silhouette
   - key: tour_taille
     required: true
+    input: cm
+    min: 30
+    max: 250
     clip: waist
     step: corps
     group: silhouette
   - key: tour_hanches
     required: false
+    input: cm
+    min: 40
+    max: 250
     clip: hips
     step: corps
     group: silhouette
   - key: tour_cou
     required: true
+    input: cm
+    min: 15
+    max: 80
     clip: neck
     step: corps
     group: silhouette
   - key: tour_taille_ceinture
     required: false
+    input: cm
+    min: 30
+    max: 250
     clip: waist_belt
     step: corps
     group: silhouette
   - key: largeur_epaules
     required: true
+    input: cm
+    min: 15
+    max: 120
     clip: shoulders
     step: corps
     group: silhouette
   - key: longueur_bras_ext
     required: true
+    input: cm
+    min: 20
+    max: 150
     clip: arm
     step: corps
     group: longueurs
   - key: longueur_jambe_ext
     required: false
+    input: cm
+    min: 30
+    max: 180
     clip: leg_ext
     step: corps
     group: longueurs
   - key: longueur_jambe_int
     required: false
+    input: cm
+    min: 25
+    max: 160
     clip: leg_int
     step: corps
     group: longueurs
   - key: tour_cuisse
     required: false
+    input: cm
+    min: 20
+    max: 150
     clip: thigh
     step: corps
     group: longueurs
 homme:
   - key: taille_veste
     required: true
+    maxlength: 40
     step: tailles
     group: vetements
   - key: taille_chemise
     required: true
+    maxlength: 20
     step: tailles
     group: vetements
   - key: coupe_chemise
@@ -111,70 +159,105 @@ homme:
     group: vetements
   - key: taille_pantalon_marque
     required: false
+    maxlength: 40
     step: tailles
     group: vetements
   - key: pointure
     required: false
+    maxlength: 12
     step: tailles
     group: vetements
   - key: hauteur
     required: true
+    input: cm
+    min: 80
+    max: 250
     zone: 1
     clip: full
     step: corps
     group: silhouette
   - key: tour_cou
     required: true
+    input: cm
+    min: 15
+    max: 80
     zone: 0
     clip: neck
     step: corps
     group: silhouette
   - key: largeur_epaules
     required: true
+    input: cm
+    min: 15
+    max: 120
     zone: 5
     clip: shoulders
     step: corps
     group: silhouette
   - key: tour_poitrine
     required: true
+    input: cm
+    min: 40
+    max: 250
     zone: 2
     clip: chest
     step: corps
     group: silhouette
   - key: tour_taille
     required: true
+    input: cm
+    min: 30
+    max: 250
     zone: 3
     clip: waist
     step: corps
     group: silhouette
   - key: tour_taille_ceinture
     required: false
+    input: cm
+    min: 30
+    max: 250
     clip: waist_belt
     step: corps
     group: silhouette
   - key: tour_hanches_pantalon
     required: false
+    input: cm
+    min: 40
+    max: 250
     clip: hips_pant
     step: corps
     group: silhouette
   - key: longueur_bras_ext
     required: true
+    input: cm
+    min: 20
+    max: 150
     zone: 7
     clip: arm
     step: corps
     group: longueurs
   - key: longueur_jambe_ext
     required: false
+    input: cm
+    min: 30
+    max: 180
     clip: leg_ext
     step: corps
     group: longueurs
   - key: longueur_jambe_int
     required: false
+    input: cm
+    min: 25
+    max: 160
     clip: leg_int
     step: corps
     group: longueurs
   - key: tour_cuisse
     required: false
+    input: cm
+    min: 20
+    max: 150
     clip: thigh
     step: corps
     group: longueurs

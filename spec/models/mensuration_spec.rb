@@ -160,6 +160,34 @@ RSpec.describe Mensuration, type: :model do
 
       expect(cleaned).to eq("hauteur" => "168")
     end
+
+    it "normalise les cm et refuse hors bornes" do
+      cleaned = described_class.sanitize_measurements("homme", {
+        "hauteur" => "168,5",
+        "tour_cou" => "5",
+        "largeur_epaules" => "999",
+        "tour_poitrine" => "abc",
+        "taille_veste" => "52 #{'x' * 50}"
+      })
+
+      expect(cleaned["hauteur"]).to eq("168.5")
+      expect(cleaned).not_to have_key("tour_cou")
+      expect(cleaned).not_to have_key("largeur_epaules")
+      expect(cleaned).not_to have_key("tour_poitrine")
+      expect(cleaned["taille_veste"].length).to be <= 40
+    end
+
+    it "définit min/max pour chaque champ en cm" do
+      described_class.all_fields.each do |_template, fields|
+        fields.each do |field|
+          next unless field["input"] == "cm"
+
+          expect(field["min"]).to be_a(Numeric), field["key"]
+          expect(field["max"]).to be_a(Numeric), field["key"]
+          expect(field["max"]).to be > field["min"], field["key"]
+        end
+      end
+    end
   end
 
   describe "#apply_public_input" do

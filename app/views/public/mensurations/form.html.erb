@@ -76,7 +76,8 @@
             <div class="row g-3 mensuration-form__identity-row">
               <div class="col-md-6">
                 <%= mensuration_labeled_field "mensuration[prenom]", @mensuration.prenom,
-                      t("mensurations.identity.prenom"), required: true %>
+                      t("mensurations.identity.prenom"), required: true, maxlength: 80,
+                      autocomplete: "given-name" %>
               </div>
               <div class="col-md-6">
                 <% if mensuration_nom_locked? %>
@@ -84,7 +85,8 @@
                         disabled: true, id: "mensuration_nom", class: "opacity-75" %>
                 <% else %>
                   <%= mensuration_labeled_field "mensuration[nom]", @mensuration.nom,
-                        t("mensurations.identity.nom"), required: true %>
+                        t("mensurations.identity.nom"), required: true, maxlength: 80,
+                        autocomplete: "family-name" %>
                 <% end %>
               </div>
             </div>
@@ -95,21 +97,25 @@
               </div>
               <div class="col-md-6">
                 <%= mensuration_labeled_field "mensuration[telephone]", @mensuration.telephone,
-                      t("mensurations.identity.telephone"), type: :tel %>
+                      t("mensurations.identity.telephone"), type: :tel, maxlength: 20,
+                      autocomplete: "tel" %>
               </div>
             </div>
             <div class="row g-3 mensuration-form__identity-row">
               <div class="col-12">
                 <%= mensuration_labeled_field "mensuration[adresse]", @mensuration.adresse,
-                      t("mensurations.identity.adresse") %>
+                      t("mensurations.identity.adresse"), maxlength: 120,
+                      autocomplete: "street-address" %>
               </div>
               <div class="col-4">
                 <%= mensuration_labeled_field "mensuration[cp]", @mensuration.cp,
-                      t("mensurations.identity.cp") %>
+                      t("mensurations.identity.cp"), maxlength: 10, inputmode: "numeric",
+                      autocomplete: "postal-code" %>
               </div>
               <div class="col-8">
                 <%= mensuration_labeled_field "mensuration[ville]", @mensuration.ville,
-                      t("mensurations.identity.ville") %>
+                      t("mensurations.identity.ville"), maxlength: 80,
+                      autocomplete: "address-level2" %>
               </div>
             </div>
             <div class="row g-3">
@@ -160,7 +166,7 @@
             <p class="mensuration-form__photo-error d-none" data-photo-preview-target="error"></p>
           </div>
 
-          <div class="d-flex align-items-center mt-3 gap-2 mensuration-form__nav">
+          <div class="d-flex align-items-center gap-2 mensuration-form__nav">
             <% if completed %>
               <%= link_to mensuration_path(token: @invitation.token),
                     class: "btn btn-sm btn-outline-light public-btn-border-radius d-none",
@@ -175,15 +181,6 @@
               <i class="bi bi-arrow-left me-1"></i><%= t("mensurations.form.prev") %>
             </button>
 
-            <% if Rails.env.development? %>
-              <button type="button"
-                      class="btn btn-sm btn-outline-secondary public-btn-border-radius"
-                      data-form-wizard-target="fill"
-                      data-action="form-wizard#fillStep">
-                Dev : remplir cette étape
-              </button>
-            <% end %>
-
             <button type="button"
                     class="btn btn-light public-btn-border-radius ms-auto px-4"
                     data-form-wizard-target="next"
@@ -197,6 +194,17 @@
           </div>
         <% end %>
         </div>
+
+        <% if Rails.env.development? %>
+          <button type="button"
+                  class="mensuration-dev-fill"
+                  data-form-wizard-target="fill"
+                  data-action="form-wizard#fillStep"
+                  title="Dev : remplir cette étape"
+                  aria-label="Dev : remplir cette étape">
+            Dev
+          </button>
+        <% end %>
       </div>
     <% end %>
   </div>

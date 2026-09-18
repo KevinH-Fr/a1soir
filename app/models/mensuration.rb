@@ -15,6 +15,14 @@ class Mensuration < ApplicationRecord
   PHOTO_CONTENT_TYPES = %w[image/jpeg image/jpg image/png image/webp].freeze
   MAX_PHOTO_BYTES = 8.megabytes
   MAX_PHOTO_EDGE = 4000
+  IDENTITY_LIMITS = {
+    "prenom" => 80,
+    "nom" => 80,
+    "telephone" => 20,
+    "adresse" => 120,
+    "cp" => 10,
+    "ville" => 80
+  }.freeze
 
   scope :pending_admin, -> { where(admin_treated_at: nil) }
   scope :pending_admin_received, -> {
@@ -51,13 +59,40 @@ class Mensuration < ApplicationRecord
     values.compact_blank!
 
     fields.each do |field|
-      next unless field["input"] == "choice"
-
       key = field["key"]
-      values.delete(key) unless field["choices"].include?(values[key])
+      next unless values.key?(key)
+
+      case field["input"]
+      when "choice"
+        values.delete(key) unless field["choices"].include?(values[key])
+      when "cm"
+        normalized = normalize_cm(values[key], min: field["min"], max: field["max"])
+        if normalized
+          values[key] = normalized
+        else
+          values.delete(key)
+        end
+      when "textarea"
+        values[key] = values[key].truncate(field["maxlength"].presence || 400, omission: "")
+      else
+        limit = field["maxlength"].presence || 40
+        values[key] = values[key].truncate(limit, omission: "")
+      end
     end
 
-    values
+    values.compact_blank!
+  end
+
+  def self.normalize_cm(value, min:, max:)
+    raw = value.to_s.strip.tr(",", ".")
+    return if raw.blank?
+    return unless raw.match?(/\A\d{1,3}(\.\d{1,2})?\z/)
+
+    number = Float(raw)
+    return if min && number < min.to_f
+    return if max && number > max.to_f
+
+    number == number.to_i ? number.to_i.to_s : number.to_s
   end
 
   def self.all_fields
@@ -89,7 +124,13 @@ class Mensuration < ApplicationRecord
     self.template = invitation.template
     self.locale = invitation.locale
 
-    identity_hash = identity.to_h.stringify_keys.compact_blank
+    identity_hash = identity.to_h.stringify_keys
+    IDENTITY_LIMITS.each do |key, limit|
+      next unless identity_hash[key].is_a?(String)
+
+      identity_hash[key] = identity_hash[key].strip.truncate(limit, omission: "")
+    end
+    identity_hash.compact_blank!
     assign_attributes(identity_hash) if identity_hash.present?
 
     incoming = self.class.sanitize_measurements(template, measurements)

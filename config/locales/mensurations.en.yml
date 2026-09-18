@@ -121,9 +121,9 @@ en:
         admin: "Trousers/skirt size + brand"
         hint: "e.g. FR 36, FR 46"
       preference_forme_robe:
-        label: "Preferred dress shape / colours"
-        short: "Shape / colours"
-        admin: "Preferred dress shape / colours"
+        label: "Preferred dress shape / colours (fitted, flared, sleeves, neckline)"
+        short: "Preferred dress shape / colours (fitted, flared, sleeves, neckline)"
+        admin: "Preferred dress shape / colours (fitted, flared, sleeves, neckline)"
         hint: "fitted, flared, sleeves, neckline"
       taille_veste_chemisier:
         label: "Jacket/blouse size"

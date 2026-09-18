@@ -5,7 +5,7 @@
   <%= render "public/mensurations/card_header" %>
   <div class="mensuration-gate__intro">
     <p><%= t("mensurations.share.intro") %></p>
-    <p><%= t("mensurations.share.intro_email") %></p>
+    <p class="mensuration-gate__intro-email"><%= t("mensurations.share.intro_email") %></p>
   </div>
 
   <%= form_with url: mensuration_start_path, method: :post, local: true,

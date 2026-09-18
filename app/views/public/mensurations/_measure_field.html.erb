@@ -27,7 +27,9 @@
           title: hint.presence || t("mensurations.fields.#{key}.label") %>
   <% when "textarea" %>
     <%= mensuration_labeled_field "measurements[#{key}]", mensuration.value_for(key), caption,
-          type: :textarea, title: hint.presence || t("mensurations.fields.#{key}.label") %>
+          type: :textarea,
+          maxlength: field["maxlength"].presence || 400,
+          title: hint.presence || t("mensurations.fields.#{key}.label") %>
   <% else %>
     <%= mensuration_labeled_field "measurements[#{key}]", mensuration.value_for(key), caption,
           required: field["required"],
@@ -36,7 +38,8 @@
           layout: (dock ? :group : :stack),
           class: ("mensuration-guide__value" if dock),
           addon: (t("mensurations.form.measure_placeholder") if dock),
-          "aria-label" => caption %>
+          "aria-label" => caption,
+          **mensuration_measure_input_opts(field) %>
   <% end %>
   <% if guided && !dock && advice.present? %>
     <%= render "public/mensurations/advice", text: advice, extra_class: "mensuration-guide__field-advice" %>
