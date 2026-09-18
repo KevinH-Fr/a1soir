@@ -1,0 +1,17 @@
+<nav class="nav nav-pills flex-column gap-2 analyses-nav" aria-label="Sections du dashboard Analyses">
+  <% analyses_tabs.each do |tab| %>
+    <% active = analyses_vue == tab[:vue] %>
+    <%= link_to analyses_tab_path(tab[:vue]),
+                class: class_names(
+                  "nav-link d-flex align-items-center gap-3 py-2 px-3 text-start analyses-tone analyses-tone--#{tab[:tone]}",
+                  "active": active
+                ),
+                "aria-current": (active ? "page" : nil) do %>
+      <i class="bi bi-<%= tab[:icon] %> flex-shrink-0 analyses-tone__icon" aria-hidden="true"></i>
+      <span class="min-w-0">
+        <span class="d-block lh-sm text-truncate analyses-tone__label"><%= tab[:label] %></span>
+        <span class="d-block lh-sm text-truncate analyses-nav__hint"><%= tab[:description] %></span>
+      </span>
+    <% end %>
+  <% end %>
+</nav>

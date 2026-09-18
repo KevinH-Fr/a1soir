@@ -35,3 +35,6 @@ application.register("navbar-outside-close", NavbarOutsideCloseController)
 
 import CopyUrlController from "./copy_url_controller"
 application.register("copy-url", CopyUrlController)
+
+import AnalysesFiltersController from "./analyses_filters_controller"
+application.register("analyses-filters", AnalysesFiltersController)

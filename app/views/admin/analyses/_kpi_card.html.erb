@@ -1,0 +1,22 @@
+<div class="col">
+  <div class="analyses-kpi h-100">
+    <div class="d-flex align-items-center justify-content-between gap-2 mb-1">
+      <span class="analyses-kpi__title text-truncate"><%= title %></span>
+      <% if local_assigns[:badge].present? %>
+        <span class="badge rounded-pill text-bg-light border text-body-secondary fw-normal"><%= badge %></span>
+      <% end %>
+    </div>
+
+    <div class="analyses-kpi__value-row">
+      <div class="analyses-kpi__value text-truncate" title="<%= value %>"><%= value %></div>
+      <% if local_assigns[:trend_metric].present? %>
+        <%= render_analyses_kpi_trend(trend_metric) %>
+      <% end %>
+    </div>
+
+    <div class="analyses-kpi__hints">
+      <div class="analyses-kpi__hint text-truncate"><%= local_assigns[:hint].presence || "&nbsp;".html_safe %></div>
+      <div class="analyses-kpi__hint text-truncate"><%= local_assigns[:hint2].presence || "&nbsp;".html_safe %></div>
+    </div>
+  </div>
+</div>

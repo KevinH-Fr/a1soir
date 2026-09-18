@@ -1,0 +1,93 @@
+<% if analyses_visibility_show?(:kpi) %>
+  <%= render_analyses_kpi_section %>
+<% end %>
+
+<% show_payment = analyses_visibility_show?(:ca_pie_payment_modes) %>
+<% show_channels = analyses_visibility_show?(:ca_channels_timeline) %>
+
+<div class="analyses-chart-stack">
+  <% if show_payment || show_channels %>
+    <div class="row g-3 align-items-stretch">
+      <% if show_payment %>
+        <div class="<%= show_channels ? "col-lg-6" : "col-12" %>">
+          <%= analyses_chart_card(extra_class: "analyses-chart-card--flush-center") do %>
+            <%= analyses_chart_heading("Modes de paiement") %>
+            <div class="d-flex justify-content-center flex-grow-1 align-items-center">
+              <%= render_analyses_chart(:ca_payment_modes_doughnut, extra_class: "analyses-chart--compact", aria_label: "Répartition du CA par mode de paiement") %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      <% if show_channels %>
+        <div class="<%= show_payment ? "col-lg-6" : "col-12" %>">
+          <%= analyses_chart_card do %>
+            <%= analyses_chart_heading("Boutique & e-shop (CA €)", meta: analyses_ca_channels_meta) %>
+            <%= render_analyses_chart(
+                  :ca_channels_timeline,
+                  chart_id: "analyses-chart-ca-channels-synthese",
+                  extra_class: "analyses-chart--fill analyses-chart--timeline",
+                  aria_label: "Évolution du CA boutique et e-shop"
+                ) %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= analyses_chart_card do %>
+    <%= analyses_chart_heading(
+          "CA, commandes & articles",
+          meta: (analyses_ca_mode_lignes? ? "CA = lignes" : "CA = encaissements")
+        ) %>
+    <%= render_analyses_chart(
+          :synthese_timeline_mixed,
+          chart_id: "analyses-chart-synthese-mixed",
+          extra_class: "analyses-chart--fill analyses-chart--timeline",
+          aria_label: "Évolution du CA, des commandes et des articles par jour"
+        ) %>
+  <% end %>
+
+  <% show_catalog_type = analyses_visibility_show?(:catalog_by_type) %>
+  <% show_equipe = analyses_visibility_show?(:profiles_section) %>
+  <% if show_catalog_type || show_equipe %>
+    <% type_count = [(@catalog_by_type || []).size, Analyses::CatalogStats::CHART_TOP_LIMIT].min %>
+    <% profile_count = (@stats_par_profile || []).size %>
+    <% catalog_h = analyses_equipe_bars_height_rem([type_count, 3].max) %>
+    <% equipe_h = analyses_equipe_bars_height_rem([profile_count, 2].max) %>
+    <%# Paire : même hauteur compacte (budget catalogue), pas le max gonflé. %>
+    <% pair_h = (show_catalog_type && show_equipe) ? catalog_h : nil %>
+    <div class="row g-3 align-items-stretch">
+      <% if show_catalog_type %>
+        <div class="<%= show_equipe ? "col-lg-6" : "col-12" %> min-w-0 d-flex">
+          <%= analyses_chart_card(extra_class: ("analyses-chart-card--stretch" if show_equipe)) do %>
+            <%= analyses_chart_heading("Catalogue · par type", meta: "Top 5 · quantité & CA") %>
+            <%= render_analyses_chart(
+                  :catalog_types_bars,
+                  chart_id: "analyses-chart-synthese-catalog-types",
+                  extra_class: "analyses-chart--fill analyses-chart--catalog-bars",
+                  box_style: "--analyses-chart-height: #{pair_h || catalog_h}rem",
+                  aria_label: "Quantités et CA par type de produit"
+                ) %>
+          <% end %>
+        </div>
+      <% end %>
+      <% if show_equipe %>
+        <div class="<%= show_catalog_type ? "col-lg-6" : "col-12" %> min-w-0 d-flex">
+          <%= analyses_chart_card(extra_class: ("analyses-chart-card--stretch" if show_catalog_type)) do %>
+            <%= analyses_chart_heading(
+                  "Équipe · CA et transactions",
+                  meta: "CA = encaissements · Transactions = lignes"
+                ) %>
+            <%= render_analyses_chart(
+                  :profiles_ca_transactions,
+                  chart_id: "analyses-chart-synthese-profiles-bars",
+                  extra_class: "analyses-chart--fill analyses-chart--equipe-bars",
+                  box_style: "--analyses-chart-height: #{pair_h || equipe_h}rem",
+                  aria_label: "CA et transactions par vendeur"
+                ) %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

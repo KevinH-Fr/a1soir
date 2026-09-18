@@ -27,6 +27,15 @@ module ArticlesHelper
     end
   end
 
+  def eshop_article_actions_locked?(article)
+    commande = article&.commande
+    return false unless commande&.eshop?
+    return false unless commande.stripe_payment&.status == "paid"
+    return false if commande.remboursee_eshop?
+
+    true
+  end
+
   def produit_selection(produit, commande)
     statut = produit.statut_disponibilite(commande.debutloc&.to_date, commande.finloc&.to_date)
     disponibles = statut[:disponibles]

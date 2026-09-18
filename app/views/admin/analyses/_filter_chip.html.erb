@@ -1,0 +1,9 @@
+<%# chip : { key:, label:, value: } — cliquer retire le filtre. %>
+<%= link_to analyses_path_without_filter(chip[:key]),
+      class: "analyses-chip",
+      title: "Retirer le filtre #{chip[:label]}",
+      data: { turbo_stream: true } do %>
+  <span class="analyses-chip__label"><%= chip[:label] %></span>
+  <span class="analyses-chip__value text-truncate"><%= chip[:value] %></span>
+  <span class="analyses-chip__x" aria-hidden="true">&times;</span>
+<% end %>

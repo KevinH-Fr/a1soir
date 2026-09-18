@@ -1,0 +1,49 @@
+<%# Barre de contrôles mobile uniquement : sur lg+, tout est dans le volet gauche. %>
+<% chips = analyses_active_filter_chips %>
+<% filters_count = analyses_active_filters_count %>
+<% period_text = analyses_period_range_text %>
+
+<div class="d-flex align-items-center gap-2 p-2">
+  <button type="button"
+          class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-2 min-w-0 analyses-tone analyses-tone--<%= analyses_vue_meta[:tone] %>"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#analysesNavOffcanvas"
+          aria-controls="analysesNavOffcanvas">
+    <i class="bi bi-<%= analyses_vue_meta[:icon] %> flex-shrink-0 analyses-tone__icon" aria-hidden="true"></i>
+    <span class="text-truncate analyses-tone__label"><%= analyses_vue_meta[:label] %></span>
+  </button>
+
+  <div class="d-flex align-items-center gap-2 ms-auto flex-shrink-0">
+    <%= render "period_dropdown" %>
+
+    <button type="button"
+            class="btn btn-sm btn-outline-secondary position-relative d-inline-flex align-items-center gap-1"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#analysesFiltersOffcanvas"
+            aria-controls="analysesFiltersOffcanvas">
+      <i class="bi bi-funnel" aria-hidden="true"></i>
+      <span class="d-none d-sm-inline">Filtres</span>
+      <% if filters_count.positive? %>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-primary">
+          <%= filters_count %>
+          <span class="visually-hidden">filtres actifs</span>
+        </span>
+      <% end %>
+    </button>
+  </div>
+</div>
+
+<% if chips.any? || period_text.present? %>
+  <div class="px-2 pb-2 d-flex flex-nowrap align-items-center gap-2 overflow-auto analyses-header__chips">
+    <% if period_text.present? %>
+      <span class="badge rounded-pill text-bg-light border text-body fw-normal flex-shrink-0">
+        <i class="bi bi-calendar3 me-1 opacity-75" aria-hidden="true"></i>
+        <%= period_text %>
+      </span>
+    <% end %>
+
+    <% chips.each do |chip| %>
+      <%= render "filter_chip", chip: chip %>
+    <% end %>
+  </div>
+<% end %>

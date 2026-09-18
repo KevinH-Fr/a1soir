@@ -1,0 +1,37 @@
+<% totals = analyses_equipe_kpi_totals %>
+<% top = analyses_equipe_top_ca_row %>
+<% top_panier = (top && top[:commandes].to_i.positive?) ? (top[:ca].to_d / top[:commandes].to_i).round(2) : nil %>
+<div class="row row-cols-1 row-cols-lg-4 g-2 g-sm-3">
+  <%= render "kpi_card",
+        title: "CA équipe",
+        value: "#{analyses_donut_amount_label(totals[:ca])} €",
+        trend_metric: :equipe_ca,
+        hint: "#{totals[:vendeurs]} vendeur#{totals[:vendeurs] > 1 ? "s" : ""}",
+        hint2: (totals[:panier] ? "Panier moyen #{analyses_donut_amount_label(totals[:panier])} €" : nil) %>
+
+  <%= render "kpi_card",
+        title: "Commandes",
+        value: totals[:commandes],
+        trend_metric: :equipe_commandes,
+        hint: "#{totals[:articles]} articles",
+        hint2: (totals[:articles_par_commande] ? "#{totals[:articles_par_commande]} articles / commande" : nil) %>
+
+  <%= render "kpi_card",
+        title: "Devis",
+        value: totals[:devis],
+        trend_metric: :equipe_devis,
+        hint: "Créés sur la période",
+        hint2: (totals[:conversion_pct] ? "Conv. #{totals[:conversion_pct]} %" : nil) %>
+
+  <%= render "kpi_card",
+        title: (totals[:vendeurs] == 1 ? "Vendeur" : "Meilleur CA"),
+        value: (top ? top[:profile] : "—"),
+        trend_metric: :top_vendeur_ca,
+        hint: (top ? "#{analyses_donut_amount_label(top[:ca])} €" : "Aucun CA sur la période"),
+        hint2: (if top
+                  [
+                    "#{top[:commandes]} commandes",
+                    (top_panier ? "panier #{analyses_donut_amount_label(top_panier)} €" : nil)
+                  ].compact.join(" · ")
+                end) %>
+</div>

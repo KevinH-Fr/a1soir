@@ -189,10 +189,21 @@ class Admin::CommandesController < Admin::ApplicationController
   end
 
   def rembourser_eshop
-    result = EshopCommandeRemboursementService.new(@commande).call
+    result = EshopCommandeRemboursementService.new(@commande).call(
+      stripe_payment_item_ids: params[:stripe_payment_item_ids],
+      include_shipping: ActiveModel::Type::Boolean.new.cast(params[:refund_shipping])
+    )
 
     if result.success?
-      StripePaymentMailer.remboursement(@commande).deliver_later unless result.already_done
+      if !result.already_done && notify_client_remboursement?
+        StripePaymentMailer.remboursement(
+          @commande,
+          montant: result.montant,
+          stripe_payment_item_ids: result.item_ids,
+          include_shipping: result.include_shipping,
+          full_refund: result.full_refund
+        ).deliver_later
+      end
       toast_key = result.already_done ? :remboursee_deja : :remboursee_ok
       admin_push_domain_toast!(flash, :commande, toast_key)
     else
@@ -203,6 +214,10 @@ class Admin::CommandesController < Admin::ApplicationController
   end
 
   private
+    def notify_client_remboursement?
+      params[:notify_client].to_s != "0"
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_commande
       @commande = Commande.includes(

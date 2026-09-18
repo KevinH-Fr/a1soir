@@ -1,0 +1,120 @@
+<% if analyses_visibility_show?(:ca_section) %>
+  <% show_payment = analyses_visibility_show?(:ca_pie_payment_modes) %>
+  <% show_channels = analyses_visibility_show?(:ca_channels_timeline) %>
+  <% show_tx_doughnut = analyses_visibility_show?(:transactions_section) %>
+
+  <div class="analyses-chart-stack">
+    <div class="row g-3 align-items-stretch">
+      <% if show_payment %>
+        <div class="col-lg-5">
+          <%= analyses_chart_card(extra_class: "analyses-chart-card--flush-center") do %>
+            <%= analyses_chart_heading("Modes de paiement") %>
+            <div class="d-flex justify-content-center flex-grow-1 align-items-center">
+              <%= render_analyses_chart(:ca_payment_modes_doughnut, extra_class: "analyses-chart--compact", aria_label: "Répartition du CA par mode de paiement") %>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-lg-7">
+          <% if show_channels %>
+            <%= analyses_chart_card do %>
+              <%= analyses_chart_heading("Boutique & e-shop (CA €)", meta: analyses_ca_channels_meta) %>
+              <%= render_analyses_chart(
+                    :ca_channels_timeline,
+                    chart_id: "analyses-chart-ca-channels",
+                    extra_class: "analyses-chart--fill analyses-chart--timeline",
+                    aria_label: "Évolution du CA boutique et e-shop"
+                  ) %>
+            <% end %>
+          <% else %>
+            <%= analyses_chart_card do %>
+              <%= analyses_chart_heading("CA & transactions", meta: analyses_ca_transactions_meta) %>
+              <%= render_analyses_chart(
+                    :ca_transactions_timeline,
+                    chart_id: "analyses-chart-ca-transactions",
+                    extra_class: "analyses-chart--fill analyses-chart--timeline",
+                    aria_label: "Évolution du CA encaissé et des transactions par jour"
+                  ) %>
+            <% end %>
+          <% end %>
+        </div>
+      <% elsif show_channels %>
+        <div class="col-12">
+          <%= analyses_chart_card do %>
+            <%= analyses_chart_heading("Boutique & e-shop (CA €)", meta: analyses_ca_channels_meta) %>
+            <%= render_analyses_chart(
+                  :ca_channels_timeline,
+                  chart_id: "analyses-chart-ca-channels",
+                  extra_class: "analyses-chart--fill analyses-chart--timeline",
+                  aria_label: "Évolution du CA boutique et e-shop"
+                ) %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="col-12">
+          <%= analyses_chart_card do %>
+            <%= analyses_chart_heading("CA & transactions", meta: analyses_ca_transactions_meta) %>
+            <%= render_analyses_chart(
+                  :ca_transactions_timeline,
+                  chart_id: "analyses-chart-ca-transactions",
+                  extra_class: "analyses-chart--fill analyses-chart--timeline",
+                  aria_label: "Évolution du CA encaissé et des transactions par jour"
+                ) %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <% if show_channels %>
+      <%= analyses_chart_card do %>
+        <%= analyses_chart_heading("CA & transactions", meta: analyses_ca_transactions_meta) %>
+        <%= render_analyses_chart(
+              :ca_transactions_timeline,
+              chart_id: "analyses-chart-ca-transactions",
+              extra_class: "analyses-chart--fill analyses-chart--timeline",
+              aria_label: "Évolution du CA encaissé et des transactions par jour"
+            ) %>
+      <% end %>
+    <% end %>
+
+    <div class="row g-3 align-items-stretch">
+      <% if show_tx_doughnut %>
+        <div class="col-12 col-lg-6 min-w-0">
+          <%= analyses_chart_card(extra_class: "analyses-chart-card--flush-center") do %>
+            <%= analyses_chart_heading("Location / vente", meta: "Quantités articles · Transactions (€)") %>
+            <div class="flex-grow-1 d-flex align-items-center w-100">
+              <%= render "admin/analyses/locvente_twin_doughnuts",
+                    euro_key: :transactions_euro_doughnut,
+                    euro_title: "Transactions (€)",
+                    euro_aria: "Répartition location et vente des transactions",
+                    qty_chart_id: "analyses-chart-locvente-qty-ca",
+                    euro_chart_id: "analyses-chart-locvente-euro-ca" %>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-12 col-lg-6 min-w-0">
+          <%= analyses_chart_card do %>
+            <%= analyses_chart_heading("Panier moyen & articles / commande", meta: "Jours sans commande exclus") %>
+            <%= render_analyses_chart(
+                  :ca_ratios_timeline,
+                  chart_id: "analyses-chart-ca-ratios",
+                  extra_class: "analyses-chart--fill analyses-chart--timeline",
+                  aria_label: "Évolution du panier moyen et des articles par commande"
+                ) %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="col-12">
+          <%= analyses_chart_card do %>
+            <%= analyses_chart_heading("Panier moyen & articles / commande", meta: "Jours sans commande exclus") %>
+            <%= render_analyses_chart(
+                  :ca_ratios_timeline,
+                  chart_id: "analyses-chart-ca-ratios",
+                  extra_class: "analyses-chart--fill analyses-chart--timeline",
+                  aria_label: "Évolution du panier moyen et des articles par commande"
+                ) %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

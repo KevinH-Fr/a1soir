@@ -1,0 +1,23 @@
+<% pinned = analyses_visibility&.pinned_filter_messages %>
+<% tone = analyses_vue_meta[:tone] %>
+
+<div class="mb-3 analyses-tone analyses-tone--<%= tone %>">
+  <div class="d-flex align-items-center gap-2 gap-sm-3">
+    <span class="d-none d-sm-flex align-items-center justify-content-center rounded-3 flex-shrink-0 analyses-heading__icon analyses-tone__badge">
+      <i class="bi bi-<%= analyses_vue_meta[:icon] %> fs-5 analyses-tone__icon" aria-hidden="true"></i>
+    </span>
+    <div class="min-w-0">
+      <h1 class="h5 mb-0 fw-bold analyses-tone__label">
+        <span class="visually-hidden">Analyses — </span><%= analyses_vue_meta[:label] %>
+      </h1>
+      <p class="mb-0 lh-sm analyses-heading__subtitle"><%= analyses_vue_meta[:description] %></p>
+    </div>
+  </div>
+
+  <% pinned&.each do |msg| %>
+    <p class="small text-body-secondary mb-0 mt-2 d-flex align-items-start gap-2" role="status">
+      <i class="bi bi-info-circle flex-shrink-0 mt-1" aria-hidden="true"></i>
+      <span><%= msg[:label] %></span>
+    </p>
+  <% end %>
+</div>

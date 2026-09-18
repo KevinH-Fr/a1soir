@@ -1,0 +1,24 @@
+<% label = local_assigns[:value_label].presence %>
+<% if trend[:pct].nil? %>
+  <div class="analyses-kpi__trend analyses-kpi__trend--neutral"
+       title="<%= trend[:period_label] %> — pas de base de comparaison">
+    <span><%= label ? "#{label} : —" : "—" %></span>
+  </div>
+<% else %>
+  <% tone = case trend[:direction]
+            when :up then "up"
+            when :down then "down"
+            else "neutral"
+            end %>
+  <% signed = trend[:signed_pct] %>
+  <% pct_text = "#{signed.positive? ? "+" : (signed.negative? ? "−" : "")}#{number_with_precision(trend[:pct], precision: 1, strip_insignificant_zeros: true)}%" %>
+  <div class="analyses-kpi__trend analyses-kpi__trend--<%= tone %>"
+       title="<%= [label, trend[:period_label]].compact.join(" · ") %>">
+    <% if trend[:direction] == :up %>
+      <i class="bi bi-arrow-up" aria-hidden="true"></i>
+    <% elsif trend[:direction] == :down %>
+      <i class="bi bi-arrow-down" aria-hidden="true"></i>
+    <% end %>
+    <span><%= label ? "#{label} : #{pct_text}" : pct_text %></span>
+  </div>
+<% end %>

@@ -1,0 +1,30 @@
+<% top = @catalog_top_products&.first %>
+<% top3_share = analyses_catalog_top3_share_pct %>
+<div class="row row-cols-1 row-cols-lg-4 g-2 g-sm-3">
+  <%= render "kpi_card",
+        title: "Quantités",
+        value: analyses_catalog_kpi_quantite,
+        trend_metric: :quantites,
+        hint: (analyses_visibility_show?(:articles_locvente_split) ? "#{@nbLoc} locations" : "#{@nbTotalArticles} articles"),
+        hint2: (analyses_visibility_show?(:articles_locvente_split) ? "#{@nbVente} ventes" : nil) %>
+
+  <%= render "kpi_card",
+        title: "CA lignes",
+        value: "#{analyses_donut_amount_label(analyses_catalog_kpi_ca_lignes)} €",
+        trend_metric: :ca_lignes,
+        hint: "Montants des lignes",
+        hint2: "Sur la période" %>
+
+  <%= render "kpi_card",
+        title: "Produits",
+        value: analyses_catalog_kpi_produits_count,
+        trend_metric: :produits,
+        hint: "Références distinctes",
+        hint2: (top3_share ? "Top 3 = #{top3_share} % qté" : nil) %>
+
+  <%= render "kpi_card",
+        title: "Top produit",
+        value: (top ? analyses_catalog_top_product_label : "—"),
+        hint: (top ? "#{top[:qte_loc].to_i} locations · #{top[:qte_vente].to_i} ventes" : "Aucune ligne"),
+        hint2: (top ? "#{analyses_donut_amount_label(top[:ca_lignes])} € CA" : nil) %>
+</div>

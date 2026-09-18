@@ -1,4 +1,5 @@
 class Admin::ProduitsController < Admin::ApplicationController
+  include Admin::ProduitListingFilters
 
   before_action :authenticate_admin!, only: %i[ destroy edit update toggle_coup_de_coeur move_up_coup_de_coeur move_down_coup_de_coeur apply_promotion remove_promotion ]
 
@@ -658,81 +659,6 @@ class Admin::ProduitsController < Admin::ApplicationController
         categorie_produit_ids: [])
     end
 
-
-  def apply_taille_filter(scope, value)
-    return scope unless value.present?
-
-    if value == "na"
-      scope.where(taille_id: nil)
-    else
-      scope.by_taille(value)
-    end
-  end
-
-  def apply_couleur_filter(scope, value)
-    return scope unless value.present?
-
-    if value == "na"
-      scope.where(couleur_id: nil)
-    else
-      scope.by_couleur(value)
-    end
-  end
-
-  def apply_categorie_filter(scope, value)
-    return scope unless value.present?
-
-    if value == "na"
-      scope.left_outer_joins(:categorie_produits).where(categorie_produits: { id: nil })
-    else
-      scope.by_categorie(CategorieProduit.find(value))
-    end
-  end
-
-  def apply_statut_filter(scope, value)
-    return scope unless value.present?
-
-    case value
-    when "na"
-      scope.where(actif: nil)
-    when "true"
-      scope.actif
-    when "false"
-      scope.inactif
-    else
-      scope
-    end
-  end
-
-  def apply_type_produit_filter(scope, value)
-    return scope unless value.present?
-
-    if value == "na"
-      scope.where(type_produit_id: nil)
-    else
-      scope.where(type_produit_id: value)
-    end
-  end
-
-  def apply_fournisseur_filter(scope, value)
-    return scope unless value.present?
-
-    if value == "na"
-      scope.where(fournisseur_id: nil)
-    else
-      scope.by_fournisseur(Fournisseur.find(value))
-    end
-  end
-
-  def apply_prix_filter(scope, value)
-    return scope unless value.present?
-
-    if value == "na"
-      scope.where('(prixvente IS NULL OR prixvente <= 0) AND (prixlocation IS NULL OR prixlocation <= 0)')
-    else
-      scope.by_prixmax(value.to_f)
-    end
-  end
 
   def apply_sort(scope, sort_param)
     case sort_param

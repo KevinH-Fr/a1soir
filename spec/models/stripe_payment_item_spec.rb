@@ -23,7 +23,21 @@ RSpec.describe StripePaymentItem do
     )
   end
 
-  describe "availability callback logic (#update_produit_availability_if_paid)" do
+  describe ".not_refunded" do
+    it "excludes items with refunded_at" do
+      StripePaymentItem.create!(stripe_payment: paid_payment, produit: produit, quantity: 1, unit_amount: 5000)
+      refunded = StripePaymentItem.create!(
+        stripe_payment: paid_payment,
+        produit: produit,
+        quantity: 1,
+        unit_amount: 5000,
+        refunded_at: Time.current
+      )
+
+      expect(StripePaymentItem.not_refunded).not_to include(refunded)
+      expect(StripePaymentItem.not_refunded.count).to eq(1)
+    end
+  end
     it "calls update_today_availability on produit when payment is paid" do
       item = StripePaymentItem.new(stripe_payment: paid_payment, produit: produit, quantity: 1, unit_amount: 5000)
       expect(produit).to receive(:update_today_availability)

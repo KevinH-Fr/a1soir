@@ -41,7 +41,20 @@
           <%= admin_collapse_details_button_content %>
         </button>
         <div class="ms-auto">
-          <%= links_record(article, show: false) %>
+          <% if eshop_article_actions_locked?(article) %>
+            <div class="d-flex justify-content-end gap-1 flex-nowrap" title="<%= t("commandes.eshop_remboursement.article_actions_locked") %>">
+              <button type="button" class="btn btn-sm btn-secondary" disabled>
+                <i class="bi bi-pencil-square"></i>
+                <span class="d-none d-lg-inline ms-1">Modifier</span>
+              </button>
+              <button type="button" class="btn btn-sm btn-danger" disabled>
+                <i class="bi bi-trash"></i>
+                <span class="d-none d-lg-inline ms-1">Supprimer</span>
+              </button>
+            </div>
+          <% else %>
+            <%= links_record(article, show: false) %>
+          <% end %>
         </div>
       </div>
 
