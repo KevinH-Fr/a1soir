@@ -142,7 +142,7 @@ fr:
         ruler: "cou"
         admin: "Tour de cou (cm)"
         example: "ex. 38"
-        advice: "Mesurez à la base du cou."
+        advice: "Passez le mètre tout autour, à la base du cou."
       coupe_chemise:
         label: "Coupe chemise"
         short: "Coupe chemise"
@@ -164,7 +164,7 @@ fr:
         ruler: "poitrine"
         admin: "Tour de poitrine (cm)"
         example: "ex. 90"
-        advice: "Mesurez horizontalement au point le plus fort."
+        advice: "Passez le mètre tout autour du buste, à l'horizontal, au point le plus fort."
       taille_sous_poitrine:
         label: "Taille sous poitrine (cm)"
         name: "Sous poitrine"
@@ -172,7 +172,7 @@ fr:
         ruler: "sous-poitrine"
         admin: "Taille sous poitrine (cm)"
         example: "ex. 80"
-        advice: "Mesurez horizontalement au point le plus fort."
+        advice: "Passez le mètre tout autour, à l'horizontal, juste sous la poitrine."
       tour_taille:
         label: "Tour de taille (cm)"
         name: "Tour de taille"
@@ -180,7 +180,7 @@ fr:
         ruler: "taille"
         admin: "Tour de taille (cm)"
         example: "ex. 70"
-        advice: "Mesurez à la taille naturelle, au plus creux."
+        advice: "Passez le mètre tout autour, à l'horizontal, à la taille naturelle (le plus creux)."
       tour_hanches:
         label: "Tour de hanches (cm)"
         name: "Tour de hanches"
@@ -188,7 +188,7 @@ fr:
         ruler: "hanches"
         admin: "Tour de hanches (cm)"
         example: "ex. 96"
-        advice: "Mesurez au niveau de la partie la plus large des hanches et des fesses."
+        advice: "Passez le mètre tout autour, à l'horizontal, au plus large des hanches et des fesses."
       largeur_epaules:
         label: "Largeur d'épaules (cm)"
         name: "Largeur d'épaules"
@@ -233,7 +233,7 @@ fr:
         ruler: "ceinture"
         admin: "Tour de taille ceinture (cm)"
         example: "ex. 80"
-        advice: "Mesurez au niveau de la ceinture du pantalon."
+        advice: "Passez le mètre tout autour, à l'horizontal, au niveau de la ceinture du pantalon."
       tour_hanches_pantalon:
         label: "Tour de hanches pantalon (cm)"
         name: "Hanches pantalon"
@@ -241,7 +241,7 @@ fr:
         ruler: "hanches"
         admin: "Tour de hanches pantalon (cm)"
         example: "ex. 98"
-        advice: "Mesurez au niveau de la partie la plus large des hanches et des fesses."
+        advice: "Passez le mètre tout autour, à l'horizontal, au plus large des hanches et des fesses."
       tour_cuisse:
         label: "Tour de Cuisse (cm)"
         name: "Tour de cuisse"
@@ -249,7 +249,7 @@ fr:
         ruler: "cuisse"
         admin: "Tour de Cuisse (cm)"
         example: "ex. 55"
-        advice: "Mesurez à l'endroit le plus large de votre cuisse."
+        advice: "Passez le mètre tout autour, à l'horizontal, à l'endroit le plus large de la cuisse."
       pointure:
         label: "Pointure"
         short: "Pointure"

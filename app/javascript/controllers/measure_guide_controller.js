@@ -24,31 +24,31 @@ function reportFieldValidity(root) {
 // Recalage visuel sur la planche 1122×1402 (ellipse → cx/cy/rx ; ligne → x/y).
 const GUIDE_TWEAKS = {
   femme: {
-    "measure-neck": { cx: 232, cy: 258, rx: 42 },
-    "measure-bust": { cx: 230, cy: 392, rx: 105 },
-    "measure-underbust": { cx: 230, cy: 438, rx: 88 },
-    "measure-waist": { cx: 230, cy: 548, rx: 92 },
+    "measure-neck": { cx: 232, cy: 258, rx: 42, ry: 0 },
+    "measure-bust": { cx: 233, cy: 392, rx: 79, ry: 8 },
+    "measure-underbust": { cx: 233, cy: 438, rx: 74, ry: 7 },
+    "measure-waist": { cx: 233, cy: 518, rx: 64, ry: 6 },
     "measure-hips": { cx: 232, cy: 668, rx: 122 },
     "measure-thigh": { cx: 174, cy: 778, rx: 46 },
     "measure-height": { x1: 678, x2: 678, y1: 50, y2: 1300 },
     "measure-outside-leg": { x1: 546, x2: 546, y1: 590, y2: 1268 },
     "measure-inside-leg": { x1: 225, x2: 205, y1: 705, y2: 1265 },
     "measure-shoulders": { x1: 783, x2: 1045, y1: 302, y2: 302 },
-    "measure-belt-waist": { cx: 913, cy: 576, rx: 82 },
+    "measure-belt-waist": { cx: 918, cy: 576, rx: 88, ry: 6 },
     "measure-arm-length": { d: "M540 302 L618 704" }
   },
   homme: {
-    "measure-neck": { cx: 226, cy: 248, rx: 38 },
-    "measure-chest": { cx: 226, cy: 370, rx: 105 },
-    "measure-waist": { cx: 226, cy: 530, rx: 90 },
+    "measure-neck": { cx: 226, cy: 248, rx: 34, ry: 0 },
+    "measure-chest": { cx: 220, cy: 370, rx: 95, ry: 7 },
+    "measure-waist": { cx: 224, cy: 508, rx: 90, ry: 6 },
     "measure-hips": { cx: 220, cy: 638, rx: 108 },
     "measure-thigh": { cx: 164, cy: 768, rx: 48 },
     "measure-height": { x1: 673, x2: 673, y1: 50, y2: 1278 },
     "measure-outside-leg": { x1: 538, x2: 538, y1: 666, y2: 1230 },
     "measure-inside-leg": { x1: 222, x2: 188, y1: 705, y2: 1242 },
     "measure-shoulders": { x1: 748, x2: 1068, y1: 320, y2: 320 },
-    "measure-belt-waist": { cx: 908, cy: 608, rx: 98 },
-    "measure-arm-length": { d: "M515 300 L612 710" }
+    "measure-belt-waist": { cx: 908, cy: 588, rx: 98 },
+    "measure-arm-length": { d: "M515 320 L612 710" }
   }
 }
 const svgCache = new Map()
@@ -336,6 +336,33 @@ export default class extends Controller {
     return out
   }
 
+  wrapPaths(cx, cy, rx, ry, invert = false) {
+    // Ovale très plat : assez pour voir devant/derrière, sans grosse boucle.
+    const depth = Math.min(Math.max(ry, 3), rx * 0.07)
+    const bottomD = `M ${cx - rx} ${cy} A ${rx} ${depth} 0 0 1 ${cx + rx} ${cy}`
+    const topD = `M ${cx + rx} ${cy} A ${rx} ${depth} 0 0 0 ${cx - rx} ${cy}`
+    // invert : devant = arc du haut (rare), sinon arc du bas (torse / base du cou).
+    const frontD = invert ? topD : bottomD
+    const backD = invert ? bottomD : topD
+
+    const halo = document.createElementNS(NS, "path")
+    halo.setAttribute("class", "guide-arrow--wrap guide-arrow--back-halo")
+    halo.setAttribute("fill", "none")
+    halo.setAttribute("d", backD)
+
+    const back = document.createElementNS(NS, "path")
+    back.setAttribute("class", "guide-arrow guide-arrow--wrap guide-arrow--back")
+    back.setAttribute("fill", "none")
+    back.setAttribute("d", backD)
+
+    const front = document.createElementNS(NS, "path")
+    front.setAttribute("class", "guide-arrow guide-arrow--wrap guide-arrow--front")
+    front.setAttribute("fill", "none")
+    front.setAttribute("d", frontD)
+
+    return [halo, back, front]
+  }
+
   makeMeasureGroup(id) {
     const group = document.createElementNS(NS, "g")
     group.setAttribute("id", id)
@@ -356,6 +383,8 @@ export default class extends Controller {
         path.setAttribute("class", "guide-arrow")
         path.setAttribute("d", tweak.d)
         group.append(path)
+      } else if (tweak.cx != null && tweak.ry) {
+        group.append(...this.wrapPaths(tweak.cx, tweak.cy, tweak.rx || 0, tweak.ry, Boolean(tweak.invert)))
       } else if (tweak.cx != null) {
         const line = document.createElementNS(NS, "line")
         line.setAttribute("class", "guide-arrow")
@@ -387,6 +416,7 @@ export default class extends Controller {
       let cx = Number(ellipse.getAttribute("cx"))
       let cy = Number(ellipse.getAttribute("cy"))
       let rx = Number(ellipse.getAttribute("rx"))
+      let ry = Number(ellipse.getAttribute("ry"))
       if (![cx, cy, rx].every(Number.isFinite)) return
 
       const id = ellipse.closest("[id^='measure-']")?.id
@@ -395,6 +425,12 @@ export default class extends Controller {
         if (tweak.cx != null) cx = tweak.cx
         if (tweak.cy != null) cy = tweak.cy
         if (tweak.rx != null) rx = tweak.rx
+        if (tweak.ry != null) ry = tweak.ry
+      }
+
+      if (Number.isFinite(ry) && ry > 0) {
+        ellipse.replaceWith(...this.wrapPaths(cx, cy, rx, ry, Boolean(tweak?.invert)))
+        return
       }
 
       const line = document.createElementNS(NS, "line")
@@ -471,6 +507,7 @@ export default class extends Controller {
     root.querySelectorAll(".measurement").forEach((group) => {
       group.querySelectorAll("circle.guide-end").forEach((el) => el.remove())
       group.querySelectorAll(".guide-arrow").forEach((el) => {
+        if (el.classList.contains("guide-arrow--wrap")) return
         this.guideEnds(el)?.forEach(([x, y], i) => {
           const dot = document.createElementNS(NS, "circle")
           dot.setAttribute("class", i === 0 ? "guide-end guide-end--start" : "guide-end guide-end--end")
@@ -592,10 +629,12 @@ export default class extends Controller {
     return 80
   }
 
-  dashedDrawPattern(length) {
-    const pair = GUIDE_DASH + GUIDE_GAP
+  dashedDrawPattern(length, sparse = false) {
+    const dash = sparse ? 2.2 : GUIDE_DASH
+    const gap = sparse ? 5.2 : GUIDE_GAP
+    const pair = dash + gap
     const repeats = Math.ceil(length / pair) + 2
-    const dots = Array.from({ length: repeats }, () => `${GUIDE_DASH} ${GUIDE_GAP}`).join(" ")
+    const dots = Array.from({ length: repeats }, () => `${dash} ${gap}`).join(" ")
     return `${dots} 0 ${length}`
   }
 
@@ -618,8 +657,8 @@ export default class extends Controller {
   }
 
   playGuideAnimation(node) {
-    const arrows = [...node.querySelectorAll(".guide-arrow")]
     const helpers = [...node.querySelectorAll(".helper")]
+    const arrows = [...node.querySelectorAll(".guide-arrow")]
     const drawn = arrows.length ? arrows : helpers
     if (!drawn.length) {
       node.classList.add("is-animating")
@@ -632,9 +671,9 @@ export default class extends Controller {
     const lengths = drawn.map((guide) => this.guideLength(guide))
 
     drawn.forEach((guide, i) => {
-      const length = lengths[i]
-      guide.style.strokeDasharray = this.dashedDrawPattern(length)
-      guide.style.strokeDashoffset = `${length}`
+      const sparse = guide.classList.contains("guide-arrow--back")
+      guide.style.strokeDasharray = this.dashedDrawPattern(lengths[i], sparse)
+      guide.style.strokeDashoffset = `${lengths[i]}`
       guide.style.transition = "none"
     })
 

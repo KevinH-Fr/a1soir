@@ -22,6 +22,31 @@ export default class extends Controller {
     return this.element.querySelector("form[data-form-wizard-target='form']")
   }
 
+  // Entrée dans un champ = Continuer (valider la mesure / l'étape), pas envoyer tout le formulaire.
+  advanceOnEnter(event) {
+    if (event.repeat) return
+    if (event.target instanceof HTMLTextAreaElement) return
+    if (event.target.closest("button, input[type=submit]")) return
+
+    if (this.isFinalSubmit()) return
+
+    event.preventDefault()
+    this.next()
+  }
+
+  guardSubmit(event) {
+    if (this.isFinalSubmit()) return
+
+    event.preventDefault()
+    this.next()
+  }
+
+  isFinalSubmit() {
+    const last = this.indexValue === this.stepTargets.length - 1
+    const guide = this.currentGuide()
+    return last && (!guide || guide.atLast)
+  }
+
   async next() {
     const guide = this.currentGuide()
     if (guide && !guide.atLast) {
@@ -79,17 +104,26 @@ export default class extends Controller {
     }
   }
 
-  // Dev only : préremplit les champs de l'étape (ou du champ guidé) affichée.
-  fillStep() {
+  // Dev only : préremplit l'étape affichée puis avance comme Continuer.
+  async fillStep() {
+    if (this.stepTargets[this.indexValue]?.hasAttribute("data-choice-step")) return
+
     const guide = this.currentGuide()
     if (guide) {
       const root = guide.currentFieldRoot()
       if (root) this.fillControls(root)
+    } else {
+      const step = this.stepTargets[this.indexValue]
+      if (step) this.fillControls(step)
+    }
+
+    if (this.isFinalSubmit()) {
+      if (this.hasSubmitTarget) this.submitTarget.click()
+      else this.formElement()?.requestSubmit()
       return
     }
 
-    const step = this.stepTargets[this.indexValue]
-    if (step) this.fillControls(step)
+    await this.next()
   }
 
   fillControls(root) {

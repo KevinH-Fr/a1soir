@@ -70,7 +70,10 @@
           </div>
 
         <%= form_with url: mensuration_save_path(token: @invitation.token), method: :post, local: true, multipart: true,
-              data: { form_wizard_target: "form" } do |f| %>
+              data: {
+                form_wizard_target: "form",
+                action: "keydown.enter->form-wizard#advanceOnEnter submit->form-wizard#guardSubmit"
+              } do |f| %>
           <div data-form-wizard-target="step" class="d-none mensuration-form__identity">
             <h2 class="h6 mb-3 pb-1 text-light border-bottom border-secondary"><%= t("mensurations.form.identity_title") %></h2>
             <div class="row g-3 mensuration-form__identity-row">
@@ -200,8 +203,8 @@
                   class="mensuration-dev-fill"
                   data-form-wizard-target="fill"
                   data-action="form-wizard#fillStep"
-                  title="Dev : remplir cette étape"
-                  aria-label="Dev : remplir cette étape">
+                  title="Dev : remplir et continuer"
+                  aria-label="Dev : remplir et continuer">
             Dev
           </button>
         <% end %>

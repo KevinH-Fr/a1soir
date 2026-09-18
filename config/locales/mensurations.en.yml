@@ -142,7 +142,7 @@ en:
         ruler: "neck"
         admin: "Neck circumference (cm)"
         example: "e.g. 38"
-        advice: "Measure at the base of the neck."
+        advice: "Wrap the tape all the way around, at the base of the neck."
       coupe_chemise:
         label: "Shirt fit"
         short: "Shirt fit"
@@ -164,7 +164,7 @@ en:
         ruler: "chest"
         admin: "Bust/chest circumference (cm)"
         example: "e.g. 90"
-        advice: "Measure horizontally at the fullest point."
+        advice: "Wrap the tape all the way around the bust, horizontally, at the fullest point."
       taille_sous_poitrine:
         label: "Underbust (cm)"
         name: "Underbust"
@@ -172,7 +172,7 @@ en:
         ruler: "underbust"
         admin: "Underbust (cm)"
         example: "e.g. 80"
-        advice: "Measure horizontally at the fullest point."
+        advice: "Wrap the tape all the way around, horizontally, just under the bust."
       tour_taille:
         label: "Waist circumference (cm)"
         name: "Waist"
@@ -180,7 +180,7 @@ en:
         ruler: "waist"
         admin: "Waist circumference (cm)"
         example: "e.g. 70"
-        advice: "Measure at the natural waist, the narrowest point."
+        advice: "Wrap the tape all the way around, horizontally, at the natural waist (the narrowest point)."
       tour_hanches:
         label: "Hip circumference (cm)"
         name: "Hips"
@@ -188,7 +188,7 @@ en:
         ruler: "hips"
         admin: "Hip circumference (cm)"
         example: "e.g. 96"
-        advice: "Measure at the widest part of the hips and buttocks."
+        advice: "Wrap the tape all the way around, horizontally, at the widest part of the hips and buttocks."
       largeur_epaules:
         label: "Shoulder width (cm)"
         name: "Shoulders"
@@ -233,7 +233,7 @@ en:
         ruler: "belt"
         admin: "Belt waist circumference (cm)"
         example: "e.g. 80"
-        advice: "Measure at your trouser waistband."
+        advice: "Wrap the tape all the way around, horizontally, at your trouser waistband."
       tour_hanches_pantalon:
         label: "Trousers hip circumference (cm)"
         name: "Trousers hips"
@@ -241,7 +241,7 @@ en:
         ruler: "hips"
         admin: "Trousers hip circumference (cm)"
         example: "e.g. 98"
-        advice: "Measure at the widest part of the hips and buttocks."
+        advice: "Wrap the tape all the way around, horizontally, at the widest part of the hips and buttocks."
       tour_cuisse:
         label: "Thigh circumference (cm)"
         name: "Thigh"
@@ -249,7 +249,7 @@ en:
         ruler: "thigh"
         admin: "Thigh circumference (cm)"
         example: "e.g. 55"
-        advice: "Measure at the widest part of your thigh."
+        advice: "Wrap the tape all the way around, horizontally, at the widest part of your thigh."
       pointure:
         label: "Shoe size"
         short: "Shoe size"

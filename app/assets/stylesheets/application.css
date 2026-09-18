@@ -3289,7 +3289,8 @@ section {
 
 .mensuration-form__nav {
   flex-shrink: 0;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  width: 100%;
   margin-top: 0.45rem !important;
   padding-top: 0.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -3544,6 +3545,10 @@ section {
 }
 
 .mensuration-shell--guided .mensuration-form__nav {
+  width: 100%;
+  max-width: var(--guide-col);
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 0.35rem !important;
   padding-top: 0.4rem;
 }
@@ -3854,6 +3859,26 @@ section {
   marker-end: none;
 }
 
+.mensuration-figure-stack #measurements .guide-arrow--front {
+  stroke: #2a241c;
+  stroke-width: 1.2;
+}
+
+.mensuration-figure-stack #measurements .guide-arrow--back-halo {
+  fill: none;
+  stroke: #2a241c;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  opacity: 0.45;
+  vector-effect: non-scaling-stroke;
+}
+
+.mensuration-figure-stack #measurements .guide-arrow--back {
+  stroke: #fff6ea;
+  stroke-width: 1.55;
+  opacity: 1;
+}
+
 .mensuration-figure-stack #measurements .helper {
   stroke-width: 0.7;
   stroke-dasharray: 2.5 3.5;
@@ -3879,6 +3904,11 @@ section {
 
 .mensuration-figure-stack #measurements .measurement.is-active.is-drawing .guide-arrow {
   opacity: 0.9;
+}
+
+.mensuration-figure-stack #measurements .measurement.is-active.is-drawing .guide-arrow--back,
+.mensuration-figure-stack #measurements .measurement.is-active .guide-arrow--back {
+  opacity: 1;
 }
 
 @media (min-width: 768px) {
