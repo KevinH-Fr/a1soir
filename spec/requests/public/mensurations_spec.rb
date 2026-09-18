@@ -600,8 +600,9 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect(invitation.reload.status).to eq("completed")
 
       follow_redirect!
-      expect(response.body).to include("mensuration-card-header")
+      expect(response.body).not_to include("mensuration-card-header")
       expect(response.body).to include("mensuration-form__thanks")
+      expect(response.body).to include(I18n.t("mensurations.form.thanks_lead", locale: :fr))
       expect(response.body).to include(I18n.t("mensurations.form.thanks_title", locale: :fr))
       expect(response.body).to include(I18n.t("mensurations.form.show_answers", locale: :fr))
       expect(response.body).to include("edit=1")

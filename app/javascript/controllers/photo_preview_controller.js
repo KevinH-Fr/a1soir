@@ -3,13 +3,19 @@ import { Controller } from "@hotwired/stimulus"
 const TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
 
 export default class extends Controller {
-  static targets = ["image", "error"]
+  static targets = ["image", "error", "card"]
   static values = {
     maxBytes: Number,
     maxEdge: Number,
     msgFormat: String,
     msgWeight: String,
     msgTooBig: String
+  }
+
+  connect() {
+    if (this.hasImageTarget && this.imageTarget.getAttribute("src")) {
+      this.markFilled(true)
+    }
   }
 
   disconnect() {
@@ -58,13 +64,20 @@ export default class extends Controller {
     if (!this.hasImageTarget) return
     this.imageTarget.src = url
     this.imageTarget.classList.remove("d-none")
+    this.markFilled(true)
   }
 
   hidePreview() {
     this.revoke()
-    if (!this.hasImageTarget) return
-    this.imageTarget.removeAttribute("src")
-    this.imageTarget.classList.add("d-none")
+    if (this.hasImageTarget) {
+      this.imageTarget.removeAttribute("src")
+      this.imageTarget.classList.add("d-none")
+    }
+    this.markFilled(false)
+  }
+
+  markFilled(filled) {
+    if (this.hasCardTarget) this.cardTarget.classList.toggle("is-filled", filled)
   }
 
   reject(input, message) {

@@ -32,4 +32,7 @@
     </g><g id="measure-thigh" class="measurement" data-field="tour_cuisse" data-view="front">
       <ellipse class="guide" cx="174" cy="887" rx="43" ry="11" />
       <ellipse class="hit-area" cx="174" cy="887" rx="57" ry="21" />
+    </g><g id="measure-inside-leg" class="measurement" data-field="jambe_interieure" data-view="front">
+      <line class="guide-arrow" x1="225" y1="738" x2="205" y2="1265" />
+      <line class="hit-area-line" x1="225" y1="738" x2="205" y2="1265" />
     </g></g></svg></svg>

@@ -24,7 +24,7 @@ const CLIP_MAP = {
   thigh: { view: "face", id: "measure-thigh" },
   arm: { view: "profil", id: "measure-arm-length" },
   leg_ext: { view: "profil", id: "measure-outside-leg" },
-  leg_int: { view: "profil", id: "measure-inside-leg" },
+  leg_int: { view: "face", id: "measure-inside-leg" },
   shoulders: { view: "dos", id: "measure-shoulders" },
   waist_belt: { view: "dos", id: "measure-belt-waist" }
 }

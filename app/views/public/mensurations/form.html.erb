@@ -1,19 +1,21 @@
-<% field_class = "form-control form-control-sm bg-dark text-light border-secondary" %>
 <% completed = @invitation.completed? %>
 <% editing = @editing == true %>
 <% thanks = completed && !editing %>
 
 <div class="mensuration-flow<%= " mensuration-flow--saved" if completed %>">
-  <div class="mensuration-form mx-1">
-    <%= render "public/mensurations/card_header" %>
+  <div class="mensuration-form mx-1<%= " mensuration-form--thanks" if thanks %>">
+    <% unless thanks %>
+      <%= render "public/mensurations/card_header" %>
+    <% end %>
 
     <% if thanks %>
       <div class="mensuration-form__thanks" role="status">
         <i class="bi bi-check-circle-fill mensuration-form__thanks-icon" aria-hidden="true"></i>
+        <h2 class="mensuration-form__thanks-lead"><%= t("mensurations.form.thanks_lead") %></h2>
         <p class="mensuration-form__thanks-title"><%= t("mensurations.form.thanks_title") %></p>
         <%= link_to t("mensurations.form.show_answers"),
               mensuration_path(token: @invitation.token, edit: 1, resume: "identity"),
-              class: "btn btn-sm btn-outline-light public-btn-border-radius mensuration-form__thanks-action" %>
+              class: "btn btn-light public-btn-border-radius mensuration-form__thanks-action" %>
         <%= button_to t("mensurations.form.delete"), mensuration_delete_path(token: @invitation.token), method: :delete,
               class: "mensuration-delete-link",
               form: {
@@ -50,8 +52,8 @@
         <% choice_class = "btn btn-outline-light public-btn-border-radius mensuration-form__template-btn" %>
         <% current_template = @invitation.template.presence %>
         <div class="mensuration-form__stage">
-          <div data-form-wizard-target="step" data-choice-step>
-            <p class="small mb-2 text-light opacity-75 text-center"><%= t("mensurations.form.intro") %></p>
+          <div class="mensuration-form__choice" data-form-wizard-target="step" data-choice-step>
+            <p class="mensuration-form__choice-intro"><%= t("mensurations.form.intro") %></p>
             <h2 class="mensuration-form__template-lead"><%= t("mensurations.share.template_step") %></h2>
             <div class="d-flex mensuration-form__template-choice">
               <%= button_to t("mensurations.share.template_femme"),
@@ -129,24 +131,33 @@
             <% end %>
           <% end %>
 
-          <div class="d-none" data-form-wizard-target="step">
-            <h2 class="h6 mb-3 pb-1 text-light border-bottom border-secondary"><%= t("mensurations.form.photo_title") %></h2>
-            <% photo_hint = t("mensurations.form.photo_hint", default: "") %>
-            <% if photo_hint.present? %>
-              <%= render "public/mensurations/advice", text: photo_hint, extra_class: "mb-2" %>
-            <% end %>
-            <% if @mensuration.photo_pied.attached? %>
-              <p class="small text-light mb-2"><i class="bi bi-check-circle"></i> <%= @mensuration.photo_pied.filename %></p>
-            <% end %>
-            <%= file_field_tag :photo_pied, accept: "image/jpeg,image/png,image/webp", class: field_class,
-                  data: { action: "change->photo-preview#preview" } %>
-            <p class="small text-light opacity-50 mt-2 mb-0">
+          <div class="d-none mensuration-form__photo" data-form-wizard-target="step">
+            <h2 class="mensuration-form__photo-title"><%= t("mensurations.form.photo_title") %></h2>
+            <p class="mensuration-form__photo-hint"><%= t("mensurations.form.photo_hint") %></p>
+
+            <% photo_attached = @mensuration.photo_pied.attached? %>
+            <label class="mensuration-form__photo-card<%= " is-filled" if photo_attached %>"
+                   data-photo-preview-target="card">
+              <%= file_field_tag :photo_pied,
+                    accept: "image/jpeg,image/png,image/webp",
+                    class: "visually-hidden",
+                    data: { action: "change->photo-preview#preview" } %>
+              <span class="mensuration-form__photo-empty">
+                <i class="bi bi-person-standing" aria-hidden="true"></i>
+                <span><%= t("mensurations.form.photo_cta") %></span>
+              </span>
+              <img data-photo-preview-target="image"
+                   class="mensuration-form__photo-preview<%= " d-none" unless photo_attached %>"
+                   alt=""
+                   <% if photo_attached %>src="<%= url_for(@mensuration.photo_pied) %>"<% end %>>
+              <span class="mensuration-form__photo-change"><%= t("mensurations.form.photo_change") %></span>
+            </label>
+
+            <p class="mensuration-form__photo-limits">
               <%= t("mensurations.form.photo_limits",
-                    max_mb: Mensuration::MAX_PHOTO_BYTES / 1.megabyte,
-                    max_px: Mensuration::MAX_PHOTO_EDGE) %>
+                    max_mb: Mensuration::MAX_PHOTO_BYTES / 1.megabyte) %>
             </p>
-            <p class="small text-danger mt-2 mb-0 d-none" data-photo-preview-target="error"></p>
-            <img data-photo-preview-target="image" class="mensuration-form__photo-preview d-none" alt="">
+            <p class="mensuration-form__photo-error d-none" data-photo-preview-target="error"></p>
           </div>
 
           <div class="d-flex align-items-center mt-3 gap-2 mensuration-form__nav">
