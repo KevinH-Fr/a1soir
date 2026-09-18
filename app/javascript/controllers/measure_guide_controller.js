@@ -44,7 +44,7 @@ const GUIDE_TWEAKS = {
     "measure-hips": { cx: 220, cy: 638, rx: 108 },
     "measure-thigh": { cx: 164, cy: 768, rx: 48 },
     "measure-height": { x1: 673, x2: 673, y1: 50, y2: 1278 },
-    "measure-outside-leg": { x1: 538, x2: 538, y1: 666, y2: 1230 },
+    "measure-outside-leg": { x1: 538, x2: 538, y1: 575, y2: 1230 },
     "measure-inside-leg": { x1: 222, x2: 188, y1: 705, y2: 1242 },
     "measure-shoulders": { x1: 748, x2: 1068, y1: 320, y2: 320 },
     "measure-belt-waist": { cx: 908, cy: 588, rx: 98 },
