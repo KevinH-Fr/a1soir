@@ -690,6 +690,8 @@ en:
       produits:
         listing_heading: "Our products"
         available_sizes: "Available sizes"
+        more_sizes: "+%{count}"
+        more_sizes_aria: "See %{count} more sizes"
         scroll_to_top:
           title: "Back to top"
           aria: "Back to top"

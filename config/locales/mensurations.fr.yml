@@ -58,7 +58,7 @@ fr:
       too_many_attempts: "Trop d'essais. Demandez un nouveau code."
       resend_wait: "Patientez une minute avant de redemander un code."
       session_expired: "Votre session a expiré. Validez à nouveau votre e-mail."
-      resume_hint: "Vous pourrez reprendre plus tard via le lien de l’e-mail."
+      resume_hint: "Vous pourrez reprendre plus tard via le lien reçu."
     share:
       welcome: "Espace mensurations"
       title: "Vos mensurations"

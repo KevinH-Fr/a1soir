@@ -21,7 +21,7 @@ Seeds::Helpers.log("04", "Référentiels catalogue")
   Seeds::Helpers.find_or_create_nom!(Couleur, nom, couleur_code: code)
 end
 
-%w[XXS XS S M L XL XXL 34 36 38 40 42 44 46 48 Unique].each do |nom|
+%w[XXS XS S M L XL XXL 32 34 35 36 37 38 39 40 41 42 43 44 46 48 50 52 54 56 58 60 62 Unique].each do |nom|
   Seeds::Helpers.find_or_create_nom!(Taille, nom)
 end
 

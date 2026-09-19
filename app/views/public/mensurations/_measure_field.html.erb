@@ -5,7 +5,7 @@
 <% name = mensuration_field_caption(key) %>
 <% dock = guided && field["clip"].present? %>
 <% caption = dock ? name : t("mensurations.fields.#{key}.short") %>
-<% field_class = guided ? "mensuration-guide__field" : (field["input"] == "textarea" ? "col-12" : "col-6") %>
+<% field_class = guided ? "mensuration-guide__field" : (field["input"] == "textarea" ? "col-12" : "col-12 col-md-6") %>
 <% field_class = "#{field_class} d-none" if local_assigns[:hidden] %>
 <div class="<%= field_class %>"
      <% if guided %>

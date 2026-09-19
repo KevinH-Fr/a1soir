@@ -78,6 +78,40 @@ RSpec.describe Admin::AnalysesController, type: :controller do
 
       let(:period) { AnalysesDashboardDataset.period_params }
 
+      it "counts a paiement by custom_date even if the commande is outside the period" do
+        data = AnalysesDashboardDataset.data
+        old_commande = Commande.create!(
+          client: Client.create!(
+            nom: "Ancienne",
+            prenom: "Cmd",
+            propart: "particulier",
+            intitule: Client::INTITULE_OPTIONS.first,
+            mail: "ancienne-#{SecureRandom.hex(4)}@test.com"
+          ),
+          profile: data[:profile_a],
+          nom: "Commande 2025 payée en mars",
+          montant: 50,
+          devis: false,
+          type_locvente: "vente",
+          created_at: Time.zone.local(2025, 6, 1, 10, 0, 0)
+        )
+        PaiementRecu.create!(
+          commande: old_commande,
+          typepaiement: "prix",
+          montant: 50,
+          moyen: "espèces",
+          custom_date: Date.new(2026, 3, 5),
+          created_at: Time.zone.local(2025, 6, 2, 11, 0, 0)
+        )
+
+        get :index, params: period.merge(vue: "ca")
+
+        expected = AnalysesDashboardDataset.expected_baseline
+        expect(assigns(:totalPrixCaEspeces)).to eq(50.to_d)
+        expect(assigns(:totalPrixCa)).to eq(expected[:total_prix_ca] + 50)
+        expect(assigns(:nbTotal)).to eq(expected[:nb_total_commandes])
+      end
+
       it "returns baseline metrics for the fixed period on synthese vue" do
         expected = AnalysesDashboardDataset.expected_baseline
 
@@ -122,6 +156,26 @@ RSpec.describe Admin::AnalysesController, type: :controller do
         expect(assigns(:nbTotal)).to eq(2)
       end
 
+      it "accepts several profiles at once" do
+        data = AnalysesDashboardDataset.data
+
+        get :index, params: period.merge(filter_profile: [data[:profile_a].id, data[:profile_b].id])
+
+        expect(assigns(:nbTotal)).to eq(4)
+      end
+
+      it "accepts several product types at once" do
+        data = AnalysesDashboardDataset.data
+
+        get :index, params: period.merge(
+          filter_type_produit: [data[:type_robe].id, data[:type_costume].id],
+          vue: "catalogue"
+        )
+
+        expect(assigns(:analyses_ca_mode)).to eq(:lignes)
+        expect(assigns(:line_metrics).produits_count).to eq(2)
+      end
+
       it "switches to line-based CA when filtering by product type" do
         data = AnalysesDashboardDataset.data
 
@@ -132,6 +186,24 @@ RSpec.describe Admin::AnalysesController, type: :controller do
         # Boutique robes (100 + 40) + Stripe robe (60) − remboursement e-shop (20) = 180
         expect(assigns(:totalPrixCa)).to eq(180.to_d)
         expect(assigns(:totalPrixCaStripe)).to eq(40.to_d)
+      end
+
+      it "accepts several categories at once" do
+        data = AnalysesDashboardDataset.data
+        cat_a = CategorieProduit.create!(nom: "soirée dataset #{SecureRandom.hex(2)}")
+        cat_b = CategorieProduit.create!(nom: "mariage dataset #{SecureRandom.hex(2)}")
+        data[:produit_robe].categorie_produits << cat_a
+        data[:produit_costume].categorie_produits << cat_b
+
+        get :index, params: period.merge(filter_categorie: [cat_a.id, cat_b.id], vue: "catalogue")
+
+        expect(assigns(:analyses_ca_mode)).to eq(:lignes)
+        expect(assigns(:line_metrics).produits_count).to eq(2)
+
+        get :index, params: period.merge(filter_categorie: cat_a.id, vue: "synthese")
+
+        expect(assigns(:line_metrics).produits_count).to eq(1)
+        expect(assigns(:totalPrixCa)).to eq(180.to_d)
       end
 
       it "filters by fournisseur like other product dimensions" do

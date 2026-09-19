@@ -20,10 +20,9 @@
             <th scope="col">Vendeur</th>
             <th scope="col" class="analyses-equipe-table__metric">Cmd</th>
             <th scope="col" class="analyses-equipe-table__metric">Devis</th>
-            <th scope="col" class="analyses-equipe-table__metric">CA</th>
+            <th scope="col" class="analyses-equipe-table__metric analyses-equipe-table__metric--ca">CA</th>
             <th scope="col" class="analyses-equipe-table__metric">Panier</th>
             <th scope="col" class="analyses-equipe-table__metric">Conv.</th>
-            <th scope="col" class="analyses-equipe-table__metric">Part</th>
           </tr>
         </thead>
         <tbody>
@@ -43,10 +42,10 @@
               <td class="analyses-equipe-table__rank">
                 <span class="analyses-equipe-table__rank-badge"><%= index + 1 %></span>
               </td>
-              <td>
-                <span class="d-inline-flex align-items-center gap-2 min-w-0">
+              <td class="analyses-equipe-table__name">
+                <span class="analyses-equipe-table__name-inner">
                   <span class="analyses-equipe-table__dot" style="--equipe-dot: <%= color %>"></span>
-                  <span class="fw-semibold text-truncate"><%= row[:profile] %></span>
+                  <span class="analyses-equipe-table__name-text"><%= row[:profile] %></span>
                 </span>
               </td>
               <td class="analyses-equipe-table__metric">
@@ -65,9 +64,9 @@
                       title: "#{devis} devis · #{number_with_precision(devis_pct, precision: 0)}% de l'équipe"
                     ) %>
               </td>
-              <td class="analyses-equipe-table__metric">
+              <td class="analyses-equipe-table__metric analyses-equipe-table__metric--ca">
                 <%= analyses_equipe_share_bar(
-                      number_to_currency(ca, unit: "€", format: "%n %u", precision: 0),
+                      "#{number_to_currency(ca, unit: "€", format: "%n %u", precision: 0)} · #{number_with_precision(part, precision: 0)}%",
                       part,
                       color: color,
                       title: "#{number_to_currency(ca, unit: "€", format: "%n %u", precision: 0)} · #{number_with_precision(part, precision: 0)}% du CA"
@@ -96,14 +95,6 @@
                 <% else %>
                   <span class="analyses-equipe-table__empty">—</span>
                 <% end %>
-              </td>
-              <td class="analyses-equipe-table__metric">
-                <%= analyses_equipe_share_bar(
-                      "#{number_with_precision(part, precision: 0)}%",
-                      part,
-                      color: color,
-                      title: "Part du CA équipe"
-                    ) %>
               </td>
             </tr>
           <% end %>

@@ -400,3 +400,52 @@ Seeds::Helpers.upsert_demo_commande!(
     { typepaiement: "prix", montant: 65, moyen: "chèque" }
   ]
 )
+
+# Écart CA (date d'encaissement) vs transactions (date de commande) :
+# le 19/09 (ou J0 au re-seed) → 1 commande 50 €, CA espèces 805 € (50 + 100 + 655).
+encaissement_jour = Date.current
+
+Seeds::Helpers.upsert_demo_commande!(
+  nom: "Commande seed CA jour 50 espèces",
+  client: client_sophie,
+  profile: profile_marie,
+  days_ago: offsets["Commande seed CA jour 50 espèces"],
+  type_locvente: "vente",
+  statutarticles: "retiré",
+  articles: [
+    { produit: robe_cocktail, locvente: "vente", prix: 50, total: 50 }
+  ],
+  paiements: [
+    { typepaiement: "prix", montant: 50, moyen: "espèces", custom_date: encaissement_jour }
+  ]
+)
+
+Seeds::Helpers.upsert_demo_commande!(
+  nom: "Commande seed CA mois dernier 100 espèces",
+  client: client_martin,
+  profile: profile_paul,
+  days_ago: offsets["Commande seed CA mois dernier 100 espèces"],
+  type_locvente: "vente",
+  statutarticles: "retiré",
+  articles: [
+    { produit: costume, locvente: "vente", prix: 100, total: 100 }
+  ],
+  paiements: [
+    { typepaiement: "prix", montant: 100, moyen: "espèces", custom_date: encaissement_jour }
+  ]
+)
+
+Seeds::Helpers.upsert_demo_commande!(
+  nom: "Commande seed CA mois dernier 655 espèces",
+  client: client_sophie,
+  profile: profile_marie,
+  days_ago: offsets["Commande seed CA mois dernier 655 espèces"],
+  type_locvente: "vente",
+  statutarticles: "retiré",
+  articles: [
+    { produit: robe_soiree, locvente: "vente", prix: 655, total: 655 }
+  ],
+  paiements: [
+    { typepaiement: "prix", montant: 655, moyen: "espèces", custom_date: encaissement_jour }
+  ]
+)

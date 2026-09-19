@@ -13,19 +13,21 @@
 
   <div class="analyses-chart-stack">
     <div class="row g-3 align-items-stretch">
-      <div class="col-lg-5 min-w-0">
-        <%= analyses_chart_card do %>
+      <div class="col-12 col-lg-4 min-w-0">
+        <%= analyses_chart_card(extra_class: "analyses-chart-card--flush-center") do %>
           <%= analyses_chart_heading(show_comparison ? "CA par vendeur" : "CA vendeur") %>
-          <%= render_analyses_chart(
-                :profiles_ca_doughnut,
-                chart_id: "analyses-chart-profiles-ca-doughnut",
-                extra_class: "analyses-chart--compact",
-                aria_label: show_comparison ? "Répartition du CA par vendeur" : "CA du vendeur"
-              ) %>
+          <div class="d-flex justify-content-center flex-grow-1 align-items-center">
+            <%= render_analyses_chart(
+                  :profiles_ca_doughnut,
+                  chart_id: "analyses-chart-profiles-ca-doughnut",
+                  extra_class: "analyses-chart--compact",
+                  aria_label: show_comparison ? "Répartition du CA par vendeur" : "CA du vendeur"
+                ) %>
+          </div>
         <% end %>
       </div>
-      <div class="col-lg-7 min-w-0">
-        <%= analyses_chart_card do %>
+      <div class="col-12 col-lg-8 min-w-0">
+        <%= analyses_chart_card(extra_class: "analyses-chart-card--equipe-ranking") do %>
           <%= analyses_chart_heading("Classement vendeurs") %>
           <%= render "equipe_ranking_table" %>
         <% end %>

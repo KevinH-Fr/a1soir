@@ -1,9 +1,9 @@
 # Champ + libellé : stack moderne par défaut ; group réservé au dock SVG (suffixe cm).
 module MensurationsHelper
-  CONTROL = "form-control bg-dark text-light border-secondary mensuration-field__control"
-  GROUP_CONTROL = "form-control form-control-sm border-secondary mensuration-guide__value"
-  SELECT = "form-select bg-dark text-light border-secondary mensuration-field__control"
-  GROUP_SELECT = "form-select form-select-sm text-light border-secondary"
+  CONTROL = "form-control bg-dark text-light mensuration-field__control"
+  GROUP_CONTROL = "form-control form-control-sm mensuration-guide__value"
+  SELECT = "form-select bg-dark text-light mensuration-field__control"
+  GROUP_SELECT = "form-select form-select-sm text-light"
   LABEL = "mensuration-field__label"
   GROUP_LABEL = "input-group-text"
 
@@ -113,10 +113,20 @@ module MensurationsHelper
   def stacked_control(id, label, field)
     content_tag(:div, class: "mensuration-field") do
       safe_join([
-        (label_tag(id, label, class: LABEL) if label.present? && id.present?),
+        (label_tag(id, mensuration_label_with_note(label), class: LABEL) if label.present? && id.present?),
         field
       ].compact)
     end
+  end
+
+  def mensuration_label_with_note(label)
+    match = label.to_s.match(/\A(.+?)(\s*\(.+\))\z/)
+    return label unless match
+
+    safe_join([
+      match[1],
+      content_tag(:span, match[2], class: "mensuration-field__label-note")
+    ])
   end
 
   def grouped_control(id, label, field, suffix: nil)

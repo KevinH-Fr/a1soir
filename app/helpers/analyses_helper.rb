@@ -82,9 +82,12 @@ module AnalysesHelper
   end
 
   def analyses_active_filters_count
-    filter_keys = Admin::ProduitListingFilters::ADMIN_PRODUIT_FILTER_KEYS +
-                  %i[filter_profile filter_locvente filter_eshop filter_propart]
-    filter_keys.count { |k| params[k].present? }
+    exclusive_keys = %i[filter_locvente filter_eshop filter_propart]
+    multi_count = Admin::ProduitListingFilters::ANALYSES_MULTI_FILTER_KEYS.sum do |key|
+      Admin::ProduitListingFilters.normalize_filter_values(params[key]).size
+    end
+    exclusive_count = exclusive_keys.count { |key| params[key].present? }
+    multi_count + exclusive_count
   end
 
   def analyses_ca_mode_lignes?
@@ -117,8 +120,13 @@ module AnalysesHelper
     admin_analyses_index_path(base)
   end
 
-  def analyses_path_without_filter(filter_key)
-    analyses_tab_path(analyses_vue, filter_key => nil)
+  def analyses_path_without_filter(filter_key, value = nil)
+    if value.present? && Admin::ProduitListingFilters::ANALYSES_MULTI_FILTER_KEYS.include?(filter_key.to_sym)
+      remaining = Admin::ProduitListingFilters.normalize_filter_values(params[filter_key]) - [value.to_s]
+      analyses_tab_path(analyses_vue, filter_key => remaining.presence)
+    else
+      analyses_tab_path(analyses_vue, filter_key => nil)
+    end
   end
 
   def analyses_chart_config(key)
@@ -157,19 +165,61 @@ module AnalysesHelper
   def analyses_filter_dropdown(label:, icon:, param_key:, collection:, model:, all_label:)
     filter_base = analyses_filter_params(include_dates: true).merge(vue: analyses_vue)
     content_tag(:div, class: "min-w-0 analyses-filter-field__dropdown") do
-      filter_dropdown(
-        label: label,
-        icon: icon,
-        param_key: param_key,
-        collection: collection,
-        model: model,
-        current_params: filter_base.except(param_key),
-        all_label: all_label,
-        columns: 2,
-        id_suffix: "analyses",
-        always_show_label: true,
-        link_data: { turbo_stream: true }
+      safe_join([
+        filter_dropdown(
+          label: label,
+          icon: icon,
+          param_key: param_key,
+          collection: collection,
+          model: model,
+          current_params: filter_base.except(param_key),
+          all_label: all_label,
+          columns: 2,
+          id_suffix: "analyses",
+          always_show_label: true,
+          multiple: true,
+          keep_label: true,
+          link_data: { turbo_stream: true }
+        ),
+        analyses_filter_selected_tags(param_key, model)
+      ])
+    end
+  end
+
+  def analyses_filter_selected_tags(param_key, model)
+    values = Admin::ProduitListingFilters.normalize_filter_values(params[param_key])
+    return "".html_safe if values.empty?
+
+    content_tag(:div, class: "analyses-filter-selected", aria: { label: "Sélection" }) do
+      safe_join(
+        values.map do |id|
+          name = analyses_filter_value_label(model, id)
+          link_to(
+            analyses_path_without_filter(param_key, id),
+            class: "analyses-filter-selected__tag",
+            title: "Retirer #{name}",
+            data: { turbo_stream: true }
+          ) do
+            safe_join([
+              tag.span(name, class: "text-truncate"),
+              tag.span("×", class: "analyses-filter-selected__x", aria: { hidden: true })
+            ])
+          end
+        end
       )
+    end
+  end
+
+  def analyses_filter_value_label(model, id)
+    return "NA" if id.to_s == "na"
+
+    record = model.find_by(id: id)
+    return id.to_s unless record
+
+    if record.respond_to?(:full_name)
+      record.full_name.presence || record.try(:nom).to_s.presence || id.to_s
+    else
+      record.nom.presence || id.to_s
     end
   end
 
@@ -194,11 +244,14 @@ module AnalysesHelper
 
   def analyses_active_filter_chips
     chips = []
-    if params[:filter_profile].present?
-      profile = Profile.find_by(id: params[:filter_profile])
-      label = profile&.full_name.presence || profile&.prenom || "Profil ##{params[:filter_profile]}"
-      chips << { key: :filter_profile, label: "Vendeur", value: label }
-    end
+    chips.concat(
+      analyses_multi_filter_chips(
+        :filter_profile, "Vendeur"
+      ) do |id|
+        profile = Profile.find_by(id: id)
+        profile&.full_name.presence || profile&.prenom || "Profil ##{id}"
+      end
+    )
     if params[:filter_eshop].present?
       value = { "true" => "E-shop", "false" => "Boutique" }[params[:filter_eshop].to_s] || params[:filter_eshop]
       chips << { key: :filter_eshop, label: "Canal", value: value }
@@ -213,31 +266,26 @@ module AnalysesHelper
     if params[:filter_locvente].present?
       chips << { key: :filter_locvente, label: "Mode", value: params[:filter_locvente].to_s.capitalize }
     end
-    if params[:filter_type_produit].present?
-      type = TypeProduit.find_by(id: params[:filter_type_produit])
-      chips << { key: :filter_type_produit, label: "Type", value: type&.nom || params[:filter_type_produit] }
-    end
-    if params[:filter_categorie].present?
-      cat = CategorieProduit.find_by(id: params[:filter_categorie])
-      chips << { key: :filter_categorie, label: "Catégorie", value: cat&.nom || params[:filter_categorie] }
-    end
-    if params[:filter_fournisseur].present?
-      fournisseur = Fournisseur.find_by(id: params[:filter_fournisseur])
-      chips << {
-        key: :filter_fournisseur,
-        label: "Fournisseur",
-        value: params[:filter_fournisseur].to_s == "na" ? "NA" : (fournisseur&.nom || params[:filter_fournisseur])
-      }
-    end
-    if params[:filter_couleur].present?
-      couleur = Couleur.find_by(id: params[:filter_couleur])
-      chips << { key: :filter_couleur, label: "Couleur", value: couleur&.nom || params[:filter_couleur] }
-    end
-    if params[:filter_taille].present?
-      taille = Taille.find_by(id: params[:filter_taille])
-      chips << { key: :filter_taille, label: "Taille", value: taille&.nom || params[:filter_taille] }
-    end
+    chips.concat(analyses_multi_filter_chips(:filter_type_produit, "Type", TypeProduit))
+    chips.concat(analyses_multi_filter_chips(:filter_categorie, "Catégorie", CategorieProduit))
+    chips.concat(analyses_multi_filter_chips(:filter_fournisseur, "Fournisseur", Fournisseur))
+    chips.concat(analyses_multi_filter_chips(:filter_couleur, "Couleur", Couleur))
+    chips.concat(analyses_multi_filter_chips(:filter_taille, "Taille", Taille))
     chips
+  end
+
+  def analyses_multi_filter_chips(key, label, model = nil)
+    Admin::ProduitListingFilters.normalize_filter_values(params[key]).map do |id|
+      display =
+        if id == "na"
+          "NA"
+        elsif block_given?
+          yield(id)
+        else
+          model.find_by(id: id)&.nom || id
+        end
+      { key: key, label: label, value: display, remove_value: id }
+    end
   end
 
   def render_analyses_kpi_section

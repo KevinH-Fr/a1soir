@@ -42,6 +42,10 @@ module Seeds
       "Commande seed même jour mixte" => 2,
       "Commande seed période préc." => 35,
       "Commande seed période préc. 2" => 42,
+      # CA du jour vs commandes : 1 commande J0 (50 €) + 2 du mois dernier payées aujourd'hui.
+      "Commande seed CA jour 50 espèces" => 0,
+      "Commande seed CA mois dernier 100 espèces" => 32,
+      "Commande seed CA mois dernier 655 espèces" => 40,
       "Devis seed Marie" => 15,
       "Devis seed Paul" => 3,
       "Boutique A" => 5,
@@ -59,7 +63,14 @@ module Seeds
     def touch_commande_timestamps!(commande, at:)
       commande.update_columns(created_at: at, updated_at: at)
       commande.articles.update_all(created_at: at, updated_at: at)
-      commande.paiement_recus.update_all(created_at: at, updated_at: at)
+      date = at.to_date
+      commande.paiement_recus.find_each do |paiement|
+        attrs = { created_at: at, updated_at: at }
+        if paiement.custom_date.blank? || paiement.custom_date == paiement.created_at.in_time_zone.to_date
+          attrs[:custom_date] = date
+        end
+        paiement.update_columns(attrs)
+      end
       commande.stripe_payment&.update_columns(created_at: at, updated_at: at)
       if commande.stripe_payment
         StripePaymentItem.where(stripe_payment_id: commande.stripe_payment.id)
@@ -70,6 +81,20 @@ module Seeds
         updated_at: at,
         custom_date: at.to_date
       )
+    end
+
+    def wipe_seed_commande!(commande)
+      return unless commande
+
+      commande.paiement_recus.delete_all
+      commande.articles.find_each { |article| article.sousarticles.delete_all }
+      commande.articles.delete_all
+      if (payment = commande.stripe_payment)
+        payment.stripe_payment_items.delete_all
+        payment.delete
+      end
+      commande.avoir_rembs.delete_all
+      commande.delete
     end
 
     def align_demo_commandes_to_recent_period!
@@ -124,6 +149,7 @@ module Seeds
             typepaiement: attrs[:typepaiement],
             montant: attrs[:montant],
             moyen: attrs[:moyen],
+            custom_date: attrs[:custom_date].presence || at.to_date,
             created_at: at,
             updated_at: at
           )

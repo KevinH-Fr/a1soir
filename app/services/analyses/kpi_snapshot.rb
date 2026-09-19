@@ -149,9 +149,12 @@ module Analyses
                          articles.where(commande_id: ids).joins(:commande).where(commandes: { eshop: [false, nil] }).sum(:prix).to_d +
                            sous_articles.joins(article: :commande).where(commandes: { id: ids, eshop: [false, nil] }).sum(:prix).to_d
                        else
-                         paiements.only_prix.where(commande_id: ids).sum(:montant).to_d
+                         paiements.only_prix.joins(:commande).where(commandes: { profile_id: profile.id }).sum(:montant).to_d
                        end
-        ca += ca_paiements + @stripe_totals.total_eur(commande_ids: ids)
+        stripe_ids = @scopes[:stripe_payments_paid_filtres]
+                       .where(commande_id: Commande.where(profile_id: profile.id).select(:id))
+                       .distinct.pluck(:commande_id)
+        ca += ca_paiements + @stripe_totals.total_eur(commande_ids: stripe_ids)
       end
 
       { ca: ca, commandes: commandes, devis: devis }
@@ -162,9 +165,10 @@ module Analyses
       return 0.to_d if profile_id.blank?
 
       ids = @scopes[:commandes_filtres].where(profile_id: profile_id).pluck(:id)
-      return 0.to_d if ids.blank?
 
       ca_paiements = if @ca_mode == :lignes
+                       return 0.to_d if ids.blank?
+
                        @scopes[:articles_filtres]
                          .where(commande_id: ids)
                          .joins(:commande)
@@ -175,10 +179,15 @@ module Analyses
                          .where(commandes: { id: ids, eshop: [false, nil] })
                          .sum(:prix).to_d
                      else
-                       @scopes[:paiements_filtres].only_prix.where(commande_id: ids).sum(:montant).to_d
+                       @scopes[:paiements_filtres].only_prix.joins(:commande)
+                                                  .where(commandes: { profile_id: profile_id })
+                                                  .sum(:montant).to_d
                      end
 
-      ca_paiements + @stripe_totals.total_eur(commande_ids: ids)
+      stripe_ids = @scopes[:stripe_payments_paid_filtres]
+                     .where(commande_id: Commande.where(profile_id: profile_id).select(:id))
+                     .distinct.pluck(:commande_id)
+      ca_paiements + @stripe_totals.total_eur(commande_ids: stripe_ids)
     end
   end
 end

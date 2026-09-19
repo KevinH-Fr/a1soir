@@ -12,13 +12,25 @@
 
       <% card_tailles = listing_card_tailles(produit) %>
       <% if card_tailles.any? %>
-        <div class="listing-taille-pills" aria-label="<%= t("public.pages.produits.available_sizes") %>">
-          <% card_tailles.each do |taille| %>
+        <% visible_tailles = card_tailles.first(listing_card_tailles_limit) %>
+        <% extra_tailles = card_tailles.size - visible_tailles.size %>
+        <div class="listing-taille-pills"
+             aria-label="<%= t("public.pages.produits.available_sizes") %>"
+             title="<%= card_tailles.map { |t| t[:nom] }.join(", ") %>">
+          <% visible_tailles.each do |taille| %>
             <%= link_to produit_path(slug: taille[:handle], id: taille[:id], back_url: produit_card_back_url),
                         class: "listing-taille-pill",
                         data: { turbo: false },
                         aria: { label: taille[:nom] } do %>
               <span class="listing-taille-pill-label"><%= taille[:nom] %></span>
+            <% end %>
+          <% end %>
+          <% if extra_tailles.positive? %>
+            <%= link_to produit_path(slug: produit.handle, id: produit.id, back_url: produit_card_back_url),
+                        class: "listing-taille-pill listing-taille-pill--more",
+                        data: { turbo: false },
+                        aria: { label: t("public.pages.produits.more_sizes_aria", count: extra_tailles) } do %>
+              <span class="listing-taille-pill-label"><%= t("public.pages.produits.more_sizes", count: extra_tailles) %></span>
             <% end %>
           <% end %>
         </div>

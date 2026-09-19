@@ -158,8 +158,8 @@ module Analyses
       ivar_set(:totalCa, paiements_filtres.sum(:montant).to_d + total_stripe_eur)
 
       grouped_by_date_ca_paiements = paiements_filtres.only_prix
-                                                    .group("DATE(created_at)")
-                                                    .order("DATE(paiement_recus.created_at)")
+                                                    .group(:custom_date)
+                                                    .order(:custom_date)
                                                     .sum(:montant)
       remb_neg = eshop_remboursements_by_day_neg(datedebut, datefin)
       ivar_set(:groupedByDateCaBoutique, merge_grouped_by_day(grouped_by_date_ca_paiements))
@@ -218,7 +218,7 @@ module Analyses
           articles: profile_articles_lignes_count(commande_ids),
           transactions: profile_transactions(commande_ids, stripe_totals),
           couleur: ChartPayloads.equipe_pastel_color(index),
-          ca_by_day: profile_ca_by_day(commande_ids, datedebut, datefin)
+          ca_by_day: profile_ca_by_day(profile.id, commande_ids, datedebut, datefin)
         ).except(:commande_ids)
       end)
     end
@@ -256,9 +256,15 @@ module Analyses
       ca_paiements = if analyses_ca_mode == :lignes
                        ligne_ca_for_commandes(commandes_ids)
                      else
-                       paiements_filtres.only_prix.where(commande_id: commandes_ids).sum(:montant).to_d
+                       paiements_filtres.only_prix
+                                        .joins(:commande)
+                                        .where(commandes: { profile_id: profile.id })
+                                        .sum(:montant).to_d
                      end
-      ca = ca_paiements + stripe_totals.total_eur(commande_ids: commandes_ids)
+      stripe_ids = stripe_payments_paid_filtres.where(
+        commande_id: Commande.where(profile_id: profile.id).select(:id)
+      ).distinct.pluck(:commande_id)
+      ca = ca_paiements + stripe_totals.total_eur(commande_ids: stripe_ids)
       label = profile.full_name.presence || profile.prenom.presence || "Profil ##{profile.id}"
 
       {
@@ -286,11 +292,11 @@ module Analyses
       ).quantites
     end
 
-    def profile_ca_by_day(commandes_ids, datedebut, datefin)
-      return {} if commandes_ids.blank?
-
+    def profile_ca_by_day(profile_id, commandes_ids, datedebut, datefin)
       boutique =
         if analyses_ca_mode == :lignes
+          return {} if commandes_ids.blank?
+
           articles_filtres
             .where(commande_id: commandes_ids)
             .joins(:commande)
@@ -299,13 +305,21 @@ module Analyses
             .sum(:prix)
         else
           paiements_filtres.only_prix
-            .where(commande_id: commandes_ids)
-            .group("DATE(paiement_recus.created_at)")
+            .joins(:commande)
+            .where(commandes: { profile_id: profile_id })
+            .group(:custom_date)
             .sum(:montant)
         end
 
+      stripe_commande_scope =
+        if analyses_ca_mode == :lignes
+          commandes_ids
+        else
+          Commande.where(profile_id: profile_id).select(:id)
+        end
+
       stripe = stripe_payments_paid_filtres
-                 .where(commande_id: commandes_ids)
+                 .where(commande_id: stripe_commande_scope)
                  .group("DATE(stripe_payments.created_at)")
                  .sum(:amount)
                  .transform_values { |cents| cents.to_d / 100 }
@@ -315,7 +329,7 @@ module Analyses
                datefin,
                product_dimension_filtered: false
              )
-               .where(commande_id: commandes_ids)
+               .where(commande_id: stripe_commande_scope)
                .group("COALESCE(avoir_rembs.custom_date, DATE(avoir_rembs.created_at))")
                .sum(:montant)
                .transform_values { |montant| -montant.to_d }

@@ -297,11 +297,41 @@ RSpec.describe Mensuration, type: :model do
   end
 
   describe "photo" do
+    def attach_jpeg(mensuration)
+      mensuration.photo_pied.attach(io: StringIO.new("fake-jpeg"), filename: "pied.jpg", content_type: "image/jpeg")
+      allow(mensuration.photo_pied.blob).to receive(:byte_size).and_return(2.megabytes)
+    end
+
     it "refuse un fichier non image" do
       mensuration = build_mensuration
       mensuration.photo_pied.attach(io: StringIO.new("plain"), filename: "notes.txt", content_type: "text/plain")
 
       expect(mensuration).not_to be_valid(:complete)
+    end
+
+    it "accepte une photo iPhone 12 MP (4032 × 3024)" do
+      mensuration = build_mensuration
+      attach_jpeg(mensuration)
+      allow(mensuration).to receive(:photo_dimensions).and_return([4032, 3024])
+
+      expect(mensuration).to be_valid(:complete)
+    end
+
+    it "accepte une photo iPhone 48 MP (8064 × 6048)" do
+      mensuration = build_mensuration
+      attach_jpeg(mensuration)
+      allow(mensuration).to receive(:photo_dimensions).and_return([8064, 6048])
+
+      expect(mensuration).to be_valid(:complete)
+    end
+
+    it "refuse un grand côté au-delà de 8500 px" do
+      mensuration = build_mensuration
+      attach_jpeg(mensuration)
+      allow(mensuration).to receive(:photo_dimensions).and_return([8501, 2000])
+
+      expect(mensuration).not_to be_valid(:complete)
+      expect(mensuration.errors[:photo_pied].join).to include("8500")
     end
   end
 end

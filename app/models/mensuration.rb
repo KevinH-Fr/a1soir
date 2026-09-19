@@ -14,7 +14,8 @@ class Mensuration < ApplicationRecord
 
   PHOTO_CONTENT_TYPES = %w[image/jpeg image/jpg image/png image/webp].freeze
   MAX_PHOTO_BYTES = 8.megabytes
-  MAX_PHOTO_EDGE = 4000
+  # 48 MP iPhone (8064) + marge ; pas de resize à l'upload (photo privée, original conservé).
+  MAX_PHOTO_EDGE = 8500
   IDENTITY_LIMITS = {
     "prenom" => 80,
     "nom" => 80,

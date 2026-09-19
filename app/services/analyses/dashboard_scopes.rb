@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-# Périmètre Analyses : commandes hors devis (dates commande), articles (dates article),
-# paiements et Stripe liés aux commandes filtrées. Devis = scope séparé (KPI).
+# Périmètre Analyses : commandes hors devis (dates commande), articles (dates article).
+# CA encaissé : custom_date du paiement, pas la date commande.
+# Devis = scope séparé (KPI).
 module Analyses
   class DashboardScopes < ApplicationService
     include Admin::ProduitListingFilters
@@ -26,8 +27,9 @@ module Analyses
       end
 
       sous_articles = scoped_sous_articles(datedebut, datefin, articles)
-      paiements = scoped_paiements(datedebut, datefin, commandes)
-      stripe_payments = scoped_stripe_payments(datedebut, datefin, commandes)
+      commandes_encaissement = commandes_for_encaissements(produits)
+      paiements = scoped_paiements(datedebut, datefin, commandes_encaissement)
+      stripe_payments = scoped_stripe_payments(datedebut, datefin, commandes_encaissement)
       stripe_items = scoped_stripe_payment_items(stripe_payments, produits)
 
       {
@@ -160,10 +162,23 @@ module Analyses
       scope
     end
 
+    # Commandes hors fenêtre de dates : un encaissement du jour sur une vieille commande compte.
+    def commandes_for_encaissements(produits)
+      commandes = scoped_commandes(nil, nil)
+      articles = Article.joins(:commande).merge(Commande.hors_devis)
+                        .where(commande_id: commandes.select(:id))
+      articles = apply_locvente_filter(articles)
+      if product_attribute_filtered?
+        apply_product_dimension(articles, commandes, produits).last
+      else
+        narrow_commandes_for_locvente(commandes, articles)
+      end
+    end
+
     def scoped_paiements(datedebut, datefin, commandes)
       scope = PaiementRecu.where(commande_id: commandes.select(:id))
       if datedebut.present? && datefin.present?
-        scope = scope.filtredatedebut(datedebut).filtredatefin(datefin)
+        scope = scope.where(custom_date: datedebut.to_date..datefin.to_date)
       end
       scope
     end

@@ -69,11 +69,19 @@ end
 boutique_count = 0
 eshop_count = 0
 
+# J0 est réservé aux 3 commandes CA espèces de 06 (50 / 100 / 655).
+Commande.where("nom LIKE ?", "Volume boutique J-000%").find_each do |commande|
+  Seeds::Helpers.wipe_seed_commande!(commande)
+end
+Seeds::Helpers.wipe_seed_commande!(Commande.find_by(nom: "Volume eshop J-000"))
+
 # Skip QR sur le volume (sinon ~200 générations PNG rendent le seed très lent).
 Commande.skip_callback(:create, :after, :generate_qr)
 
 begin
   days.times do |days_ago|
+    next if days_ago.zero?
+
     rng.rand(1..3).times do |slot|
       type_locvente = types_commande.sample(random: rng)
       articles = build_articles.call(type_locvente)
@@ -103,6 +111,7 @@ begin
 
   # ~1 vente e-shop tous les 3 jours
   (0...days).step(3) do |days_ago|
+    next if days_ago.zero?
     next if rng.rand < 0.15 && days_ago.positive?
 
     stripe_items = produits_eshop.sample(rng.rand(1..2), random: rng).map do |produit|

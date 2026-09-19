@@ -516,10 +516,16 @@ module PagesHelper
   end
 
   # Tailles à afficher sur une carte listing (hash page courante, sinon rien).
+  LISTING_CARD_TAILLES_MAX = 6
+
   def listing_card_tailles(produit)
     return [] if @listing_tailles_by_key.nil?
 
     Array(@listing_tailles_by_key[[produit.handle, produit.couleur_id]])
+  end
+
+  def listing_card_tailles_limit
+    LISTING_CARD_TAILLES_MAX
   end
 
   # Paramètres de listing public partagés entre filtres Turbo, recherche et back_url fiche produit.

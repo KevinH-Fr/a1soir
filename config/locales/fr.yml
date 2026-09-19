@@ -909,6 +909,8 @@ fr:
       produits:
         listing_heading: "Nos produits"
         available_sizes: "Tailles disponibles"
+        more_sizes: "+%{count}"
+        more_sizes_aria: "Voir %{count} tailles de plus"
         scroll_to_top:
           title: "Remonter en haut de la page"
           aria: "Remonter en haut de la page"

@@ -23,7 +23,11 @@
       <li>
         <%= link_to label,
                     admin_analyses_index_path(analyses_period_params(debut: debut, fin: fin)),
-                    class: class_names("dropdown-item analyses-period-menu__item", "analyses-period-menu__item--active" => active) %>
+                    class: class_names(
+                      "dropdown-item analyses-period-menu__item",
+                      "analyses-period-menu__item--today" => label == "Aujourd'hui",
+                      "analyses-period-menu__item--active" => active
+                    ) %>
       </li>
     <% end %>
     <li><hr class="dropdown-divider analyses-period-menu__divider"></li>

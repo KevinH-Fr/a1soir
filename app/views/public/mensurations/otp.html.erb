@@ -37,13 +37,6 @@
       </div>
       <%= f.submit t("mensurations.otp.verify"), class: "btn btn-light public-btn-border-radius w-100 py-2" %>
     <% end %>
-
-    <div class="mensuration-otp__resend">
-      <%= button_to t("mensurations.otp.resend_code"), mensuration_otp_path(token: @invitation.token),
-            method: :post,
-            class: "btn btn-link btn-sm text-light opacity-50 p-0" %>
-      <p class="mensuration-otp__spam-hint"><%= t("mensurations.otp.spam_hint") %></p>
-    </div>
   <% else %>
     <div class="mensuration-otp__actions">
       <%= button_to t("mensurations.otp.send_code"), mensuration_otp_path(token: @invitation.token),
@@ -53,7 +46,18 @@
     </div>
   <% end %>
 
-  <p class="mensuration-otp__resume-hint">
-    <%= t("mensurations.otp.resume_hint") %>
-  </p>
+  <div class="mensuration-otp__aside">
+    <% if code_pending %>
+      <%= button_to t("mensurations.otp.resend_code"), mensuration_otp_path(token: @invitation.token),
+            method: :post,
+            form_class: "mensuration-otp__resend-form",
+            class: "mensuration-otp__resend-btn" %>
+    <% end %>
+    <div class="mensuration-otp__notes">
+      <% if code_pending %>
+        <p><%= t("mensurations.otp.spam_hint") %></p>
+      <% end %>
+      <p><%= t("mensurations.otp.resume_hint") %></p>
+    </div>
+  </div>
 </div>

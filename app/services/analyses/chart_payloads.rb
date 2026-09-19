@@ -703,6 +703,8 @@ module Analyses
     end
 
     def line_dataset(label, data, color, fill: false, border_dash: nil, tension: 0.4)
+      # Un seul jour : sans point la ligne est invisible (pas de segment).
+      sparse = Array(data).size <= 2
       {
         label: label,
         data: data,
@@ -715,9 +717,9 @@ module Analyses
         fill: fill,
         tension: tension,
         spanGaps: true,
-        pointRadius: 0,
-        pointHoverRadius: 4,
-        pointHitRadius: 10,
+        pointRadius: sparse ? 4 : 0,
+        pointHoverRadius: 5,
+        pointHitRadius: 12,
         pointBackgroundColor: color,
         pointBorderColor: "#fff",
         pointBorderWidth: 1.5

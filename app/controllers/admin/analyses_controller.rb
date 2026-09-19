@@ -78,11 +78,17 @@ class Admin::AnalysesController < Admin::ApplicationController
   end
 
   def analyses_filter_params
-    params.permit(
+    permitted = params.permit(
       :debut, :fin, :vue,
-      :filter_profile, :filter_locvente, :filter_eshop, :filter_propart,
-      *Admin::ProduitListingFilters::ADMIN_PRODUIT_FILTER_KEYS
-    )
+      :filter_locvente, :filter_eshop, :filter_propart
+    ).to_h.symbolize_keys
+
+    Admin::ProduitListingFilters::ANALYSES_MULTI_FILTER_KEYS.each do |key|
+      values = Admin::ProduitListingFilters.normalize_filter_values(params[key])
+      permitted[key] = values if values.any?
+    end
+
+    permitted
   end
 
   def load_filter_collections

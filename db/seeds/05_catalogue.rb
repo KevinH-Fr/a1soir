@@ -111,7 +111,7 @@ families = [
     type: "robe", categories: %w[robe],
     prixvente: 240, prixlocation: 125, prixachat: 90,
     ancien_prixvente: 290, poids: 1600,
-    couleurs: %w[noir rouge champagne], tailles: %w[36 38 40],
+    couleurs: %w[noir rouge champagne], tailles: %w[32 34 36 38 40 42 44 46 48 50],
     quantite: 14, eshop: true, coup_de_coeur: true
   },
   {
@@ -129,7 +129,7 @@ families = [
     type: "costume", categories: %w[costume],
     prixvente: 260, prixlocation: 130, prixachat: 110,
     poids: 2200,
-    couleurs: %w[noir marine gris], tailles: %w[m l xl],
+    couleurs: %w[noir marine gris], tailles: %w[44 46 48 50 52 54 56 58 60 62],
     quantite: 10, eshop: true, coup_de_coeur: true
   },
   {
@@ -165,7 +165,7 @@ families = [
     type: "chaussures", categories: %w[chaussures],
     prixvente: 95, prixlocation: 42, prixachat: 32,
     poids: 600,
-    couleurs: %w[noir rose ivoire], tailles: %w[36 38 40],
+    couleurs: %w[noir rose ivoire], tailles: %w[35 36 37 38 39 40 41 42 43 44],
     quantite: 10, eshop: true
   },
   {
@@ -278,10 +278,25 @@ ensure
   Produit.set_callback(:create, :after, :generate_qr)
 end
 
+# Anciennes tailles d'une famille (ex. costume M/L/XL) : on bascule les lignes puis on supprime.
+created_ids = created.map(&:id)
+%w[robe-sirene-sequins costume-trois-pieces escarpins-satin].each do |handle|
+  Produit.where(handle: handle).where.not(id: created_ids).find_each do |obsolete|
+    replacement = created.find { |produit| produit.handle == obsolete.handle && produit.couleur_id == obsolete.couleur_id }
+    if replacement
+      Article.where(produit_id: obsolete.id).update_all(produit_id: replacement.id)
+      StripePaymentItem.where(produit_id: obsolete.id).update_all(produit_id: replacement.id)
+    end
+    next if obsolete.articles.exists? || StripePaymentItem.where(produit_id: obsolete.id).exists?
+
+    obsolete.destroy
+  end
+end
+
 # Deux pastilles couleur (le shop a déjà un fallback sans photo).
 %w[
   SEED-robe-sirene-sequins-noir-36
-  SEED-costume-trois-pieces-noir-m
+  SEED-costume-trois-pieces-noir-48
 ].each do |reffrs|
   produit = created.find { |p| p.reffrs == reffrs }
   attach_swatch.call(produit) if produit

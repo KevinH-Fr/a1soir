@@ -39,7 +39,7 @@
            class="mensuration-form__body">
         <div class="mensuration-form__progress<%= " d-none" if @invitation.template.blank? %>"
              data-form-wizard-target="progress">
-          <div class="small text-light opacity-75 mb-1"
+          <div class="small text-light opacity-90 mb-1"
                data-form-wizard-target="caption"
                data-template="<%= t("mensurations.form.step") %>">
             <%= t("mensurations.form.step", current: 1, total: 3) %>
@@ -85,7 +85,7 @@
               <div class="col-md-6">
                 <% if mensuration_nom_locked? %>
                   <%= mensuration_labeled_field nil, @mensuration.nom, t("mensurations.identity.nom"),
-                        disabled: true, id: "mensuration_nom", class: "opacity-75" %>
+                        disabled: true, id: "mensuration_nom" %>
                 <% else %>
                   <%= mensuration_labeled_field "mensuration[nom]", @mensuration.nom,
                         t("mensurations.identity.nom"), required: true, maxlength: 80,
@@ -95,8 +95,8 @@
             </div>
             <div class="row g-3 mensuration-form__identity-row">
               <div class="col-md-6">
-                <%= mensuration_labeled_field nil, @invitation.email, t("mensurations.identity.email"),
-                      disabled: true, id: "mensuration_email", class: "opacity-75" %>
+                  <%= mensuration_labeled_field nil, @invitation.email, t("mensurations.identity.email"),
+                        disabled: true, id: "mensuration_email" %>
               </div>
               <div class="col-md-6">
                 <%= mensuration_labeled_field "mensuration[telephone]", @mensuration.telephone,
@@ -110,12 +110,12 @@
                       t("mensurations.identity.adresse"), maxlength: 120,
                       autocomplete: "street-address" %>
               </div>
-              <div class="col-4">
+              <div class="col-12 col-md-4">
                 <%= mensuration_labeled_field "mensuration[cp]", @mensuration.cp,
                       t("mensurations.identity.cp"), maxlength: 10, inputmode: "numeric",
                       autocomplete: "postal-code" %>
               </div>
-              <div class="col-8">
+              <div class="col-12 col-md-8">
                 <%= mensuration_labeled_field "mensuration[ville]", @mensuration.ville,
                       t("mensurations.identity.ville"), maxlength: 80,
                       autocomplete: "address-level2" %>
@@ -172,13 +172,13 @@
           <div class="d-flex align-items-center gap-2 mensuration-form__nav">
             <% if completed %>
               <%= link_to mensuration_path(token: @invitation.token),
-                    class: "btn btn-sm btn-outline-light public-btn-border-radius d-none",
+                    class: "btn btn-outline-light public-btn-border-radius d-none",
                     data: { form_wizard_target: "home" } do %>
                 <i class="bi bi-arrow-left me-1"></i><%= t("mensurations.form.prev") %>
               <% end %>
             <% end %>
             <button type="button"
-                    class="btn btn-sm btn-outline-light public-btn-border-radius d-none"
+                    class="btn btn-outline-light public-btn-border-radius d-none"
                     data-form-wizard-target="prev"
                     data-action="form-wizard#prev">
               <i class="bi bi-arrow-left me-1"></i><%= t("mensurations.form.prev") %>

@@ -25,8 +25,10 @@ module ProduitsFiltersHelper
   end
 
   def filter_dropdown(label:, icon:, param_key:, collection: nil, model: nil, current_params: {}, all_label: nil, columns: nil,
-                      always_show_label: false, id_suffix: nil, link_data: {})
-    selected_value = params[param_key]
+                      always_show_label: false, id_suffix: nil, link_data: {}, multiple: false, keep_label: nil)
+    keep_label = multiple if keep_label.nil?
+    selected_values = Admin::ProduitListingFilters.normalize_filter_values(params[param_key])
+    selected_value = multiple ? selected_values.first : params[param_key]
     item_opts = ->(**html) do
       if link_data.present?
         html[:data] = (html[:data] || {}).merge(link_data)
@@ -34,12 +36,14 @@ module ProduitsFiltersHelper
       html
     end
     selected_label =
-    if selected_value.present? && model
+    if multiple && selected_values.size > 1
+      "#{label} · #{selected_values.size}"
+    elsif selected_value.present? && model
       case param_key
       when :filter_taille, :filter_categorie, :filter_couleur, :filter_fournisseur, :filter_type_produit
-        selected_value == "na" ? "NA" : model.find_by(id: selected_value)&.nom
+        selected_value.to_s == "na" ? "NA" : filter_dropdown_record_label(model, selected_value)
       else
-        model.find_by(id: selected_value)&.nom
+        filter_dropdown_record_label(model, selected_value)
       end
     
     elsif selected_value.present? && param_key == :filter_statut
@@ -59,7 +63,16 @@ module ProduitsFiltersHelper
       end
     end
 
+    selected_title =
+      if multiple && selected_values.size > 1 && model
+        selected_values.map { |id| id == "na" ? "NA" : filter_dropdown_record_label(model, id) }.compact.join(", ")
+      elsif selected_label.present?
+        selected_label.to_s
+      end
+
     toggle_id = id_suffix.present? ? "#{param_key}Dropdown_#{id_suffix}" : "#{param_key}Dropdown"
+    toggle_data = { bs_toggle: "dropdown" }
+    toggle_data[:bs_auto_close] = "outside" if multiple
 
     content_tag(:div, class: "dropdown") do
       # Button
@@ -68,19 +81,25 @@ module ProduitsFiltersHelper
           class: "btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center gap-1 min-w-0",
           type: "button",
           id: toggle_id,
-          data: { bs_toggle: "dropdown" },
+          data: toggle_data,
           aria: { expanded: false },
-          title: (selected_label.present? ? selected_label.to_s : nil)) do
+          title: selected_title) do
           button_parts = []
           button_parts << tag.i(class: "#{icon} flex-shrink-0", aria: { hidden: true })
 
-          if selected_label.present?
+          if selected_label.present? && !keep_label
             button_parts << content_tag(:span, selected_label,
               class: "text-truncate text-start",
               style: "max-width: 11rem")
           else
             label_span_class = always_show_label ? "text-start" : "text-start d-none d-md-inline"
-            button_parts << content_tag(:span, label, class: label_span_class)
+            button_label =
+              if keep_label && selected_values.size > 1
+                "#{label.pluralize} #{selected_values.size}"
+              else
+                label
+              end
+            button_parts << content_tag(:span, button_label, class: label_span_class)
           end
 
           safe_join(button_parts)
@@ -155,7 +174,9 @@ module ProduitsFiltersHelper
                 link_to(
                   all_label || "Tous",
                   url_for(current_params.merge(param_key => nil)),
-                  **item_opts.call(class: produits_filter_dropdown_item_class(selected_value.blank?))
+                  **item_opts.call(
+                    class: multiple ? "dropdown-item small" : produits_filter_dropdown_item_class(selected_values.empty?)
+                  )
                 )
               end
             )
@@ -163,10 +184,12 @@ module ProduitsFiltersHelper
             if [:filter_taille, :filter_categorie, :filter_couleur, :filter_statut, :filter_fournisseur, :filter_type_produit].include?(param_key)
               concat(
                 content_tag(:li) do
-                  link_to(
-                    "NA",
-                    url_for(current_params.merge(param_key => "na")),
-                    **item_opts.call(class: produits_filter_dropdown_item_class(selected_value == "na"))
+                  filter_dropdown_choice_link(
+                    label: "NA",
+                    url: filter_dropdown_choice_url(current_params, param_key, "na", selected_values, multiple: multiple),
+                    active: selected_values.include?("na"),
+                    multiple: multiple,
+                    item_opts: item_opts
                   )
                 end
               )
@@ -174,15 +197,19 @@ module ProduitsFiltersHelper
             
           
             collection.each do |item|
-              active = selected_value.to_s == item.id.to_s
-              nom = item.nom.to_s
+              id_s = item.id.to_s
+              active = selected_values.include?(id_s)
+              nom = filter_dropdown_item_name(item)
               display = truncate(nom, length: FILTER_DROPDOWN_ITEM_NAME_LENGTH, omission: "…")
               concat(
                 content_tag(:li) do
-                  link_to(
-                    display,
-                    url_for(current_params.merge(param_key => item)),
-                    **item_opts.call(class: produits_filter_dropdown_item_class(active), title: nom)
+                  filter_dropdown_choice_link(
+                    label: display,
+                    url: filter_dropdown_choice_url(current_params, param_key, item, selected_values, multiple: multiple),
+                    active: active,
+                    multiple: multiple,
+                    item_opts: item_opts,
+                    title: nom
                   )
                 end
               )
@@ -311,5 +338,53 @@ module ProduitsFiltersHelper
 
   def produits_filter_dropdown_item_class(active)
     ["dropdown-item", "small", ("active" if active)].compact.join(" ")
+  end
+
+  def filter_dropdown_item_name(item)
+    if item.respond_to?(:full_name)
+      item.full_name.presence || item.try(:nom).to_s
+    else
+      item.nom.to_s
+    end
+  end
+
+  def filter_dropdown_record_label(model, id)
+    record = model.find_by(id: id)
+    return nil unless record
+
+    filter_dropdown_item_name(record)
+  end
+
+  def filter_dropdown_choice_url(current_params, param_key, item, selected_values, multiple:)
+    id = item.respond_to?(:id) ? item.id.to_s : item.to_s
+    if multiple
+      next_values = selected_values.include?(id) ? selected_values - [id] : selected_values + [id]
+      url_for(current_params.merge(param_key => next_values.presence))
+    else
+      url_for(current_params.merge(param_key => item))
+    end
+  end
+
+  def filter_dropdown_choice_link(label:, url:, active:, multiple:, item_opts:, title: nil)
+    item_class =
+      if multiple
+        class_names("dropdown-item", "small", "d-flex align-items-center gap-2", "is-selected" => active)
+      else
+        produits_filter_dropdown_item_class(active)
+      end
+    opts = item_opts.call(class: item_class, title: title)
+    if multiple
+      link_to(url, **opts) do
+        safe_join([
+          tag.i(
+            class: class_names("bi flex-shrink-0", active ? "bi-check-square" : "bi-square"),
+            aria: { hidden: true }
+          ),
+          label
+        ], " ")
+      end
+    else
+      link_to(label, url, **opts)
+    end
   end
 end

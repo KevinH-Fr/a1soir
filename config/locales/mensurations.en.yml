@@ -58,7 +58,7 @@ en:
       too_many_attempts: "Too many attempts. Please request a new code."
       resend_wait: "Please wait a minute before requesting another code."
       session_expired: "Your session has expired. Please verify your email again."
-      resume_hint: "You can come back later via the link in your email."
+      resume_hint: "You can come back later via the email link."
     share:
       welcome: "Measurements space"
       title: "Your measurements"

@@ -20,15 +20,15 @@ module Analyses
     def dimension_pinned?(dimension)
       case dimension.to_sym
       when :profile
-        @filter_params[:filter_profile].present?
+        single_value_filter?(:filter_profile)
       when :type_produit
-        @filter_params[:filter_type_produit].present?
+        single_value_filter?(:filter_type_produit)
       when :categorie
-        @filter_params[:filter_categorie].present?
+        single_value_filter?(:filter_categorie)
       when :couleur
-        @filter_params[:filter_couleur].present?
+        single_value_filter?(:filter_couleur)
       when :taille
-        @filter_params[:filter_taille].present?
+        single_value_filter?(:filter_taille)
       when :locvente
         @filter_params[:filter_locvente].present?
       when :eshop
@@ -84,6 +84,16 @@ module Analyses
         messages << { key: :filter_profile, label: "Vendeur filtré — comparaison multi-vendeurs masquée." }
       end
       messages
+    end
+
+    private
+
+    def filter_values(key)
+      Array.wrap(@filter_params[key]).flatten.map(&:to_s).reject(&:blank?)
+    end
+
+    def single_value_filter?(key)
+      filter_values(key).size == 1
     end
   end
 end

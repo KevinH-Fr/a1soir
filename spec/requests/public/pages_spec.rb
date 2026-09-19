@@ -455,6 +455,33 @@ RSpec.describe "Public::Pages", type: :request do
         expect(response.body).to include("produit/#{produit_m.handle}-#{produit_m.id}")
       end
 
+      it "caps size pills at 6 and links the overflow to the product" do
+        couleur_large = Couleur.create!(nom: "noir-pills-overflow")
+        tailles = (31..38).map { |n| Taille.create!(nom: n.to_s) }
+        variants = tailles.map.with_index do |taille, index|
+          Produit.create!(
+            nom: "Robe pastilles overflow",
+            prixvente: 50,
+            stripe_price_id: "price_listing_pills_overflow_#{index}",
+            eshop: true,
+            today_availability: true,
+            quantite: 1,
+            taille: taille,
+            couleur: couleur_large,
+            actif: true
+          )
+        end
+
+        get "/fr/produits"
+
+        expect(response).to have_http_status(:ok)
+        pills = response.body.scan(/listing-taille-pill-label">([^<]+)/).flatten
+        expect(pills).to include("31", "32", "33", "34", "35", "36", "+2")
+        expect(pills).not_to include("37", "38")
+        expect(response.body).to include("listing-taille-pill--more")
+        expect(response.body).to include("produit/#{variants.first.handle}-")
+      end
+
       it "shows only the filtered size when a taille filter is active" do
         get "/fr/produits", params: { taille: taille_m.id }
 

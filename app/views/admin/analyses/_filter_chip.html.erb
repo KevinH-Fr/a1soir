@@ -1,5 +1,5 @@
-<%# chip : { key:, label:, value: } — cliquer retire le filtre. %>
-<%= link_to analyses_path_without_filter(chip[:key]),
+<%# chip : { key:, label:, value:, remove_value?: } — cliquer retire cette valeur (ou tout le filtre). %>
+<%= link_to analyses_path_without_filter(chip[:key], chip[:remove_value]),
       class: "analyses-chip",
       title: "Retirer le filtre #{chip[:label]}",
       data: { turbo_stream: true } do %>

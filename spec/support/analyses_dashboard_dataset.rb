@@ -78,6 +78,7 @@ module AnalysesDashboardDataset
         typepaiement: "prix",
         montant: 65,
         moyen: "chèque",
+        custom_date: t_day1.to_date,
         created_at: t_day1,
         updated_at: t_day1
       )
@@ -118,6 +119,7 @@ module AnalysesDashboardDataset
         typepaiement: "prix",
         montant: 80,
         moyen: "carte bleue",
+        custom_date: t_in_period.to_date,
         created_at: t_in_period,
         updated_at: t_in_period
       )
@@ -149,6 +151,7 @@ module AnalysesDashboardDataset
         typepaiement: "prix",
         montant: 30,
         moyen: "carte bleue",
+        custom_date: t_in_period.to_date,
         created_at: t_in_period.change(hour: 17),
         updated_at: t_in_period.change(hour: 17)
       )
@@ -203,6 +206,7 @@ module AnalysesDashboardDataset
         typepaiement: "prix",
         montant: 40,
         moyen: "virement",
+        custom_date: t_day8.to_date,
         created_at: t_day8,
         updated_at: t_day8
       )

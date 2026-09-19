@@ -86,6 +86,19 @@ RSpec.describe Analyses::ChartPayloads do
     expect(config[:options][:scales][:y][:stacked]).to be_nil
   end
 
+  it "shows points on boutique / e-shop when only one day has CA" do
+    helper_double.instance_variable_set(:@groupedByDateCaBoutique, { "19/09/2026" => 50 })
+    helper_double.instance_variable_set(:@groupedByDateCaEshop, {})
+
+    config = payloads.build(:ca_channels_timeline)
+    boutique, eshop = config[:data][:datasets]
+
+    expect(config[:data][:labels]).to eq(["19/09/2026"])
+    expect(boutique[:data]).to eq([50])
+    expect(eshop[:data]).to eq([0])
+    expect(boutique[:pointRadius]).to eq(4)
+  end
+
   it "builds CA ratios timeline with panier moyen and articles per commande" do
     config = payloads.build(:ca_ratios_timeline)
     expect(config[:type]).to eq("line")

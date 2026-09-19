@@ -27,6 +27,24 @@ RSpec.describe Analyses::DashboardVisibility do
     expect(visibility.show?(:catalog_by_categorie)).to be(true)
   end
 
+  it "keeps catalog charts when several values are selected" do
+    vis = described_class.new(
+      { filter_type_produit: %w[3 4], filter_categorie: %w[8 9] },
+      ca_mode: :paiements,
+      vue: "catalogue"
+    )
+    expect(vis.dimension_pinned?(:type_produit)).to be(false)
+    expect(vis.dimension_pinned?(:categorie)).to be(false)
+    expect(vis.show?(:catalog_by_type)).to be(true)
+    expect(vis.show?(:catalog_by_categorie)).to be(true)
+  end
+
+  it "hides category chart only when a single category is selected" do
+    vis = described_class.new({ filter_categorie: "8" }, ca_mode: :paiements, vue: "catalogue")
+    expect(vis.dimension_pinned?(:categorie)).to be(true)
+    expect(vis.show?(:catalog_by_categorie)).to be(false)
+  end
+
   it "shows catalog type and equipe previews on synthese" do
     synth = described_class.new({}, ca_mode: :paiements, vue: "synthese")
     expect(synth.show?(:catalog_by_type)).to be(true)

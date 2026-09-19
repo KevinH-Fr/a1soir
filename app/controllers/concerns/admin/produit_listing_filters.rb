@@ -9,33 +9,36 @@ module Admin
       filter_taille filter_couleur filter_categorie filter_type_produit filter_fournisseur
     ].freeze
 
-    def apply_taille_filter(scope, value)
-      return scope unless value.present?
+    # Filtres Analyses qui acceptent plusieurs ids (query `filter_categorie[]=…`).
+    ANALYSES_MULTI_FILTER_KEYS = (ADMIN_PRODUIT_FILTER_KEYS + %i[filter_profile]).freeze
 
-      if value == "na"
-        scope.where(taille_id: nil)
-      else
-        scope.by_taille(value)
-      end
+    def self.normalize_filter_values(value)
+      Array.wrap(value).flatten.filter_map { |v| v.to_s.strip.presence }.uniq
+    end
+
+    def apply_taille_filter(scope, value)
+      apply_nullable_fk_filter(scope, :taille_id, value)
     end
 
     def apply_couleur_filter(scope, value)
-      return scope unless value.present?
-
-      if value == "na"
-        scope.where(couleur_id: nil)
-      else
-        scope.by_couleur(value)
-      end
+      apply_nullable_fk_filter(scope, :couleur_id, value)
     end
 
     def apply_categorie_filter(scope, value)
-      return scope unless value.present?
+      values = Admin::ProduitListingFilters.normalize_filter_values(value)
+      return scope if values.empty?
 
-      if value == "na"
+      ids = values.reject { |v| v == "na" }
+      include_na = values.include?("na")
+
+      if include_na && ids.empty?
         scope.left_outer_joins(:categorie_produits).where(categorie_produits: { id: nil })
+      elsif include_na
+        scope.left_outer_joins(:categorie_produits)
+             .where("categorie_produits.id IN (?) OR categorie_produits.id IS NULL", ids)
+             .distinct
       else
-        scope.by_categorie(CategorieProduit.find(value))
+        scope.by_categories(ids)
       end
     end
 
@@ -55,24 +58,29 @@ module Admin
     end
 
     def apply_type_produit_filter(scope, value)
-      return scope unless value.present?
-
-      if value == "na"
-        scope.where(type_produit_id: nil)
-      else
-        scope.where(type_produit_id: value)
-      end
+      apply_nullable_fk_filter(scope, :type_produit_id, value)
     end
 
     def apply_fournisseur_filter(scope, value)
-      return scope unless value.present?
+      apply_nullable_fk_filter(scope, :fournisseur_id, value)
+    end
 
-      if value == "na"
-        scope.where(fournisseur_id: nil)
+    def apply_nullable_fk_filter(scope, column, value)
+      values = Admin::ProduitListingFilters.normalize_filter_values(value)
+      return scope if values.empty?
+
+      ids = values.reject { |v| v == "na" }
+      include_na = values.include?("na")
+
+      if include_na && ids.empty?
+        scope.where(column => nil)
+      elsif include_na
+        scope.where(column => ids).or(scope.where(column => nil))
       else
-        scope.by_fournisseur(Fournisseur.find(value))
+        scope.where(column => ids)
       end
     end
+    private :apply_nullable_fk_filter
 
     def apply_prix_filter(scope, value)
       return scope unless value.present?

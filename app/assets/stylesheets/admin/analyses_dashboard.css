@@ -314,6 +314,20 @@
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+.analyses-period-menu__item--today,
+.analyses-period-menu .dropdown-item.analyses-period-menu__item--today {
+  color: #0a58ca;
+}
+
+.analyses-period-menu__item--today:hover,
+.analyses-period-menu__item--today:focus-visible,
+.analyses-period-menu__item--today.analyses-period-menu__item--active,
+.analyses-period-menu__item--today.active,
+.analyses-period-menu .dropdown-item.analyses-period-menu__item--today:hover,
+.analyses-period-menu .dropdown-item.analyses-period-menu__item--today:focus-visible {
+  color: #084298;
+}
+
 .analyses-period-menu__divider {
   margin: 0.35rem 0.25rem;
   opacity: 0.08;
@@ -518,6 +532,62 @@
   padding: 0.4rem 0.65rem;
 }
 
+.analyses-filter-field .dropdown-item.active,
+.analyses-filter-field .dropdown-item:active,
+.analyses-filter-field .dropdown-item.is-selected {
+  color: var(--bs-body-color);
+  background-color: rgba(0, 0, 0, 0.045);
+  font-weight: 600;
+}
+
+.analyses-filter-field .dropdown-item.is-selected .bi {
+  opacity: 0.7;
+}
+
+.analyses-filter-selected {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.45rem;
+}
+
+.analyses-filter-selected__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  max-width: 100%;
+  padding: 0.08rem 0.2rem 0.08rem 0.45rem;
+  font-size: 0.7rem;
+  line-height: 1.3;
+  color: var(--bs-body-color);
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 999px;
+}
+
+.analyses-filter-selected__tag:hover {
+  color: var(--bs-body-color);
+  border-color: rgba(220, 53, 69, 0.28);
+}
+
+.analyses-filter-selected__x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.9rem;
+  height: 0.9rem;
+  font-size: 0.75rem;
+  line-height: 1;
+  color: var(--bs-secondary-color);
+  opacity: 0.5;
+}
+
+.analyses-filter-selected__tag:hover .analyses-filter-selected__x {
+  opacity: 1;
+  color: var(--bs-danger);
+}
+
 /* Panneau filtres (offcanvas). */
 .analyses-filters-panel {
   background-color: var(--light-beige-color);
@@ -665,6 +735,12 @@
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
+  min-width: 0;
+}
+
+.analyses-chart-stack > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 /* Doughnuts : bornés en largeur ; aspect-ratio réserve la place avant le montage
@@ -1153,23 +1229,41 @@
 }
 
 /* Tableau classement vendeurs. */
+.analyses-chart-card--equipe-ranking {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.analyses-equipe-table {
+  min-width: 0;
+  max-width: 100%;
+}
+
 .analyses-equipe-table__wrap {
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 0.5rem;
   background-color: rgba(255, 255, 255, 0.72);
-  overflow: hidden;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .analyses-equipe-table__table {
   --bs-table-bg: transparent;
   --bs-table-hover-bg: rgba(var(--analyses-tone-rgb, 184, 74, 107), 0.06);
+  width: max-content;
+  min-width: 100%;
   margin-bottom: 0;
-  font-size: 0.875rem;
+  table-layout: fixed;
+  font-size: 0.8125rem;
 }
 
 .analyses-equipe-table__table > :not(caption) > * > * {
-  padding: 0.6rem 0.7rem;
+  padding: 0.45rem 0.4rem;
   border-bottom-color: rgba(0, 0, 0, 0.05);
+  vertical-align: middle;
 }
 
 .analyses-equipe-table__table thead th {
@@ -1187,7 +1281,7 @@
 }
 
 .analyses-equipe-table__rank {
-  width: 2.5rem;
+  width: 2.25rem;
   text-align: center;
 }
 
@@ -1218,8 +1312,31 @@
   white-space: nowrap;
 }
 
+.analyses-equipe-table__name {
+  width: 6.25rem;
+  overflow: hidden;
+}
+
+.analyses-equipe-table__name-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.analyses-equipe-table__name-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
 .analyses-equipe-table__metric {
-  min-width: 5.5rem;
+  width: 4.6rem;
+}
+
+.analyses-equipe-table__metric--ca {
   width: 7.5rem;
 }
 
@@ -1280,19 +1397,12 @@
   align-items: center;
   justify-content: flex-end;
   height: 100%;
-  padding: 0 0.45rem;
-  font-size: 0.78rem;
+  padding: 0 0.3rem;
+  font-size: 0.72rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   line-height: 1;
   color: #1e293b;
   white-space: nowrap;
-}
-
-@media (max-width: 991.98px) {
-  .analyses-equipe-table__metric {
-    min-width: 4.75rem;
-    width: 6.25rem;
-  }
 }
 
