@@ -20,9 +20,9 @@ RSpec.describe Produit do
   end
 
   describe "#set_default_poids (after_initialize)" do
-    it "sets poids to 2000 when nil on initialize" do
+    it "sets poids to 1000 when nil on initialize" do
       produit = Produit.new(nom: "Test")
-      expect(produit.poids).to eq(2000)
+      expect(produit.poids).to eq(1000)
     end
 
     it "preserves an explicitly set poids" do
@@ -91,9 +91,36 @@ RSpec.describe Produit do
     end
 
     context "with eshop (Stripe) sales" do
+      def build_eshop_payment(status: "paid", stripe_payment_id:, refunded_at: nil)
+        eshop_commande = Commande.create!(
+          client: client,
+          profile: profile,
+          nom: "E-shop #{stripe_payment_id}",
+          montant: 50,
+          devis: false,
+          type_locvente: "vente",
+          typeevent: Commande::EVENEMENTS_OPTIONS.first,
+          eshop: true
+        )
+        payment = StripePayment.create!(
+          commande: eshop_commande,
+          stripe_payment_id: stripe_payment_id,
+          status: status,
+          amount: 5000,
+          currency: "eur"
+        )
+        StripePaymentItem.create!(
+          stripe_payment: payment,
+          produit: produit,
+          quantity: 1,
+          unit_amount: 5000,
+          refunded_at: refunded_at
+        )
+        payment
+      end
+
       it "deducts paid StripePaymentItems from disponibles" do
-        payment = StripePayment.create!(stripe_payment_id: "pi_test_avail_1", status: "paid", amount: 5000, currency: "eur")
-        StripePaymentItem.create!(stripe_payment: payment, produit: produit, quantity: 1, unit_amount: 5000)
+        build_eshop_payment(stripe_payment_id: "pi_test_avail_1")
 
         result = produit.statut_disponibilite(today, today)
         expect(result[:vendus_eshop]).to eq(1)
@@ -102,8 +129,7 @@ RSpec.describe Produit do
       end
 
       it "does not count pending (unpaid) StripePaymentItems" do
-        payment = StripePayment.create!(stripe_payment_id: "pi_test_avail_2", status: "pending", amount: 5000, currency: "eur")
-        StripePaymentItem.create!(stripe_payment: payment, produit: produit, quantity: 1, unit_amount: 5000)
+        build_eshop_payment(status: "pending", stripe_payment_id: "pi_test_avail_2")
 
         result = produit.statut_disponibilite(today, today)
         expect(result[:vendus_eshop]).to eq(0)
@@ -144,9 +170,7 @@ RSpec.describe Produit do
       it "combines boutique and eshop sales" do
         commande = build_boutique_commande
         Article.create!(commande: commande, produit: produit, quantite: 1, locvente: "vente", prix: 50, total: 50)
-
-        payment = StripePayment.create!(stripe_payment_id: "pi_test_avail_3", status: "paid", amount: 5000, currency: "eur")
-        StripePaymentItem.create!(stripe_payment: payment, produit: produit, quantity: 1, unit_amount: 5000)
+        build_eshop_payment(stripe_payment_id: "pi_test_avail_3")
 
         result = produit.statut_disponibilite(today, today)
         expect(result[:vendus]).to eq(2)
@@ -156,6 +180,7 @@ RSpec.describe Produit do
   end
 
   describe "#update_today_availability" do
+    let!(:client) { Client.create!(nom: "Client Test", propart: "particulier", intitule: Client::INTITULE_OPTIONS.first, mail: "client-avail@test.com") }
     let!(:profile) { Profile.create!(prenom: "Vendeur", nom: "Test") }
 
     it "sets today_availability to true when stock is available" do
@@ -168,7 +193,23 @@ RSpec.describe Produit do
 
     it "sets today_availability to false when all stock is sold" do
       produit = Produit.create!(nom: "Rupture", quantite: 1)
-      payment = StripePayment.create!(stripe_payment_id: "pi_avail_sold_1", status: "paid", amount: 5000, currency: "eur")
+      eshop_commande = Commande.create!(
+        client: client,
+        profile: profile,
+        nom: "E-shop rupture",
+        montant: 50,
+        devis: false,
+        type_locvente: "vente",
+        typeevent: Commande::EVENEMENTS_OPTIONS.first,
+        eshop: true
+      )
+      payment = StripePayment.create!(
+        commande: eshop_commande,
+        stripe_payment_id: "pi_avail_sold_1",
+        status: "paid",
+        amount: 5000,
+        currency: "eur"
+      )
       StripePaymentItem.create!(stripe_payment: payment, produit: produit, quantity: 1, unit_amount: 5000)
 
       result = produit.update_today_availability

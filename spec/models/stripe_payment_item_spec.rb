@@ -38,6 +38,8 @@ RSpec.describe StripePaymentItem do
       expect(StripePaymentItem.not_refunded.count).to eq(1)
     end
   end
+
+  describe "#update_produit_availability_if_paid" do
     it "calls update_today_availability on produit when payment is paid" do
       item = StripePaymentItem.new(stripe_payment: paid_payment, produit: produit, quantity: 1, unit_amount: 5000)
       expect(produit).to receive(:update_today_availability)
@@ -60,7 +62,31 @@ RSpec.describe StripePaymentItem do
   describe "integration: today_availability reflects eshop sale after payment is paid" do
     it "sets produit today_availability to false after exhausting stock" do
       produit_single = Produit.create!(nom: "Item stock intégration", quantite: 1)
-      payment = StripePayment.create!(stripe_payment_id: "pi_item_integ_1", status: "paid", amount: 5000, currency: "eur")
+      client = Client.create!(
+        nom: "Item",
+        prenom: "Stock",
+        propart: "particulier",
+        intitule: Client::INTITULE_OPTIONS.first,
+        mail: "item-stock-#{SecureRandom.hex(4)}@test.com"
+      )
+      profile = Profile.create!(prenom: "Vendeur", nom: "Item")
+      commande = Commande.create!(
+        client: client,
+        profile: profile,
+        nom: "E-shop item integ",
+        montant: 50,
+        devis: false,
+        type_locvente: "vente",
+        typeevent: Commande::EVENEMENTS_OPTIONS.first,
+        eshop: true
+      )
+      payment = StripePayment.create!(
+        commande: commande,
+        stripe_payment_id: "pi_item_integ_1",
+        status: "paid",
+        amount: 5000,
+        currency: "eur"
+      )
       StripePaymentItem.create!(stripe_payment: payment, produit: produit_single, quantity: 1, unit_amount: 5000)
 
       # Manually trigger availability update (simulates after_commit in transactional tests)

@@ -51,7 +51,7 @@ RSpec.describe SeoPages::Registry do
       page = described_class.find("histoire-autour-dun-soir-cannes", scope: "guides")
       related = described_class.related_pages(page)
 
-      expect(related.length).to eq(SeoPages::Registry::RELATED_PAGES_TARGET)
+      expect(related.length).to eq(described_class.singleton_class::RELATED_PAGES_TARGET)
       expect(related.map { |entry| entry[:slug] }).to include("robe-de-mariee-cannes", "metier-couturiere-retouches")
       expect(related.map { |entry| entry[:slug] }).not_to include("histoire-autour-dun-soir-cannes")
     end

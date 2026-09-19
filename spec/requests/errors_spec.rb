@@ -5,12 +5,17 @@ require "rails_helper"
 RSpec.describe "Pages d'erreur", type: :request do
   describe "GET /404" do
     it "affiche la page boutique en français" do
-      get "/404"
+      # GET /404 passe par public/404.html (200) via le serveur de fichiers.
+      # exceptions_app appelle le routeur directement.
+      status, _headers, body = Rails.application.routes.call(
+        Rack::MockRequest.env_for("/404", "HTTP_HOST" => "www.example.com")
+      )
+      html = body.each.to_a.join
 
-      expect(response).to have_http_status(:not_found)
-      expect(response.body).to include("Page introuvable")
-      expect(response.body).to include("Retour à la boutique")
-      expect(response.body).to include("noindex")
+      expect(status).to eq(404)
+      expect(html).to include("Page introuvable")
+      expect(html).to include("Retour à la boutique")
+      expect(html).to include("noindex")
     end
   end
 

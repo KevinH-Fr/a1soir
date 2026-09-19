@@ -145,6 +145,9 @@ RSpec.describe StripePaymentMailer, type: :mailer do
       end
 
       it "does not bcc when KH_MAIL is blank" do
+        allow(ENV).to receive(:[]).with("KH_MAIL").and_return(nil)
+        allow(ENV).to receive(:fetch).with("KH_MAIL", anything).and_return(nil)
+
         expect(mail.bcc).to be_nil.or be_blank
       end
 
@@ -267,7 +270,7 @@ RSpec.describe StripePaymentMailer, type: :mailer do
         full_refund: false
       )
 
-      html = mail.html_part.body.encoded
+      html = CGI.unescapeHTML(mail.html_part.body.decoded)
       expect(mail.subject).to eq(I18n.t("stripe_payment_mailer.remboursement.subject_partial"))
       expect(html).to include("Pochette mailer test")
       expect(html).not_to include("Robe mailer test")

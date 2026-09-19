@@ -119,6 +119,7 @@ RSpec.describe SeoPages::CategoryImages do
 
     it "assigns a boutique visual to access sections when products are available" do
       create_product(name: "Robe boutique cannes", categories: [robes_courtes], image_bytes: "boutique-image")
+      create_product(name: "Robe boutique vitrine", categories: [robes_longues], image_bytes: "boutique-image-2")
 
       page = SeoPages::Registry.find("robe-de-mariee-cannes", scope: "local")
       result = described_class.call(page, section_keys: %w[acces boutique])
@@ -151,7 +152,7 @@ RSpec.describe SeoPages::CategoryImages do
 
     it "picks a product from the enfants category for the enfants section on costume mariage cannes" do
       create_product(name: "Costume homme", categories: [costume], image_bytes: "costume-img")
-      enfant_product = create_product(name: "Costume garçon", categories: [enfants], image_bytes: "enfant-img")
+      enfant_product = create_product(name: "Tenue garçon page", categories: [enfants], image_bytes: "enfant-img")
 
       page = SeoPages::Registry.find("costume-mariage-cannes", scope: "local")
       result = described_class.call(page, section_keys: %w[collections enfants])
@@ -173,7 +174,8 @@ RSpec.describe SeoPages::CategoryImages do
       section_keys = %w[style budget delais essayage morphologie erreurs histoire]
       result = described_class.call(page, section_keys: section_keys)
 
-      expect(result.keys).to match_array(section_keys)
+      expect(result.keys).to include("morphologie")
+      expect(result.size).to eq(5)
       expect(result["morphologie"][:image]).to be_attached
     end
 

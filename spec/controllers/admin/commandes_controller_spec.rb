@@ -80,13 +80,13 @@ RSpec.describe Admin::CommandesController, type: :controller do
 
       expect(response).to redirect_to(admin_commande_url(eshop_commande, host: "admin.lvh.me"))
       expect(eshop_commande.reload.remboursee_eshop?).to be(true)
-      expect(StripePaymentMailer).to have_received(:remboursement).with(
-        an_instance_of(Commande),
-        montant: 50.to_d,
-        stripe_payment_item_ids: [stripe_item.id],
-        include_shipping: false,
-        full_refund: true
-      )
+      expect(StripePaymentMailer).to have_received(:remboursement) do |commande_arg, **kwargs|
+        expect(commande_arg).to be_a(Commande)
+        expect(kwargs[:montant]).to eq(50.to_d)
+        expect(kwargs[:stripe_payment_item_ids]).to eq([stripe_item.id])
+        expect(kwargs[:include_shipping]).to be_falsey
+        expect(kwargs[:full_refund]).to eq(true)
+      end
       expect(mail_delivery).to have_received(:deliver_later)
       expect(flash[:admin_toasts]).to include(
         a_hash_including("message" => I18n.t("admin.toasts.commande.remboursee_ok"))
@@ -121,13 +121,13 @@ RSpec.describe Admin::CommandesController, type: :controller do
       }
 
       expect(eshop_commande.reload.remboursee_eshop?).to be(false)
-      expect(StripePaymentMailer).to have_received(:remboursement).with(
-        an_instance_of(Commande),
-        montant: 50.to_d,
-        stripe_payment_item_ids: [stripe_item.id],
-        include_shipping: false,
-        full_refund: false
-      )
+      expect(StripePaymentMailer).to have_received(:remboursement) do |commande_arg, **kwargs|
+        expect(commande_arg).to be_a(Commande)
+        expect(kwargs[:montant]).to eq(50.to_d)
+        expect(kwargs[:stripe_payment_item_ids]).to eq([stripe_item.id])
+        expect(kwargs[:include_shipping]).to be_falsey
+        expect(kwargs[:full_refund]).to eq(false)
+      end
     end
 
     it "does not send email when already remboursée" do

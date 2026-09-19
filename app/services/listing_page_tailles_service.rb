@@ -5,6 +5,8 @@
 #
 # Même clé de regroupement que FiltersProduitsService : [handle, couleur_id].
 # Chaque entrée : { nom:, id:, handle: } pour lier vers la fiche de la variante.
+#
+# Taille « unique » : pas de pastille sur la carte (aucun choix à faire).
 class ListingPageTaillesService
   def initialize(produits, taille_filter_id: nil)
     @produits = Array(produits)
@@ -34,9 +36,15 @@ class ListingPageTaillesService
     }
   end
 
+  # Tille unique en base, mais pas de pastille sur la carte.
+  def one_size?(produit)
+    produit.taille&.nom.to_s.downcase == "unique"
+  end
+
   def tailles_from_listed_products
     @produits.each_with_object({}) do |produit, hash|
       next if produit.taille&.nom.blank?
+      next if one_size?(produit)
 
       hash[key_for(produit)] = [entry_for(produit)]
     end
@@ -62,6 +70,7 @@ class ListingPageTaillesService
     siblings.each do |produit|
       pair = key_for(produit)
       next unless grouped.key?(pair)
+      next if one_size?(produit)
 
       nom = produit.taille.nom.upcase
       next if grouped[pair].any? { |entry| entry[:nom] == nom }

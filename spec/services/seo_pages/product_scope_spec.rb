@@ -56,14 +56,16 @@ RSpec.describe SeoPages::ProductScope do
     taille_s = Taille.create!(nom: "S-#{SecureRandom.hex(2)}")
     taille_m = Taille.create!(nom: "M-#{SecureRandom.hex(2)}")
 
-    create_product(name: "Robe taille S", handle: shared_handle, taille: taille_s)
-    create_product(name: "Robe taille M", handle: shared_handle, taille: taille_m)
+    size_s = create_product(name: "Robe taille S", taille: taille_s)
+    size_m = create_product(name: "Robe taille M", taille: taille_m)
     create_product(name: "Autre robe")
+    size_s.update_columns(handle: shared_handle)
+    size_m.update_columns(handle: shared_handle)
 
     result = described_class.call(page)
 
     expect(result.size).to eq(2)
-    expect(result.map(&:handle).uniq).to eq([shared_handle, result.last.handle])
+    expect(result.map(&:handle).uniq).to contain_exactly(shared_handle, "autre-robe")
   end
 
   it "orders like the public catalogue: coups de coeur first, then most recently updated" do

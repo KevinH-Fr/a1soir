@@ -6,7 +6,16 @@ RSpec.describe "Sitemap", type: :request do
   around do |example|
     old_host = ENV["SITEMAP_HOST"]
     ENV["SITEMAP_HOST"] = "http://www.example.com"
+
+    # GET /sitemap.xml.gz is otherwise served from public/ if a debug dump exists.
+    sitemap_path = Rails.root.join("public/sitemap.xml.gz")
+    hidden_path = Rails.root.join("tmp/sitemap.xml.gz.specbak-#{Process.pid}")
+    FileUtils.mkdir_p(hidden_path.dirname)
+    FileUtils.mv(sitemap_path, hidden_path) if File.exist?(sitemap_path)
+
     example.run
+  ensure
+    FileUtils.mv(hidden_path, sitemap_path) if hidden_path && File.exist?(hidden_path)
     if old_host
       ENV["SITEMAP_HOST"] = old_host
     else

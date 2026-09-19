@@ -157,7 +157,9 @@ RSpec.describe "Public StripePayments", type: :request do
         expect(Stripe::Checkout::Session).to receive(:create).with(
           a_hash_including(
             :line_items,
-            shipping_address_collection: a_hash_including(allowed_countries: %w[FR BE CH]),
+            shipping_address_collection: a_hash_including(
+              allowed_countries: Rails.application.config.x.stripe_eshop_checkout_shipping_countries
+            ),
             phone_number_collection: { enabled: true }
           )
         ).and_return(OpenStruct.new(url: checkout_url))
@@ -282,17 +284,28 @@ RSpec.describe "Public StripePayments", type: :request do
       expect(StripeCheckoutFulfillmentService).not_to receive(:retrieve_session!)
 
       get "/fr/purchase_success", params: { session_id: "cs_test_valid" }
-      expect(response).to redirect_to("/fr")
+      expect(response).to redirect_to("/?locale=fr")
       expect(flash[:notice]).to be_present
     end
 
+    def seed_pending_checkout_id(checkout_id)
+      seeded = false
+      allow_any_instance_of(ActionDispatch::Request).to receive(:session).and_wrap_original do |orig|
+        orig.call.tap do |s|
+          next if seeded
+
+          s[:pending_stripe_checkout_id] = checkout_id
+          seeded = true
+        end
+      end
+    end
+
     it "redirects to cart when Stripe raises InvalidRequestError" do
+      seed_pending_checkout_id("cs_bad")
       allow(StripeCheckoutFulfillmentService).to receive(:retrieve_session!)
         .and_raise(Stripe::InvalidRequestError.new("No such session", :session_id))
 
-      get "/fr/purchase_success",
-          params: { session_id: "cs_bad" },
-          session: { pending_stripe_checkout_id: "cs_bad" }
+      get "/fr/purchase_success", params: { session_id: "cs_bad" }
       expect(response).to redirect_to("/fr/cart")
       expect(flash[:alert]).to be_present
     end
@@ -302,12 +315,11 @@ RSpec.describe "Public StripePayments", type: :request do
       payment = double("StripePayment", id: 42)
       result = double("StripeCheckoutFulfillmentResult", payment: payment)
 
+      seed_pending_checkout_id("cs_ok")
       allow(StripeCheckoutFulfillmentService).to receive(:retrieve_session!).with("cs_ok").and_return(stripe_session)
       allow(StripeCheckoutFulfillmentService).to receive(:new).with(stripe_session).and_return(double(fulfill!: result))
 
-      get "/fr/purchase_success",
-          params: { session_id: "cs_ok" },
-          session: { pending_stripe_checkout_id: "cs_ok" }
+      get "/fr/purchase_success", params: { session_id: "cs_ok" }
 
       expect(response).to redirect_to("/fr/status/42")
       expect(flash[:notice]).to be_present

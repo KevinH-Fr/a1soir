@@ -76,4 +76,22 @@ RSpec.describe ListingPageTaillesService do
     result = described_class.new([produit_s]).call
     expect(result[key].map { |entry| entry[:nom] }).to eq(%w[M S])
   end
+
+  it "hides unique (one-size) pills" do
+    taille_unique = Taille.create!(nom: "unique")
+    collier = Produit.create!(
+      nom: "Collier pastilles",
+      prixvente: 40,
+      stripe_price_id: "price_listing_tailles_unique",
+      eshop: true,
+      today_availability: true,
+      quantite: 1,
+      taille: taille_unique,
+      couleur: couleur,
+      actif: true
+    )
+
+    result = described_class.new([collier]).call
+    expect(result[[collier.handle, couleur.id]]).to eq([])
+  end
 end

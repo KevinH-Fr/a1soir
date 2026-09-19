@@ -167,5 +167,24 @@ module Seeds
         model.create!(attrs.merge(nom: key))
       end
     end
+
+    # PNG RGB uni (sans gem) pour pastilles de démo.
+    def solid_png(width, height, red, green, blue)
+      require "zlib"
+
+      row = ([0] + ([red, green, blue] * width)).pack("C*")
+      raw = row * height
+      deflate = Zlib::Deflate.deflate(raw, Zlib::BEST_SPEED)
+      ihdr = [width, height, 8, 2, 0, 0, 0].pack("N2C5")
+
+      png_chunk = lambda do |type, data|
+        [data.bytesize].pack("N") + type + data + [Zlib.crc32(type + data)].pack("N")
+      end
+
+      "\x89PNG\r\n\x1a\n".b <<
+        png_chunk.call("IHDR", ihdr) <<
+        png_chunk.call("IDAT", deflate) <<
+        png_chunk.call("IEND", +"")
+    end
   end
 end

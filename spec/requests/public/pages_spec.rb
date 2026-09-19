@@ -410,7 +410,7 @@ RSpec.describe "Public::Pages", type: :request do
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include('href="/fr/produits"')
-      expect(response.body).not_to include("update_filters")
+      expect(response.body).to include(I18n.t("public.pages.produits.filters.active.clear_all"))
     end
 
     context "listing size pills" do

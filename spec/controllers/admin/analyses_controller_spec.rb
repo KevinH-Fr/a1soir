@@ -39,6 +39,8 @@ RSpec.describe Admin::AnalysesController, type: :controller do
     end
 
     it "nets Stripe CA by eshop remboursements" do
+      allow(GenerateQr).to receive(:call)
+
       commande = Commande.create!(
         client: client,
         profile: profile,
@@ -46,6 +48,7 @@ RSpec.describe Admin::AnalysesController, type: :controller do
         montant: 65,
         devis: false,
         type_locvente: "vente",
+        typeevent: Commande::EVENEMENTS_OPTIONS.first,
         eshop: true
       )
       StripePayment.create!(
@@ -63,7 +66,7 @@ RSpec.describe Admin::AnalysesController, type: :controller do
         custom_date: Date.current
       )
 
-      get :index, params: { debut: Date.current, fin: Date.current, vue: "synthese" }
+      get :index, params: { debut: Date.current.to_s, fin: Date.current.to_s, vue: "synthese" }
 
       expect(response).to have_http_status(:ok)
       expect(assigns(:total_stripe_eur)).to eq(45.to_d)

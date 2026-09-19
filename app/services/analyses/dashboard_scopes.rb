@@ -49,7 +49,7 @@ module Analyses
     def parse_datetime(value)
       return nil if value.blank?
 
-      DateTime.parse(value.to_s)
+      Time.zone.parse(value.to_s)
     end
 
     def product_attribute_filtered?

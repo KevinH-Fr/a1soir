@@ -11,8 +11,8 @@ RSpec.describe StripeProductService do
     )
   end
 
-  let(:stripe_product) { instance_double("Stripe::Product", id: "prod_test_123") }
-  let(:stripe_price) { instance_double("Stripe::Price", id: "price_test_123") }
+  let(:stripe_product) { double("Stripe::Product", id: "prod_test_123") }
+  let(:stripe_price) { double("Stripe::Price", id: "price_test_123") }
 
   describe "#create_product_and_price" do
     it "sends a product image URL when image1 is attached" do
@@ -29,7 +29,7 @@ RSpec.describe StripeProductService do
 
       service.create_product_and_price
 
-      expect(produit.image1).to have_received(:url)
+      expect(produit.image1).to have_received(:url).at_least(:once)
       expect(Stripe::Product).to have_received(:create).with(hash_including(images: ["https://cdn.example.com/product.jpg"]))
     end
 

@@ -30,6 +30,17 @@ RSpec.describe "hard_destroy_allowed?" do
   describe Commande do
     let(:produit) { Produit.create!(nom: "Produit-commande-guard-#{SecureRandom.hex(3)}") }
 
+    before do
+      calendar = instance_double(
+        GoogleCalendarService,
+        create_event_from_meeting: "evt-test",
+        update_event_from_meeting: true,
+        delete_event: true
+      )
+      allow(GoogleCalendarService).to receive(:new).and_return(calendar)
+      allow(MeetingMailer).to receive_message_chain(:reminder_email, :deliver_now)
+    end
+
     it "allows when no lignes ni données métier liées" do
       expect(commande.hard_destroy_allowed?).to be(true)
     end
@@ -71,13 +82,18 @@ RSpec.describe "hard_destroy_allowed?" do
     end
 
     it "blocks when meetings exist" do
-      Meeting.create!(commande: commande, nom: "RDV", datedebut: 1.day.from_now)
+      Meeting.create!(
+        commande: commande,
+        nom: "RDV",
+        datedebut: 1.day.from_now,
+        datefin: 1.day.from_now + 1.hour
+      )
       expect(commande.reload.hard_destroy_allowed?).to be(false)
     end
 
-    it "blocks when doc_editions exist" do
+    it "allows when only doc_editions exist (destroyed with the commande)" do
       DocEdition.create!(commande: commande, doc_type: "commande", edition_type: "pdf")
-      expect(commande.reload.hard_destroy_allowed?).to be(false)
+      expect(commande.reload.hard_destroy_allowed?).to be(true)
     end
   end
 
@@ -123,7 +139,7 @@ RSpec.describe "hard_destroy_allowed?" do
 
     it "blocks when a produit uses categorie_produit_id directly" do
       cat = CategorieProduit.create!(nom: "cat-direct-#{SecureRandom.hex(3)}")
-      Produit.create!(nom: "Produit cat direct", categorie_produit: cat)
+      Produit.create!(nom: "Produit cat direct", categorie_produit_id: cat.id)
       expect(cat.reload.hard_destroy_allowed?).to be(false)
     end
   end
@@ -163,6 +179,17 @@ RSpec.describe "hard_destroy_allowed?" do
       )
     end
 
+    before do
+      calendar = instance_double(
+        GoogleCalendarService,
+        create_event_from_meeting: "evt-test",
+        update_event_from_meeting: true,
+        delete_event: true
+      )
+      allow(GoogleCalendarService).to receive(:new).and_return(calendar)
+      allow(MeetingMailer).to receive_message_chain(:reminder_email, :deliver_now)
+    end
+
     it "allows when no commandes or meetings" do
       expect(client_row.hard_destroy_allowed?).to be(true)
     end
@@ -181,7 +208,12 @@ RSpec.describe "hard_destroy_allowed?" do
     end
 
     it "blocks when meetings exist" do
-      Meeting.create!(client: client_row, nom: "RDV", datedebut: 1.day.from_now)
+      Meeting.create!(
+        client: client_row,
+        nom: "RDV",
+        datedebut: 1.day.from_now,
+        datefin: 1.day.from_now + 1.hour
+      )
       expect(client_row.reload.hard_destroy_allowed?).to be(false)
     end
   end

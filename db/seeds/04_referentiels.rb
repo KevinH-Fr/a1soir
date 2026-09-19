@@ -2,10 +2,23 @@
 
 Seeds::Helpers.log("04", "Référentiels catalogue")
 
-%w[
-  Noir Blanc Rouge Bleu Bordeaux Champagne Vert Rose Gris Ivoire Marine Or Beige Lavande
-].each do |nom|
-  Seeds::Helpers.find_or_create_nom!(Couleur, nom)
+{
+  "Noir" => "#111111",
+  "Blanc" => "#f4f1ea",
+  "Rouge" => "#c1121f",
+  "Bleu" => "#1d4e89",
+  "Bordeaux" => "#6d071a",
+  "Champagne" => "#f3e0b8",
+  "Vert" => "#2d6a4f",
+  "Rose" => "#e8a0bf",
+  "Gris" => "#6c757d",
+  "Ivoire" => "#f7f1de",
+  "Marine" => "#001f3f",
+  "Or" => "#c9a227",
+  "Beige" => "#d8c3a5",
+  "Lavande" => "#b57edc"
+}.each do |nom, code|
+  Seeds::Helpers.find_or_create_nom!(Couleur, nom, couleur_code: code)
 end
 
 %w[XXS XS S M L XL XXL 34 36 38 40 42 44 46 48 Unique].each do |nom|

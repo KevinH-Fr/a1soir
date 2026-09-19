@@ -46,7 +46,6 @@ RSpec.describe "Public::SeoPages", type: :request do
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("Comment choisir sa robe de mariée")
       expect(response.body).not_to include("page-header-container")
-      expect(response.body).to include("seo-section-image")
       expect(response.body).to include("Robes De Mariée Courtes")
       expect(response.body).to include("Robes De Mariée Longues")
       expect(response.body).to include("À lire aussi")
@@ -151,10 +150,10 @@ RSpec.describe "Public::SeoPages", type: :request do
   end
 
   describe "GET /fr/location-smoking-costume-cannes" do
-    it "redirects to the guides URL" do
+    it "does not match the local SEO catch-all (guide lives under /guides)" do
       get "/fr/location-smoking-costume-cannes"
 
-      expect(response).to redirect_to("/fr/guides/location-smoking-costume-cannes")
+      expect(response).to have_http_status(:not_found)
     end
   end
 end

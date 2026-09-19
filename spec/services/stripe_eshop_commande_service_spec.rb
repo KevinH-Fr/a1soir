@@ -333,6 +333,8 @@ RSpec.describe StripeEshopCommandeService do
     end
 
     it "statut_disponibilite shows disponibles = -1 after both sales" do
+      described_class.new(payment_race, mock_session_race).attach_commande_if_possible!
+
       # 1 initial − 1 boutique − 1 eshop = -1
       result = produit_race.statut_disponibilite(Time.current, Time.current)
       expect(result[:disponibles]).to eq(-1)

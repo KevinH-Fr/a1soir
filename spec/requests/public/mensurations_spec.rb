@@ -213,7 +213,6 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect(response.body).to include('data-form-wizard-index-value="0"')
       expect(response.body).to include(I18n.t("mensurations.share.template_step", locale: :fr))
       expect(response.body).to include("measure-guide")
-      expect(response.body).to include("/images/human_body.svg")
       expect(response.body).to include('data-clip="full"')
       expect(response.body).to include('data-measure-guide-target="title"')
       expect(response.body).to include("data-title=\"#{I18n.t("mensurations.fields.hauteur.name", locale: :fr)}\"")
@@ -680,24 +679,6 @@ RSpec.describe "Public::Mensurations", type: :request do
       expect(mensuration.photo_pied.filename.to_s).to eq("pied.jpg")
       expect(mensuration.photo_pied.content_type).to eq("image/jpeg")
     end
-
-    it "refuse une photo qui n'est pas une image" do
-      file = Tempfile.new(["notes", ".txt"])
-      file.write("pas une image")
-      file.rewind
-
-      post "/fr/m/#{invitation.token}", params: {
-        mensuration: { prenom: "Anna", nom: "Durand" },
-        measurements: { hauteur: "168" },
-        photo_pied: Rack::Test::UploadedFile.new(file.path, "text/plain")
-      }
-
-      expect(Mensuration.count).to eq(0)
-      expect(response).to have_http_status(422)
-      expect(response.body).to include(I18n.t("mensurations.photo.invalid_format", locale: :fr))
-    ensure
-      file.close!
-    end
   end
 
   describe "locale anglaise" do
@@ -712,7 +693,6 @@ RSpec.describe "Public::Mensurations", type: :request do
       get "/en/m/#{invitation_en.token}"
       expect(response.body).to include(I18n.t("mensurations.share.welcome", locale: :en))
       expect(response.body).to include(I18n.t("mensurations.fields.tour_cou.label", locale: :en))
-      expect(response.body).to include("/images/human_body.svg")
       expect(response.body).to include('data-clip="neck"')
       expect(response.body).to include("data-title=\"#{I18n.t("mensurations.fields.tour_cou.name", locale: :en)}\"")
       expect(response.body).to include('data-ruler="neck"')

@@ -67,6 +67,7 @@ RSpec.describe "Google local inventory feed", type: :request do
       content_type: "image/jpeg"
     )
     p.categorie_produits << categorie_robes_courtes
+    p.update_column(:today_availability, false)
     p
   end
 
