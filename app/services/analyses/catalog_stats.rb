@@ -28,10 +28,15 @@ module Analyses
 
     def call
       by_produit = aggregate_by_produit
+      top_by_qty = top_products_from(by_produit, primary: :quantite, secondary: :ca_lignes)
       {
-        top_products: top_products_from(by_produit),
-        by_type: rollup_by_type(by_produit),
-        by_categorie: rollup_by_categorie(by_produit),
+        top_products: top_by_qty,
+        top_products_by_qty: top_by_qty,
+        top_products_by_ca: top_products_from(by_produit, primary: :ca_lignes, secondary: :quantite),
+        by_type: rollup_by_type(by_produit, primary: :quantite, secondary: :ca_lignes),
+        by_type_by_ca: rollup_by_type(by_produit, primary: :ca_lignes, secondary: :quantite),
+        by_categorie: rollup_by_categorie(by_produit, primary: :quantite, secondary: :ca_lignes),
+        by_categorie_by_ca: rollup_by_categorie(by_produit, primary: :ca_lignes, secondary: :quantite),
         categorie_attribution_notice: CATEGORIE_ATTRIBUTION_NOTICE
       }
     end
@@ -65,13 +70,13 @@ module Analyses
       end
     end
 
-    def top_products_from(by_produit)
+    def top_products_from(by_produit, primary:, secondary:)
       by_produit
-        .sort_by { |row| [-row[:quantite], -row[:ca_lignes]] }
+        .sort_by { |row| [-row[primary], -row[secondary]] }
         .first(@limit)
     end
 
-    def rollup_by_type(by_produit)
+    def rollup_by_type(by_produit, primary:, secondary:)
       buckets = Hash.new { |h, k| h[k] = { label: k, quantite: 0, ca_lignes: 0.to_d } }
 
       by_produit.each do |row|
@@ -81,22 +86,22 @@ module Analyses
         buckets[label][:ca_lignes] += row[:ca_lignes]
       end
 
-      buckets.values.sort_by { |b| [-b[:quantite], -b[:ca_lignes]] }.first(@chart_limit)
+      buckets.values.sort_by { |b| [-b[primary], -b[secondary]] }.first(@chart_limit)
     end
 
-    def rollup_by_categorie(by_produit)
+    def rollup_by_categorie(by_produit, primary:, secondary:)
       produit_ids = by_produit.map { |r| r[:produit_id] }
-      primary = primary_categories_for(produit_ids)
+      primary_cats = primary_categories_for(produit_ids)
 
       buckets = Hash.new { |h, k| h[k] = { label: k, quantite: 0, ca_lignes: 0.to_d } }
 
       by_produit.each do |row|
-        label = primary.fetch(row[:produit_id], SANS_CATEGORIE_LABEL)
+        label = primary_cats.fetch(row[:produit_id], SANS_CATEGORIE_LABEL)
         buckets[label][:quantite] += row[:quantite]
         buckets[label][:ca_lignes] += row[:ca_lignes]
       end
 
-      buckets.values.sort_by { |b| [-b[:quantite], -b[:ca_lignes]] }.first(@chart_limit)
+      buckets.values.sort_by { |b| [-b[primary], -b[secondary]] }.first(@chart_limit)
     end
 
     def primary_categories_for(produit_ids)

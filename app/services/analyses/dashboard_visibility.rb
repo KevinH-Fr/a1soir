@@ -55,9 +55,9 @@ module Analyses
       when :catalog_section
         @vue == "catalogue"
       when :catalog_by_type
-        !dimension_pinned?(:type_produit) && @vue.in?(%w[synthese catalogue])
+        !dimension_pinned?(:type_produit) && @vue == "catalogue"
       when :catalog_by_categorie
-        !dimension_pinned?(:categorie) && @vue == "catalogue"
+        !dimension_pinned?(:categorie) && @vue.in?(%w[synthese catalogue])
       when :profiles_section
         @vue.in?(%w[synthese equipe])
       when :profiles_comparison
@@ -71,10 +71,10 @@ module Analyses
 
     def pinned_filter_messages
       messages = []
-      if dimension_pinned?(:type_produit) && @vue.in?(%w[synthese catalogue])
+      if dimension_pinned?(:type_produit) && @vue == "catalogue"
         messages << { key: :filter_type_produit, label: "Type produit filtré — graphique par type masqué." }
       end
-      if dimension_pinned?(:categorie) && @vue == "catalogue"
+      if dimension_pinned?(:categorie) && @vue.in?(%w[synthese catalogue])
         messages << { key: :filter_categorie, label: "Catégorie filtrée — graphique par catégorie masqué." }
       end
       if dimension_pinned?(:locvente) && @vue == "catalogue"

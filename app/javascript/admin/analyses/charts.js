@@ -132,7 +132,7 @@ function applyAnimations(config) {
   }
 }
 
-function tooltipLabel(context, tooltipKind) {
+function tooltipLabel(context, tooltipKind, grain) {
   const datasetLabel = context.dataset?.label || ""
   const sliceLabel = context.label || ""
   const value = parsedValue(context)
@@ -141,6 +141,7 @@ function tooltipLabel(context, tooltipKind) {
   const isPctLabel = /\(%\)|part\s+e-shop|taux\s+d['’]?encaissement/i.test(datasetLabel)
   const isMoneyLabel = /€|CA|panier|boutique|e-shop|stripe|encaiss|transaction|non encaissé/i.test(datasetLabel) && !isPctLabel
   const isQtyLabel = /quantit|commandes|^articles$|art\.|articles\s*\//i.test(datasetLabel)
+  const periodShareLabel = grain === "hour" ? "% de l'heure" : "% du jour"
 
   if (tooltipKind === "locvente_qty" || tooltipKind === "locvente_money") {
     const pct = slicePercent(value, context.dataset?.data)
@@ -158,7 +159,7 @@ function tooltipLabel(context, tooltipKind) {
     }, 0)
     const pct = dayTotal > 0 ? Math.round((Number(value) / dayTotal) * 100) : 0
     const name = datasetLabel || "Canal"
-    return `${name}: ${formatEuro(value)} · ${pct} % du jour`
+    return `${name}: ${formatEuro(value)} · ${pct} ${periodShareLabel}`
   }
 
   if (isPctLabel) {
@@ -200,6 +201,7 @@ function tooltipLabel(context, tooltipKind) {
 function buildConfig(raw) {
   const config = JSON.parse(JSON.stringify(raw))
   const tooltipKind = config._tooltip || "mixed"
+  const grain = config._grain || "day"
   delete config._tooltip
   delete config._grain
 
@@ -214,7 +216,7 @@ function buildConfig(raw) {
     callbacks: {
       ...(existingTooltip.callbacks || {}),
       label(context) {
-        return tooltipLabel(context, tooltipKind)
+        return tooltipLabel(context, tooltipKind, grain)
       }
     }
   }
@@ -233,6 +235,26 @@ export function destroyAnalysesCharts(root = document) {
       canvas._analysesChart = null
     }
   })
+}
+
+export function updateAnalysesChartFromRaw(canvas, rawConfig) {
+  if (typeof Chart === "undefined" || !rawConfig) return
+
+  ensureChartDefaults()
+  const config = buildConfig(rawConfig)
+
+  if (canvas._analysesChart) {
+    const chart = canvas._analysesChart
+    chart.$analysesSettled = true
+    chart.data = config.data
+    chart.options = config.options
+    chart.config._tooltip = rawConfig._tooltip
+    chart.update("none")
+    return
+  }
+
+  canvas.dataset.analysesChart = JSON.stringify(rawConfig)
+  mountChartWhenVisible(canvas, config)
 }
 
 function createAnalysesChart(canvas, config) {

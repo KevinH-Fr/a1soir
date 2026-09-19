@@ -148,9 +148,84 @@ module AnalysesHelper
     end
   end
 
+  # En-tête avec bascule Quantité / CA (Stimulus analyses-segment-toggle).
+  def analyses_chart_heading_with_toggle(title, meta: nil, extra_class: nil)
+    tag.div(class: class_names("analyses-chart-heading analyses-chart-heading--with-toggle", extra_class)) do
+      left = tag.div(class: "analyses-chart-heading__text") do
+        parts = [tag.p(title, class: "analyses-chart-heading__title mb-0")]
+        if meta.present?
+          parts << tag.p(meta, class: "analyses-chart-heading__meta mb-0")
+        end
+        safe_join(parts)
+      end
+      safe_join([left, analyses_qty_ca_toggle])
+    end
+  end
+
+  def analyses_qty_ca_toggle
+    tag.div(class: "btn-group analyses-segment-toggle", role: "group", "aria-label": "Métrique") do
+      safe_join([
+        analyses_segment_button("Quantité", key: "qty", active: true),
+        analyses_segment_button("CA", key: "ca", active: false)
+      ])
+    end
+  end
+
+  def analyses_segment_button(label, key:, active:)
+    tag.button(
+      label,
+      type: "button",
+      class: class_names(
+        "btn btn-sm",
+        active ? "btn-dark active" : "btn-outline-secondary"
+      ),
+      data: {
+        analyses_segment_toggle_target: "button",
+        segment_key: key,
+        action: "analyses-segment-toggle#select"
+      },
+      aria: { pressed: active }
+    )
+  end
+
+  # Chart basculable qty/ca : deux configs JSON, un canvas (défaut = quantité).
+  def render_analyses_toggleable_chart(qty_key, ca_key, chart_id:, aria_label: nil, extra_class: nil, box_style: nil)
+    qty_config = analyses_chart_config(qty_key)
+    ca_config = analyses_chart_config(ca_key)
+    return "" if qty_config.blank? || ca_config.blank?
+
+    qty_center = Array(qty_config.delete(:_centerText))
+    ca_center = Array(ca_config.delete(:_centerText))
+
+    render(
+      partial: "admin/analyses/chart_canvas_toggleable",
+      locals: {
+        chart_id: chart_id,
+        qty_config: qty_config,
+        ca_config: ca_config,
+        qty_center: qty_center,
+        ca_center: ca_center,
+        aria_label: aria_label,
+        extra_class: extra_class,
+        box_style: box_style
+      }
+    )
+  end
+
+  # Même gutters que les rangées KPI (`g-2 g-sm-3`) pour aligner les bords.
+  ANALYSES_CONTENT_ROW = "row g-2 g-sm-3 align-items-stretch".freeze
+
   # Card légère autour d'un chart (sans titre de section global).
   def analyses_chart_card(extra_class: nil, &block)
     tag.div(class: class_names("analyses-chart-card", extra_class), &block)
+  end
+
+  # Chart pleine largeur dans le même rail horizontal que les KPI.
+  def analyses_full_bleed_chart(**html_options, &block)
+    col_class = class_names("col-12 min-w-0", html_options.delete(:col_class))
+    tag.div(class: ANALYSES_CONTENT_ROW) do
+      tag.div(class: col_class, **html_options, &block)
+    end
   end
 
   def analyses_info_alert(message, extra_class: nil)

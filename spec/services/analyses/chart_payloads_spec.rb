@@ -32,7 +32,9 @@ RSpec.describe Analyses::ChartPayloads do
           ca_by_day: { "06/03/2026" => 50 } }
       ],
       :@catalog_by_type => [{ label: "Robe", quantite: 4, ca_lignes: 120.to_d }],
-      :@catalog_by_categorie => [{ label: "cat", quantite: 2, ca_lignes: 50.to_d }]
+      :@catalog_by_type_by_ca => [{ label: "Robe", quantite: 4, ca_lignes: 120.to_d }],
+      :@catalog_by_categorie => [{ label: "cat", quantite: 2, ca_lignes: 50.to_d }],
+      :@catalog_by_categorie_by_ca => [{ label: "cat", quantite: 2, ca_lignes: 50.to_d }]
     }
     Object.new.tap do |obj|
       data.each do |key, value|
@@ -45,13 +47,15 @@ RSpec.describe Analyses::ChartPayloads do
 
   subject(:payloads) { described_class.new(helper_double) }
 
-  it "builds mixed timeline with aligned labels" do
+  it "builds mixed timeline with aligned labels as bars when ≤2 days" do
     config = payloads.build(:synthese_timeline_mixed)
     expect(config[:data][:labels]).to eq(%w[05/03/2026 06/03/2026])
     expect(config[:data][:datasets].size).to eq(3)
+    expect(config[:_grain]).to eq("day")
     ca, cmd, art = config[:data][:datasets]
-    expect(ca[:type]).to eq("line")
+    expect(ca[:type]).to eq("bar")
     expect(ca[:label]).to eq("CA (€)")
+    expect(ca[:maxBarThickness]).to eq(48)
     expect(cmd[:type]).to eq("bar")
     expect(cmd[:label]).to eq("Commandes")
     expect(cmd[:data]).to eq([2, 1])
@@ -61,53 +65,113 @@ RSpec.describe Analyses::ChartPayloads do
     expect(art[:yAxisID]).to eq("y1")
   end
 
-  it "builds CA + transactions dual timeline on the same euro axis" do
+  it "builds mixed timeline as line when the day range fills ≥3 labels" do
+    helper_double.instance_variable_set(:@datedebut, Date.new(2026, 3, 4))
+    helper_double.instance_variable_set(:@datefin, Date.new(2026, 3, 6))
+    helper_double.instance_variable_set(:@timeline_grain, :day)
+
+    config = payloads.build(:synthese_timeline_mixed)
+    expect(config[:data][:labels]).to eq(%w[04/03/2026 05/03/2026 06/03/2026])
+    ca = config[:data][:datasets].first
+    expect(ca[:type]).to eq("line")
+    expect(ca[:data]).to eq([0, 150, 80])
+    expect(ca[:tension]).to eq(0.4)
+  end
+
+  it "builds CA + transactions as bars when ≤2 day labels" do
     config = payloads.build(:ca_transactions_timeline)
-    expect(config[:type]).to eq("line")
+    expect(config[:type]).to eq("bar")
+    expect(config[:_grain]).to eq("day")
     expect(config[:data][:labels]).to eq(%w[05/03/2026 06/03/2026])
     ca, tx = config[:data][:datasets]
     expect(ca[:label]).to eq("CA encaissé (€)")
     expect(ca[:data]).to eq([150, 80])
+    expect(ca[:maxBarThickness]).to eq(48)
     expect(tx[:label]).to eq("Transactions (€)")
     expect(tx[:data]).to eq([200, 0])
     expect(config[:options][:scales][:y1]).to be_nil
   end
 
-  it "builds boutique / e-shop channels timeline" do
+  it "builds boutique / e-shop channels as bars when ≤2 day labels" do
     config = payloads.build(:ca_channels_timeline)
-    expect(config[:type]).to eq("line")
+    expect(config[:type]).to eq("bar")
     expect(config[:_tooltip]).to eq("channels_money")
+    expect(config[:_grain]).to eq("day")
     boutique, eshop = config[:data][:datasets]
     expect(boutique[:label]).to eq("Boutique (€)")
     expect(boutique[:data]).to eq([100, 50])
     expect(eshop[:label]).to eq("E-shop (€)")
     expect(eshop[:data]).to eq([50, 30])
-    expect(eshop[:borderDash]).to eq([5, 4])
     expect(config[:options][:scales][:y][:stacked]).to be_nil
   end
 
-  it "shows points on boutique / e-shop when only one day has CA" do
+  it "uses bars for boutique / e-shop when only one day has CA" do
     helper_double.instance_variable_set(:@groupedByDateCaBoutique, { "19/09/2026" => 50 })
     helper_double.instance_variable_set(:@groupedByDateCaEshop, {})
 
     config = payloads.build(:ca_channels_timeline)
     boutique, eshop = config[:data][:datasets]
 
+    expect(config[:type]).to eq("bar")
     expect(config[:data][:labels]).to eq(["19/09/2026"])
     expect(boutique[:data]).to eq([50])
     expect(eshop[:data]).to eq([0])
-    expect(boutique[:pointRadius]).to eq(4)
+    expect(boutique[:maxBarThickness]).to eq(48)
+  end
+
+  it "builds hourly channels timeline as a line with tension 0" do
+    helper_double.instance_variable_set(:@timeline_grain, :hour)
+    helper_double.instance_variable_set(:@datedebut, Date.new(2026, 9, 19))
+    helper_double.instance_variable_set(:@datefin, Date.new(2026, 9, 19))
+    helper_double.instance_variable_set(:@groupedByDateCaBoutique, { "10h" => 40, "14h" => 60 })
+    helper_double.instance_variable_set(:@groupedByDateCaEshop, { "11h" => 20 })
+
+    allow(Time).to receive(:zone).and_return(ActiveSupport::TimeZone["Europe/Paris"])
+    travel_to Time.zone.local(2026, 9, 19, 16, 0, 0) do
+      config = payloads.build(:ca_channels_timeline)
+      boutique, eshop = config[:data][:datasets]
+
+      expect(config[:type]).to eq("line")
+      expect(config[:_grain]).to eq("hour")
+      expect(config[:data][:labels].first).to eq("8h")
+      expect(config[:data][:labels]).to include("10h", "11h", "14h")
+      expect(config[:data][:labels].last).to eq("16h")
+      expect(boutique[:tension]).to eq(0)
+      expect(boutique[:pointRadius]).to eq(3)
+      expect(boutique[:data][config[:data][:labels].index("10h")]).to eq(40)
+      expect(eshop[:data][config[:data][:labels].index("11h")]).to eq(20)
+      expect(config[:options][:scales][:x][:ticks][:maxTicksLimit]).to eq(16)
+    end
   end
 
   it "builds CA ratios timeline with panier moyen and articles per commande" do
     config = payloads.build(:ca_ratios_timeline)
-    expect(config[:type]).to eq("line")
+    expect(config[:type]).to eq("bar")
     expect(config[:data][:labels]).to eq(%w[05/03/2026 06/03/2026])
     panier, art = config[:data][:datasets]
     expect(panier[:label]).to eq("Panier moyen (€)")
     expect(panier[:data]).to eq([75, 80]) # 150/2, 80/1
     expect(art[:label]).to eq("Art. / commande")
     expect(art[:data]).to eq([1.5, 0.0]) # 3/2, 0 articles le 06
+  end
+
+  it "keeps nil panier buckets when there are no commandes (spanGaps)" do
+    helper_double.instance_variable_set(:@timeline_grain, :hour)
+    helper_double.instance_variable_set(:@datedebut, Date.new(2026, 9, 19))
+    helper_double.instance_variable_set(:@datefin, Date.new(2026, 9, 19))
+    helper_double.instance_variable_set(:@groupedByDateCa, { "10h" => 100 })
+    helper_double.instance_variable_set(:@groupedByDate, { "10h" => 2 })
+    helper_double.instance_variable_set(:@groupedByDateArticles, { "10h" => 4 })
+
+    travel_to Time.zone.local(2026, 9, 19, 12, 0, 0) do
+      config = payloads.build(:ca_ratios_timeline)
+      panier = config[:data][:datasets].first
+      idx10 = config[:data][:labels].index("10h")
+      idx11 = config[:data][:labels].index("11h")
+      expect(panier[:data][idx10]).to eq(50)
+      expect(panier[:data][idx11]).to be_nil
+      expect(panier[:spanGaps]).to be(true)
+    end
   end
 
   it "builds payment modes doughnut with center text metadata" do
@@ -166,9 +230,10 @@ RSpec.describe Analyses::ChartPayloads do
     expect(config[:_centerText].last).to eq("CA équipe")
   end
 
-  it "builds profiles CA timeline line chart" do
+  it "builds profiles CA timeline as bars when ≤2 day labels" do
     config = payloads.build(:profiles_ca_timeline)
-    expect(config[:type]).to eq("line")
+    expect(config[:type]).to eq("bar")
+    expect(config[:_grain]).to eq("day")
     expect(config[:data][:labels]).to eq(%w[05/03/2026 06/03/2026])
     expect(config[:data][:datasets].map { |d| d[:label] }).to eq(%w[Alice Bob])
     expect(config[:data][:datasets].first[:data]).to eq([80, 20])
@@ -176,17 +241,28 @@ RSpec.describe Analyses::ChartPayloads do
     expect(config[:data][:datasets].second[:spanGaps]).to be(true)
   end
 
-  it "builds catalog dual-axis bars with quantite and CA" do
+  it "builds catalog single-axis quantity bars" do
     config = payloads.build(:catalog_types_bars)
     expect(config[:type]).to eq("bar")
     expect(config[:options][:indexAxis]).to eq("y")
-    qty, ca = config[:data][:datasets]
+    expect(config[:data][:datasets].size).to eq(1)
+    qty = config[:data][:datasets].first
     expect(qty[:label]).to eq("Quantité")
     expect(qty[:data]).to eq([4])
-    expect(qty[:xAxisID]).to eq("x")
+    expect(config[:_tooltip]).to eq("integer")
+  end
+
+  it "builds catalog single-axis CA bars from CA-ranked rows" do
+    helper_double.instance_variable_set(
+      :@catalog_by_type_by_ca,
+      [{ label: "Costume", quantite: 1, ca_lignes: 200.to_d }]
+    )
+    config = payloads.build(:catalog_types_bars_ca)
+    expect(config[:data][:labels]).to eq(["Costume"])
+    ca = config[:data][:datasets].first
     expect(ca[:label]).to eq("CA (€)")
-    expect(ca[:data]).to eq([120])
-    expect(ca[:xAxisID]).to eq("x1")
+    expect(ca[:data]).to eq([200])
+    expect(config[:_tooltip]).to eq("money")
   end
 
   it "builds loc/vente quantity doughnut" do

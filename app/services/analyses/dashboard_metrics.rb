@@ -9,6 +9,7 @@ module Analyses
 
     def assign_tab!(vue, filter_params:, stripe_totals:)
       vue = DashboardVisibility.normalize_vue(vue)
+      ivar_set(:timeline_grain, TimelineBuckets.grain(datedebut, datefin))
 
       case vue
       when "synthese"
@@ -32,6 +33,10 @@ module Analyses
     end
 
     private
+
+    def timeline_grain
+      ivar(:timeline_grain) || :day
+    end
 
     def datedebut
       ivar(:datedebut)
@@ -96,10 +101,13 @@ module Analyses
       ivar_set(:nbRendu, commandes_filtres.rendu.count)
       ivar_set(:nbDevisPeriode, devis_dans_periode(datedebut, datefin).count)
 
-      grouped_by_date = commandes_filtres.group("DATE(created_at)").order("DATE(commandes.created_at)").count("created_at")
-      ivar_set(:groupedByDate, grouped_by_date.transform_keys do |date|
-        I18n.l(Date.parse(date.to_s), format: "%d/%m/%Y")
-      end)
+      if timeline_grain == :hour
+        rows = commandes_filtres.pluck(:created_at).map { |at| [at, 1] }
+        ivar_set(:groupedByDate, TimelineBuckets.group_times(rows, grain: :hour).transform_values(&:to_i))
+      else
+        grouped_by_date = commandes_filtres.group("DATE(created_at)").order("DATE(commandes.created_at)").count("created_at")
+        ivar_set(:groupedByDate, grouped_by_date.transform_keys { |date| TimelineBuckets.normalize_day_key(date) })
+      end
     end
 
     def assign_article_metrics
@@ -110,9 +118,13 @@ module Analyses
       ivar_set(:caLocArticles, line_metrics.loc_ca_lignes)
       ivar_set(:caVenteArticles, line_metrics.vente_ca_lignes)
 
-      ivar_set(:groupedByDateArticles, line_metrics.quantites_by_day.transform_keys do |date|
-        I18n.l(Date.parse(date.to_s), format: "%d/%m/%Y")
-      end)
+      if timeline_grain == :hour
+        ivar_set(:groupedByDateArticles, line_metrics.quantites_for_timeline(:hour))
+      else
+        ivar_set(:groupedByDateArticles, line_metrics.quantites_by_day.transform_keys { |date|
+          TimelineBuckets.normalize_day_key(date)
+        })
+      end
     end
 
     def assign_transaction_metrics(stripe_totals, datedebut, datefin)
@@ -126,15 +138,27 @@ module Analyses
       ivar_set(:totalTransactions, total_loc + total_vente)
 
       articles_timeline = articles_filtres.where(commandes: { eshop: [false, nil] })
-      grouped_articles_jour = articles_timeline.group("DATE(articles.created_at)").order("DATE(articles.created_at)").sum("total")
-      ivar_set(
-        :groupedByDateTransactions,
-        merge_grouped_by_day(
-          grouped_articles_jour,
-          stripe_totals.grouped_by_day_eur,
-          eshop_remboursements_by_day_neg(datedebut, datefin)
+      if timeline_grain == :hour
+        article_rows = articles_timeline.pluck(:created_at, :total)
+        ivar_set(
+          :groupedByDateTransactions,
+          merge_timeline_hashes(
+            TimelineBuckets.group_times(article_rows, grain: :hour),
+            stripe_totals.grouped_for_timeline(:hour),
+            eshop_remboursements_for_timeline_neg(datedebut, datefin)
+          )
         )
-      )
+      else
+        grouped_articles_jour = articles_timeline.group("DATE(articles.created_at)").order("DATE(articles.created_at)").sum("total")
+        ivar_set(
+          :groupedByDateTransactions,
+          merge_timeline_hashes(
+            grouped_articles_jour,
+            stripe_totals.grouped_by_day_eur,
+            eshop_remboursements_by_day_neg(datedebut, datefin)
+          )
+        )
+      end
     end
 
     def assign_ca_metrics(stripe_totals, datedebut, datefin)
@@ -157,21 +181,23 @@ module Analyses
       ivar_set(:totalPrixCa, boutique + total_stripe_eur)
       ivar_set(:totalCa, paiements_filtres.sum(:montant).to_d + total_stripe_eur)
 
-      grouped_by_date_ca_paiements = paiements_filtres.only_prix
-                                                    .group(:custom_date)
-                                                    .order(:custom_date)
-                                                    .sum(:montant)
-      remb_neg = eshop_remboursements_by_day_neg(datedebut, datefin)
-      ivar_set(:groupedByDateCaBoutique, merge_grouped_by_day(grouped_by_date_ca_paiements))
-      ivar_set(:groupedByDateCaEshop, merge_grouped_by_day(stripe_totals.grouped_by_day_eur, remb_neg))
-      ivar_set(
-        :groupedByDateCa,
-        merge_grouped_by_day(
-          grouped_by_date_ca_paiements,
-          stripe_totals.grouped_by_day_eur,
-          remb_neg
+      if timeline_grain == :hour
+        # Jour métier = custom_date (déjà filtré) ; heure ops = created_at.
+        boutique = TimelineBuckets.group_times(
+          paiements_filtres.only_prix.pluck(:created_at, :montant),
+          grain: :hour
         )
-      )
+        remb_neg = eshop_remboursements_for_timeline_neg(datedebut, datefin)
+        stripe = stripe_totals.grouped_for_timeline(:hour)
+      else
+        boutique = paiements_filtres.only_prix.group(:custom_date).order(:custom_date).sum(:montant)
+        remb_neg = eshop_remboursements_by_day_neg(datedebut, datefin)
+        stripe = stripe_totals.grouped_by_day_eur
+      end
+
+      ivar_set(:groupedByDateCaBoutique, merge_timeline_hashes(boutique))
+      ivar_set(:groupedByDateCaEshop, merge_timeline_hashes(stripe, remb_neg))
+      ivar_set(:groupedByDateCa, merge_timeline_hashes(boutique, stripe, remb_neg))
     end
 
     def assign_ca_metrics_from_lines(stripe_totals, datedebut, datefin)
@@ -186,18 +212,20 @@ module Analyses
       ivar_set(:totalPrixCa, boutique_lines + total_stripe_eur)
       ivar_set(:totalCa, boutique_lines + total_stripe_eur)
 
-      grouped_articles_jour = articles_filtres.where(commandes: { eshop: [false, nil] }).group("DATE(articles.created_at)").order("DATE(articles.created_at)").sum("total")
-      remb_neg = eshop_remboursements_by_day_neg(datedebut, datefin)
-      ivar_set(:groupedByDateCaBoutique, merge_grouped_by_day(grouped_articles_jour))
-      ivar_set(:groupedByDateCaEshop, merge_grouped_by_day(stripe_totals.grouped_by_day_eur, remb_neg))
-      ivar_set(
-        :groupedByDateCa,
-        merge_grouped_by_day(
-          grouped_articles_jour,
-          stripe_totals.grouped_by_day_eur,
-          remb_neg
-        )
-      )
+      boutique_scope = articles_filtres.where(commandes: { eshop: [false, nil] })
+      if timeline_grain == :hour
+        boutique = TimelineBuckets.group_times(boutique_scope.pluck(:created_at, :total), grain: :hour)
+        remb_neg = eshop_remboursements_for_timeline_neg(datedebut, datefin)
+        stripe = stripe_totals.grouped_for_timeline(:hour)
+      else
+        boutique = boutique_scope.group("DATE(articles.created_at)").order("DATE(articles.created_at)").sum("total")
+        remb_neg = eshop_remboursements_by_day_neg(datedebut, datefin)
+        stripe = stripe_totals.grouped_by_day_eur
+      end
+
+      ivar_set(:groupedByDateCaBoutique, merge_timeline_hashes(boutique))
+      ivar_set(:groupedByDateCaEshop, merge_timeline_hashes(stripe, remb_neg))
+      ivar_set(:groupedByDateCa, merge_timeline_hashes(boutique, stripe, remb_neg))
     end
 
     def assign_profile_stats(datedebut, datefin, stripe_totals, filter_params)
@@ -293,24 +321,6 @@ module Analyses
     end
 
     def profile_ca_by_day(profile_id, commandes_ids, datedebut, datefin)
-      boutique =
-        if analyses_ca_mode == :lignes
-          return {} if commandes_ids.blank?
-
-          articles_filtres
-            .where(commande_id: commandes_ids)
-            .joins(:commande)
-            .where(commandes: { eshop: [false, nil] })
-            .group("DATE(articles.created_at)")
-            .sum(:prix)
-        else
-          paiements_filtres.only_prix
-            .joins(:commande)
-            .where(commandes: { profile_id: profile_id })
-            .group(:custom_date)
-            .sum(:montant)
-        end
-
       stripe_commande_scope =
         if analyses_ca_mode == :lignes
           commandes_ids
@@ -318,23 +328,83 @@ module Analyses
           Commande.where(profile_id: profile_id).select(:id)
         end
 
-      stripe = stripe_payments_paid_filtres
+      if timeline_grain == :hour
+        boutique =
+          if analyses_ca_mode == :lignes
+            return {} if commandes_ids.blank?
+
+            TimelineBuckets.group_times(
+              articles_filtres
+                .where(commande_id: commandes_ids)
+                .joins(:commande)
+                .where(commandes: { eshop: [false, nil] })
+                .pluck(:created_at, :prix),
+              grain: :hour
+            )
+          else
+            TimelineBuckets.group_times(
+              paiements_filtres.only_prix
+                .joins(:commande)
+                .where(commandes: { profile_id: profile_id })
+                .pluck("paiement_recus.created_at", "paiement_recus.montant"),
+              grain: :hour
+            )
+          end
+
+        stripe = TimelineBuckets.group_times(
+          stripe_payments_paid_filtres
+            .where(commande_id: stripe_commande_scope)
+            .pluck(:created_at, :amount)
+            .map { |at, cents| [at, cents.to_d / 100] },
+          grain: :hour
+        )
+
+        remb = TimelineBuckets.group_times(
+          eshop_remboursements_scope(datedebut, datefin, product_dimension_filtered: false)
+            .where(commande_id: stripe_commande_scope)
+            .pluck(:created_at, :montant)
+            .map { |at, montant| [at, -montant.to_d] },
+          grain: :hour
+        )
+
+        merge_timeline_hashes(boutique, stripe, remb)
+      else
+        boutique =
+          if analyses_ca_mode == :lignes
+            return {} if commandes_ids.blank?
+
+            articles_filtres
+              .where(commande_id: commandes_ids)
+              .joins(:commande)
+              .where(commandes: { eshop: [false, nil] })
+              .group("DATE(articles.created_at)")
+              .sum(:prix)
+          else
+            paiements_filtres.only_prix
+              .joins(:commande)
+              .where(commandes: { profile_id: profile_id })
+              .group(:custom_date)
+              .sum(:montant)
+          end
+
+        stripe = stripe_payments_paid_filtres
+                   .where(commande_id: stripe_commande_scope)
+                   .group("DATE(stripe_payments.created_at)")
+                   .sum(:amount)
+                   .transform_values { |cents| cents.to_d / 100 }
+
+        remb = eshop_remboursements_scope(
+                 datedebut,
+                 datefin,
+                 product_dimension_filtered: false
+               )
                  .where(commande_id: stripe_commande_scope)
-                 .group("DATE(stripe_payments.created_at)")
-                 .sum(:amount)
-                 .transform_values { |cents| cents.to_d / 100 }
+                 .group("COALESCE(avoir_rembs.custom_date, DATE(avoir_rembs.created_at))")
+                 .sum(:montant)
+                 .transform_values { |montant| -montant.to_d }
 
-      remb = eshop_remboursements_scope(
-               datedebut,
-               datefin,
-               product_dimension_filtered: false
-             )
-               .where(commande_id: stripe_commande_scope)
-               .group("COALESCE(avoir_rembs.custom_date, DATE(avoir_rembs.created_at))")
-               .sum(:montant)
-               .transform_values { |montant| -montant.to_d }
-
-      merge_grouped_by_day(boutique, stripe, remb)
+        merge_timeline_hashes(boutique, stripe, remb)
+      end
     end
 
     def ligne_ca_for_commandes(commandes_ids)
@@ -349,8 +419,12 @@ module Analyses
         stripe_items_scope: stripe_payment_items_filtres
       )
       ivar_set(:catalog_top_products, stats[:top_products])
+      ivar_set(:catalog_top_products_by_qty, stats[:top_products_by_qty])
+      ivar_set(:catalog_top_products_by_ca, stats[:top_products_by_ca])
       ivar_set(:catalog_by_type, stats[:by_type])
+      ivar_set(:catalog_by_type_by_ca, stats[:by_type_by_ca])
       ivar_set(:catalog_by_categorie, stats[:by_categorie])
+      ivar_set(:catalog_by_categorie_by_ca, stats[:by_categorie_by_ca])
       ivar_set(:catalog_categorie_notice, stats[:categorie_attribution_notice])
     end
 
@@ -389,6 +463,23 @@ module Analyses
       value
     end
 
+    # Grain heure : bucketter created_at (ops) ; le scope date reste custom_date COALESCE.
+    def eshop_remboursements_for_timeline_neg(datedebut, datefin)
+      memo = ivar(:eshop_remboursements_for_timeline_neg)
+      return memo if memo
+
+      rows = eshop_remboursements_scope(
+        datedebut,
+        datefin,
+        product_dimension_filtered: product_dimension_filtered,
+        stripe_scope: stripe_payments_paid_filtres
+      ).pluck(:created_at, :montant).map { |at, montant| [at, -montant.to_d] }
+
+      value = TimelineBuckets.group_times(rows, grain: timeline_grain)
+      ivar_set(:eshop_remboursements_for_timeline_neg, value)
+      value
+    end
+
     def devis_dans_periode(datedebut, datefin)
       scope = Commande.est_devis
       if datedebut.present? && datefin.present?
@@ -397,17 +488,28 @@ module Analyses
       scope
     end
 
-    def merge_grouped_by_day(*hashes)
+    # Fusion grain-aware : clés jour "%d/%m/%Y" ou heure "10h".
+    def merge_timeline_hashes(*hashes)
+      grain = timeline_grain
       merged = Hash.new(0.to_d)
       hashes.each do |h|
         next if h.blank?
 
-        h.each do |date_key, amount|
-          label = I18n.l(Date.parse(date_key.to_s), format: "%d/%m/%Y")
+        h.each do |key, amount|
+          label = if grain == :hour
+                    key.to_s
+                  else
+                    TimelineBuckets.normalize_day_key(key)
+                  end
           merged[label] += amount.to_d
         end
       end
-      merged.sort_by { |k, _| Date.strptime(k, "%d/%m/%Y") }.to_h
+      TimelineBuckets.sort_hash(merged, grain: grain)
+    end
+
+    # Alias conservé pour d’éventuels callers / specs.
+    def merge_grouped_by_day(*hashes)
+      merge_timeline_hashes(*hashes)
     end
   end
 end

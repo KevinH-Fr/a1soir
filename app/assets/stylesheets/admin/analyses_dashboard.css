@@ -666,6 +666,29 @@
   margin-bottom: 0.65rem;
 }
 
+.analyses-chart-heading--with-toggle {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.analyses-chart-heading--with-toggle .analyses-chart-heading__text {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.analyses-segment-toggle {
+  flex: 0 0 auto;
+}
+
+.analyses-segment-toggle .btn {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  line-height: 1.2;
+}
+
 .analyses-chart-heading__title {
   font-size: 0.875rem;
   font-weight: 600;
@@ -736,11 +759,22 @@
   flex-direction: column;
   gap: 0.85rem;
   min-width: 0;
+  width: 100%;
 }
 
 .analyses-chart-stack > * {
   min-width: 0;
-  max-width: 100%;
+}
+
+/* Même rail horizontal que les KPI : les .row doivent pouvoir « déborder »
+   via les gutters négatifs Bootstrap (sinon les cards sont rentrées vs un chart full-bleed). */
+.analyses-chart-stack > .row {
+  --analyses-stack-gutter: var(--bs-gutter-x, 1rem);
+  width: calc(100% + var(--analyses-stack-gutter));
+  max-width: none;
+  margin-left: calc(var(--analyses-stack-gutter) * -0.5);
+  margin-right: calc(var(--analyses-stack-gutter) * -0.5);
+  flex-shrink: 0;
 }
 
 /* Doughnuts : bornés en largeur ; aspect-ratio réserve la place avant le montage
@@ -754,6 +788,12 @@
   width: 100%;
   max-width: 100%;
   margin-inline: auto;
+}
+
+.analyses-locvente-single {
+  width: 100%;
+  min-width: 0;
+  min-height: 12rem;
 }
 
 .analyses-locvente-twins {
@@ -1071,6 +1111,8 @@
   max-height: min(24rem, 55vh);
   overflow-y: auto;
   overflow-x: auto;
+  /* Évite le décalage horizontal quand la scrollbar apparaît / disparaît au bascule qté↔CA. */
+  scrollbar-gutter: stable;
 }
 
 .analyses-catalog-top__table {
@@ -1078,6 +1120,9 @@
   --bs-table-hover-bg: rgba(var(--analyses-tone-rgb, 184, 134, 11), 0.06);
   margin-bottom: 0;
   font-size: 0.875rem;
+  /* Largeurs stables entre les deux classements (noms / montants différents). */
+  table-layout: fixed;
+  width: 100%;
 }
 
 .analyses-catalog-top__table > :not(caption) > * > * {
@@ -1105,7 +1150,7 @@
 }
 
 .analyses-catalog-top__rank {
-  width: 2rem;
+  width: 2.5rem;
   text-align: center;
 }
 
@@ -1116,9 +1161,31 @@
   color: var(--bs-secondary-color);
 }
 
+.analyses-catalog-top__col-product {
+  width: auto;
+}
+
+.analyses-catalog-top__col-qty {
+  width: 4.5rem;
+}
+
+.analyses-catalog-top__col-ca {
+  width: 6.5rem;
+}
+
 .analyses-catalog-top__col-split {
-  min-width: 10rem;
   width: 22%;
+  min-width: 0;
+}
+
+@media (max-width: 767.98px) {
+  .analyses-catalog-top__col-qty {
+    width: 3.75rem;
+  }
+
+  .analyses-catalog-top__col-ca {
+    width: 5.5rem;
+  }
 }
 
 .analyses-catalog-top__split-label {
@@ -1146,7 +1213,7 @@
 .analyses-catalog-top__stack-track {
   display: flex;
   width: 100%;
-  min-width: 7rem;
+  min-width: 0;
   height: 1.35rem;
   border-radius: 0.3rem;
   overflow: hidden;

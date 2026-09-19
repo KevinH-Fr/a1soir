@@ -4,9 +4,9 @@
   <% show_tx_doughnut = analyses_visibility_show?(:transactions_section) %>
 
   <div class="analyses-chart-stack">
-    <div class="row g-3 align-items-stretch">
+    <div class="<%= AnalysesHelper::ANALYSES_CONTENT_ROW %>">
       <% if show_payment %>
-        <div class="col-lg-5">
+        <div class="col-lg-5 min-w-0">
           <%= analyses_chart_card(extra_class: "analyses-chart-card--flush-center") do %>
             <%= analyses_chart_heading("Modes de paiement") %>
             <div class="d-flex justify-content-center flex-grow-1 align-items-center">
@@ -14,7 +14,7 @@
             </div>
           <% end %>
         </div>
-        <div class="col-lg-7">
+        <div class="col-lg-7 min-w-0">
           <% if show_channels %>
             <%= analyses_chart_card do %>
               <%= analyses_chart_heading("Boutique & e-shop (CA €)", meta: analyses_ca_channels_meta) %>
@@ -38,7 +38,7 @@
           <% end %>
         </div>
       <% elsif show_channels %>
-        <div class="col-12">
+        <div class="col-12 min-w-0">
           <%= analyses_chart_card do %>
             <%= analyses_chart_heading("Boutique & e-shop (CA €)", meta: analyses_ca_channels_meta) %>
             <%= render_analyses_chart(
@@ -50,7 +50,7 @@
           <% end %>
         </div>
       <% else %>
-        <div class="col-12">
+        <div class="col-12 min-w-0">
           <%= analyses_chart_card do %>
             <%= analyses_chart_heading("CA & transactions", meta: analyses_ca_transactions_meta) %>
             <%= render_analyses_chart(
@@ -65,30 +65,27 @@
     </div>
 
     <% if show_channels %>
-      <%= analyses_chart_card do %>
-        <%= analyses_chart_heading("CA & transactions", meta: analyses_ca_transactions_meta) %>
-        <%= render_analyses_chart(
-              :ca_transactions_timeline,
-              chart_id: "analyses-chart-ca-transactions",
-              extra_class: "analyses-chart--fill analyses-chart--timeline",
-              aria_label: "Évolution du CA encaissé et des transactions par jour"
-            ) %>
+      <%= analyses_full_bleed_chart do %>
+        <%= analyses_chart_card do %>
+          <%= analyses_chart_heading("CA & transactions", meta: analyses_ca_transactions_meta) %>
+          <%= render_analyses_chart(
+                :ca_transactions_timeline,
+                chart_id: "analyses-chart-ca-transactions",
+                extra_class: "analyses-chart--fill analyses-chart--timeline",
+                aria_label: "Évolution du CA encaissé et des transactions par jour"
+              ) %>
+        <% end %>
       <% end %>
     <% end %>
 
-    <div class="row g-3 align-items-stretch">
+    <div class="<%= AnalysesHelper::ANALYSES_CONTENT_ROW %>">
       <% if show_tx_doughnut %>
         <div class="col-12 col-lg-6 min-w-0">
           <%= analyses_chart_card(extra_class: "analyses-chart-card--flush-center") do %>
-            <%= analyses_chart_heading("Location / vente", meta: "Quantités articles · Transactions (€)") %>
-            <div class="flex-grow-1 d-flex align-items-center w-100">
-              <%= render "admin/analyses/locvente_twin_doughnuts",
-                    euro_key: :transactions_euro_doughnut,
-                    euro_title: "Transactions (€)",
-                    euro_aria: "Répartition location et vente des transactions",
-                    qty_chart_id: "analyses-chart-locvente-qty-ca",
-                    euro_chart_id: "analyses-chart-locvente-euro-ca" %>
-            </div>
+            <%= render "admin/analyses/locvente_metric_doughnut",
+                  euro_key: :transactions_euro_doughnut,
+                  euro_aria: "Répartition location et vente des transactions",
+                  chart_id: "analyses-chart-locvente-ca" %>
           <% end %>
         </div>
         <div class="col-12 col-lg-6 min-w-0">
@@ -103,7 +100,7 @@
           <% end %>
         </div>
       <% else %>
-        <div class="col-12">
+        <div class="col-12 min-w-0">
           <%= analyses_chart_card do %>
             <%= analyses_chart_heading("Panier moyen & articles / commande", meta: "Jours sans commande exclus") %>
             <%= render_analyses_chart(

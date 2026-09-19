@@ -56,8 +56,16 @@ module Seeds
       "Devis A" => 12
     }.freeze
 
-    def demo_timestamp(days_ago)
-      days_ago.days.ago.in_time_zone.change(hour: 11, min: 30, sec: 0)
+    # Heure déterministe 10h–18h dérivée du nom (pas Hash Ruby randomisé).
+    # Plusieurs commandes le même days_ago → heures différentes pour juger le grain horaire.
+    def demo_timestamp(days_ago, name: nil)
+      base = days_ago.days.ago.in_time_zone
+      hour = if name.present?
+               10 + (name.to_s.bytes.sum % 9) # 10..18
+             else
+               11
+             end
+      base.change(hour: hour, min: 30, sec: 0)
     end
 
     def touch_commande_timestamps!(commande, at:)
@@ -102,13 +110,13 @@ module Seeds
         commande = Commande.find_by(nom: nom)
         next unless commande
 
-        touch_commande_timestamps!(commande, at: demo_timestamp(days_ago))
+        touch_commande_timestamps!(commande, at: demo_timestamp(days_ago, name: nom))
       end
-      log("align", "Commandes démo étalées sur les #{DEMO_COMMANDE_OFFSETS.values.max} derniers jours")
+      log("align", "Commandes démo étalées sur les #{DEMO_COMMANDE_OFFSETS.values.max} derniers jours (heures 10h–18h)")
     end
 
     def upsert_demo_commande!(nom:, client:, profile:, days_ago:, devis: false, eshop: false, type_locvente: "vente", statutarticles: "retiré", articles: [], paiements: [], stripe: nil)
-      at = demo_timestamp(days_ago)
+      at = demo_timestamp(days_ago, name: nom)
       commande = Commande.find_or_initialize_by(nom: nom)
       commande.assign_attributes(
         client: client,

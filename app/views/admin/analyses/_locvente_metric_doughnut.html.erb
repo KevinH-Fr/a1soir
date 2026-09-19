@@ -1,0 +1,16 @@
+<%# Doughnut Location / vente unique + bascule Quantité / CA (Stimulus).
+    locals: euro_key, euro_aria:, chart_id: %>
+<% euro_aria = local_assigns.fetch(:euro_aria, "Répartition location et vente en euros") %>
+<% chart_id = local_assigns.fetch(:chart_id, "analyses-chart-locvente-toggle") %>
+<div data-controller="analyses-segment-toggle" data-analyses-segment-toggle-active-value="qty">
+  <%= analyses_chart_heading_with_toggle("Location / vente", meta: "Parts location et vente") %>
+  <div class="analyses-locvente-single d-flex justify-content-center align-items-center flex-grow-1">
+    <%= render_analyses_toggleable_chart(
+          :locvente_qty_doughnut,
+          euro_key,
+          chart_id: chart_id,
+          extra_class: "analyses-chart--compact analyses-chart--twin",
+          aria_label: euro_aria
+        ) %>
+  </div>
+</div>

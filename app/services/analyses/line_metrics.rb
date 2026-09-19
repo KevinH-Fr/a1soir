@@ -65,41 +65,83 @@ module Analyses
     end
 
     def quantites_by_day
-      article_days = boutique_articles
-                     .group(Arel.sql("DATE(articles.created_at)"))
-                     .order(Arel.sql("DATE(articles.created_at)"))
-                     .sum(:quantite)
-                     .transform_values(&:to_i)
+      quantites_for_timeline(:day)
+    end
 
-      stripe_days = stripe_items_for_aggregation
-                    .joins(:stripe_payment)
-                    .group(Arel.sql("DATE(stripe_payments.created_at)"))
-                    .order(Arel.sql("DATE(stripe_payments.created_at)"))
-                    .sum(:quantity)
-                    .transform_values(&:to_i)
+    # Grain :day → clés DATE SQL ; :hour → labels "10h" via Time.zone (pas strftime UTC).
+    def quantites_for_timeline(grain)
+      grain = grain.to_sym
+      if grain == :hour
+        article_rows = boutique_articles.pluck(:created_at, :quantite)
+        stripe_rows =
+          if stripe_items_empty?
+            []
+          else
+            stripe_items_for_aggregation
+              .joins(:stripe_payment)
+              .pluck("stripe_payments.created_at", "stripe_payment_items.quantity")
+          end
+        TimelineBuckets.group_times(article_rows + stripe_rows, grain: :hour)
+                       .transform_values(&:to_i)
+      else
+        article_days = boutique_articles
+                       .group(Arel.sql("DATE(articles.created_at)"))
+                       .order(Arel.sql("DATE(articles.created_at)"))
+                       .sum(:quantite)
+                       .transform_values(&:to_i)
 
-      merge_day_ints(article_days, stripe_days)
+        stripe_days = stripe_items_for_aggregation
+                      .joins(:stripe_payment)
+                      .group(Arel.sql("DATE(stripe_payments.created_at)"))
+                      .order(Arel.sql("DATE(stripe_payments.created_at)"))
+                      .sum(:quantity)
+                      .transform_values(&:to_i)
+
+        merge_day_ints(article_days, stripe_days)
+      end
     end
 
     def ca_lignes_by_day
-      article_days = boutique_articles
-                     .group(Arel.sql("DATE(articles.created_at)"))
-                     .order(Arel.sql("DATE(articles.created_at)"))
-                     .sum(:prix)
-                     .transform_values(&:to_d)
+      ca_lignes_for_timeline(:day)
+    end
 
-      stripe_days = if stripe_items_empty?
-                      {}
-                    else
-                      stripe_items_for_aggregation
-                        .joins(:stripe_payment)
-                        .group(Arel.sql("DATE(stripe_payments.created_at)"))
-                        .order(Arel.sql("DATE(stripe_payments.created_at)"))
-                        .sum(Arel.sql("stripe_payment_items.quantity * stripe_payment_items.unit_amount"))
-                        .transform_values { |cents| cents.to_d / 100 }
-                    end
+    def ca_lignes_for_timeline(grain)
+      grain = grain.to_sym
+      if grain == :hour
+        article_rows = boutique_articles.pluck(:created_at, :prix)
+        stripe_rows =
+          if stripe_items_empty?
+            []
+          else
+            stripe_items_for_aggregation
+              .joins(:stripe_payment)
+              .pluck(
+                Arel.sql("stripe_payments.created_at"),
+                Arel.sql("stripe_payment_items.quantity * stripe_payment_items.unit_amount")
+              )
+              .map { |at, cents| [at, cents.to_d / 100] }
+          end
+        TimelineBuckets.group_times(article_rows + stripe_rows, grain: :hour)
+      else
+        article_days = boutique_articles
+                       .group(Arel.sql("DATE(articles.created_at)"))
+                       .order(Arel.sql("DATE(articles.created_at)"))
+                       .sum(:prix)
+                       .transform_values(&:to_d)
 
-      merge_day_decimals(article_days, stripe_days)
+        stripe_days = if stripe_items_empty?
+                        {}
+                      else
+                        stripe_items_for_aggregation
+                          .joins(:stripe_payment)
+                          .group(Arel.sql("DATE(stripe_payments.created_at)"))
+                          .order(Arel.sql("DATE(stripe_payments.created_at)"))
+                          .sum(Arel.sql("stripe_payment_items.quantity * stripe_payment_items.unit_amount"))
+                          .transform_values { |cents| cents.to_d / 100 }
+                      end
+
+        merge_day_decimals(article_days, stripe_days)
+      end
     end
 
     def stripe_ca_lignes

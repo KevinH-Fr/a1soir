@@ -73,8 +73,10 @@ module Analyses
       when :profiles_ca_transactions then profiles_ca_transactions
       when :profiles_ca_doughnut then profiles_ca_doughnut
       when :profiles_ca_timeline then profiles_ca_timeline
-      when :catalog_types_bars then catalog_qty_ca_bars(:type)
-      when :catalog_categories_bars then catalog_qty_ca_bars(:categorie)
+      when :catalog_types_bars then catalog_metric_bars(:type, :qty)
+      when :catalog_types_bars_ca then catalog_metric_bars(:type, :ca)
+      when :catalog_categories_bars then catalog_metric_bars(:categorie, :qty)
+      when :catalog_categories_bars_ca then catalog_metric_bars(:categorie, :ca)
       else
         nil
       end
@@ -90,37 +92,57 @@ module Analyses
       ca_hash = h.instance_variable_get(:@groupedByDateCa) || {}
       cmd_hash = h.instance_variable_get(:@groupedByDate) || {}
       art_hash = h.instance_variable_get(:@groupedByDateArticles) || {}
-      labels = aligned_day_labels(ca_hash, cmd_hash, art_hash)
+      labels = timeline_labels(ca_hash, cmd_hash, art_hash)
       ca_values = values_for_labels(labels, ca_hash, integer: true)
       cmd_values = values_for_labels(labels, cmd_hash, integer: true)
       art_values = values_for_labels(labels, art_hash, integer: true)
+      sparse_bars = use_sparse_day_bars?(labels)
 
-      # CA = ligne hero (SERIES_CA) · commandes / articles = barres contrastées.
+      ca_dataset = if sparse_bars
+                     {
+                       type: "bar",
+                       label: "CA (€)",
+                       data: ca_values,
+                       yAxisID: "y",
+                       backgroundColor: rgba_fill(SERIES_CA, 0.75),
+                       hoverBackgroundColor: rgba_fill(SERIES_CA, 0.9),
+                       borderWidth: 0,
+                       borderRadius: { topLeft: 3, topRight: 3, bottomLeft: 0, bottomRight: 0 },
+                       borderSkipped: false,
+                       barPercentage: 0.9,
+                       categoryPercentage: 0.75,
+                       maxBarThickness: 48,
+                       order: 2
+                     }
+                   else
+                     {
+                       type: "line",
+                       label: "CA (€)",
+                       data: ca_values,
+                       yAxisID: "y",
+                       borderColor: SERIES_CA,
+                       backgroundColor: rgba_fill(SERIES_CA, 0.06),
+                       borderWidth: 2.5,
+                       borderCapStyle: "round",
+                       borderJoinStyle: "round",
+                       fill: true,
+                       tension: line_tension,
+                       pointRadius: line_point_radius(labels.size),
+                       pointHoverRadius: 4,
+                       pointHitRadius: 10,
+                       pointBackgroundColor: SERIES_CA,
+                       pointBorderColor: "#fff",
+                       pointBorderWidth: 1.5,
+                       order: 2
+                     }
+                   end
+
       {
         type: "bar",
         data: {
           labels: labels,
           datasets: [
-            {
-              type: "line",
-              label: "CA (€)",
-              data: ca_values,
-              yAxisID: "y",
-              borderColor: SERIES_CA,
-              backgroundColor: rgba_fill(SERIES_CA, 0.06),
-              borderWidth: 2.5,
-              borderCapStyle: "round",
-              borderJoinStyle: "round",
-              fill: true,
-              tension: 0.4,
-              pointRadius: 0,
-              pointHoverRadius: 4,
-              pointHitRadius: 10,
-              pointBackgroundColor: SERIES_CA,
-              pointBorderColor: "#fff",
-              pointBorderWidth: 1.5,
-              order: 2
-            },
+            ca_dataset,
             {
               type: "bar",
               label: "Commandes",
@@ -133,8 +155,9 @@ module Analyses
               borderSkipped: false,
               barPercentage: 0.9,
               categoryPercentage: 0.75,
+              maxBarThickness: sparse_bars ? 48 : nil,
               order: 1
-            },
+            }.compact,
             {
               type: "bar",
               label: "Articles",
@@ -147,12 +170,14 @@ module Analyses
               borderSkipped: false,
               barPercentage: 0.9,
               categoryPercentage: 0.75,
+              maxBarThickness: sparse_bars ? 48 : nil,
               order: 1
-            }
+            }.compact
           ]
         },
         options: mixed_timeline_options(left_title: "CA (€)", right_title: "Nombre"),
-        _tooltip: "mixed"
+        _tooltip: "mixed",
+        _grain: grain_string
       }
     end
 
@@ -191,23 +216,26 @@ module Analyses
     def ca_transactions_timeline
       ca_hash = h.instance_variable_get(:@groupedByDateCa) || {}
       tx_hash = h.instance_variable_get(:@groupedByDateTransactions) || {}
-      labels = aligned_day_labels(ca_hash, tx_hash)
+      labels = timeline_labels(ca_hash, tx_hash)
+      sparse = use_sparse_day_bars?(labels)
 
       {
-        type: "line",
+        type: sparse ? "bar" : "line",
         data: {
           labels: labels,
           datasets: [
-            line_dataset(
+            line_or_bar_dataset(
               "CA encaissé (€)",
               values_for_labels(labels, ca_hash, integer: true),
               SERIES_CA,
+              labels: labels,
               fill: true
             ),
-            line_dataset(
+            line_or_bar_dataset(
               "Transactions (€)",
               values_for_labels(labels, tx_hash, integer: true),
               GREEN,
+              labels: labels,
               fill: false,
               border_dash: [5, 4],
               tension: 0.35
@@ -224,7 +252,8 @@ module Analyses
             y: axis_y(title: "€")
           }
         },
-        _tooltip: "money"
+        _tooltip: "money",
+        _grain: grain_string
       }
     end
 
@@ -232,23 +261,26 @@ module Analyses
     def ca_channels_timeline
       boutique_hash = h.instance_variable_get(:@groupedByDateCaBoutique) || {}
       eshop_hash = h.instance_variable_get(:@groupedByDateCaEshop) || {}
-      labels = aligned_day_labels(boutique_hash, eshop_hash)
+      labels = timeline_labels(boutique_hash, eshop_hash)
+      sparse = use_sparse_day_bars?(labels)
 
       {
-        type: "line",
+        type: sparse ? "bar" : "line",
         data: {
           labels: labels,
           datasets: [
-            line_dataset(
+            line_or_bar_dataset(
               "Boutique (€)",
               values_for_labels(labels, boutique_hash, integer: true),
               SERIES_CA,
+              labels: labels,
               fill: true
             ),
-            line_dataset(
+            line_or_bar_dataset(
               "E-shop (€)",
               values_for_labels(labels, eshop_hash, integer: true),
               SERIES_ESHOP,
+              labels: labels,
               fill: false,
               border_dash: [5, 4],
               tension: 0.35
@@ -265,79 +297,63 @@ module Analyses
             y: axis_y(title: "CA (€)")
           }
         },
-        _tooltip: "channels_money"
+        _tooltip: "channels_money",
+        _grain: grain_string
       }
     end
 
-    # Panier moyen (€) + articles (qté) / commande, jour par jour.
+    # Panier moyen (€) + articles (qté) / commande, bucket par bucket.
     def ca_ratios_timeline
       ca_hash = h.instance_variable_get(:@groupedByDateCa) || {}
       cmd_hash = h.instance_variable_get(:@groupedByDate) || {}
       art_hash = h.instance_variable_get(:@groupedByDateArticles) || {}
-      labels = aligned_day_labels(ca_hash, cmd_hash, art_hash)
+      labels = timeline_labels(ca_hash, cmd_hash, art_hash)
+      sparse = use_sparse_day_bars?(labels)
 
-      panier_values = labels.map do |day|
-        cmds = cmd_hash.fetch(day, 0).to_i
+      panier_values = labels.map do |bucket|
+        cmds = cmd_hash.fetch(bucket, 0).to_i
         next nil if cmds.zero?
 
-        (ca_hash.fetch(day, 0).to_d / cmds).round.to_i
+        (ca_hash.fetch(bucket, 0).to_d / cmds).round.to_i
       end
 
-      art_per_cmd_values = labels.map do |day|
-        cmds = cmd_hash.fetch(day, 0).to_i
+      art_per_cmd_values = labels.map do |bucket|
+        cmds = cmd_hash.fetch(bucket, 0).to_i
         next nil if cmds.zero?
 
-        (art_hash.fetch(day, 0).to_d / cmds).round(1)
+        (art_hash.fetch(bucket, 0).to_d / cmds).round(1)
       end
 
       {
-        type: "line",
+        type: sparse ? "bar" : "line",
         data: {
           labels: labels,
           datasets: [
-            {
-              label: "Panier moyen (€)",
-              data: panier_values,
-              yAxisID: "y",
-              borderColor: BLUE,
-              backgroundColor: rgba_fill(BLUE, 0.08),
-              borderWidth: 2.25,
-              borderCapStyle: "round",
-              borderJoinStyle: "round",
+            line_or_bar_dataset(
+              "Panier moyen (€)",
+              panier_values,
+              BLUE,
+              labels: labels,
               fill: true,
-              tension: 0.4,
-              spanGaps: true,
-              pointRadius: 0,
-              pointHoverRadius: 4,
-              pointHitRadius: 10,
-              pointBackgroundColor: BLUE,
-              pointBorderColor: "#fff",
-              pointBorderWidth: 1.5
-            },
-            {
-              label: "Art. / commande",
-              data: art_per_cmd_values,
-              yAxisID: "y1",
-              borderColor: GOLD,
-              backgroundColor: rgba_fill(GOLD, 0.06),
-              borderWidth: 2,
-              borderDash: [5, 4],
-              borderCapStyle: "round",
-              borderJoinStyle: "round",
+              y_axis_id: "y",
+              span_gaps: true
+            ),
+            line_or_bar_dataset(
+              "Art. / commande",
+              art_per_cmd_values,
+              GOLD,
+              labels: labels,
               fill: false,
+              border_dash: [5, 4],
               tension: 0.35,
-              spanGaps: true,
-              pointRadius: 0,
-              pointHoverRadius: 4,
-              pointHitRadius: 10,
-              pointBackgroundColor: GOLD,
-              pointBorderColor: "#fff",
-              pointBorderWidth: 1.5
-            }
+              y_axis_id: "y1",
+              span_gaps: true
+            )
           ]
         },
         options: mixed_timeline_options(left_title: "Panier moyen (€)", right_title: "Art. / commande"),
-        _tooltip: "mixed"
+        _tooltip: "mixed",
+        _grain: grain_string
       }
     end
 
@@ -566,37 +582,29 @@ module Analyses
 
     def profiles_ca_timeline
       stats = (h.instance_variable_get(:@stats_par_profile) || []).sort_by { |r| -r[:ca].to_f }
-      labels = stats.flat_map { |row| (row[:ca_by_day] || {}).keys }
-                    .uniq
-                    .sort_by { |day| Date.strptime(day.to_s, "%d/%m/%Y") }
+      hashes = stats.map { |row| row[:ca_by_day] || {} }
+      labels = timeline_labels(*hashes)
+      sparse = use_sparse_day_bars?(labels)
 
       {
-        type: "line",
+        type: sparse ? "bar" : "line",
         data: {
           labels: labels,
           datasets: stats.each_with_index.map do |row, index|
             color = row[:couleur].presence || self.class.equipe_pastel_color(index)
-            {
-              label: row[:profile],
-              data: labels.map { |day|
-                value = row.dig(:ca_by_day, day)
-                value.nil? ? nil : value.to_d.round.to_i
-              },
-              borderColor: color,
-              backgroundColor: rgba_fill(color, 0.1),
-              borderWidth: 2.25,
-              borderCapStyle: "round",
-              borderJoinStyle: "round",
+            values = labels.map { |bucket|
+              value = row.dig(:ca_by_day, bucket)
+              value.nil? ? nil : value.to_d.round.to_i
+            }
+            line_or_bar_dataset(
+              row[:profile],
+              values,
+              color,
+              labels: labels,
               fill: false,
               tension: 0.35,
-              spanGaps: true,
-              pointRadius: 0,
-              pointHoverRadius: 4,
-              pointHitRadius: 10,
-              pointBackgroundColor: color,
-              pointBorderColor: "#fff",
-              pointBorderWidth: 1.5
-            }
+              span_gaps: true
+            )
           end
         },
         options: {
@@ -609,61 +617,43 @@ module Analyses
             y: axis_y(title: "CA (€)")
           }
         },
-        _tooltip: "money"
+        _tooltip: "money",
+        _grain: grain_string
       }
     end
 
-    def catalog_qty_ca_bars(kind)
-      rows = if kind == :type
-               h.instance_variable_get(:@catalog_by_type) || []
-             else
-               h.instance_variable_get(:@catalog_by_categorie) || []
-             end
+    # Une métrique à la fois (bascule Quantité / CA) — lisible en colonne étroite.
+    def catalog_metric_bars(kind, metric)
+      rows = catalog_rows_for(kind, metric)
       labels = rows.map { |r| r[:label] }
-      quantities = rows.map { |r| r[:quantite].to_i }
-      ca_values = rows.map { |r| r[:ca_lignes].to_d.round.to_i }
+      by_ca = metric.to_sym == :ca
+      values = rows.map { |r| by_ca ? r[:ca_lignes].to_d.round.to_i : r[:quantite].to_i }
+      color = by_ca ? SERIES_CATALOG_CA : SERIES_CATALOG_QTY
+      label = by_ca ? "CA (€)" : "Quantité"
+      axis_title = by_ca ? "CA (€)" : "Quantité"
 
-      # Deux métriques ≠ unités → barres groupées + double axe (recommandé Chart.js),
-      # plutôt qu'un doughnut concentrique trompeur.
       {
         type: "bar",
         data: {
           labels: labels,
-          datasets: [
-            {
-              label: "Quantité",
-              data: quantities,
-              xAxisID: "x",
-              backgroundColor: rgba_fill(SERIES_CATALOG_QTY, 0.72),
-              hoverBackgroundColor: rgba_fill(SERIES_CATALOG_QTY, 0.88),
-              borderRadius: 5,
-              borderSkipped: false,
-              borderWidth: 0,
-              barPercentage: 0.85,
-              categoryPercentage: 0.7
-            },
-            {
-              label: "CA (€)",
-              data: ca_values,
-              xAxisID: "x1",
-              backgroundColor: rgba_fill(SERIES_CATALOG_CA, 0.72),
-              hoverBackgroundColor: rgba_fill(SERIES_CATALOG_CA, 0.88),
-              borderRadius: 5,
-              borderSkipped: false,
-              borderWidth: 0,
-              barPercentage: 0.85,
-              categoryPercentage: 0.7
-            }
-          ]
+          datasets: [{
+            label: label,
+            data: values,
+            backgroundColor: rgba_fill(color, 0.72),
+            hoverBackgroundColor: rgba_fill(color, 0.88),
+            borderRadius: 5,
+            borderSkipped: false,
+            borderWidth: 0,
+            barPercentage: 0.85,
+            categoryPercentage: 0.7
+          }]
         },
         options: {
           indexAxis: "y",
           responsive: true,
           maintainAspectRatio: false,
           interaction: { mode: "index", intersect: false },
-          plugins: {
-            legend: legend_options
-          },
+          plugins: { legend: { display: false } },
           scales: {
             y: {
               ticks: { color: TICK_COLOR, font: { size: 11 } },
@@ -671,43 +661,104 @@ module Analyses
               border: { display: false }
             },
             x: {
-              position: "top",
               beginAtZero: true,
-              ticks: { precision: 0, color: SERIES_CATALOG_QTY, font: { size: 10 } },
+              ticks: { precision: 0, color: color, font: { size: 10 } },
               grid: { color: GRID_COLOR, drawBorder: false },
               border: { display: false },
               title: {
                 display: true,
-                text: "Quantité",
-                color: TICK_COLOR,
-                font: { size: 10, weight: "500" }
-              }
-            },
-            x1: {
-              position: "bottom",
-              beginAtZero: true,
-              ticks: { precision: 0, color: SERIES_CATALOG_CA, font: { size: 10 } },
-              grid: { drawOnChartArea: false },
-              border: { display: false },
-              title: {
-                display: true,
-                text: "CA (€)",
+                text: axis_title,
                 color: TICK_COLOR,
                 font: { size: 10, weight: "500" }
               }
             }
           }
         },
-        _tooltip: "mixed"
+        _tooltip: by_ca ? "money" : "integer"
       }
     end
 
-    def line_dataset(label, data, color, fill: false, border_dash: nil, tension: 0.4)
-      # Un seul jour : sans point la ligne est invisible (pas de segment).
-      sparse = Array(data).size <= 2
+    def catalog_rows_for(kind, metric)
+      by_ca = metric.to_sym == :ca
+      if kind == :type
+        h.instance_variable_get(by_ca ? :@catalog_by_type_by_ca : :@catalog_by_type) || []
+      else
+        h.instance_variable_get(by_ca ? :@catalog_by_categorie_by_ca : :@catalog_by_categorie) || []
+      end
+    end
+
+    def timeline_grain
+      (h.instance_variable_get(:@timeline_grain).presence || :day).to_sym
+    end
+
+    def grain_string
+      timeline_grain.to_s
+    end
+
+    def use_sparse_day_bars?(labels)
+      timeline_grain == :day && Array(labels).size <= 2
+    end
+
+    def line_tension
+      timeline_grain == :hour ? 0 : 0.4
+    end
+
+    def line_point_radius(label_count)
+      return 3 if timeline_grain == :hour
+      return 4 if label_count.to_i <= 2
+
+      0
+    end
+
+    def timeline_labels(*hashes)
+      data_keys = hashes.flat_map(&:keys)
+      debut = h.instance_variable_get(:@datedebut)
+      fin = h.instance_variable_get(:@datefin)
+      TimelineBuckets.filled_labels(
+        debut: debut,
+        fin: fin,
+        grain: timeline_grain,
+        data_keys: data_keys
+      )
+    end
+
+    def line_or_bar_dataset(label, data, color, labels:, fill: false, border_dash: nil, tension: nil, y_axis_id: nil, span_gaps: true)
+      if use_sparse_day_bars?(labels)
+        {
+          label: label,
+          data: data,
+          yAxisID: y_axis_id,
+          backgroundColor: rgba_fill(color, fill ? 0.75 : 0.55),
+          hoverBackgroundColor: rgba_fill(color, 0.9),
+          borderWidth: 0,
+          borderRadius: { topLeft: 3, topRight: 3, bottomLeft: 0, bottomRight: 0 },
+          borderSkipped: false,
+          barPercentage: 0.85,
+          categoryPercentage: 0.7,
+          maxBarThickness: 48,
+          spanGaps: span_gaps
+        }.compact
+      else
+        line_dataset(
+          label,
+          data,
+          color,
+          fill: fill,
+          border_dash: border_dash,
+          tension: tension || line_tension,
+          y_axis_id: y_axis_id,
+          span_gaps: span_gaps,
+          labels: labels
+        )
+      end
+    end
+
+    def line_dataset(label, data, color, fill: false, border_dash: nil, tension: nil, y_axis_id: nil, span_gaps: true, labels: nil)
+      size = Array(labels || data).size
       {
         label: label,
         data: data,
+        yAxisID: y_axis_id,
         borderColor: color,
         backgroundColor: rgba_fill(color, fill ? 0.08 : 0.0),
         borderWidth: fill ? 2.25 : 2,
@@ -715,9 +766,9 @@ module Analyses
         borderCapStyle: "round",
         borderJoinStyle: "round",
         fill: fill,
-        tension: tension,
-        spanGaps: true,
-        pointRadius: sparse ? 4 : 0,
+        tension: tension.nil? ? line_tension : tension,
+        spanGaps: span_gaps,
+        pointRadius: line_point_radius(size),
         pointHoverRadius: 5,
         pointHitRadius: 12,
         pointBackgroundColor: color,
@@ -789,7 +840,7 @@ module Analyses
           maxRotation: 0,
           minRotation: 0,
           autoSkip: true,
-          maxTicksLimit: 8,
+          maxTicksLimit: timeline_grain == :hour ? 16 : 8,
           color: TICK_COLOR,
           font: { size: 10 }
         },
@@ -819,8 +870,14 @@ module Analyses
       }
     end
 
+    # Conservé pour specs / callers qui n'ont pas @datedebut.
     def aligned_day_labels(*hashes)
-      hashes.flat_map(&:keys).uniq.sort_by { |day| Date.strptime(day.to_s, "%d/%m/%Y") }
+      TimelineBuckets.filled_labels(
+        debut: nil,
+        fin: nil,
+        grain: :day,
+        data_keys: hashes.flat_map(&:keys)
+      )
     end
 
     def values_for_labels(labels, hash, integer: false)

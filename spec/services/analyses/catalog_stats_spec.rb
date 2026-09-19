@@ -55,12 +55,30 @@ RSpec.describe Analyses::CatalogStats do
     expect(result[:top_products].map { |r| r[:produit].id }).to eq([produit_multi.id, produit_solo.id])
     expect(result[:top_products].first[:quantite]).to eq(2)
     expect(result[:top_products].first[:ca_lignes]).to eq(30.to_d)
+    expect(result[:top_products_by_qty].map { |r| r[:produit].id }).to eq([produit_multi.id, produit_solo.id])
+  end
+
+  it "ranks a separate top products list by CA then quantity" do
+    # Solo = 20 €, Multi = 30 € → ordre CA = multi puis solo (même ordre ici).
+    # Ajoute un produit fort en CA / faible qté pour différencier.
+    rich = Produit.create!(nom: "Riche", prixvente: 200, quantite: 1, type_produit: type_a)
+    Article.create!(commande: commande, produit: rich, quantite: 1, prix: 200, total: 200, locvente: "vente")
+
+    ranked = described_class.call(articles_scope)
+    expect(ranked[:top_products_by_ca].first[:produit].id).to eq(rich.id)
+    expect(ranked[:top_products_by_qty].first[:produit].id).to eq(produit_multi.id)
   end
 
   it "rolls up by type without duplication" do
     by_type = result[:by_type].index_by { |r| r[:label] }
     expect(by_type[type_a.nom][:quantite]).to eq(2)
     expect(by_type[type_b.nom][:quantite]).to eq(1)
+  end
+
+  it "rolls up type and category by CA separately" do
+    by_type_ca = result[:by_type_by_ca].index_by { |r| r[:label] }
+    expect(by_type_ca[type_a.nom][:ca_lignes]).to eq(30.to_d)
+    expect(result[:by_categorie_by_ca]).to be_present
   end
 
   it "attributes multi-category products to the first category by name" do

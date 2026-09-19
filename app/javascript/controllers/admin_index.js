@@ -38,3 +38,6 @@ application.register("copy-url", CopyUrlController)
 
 import AnalysesFiltersController from "./analyses_filters_controller"
 application.register("analyses-filters", AnalysesFiltersController)
+
+import AnalysesSegmentToggleController from "./analyses_segment_toggle_controller"
+application.register("analyses-segment-toggle", AnalysesSegmentToggleController)

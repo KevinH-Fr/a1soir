@@ -11,8 +11,8 @@
     <%= analyses_info_alert(header_notice, extra_class: "mb-3") %>
   <% end %>
 
-  <div class="analyses-chart-stack">
-    <div class="row g-3 align-items-stretch">
+  <div class="analyses-chart-stack mt-3">
+    <div class="<%= AnalysesHelper::ANALYSES_CONTENT_ROW %>">
       <div class="col-12 col-lg-4 min-w-0">
         <%= analyses_chart_card(extra_class: "analyses-chart-card--flush-center") do %>
           <%= analyses_chart_heading(show_comparison ? "CA par vendeur" : "CA vendeur") %>
@@ -35,16 +35,18 @@
     </div>
 
     <% if show_timeline %>
-      <%= analyses_chart_card do %>
-        <%= analyses_chart_heading(
-              show_comparison ? "Évolution du CA par vendeur" : "Évolution du CA"
-            ) %>
-        <%= render_analyses_chart(
-              :profiles_ca_timeline,
-              chart_id: "analyses-chart-profiles-timeline",
-              extra_class: "analyses-chart--fill analyses-chart--equipe-timeline",
-              aria_label: show_comparison ? "Évolution du CA par vendeur" : "Évolution du CA du vendeur"
-            ) %>
+      <%= analyses_full_bleed_chart do %>
+        <%= analyses_chart_card do %>
+          <%= analyses_chart_heading(
+                show_comparison ? "Évolution du CA par vendeur" : "Évolution du CA"
+              ) %>
+          <%= render_analyses_chart(
+                :profiles_ca_timeline,
+                chart_id: "analyses-chart-profiles-timeline",
+                extra_class: "analyses-chart--fill analyses-chart--equipe-timeline",
+                aria_label: show_comparison ? "Évolution du CA par vendeur" : "Évolution du CA du vendeur"
+              ) %>
+        <% end %>
       <% end %>
     <% end %>
   </div>

@@ -1,6 +1,8 @@
-<%# Top produits — barre horizontale empilée loc / vente. %>
+<%# Top produits — deux classements (qté / CA), bascule via Stimulus parent. %>
+<% rows_qty = @catalog_top_products_by_qty.presence || @catalog_top_products %>
+<% rows_ca = @catalog_top_products_by_ca.presence || @catalog_top_products %>
 <div class="analyses-catalog-top">
-  <% if @catalog_top_products.blank? %>
+  <% if rows_qty.blank? && rows_ca.blank? %>
     <p class="small text-muted mb-0">Aucune ligne article sur cette période.</p>
   <% else %>
     <div class="analyses-catalog-top__table-wrap">
@@ -8,8 +10,8 @@
         <thead>
           <tr>
             <th scope="col" class="analyses-catalog-top__rank">#</th>
-            <th scope="col">Produit</th>
-            <th scope="col" class="text-end">Qté</th>
+            <th scope="col" class="analyses-catalog-top__col-product">Produit</th>
+            <th scope="col" class="analyses-catalog-top__col-qty text-end">Qté</th>
             <th scope="col" class="analyses-catalog-top__col-split d-none d-md-table-cell">
               <span class="analyses-catalog-top__split-label">
                 <span class="analyses-catalog-top__swatch analyses-catalog-top__swatch--loc" aria-hidden="true"></span>
@@ -19,77 +21,14 @@
                 Vente
               </span>
             </th>
-            <th scope="col" class="text-end">CA lignes</th>
+            <th scope="col" class="analyses-catalog-top__col-ca text-end">CA lignes</th>
           </tr>
         </thead>
-        <tbody>
-          <% @catalog_top_products.each_with_index do |row, index| %>
-            <% produit = row[:produit] %>
-            <% meta = [produit.couleur&.nom, produit.taille&.nom, produit.type_produit&.nom].compact %>
-            <% qty = row[:quantite].to_i %>
-            <% ca = row[:ca_lignes].to_d %>
-            <% q_loc = row[:qte_loc].to_i %>
-            <% q_vente = row[:qte_vente].to_i %>
-            <% mix_total = q_loc + q_vente %>
-            <% loc_pct = mix_total.positive? ? ((q_loc * 100.0) / mix_total).round(1) : 0 %>
-            <% vente_pct = mix_total.positive? ? (100 - loc_pct) : 0 %>
-            <tr>
-              <td class="analyses-catalog-top__rank">
-                <span class="analyses-catalog-top__rank-num"><%= index + 1 %></span>
-              </td>
-              <td>
-                <%= link_to admin_produit_path(produit),
-                            class: "analyses-catalog-top__product text-decoration-none" do %>
-                  <span class="analyses-catalog-top__thumb">
-                    <%= cloudinary_attachment_image(
-                          produit.default_image,
-                          width: 96,
-                          html_width: 40,
-                          alt: produit.nom,
-                          class: "analyses-catalog-top__img"
-                        ) %>
-                  </span>
-                  <span class="min-w-0">
-                    <span class="analyses-catalog-top__name d-block text-truncate"><%= produit.nom %></span>
-                    <% if meta.any? %>
-                      <span class="analyses-catalog-top__meta d-block text-truncate"><%= meta.join(" · ") %></span>
-                    <% end %>
-                  </span>
-                <% end %>
-              </td>
-              <td class="text-end">
-                <span class="analyses-catalog-top__num"><%= qty %></span>
-              </td>
-              <td class="analyses-catalog-top__col-split d-none d-md-table-cell">
-                <% if mix_total.zero? %>
-                  <span class="analyses-catalog-top__num text-body-secondary">—</span>
-                <% else %>
-                  <div class="analyses-catalog-top__stack-track"
-                       title="<%= q_loc %> locations · <%= q_vente %> ventes"
-                       role="img"
-                       aria-label="<%= q_loc %> locations, <%= q_vente %> ventes">
-                    <% if loc_pct.positive? %>
-                      <span class="analyses-catalog-top__stack-seg analyses-catalog-top__stack-seg--loc"
-                            style="width: <%= loc_pct %>%">
-                        <% if loc_pct >= 14 %><%= q_loc %><% end %>
-                      </span>
-                    <% end %>
-                    <% if vente_pct.positive? %>
-                      <span class="analyses-catalog-top__stack-seg analyses-catalog-top__stack-seg--vente"
-                            style="width: <%= vente_pct %>%">
-                        <% if vente_pct >= 14 %><%= q_vente %><% end %>
-                      </span>
-                    <% end %>
-                  </div>
-                <% end %>
-              </td>
-              <td class="text-end">
-                <span class="analyses-catalog-top__num analyses-catalog-top__ca">
-                  <%= number_to_currency(ca, unit: "€", format: "%n %u", precision: 0) %>
-                </span>
-              </td>
-            </tr>
-          <% end %>
+        <tbody data-analyses-segment-toggle-target="panel" data-segment-key="qty">
+          <%= render partial: "admin/analyses/catalog_top_products_rows", locals: { rows: rows_qty } %>
+        </tbody>
+        <tbody class="d-none" data-analyses-segment-toggle-target="panel" data-segment-key="ca">
+          <%= render partial: "admin/analyses/catalog_top_products_rows", locals: { rows: rows_ca } %>
         </tbody>
       </table>
     </div>

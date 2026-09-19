@@ -71,6 +71,9 @@ RSpec.describe Admin::AnalysesController, type: :controller do
       expect(response).to have_http_status(:ok)
       expect(assigns(:total_stripe_eur)).to eq(45.to_d)
       expect(assigns(:totalPrixCaStripe)).to eq(45.to_d)
+      expect(assigns(:timeline_grain)).to eq(:hour)
+      expect(response.body).to include("analyses-chart-synthese-mixed")
+      expect(response.body).to match(/_grain(?:\\u0022|&quot;|")\s*:\s*(?:\\u0022|&quot;|")hour/)
     end
 
     context "with analyses dashboard dataset" do
@@ -119,9 +122,9 @@ RSpec.describe Admin::AnalysesController, type: :controller do
 
         expect(response).to have_http_status(:ok)
         expect(response.body).to include("analyses-chart-synthese-mixed")
-        expect(response.body).to include("analyses-chart-synthese-catalog-types")
+        expect(response.body).to include("analyses-chart-synthese-catalog-categories")
         expect(response.body).to include("analyses-chart-synthese-profiles-bars")
-        expect(assigns(:catalog_by_type)).to be_present
+        expect(assigns(:catalog_by_categorie)).to be_present
         expect(assigns(:stats_par_profile)).to be_present
         expect(response.body).to include('id="analysesFiltersOffcanvas"')
         expect(response.body).to include('data-bs-target="#analysesFiltersOffcanvas"')
@@ -133,6 +136,21 @@ RSpec.describe Admin::AnalysesController, type: :controller do
         expect(assigns(:totalPrixCaCb)).to eq(expected[:total_prix_ca_cb])
         expect(assigns(:totalPrixCaEspeces)).to eq(expected[:total_prix_ca_especes])
         expect(assigns(:analyses_ca_mode)).to eq(:paiements)
+      end
+
+      it "renders catalogue vue with toggleable locvente doughnut and ranking charts" do
+        get :index, params: period.merge(vue: "catalogue")
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("analyses-chart-locvente-catalogue")
+        expect(response.body).to include("analyses-chart-catalog-categories")
+        expect(response.body).to include("analyses-chart-catalog-types")
+        expect(response.body).to include('data-controller="analyses-segment-toggle"')
+        expect(response.body).not_to include("analyses-locvente-twins")
+        expect(assigns(:catalog_top_products_by_qty)).to be_present
+        expect(assigns(:catalog_top_products_by_ca)).to be_present
+        expect(assigns(:catalog_by_type_by_ca)).to be_present
+        expect(assigns(:catalog_by_categorie_by_ca)).to be_present
       end
 
       it "returns transaction metrics on ca vue" do

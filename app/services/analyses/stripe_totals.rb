@@ -45,15 +45,22 @@ module Analyses
     end
 
     def grouped_by_day_eur
-      @grouped_by_day_eur ||= if @product_dimension_filtered
-                                grouped_stripe_items_by_day
-                              else
-                                @stripe_payments_scope
-                                  .group("DATE(stripe_payments.created_at)")
-                                  .order("DATE(stripe_payments.created_at)")
-                                  .sum(:amount)
-                                  .transform_values { |cents| cents.to_d / 100 }
-                              end
+      @grouped_by_day_eur ||= grouped_for_timeline(:day)
+    end
+
+    def grouped_for_timeline(grain)
+      grain = grain.to_sym
+      if grain == :hour
+        grouped_by_hour_eur
+      elsif @product_dimension_filtered
+        grouped_stripe_items_by_day
+      else
+        @stripe_payments_scope
+          .group("DATE(stripe_payments.created_at)")
+          .order("DATE(stripe_payments.created_at)")
+          .sum(:amount)
+          .transform_values { |cents| cents.to_d / 100 }
+      end
     end
 
     private
@@ -81,6 +88,22 @@ module Analyses
         .order("DATE(stripe_payments.created_at)")
         .sum("stripe_payment_items.quantity * stripe_payment_items.unit_amount")
         .transform_values { |cents| cents.to_d / 100 }
+    end
+
+    def grouped_by_hour_eur
+      if @product_dimension_filtered
+        rows = stripe_items_scope
+                 .pluck(
+                   Arel.sql("stripe_payments.created_at"),
+                   Arel.sql("stripe_payment_items.quantity * stripe_payment_items.unit_amount")
+                 )
+                 .map { |at, cents| [at, cents.to_d / 100] }
+        TimelineBuckets.group_times(rows, grain: :hour)
+      else
+        rows = @stripe_payments_scope.pluck(:created_at, :amount)
+                 .map { |at, cents| [at, cents.to_d / 100] }
+        TimelineBuckets.group_times(rows, grain: :hour)
+      end
     end
 
     def remboursements_eur(commande_ids: nil)
