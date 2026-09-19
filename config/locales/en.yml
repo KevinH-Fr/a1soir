@@ -285,7 +285,7 @@ en:
         nom_label: "Name :"
         voir_produit: "View product →"
     notification_admin:
-      subject: "New appointment request"
+      subject: "📅 New appointment request"
       body:
         title: "New appointment request received."
         demandeur: "Requester"
@@ -317,7 +317,7 @@ en:
         returns_notice: "You have a 14-day right of withdrawal from receipt. To return an item, contact us via the site contact form (a1soir.com) before sending your parcel: we will provide instructions and cover return shipping. Refund of items and initial delivery costs within 14 days of receiving a compliant return (original condition, tags, unworn except for fitting). Details: a1soir.com/legal."
         thanks: "Thank you for your trust."
     notification_admin:
-      subject: "New e-shop order (Stripe payment)"
+      subject: "🛍️ New e-shop order (Stripe payment)"
       body:
         title: "An online shop order has just been recorded."
         customer_email: "Customer email (Stripe)"
