@@ -136,6 +136,11 @@ module AdminFlashToast
         icon: "bag-check-fill",
         message_key: "admin.toasts.commande.created",
       },
+      commande_rapide_created: {
+        variant: :success,
+        icon: "lightning-fill",
+        message_key: "admin.toasts.commande.commande_rapide_created",
+      },
       updated: {
         variant: :info,
         icon: "pencil-square",

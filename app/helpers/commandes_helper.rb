@@ -22,6 +22,39 @@ module CommandesHelper
       end
     end
 
+    def commande_a_completer_badge(commande)
+      return "".html_safe unless commande&.client&.commande_rapide?
+
+      content_tag(:span,
+                  class: "badge border border-info text-info fw-semibold shadow-sm",
+                  title: "Client technique à remplacer") do
+        concat content_tag(:i, nil, class: "bi bi-hourglass-split me-1")
+        concat "Client à compléter"
+      end
+    end
+
+    def commande_dates_manquantes_badge(commande)
+      return "".html_safe unless commande&.dates_location_manquantes?
+
+      content_tag(:span,
+                  class: "badge border border-warning text-dark fw-semibold shadow-sm",
+                  title: "Dates de location manquantes") do
+        concat content_tag(:i, nil, class: "bi bi-calendar-x me-1")
+        concat "Dates manquantes"
+      end
+    end
+
+    def commande_evenement_manquant_badge(commande)
+      return "".html_safe unless commande&.evenement_manquant?
+
+      content_tag(:span,
+                  class: "badge border border-secondary text-secondary fw-semibold shadow-sm",
+                  title: "Type ou date d’événement manquant") do
+        concat content_tag(:i, nil, class: "bi bi-calendar-event me-1")
+        concat "Événement manquant"
+      end
+    end
+
     def pdf_afficher_annulation_eshop?(commande, doc_edition)
       doc_edition.doc_type == "facture" && commande.remboursee_eshop?
     end

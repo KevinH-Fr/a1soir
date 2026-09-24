@@ -1,4 +1,6 @@
 class Commande < ApplicationRecord
+  include CommandeRapideCompletable
+
   belongs_to :client
   belongs_to :profile
 
@@ -32,7 +34,6 @@ class Commande < ApplicationRecord
 
   scope :par_profile, ->(profile) { where(profile: profile) if profile.present? }
   scope :eshop_sales, -> { where(eshop: true) }
-
 
   EVENEMENTS_OPTIONS = ['mariage', 'soirée', 'festival de Cannes', 'divers']
 

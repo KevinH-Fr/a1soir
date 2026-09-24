@@ -38,6 +38,7 @@ en:
         destroyed: "Sub-item deleted"
       commande:
         created: "Order created"
+        commande_rapide_created: "Quick order created — select products"
         updated: "Order updated"
         destroyed: "Order deleted"
         destroy_blocked: "Unable to delete this order: related records still exist in the database."

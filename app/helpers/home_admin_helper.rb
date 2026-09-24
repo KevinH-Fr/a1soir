@@ -1,5 +1,5 @@
 module HomeAdminHelper
-  def dashboard_card(title, path, new_path, icon, items)
+  def dashboard_card(title, path, new_path, icon, items, quick_action: nil)
     content_tag(:div, class: "card m-2 shadow-sm") do
       concat(content_tag(:div, class: "card-header bg-dark text-light p-1 px-2") do
         concat(content_tag(:div, class: "row align-items-center m-0 p-0") do
@@ -11,7 +11,16 @@ module HomeAdminHelper
             concat(link_to title, path, class: "text-center text-decoration-none text-light fs-6")
           end)
 
-          concat(content_tag(:div, class: "col text-end m-0 p-0") do
+          concat(content_tag(:div, class: "col text-end m-0 p-0 d-inline-flex align-items-center justify-content-end gap-1") do
+            if quick_action.present?
+              concat(button_to(quick_action[:path],
+                               method: :post,
+                               class: "btn btn-sm btn-outline-warning",
+                               title: quick_action[:title],
+                               aria: { label: quick_action[:title] }) do
+                concat content_tag(:i, nil, class: "bi #{quick_action[:icon] || "bi-lightning-charge-fill"}")
+              end)
+            end
             concat(link_to("", new_path, class: "bi bi-plus-lg btn btn-warning btn-sm"))
           end)
         end)
@@ -55,21 +64,28 @@ module HomeAdminHelper
     end
   end
 
-  def options_supplementaires_link(path, icon_class, text, btn_class, badge_count: nil, badge_show_zero: false, badge_class: "bg-danger")
+  def options_supplementaires_link(path, icon_class, text, btn_class, badge_count: nil, badge_show_zero: false, badge_class: "bg-danger", method: :get)
     classes = [
       "admin-quick-action-btn",
       "btn btn-sm rounded-3 px-2 d-inline-flex align-items-center justify-content-center gap-2",
       "me-1 mb-2 position-relative text-nowrap",
       btn_class
-    ]
-    link_to(path, class: classes.join(" ")) do
-      concat content_tag(:i, "", class: "bi #{icon_class} flex-shrink-0")
-      concat content_tag(:span, text, class: "")
+    ].join(" ")
+
+    content = safe_join([
+      content_tag(:i, "", class: "bi #{icon_class} flex-shrink-0"),
+      content_tag(:span, text, class: ""),
       if !badge_count.nil? && (badge_show_zero || badge_count > 0)
-        concat content_tag(:span, badge_count,
+        content_tag(:span, badge_count,
           class: "position-absolute top-0 start-100 translate-middle badge rounded-pill #{badge_class}",
           style: "font-size: 0.65rem; padding: 0.2rem 0.4rem;")
       end
+    ].compact)
+
+    if method.to_sym == :post
+      button_to(path, method: :post, class: classes, form: { class: "d-inline" }) { content }
+    else
+      link_to(path, class: classes) { content }
     end
   end
 

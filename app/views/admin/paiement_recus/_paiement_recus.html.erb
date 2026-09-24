@@ -6,11 +6,18 @@
           role: "button", aria: { expanded: "false", controls: "collapseNewPaiement" }),
   totals_inline: render("admin/paiement_recus/synthese")) %>
 
+<% paiement_nouveau = PaiementRecu.new %>
+<% if @commande.a_completer? %>
+  <% paiement_nouveau.typepaiement = "prix" %>
+  <% solde = solde_prix(@commande) %>
+  <% paiement_nouveau.montant = solde if solde.present? && solde != 0 %>
+<% end %>
+
 <%= admin_collapse_nouveau collapse_id: "collapseNewPaiement",
       target_id: "new_paiement",
       inner_partial: "admin/paiement_recus/form",
       commande_id: @commande.id,
-      paiement_recu: PaiementRecu.new %>
+      paiement_recu: paiement_nouveau %>
 
 <div id="paiement_recus" class="<%= admin_list_stack_classes %>">
   <% @commande.paiement_recus.each do |paiement_recu| %>

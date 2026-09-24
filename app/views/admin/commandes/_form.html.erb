@@ -26,20 +26,20 @@
           <span>Références</span>
         </h2>
         <div class="row g-1">
-          <% unless @client %>
+          <% if @client.present? && !@client.commande_rapide? %>
+            <%= form.hidden_field :client_id, value: @client.id %>
+          <% else %>
             <div class="col-12 col-md-6">
               <div class="form-group input-group mb-1 w-100">
                 <div class="input-group-text">
                   <%= form.label :client_id, class: "" %>
                 </div>
                 <%= form.select :client_id,
-                      options_for_select(Client.all.order(:nom).pluck(:nom, :id)),
+                      options_for_select(Client.all.order(:nom).pluck(:nom, :id), form.object.client_id),
                       { include_blank: "" },
                       { class: "form-select" } %>
               </div>
             </div>
-          <% else %>
-            <%= form.hidden_field :client_id, value: @client.id %>
           <% end %>
           <div class="col-12 col-md-6">
             <div class="form-group input-group mb-1 w-100">

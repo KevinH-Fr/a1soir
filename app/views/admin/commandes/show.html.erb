@@ -3,7 +3,9 @@
 <div class="<%= admin_list_stack_classes %>">
   <%= render @commande, show_eshop_guide: @commande.eshop? %>
 </div>
-<%= render partial: 'admin/clients/client_mini', locals: { client: @commande.client } %>
+<div id="commande_client_mini">
+  <%= render partial: 'admin/clients/client_mini', locals: { client: @commande.client } %>
+</div>
 <%= render 'admin/articles/articles' %>
 <%= render "admin/commandes/stripe_payment" %>
 <%= render 'admin/paiement_recus/paiement_recus' %>

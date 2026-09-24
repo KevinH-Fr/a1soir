@@ -160,4 +160,23 @@ RSpec.describe Admin::CommandesController, type: :controller do
       )
     end
   end
+
+  describe "POST #create_commande_rapide" do
+    it "creates a commande on technical client and profile, sets session, redirects to selection" do
+      expect {
+        post :create_commande_rapide
+      }.to change(Commande, :count).by(1)
+
+      created = Commande.order(:id).last
+      expect(created.client).to eq(Client.commande_rapide)
+      expect(created.profile).to eq(Profile.commande_rapide)
+      expect(created.devis).to eq(false)
+      expect(created.eshop).to eq(false)
+      expect(session[:commande]).to eq(created.id)
+      expect(response).to redirect_to(admin_selection_produit_path)
+      expect(flash[:admin_toasts]).to include(
+        a_hash_including("message" => I18n.t("admin.toasts.commande.commande_rapide_created"))
+      )
+    end
+  end
 end

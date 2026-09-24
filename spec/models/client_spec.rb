@@ -123,4 +123,23 @@ RSpec.describe 'Client' do
         expect(found).to be_nil
       end
     end
+
+    describe ".commande_rapide" do
+      it "finds or creates the shared technical client" do
+        first = Client.commande_rapide
+        second = Client.commande_rapide
+
+        expect(first.mail).to eq(Client::COMMANDE_RAPIDE_MAIL)
+        expect(first.tel).to eq(Client::COMMANDE_RAPIDE_TEL)
+        expect(first.prenom).to eq(Client::COMMANDE_RAPIDE_PRENOM)
+        expect(first.nom).to eq(Client::COMMANDE_RAPIDE_NOM)
+        expect(second.id).to eq(first.id)
+        expect(first.commande_rapide?).to be(true)
+      end
+
+      it "blocks hard destroy even without commandes" do
+        client = Client.commande_rapide
+        expect(client.hard_destroy_allowed?).to be(false)
+      end
+    end
 end

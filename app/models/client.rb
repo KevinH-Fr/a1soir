@@ -1,4 +1,6 @@
 class Client < ApplicationRecord
+    include ClientCommandeRapide
+
     # Même forme qu’en base pour les recherches : find_by(mail: …) sans SQL LOWER.
     normalizes :mail, with: ->(mail) { mail.to_s.strip.downcase.presence }
 
@@ -16,7 +18,7 @@ class Client < ApplicationRecord
     PROPART_OPTIONS = ["particulier", "professionnel"]
     INTITULE_OPTIONS = ["Madame", "Monsieur", "Madame et Monsieur", "Madame/Monsieur"]
     ESHOP_DEFAULT_INTITULE = "Madame/Monsieur"
-    
+
     def full_name
       prenom + " " + nom
     end
@@ -50,6 +52,7 @@ class Client < ApplicationRecord
     end
 
   def hard_destroy_allowed?
+    return false if commande_rapide?
     return false if commandes.exists?
     return false if meetings.exists?
 

@@ -37,6 +37,7 @@ fr:
         destroyed: "Sous-article supprimé"
       commande:
         created: "Commande créée"
+        commande_rapide_created: "Commande rapide créée — sélectionnez les articles"
         updated: "Commande mise à jour"
         destroyed: "Commande supprimée"
         destroy_blocked: "Impossible de supprimer cette commande :  des enregistrements y sont encore liés en base."

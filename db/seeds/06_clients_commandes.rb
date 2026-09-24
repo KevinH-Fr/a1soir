@@ -10,6 +10,9 @@ robe_cocktail = Produit.find_by!(nom: "Robe cocktail démo")
 robe_soiree = Produit.find_by!(nom: "Robe soirée démo")
 costume = Produit.find_by!(nom: "Costume smoking démo")
 
+Client.commande_rapide
+Seeds::Helpers.log("06", "Client Commande rapide : #{Client::COMMANDE_RAPIDE_PRENOM} #{Client::COMMANDE_RAPIDE_NOM}")
+
 client_sophie = Client.find_or_create_by!(mail: "client@dev.a1soir.local") do |c|
   c.nom = "Bernard"
   c.prenom = "Sophie"

@@ -17,11 +17,19 @@
           <% end %>
           <%= custom_badge("", "", "", "", commande.client.full_name) %>
           <%= custom_badge("", "", "", "", commande.type_locvente) if commande.type_locvente %>
-          <%= custom_badge("fa-calendar", "", "", "", commande.full_event) %>
+          <%= custom_badge("fa-calendar", "", "", "", commande.full_event) unless commande.evenement_manquant? %>
 
           <%= custom_badge("", "", "", "", commande.profile&.prenom) %>
           <%= custom_badge("fa-hourglass-half", "devis", "", "", "") if commande.devis?  %>
 
+        <% end %>
+
+        <% if commande.client&.commande_rapide? || commande.dates_location_manquantes? || commande.evenement_manquant? %>
+          <div class="d-flex flex-wrap align-items-center gap-1 mx-1 mt-1" role="status" aria-label="Éléments à compléter">
+            <%= commande_a_completer_badge(commande) %>
+            <%= commande_dates_manquantes_badge(commande) %>
+            <%= commande_evenement_manquant_badge(commande) %>
+          </div>
         <% end %>
 
         <div class="my-2 p-1">

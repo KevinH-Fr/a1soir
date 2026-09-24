@@ -12,7 +12,12 @@
               order_ref: commande.ref_commande,
               tail: " #{commande.client.full_name} #{commande.created_at.strftime('%d/%m/%Y')}",
               row_icon: commande.eshop? ? :eshop : :none
-            } } )  %>
+            } },
+            quick_action: {
+              path: create_commande_rapide_admin_commandes_path,
+              title: "Commande rapide",
+              icon: "bi-lightning-charge-fill"
+            })  %>
     </div>
   </div>
 

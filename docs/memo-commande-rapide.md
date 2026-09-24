@@ -3,7 +3,7 @@
 **Objet :** Accélérer la saisie d’une commande boutique en reportant le non-essentiel  
 **Contexte :** Admin commandes (hors e-shop)  
 **Principe :** Enregistrer vite (articles + paiement), compléter client / dates / événement plus tard  
-**Statut :** Cadrage (non implémenté)
+**Statut :** Implémenté
 
 ---
 
@@ -22,101 +22,61 @@ Le raccourci s’applique à toute commande boutique : location, vente ou mixte.
 
 ---
 
-## Solution proposée
+## Solution
 
-**Bouton « Commande rapide »** qui crée une commande pré-remplie :
+**Bouton « Commande rapide »** (dashboard + index commandes) qui crée une commande pré-remplie :
 
 | Auto / reporté | Saisi tout de suite |
 |----------------|---------------------|
-| Client technique partagé « Commande rapide » | Articles (produit, qty, prix, loc/vente **par ligne**) |
-| Profile = vendeur connecté | Paiement (surtout moyen ; montant aidé) |
+| Client technique partagé « Commande Rapide » | Articles (produit, qty, prix, loc/vente **par ligne**) |
+| Profile technique « Rapide » | Paiement (moyen ; type `prix` + montant solde préremplis) |
 | `devis: false` | |
 | Type loc/vente/mixte **non forcé** (déduit des articles) | |
 | Événement, dates location, commentaires vides | |
 
-**Complétion ultérieure :** changer le client, remplir dates / événement via le formulaire commande existant. Les commandes encore sur le client placeholder = file « à compléter ».
+**Complétion ultérieure :** changer le client (select visible à l’édition tant que le client est encore « Commande Rapide ») et le profil, remplir dates / événement via le formulaire commande existant. Badge « Client à compléter » tant que le client technique ; « Dates manquantes » si ligne location sans dates ; « Événement manquant » tant que type ou date d’événement absents.
 
 ---
 
-## Ce qu’on accélère
+## Clics gagnés (implémenté)
 
-| Étape | Aujourd’hui | Commande rapide | Gain |
-|-------|-------------|-----------------|------|
-| **Client** | Création fiche ou recherche | Client unique « Commande rapide » / « Comptoir » | Évite 1 écran + validations `tel_or_mail` |
-| **Profile** | Select manuel | Auto = vendeur connecté | 1 clic en moins |
-| **Type commande** | Radio location/vente/mixte à la création | Laissé vide ; déduit des articles | Pas de choix prématuré |
-| **Événement** | typeevent + dateevent | Vide | Reportable |
-| **Dates location** | debutloc / finloc | Vides au départ | Reportables |
-| **Devis / commentaires** | Cases + textes | `devis: false`, vides | Reportable |
-| **Statut articles** | `non-retiré` | Inchangé | — |
-| **Articles** | Sélection + qty/prix + loc/vente | Conservé | — |
-| **Paiement** | type + moyen + montant | Conservé ; aide type `prix`, date du jour, montant = solde | Moins de champs |
+Un clic = action pointeur. Hors article (identique des deux côtés). Objectif = temps jusqu’à encaissement.
+
+- **8 clics** si le client est déjà dans la liste du dashboard (13 → 5 hors article).
+- **9 clics** pour un nouveau client, ou via « + » Commandes (14 → 5).
+- Dont **5–6** (saut client + fiche commande + select profil + entrée sélection produit) et **3** (paiement prérempli type + montant).
 
 ---
 
-## Gains estimés (1er passage, 1 article)
+## Mise en œuvre technique
 
-Comptage des **champs affichés** dans les formulaires admin.
-
-### Inventaire
-
-- **Client** : 15 champs (language, prenom, nom, propart, intitule, tel, tel2, mail, mail2, adresse, cp, ville, pays, commentaires, contact)
-- **Commande** : 10 champs (client, profile, typeevent, dateevent, debutloc, finloc, description, commentaires, devis, type_locvente)
-- **Article** : ~4–6 saisies utiles — **non réduit**
-- **Paiement** : 5 champs (typepaiement, moyen, montant, commentaires, custom_date)
-
-### Scénarios
-
-| Scénario | Classique | Commande rapide | Réduction |
-|----------|-----------|-----------------|-----------|
-| **A. Nouveau client** (tous champs affichés) | ~35 / 4 écrans | ~6–7 / 2–3 écrans | **≈ 80–85 %** |
-| Hors articles seulement | 30 | 1–2 | **≈ 93–97 %** |
-| **B. Client déjà existant** | ~12–15 | ~6–7 | **≈ 40–55 %** |
-| **C. Saisie minimale « expérimentée »** | ~8–11 décisions | ~3–4 | **≈ 55–65 %** |
-
-Le gros levier = **sauter client + fiche commande** (~25 champs).
-
-**Nuance :** si le vendeur complète client / dates / événement plus tard, le volume total de données sur le cycle de vie peut se rapprocher du classique. Le bénéfice principal est le **temps jusqu’à commande utilisable / encaissée**, pas une suppression définitive de toutes les infos.
-
----
-
-## Mise en œuvre technique (rappel)
-
-1. **Client technique partagé** (seed / `find_or_create`), ex. prenom `Commande`, nom `Rapide`, mail interne pour passer `tel_or_mail_present` — pas un client fantôme par commande.
-2. **Action** `Admin::CommandesController#create_commande_rapide` (POST) :
-   - `client` = placeholder
-   - `profile` = vendeur courant
-   - `devis: false`
-   - ne pas forcer `type_locvente`
-   - redirect vers sélection produits (puis paiement)
-3. **UI** : bouton sur dashboard / index commandes.
-4. **Repérage « à compléter »** : scope sur `client_id` du placeholder + badge show/index.
-5. **Paiement** (optionnel) : préremplir `typepaiement: "prix"`, date du jour, montant = solde restant.
-6. **Hors scope** : e-shop ; le parcours classique (client d’abord) reste disponible.
+1. **Client technique** : concern `ClientCommandeRapide` → `Client.commande_rapide` (prénom/nom `Commande` / `Rapide`, mail `commande-rapide@example.invalid`).
+2. **Profil technique** : concern `ProfileCommandeRapide` → `Profile.commande_rapide` (prénom `Rapide`, comme l’e-shop).
+3. **Repérage** : concern `CommandeRapideCompletable` → `a_completer?`, `dates_location_manquantes?`, scope `a_completer`.
+4. **Action** `POST Admin::CommandesController#create_commande_rapide` → `session[:commande]` + redirect sélection produit.
+5. **UI** : bouton éclair dashboard / index / bloc Accès ; badges show/index ; paiement prérempli si `a_completer?`.
+6. **Hors scope** : e-shop ; parcours classique inchangé ; pas de liaison User ↔ Profile ; pas de masquage analyses.
 
 ### Fichiers clés
 
-- `app/models/client.rb` — `Client.commande_rapide`
-- `db/seeds/` — seed du client
+- `app/models/concerns/client_commande_rapide.rb`
+- `app/models/concerns/profile_commande_rapide.rb`
+- `app/models/concerns/commande_rapide_completable.rb`
+- `db/seeds/02_profiles.rb`, `db/seeds/06_clients_commandes.rb`
 - `app/controllers/admin/commandes_controller.rb` + route
 - Dashboard / index commandes — bouton
-- `app/views/admin/commandes/_commande.html.erb` — badge
+- `app/views/admin/commandes/_commande.html.erb` — badges
+- `app/views/admin/paiement_recus/_paiement_recus.html.erb` — préremplissage
 - Specs associées
 
 ### Point d’attention location
 
-Sans `debutloc` / `finloc`, la disponibilité stock liée aux dates peut être incomplète jusqu’à complétion. Acceptable si le vendeur revient dessus ; éventuellement rappel UI « dates manquantes » si la commande a des lignes location.
+Sans `debutloc` / `finloc`, la disponibilité stock liée aux dates peut être incomplète jusqu’à complétion. Badge « Dates manquantes » si la commande a des lignes location.
 
 ---
 
 ## Limites
 
-- Analyses / ranking par client : regroupés sous « Commande rapide » jusqu’à réaffectation
+- Analyses / ranking : client et CA regroupés sous « Commande Rapide » / profil « Rapide » jusqu’à réaffectation
 - Documents / mails : pas de vrai contact tant que le client n’est pas changé
 - Risque de file de commandes « orphelines » si personne ne complète
-
----
-
-## Next
-
-Valider ce mémo, puis implémenter : client placeholder + action + bouton + badge.

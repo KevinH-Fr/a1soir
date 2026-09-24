@@ -223,6 +223,7 @@ Rails.application.routes.draw do
         
         collection do
           post 'selection_articles'
+          post :create_commande_rapide
         end
       end
         

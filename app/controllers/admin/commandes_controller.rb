@@ -91,6 +91,25 @@ class Admin::CommandesController < Admin::ApplicationController
     end
   end
 
+  # Crée une commande boutique minimale (client + profil techniques) et ouvre la sélection produit.
+  def create_commande_rapide
+    @commande = Commande.new(
+      client: Client.commande_rapide,
+      profile: Profile.commande_rapide,
+      devis: false,
+      eshop: false
+    )
+
+    if @commande.save
+      session[:commande] = @commande.id
+      admin_push_domain_toast!(flash, :commande, :commande_rapide_created)
+      redirect_to admin_selection_produit_path
+    else
+      admin_push_model_errors_toast!(flash, @commande)
+      redirect_back fallback_location: admin_commandes_path
+    end
+  end
+
   def update
     @clients = Client.all
     @profiles = Profile.all
@@ -98,12 +117,16 @@ class Admin::CommandesController < Admin::ApplicationController
 
     respond_to do |format|
       if @commande.update(commande_params)
+        @commande.reload
 
         admin_push_domain_toast!(flash.now, :commande, :updated)
 
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.update(@commande, partial: "admin/commandes/commande", locals: {commande: @commande}),
+            turbo_stream.update(@commande, partial: "admin/commandes/commande", locals: { commande: @commande }),
+            turbo_stream.update("commande_client_mini",
+              partial: "admin/clients/client_mini",
+              locals: { client: @commande.client }),
             turbo_stream.prepend('flash', partial: 'layouts/flash', locals: { flash: flash })
           ]
         end
@@ -114,11 +137,9 @@ class Admin::CommandesController < Admin::ApplicationController
         end
         format.json { render :show, status: :ok, location: @commande }
       else
-
-        
         format.turbo_stream do
-          render turbo_stream: turbo_stream.update(@commande, 
-                    partial: 'admin/commandes/form', 
+          render turbo_stream: turbo_stream.update(@commande,
+                    partial: 'admin/commandes/form',
                     locals: { commande: @commande, admin_form_row_embedded: true })
         end
 

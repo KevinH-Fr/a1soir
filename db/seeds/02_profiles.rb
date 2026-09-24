@@ -13,3 +13,8 @@ Profile.find_or_create_by!(prenom: Profile::ESHOP_PROFILE_PRENOM) do |p|
   p.nom = nil
 end
 Seeds::Helpers.log("02", "Profil E-shop : #{Profile::ESHOP_PROFILE_PRENOM} (id #{Profile.find_by(prenom: Profile::ESHOP_PROFILE_PRENOM)&.id})")
+
+Profile.find_or_create_by!(prenom: Profile::COMMANDE_RAPIDE_PROFILE_PRENOM) do |p|
+  p.nom = nil
+end
+Seeds::Helpers.log("02", "Profil Commande rapide : #{Profile::COMMANDE_RAPIDE_PROFILE_PRENOM} (id #{Profile.find_by(prenom: Profile::COMMANDE_RAPIDE_PROFILE_PRENOM)&.id})")

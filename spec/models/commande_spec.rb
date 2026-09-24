@@ -71,4 +71,63 @@ RSpec.describe 'Commande' do
         end
     end
 
+    describe "commande rapide" do
+      it "marks a_completer when client or profile is technical" do
+        commande = Commande.create!(
+          client: Client.commande_rapide,
+          profile: Profile.commande_rapide,
+          devis: false,
+          eshop: false
+        )
+        expect(commande.a_completer?).to be(true)
+        expect(Commande.a_completer).to include(commande)
+      end
+
+      it "detects missing location dates when a location article exists" do
+        client = Client.create!(
+          nom: "Loc",
+          prenom: "Dates",
+          propart: "particulier",
+          intitule: Client::INTITULE_OPTIONS.first,
+          mail: "dates-#{SecureRandom.hex(4)}@test.com"
+        )
+        profile = Profile.create!(prenom: "V", nom: "D")
+        commande = Commande.create!(
+          client: client,
+          profile: profile,
+          devis: false,
+          type_locvente: "location"
+        )
+        produit = Produit.create!(nom: "Robe dates", prixlocation: 50, quantite: 1)
+        Article.create!(
+          commande: commande,
+          produit: produit,
+          locvente: "location",
+          quantite: 1,
+          prix: 50,
+          total: 50
+        )
+
+        expect(commande.dates_location_manquantes?).to be(true)
+        commande.update!(debutloc: Date.today, finloc: Date.today + 1)
+        expect(commande.dates_location_manquantes?).to be(false)
+      end
+
+      it "detects missing event type or date" do
+        commande = Commande.create!(
+          client: Client.commande_rapide,
+          profile: Profile.commande_rapide,
+          devis: false,
+          eshop: false
+        )
+        expect(commande.evenement_manquant?).to be(true)
+
+        commande.update!(typeevent: "mariage")
+        expect(commande.evenement_manquant?).to be(true)
+
+        commande.update!(dateevent: Date.today)
+        expect(commande.evenement_manquant?).to be(false)
+      end
+    end
+
 end

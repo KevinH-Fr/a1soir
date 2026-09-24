@@ -1,4 +1,6 @@
 class Profile < ApplicationRecord
+    include ProfileCommandeRapide
+
     # Profil technique e-shop : identifié par le prénom uniquement ; `nom` laissé vide.
     ESHOP_PROFILE_PRENOM = "Eshop"
 
@@ -40,6 +42,7 @@ class Profile < ApplicationRecord
 
     def hard_destroy_allowed?
       return false if prenom.to_s.casecmp?(ESHOP_PROFILE_PRENOM)
+      return false if commande_rapide?
       return false if commandes.exists?
 
       true
