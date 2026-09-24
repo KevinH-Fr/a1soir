@@ -76,6 +76,78 @@ RSpec.describe Admin::AnalysesController, type: :controller do
       expect(response.body).to match(/_grain(?:\\u0022|&quot;|")\s*:\s*(?:\\u0022|&quot;|")hour/)
     end
 
+    it "nets boutique CA by remboursement moyen without changing Stripe" do
+      allow(GenerateQr).to receive(:call)
+
+      commande = Commande.create!(
+        client: client,
+        profile: profile,
+        nom: "Boutique remb CA",
+        montant: 100,
+        devis: false,
+        type_locvente: "vente",
+        typeevent: Commande::EVENEMENTS_OPTIONS.first,
+        eshop: false
+      )
+      PaiementRecu.create!(
+        commande: commande,
+        typepaiement: "prix",
+        montant: 100,
+        moyen: "espèces",
+        custom_date: Date.current
+      )
+      AvoirRemb.create!(
+        commande: commande,
+        type_avoir_remb: "remboursement",
+        montant: 30,
+        moyen: "espèces",
+        custom_date: Date.current
+      )
+
+      get :index, params: { debut: Date.current.to_s, fin: Date.current.to_s, vue: "ca" }
+
+      expect(response).to have_http_status(:ok)
+      expect(assigns(:totalPrixCaEspeces)).to eq(70.to_d)
+      expect(assigns(:totalPrixCa)).to eq(70.to_d)
+      expect(assigns(:totalPrixCaStripe)).to eq(0.to_d)
+    end
+
+    it "ignores boutique remboursements without moyen in CA fluxes" do
+      allow(GenerateQr).to receive(:call)
+
+      commande = Commande.create!(
+        client: client,
+        profile: profile,
+        nom: "Boutique remb legacy",
+        montant: 80,
+        devis: false,
+        type_locvente: "vente",
+        typeevent: Commande::EVENEMENTS_OPTIONS.first,
+        eshop: false
+      )
+      PaiementRecu.create!(
+        commande: commande,
+        typepaiement: "prix",
+        montant: 80,
+        moyen: "carte bleue",
+        custom_date: Date.current
+      )
+      remb = AvoirRemb.new(
+        commande: commande,
+        type_avoir_remb: "remboursement",
+        montant: 20,
+        moyen: "carte bleue",
+        custom_date: Date.current
+      )
+      remb.save!
+      remb.update_columns(moyen: nil)
+
+      get :index, params: { debut: Date.current.to_s, fin: Date.current.to_s, vue: "ca" }
+
+      expect(assigns(:totalPrixCaCb)).to eq(80.to_d)
+      expect(assigns(:totalPrixCa)).to eq(80.to_d)
+    end
+
     context "with analyses dashboard dataset" do
       before { AnalysesDashboardDataset.seed! }
 

@@ -4,7 +4,7 @@
              compact: avoir_compact,
              embedded: local_assigns.fetch(:admin_form_row_embedded, false)
            } do %>
-  <%= form_with(model: avoir_remb, url: avoir_remb.persisted? ? admin_avoir_remb_path(avoir_remb) : admin_avoir_rembs_path, method: avoir_remb.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
+  <%= form_with(model: avoir_remb, url: avoir_remb.persisted? ? admin_avoir_remb_path(avoir_remb) : admin_avoir_rembs_path, method: avoir_remb.persisted? ? :patch : :post, data: { turbo: true, controller: "avoir-remb-moyen", avoir_remb_moyen_require_moyen_on_create_value: !avoir_remb.persisted? }) do |form| %>
     <% if avoir_remb.errors.any? %>
       <div class="alert alert-danger py-2 mb-3" role="alert">
         <h2 class="h6 mb-2"><%= pluralize(avoir_remb.errors.count, "error") %> prohibited this avoir_remb from being saved:</h2>
@@ -21,12 +21,24 @@
         <%= form.label :type_avoir_remb, class: "input-group-text" %>
         <%= form.select :type_avoir_remb, AvoirRemb::TYPE_AVOIRREMB,
           { include_blank: "Sélectionner" },
-          class: "form-select", required: true %>
+          class: "form-select",
+          required: true,
+          data: { avoir_remb_moyen_target: "typeSelect", action: "change->avoir-remb-moyen#sync" } %>
       </div>
 
       <%= custom_form_elements(form,
         [:montant, :number_field],
         [:nature, :text_field]) %>
+
+      <div class="input-group w-100"
+           data-avoir-remb-moyen-target="moyenField"
+           <%= "hidden" unless avoir_remb.type_avoir_remb == "remboursement" %>>
+        <%= form.label :moyen, class: "input-group-text" %>
+        <%= form.select :moyen, AvoirRemb::MOYEN_PAIEMENT,
+          { include_blank: "Sélectionner" },
+          class: "form-select",
+          data: { avoir_remb_moyen_target: "moyenSelect" } %>
+      </div>
 
       <div class="input-group w-100">
         <%= form.label :custom_date, "Date", class: "input-group-text" %>

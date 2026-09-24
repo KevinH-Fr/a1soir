@@ -99,8 +99,18 @@ module Analyses
         boutique = paiements.only_prix
                             .where(moyen: ["carte bleue", "espèces", "chèque", "virement"])
                             .sum(:montant).to_d
-        boutique + stripe_eur
+        boutique - boutique_remboursements_total + stripe_eur
       end
+    end
+
+    def boutique_remboursements_total
+      @boutique_remboursements_total ||= (@scopes[:remboursements_boutique_filtres] || AvoirRemb.none).sum(:montant).to_d
+    end
+
+    def boutique_remboursements_for_profile(profile_id)
+      (@scopes[:remboursements_boutique_filtres] || AvoirRemb.none)
+        .merge(Commande.where(profile_id: profile_id))
+        .sum(:montant).to_d
     end
 
     def transaction_totals(articles, sous_articles)
@@ -149,7 +159,8 @@ module Analyses
                          articles.where(commande_id: ids).joins(:commande).where(commandes: { eshop: [false, nil] }).sum(:prix).to_d +
                            sous_articles.joins(article: :commande).where(commandes: { id: ids, eshop: [false, nil] }).sum(:prix).to_d
                        else
-                         paiements.only_prix.joins(:commande).where(commandes: { profile_id: profile.id }).sum(:montant).to_d
+                         paiements.only_prix.joins(:commande).where(commandes: { profile_id: profile.id }).sum(:montant).to_d -
+                           boutique_remboursements_for_profile(profile.id)
                        end
         stripe_ids = @scopes[:stripe_payments_paid_filtres]
                        .where(commande_id: Commande.where(profile_id: profile.id).select(:id))
@@ -181,7 +192,8 @@ module Analyses
                      else
                        @scopes[:paiements_filtres].only_prix.joins(:commande)
                                                   .where(commandes: { profile_id: profile_id })
-                                                  .sum(:montant).to_d
+                                                  .sum(:montant).to_d -
+                         boutique_remboursements_for_profile(profile_id)
                      end
 
       stripe_ids = @scopes[:stripe_payments_paid_filtres]

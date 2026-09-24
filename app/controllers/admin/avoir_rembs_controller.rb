@@ -181,7 +181,7 @@ class Admin::AvoirRembsController < Admin::ApplicationController
     end
 
     def avoir_remb_params
-      params.require(:avoir_remb).permit(:type_avoir_remb, :montant, :nature, :commande_id, :custom_date)
+      params.require(:avoir_remb).permit(:type_avoir_remb, :montant, :nature, :commande_id, :custom_date, :moyen)
     end
 
 end

@@ -8,6 +8,7 @@
         <tr>
           <th class="text-center" style="width:32px">#</th>
           <th>Type</th>
+          <th>Moyen</th>
           <th class="text-center">Date</th>
           <th class="text-end">Montant</th>
         </tr>
@@ -17,6 +18,7 @@
           <tr>
             <td class="text-center align-middle text-muted small"><%= i + 1 %></td>
             <td class="align-middle small"><%= avoirremb.type_avoir_remb %></td>
+            <td class="align-middle small"><%= avoirremb.moyen %></td>
             <td class="text-center align-middle small"><%= avoirremb.custom_date.strftime("%d/%m/%y") if avoirremb.custom_date.present? %></td>
             <td class="text-end align-middle"><%= custom_currency_format(avoirremb.montant) %></td>
           </tr>
@@ -24,7 +26,7 @@
       </tbody>
       <tfoot class="table-light fw-bold">
         <tr>
-          <td colspan="3" class="text-end text-muted small">Total</td>
+          <td colspan="4" class="text-end text-muted small">Total</td>
           <td class="text-end"><%= custom_currency_format(avoir_deduit(@doc_edition.commande) - remb_deduit(@doc_edition.commande)) %></td>
         </tr>
       </tfoot>

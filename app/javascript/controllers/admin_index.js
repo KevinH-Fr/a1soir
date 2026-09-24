@@ -41,3 +41,6 @@ application.register("analyses-filters", AnalysesFiltersController)
 
 import AnalysesSegmentToggleController from "./analyses_segment_toggle_controller"
 application.register("analyses-segment-toggle", AnalysesSegmentToggleController)
+
+import AvoirRembMoyenController from "./avoir_remb_moyen_controller"
+application.register("avoir-remb-moyen", AvoirRembMoyenController)

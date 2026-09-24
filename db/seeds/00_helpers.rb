@@ -46,6 +46,8 @@ module Seeds
       "Commande seed CA jour 50 espèces" => 0,
       "Commande seed CA mois dernier 100 espèces" => 32,
       "Commande seed CA mois dernier 655 espèces" => 40,
+      # Remboursement boutique avec moyen à J0 (paiement 120 CB − remb 40 CB = 80).
+      "Commande seed remb boutique jour" => 0,
       "Devis seed Marie" => 15,
       "Devis seed Paul" => 3,
       "Boutique A" => 5,
@@ -84,11 +86,13 @@ module Seeds
         StripePaymentItem.where(stripe_payment_id: commande.stripe_payment.id)
                          .update_all(created_at: at, updated_at: at)
       end
-      AvoirRemb.where(commande_id: commande.id).update_all(
-        created_at: at,
-        updated_at: at,
-        custom_date: at.to_date
-      )
+      AvoirRemb.where(commande_id: commande.id).find_each do |remb|
+        attrs = { created_at: at, updated_at: at }
+        if remb.custom_date.blank? || remb.custom_date == remb.created_at.in_time_zone.to_date
+          attrs[:custom_date] = date
+        end
+        remb.update_columns(attrs)
+      end
     end
 
     def wipe_seed_commande!(commande)
@@ -115,7 +119,7 @@ module Seeds
       log("align", "Commandes démo étalées sur les #{DEMO_COMMANDE_OFFSETS.values.max} derniers jours (heures 10h–18h)")
     end
 
-    def upsert_demo_commande!(nom:, client:, profile:, days_ago:, devis: false, eshop: false, type_locvente: "vente", statutarticles: "retiré", articles: [], paiements: [], stripe: nil)
+    def upsert_demo_commande!(nom:, client:, profile:, days_ago:, devis: false, eshop: false, type_locvente: "vente", statutarticles: "retiré", articles: [], paiements: [], remboursements: [], stripe: nil)
       at = demo_timestamp(days_ago, name: nom)
       commande = Commande.find_or_initialize_by(nom: nom)
       commande.assign_attributes(
@@ -157,6 +161,19 @@ module Seeds
             typepaiement: attrs[:typepaiement],
             montant: attrs[:montant],
             moyen: attrs[:moyen],
+            custom_date: attrs[:custom_date].presence || at.to_date,
+            created_at: at,
+            updated_at: at
+          )
+        end
+
+        commande.avoir_rembs.destroy_all
+        remboursements.each do |attrs|
+          commande.avoir_rembs.create!(
+            type_avoir_remb: attrs.fetch(:type_avoir_remb, "remboursement"),
+            montant: attrs[:montant],
+            moyen: attrs[:moyen],
+            nature: attrs[:nature],
             custom_date: attrs[:custom_date].presence || at.to_date,
             created_at: at,
             updated_at: at

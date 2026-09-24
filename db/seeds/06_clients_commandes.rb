@@ -449,3 +449,28 @@ Seeds::Helpers.upsert_demo_commande!(
     { typepaiement: "prix", montant: 655, moyen: "espèces", custom_date: encaissement_jour }
   ]
 )
+
+# Paiement CB 120 € − remboursement boutique CB 40 € à J0 → CA CB net −40 vs sans remb.
+Seeds::Helpers.upsert_demo_commande!(
+  nom: "Commande seed remb boutique jour",
+  client: client_sophie,
+  profile: profile_marie,
+  days_ago: offsets["Commande seed remb boutique jour"],
+  type_locvente: "vente",
+  statutarticles: "retiré",
+  articles: [
+    { produit: robe_cocktail, locvente: "vente", prix: 120, total: 120 }
+  ],
+  paiements: [
+    { typepaiement: "prix", montant: 120, moyen: "carte bleue", custom_date: encaissement_jour }
+  ],
+  remboursements: [
+    {
+      type_avoir_remb: "remboursement",
+      montant: 40,
+      moyen: "carte bleue",
+      nature: "Seed démo analyses",
+      custom_date: encaissement_jour
+    }
+  ]
+)

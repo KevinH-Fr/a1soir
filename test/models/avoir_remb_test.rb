@@ -19,6 +19,12 @@ class AvoirRembTest < ActiveSupport::TestCase
 
   test "accepts avoir or remboursement" do
     assert AvoirRemb.new(commande: @commande, type_avoir_remb: "avoir", montant: 1).valid?
-    assert AvoirRemb.new(commande: @commande, type_avoir_remb: "remboursement", montant: 1).valid?
+    assert AvoirRemb.new(commande: @commande, type_avoir_remb: "remboursement", montant: 1, moyen: "espèces").valid?
+  end
+
+  test "requires moyen on new boutique remboursement" do
+    ar = AvoirRemb.new(commande: @commande, type_avoir_remb: "remboursement", montant: 1)
+    assert_not ar.valid?
+    assert ar.errors[:moyen].any?
   end
 end

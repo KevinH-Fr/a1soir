@@ -29,6 +29,7 @@ module Analyses
       sous_articles = scoped_sous_articles(datedebut, datefin, articles)
       commandes_encaissement = commandes_for_encaissements(produits)
       paiements = scoped_paiements(datedebut, datefin, commandes_encaissement)
+      remboursements_boutique = scoped_remboursements_boutique(datedebut, datefin, commandes_encaissement)
       stripe_payments = scoped_stripe_payments(datedebut, datefin, commandes_encaissement)
       stripe_items = scoped_stripe_payment_items(stripe_payments, produits)
 
@@ -39,6 +40,7 @@ module Analyses
         articles_filtres: articles,
         sous_articles_filtres: sous_articles,
         paiements_filtres: paiements,
+        remboursements_boutique_filtres: remboursements_boutique,
         stripe_payments_paid_filtres: stripe_payments,
         stripe_payment_items_filtres: stripe_items,
         product_dimension_filtered: product_dimension_filtered?(@filter_params),
@@ -177,6 +179,19 @@ module Analyses
 
     def scoped_paiements(datedebut, datefin, commandes)
       scope = PaiementRecu.where(commande_id: commandes.select(:id))
+      if datedebut.present? && datefin.present?
+        scope = scope.where(custom_date: datedebut.to_date..datefin.to_date)
+      end
+      scope
+    end
+
+    # Remboursements boutique avec moyen : même fenêtre custom_date que les encaissements.
+    def scoped_remboursements_boutique(datedebut, datefin, commandes)
+      scope = AvoirRemb.remb_only
+                       .joins(:commande)
+                       .where(commandes: { eshop: [false, nil] })
+                       .where.not(moyen: [nil, ""])
+                       .where(commande_id: commandes.select(:id))
       if datedebut.present? && datefin.present?
         scope = scope.where(custom_date: datedebut.to_date..datefin.to_date)
       end

@@ -62,6 +62,10 @@ module Analyses
       ivar(:paiementsFiltres)
     end
 
+    def remboursements_boutique_filtres
+      ivar(:remboursementsBoutiqueFiltres) || AvoirRemb.none
+    end
+
     def stripe_payments_paid_filtres
       ivar(:stripePaymentsPaidFiltres)
     end
@@ -171,15 +175,18 @@ module Analyses
 
     def assign_ca_metrics_from_paiements(stripe_totals, datedebut, datefin)
       by_moyen = paiements_filtres.only_prix.group(:moyen).sum(:montant)
-      ivar_set(:totalPrixCaCb, by_moyen.fetch("carte bleue", 0).to_d)
-      ivar_set(:totalPrixCaEspeces, by_moyen.fetch("espèces", 0).to_d)
-      ivar_set(:totalPrixCaCheque, by_moyen.fetch("chèque", 0).to_d)
-      ivar_set(:totalPrixCaVirement, by_moyen.fetch("virement", 0).to_d)
+      remb_by_moyen = remboursements_boutique_filtres.group(:moyen).sum(:montant)
+      remb_total = remb_by_moyen.values.sum.to_d
+
+      ivar_set(:totalPrixCaCb, by_moyen.fetch("carte bleue", 0).to_d - remb_by_moyen.fetch("carte bleue", 0).to_d)
+      ivar_set(:totalPrixCaEspeces, by_moyen.fetch("espèces", 0).to_d - remb_by_moyen.fetch("espèces", 0).to_d)
+      ivar_set(:totalPrixCaCheque, by_moyen.fetch("chèque", 0).to_d - remb_by_moyen.fetch("chèque", 0).to_d)
+      ivar_set(:totalPrixCaVirement, by_moyen.fetch("virement", 0).to_d - remb_by_moyen.fetch("virement", 0).to_d)
       ivar_set(:totalPrixCaStripe, total_stripe_eur)
       boutique = ivar(:totalPrixCaCb) + ivar(:totalPrixCaEspeces) + ivar(:totalPrixCaCheque) + ivar(:totalPrixCaVirement)
       ivar_set(:totalPrixCaBoutique, boutique)
       ivar_set(:totalPrixCa, boutique + total_stripe_eur)
-      ivar_set(:totalCa, paiements_filtres.sum(:montant).to_d + total_stripe_eur)
+      ivar_set(:totalCa, paiements_filtres.sum(:montant).to_d - remb_total + total_stripe_eur)
 
       if timeline_grain == :hour
         # Jour métier = custom_date (déjà filtré) ; heure ops = created_at.
@@ -187,17 +194,19 @@ module Analyses
           paiements_filtres.only_prix.pluck(:created_at, :montant),
           grain: :hour
         )
+        boutique_remb_neg = boutique_remboursements_for_timeline_neg
         remb_neg = eshop_remboursements_for_timeline_neg(datedebut, datefin)
         stripe = stripe_totals.grouped_for_timeline(:hour)
       else
         boutique = paiements_filtres.only_prix.group(:custom_date).order(:custom_date).sum(:montant)
+        boutique_remb_neg = boutique_remboursements_by_day_neg
         remb_neg = eshop_remboursements_by_day_neg(datedebut, datefin)
         stripe = stripe_totals.grouped_by_day_eur
       end
 
-      ivar_set(:groupedByDateCaBoutique, merge_timeline_hashes(boutique))
+      ivar_set(:groupedByDateCaBoutique, merge_timeline_hashes(boutique, boutique_remb_neg))
       ivar_set(:groupedByDateCaEshop, merge_timeline_hashes(stripe, remb_neg))
-      ivar_set(:groupedByDateCa, merge_timeline_hashes(boutique, stripe, remb_neg))
+      ivar_set(:groupedByDateCa, merge_timeline_hashes(boutique, boutique_remb_neg, stripe, remb_neg))
     end
 
     def assign_ca_metrics_from_lines(stripe_totals, datedebut, datefin)
@@ -287,7 +296,10 @@ module Analyses
                        paiements_filtres.only_prix
                                         .joins(:commande)
                                         .where(commandes: { profile_id: profile.id })
-                                        .sum(:montant).to_d
+                                        .sum(:montant).to_d -
+                       remboursements_boutique_filtres
+                         .merge(Commande.where(profile_id: profile.id))
+                         .sum(:montant).to_d
                      end
       stripe_ids = stripe_payments_paid_filtres.where(
         commande_id: Commande.where(profile_id: profile.id).select(:id)
@@ -367,7 +379,20 @@ module Analyses
           grain: :hour
         )
 
-        merge_timeline_hashes(boutique, stripe, remb)
+        boutique_remb =
+          if analyses_ca_mode == :lignes
+            {}
+          else
+            TimelineBuckets.group_times(
+              remboursements_boutique_filtres
+                .merge(Commande.where(profile_id: profile_id))
+                .pluck("avoir_rembs.created_at", "avoir_rembs.montant")
+                .map { |at, montant| [at, -montant.to_d] },
+              grain: :hour
+            )
+          end
+
+        merge_timeline_hashes(boutique, boutique_remb, stripe, remb)
       else
         boutique =
           if analyses_ca_mode == :lignes
@@ -403,7 +428,18 @@ module Analyses
                  .sum(:montant)
                  .transform_values { |montant| -montant.to_d }
 
-        merge_timeline_hashes(boutique, stripe, remb)
+        boutique_remb =
+          if analyses_ca_mode == :lignes
+            {}
+          else
+            remboursements_boutique_filtres
+              .merge(Commande.where(profile_id: profile_id))
+              .group(:custom_date)
+              .sum(:montant)
+              .transform_values { |montant| -montant.to_d }
+          end
+
+        merge_timeline_hashes(boutique, boutique_remb, stripe, remb)
       end
     end
 
@@ -441,6 +477,30 @@ module Analyses
         rel = rel.where(commande_id: stripe_scope.select(:commande_id))
       end
       rel
+    end
+
+    def boutique_remboursements_by_day_neg
+      memo = ivar(:boutique_remboursements_by_day_neg)
+      return memo if memo
+
+      value = remboursements_boutique_filtres
+                .group(:custom_date)
+                .sum(:montant)
+                .transform_values { |montant| -montant.to_d }
+      ivar_set(:boutique_remboursements_by_day_neg, value)
+      value
+    end
+
+    def boutique_remboursements_for_timeline_neg
+      memo = ivar(:boutique_remboursements_for_timeline_neg)
+      return memo if memo
+
+      rows = remboursements_boutique_filtres
+               .pluck(:created_at, :montant)
+               .map { |at, montant| [at, -montant.to_d] }
+      value = TimelineBuckets.group_times(rows, grain: timeline_grain)
+      ivar_set(:boutique_remboursements_for_timeline_neg, value)
+      value
     end
 
     def eshop_remboursements_grouped_by_day(datedebut, datefin, product_dimension_filtered: false, stripe_scope: nil)

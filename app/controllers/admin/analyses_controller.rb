@@ -20,6 +20,7 @@ class Admin::AnalysesController < Admin::ApplicationController
     @articlesFiltres = scopes[:articles_filtres]
     @sousArticlesFiltres = scopes[:sous_articles_filtres]
     @paiementsFiltres = scopes[:paiements_filtres]
+    @remboursementsBoutiqueFiltres = scopes[:remboursements_boutique_filtres]
     @stripePaymentsPaidFiltres = scopes[:stripe_payments_paid_filtres]
     @stripePaymentItemsFiltres = scopes[:stripe_payment_items_filtres]
     @product_dimension_filtered = scopes[:product_dimension_filtered]

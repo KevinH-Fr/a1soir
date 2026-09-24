@@ -6,6 +6,7 @@
       <div class="d-flex flex-wrap gap-2">
         <%= field_with_label("type", avoir_remb.type_avoir_remb, icon_class: "bi-tag") %>
         <%= field_with_label("montant", custom_currency_no_decimals_format(avoir_remb.montant), icon_class: "bi-cash-stack") %>
+        <%= field_with_label("moyen", avoir_remb.moyen, icon_class: "bi-wallet2") if avoir_remb.moyen.present? %>
         <%= field_with_label("nature", avoir_remb.nature, icon_class: "bi-card-text") if avoir_remb.nature.present? %>
         <% if avoir_remb.custom_date.present? %>
           <%= field_with_label("date", avoir_remb.custom_date.strftime("%d/%m/%Y"), icon_class: "bi-calendar3") %>

@@ -86,6 +86,7 @@ RSpec.describe Analyses::DashboardMetrics, "timeline grain" do
     set_ivar(:articlesFiltres, articles)
     set_ivar(:sousArticlesFiltres, Sousarticle.joins(article: :commande).none)
     set_ivar(:paiementsFiltres, PaiementRecu.where(commande_id: commande.id))
+    set_ivar(:remboursementsBoutiqueFiltres, AvoirRemb.none)
     set_ivar(:stripePaymentsPaidFiltres, StripePayment.none)
     set_ivar(:stripePaymentItemsFiltres, StripePaymentItem.none)
     set_ivar(:product_dimension_filtered, false)
