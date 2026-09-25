@@ -27,9 +27,11 @@ class DemandeRdv < ApplicationRecord
                                numericality: { only_integer: true,
                                                greater_than_or_equal_to: 1,
                                                less_than_or_equal_to: 10 }
+  validates :locale, inclusion: { in: %w[fr en] }
   validate :type_rdv_must_be_valid
 
   # Callbacks
+  before_validation :normalize_locale
   after_update :sync_meeting_with_statut
 
   # Ransack
@@ -62,9 +64,22 @@ class DemandeRdv < ApplicationRecord
   end
 
   # Construit les attributs pour initialiser un Client depuis la demande.
+  # La langue n'est écrite qu'à la création : une fiche déjà existante n'est pas écrasée.
   def to_client_attributes
-    { prenom: prenom, nom: nom, tel: telephone, mail: email }
+    { prenom: prenom, nom: nom, tel: telephone, mail: email, language: visit_locale }
       .select { |_key, value| value.present? }
+  end
+
+  # Langue des mails client liés à cette demande.
+  # Une fiche existante garde sa langue. Sinon, c'est la locale du site
+  # au moment de la demande — celle qui sera écrite sur la nouvelle fiche.
+  def client_mail_locale
+    raw = Client.find_existing_from_demande(self)&.language.presence || visit_locale
+    %w[fr en].include?(raw.to_s) ? raw.to_sym : :fr
+  end
+
+  def visit_locale
+    %w[fr en].include?(locale.to_s) ? locale.to_s : "fr"
   end
 
   # ---- Durée du rendez-vous ----------------------------------------------
@@ -202,6 +217,10 @@ class DemandeRdv < ApplicationRecord
   end
 
   private
+
+  def normalize_locale
+    self.locale = visit_locale
+  end
 
   # Vérifie que type_rdv correspond à un TypeRdv existant.
   def type_rdv_must_be_valid

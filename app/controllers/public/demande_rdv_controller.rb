@@ -12,6 +12,7 @@ module Public
 
       @demande_rdv = DemandeRdv.new(demande_rdv_params)
       @demande_rdv.statut = "soumis"
+      @demande_rdv.locale = I18n.locale.to_s.presence_in(%w[fr en]) || "fr"
       
       # Si c'est une demande depuis la cabine d'essayage et que le type n'est pas rempli, pré-sélectionner "Essayage"
       @demande_rdv.set_type_essayage if params[:from_cabine] == "1"

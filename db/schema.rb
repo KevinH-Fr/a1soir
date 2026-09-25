@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_09_24_183000) do
+ActiveRecord::Schema[7.2].define(version: 2026_09_25_143000) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -221,6 +221,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_24_183000) do
     t.integer "nombre_personnes"
     t.string "evenement"
     t.date "date_evenement"
+    t.string "locale", default: "fr", null: false
   end
 
   create_table "doc_editions", force: :cascade do |t|

@@ -16,7 +16,7 @@
     </div>
 
     <div class= "card-body p-2 light-beige-colored text-center gap-2">
-        <%= options_supplementaires_link(create_commande_rapide_admin_commandes_path, "bi-lightning-charge-fill","Commande rapide", "btn-outline-warning", method: :post ) %>
+        <%= options_supplementaires_link(create_commande_rapide_admin_commandes_path, "bi-lightning-charge-fill","Vente rapide", "btn-outline-warning", method: :post ) %>
         <%= options_supplementaires_link(admin_users_path, "bi-person-circle", "Comptes", "btn-outline-primary") if current_admin_user.admin? %>
         <%= options_supplementaires_link(admin_profiles_path, "bi-person-check", "Profils", "btn-outline-dark") if current_admin_user.admin? %>
         <%= options_supplementaires_link(admin_textes_path, "bi-flag", "Marketing", "btn-outline-warning") if current_admin_user.admin? %>

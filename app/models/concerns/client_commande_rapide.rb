@@ -1,18 +1,19 @@
 # frozen_string_literal: true
 
-# Client technique partagé pour les commandes créées via « Commande rapide ».
+# Client technique partagé pour les ventes créées via « Vente rapide ».
 module ClientCommandeRapide
   extend ActiveSupport::Concern
 
-  COMMANDE_RAPIDE_PRENOM = "Commande"
+  COMMANDE_RAPIDE_PRENOM = "Vente"
   COMMANDE_RAPIDE_NOM = "Rapide"
+  COMMANDE_RAPIDE_PRENOM_LEGACY = "Commande"
   COMMANDE_RAPIDE_TEL = "0000000000"
   # Domaine réservé RFC (`.invalid`) : non livrable, pas un faux domaine métier.
   COMMANDE_RAPIDE_MAIL = "commande-rapide@example.invalid"
   COMMANDE_RAPIDE_MAIL_LEGACY = "commande.rapide@interne.a1soir.local"
 
   class_methods do
-    # Find-or-create + normalisation douce (mail legacy → mail technique).
+    # Find-or-create + normalisation douce (mail / prénom legacy → attrs techniques).
     def commande_rapide
       client = find_commande_rapide_record
       return sync_commande_rapide_attrs!(client) if client
@@ -39,6 +40,10 @@ module ClientCommandeRapide
         prenom: ClientCommandeRapide::COMMANDE_RAPIDE_PRENOM,
         nom: ClientCommandeRapide::COMMANDE_RAPIDE_NOM
       ) ||
+        find_by(
+          prenom: ClientCommandeRapide::COMMANDE_RAPIDE_PRENOM_LEGACY,
+          nom: ClientCommandeRapide::COMMANDE_RAPIDE_NOM
+        ) ||
         find_by(mail: ClientCommandeRapide::COMMANDE_RAPIDE_MAIL) ||
         find_by(mail: ClientCommandeRapide::COMMANDE_RAPIDE_MAIL_LEGACY)
     end
@@ -55,7 +60,10 @@ module ClientCommandeRapide
   end
 
   def commande_rapide?
-    prenom.to_s.casecmp?(ClientCommandeRapide::COMMANDE_RAPIDE_PRENOM) &&
-      nom.to_s.casecmp?(ClientCommandeRapide::COMMANDE_RAPIDE_NOM)
+    nom.to_s.casecmp?(ClientCommandeRapide::COMMANDE_RAPIDE_NOM) &&
+      (
+        prenom.to_s.casecmp?(ClientCommandeRapide::COMMANDE_RAPIDE_PRENOM) ||
+        prenom.to_s.casecmp?(ClientCommandeRapide::COMMANDE_RAPIDE_PRENOM_LEGACY)
+      )
   end
 end

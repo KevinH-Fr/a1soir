@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Repérage des commandes encore sur client / profil techniques « Commande rapide ».
+# Repérage des commandes encore sur client / profil techniques « Vente rapide ».
 module CommandeRapideCompletable
   extend ActiveSupport::Concern
 

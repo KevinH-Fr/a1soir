@@ -91,11 +91,12 @@ class Admin::CommandesController < Admin::ApplicationController
     end
   end
 
-  # Crée une commande boutique minimale (client + profil techniques) et ouvre la sélection produit.
+  # Crée une vente rapide boutique (client + profil techniques) et ouvre la sélection produit.
   def create_commande_rapide
     @commande = Commande.new(
       client: Client.commande_rapide,
       profile: Profile.commande_rapide,
+      type_locvente: "vente",
       devis: false,
       eshop: false
     )

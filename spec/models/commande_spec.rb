@@ -76,11 +76,34 @@ RSpec.describe 'Commande' do
         commande = Commande.create!(
           client: Client.commande_rapide,
           profile: Profile.commande_rapide,
+          type_locvente: "vente",
           devis: false,
           eshop: false
         )
         expect(commande.a_completer?).to be(true)
         expect(Commande.a_completer).to include(commande)
+      end
+
+      it "forces articles to vente while a_completer" do
+        commande = Commande.create!(
+          client: Client.commande_rapide,
+          profile: Profile.commande_rapide,
+          type_locvente: "vente",
+          devis: false,
+          eshop: false
+        )
+        produit = Produit.create!(nom: "Robe rapide", prixvente: 80, quantite: 1)
+        article = Article.create!(
+          commande: commande,
+          produit: produit,
+          locvente: "location",
+          quantite: 1,
+          prix: 80,
+          total: 80
+        )
+
+        expect(article.locvente).to eq("vente")
+        expect(commande.reload.type_locvente).to eq("vente")
       end
 
       it "detects missing location dates when a location article exists" do
@@ -117,6 +140,7 @@ RSpec.describe 'Commande' do
         commande = Commande.create!(
           client: Client.commande_rapide,
           profile: Profile.commande_rapide,
+          type_locvente: "vente",
           devis: false,
           eshop: false
         )

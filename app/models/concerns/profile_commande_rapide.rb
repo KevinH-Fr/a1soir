@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Profil technique pour les commandes créées via « Commande rapide » (même idée que l’e-shop).
+# Profil technique pour les ventes créées via « Vente rapide » (même idée que l’e-shop).
 module ProfileCommandeRapide
   extend ActiveSupport::Concern
 

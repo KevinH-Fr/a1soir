@@ -170,6 +170,7 @@ RSpec.describe Admin::CommandesController, type: :controller do
       created = Commande.order(:id).last
       expect(created.client).to eq(Client.commande_rapide)
       expect(created.profile).to eq(Profile.commande_rapide)
+      expect(created.type_locvente).to eq("vente")
       expect(created.devis).to eq(false)
       expect(created.eshop).to eq(false)
       expect(session[:commande]).to eq(created.id)

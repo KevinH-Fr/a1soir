@@ -9,6 +9,7 @@ class Article < ApplicationRecord
   scope :location_only, -> { where(locvente: 'location') }
   scope :vente_only, -> { where(locvente: 'vente') }
 
+  before_validation :force_vente_si_commande_rapide
   before_create :capture_promotion_info
 
   after_commit :after_article_save, on: [:create, :update, :destroy]
@@ -37,6 +38,12 @@ class Article < ApplicationRecord
 
   private
 
+  def force_vente_si_commande_rapide
+    return unless commande&.a_completer?
+
+    self.locvente = "vente"
+  end
+
   def capture_promotion_info
     return unless produit&.en_promotion?
     note = "Promotion appliquée (ancien prix : #{produit.ancien_prixvente} €)"
@@ -47,6 +54,14 @@ class Article < ApplicationRecord
     # Update the type_locvente field in the Commande based on the distinct locvente values
 
     commande = self.commande
+    return if commande.blank?
+
+    # Vente rapide boutique : reste toujours en vente
+    if commande.a_completer?
+      commande.update(type_locvente: "vente") if commande.type_locvente != "vente"
+      return
+    end
+
     if commande.articles.any?
       locvente_values = commande.articles.distinct.pluck(:locvente)
       if locvente_values.include?('location') && locvente_values.include?('vente')

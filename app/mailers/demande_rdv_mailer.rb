@@ -5,7 +5,7 @@ class DemandeRdvMailer < ApplicationMailer
     @demande_rdv = demande_rdv
     return unless @demande_rdv&.email.present?
 
-    I18n.locale = :fr
+    I18n.locale = @demande_rdv.client_mail_locale
 
     attach_inline_logo
 
