@@ -23,7 +23,7 @@ module ClientCommandeRapide
         tel: ClientCommandeRapide::COMMANDE_RAPIDE_TEL,
         mail: ClientCommandeRapide::COMMANDE_RAPIDE_MAIL,
         propart: "particulier",
-        intitule: INTITULE_OPTIONS.first
+        intitule: Client::INTITULE_OPTIONS.first
       )
     end
 
