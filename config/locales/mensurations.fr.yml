@@ -121,9 +121,9 @@ fr:
         admin: "Taille pantalon/jupe + marque"
         hint: "ex : T36, T46"
       preference_forme_robe:
-        label: "Préférence de forme de robe / couleurs (près du corps, évasée, manche, décolletée)"
-        short: "Préférence de forme de robe / couleurs (près du corps, évasée, manche, décolletée)"
-        admin: "Préférence forme de robe / couleurs (près du corps, évasée, manche, décolletée)"
+        label: "Préférence de forme de robe / couleurs"
+        short: "Préférence de forme de robe / couleurs"
+        admin: "Préférence forme de robe / couleurs"
         hint: "près du corps, évasée, manche, décolletée"
       taille_veste_chemisier:
         label: "Taille veste/chemisier"

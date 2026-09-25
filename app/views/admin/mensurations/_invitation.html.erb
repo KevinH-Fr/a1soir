@@ -56,14 +56,25 @@
         </div>
 
         <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-1">
-          <a class="small text-muted text-decoration-none d-inline-flex align-items-center ms-1"
-             data-bs-toggle="collapse"
-             href="#<%= collapse_id %>"
-             role="button"
-             aria-expanded="false"
-             aria-controls="<%= collapse_id %>">
-            <%= admin_collapse_details_button_content %>
-          </a>
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <a class="small text-muted text-decoration-none d-inline-flex align-items-center ms-1"
+               data-bs-toggle="collapse"
+               href="#<%= collapse_id %>"
+               role="button"
+               aria-expanded="false"
+               aria-controls="<%= collapse_id %>">
+              <%= admin_collapse_details_button_content %>
+            </a>
+            <% if mensuration.present? %>
+              <% extra_meta = [["Démarrée le", l(invitation.created_at, format: :short)]] %>
+              <% if in_progress && mensuration.draft_wizard_index.present? %>
+                <% extra_meta << ["Progression", "Étape #{mensuration.draft_wizard_index.to_i + 1}"] %>
+              <% end %>
+              <%= render "admin/mensurations/sheet_modal",
+                    mensuration: mensuration,
+                    extra_meta: extra_meta %>
+            <% end %>
+          </div>
 
           <div class="ms-auto d-flex align-items-center gap-1 flex-nowrap">
             <% if received && !treated %>
@@ -93,9 +104,12 @@
               <% if in_progress && mensuration.draft_wizard_index.present? %>
                 <% extra_meta << ["Progression", "Étape #{mensuration.draft_wizard_index.to_i + 1}"] %>
               <% end %>
-              <%= render "admin/mensurations/fiche",
-                    mensuration: mensuration,
-                    extra_meta: extra_meta %>
+              <div class="mensuration-admin-fiche">
+                <%= render "admin/mensurations/meta",
+                      mensuration: mensuration,
+                      extra_meta: extra_meta,
+                      compact: true %>
+              </div>
             <% else %>
               <div class="mensuration-admin-fiche">
                 <dl class="mensuration-admin-fiche__meta mb-0 pb-0 border-0">

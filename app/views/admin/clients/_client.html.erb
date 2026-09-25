@@ -4,7 +4,6 @@
 <% collapse_id = mini ? "collapseClientMini#{dom_id(client)}" : "collapseClient#{dom_id(client)}" %>
 <%# Fiche mensurations : uniquement là où le rendu la demande (page client), pas dans les listes. %>
 <% mensuration = local_assigns[:with_mensuration] ? client.mensuration : nil %>
-<% mensuration_collapse_id = "collapseMensuration#{dom_id(client)}" %>
 
 <% unless inner_only %>
 <div id="<%= dom_id client %>">
@@ -37,24 +36,22 @@
       <% end %>
 
       <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-1">
-        <a class="small text-muted text-decoration-none d-inline-flex align-items-center"
-           data-bs-toggle="collapse"
-           href="#<%= collapse_id %>"
-           role="button"
-           aria-expanded="false"
-           aria-controls="<%= collapse_id %>">
-          <%= admin_collapse_details_button_content %>
-        </a>
-        <% if mensuration %>
+        <div class="d-flex flex-wrap align-items-center gap-3">
           <a class="small text-muted text-decoration-none d-inline-flex align-items-center"
              data-bs-toggle="collapse"
-             href="#<%= mensuration_collapse_id %>"
+             href="#<%= collapse_id %>"
              role="button"
              aria-expanded="false"
-             aria-controls="<%= mensuration_collapse_id %>">
-            <%= admin_collapse_details_button_content(label: "Dimensions") %>
+             aria-controls="<%= collapse_id %>">
+            <%= admin_collapse_details_button_content %>
           </a>
-        <% end %>
+          <% if mensuration %>
+            <%= render "admin/mensurations/sheet_modal",
+                  mensuration: mensuration,
+                  hide_identity: true,
+                  show_delete: true %>
+          <% end %>
+        </div>
         <div class="ms-auto">
           <%= links_record(client, edit_params: mini ? { client_display_variant: "mini" } : nil) %>
         </div>
@@ -85,17 +82,6 @@
           </div>
         </div>
       </div>
-
-      <% if mensuration %>
-        <div class="collapse" id="<%= mensuration_collapse_id %>">
-          <%# Padding interne, pas de margin sur le collapse (sinon tressautement à l’anim Bootstrap). %>
-          <div class="pt-2">
-            <div class="border-top border-secondary border-opacity-25 pt-2 px-2 pb-1">
-              <%= render "admin/mensurations/client_fiche", mensuration: mensuration %>
-            </div>
-          </div>
-        </div>
-      <% end %>
 
     </div>
   </div>

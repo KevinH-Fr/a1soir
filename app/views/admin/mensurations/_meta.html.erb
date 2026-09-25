@@ -1,0 +1,23 @@
+<%# Meta seule (collapse liste / carte) — identité + dates. %>
+<% invitation = mensuration.mensuration_invitation %>
+<% hide_identity = local_assigns.fetch(:hide_identity, false) %>
+<% extra_meta = local_assigns.fetch(:extra_meta, []) %>
+<% compact = local_assigns.fetch(:compact, false) %>
+
+<dl class="mensuration-admin-fiche__meta<%= " mb-0 pb-0 border-0" if compact %>">
+  <% extra_meta.each do |label, value| %>
+    <%= mensuration_admin_meta_item(label, value) %>
+  <% end %>
+  <% unless hide_identity %>
+    <%= mensuration_admin_meta_item("Prénom", mensuration.prenom) %>
+    <%= mensuration_admin_meta_item("Nom", mensuration.nom) %>
+    <%= mensuration_admin_meta_item("E-mail", invitation.email) %>
+    <%= mensuration_admin_meta_item("Téléphone", mensuration.telephone) %>
+    <%= mensuration_admin_meta_item("Adresse", [mensuration.adresse, mensuration.cp, mensuration.ville].compact_blank.join(", ")) %>
+  <% end %>
+  <%= mensuration_admin_meta_item("Événement", mensuration.date_evenement && l(mensuration.date_evenement)) %>
+  <%= mensuration_admin_meta_item("Reçue le", l(mensuration.updated_at.to_date)) %>
+  <% if mensuration.admin_treated? %>
+    <%= mensuration_admin_meta_item("Traitée le", l(mensuration.admin_treated_at.to_date)) %>
+  <% end %>
+</dl>

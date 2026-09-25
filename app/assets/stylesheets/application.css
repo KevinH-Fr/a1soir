@@ -2623,7 +2623,7 @@ section {
 .mensuration-admin-fiche__meta-item dd {
   margin: 0.1rem 0 0;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 400;
   word-break: break-word;
 }
 
@@ -2711,6 +2711,479 @@ section {
     grid-template-columns: 1fr;
   }
 }
+
+/* Modale fiche mensurations (admin) — une source écran/impression */
+.mensuration-sheet__body {
+  background: #f8f4ee;
+}
+
+.mensuration-sheet .mensuration-sheet-doc {
+  color: #2a241c;
+}
+
+.mensuration-sheet-doc__title {
+  margin: 0 0 0.85rem;
+  font-size: 1.05rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+/* Infos compactes à gauche, silhouettes à droite (même structure à l’impression). */
+.mensuration-sheet-doc__layout {
+  display: grid;
+  grid-template-columns: minmax(11rem, 12.5rem) minmax(0, 1fr);
+  gap: 0.85rem 0.9rem;
+  align-items: stretch;
+}
+
+.mensuration-sheet-doc__layout--solo {
+  grid-template-columns: 1fr;
+}
+
+.mensuration-sheet-doc__aside {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  min-width: 0;
+  min-height: 100%;
+  height: 100%;
+  padding: 0.55rem 0.65rem;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(42, 36, 28, 0.08);
+  border-radius: 0.35rem;
+  box-sizing: border-box;
+}
+
+.mensuration-sheet-doc__photo {
+  margin: 0 auto;
+  width: 5.5rem;
+}
+
+.mensuration-sheet-doc__photo-trigger {
+  position: relative;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  line-height: 0;
+  cursor: zoom-in;
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.mensuration-sheet-doc__photo-trigger:hover .mensuration-sheet-doc__photo-zoom,
+.mensuration-sheet-doc__photo-trigger:focus-visible .mensuration-sheet-doc__photo-zoom {
+  opacity: 1;
+}
+
+.mensuration-sheet-doc__photo img,
+.mensuration-sheet-doc__photo-print {
+  display: block;
+  width: 5.5rem;
+  height: 7.25rem;
+  object-fit: cover;
+  border-radius: 0.25rem;
+  background: #ebe3d6;
+}
+
+.mensuration-sheet-doc__photo-zoom {
+  position: absolute;
+  right: 0.2rem;
+  bottom: 0.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 999px;
+  background: rgba(42, 36, 28, 0.72);
+  color: #f3ebe0;
+  font-size: 0.7rem;
+  opacity: 0.92;
+  pointer-events: none;
+}
+
+.mensuration-sheet-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(20, 16, 12, 0.82);
+  cursor: zoom-out;
+}
+
+.mensuration-sheet-lightbox[hidden] {
+  display: none !important;
+}
+
+.mensuration-sheet-lightbox img {
+  max-width: min(92vw, 52rem);
+  max-height: 88vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 0.35rem;
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.35);
+  cursor: default;
+  background: #ebe3d6;
+}
+
+.mensuration-sheet-lightbox__close {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  cursor: pointer;
+}
+
+.mensuration-sheet-lightbox__close:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.mensuration-sheet-doc__block {
+  min-width: 0;
+}
+
+.mensuration-sheet-doc__block-title {
+  margin: 0 0 0.25rem;
+  padding-bottom: 0.15rem;
+  border-bottom: 1px solid rgba(42, 36, 28, 0.12);
+  font-size: 0.62rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(42, 36, 28, 0.55);
+}
+
+.mensuration-sheet-doc__compact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  margin: 0;
+}
+
+.mensuration-sheet-doc__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.1rem 0.45rem;
+  align-items: baseline;
+  margin: 0;
+  padding: 0.08rem 0;
+}
+
+.mensuration-sheet-doc__row dt {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: rgba(42, 36, 28, 0.62);
+  line-height: 1.25;
+}
+
+.mensuration-sheet-doc__row dd {
+  margin: 0;
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-align: right;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.mensuration-sheet-doc__row--wide {
+  grid-template-columns: 1fr;
+  gap: 0.1rem;
+}
+
+.mensuration-sheet-doc__row--wide dt {
+  font-size: 0.65rem;
+}
+
+.mensuration-sheet-doc__row--wide dd {
+  text-align: left;
+  font-weight: 500;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.mensuration-sheet-doc__figures-wrap {
+  min-width: 0;
+}
+
+.mensuration-sheet-doc__footer {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(42, 36, 28, 0.12);
+  text-align: right;
+}
+
+.mensuration-sheet .mensuration-admin-fiche__meta {
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.mensuration-sheet__figures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem 1rem;
+  margin: 0;
+  align-items: start;
+}
+
+.mensuration-sheet__figures:has(> :only-child) {
+  grid-template-columns: minmax(0, 22rem);
+}
+
+/* Petit écran / portrait : une silhouette sous l’autre (après la règle 2-col). */
+@media (max-width: 767.98px) {
+  .mensuration-sheet-doc__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .mensuration-sheet-doc__aside {
+    order: 2;
+  }
+
+  .mensuration-sheet-doc__figures-wrap {
+    order: 1;
+  }
+
+  .mensuration-sheet__figures,
+  .mensuration-sheet__figures:has(> :only-child) {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+}
+
+@media (orientation: portrait) and (max-width: 991.98px) {
+  .mensuration-sheet__figures,
+  .mensuration-sheet__figures:has(> :only-child) {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+}
+
+/* Place réservée en HTML avant le SVG. */
+.mensuration-sheet__figure {
+  --mensuration-paper: #f3ebe0;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 760 / 1305;
+  min-height: 18rem;
+  height: auto;
+  background: var(--mensuration-paper);
+  overflow: visible;
+}
+
+.mensuration-sheet__figure.mensuration-figure-stack {
+  max-height: none;
+  aspect-ratio: 760 / 1305;
+  min-height: 18rem;
+  overflow: visible;
+  background: var(--mensuration-paper);
+}
+
+.mensuration-sheet__figure--loading::after {
+  content: "";
+  position: absolute;
+  inset: 18% 32%;
+  border-radius: 40% 40% 28% 28%;
+  background: rgba(42, 36, 28, 0.07);
+  animation: mensuration-sheet-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes mensuration-sheet-pulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.9; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mensuration-sheet__figure--loading::after {
+    animation: none;
+    opacity: 0.55;
+  }
+}
+
+/* Même boîte pour Face/Profil (viewBox natifs différents → height:auto divergait). */
+.mensuration-sheet__figure .mensuration-figure-svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  overflow: visible;
+  background: var(--mensuration-paper);
+}
+
+.mensuration-sheet__photo {
+  width: 140px;
+}
+
+.mensuration-sheet__photo img {
+  width: 140px;
+  height: 188px;
+  object-fit: cover;
+}
+
+.mensuration-figure-label {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  fill: #2a241c;
+  font-size: 28px;
+  font-weight: 600;
+  paint-order: stroke fill;
+  stroke: #f3ebe0;
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.mensuration-figure-chip__bg {
+  fill: #2a241c;
+  stroke: #f3ebe0;
+  stroke-width: 1.5;
+}
+
+.mensuration-figure-chip__value {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  fill: #f3ebe0;
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.mensuration-figure-leader {
+  stroke: #2a241c;
+  stroke-width: 0.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.32;
+  vector-effect: non-scaling-stroke;
+}
+
+.mensuration-sheet__figure #measurements .measurement.is-active {
+  opacity: 1;
+}
+
+@media print {
+  /* Fiche ecran scalee sur 1 page A4 paysage (JS -- transform). */
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  body.mensuration-sheet-printing * {
+    visibility: hidden;
+  }
+
+  body.mensuration-sheet-printing .mensuration-sheet-print-root,
+  body.mensuration-sheet-printing .mensuration-sheet-print-root * {
+    visibility: visible;
+  }
+
+  body.mensuration-sheet-printing .mensuration-sheet-print-root .no-print,
+  body.mensuration-sheet-printing .mensuration-sheet-print-root .no-print * {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  body.mensuration-sheet-printing .modal {
+    position: static !important;
+    inset: auto !important;
+    display: block !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+    height: auto !important;
+    width: auto !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+  }
+
+  body.mensuration-sheet-printing .modal-dialog {
+    position: static !important;
+    max-width: none !important;
+    width: auto !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  body.mensuration-sheet-printing .modal-content {
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  body.mensuration-sheet-printing .modal-body.mensuration-sheet__body {
+    overflow: hidden !important;
+    max-height: none !important;
+    margin: 4mm !important;
+    padding: 0 !important;
+  }
+
+  body.mensuration-sheet-printing .modal-backdrop {
+    display: none !important;
+  }
+
+  body.mensuration-sheet-printing .mensuration-sheet-lightbox {
+    display: none !important;
+  }
+
+  body.mensuration-sheet-printing .mensuration-sheet__body,
+  body.mensuration-sheet-printing .mensuration-sheet__figure,
+  body.mensuration-sheet-printing .mensuration-figure-svg,
+  body.mensuration-sheet-printing .mensuration-sheet-doc__aside,
+  body.mensuration-sheet-printing .mensuration-figure-svg image {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body.mensuration-sheet-printing .mensuration-sheet__body,
+  body.mensuration-sheet-printing .mensuration-sheet__figure,
+  body.mensuration-sheet-printing .mensuration-figure-svg {
+    background: #f3ebe0 !important;
+  }
+
+  body.mensuration-sheet-printing .mensuration-sheet-doc__title {
+    display: block !important;
+  }
+
+  /* Garder le layout ecran (pas de reflow mm qui crop / letterbox). */
+  body.mensuration-sheet-printing .mensuration-sheet-doc__layout {
+    align-items: stretch;
+  }
+
+  body.mensuration-sheet-printing .mensuration-sheet-doc__aside {
+    order: 0 !important;
+  }
+
+  body.mensuration-sheet-printing .mensuration-sheet-doc__figures-wrap {
+    order: 0 !important;
+  }
+
+  body.mensuration-sheet-printing .mensuration-sheet-doc__photo-print {
+    display: block !important;
+  }
+
+  body.mensuration-sheet-printing .mensuration-figure-svg image,
+  body.mensuration-sheet-printing .mensuration-figure-svg #measurements,
+  body.mensuration-sheet-printing .mensuration-figure-svg .mensuration-figure-labels {
+    visibility: visible !important;
+  }
+}
+
 
 .mensuration-shell {
   max-width: 1040px;

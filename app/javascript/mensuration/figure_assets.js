@@ -1,6 +1,6 @@
 // clip YAML → vue SVG + id du groupe #measure-*
 // viewBox = crop dans la planche 1122×1402 (3 angles côte à côte).
-const VIEW_BOX = {
+export const VIEW_BOX = {
   femme: {
     face: "37 40 381 1305",
     profil: "410 40 340 1305",

@@ -1,0 +1,92 @@
+<%# Contenu unique écran + impression : panneau infos à gauche, silhouettes à droite. %>
+<% invitation = mensuration.mensuration_invitation %>
+<% hide_identity = local_assigns.fetch(:hide_identity, false) %>
+<% extra_meta = local_assigns.fetch(:extra_meta, []) %>
+<% photo_url = mensuration.photo_pied.attached? ? photo_admin_mensuration_path(invitation) : nil %>
+<% title = local_assigns[:title].presence ||
+           [mensuration.prenom, mensuration.nom].compact_blank.join(" ").presence ||
+           invitation.email %>
+<% groups = mensuration_filled_field_groups(mensuration, exclude_on_svg: true) %>
+<% info_items = [] %>
+<% unless hide_identity %>
+  <% full_name = [mensuration.prenom, mensuration.nom].compact_blank.join(" ") %>
+  <% info_items = [
+        ["Nom", full_name],
+        ["E-mail", invitation.email],
+        ["Téléphone", mensuration.telephone],
+        ["Adresse", [mensuration.adresse, mensuration.cp, mensuration.ville].compact_blank.join(", ")]
+      ].reject { |_, v| v.blank? } %>
+<% end %>
+<% info_items += (extra_meta + [
+      ["Événement", mensuration.date_evenement && l(mensuration.date_evenement)],
+      ["Reçue le", l(mensuration.updated_at.to_date)],
+      (["Traitée le", l(mensuration.admin_treated_at.to_date)] if mensuration.admin_treated?)
+    ].compact).reject { |_, v| v.blank? } %>
+<% has_aside = photo_url.present? || info_items.any? || groups.any? %>
+
+<article class="mensuration-sheet-doc">
+  <h2 class="mensuration-sheet-doc__title d-none d-print-block"><%= title.presence || "Mensurations" %></h2>
+
+  <div class="mensuration-sheet-doc__layout<%= " mensuration-sheet-doc__layout--solo" unless has_aside %>">
+    <% if has_aside %>
+      <aside class="mensuration-sheet-doc__aside">
+        <% if photo_url %>
+          <figure class="mensuration-sheet-doc__photo">
+            <button type="button"
+                    class="mensuration-sheet-doc__photo-trigger no-print"
+                    data-action="mensuration-sheet#openPhoto"
+                    data-mensuration-sheet-url-param="<%= photo_url %>"
+                    title="Agrandir la photo"
+                    aria-label="Agrandir la photo">
+              <img src="<%= photo_url %>" alt="Photo en pied" loading="lazy">
+              <span class="mensuration-sheet-doc__photo-zoom" aria-hidden="true">
+                <i class="bi bi-zoom-in"></i>
+              </span>
+            </button>
+            <%# Impression : image seule, sans bouton. %>
+            <img src="<%= photo_url %>"
+                 alt="Photo en pied"
+                 class="mensuration-sheet-doc__photo-print d-none d-print-block"
+                 decoding="async">
+          </figure>
+        <% end %>
+
+        <% if info_items.any? %>
+          <section class="mensuration-sheet-doc__block">
+            <h3 class="mensuration-sheet-doc__block-title">Coordonnées</h3>
+            <dl class="mensuration-sheet-doc__compact">
+              <% info_items.each do |label, value| %>
+                <%= mensuration_sheet_meta_row(label, value) %>
+              <% end %>
+            </dl>
+          </section>
+        <% end %>
+
+        <% groups.each do |group, fields| %>
+          <section class="mensuration-sheet-doc__block">
+            <h3 class="mensuration-sheet-doc__block-title">
+              <%= t("mensurations.groups.#{group}", locale: :fr) %>
+            </h3>
+            <dl class="mensuration-sheet-doc__compact">
+              <% fields.each do |field| %>
+                <%= mensuration_sheet_measure_row(field, mensuration.value_for(field["key"])) %>
+              <% end %>
+            </dl>
+          </section>
+        <% end %>
+      </aside>
+    <% end %>
+
+    <div class="mensuration-sheet-doc__figures-wrap">
+      <div class="mensuration-sheet__figures"
+           data-mensuration-sheet-target="figures"
+           aria-busy="true">
+        <% mensuration_silhouette_panel_views(mensuration).each do |view| %>
+          <div class="mensuration-sheet__figure mensuration-sheet__figure--loading"
+               data-view="<%= view %>"
+               aria-hidden="true"></div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</article>

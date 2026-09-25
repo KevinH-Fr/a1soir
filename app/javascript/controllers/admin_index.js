@@ -44,3 +44,6 @@ application.register("analyses-segment-toggle", AnalysesSegmentToggleController)
 
 import AvoirRembMoyenController from "./avoir_remb_moyen_controller"
 application.register("avoir-remb-moyen", AvoirRembMoyenController)
+
+import MensurationSheetController from "./mensuration_sheet_controller"
+application.register("mensuration-sheet", MensurationSheetController)

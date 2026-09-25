@@ -67,14 +67,10 @@ module MensurationsHelper
     stacked_control(id, label, field)
   end
 
-  # Pastille admin : libellé court + valeur mise en avant.
+  # Pastille admin (collapse / listes compactes).
   def mensuration_measure_chip(field, value)
     key = field["key"]
-    display = if field["input"] == "choice"
-                t("mensurations.choices.#{key}.#{value}", locale: :fr, default: value)
-              else
-                value
-              end
+    display = mensuration_measure_display(field, value)
     short = t("mensurations.fields.#{key}.short", locale: :fr)
     full = t("mensurations.fields.#{key}.admin", locale: :fr)
     wide = field["input"] == "textarea"
@@ -87,6 +83,72 @@ module MensurationsHelper
         content_tag(:span, display, class: "mensuration-admin-fiche__cell-value")
       ])
     end
+  end
+
+  # Ligne fiche sheet (écran = impression) : libellé | valeur.
+  def mensuration_sheet_measure_row(field, value)
+    key = field["key"]
+    display = mensuration_measure_display(field, value)
+    label = t("mensurations.fields.#{key}.name", locale: :fr, default: "").presence ||
+            t("mensurations.fields.#{key}.short", locale: :fr).to_s.sub(/\s*\(cm\)\s*\z/i, "")
+    wide = field["input"] == "textarea"
+
+    content_tag(:div,
+      class: ["mensuration-sheet-doc__row", ("mensuration-sheet-doc__row--wide" if wide)].compact.join(" ")) do
+      safe_join([
+        content_tag(:dt, label),
+        content_tag(:dd, display)
+      ])
+    end
+  end
+
+  def mensuration_sheet_meta_row(label, value, wide: false)
+    return if value.blank?
+
+    wide ||= label.to_s.match?(/\A(Adresse|E-mail|Email)\z/i) || value.to_s.length > 28
+
+    content_tag(:div,
+      class: ["mensuration-sheet-doc__row", ("mensuration-sheet-doc__row--wide" if wide)].compact.join(" ")) do
+      safe_join([
+        content_tag(:dt, label),
+        content_tag(:dd, value)
+      ])
+    end
+  end
+
+  def mensuration_measure_display(field, value)
+    key = field["key"]
+    if field["input"] == "choice"
+      t("mensurations.choices.#{key}.#{value}", locale: :fr, default: value)
+    else
+      value
+    end
+  end
+
+  # Groupes remplis, ordre métier stable.
+  # exclude_on_svg: true → ne pas répéter les cm déjà sur Face/Profil ;
+  # les mesures « dos » (épaules, ceinture) restent dans le panneau texte.
+  MENSURATION_GROUP_ORDER = %w[silhouette longueurs vetements preferences].freeze
+  MENSURATION_SVG_VIEWS = %w[face profil].freeze
+
+  def mensuration_filled_field_groups(mensuration, exclude_clipped: false, exclude_on_svg: false)
+    exclude_on_svg ||= exclude_clipped
+
+    filled = mensuration.fields.select do |field|
+      next false if mensuration.value_for(field["key"]).blank?
+
+      if exclude_on_svg && field["clip"].present?
+        view = MENSURATION_CLIP_VIEW[field["clip"]]
+        next false if MENSURATION_SVG_VIEWS.include?(view)
+      end
+
+      true
+    end
+    grouped = filled.group_by { |field| field["group"].presence || "vetements" }
+    MENSURATION_GROUP_ORDER.filter_map do |key|
+      fields = grouped.delete(key)
+      [key, fields] if fields.present?
+    end + grouped.to_a
   end
 
   def mensuration_locale_switch_path(locale)
@@ -106,6 +168,49 @@ module MensurationsHelper
         content_tag(:dd, value)
       ])
     end
+  end
+
+  # Payload JSON pour les silhouettes admin (clip + libellé court + valeur).
+  def mensuration_silhouette_measures(mensuration)
+    mensuration.fields.filter_map do |field|
+      clip = field["clip"].presence
+      next unless clip
+
+      value = mensuration.value_for(field["key"])
+      next if value.blank?
+
+      key = field["key"]
+      label = t("mensurations.fields.#{key}.name", locale: :fr, default: "").presence ||
+              t("mensurations.fields.#{key}.short", locale: :fr).to_s.sub(/\s*\(cm\)\s*\z/i, "")
+      { clip: clip, label: label, value: value }
+    end
+  end
+
+  # Vues silhouette fiche admin : Face + Profil seulement (dos → panneau texte).
+  MENSURATION_CLIP_VIEW = {
+    "full" => "profil",
+    "neck" => "face",
+    "chest" => "face",
+    "torso" => "face",
+    "waist" => "face",
+    "hips" => "face",
+    "hips_pant" => "face",
+    "thigh" => "face",
+    "arm" => "profil",
+    "leg_ext" => "profil",
+    "leg_int" => "face",
+    "shoulders" => "dos",
+    "waist_belt" => "dos"
+  }.freeze
+
+  def mensuration_silhouette_panel_views(mensuration)
+    by_view = Hash.new { |h, k| h[k] = 0 }
+    mensuration_silhouette_measures(mensuration).each do |measure|
+      view = MENSURATION_CLIP_VIEW[measure[:clip]]
+      by_view[view] += 1 if MENSURATION_SVG_VIEWS.include?(view)
+    end
+
+    MENSURATION_SVG_VIEWS.select { |view| by_view[view].positive? }
   end
 
   private

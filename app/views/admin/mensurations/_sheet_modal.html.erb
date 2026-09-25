@@ -1,0 +1,82 @@
+<%# Bouton + modale : chrome no-print ; contenu = sheet_content (écran = impression). %>
+<% invitation = mensuration.mensuration_invitation %>
+<% hide_identity = local_assigns.fetch(:hide_identity, false) %>
+<% show_delete = local_assigns.fetch(:show_delete, false) %>
+<% extra_meta = local_assigns.fetch(:extra_meta, []) %>
+<% sheet_id = "mensurationSheet#{mensuration.id}" %>
+<% silhouette = mensuration_silhouette_measures(mensuration) %>
+<% title = [mensuration.prenom, mensuration.nom].compact_blank.join(" ").presence || invitation.email %>
+
+<%= tag.div(
+      class: "d-inline-flex",
+      data: {
+        controller: "mensuration-sheet",
+        mensuration_sheet_template_value: mensuration.template,
+        mensuration_sheet_measures_value: silhouette
+      }
+    ) do %>
+  <button type="button"
+          class="btn btn-sm btn-outline-success d-inline-flex align-items-center"
+          data-bs-toggle="modal"
+          data-bs-target="#<%= sheet_id %>">
+    <i class="bi bi-person-lines-fill me-1" aria-hidden="true"></i>
+    Mensurations
+  </button>
+
+  <div class="modal fade"
+       id="<%= sheet_id %>"
+       tabindex="-1"
+       aria-labelledby="<%= sheet_id %>Label"
+       aria-hidden="true"
+       data-mensuration-sheet-target="modal">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content mensuration-sheet mensuration-sheet-print-root">
+        <div class="modal-header py-2 no-print align-items-center gap-2">
+          <h2 class="modal-title h6 mb-0 text-truncate" id="<%= sheet_id %>Label">
+            Mensurations<%= " — #{title}" if title.present? %>
+          </h2>
+          <div class="d-flex align-items-center gap-2 ms-auto flex-shrink-0">
+            <button type="button"
+                    class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center"
+                    data-action="mensuration-sheet#print">
+              <i class="bi bi-printer me-1" aria-hidden="true"></i>
+              Imprimer
+            </button>
+            <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Fermer"></button>
+          </div>
+        </div>
+
+        <div class="modal-body mensuration-sheet__body">
+          <%= render "admin/mensurations/sheet_content",
+                mensuration: mensuration,
+                hide_identity: hide_identity,
+                extra_meta: extra_meta,
+                title: title %>
+
+          <% if show_delete %>
+            <div class="mensuration-sheet-doc__footer no-print">
+              <%= button_to admin_mensuration_path(invitation), method: :delete,
+                    class: "btn btn-sm btn-outline-danger",
+                    form: { data: { turbo_confirm: "Supprimer les mensurations et la photo de #{mensuration.client&.full_name || mensuration.nom} ?" } } do %>
+                <i class="bi bi-trash me-1"></i>Supprimer les mensurations
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mensuration-sheet-lightbox no-print"
+       hidden
+       data-mensuration-sheet-target="lightbox"
+       data-action="click->mensuration-sheet#closePhoto keydown@window:capture->mensuration-sheet#photoKeydown">
+    <button type="button"
+            class="mensuration-sheet-lightbox__close"
+            data-action="mensuration-sheet#closePhoto"
+            aria-label="Fermer">
+      <i class="bi bi-x-lg" aria-hidden="true"></i>
+    </button>
+    <img src="" alt="Photo en pied" data-mensuration-sheet-target="lightboxImage">
+  </div>
+<% end %>
