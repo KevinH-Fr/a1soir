@@ -46,6 +46,7 @@ Rails.application.routes.draw do
       get 'm', to: redirect('/mensurations')
       # Token interne OTP / formulaire — avant le catch-all SEO ':slug'.
       get 'm/:token', to: 'mensurations#show', as: :mensuration
+      get 'm/:token/photo', to: 'mensurations#photo', as: :mensuration_photo
       post 'm/:token/otp', to: 'mensurations#send_otp', as: :mensuration_otp
       post 'm/:token/verify', to: 'mensurations#verify_otp', as: :mensuration_verify
       post 'm/:token/template', to: 'mensurations#update_template', as: :mensuration_template

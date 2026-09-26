@@ -3026,7 +3026,7 @@ section {
   height: 100%;
   max-height: none;
   overflow: visible;
-  background: var(--mensuration-paper);
+  background: transparent;
 }
 
 .mensuration-sheet__photo {
@@ -3435,9 +3435,34 @@ section {
   color: #fff;
   -webkit-text-fill-color: #fff;
   caret-color: #fff;
+  color-scheme: dark;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: 0.1rem;
+}
+
+/* Chrome repeint le champ en clair dès qu'un e-mail est saisi ou proposé.
+   Le texte reste blanc : on recouvre ce fond par un aplat sombre. */
+.mensuration-otp .mensuration-gate__email:-webkit-autofill,
+.mensuration-otp .mensuration-gate__email:-webkit-autofill:hover,
+.mensuration-otp .mensuration-gate__email:-webkit-autofill:focus,
+.mensuration-otp .mensuration-gate__email:-webkit-autofill:active,
+.mensuration-otp .mensuration-gate__email:autofill,
+.mensuration-otp .mensuration-gate__email:autofill:hover,
+.mensuration-otp .mensuration-gate__email:autofill:focus {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  caret-color: #fff;
+  -webkit-box-shadow: 0 0 0 1000px #141414 inset !important;
+  box-shadow: 0 0 0 1000px #141414 inset !important;
+  transition: background-color 9999s ease-out 0s;
+}
+
+.mensuration-otp .mensuration-gate__email:-webkit-autofill:focus,
+.mensuration-otp .mensuration-gate__email:autofill:focus {
+  border-color: rgba(255, 255, 255, 0.92);
+  -webkit-box-shadow: 0 0 0 1000px #1a1a1a inset, 0 0 0 2px rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 0 0 1000px #1a1a1a inset, 0 0 0 2px rgba(255, 255, 255, 0.16) !important;
 }
 
 .mensuration-gate__email::placeholder {
@@ -3728,6 +3753,12 @@ section {
 .mensuration-form__photo-empty .bi {
   font-size: 1.85rem;
   opacity: 0.9;
+}
+
+.mensuration-form__photo-empty > span {
+  max-width: 9.2rem;
+  text-align: center;
+  line-height: 1.3;
 }
 
 .mensuration-form__photo-preview {
@@ -4405,7 +4436,7 @@ section {
   width: 100%;
   height: auto;
   max-height: min(52vh, 28rem);
-  background: var(--mensuration-paper);
+  background: transparent;
   overflow: hidden;
 }
 
@@ -4550,6 +4581,13 @@ section {
 /* Flèche du select : un cran plus claire que l’ancien gris secondary. */
 .mensuration-form .form-select {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23c8c8c8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e") !important;
+}
+
+/* Liste native : le texte hérite du blanc du champ, le fond système reste clair. */
+.mensuration-form .form-select option {
+  background-color: #1a1a1a !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff;
 }
 
 .mensuration-form .form-control::placeholder {

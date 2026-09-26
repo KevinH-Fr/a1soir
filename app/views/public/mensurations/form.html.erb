@@ -158,7 +158,7 @@
               <img data-photo-preview-target="image"
                    class="mensuration-form__photo-preview<%= " d-none" unless photo_attached %>"
                    alt=""
-                   <% if photo_attached %>src="<%= url_for(@mensuration.photo_pied) %>"<% end %>>
+                   <% if photo_attached %>src="<%= mensuration_photo_path(token: @invitation.token) %>"<% end %>>
               <span class="mensuration-form__photo-change"><%= t("mensurations.form.photo_change") %></span>
             </label>
 

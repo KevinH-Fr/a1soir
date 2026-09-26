@@ -15,7 +15,7 @@ module Public
     before_action :set_invitation, except: [:gate, :start]
     before_action :sync_invitation_locale, except: [:gate, :start]
     before_action :load_footer_texte
-    before_action :require_otp_session, only: [:save, :draft, :destroy, :update_template]
+    before_action :require_otp_session, only: [:save, :draft, :destroy, :update_template, :photo]
 
     def gate
       @email = ""
@@ -54,6 +54,19 @@ module Public
       else
         redirect_to_invitation(invitation, alert: t("mensurations.otp.resend_wait"))
       end
+    end
+
+    # Même contrainte qu'en admin : une redirection Cloudinary (authenticated / download)
+    # n'est pas affichable dans <img>. En local l'aperçu est un blob: du navigateur.
+    def photo
+      mensuration = @invitation.mensuration
+      blob = mensuration&.photo_pied&.blob
+      raise ActiveRecord::RecordNotFound unless blob
+
+      send_data mensuration.photo_pied_bytes,
+                type: blob.content_type.presence || "image/jpeg",
+                disposition: :inline,
+                filename: blob.filename.to_s
     end
 
     # Page unique : demande de code tant que l'e-mail n'est pas vérifié, formulaire ensuite.

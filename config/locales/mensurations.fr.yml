@@ -19,7 +19,7 @@ fr:
       prev: "Retour"
       step: "Étape %{current} sur %{total}"
       photo_hint: "De la tête aux pieds — optionnel, pour mieux vous conseiller."
-      photo_cta: "Ajouter une photo"
+      photo_cta: "Cliquez pour sélectionner une photo"
       photo_change: "Changer"
       photo_limits: "JPEG, PNG ou WebP · %{max_mb} Mo max."
       submit: "Envoyer mes mesures"

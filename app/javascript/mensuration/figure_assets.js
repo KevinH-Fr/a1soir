@@ -7,10 +7,24 @@ export const VIEW_BOX = {
     dos: "726 40 374 1305"
   },
   homme: {
-    face: "30 40 380 1305",
-    profil: "414 40 301 1305",
+    // new2 = vues 440×1385 ; crop serré (laisse de la place à droite pour measure-height)
+    face: "56 109 329 1132",
+    profil: "115 40 230 1305",
     dos: "716 40 380 1305"
   }
+}
+
+// Surcharge de nom de fichier (cache-bust / version Inkscape).
+const SVG_FILE = {
+  "homme/face": "mensurations_homme_face.svg",
+  "homme/profil": "mensurations_homme_profil.svg"
+}
+
+export function svgUrl(template, view) {
+  const gender = template === "homme" ? "homme" : "femme"
+  const override = SVG_FILE[`${gender}/${view}`]
+  const file = override || `mensurations_${gender}_${view}.svg`
+  return `/images/${file}`
 }
 
 const CLIP_MAP = {
@@ -40,12 +54,12 @@ export function resolveClip(clip, template = "femme") {
   return {
     view: base.view,
     id,
-    url: `/images/mensurations_${gender}_${base.view}.svg`,
+    url: svgUrl(gender, base.view),
     viewBox: VIEW_BOX[gender][base.view]
   }
 }
 
-export function preloadUrls(template) {
+export function preloadUrls(template, views = ["face", "profil"]) {
   const t = template === "homme" ? "homme" : "femme"
-  return ["face", "profil", "dos"].map((view) => `/images/mensurations_${t}_${view}.svg`)
+  return views.map((view) => svgUrl(t, view))
 }

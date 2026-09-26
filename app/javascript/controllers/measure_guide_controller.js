@@ -37,7 +37,12 @@ export default class extends Controller {
     this.animToken = 0
     this.drawTimers = []
     this.drawAnims = []
-    preloadUrls(this.templateValue).forEach((url) => {
+    const views = [...new Set(
+      this.fieldTargets
+        .map((el) => resolveClip(el.dataset.clip, this.templateValue)?.view)
+        .filter(Boolean)
+    )]
+    preloadUrls(this.templateValue, views).forEach((url) => {
       fetchSvg(url).catch(() => {})
     })
     this.showField()

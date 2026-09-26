@@ -1,5 +1,5 @@
 // Rendu SVG silhouette (crop vue + guides) — partagé guide public / fiche admin.
-import { VIEW_BOX } from "./figure_assets"
+import { VIEW_BOX, svgUrl } from "./figure_assets"
 
 export const NS = "http://www.w3.org/2000/svg"
 export const XLINK = "http://www.w3.org/1999/xlink"
@@ -46,7 +46,7 @@ export function viewSpec(view, template = "femme") {
   const gender = template === "homme" ? "homme" : "femme"
   return {
     view,
-    url: `/images/mensurations_${gender}_${view}.svg`,
+    url: svgUrl(gender, view),
     viewBox: VIEW_BOX[gender][view]
   }
 }
@@ -55,7 +55,8 @@ export async function fetchSvg(url) {
   const cached = svgCache.get(url)
   if (cached) return cached
 
-  const promise = fetch(url)
+  // no-cache : revalide côté serveur (évite de garder une vieille silhouette après edit Inkscape).
+  const promise = fetch(url, { cache: "no-cache" })
     .then((response) => {
       if (!response.ok) throw new Error(`HTTP ${response.status}`)
       return response.text()
@@ -174,7 +175,11 @@ export function buildViewSvg(root, viewBox) {
   layer.append(image)
 
   const measures = srcMeasures.cloneNode(true)
-  measures.setAttribute("transform", `translate(${-vx} ${-vy})`)
+  // Garder un transform d'alignement éventuel (SVG new2) puis appliquer le crop viewBox.
+  const alignTx = (srcMeasures.getAttribute("transform") || "").trim()
+  const cropTx = `translate(${-vx} ${-vy})`
+  measures.setAttribute("transform", alignTx ? `${cropTx} ${alignTx}` : cropTx)
+  if (alignTx) out.dataset.alignTransform = alignTx
   layer.append(measures)
   out.append(layer)
 
@@ -531,7 +536,9 @@ export function placeMeasureLabels(svg, items) {
 
   const labelsLayer = document.createElementNS(NS, "g")
   labelsLayer.setAttribute("class", "mensuration-figure-labels")
-  labelsLayer.setAttribute("transform", `translate(${-vx} ${-vy})`)
+  const alignTx = (svg.dataset.alignTransform || "").trim()
+  const cropTx = `translate(${-vx} ${-vy})`
+  labelsLayer.setAttribute("transform", alignTx ? `${cropTx} ${alignTx}` : cropTx)
   svg.append(labelsLayer)
 
   const prepared = items.map((item) => {

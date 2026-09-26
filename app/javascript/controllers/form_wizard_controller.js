@@ -22,7 +22,7 @@ export default class extends Controller {
     return this.element.querySelector("form[data-form-wizard-target='form']")
   }
 
-  // Entrée dans un champ = Continuer (valider la mesure / l'étape), pas envoyer tout le formulaire.
+  // Entrée dans un champ de mesure = Continuer. Les coordonnées n'avancent qu'au clic.
   advanceOnEnter(event) {
     if (event.repeat) return
     if (event.target instanceof HTMLTextAreaElement) return
@@ -31,6 +31,7 @@ export default class extends Controller {
     if (this.isFinalSubmit()) return
 
     event.preventDefault()
+    if (this.onIdentityStep()) return
     this.next()
   }
 
@@ -38,7 +39,13 @@ export default class extends Controller {
     if (this.isFinalSubmit()) return
 
     event.preventDefault()
+    // L'autofill du navigateur envoie le formulaire dès que les coordonnées sont pleines.
+    if (this.onIdentityStep()) return
     this.next()
+  }
+
+  onIdentityStep() {
+    return this.stepTargets[this.indexValue]?.classList.contains("mensuration-form__identity")
   }
 
   isFinalSubmit() {

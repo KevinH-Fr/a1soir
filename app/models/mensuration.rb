@@ -178,6 +178,47 @@ class Mensuration < ApplicationRecord
     client
   end
 
+  # Octets affichables. Le service Cloudinary redirige souvent vers une URL
+  # /image/download qu'un <img> ne peut pas rendre ; on lit donc le fichier ici.
+  def photo_pied_bytes
+    blob = photo_pied.blob
+    raise ActiveRecord::RecordNotFound unless blob
+    return blob.download unless blob.service_name == "cloudinary"
+
+    ext = blob.filename.extension_without_delimiter.presence || "jpg"
+    %w[upload authenticated].each do |delivery_type|
+      url = Cloudinary::Utils.cloudinary_url(
+        blob.key.to_s,
+        resource_type: :image,
+        type: delivery_type,
+        sign_url: true,
+        secure: true,
+        format: ext
+      )
+      body = Cloudinary::Downloader.download(url)
+      return body if self.class.image_bytes?(body)
+    end
+
+    download_url = Cloudinary::Utils.private_download_url(
+      blob.key.to_s,
+      ext,
+      resource_type: "image",
+      type: "authenticated",
+      expires_at: 10.minutes.from_now.to_i
+    )
+    body = Cloudinary::Downloader.download(download_url)
+    return body if self.class.image_bytes?(body)
+
+    raise ActiveRecord::RecordNotFound
+  end
+
+  def self.image_bytes?(body)
+    return false if body.blank? || body.bytesize < 12
+
+    head = body.b[0, 12]
+    head.start_with?("\xFF\xD8".b, "\x89PNG".b, "GIF8".b, "RIFF".b)
+  end
+
   private
 
   def photo_pied_must_be_image
@@ -202,7 +243,8 @@ class Mensuration < ApplicationRecord
 
   def photo_dimensions
     blob = photo_pied.blob
-    blob.analyze unless blob.analyzed?
+    # Pas de blob.analyze : ça retélécharge l'original depuis Cloudinary
+    # dans la requête, et Heroku coupe à 30 s. Le navigateur borne déjà le bord.
     [blob.metadata["width"].to_i, blob.metadata["height"].to_i]
   rescue StandardError
     [0, 0]
