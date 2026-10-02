@@ -174,6 +174,18 @@ export function buildViewSvg(root, viewBox) {
   image.style.pointerEvents = "none"
   layer.append(image)
 
+  // Tracés Inkscape posés sur la planche (retouches). Le rendu ne gardait
+  // que l'image embarquée, donc ces corrections n'apparaissaient jamais.
+  const artwork = document.createElementNS(NS, "g")
+  artwork.setAttribute("class", "figure-artwork")
+  artwork.setAttribute("transform", `translate(${-vx} ${-vy})`)
+  artwork.style.pointerEvents = "none"
+  panel.childNodes.forEach((node) => {
+    if (!isFigureArtwork(node)) return
+    artwork.append(node.cloneNode(true))
+  })
+  if (artwork.childNodes.length) layer.append(artwork)
+
   const measures = srcMeasures.cloneNode(true)
   // Garder un transform d'alignement éventuel (SVG new2) puis appliquer le crop viewBox.
   const alignTx = (srcMeasures.getAttribute("transform") || "").trim()
@@ -219,12 +231,90 @@ function makeMeasureGroup(id) {
 }
 
 function pathEnds(d) {
-  const nums = String(d).match(/-?\d*\.?\d+/g)?.map(Number)
-  if (!nums || nums.length < 4) return null
-  return [
-    [nums[0], nums[1]],
-    [nums[nums.length - 2], nums[nums.length - 1]]
-  ]
+  const tokens = String(d).match(/[a-zA-Z]|-?\d*\.?\d+(?:e[-+]?\d+)?/gi)
+  if (!tokens) return null
+
+  let i = 0
+  let cx = 0
+  let cy = 0
+  let sx = null
+  let sy = null
+  let ex = null
+  let ey = null
+  let cmd = ""
+
+  const read = () => Number(tokens[i++])
+
+  while (i < tokens.length) {
+    if (/[a-zA-Z]/.test(tokens[i])) cmd = tokens[i++]
+    if (!cmd) break
+
+    const rel = cmd === cmd.toLowerCase()
+    const kind = cmd.toUpperCase()
+    const abs = (x, y) => (rel ? [cx + x, cy + y] : [x, y])
+
+    if (kind === "M") {
+      const x = read()
+      const y = read()
+      ;[cx, cy] = sx == null ? [x, y] : abs(x, y)
+      if (sx == null) {
+        sx = cx
+        sy = cy
+      }
+      ex = cx
+      ey = cy
+      cmd = rel ? "l" : "L"
+    } else if (kind === "L") {
+      ;[cx, cy] = abs(read(), read())
+      ex = cx
+      ey = cy
+    } else if (kind === "H") {
+      cx = rel ? cx + read() : read()
+      ex = cx
+      ey = cy
+    } else if (kind === "V") {
+      cy = rel ? cy + read() : read()
+      ex = cx
+      ey = cy
+    } else if (kind === "C") {
+      read()
+      read()
+      read()
+      read()
+      ;[cx, cy] = abs(read(), read())
+      ex = cx
+      ey = cy
+    } else if (kind === "S" || kind === "Q") {
+      read()
+      read()
+      ;[cx, cy] = abs(read(), read())
+      ex = cx
+      ey = cy
+    } else if (kind === "T") {
+      ;[cx, cy] = abs(read(), read())
+      ex = cx
+      ey = cy
+    } else if (kind === "A") {
+      read()
+      read()
+      read()
+      read()
+      read()
+      ;[cx, cy] = abs(read(), read())
+      ex = cx
+      ey = cy
+    } else if (kind === "Z") {
+      cx = sx
+      cy = sy
+      ex = cx
+      ey = cy
+    } else {
+      break
+    }
+  }
+
+  if (![sx, sy, ex, ey].every(Number.isFinite)) return null
+  return [[sx, sy], [ex, ey]]
 }
 
 function guideEnds(el) {
@@ -295,9 +385,21 @@ function ensureMissingGuides(root, tweaks) {
   })
 }
 
-export function normalizeGuides(root, template = "femme") {
+const ARTWORK_TAGS = new Set([
+  "g", "path", "circle", "ellipse", "polygon", "polyline", "rect", "line", "image", "use", "text"
+])
+
+function isFigureArtwork(el) {
+  if (!el || el.nodeType !== 1 || !ARTWORK_TAGS.has(el.localName)) return false
+  if (el.localName === "g" && el.id === "measurements") return false
+  if (el.classList.contains("base-image")) return false
+  return true
+}
+
+export function normalizeGuides(root, template = "femme", view = null) {
   const tweaks = GUIDE_TWEAKS[template === "homme" ? "homme" : "femme"] || {}
-  ensureMissingGuides(root, tweaks)
+  const keepSvgGuides = template === "homme" && view === "profil"
+  ensureMissingGuides(root, keepSvgGuides ? {} : tweaks)
 
   root.querySelectorAll("ellipse.guide").forEach((ellipse) => {
     let cx = Number(ellipse.getAttribute("cx"))
@@ -331,7 +433,7 @@ export function normalizeGuides(root, template = "femme") {
 
   root.querySelectorAll("#measure-height .helper").forEach((el) => el.remove())
 
-  Object.entries(tweaks).forEach(([id, tweak]) => {
+  if (!keepSvgGuides) Object.entries(tweaks).forEach(([id, tweak]) => {
     const group = root.querySelector(`#${CSS.escape(id)}`)
     if (!group) return
 
@@ -620,7 +722,7 @@ export async function renderViewFigure({ template, view, measureItems }) {
   const spec = viewSpec(view, template)
   const root = await fetchSvg(spec.url)
   const svg = buildViewSvg(root, spec.viewBox)
-  normalizeGuides(svg, template)
+  normalizeGuides(svg, template, view)
 
   const ids = measureItems.map((m) => m.id)
 

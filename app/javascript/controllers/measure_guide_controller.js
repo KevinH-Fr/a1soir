@@ -191,7 +191,7 @@ export default class extends Controller {
     if (!svg) throw new Error("empty svg")
 
     const clone = buildViewSvg(svg, spec.viewBox)
-    normalizeGuides(clone, this.templateValue)
+    normalizeGuides(clone, this.templateValue, spec.view)
 
     const hasCurrent = Boolean(this.canvasTarget.querySelector("svg.mensuration-figure-svg"))
     const animate = hasCurrent && !REDUCED
