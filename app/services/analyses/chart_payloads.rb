@@ -81,6 +81,7 @@ module Analyses
       when :rdv_statut_doughnut then rdv_statut_doughnut
       when :rdv_conversion_doughnut then rdv_conversion_doughnut
       when :rdv_type_bars then rdv_type_bars
+      when :rdv_evenement_bars then rdv_evenement_bars
       when :rdv_agenda_origin_doughnut then rdv_agenda_origin_doughnut
       when :rdv_agenda_timeline then rdv_agenda_timeline
       else
@@ -695,6 +696,7 @@ module Analyses
 
     SERIES_CABINE = "rgb(13, 148, 136)".freeze
     SERIES_SANS_CABINE = "rgb(148, 163, 184)".freeze
+    SERIES_INTERNE = "rgb(74, 132, 176)".freeze
 
     RDV_STATUT_COLORS = {
       "soumis" => "rgb(220, 192, 118)",
@@ -740,7 +742,7 @@ module Analyses
           labels: ["Demandes du site", "Calendrier interne"],
           datasets: [{
             data: [site, interne],
-            backgroundColor: [SERIES_CABINE, "rgb(74, 132, 176)"],
+            backgroundColor: [SERIES_CABINE, SERIES_INTERNE],
             borderWidth: 2,
             borderColor: ring_border,
             hoverBorderWidth: 2,
@@ -765,10 +767,10 @@ module Analyses
         labels: labels,
         series: [
           ["Demandes du site", values_for_labels(labels, site_hash, integer: true), SERIES_CABINE],
-          ["Calendrier interne", values_for_labels(labels, interne_hash, integer: true), "rgb(74, 132, 176)"]
+          ["Calendrier interne", values_for_labels(labels, interne_hash, integer: true), SERIES_INTERNE]
         ],
         y_title: "RDV",
-        stacked: false
+        stacked: true
       )
     end
 
@@ -917,23 +919,29 @@ module Analyses
       }
     end
 
-    # Parmi les confirmées : transformées vs non (centre = taux %).
+    # RDV site : commande / en cours (< 14 j) / sans commande (≥ 14 j).
     def rdv_conversion_doughnut
-      confirmes = h.instance_variable_get(:@nbDemandesRdvConfirmes).to_i
+      cohort = h.instance_variable_get(:@nbDemandesRdvConfirmes).to_i
       transformees = h.instance_variable_get(:@nbDemandesRdvTransformees).to_i
-      reste = [confirmes - transformees, 0].max
+      en_cours = h.instance_variable_get(:@nbRdvTransformationEnCours).to_i
+      sans = h.instance_variable_get(:@nbRdvTransformationSans).to_i
+      pending_days = Analyses::RdvStats::TRANSFORMATION_PENDING_DAYS
       taux = h.instance_variable_get(:@tauxTransformationRdv)
       taux_label = taux.nil? ? "—" : "#{ActiveSupport::NumberHelper.number_to_rounded(taux, precision: 1, strip_insignificant_zeros: true)} %"
       ring_border = "rgb(255, 255, 255)"
-      values = confirmes.positive? ? [transformees, reste] : [0, 0]
+      values = cohort.positive? ? [transformees, en_cours, sans] : [0, 0, 0]
 
       {
         type: "doughnut",
         data: {
-          labels: ["Avec commande", "Sans commande"],
+          labels: [
+            "Avec commande",
+            "En cours (< #{pending_days} j)",
+            "Sans commande (≥ #{pending_days} j)"
+          ],
           datasets: [{
             data: values,
-            backgroundColor: [SERIES_CABINE, SLATE_MUTED],
+            backgroundColor: [SERIES_CABINE, GOLD, SLATE_MUTED],
             borderWidth: 2,
             borderColor: ring_border,
             hoverBorderWidth: 2,
@@ -945,15 +953,22 @@ module Analyses
         },
         options: doughnut_options.merge(cutout: "62%"),
         _tooltip: "integer",
-        _centerText: [taux_label, "transformation"]
+        _centerText: [taux_label, "RDV site → cmd"]
       }
     end
 
-    # Même pattern que catalogue (barres horizontales).
     def rdv_type_bars
-      by_type = h.instance_variable_get(:@rdvByType) || {}
-      labels = by_type.keys.presence || ["—"]
-      values = labels.map { |k| by_type[k].to_i }
+      rdv_category_bars(h.instance_variable_get(:@rdvByType) || {})
+    end
+
+    def rdv_evenement_bars
+      rdv_category_bars(h.instance_variable_get(:@rdvByEvenement) || {})
+    end
+
+    # Même pattern que catalogue (barres horizontales).
+    def rdv_category_bars(counts)
+      labels = counts.keys.presence || ["—"]
+      values = labels.map { |key| counts[key].to_i }
       colors = labels.each_index.map { |i| RDV_TYPE_COLORS[i % RDV_TYPE_COLORS.length] }
 
       {

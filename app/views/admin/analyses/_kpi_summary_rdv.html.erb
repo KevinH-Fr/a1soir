@@ -22,11 +22,11 @@
         title: "Transformation",
         value: taux_label,
         trend_metric: :rdv_taux_transformation,
-        hint: "Confirmées sur date de demande",
-        hint2: "#{@nbDemandesRdvTransformees} / #{@nbDemandesRdvConfirmes} confirmées" %>
+        hint: "#{@nbDemandesRdvTransformees} cmd · #{@nbRdvTransformationEnCours} en cours · #{@nbRdvTransformationSans} sans",
+        hint2: "#{analyses_donut_amount_label(@caRdvTransformees)} € encaissés" %>
 
   <%= render "kpi_card",
-        title: "Calendrier interne",
+        title: "Agenda",
         value: @nbAgendaRdv,
         trend_metric: :rdv_agenda,
         hint: "Date du rendez-vous",

@@ -5,6 +5,8 @@
 <% if analyses_visibility_show?(:rdv_section) %>
   <% type_count = [(@rdvByType || {}).size, 2].max %>
   <% type_h = analyses_equipe_bars_height_rem(type_count) %>
+  <% event_count = [(@rdvByEvenement || {}).size, 2].max %>
+  <% event_h = analyses_equipe_bars_height_rem(event_count) %>
 
   <div class="analyses-chart-stack mt-3">
     <div class="<%= AnalysesHelper::ANALYSES_CONTENT_ROW %>">
@@ -24,15 +26,15 @@
       <div class="col-lg-6 min-w-0">
         <%= analyses_chart_card(extra_class: "analyses-chart-card--flush-center") do %>
           <%= analyses_chart_heading(
-                "Demandes du site · transformation",
-                meta: "Confirmées (date de la demande) → commande"
+                "RDV site · transformation",
+                meta: "Commande · en cours (< 14 j) · sans commande (≥ 14 j)"
               ) %>
           <div class="d-flex justify-content-center flex-grow-1 align-items-center">
             <%= render_analyses_chart(
                   :rdv_conversion_doughnut,
                   chart_id: "analyses-chart-rdv-conversion",
                   extra_class: "analyses-chart--compact",
-                  aria_label: "Taux de transformation des demandes confirmées"
+                  aria_label: "Rendez-vous site : avec commande, en cours ou sans commande"
                 ) %>
           </div>
         <% end %>
@@ -77,34 +79,49 @@
               ) %>
         <% end %>
       </div>
-      <div class="col-lg-6 min-w-0">
+      <div class="col-lg-6 min-w-0 d-flex">
+        <%= analyses_chart_card(extra_class: "analyses-chart-card--stretch") do %>
+          <%= analyses_chart_heading("Demandes du site · événement", meta: "Date de la demande") %>
+          <%= render_analyses_chart(
+                :rdv_evenement_bars,
+                chart_id: "analyses-chart-rdv-evenement",
+                extra_class: "analyses-chart--fill analyses-chart--catalog-bars",
+                box_style: "--analyses-chart-height: #{event_h}rem",
+                aria_label: "Répartition des demandes du site par type d'événement"
+              ) %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="<%= AnalysesHelper::ANALYSES_CONTENT_ROW %>">
+      <div class="col-lg-6 min-w-0 d-flex">
         <%= analyses_chart_card(extra_class: "analyses-chart-card--flush-center analyses-chart-card--stretch") do %>
-          <%= analyses_chart_heading("Calendrier interne · origine", meta: "Date du rendez-vous") %>
+          <%= analyses_chart_heading("Agenda · origine", meta: "Date du rendez-vous") %>
           <div class="d-flex justify-content-center flex-grow-1 align-items-center">
             <%= render_analyses_chart(
                   :rdv_agenda_origin_doughnut,
                   chart_id: "analyses-chart-rdv-agenda-origin",
                   extra_class: "analyses-chart--compact",
-                  aria_label: "Origine des rendez-vous : demandes du site ou calendrier interne"
+                  aria_label: "Origine de l'agenda : demandes du site et calendrier interne"
                 ) %>
           </div>
         <% end %>
       </div>
+      <div class="col-lg-6 min-w-0 d-flex">
+        <%= analyses_chart_card(extra_class: "analyses-chart-card--stretch") do %>
+          <%= analyses_chart_heading(
+                "Agenda · origine",
+                meta: "Date du rendez-vous · jours avec activité · site / créés en interne"
+              ) %>
+          <%= render_analyses_chart(
+                :rdv_agenda_timeline,
+                chart_id: "analyses-chart-rdv-agenda",
+                extra_class: "analyses-chart--fill analyses-chart--rdv-bars",
+                box_style: "--analyses-chart-height: 20rem",
+                aria_label: "Évolution des rendez-vous selon la date du rendez-vous et l’origine"
+              ) %>
+        <% end %>
+      </div>
     </div>
-
-    <%= analyses_full_bleed_chart do %>
-      <%= analyses_chart_card do %>
-        <%= analyses_chart_heading(
-              "Calendrier interne",
-              meta: "Date du rendez-vous · jours avec activité · site ou créés en interne"
-            ) %>
-        <%= render_analyses_chart(
-              :rdv_agenda_timeline,
-              chart_id: "analyses-chart-rdv-agenda",
-              extra_class: "analyses-chart--fill analyses-chart--rdv-bars",
-              aria_label: "Évolution des rendez-vous selon la date du rendez-vous et l’origine"
-            ) %>
-      <% end %>
-    <% end %>
   </div>
 <% end %>

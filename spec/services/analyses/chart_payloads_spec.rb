@@ -308,7 +308,7 @@ RSpec.describe Analyses::ChartPayloads do
     expect(config[:options][:scales][:y][:suggestedMax]).to eq(4)
   end
 
-  it "builds RDV agenda bars as grouped active days" do
+  it "builds RDV agenda bars as stacked active days" do
     helper_double.instance_variable_set(:@datedebut, Date.new(2026, 3, 4))
     helper_double.instance_variable_set(:@datefin, Date.new(2026, 3, 7))
     helper_double.instance_variable_set(:@timeline_grain, :day)
@@ -320,8 +320,9 @@ RSpec.describe Analyses::ChartPayloads do
     site, interne = config[:data][:datasets]
     expect(site[:data]).to eq([1])
     expect(interne[:data]).to eq([2])
-    expect(site[:stack]).to be_nil
-    expect(site[:skipNull]).to eq(true)
+    expect(site[:stack]).to eq("rdv")
+    expect(interne[:stack]).to eq("rdv")
+    expect(config[:options][:scales][:y][:suggestedMax]).to eq(4)
   end
 
 end

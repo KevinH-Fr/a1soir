@@ -2,10 +2,20 @@
 
 module Analyses
   # Onglet Analyses « Rendez-vous » :
-  # - Demandes site (DemandeRdv) : reçues, cabine, statut, type, transformation
+  # - Demandes site (DemandeRdv) : reçues, cabine, statut, type, événement
   # - Agenda (Meeting) : RDV prévus sur la période, origine site vs interne
+  # - Transformation : RDV site de la période → commande / en cours / sans commande
+  # - CA transformé : encaissé TTC des commandes hors devis liées, une fois par commande
   class RdvStats < ApplicationService
     STATUTS = %w[soumis confirmé annulé].freeze
+    EVENEMENT_LABELS = {
+      "mariage" => "Mariage",
+      "soiree" => "Soirée",
+      "soirée" => "Soirée",
+      "autre" => "Autre"
+    }.freeze
+    # Sans commande : « en cours » si le RDV a moins de N jours, sinon « sans ».
+    TRANSFORMATION_PENDING_DAYS = 14
 
     # Ruby wday : 0=dim … 6=sam — affichage Lun → Dim
     WEEKDAY_ORDER = [1, 2, 3, 4, 5, 6, 0].freeze
@@ -39,13 +49,14 @@ module Analyses
       from_site = meetings.where.not(demande_rdv_id: nil)
       interne = meetings.where(demande_rdv_id: nil)
 
-      transformation_stats(recues).merge(
+      transformation_stats(from_site).merge(
         demandes_recues: n_recues,
         avec_cabine: n_avec,
         sans_cabine: n_sans,
         part_cabine: rate(n_avec, n_recues),
         by_statut: counts_by_statut(recues),
         by_type: counts_by_type(recues),
+        by_evenement: counts_by_evenement(recues),
         timeline_grain: @grain,
         timeline_recues_avec: timeline_counts(recues_avec, "demande_rdvs.created_at"),
         timeline_recues_sans: timeline_counts(recues_sans, "demande_rdvs.created_at"),
@@ -74,9 +85,13 @@ module Analyses
         part_cabine: nil,
         confirmes: 0,
         transformees: 0,
+        transformation_en_cours: 0,
+        transformation_sans: 0,
         taux_transformation: nil,
+        ca_transformees: 0.to_d,
         by_statut: STATUTS.index_with(0),
         by_type: {},
+        by_evenement: {},
         timeline_grain: :day,
         timeline_recues_avec: {},
         timeline_recues_sans: {},
@@ -89,9 +104,11 @@ module Analyses
       }
     end
 
+    HEATMAP_HOURS = (0..23).to_a.freeze
+
     def empty_heatmap
       {
-        hours: (TimelineBuckets::HOUR_START..TimelineBuckets::HOUR_END).to_a,
+        hours: HEATMAP_HOURS,
         days: WEEKDAY_ORDER.map { |wday| { wday: wday, label: WEEKDAY_LABELS[wday] } },
         counts: {},
         max: 0
@@ -101,26 +118,16 @@ module Analyses
     # Heatmap jour × heure sur created_at (date de la demande), timezone app.
     def demande_heatmap(recues)
       counts = Hash.new(0)
-      hours_seen = []
 
       recues.pluck(:created_at).each do |at|
         next if at.blank?
 
         t = at.in_time_zone
         counts[[t.wday, t.hour]] += 1
-        hours_seen << t.hour
       end
-
-      start_h = TimelineBuckets::HOUR_START
-      end_h = TimelineBuckets::HOUR_END
-      if hours_seen.any?
-        start_h = [start_h, hours_seen.min].min
-        end_h = [end_h, hours_seen.max].max
-      end
-      hours = (start_h..end_h).to_a
 
       {
-        hours: hours,
+        hours: HEATMAP_HOURS,
         days: WEEKDAY_ORDER.map { |wday| { wday: wday, label: WEEKDAY_LABELS[wday] } },
         counts: counts,
         max: counts.values.max.to_i
@@ -139,6 +146,18 @@ module Analyses
            .to_h
     end
 
+    def counts_by_evenement(scope)
+      totals = Hash.new(0)
+      scope.group(:evenement).count.each do |code, count|
+        totals[evenement_label(code)] += count.to_i
+      end
+      totals.sort_by { |label, count| [-count, label] }.to_h
+    end
+
+    def evenement_label(code)
+      EVENEMENT_LABELS.fetch(code.to_s, code.to_s.presence || "—")
+    end
+
     def timeline_counts(scope, qualified_column)
       if @grain == :hour
         rows = scope.pluck(Arel.sql(qualified_column)).compact.map { |at| [at, 1] }
@@ -149,35 +168,72 @@ module Analyses
       end
     end
 
-    def transformation_stats(recues)
-      confirmes = recues.where(statut: "confirmé")
-      n_confirmes = confirmes.count
-      transformees = transformed_count(confirmes)
+    # RDV site (datedebut dans la période) :
+    # - transformé : commande hors devis sur la période après le RDV
+    # - en cours : pas de commande, RDV < 14 j
+    # - sans : pas de commande, RDV ≥ 14 j
+    # - CA : encaissé TTC de ces commandes (paiements prix + Stripe − remboursements), sans doublon
+    def transformation_stats(site_meetings)
+      cohort = site_meetings.where.not(client_id: nil)
+      n = cohort.count
+      binds = [false, @range.begin, @range.end]
+      transformed = cohort.where([period_commande_exists_sql, *binds])
+      transformees = transformed.count
+      without = cohort.where.not(id: transformed.select(:id))
+      pending_after = TRANSFORMATION_PENDING_DAYS.days.ago.end_of_day
+      en_cours = without.where("meetings.datedebut > ?", pending_after).count
+      sans = without.where("meetings.datedebut <= ?", pending_after).count
 
       {
-        confirmes: n_confirmes,
+        confirmes: n,
         transformees: transformees,
-        taux_transformation: rate(transformees, n_confirmes)
+        transformation_en_cours: en_cours,
+        transformation_sans: sans,
+        taux_transformation: rate(transformees, n),
+        ca_transformees: ca_commandes_liees(transformed)
       }
     end
 
-    def transformed_count(confirmes_scope)
-      confirmes_scope
-        .joins(:meeting)
-        .where.not(meetings: { client_id: nil })
-        .where(
-          <<~SQL.squish,
-            EXISTS (
-              SELECT 1 FROM commandes
-              WHERE commandes.client_id = meetings.client_id
-                AND commandes.devis = ?
-                AND commandes.created_at >= meetings.created_at
-            )
-          SQL
-          false
+    def ca_commandes_liees(transformed)
+      ids = linked_commande_ids(transformed)
+      return 0.to_d if ids.empty?
+
+      encaisse = PaiementRecu.only_prix
+                             .where(commande_id: ids, moyen: PaiementRecu::MOYEN_PAIEMENT)
+                             .sum(:montant).to_d
+      stripe = StripePayment.paid.where(commande_id: ids).sum(:amount).to_d / 100
+      remboursements = AvoirRemb.remb_only
+                                .joins(:commande)
+                                .where(commande_id: ids, commandes: { eshop: [false, nil] })
+                                .where.not(moyen: [nil, ""])
+                                .sum(:montant).to_d
+      encaisse + stripe - remboursements
+    end
+
+    def linked_commande_ids(transformed)
+      Commande.hors_devis
+              .joins(<<~SQL.squish)
+                INNER JOIN meetings
+                  ON meetings.client_id = commandes.client_id
+                 AND commandes.created_at >= meetings.datedebut
+              SQL
+              .where(commandes: { created_at: @range })
+              .where(meetings: { id: transformed.reselect(:id) })
+              .distinct
+              .ids
+    end
+
+    def period_commande_exists_sql
+      <<~SQL.squish
+        EXISTS (
+          SELECT 1 FROM commandes
+          WHERE commandes.client_id = meetings.client_id
+            AND commandes.devis = ?
+            AND commandes.created_at >= meetings.datedebut
+            AND commandes.created_at >= ?
+            AND commandes.created_at <= ?
         )
-        .distinct
-        .count(:id)
+      SQL
     end
 
     def rate(numerator, denominator)

@@ -6,7 +6,7 @@ module Analyses
   class KpiSnapshot < ApplicationService
     RDV_METRICS = %i[
       rdv_demandes_recues rdv_part_cabine
-      rdv_taux_transformation rdv_agenda
+      rdv_taux_transformation rdv_ca_transformation rdv_agenda
     ].freeze
 
     ALL_METRICS = (%i[
@@ -120,6 +120,7 @@ module Analyses
       values[:rdv_demandes_recues] = stats[:demandes_recues] if need?(:rdv_demandes_recues)
       values[:rdv_part_cabine] = stats[:part_cabine] if need?(:rdv_part_cabine)
       values[:rdv_taux_transformation] = stats[:taux_transformation] if need?(:rdv_taux_transformation)
+      values[:rdv_ca_transformation] = stats[:ca_transformees] if need?(:rdv_ca_transformation)
       values[:rdv_agenda] = stats[:agenda_total] if need?(:rdv_agenda)
       values
     end

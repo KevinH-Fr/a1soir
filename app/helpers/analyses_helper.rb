@@ -15,8 +15,8 @@ module AnalysesHelper
     { vue: "equipe", label: "Équipe", icon: "people-fill", tone: "equipe",
       description: "Performance par vendeur" },
     { vue: "rdv", label: "Rendez-vous", icon: "calendar-check", tone: "rdv",
-      description: "Demandes du site et calendrier interne",
-      nav_hint: "Site et calendrier" }
+      description: "Demandes du site et agenda",
+      nav_hint: "Site et agenda" }
   ].freeze
 
   ANALYSES_COMMERCE_FILTER_KEYS = (

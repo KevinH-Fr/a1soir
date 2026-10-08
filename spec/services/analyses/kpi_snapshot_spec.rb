@@ -25,11 +25,17 @@ RSpec.describe Analyses::KpiSnapshot do
 
     snapshot = described_class.call(
       period,
-      metrics: %i[rdv_demandes_recues rdv_part_cabine rdv_taux_transformation rdv_agenda]
+      metrics: %i[
+        rdv_demandes_recues rdv_part_cabine rdv_taux_transformation
+        rdv_ca_transformation rdv_agenda
+      ]
     )
 
     expect(snapshot.keys).to match_array(
-      %i[rdv_demandes_recues rdv_part_cabine rdv_taux_transformation rdv_agenda]
+      %i[
+        rdv_demandes_recues rdv_part_cabine rdv_taux_transformation
+        rdv_ca_transformation rdv_agenda
+      ]
     )
   end
 end

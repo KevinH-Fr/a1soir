@@ -45,33 +45,34 @@ noms = %w[Petit Roux Moreau Garcia Lefebvre Faure Blanc Guerin Andre Renaud]
 
 # days_ago_created, days_ago_rdv (négatif = RDV à venir, hors période Analyses),
 # statut, type_idx, cabine?, transform?
-# Étalé sur ~30 j (période Analyses par défaut) ; reçues ≠ prévus volontairement.
+# Demandes récentes (~30 j) + quelques RDV matures (≥ 31 j) pour la transformation.
 rdv_seed_rows = [
   [0,  0,  "soumis",    0, false, false],
   [1,  0,  "soumis",    1, true,  false],
-  [1,  1,  "confirmé",  1, true,  true],
-  [2,  1,  "confirmé",  0, false, true],
+  [1,  1,  "confirmé",  1, true,  false],  # trop tôt (fenêtre 30 j)
+  [2,  1,  "confirmé",  0, false, false],
   [3,  2,  "annulé",    0, false, false],
   [4,  3,  "soumis",    2, false, false],
-  [5,  2,  "confirmé",  1, true,  true],
+  # transform: besoin d’un RDV assez ancien (≥ 31 j) pour entrer dans le taux mature.
+  [5,  2,  "confirmé",  1, true,  false],   # RDV récent → trop tôt pour transformation
   [6,  -4, "soumis",    0, true,  false],   # reçue, RDV futur hors période
   [7,  4,  "confirmé",  2, false, false],
-  [8,  5,  "confirmé",  1, true,  true],
+  [8,  5,  "confirmé",  1, true,  false],
   [9,  3,  "soumis",    0, false, false],
   [10, 6,  "annulé",    1, true,  false],
-  [11, 7,  "confirmé",  0, false, true],
+  [11, 7,  "confirmé",  0, false, false],
   [12, -8, "soumis",    1, true,  false],  # reçue, RDV futur hors période
   [14, 8,  "confirmé",  1, false, false],
   [15, 9,  "soumis",    2, false, false],
-  [16, 10, "confirmé",  0, true,  true],
+  [16, 10, "confirmé",  0, true,  false],
   [18, 11, "annulé",    2, false, false],
-  [20, 12, "confirmé",  1, true,  true],
+  [20, 12, "confirmé",  1, true,  false],
   [21, -10,"soumis",    0, false, false],  # reçue, RDV futur hors période
-  [22, 14, "confirmé",  0, false, true],
-  [24, 15, "soumis",    1, true,  false],
-  [26, 18, "confirmé",  1, true,  true],
-  [28, 20, "confirmé",  0, false, false],
-  [29, 22, "soumis",    2, false, false]
+  [35, 32, "confirmé",  0, false, true],   # mature + transformé
+  [38, 34, "confirmé",  1, true,  true],   # mature + transformé
+  [42, 36, "confirmé",  0, false, false],  # mature sans commande
+  [45, 40, "confirmé",  1, true,  true],   # mature + transformé
+  [48, 42, "soumis",    2, false, false]
 ]
 
 Meeting.skip_callback(:create, :after, :add_calendar_event)
@@ -138,15 +139,18 @@ begin
       else
         meeting = Meeting.create!(meeting_attrs)
       end
-      # Instant de confirmation ≈ réception + 1 jour (pour le taux de transformation).
+      # Instant de confirmation ≈ réception + 1 jour.
       meeting.update_columns(created_at: created_at + 1.day, updated_at: created_at + 1.day)
 
       if transform
+        # Commande dans les 30 j après le RDV (stat transformation Analyses).
+        cmd_at = date_rdv + 2.days
+        cmd_days_ago = [(Time.zone.now - cmd_at) / 1.day, 0].max.floor
         Seeds::Helpers.upsert_demo_commande!(
           nom: "Commande seed RDV #{format('%02d', index + 1)}",
           client: client,
           profile: profile_marie,
-          days_ago: [days_ago - 2, 0].max,
+          days_ago: cmd_days_ago,
           type_locvente: "vente",
           statutarticles: "non-retiré",
           articles: [
@@ -157,8 +161,6 @@ begin
           ]
         )
         commande = Commande.find_by!(nom: "Commande seed RDV #{format('%02d', index + 1)}")
-        # Garantir created_at >= meeting.created_at
-        cmd_at = [meeting.reload.created_at + 2.hours, Seeds::Helpers.demo_timestamp([days_ago - 2, 0].max, name: commande.nom)].max
         Seeds::Helpers.touch_commande_timestamps!(commande, at: cmd_at)
       end
     elsif meeting
