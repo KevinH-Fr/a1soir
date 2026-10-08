@@ -33,40 +33,42 @@
     </div>
   </div>
 
-  <div class="analyses-sidebar__block flex-shrink-0">
-    <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
-      <p class="analyses-sidebar__label mb-0">Filtres</p>
-      <% if filters_count.positive? %>
-        <%= link_to "Effacer", analyses_clear_filters_path,
-                    class: "analyses-sidebar__clear",
-                    data: { turbo_stream: true } %>
-      <% end %>
-    </div>
-
-    <button type="button"
-            class="analyses-filters-trigger"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#analysesFiltersOffcanvas"
-            aria-controls="analysesFiltersOffcanvas">
-      <span class="d-inline-flex align-items-center gap-2 min-w-0">
-        <i class="bi bi-funnel flex-shrink-0" aria-hidden="true"></i>
-        <span class="text-truncate"><%= filters_count.positive? ? "Modifier les filtres" : "Ajouter un filtre" %></span>
-      </span>
-      <% if filters_count.positive? %>
-        <span class="analyses-filters-trigger__count"><%= filters_count %></span>
-      <% else %>
-        <i class="bi bi-plus-lg analyses-filters-trigger__plus" aria-hidden="true"></i>
-      <% end %>
-    </button>
-
-    <% if chips.any? %>
-      <div class="d-flex flex-wrap gap-1 mt-2 analyses-sidebar__chips">
-        <% chips.each do |chip| %>
-          <%= render "filter_chip", chip: chip %>
+  <% if analyses_visibility_show?(:filters_panel) %>
+    <div class="analyses-sidebar__block flex-shrink-0">
+      <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+        <p class="analyses-sidebar__label mb-0">Filtres</p>
+        <% if filters_count.positive? %>
+          <%= link_to "Effacer", analyses_clear_filters_path,
+                      class: "analyses-sidebar__clear",
+                      data: { turbo_stream: true } %>
         <% end %>
       </div>
-    <% end %>
-  </div>
+
+      <button type="button"
+              class="analyses-filters-trigger"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#analysesFiltersOffcanvas"
+              aria-controls="analysesFiltersOffcanvas">
+        <span class="d-inline-flex align-items-center gap-2 min-w-0">
+          <i class="bi bi-funnel flex-shrink-0" aria-hidden="true"></i>
+          <span class="text-truncate"><%= filters_count.positive? ? "Modifier les filtres" : "Ajouter un filtre" %></span>
+        </span>
+        <% if filters_count.positive? %>
+          <span class="analyses-filters-trigger__count"><%= filters_count %></span>
+        <% else %>
+          <i class="bi bi-plus-lg analyses-filters-trigger__plus" aria-hidden="true"></i>
+        <% end %>
+      </button>
+
+      <% if chips.any? %>
+        <div class="d-flex flex-wrap gap-1 mt-2 analyses-sidebar__chips">
+          <% chips.each do |chip| %>
+            <%= render "filter_chip", chip: chip %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 
   <div class="p-2 flex-grow-1 analyses-dashboard__scroll">
     <p class="analyses-sidebar__label mb-2 px-1">Sections</p>

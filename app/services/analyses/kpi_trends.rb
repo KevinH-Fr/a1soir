@@ -6,7 +6,8 @@ module Analyses
       "synthese" => %i[ca commandes articles_lignes top_vendeur_ca],
       "ca" => %i[ca transactions commandes stripe],
       "catalogue" => %i[quantites ca_lignes produits],
-      "equipe" => %i[equipe_ca equipe_commandes equipe_devis top_vendeur_ca]
+      "equipe" => %i[equipe_ca equipe_commandes equipe_devis top_vendeur_ca],
+      "rdv" => %i[rdv_demandes_recues rdv_part_cabine rdv_taux_transformation rdv_agenda]
     }.freeze
 
     def self.call(filter_params:, vue:, current: nil)
@@ -44,6 +45,10 @@ module Analyses
     private
 
     def build_trend(current, previous, period_label)
+      if current.nil? || previous.nil?
+        return { pct: nil, direction: :neutral, period_label: period_label }
+      end
+
       curr = current.to_d
       prev = previous.to_d
 

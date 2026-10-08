@@ -60,6 +60,18 @@ RSpec.describe Analyses::DashboardVisibility do
     expect(described_class.new({}, ca_mode: :paiements, vue: "ca").show?(:kpi)).to be(true)
     expect(visibility.show?(:kpi)).to be(true)
     expect(described_class.new({}, ca_mode: :paiements, vue: "equipe").show?(:kpi)).to be(true)
+    expect(described_class.new({}, ca_mode: :paiements, vue: "rdv").show?(:kpi)).to be(true)
+  end
+
+  it "hides commerce filters on rdv vue" do
+    rdv = described_class.new({}, ca_mode: :paiements, vue: "rdv")
+    expect(rdv.show?(:filters_panel)).to be(false)
+    expect(rdv.show?(:rdv_section)).to be(true)
+    expect(described_class.new({}, ca_mode: :paiements, vue: "synthese").show?(:filters_panel)).to be(true)
+  end
+
+  it "normalizes rdv vue" do
+    expect(described_class.normalize_vue("rdv")).to eq("rdv")
   end
 
   it "shows CA section charts on ca vue only" do

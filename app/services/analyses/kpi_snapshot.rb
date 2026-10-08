@@ -4,13 +4,18 @@ module Analyses
   # Agrégats KPI pour une fenêtre de dates + filtres (sans séries temporelles).
   # `metrics:` limite les clés calculées (évite p.ex. equipe_totals hors onglet équipe).
   class KpiSnapshot < ApplicationService
-    ALL_METRICS = %i[
+    RDV_METRICS = %i[
+      rdv_demandes_recues rdv_part_cabine
+      rdv_taux_transformation rdv_agenda
+    ].freeze
+
+    ALL_METRICS = (%i[
       ca commandes articles_lignes devis
       transactions stripe
       quantites ca_lignes produits
       equipe_ca equipe_commandes equipe_devis
       top_vendeur_ca
-    ].freeze
+    ] + RDV_METRICS).freeze
 
     def self.call(filter_params, metrics: nil)
       new(filter_params, metrics: metrics).call
@@ -19,26 +24,35 @@ module Analyses
     def initialize(filter_params, metrics: nil)
       @filter_params = filter_params.to_h.symbolize_keys
       @metrics = metrics&.map(&:to_sym)
-      @scopes = DashboardScopes.call(@filter_params)
-      @datedebut = @scopes[:datedebut]
-      @datefin = @scopes[:datefin]
-      @product_dimension_filtered = @scopes[:product_dimension_filtered]
-      @ca_mode = @product_dimension_filtered ? :lignes : :paiements
-      @stripe_totals = StripeTotals.new(
-        datedebut: @datedebut,
-        datefin: @datefin,
-        stripe_payments_scope: @scopes[:stripe_payments_paid_filtres],
-        filtered_produits: @scopes[:filtered_produits],
-        product_dimension_filtered: @product_dimension_filtered
-      )
+
+      if commerce_scopes_needed?
+        @scopes = DashboardScopes.call(@filter_params)
+        @datedebut = @scopes[:datedebut]
+        @datefin = @scopes[:datefin]
+        @product_dimension_filtered = @scopes[:product_dimension_filtered]
+        @ca_mode = @product_dimension_filtered ? :lignes : :paiements
+        @stripe_totals = StripeTotals.new(
+          datedebut: @datedebut,
+          datefin: @datefin,
+          stripe_payments_scope: @scopes[:stripe_payments_paid_filtres],
+          filtered_produits: @scopes[:filtered_produits],
+          product_dimension_filtered: @product_dimension_filtered
+        )
+      else
+        @datedebut = parse_datetime(@filter_params[:debut])
+        @datefin = parse_datetime(@filter_params[:fin])
+      end
     end
 
     def call
+      result = {}
+      result.merge!(rdv_metric_values) if need_any?(*RDV_METRICS)
+      return result if rdv_only?
+
       commandes = @scopes[:commandes_filtres]
       articles = @scopes[:articles_filtres]
       sous_articles = @scopes[:sous_articles_filtres]
       paiements = @scopes[:paiements_filtres]
-      result = {}
 
       result[:ca] = ca_total(articles, sous_articles, paiements) if need?(:ca)
       result[:commandes] = commandes.count if need?(:commandes)
@@ -84,6 +98,30 @@ module Analyses
 
     def needed_metrics
       @needed_metrics ||= (@metrics.presence || ALL_METRICS)
+    end
+
+    def rdv_only?
+      needed_metrics.all? { |key| RDV_METRICS.include?(key) }
+    end
+
+    def commerce_scopes_needed?
+      !rdv_only?
+    end
+
+    def parse_datetime(value)
+      return nil if value.blank?
+
+      Time.zone.parse(value.to_s)
+    end
+
+    def rdv_metric_values
+      stats = RdvStats.call(debut: @datedebut, fin: @datefin)
+      values = {}
+      values[:rdv_demandes_recues] = stats[:demandes_recues] if need?(:rdv_demandes_recues)
+      values[:rdv_part_cabine] = stats[:part_cabine] if need?(:rdv_part_cabine)
+      values[:rdv_taux_transformation] = stats[:taux_transformation] if need?(:rdv_taux_transformation)
+      values[:rdv_agenda] = stats[:agenda_total] if need?(:rdv_agenda)
+      values
     end
 
     def stripe_eur

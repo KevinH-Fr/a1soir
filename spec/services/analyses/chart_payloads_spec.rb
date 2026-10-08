@@ -291,4 +291,37 @@ RSpec.describe Analyses::ChartPayloads do
     expect(config[:_centerText].first).to include("150")
   end
 
+  it "densifies RDV cabine bars to active days only" do
+    helper_double.instance_variable_set(:@datedebut, Date.new(2026, 3, 4))
+    helper_double.instance_variable_set(:@datefin, Date.new(2026, 3, 8))
+    helper_double.instance_variable_set(:@timeline_grain, :day)
+    helper_double.instance_variable_set(:@groupedByDateRdvRecuesAvec, { "05/03/2026" => 2, "08/03/2026" => 1 })
+    helper_double.instance_variable_set(:@groupedByDateRdvRecuesSans, { "05/03/2026" => 1 })
+
+    config = payloads.build(:rdv_recues_timeline)
+    expect(config[:type]).to eq("bar")
+    expect(config[:data][:labels]).to eq(%w[05/03 08/03])
+    avec, sans = config[:data][:datasets]
+    expect(avec[:data]).to eq([2, 1])
+    expect(sans[:data]).to eq([1, 0])
+    expect(avec[:stack]).to eq("rdv")
+    expect(config[:options][:scales][:y][:suggestedMax]).to eq(4)
+  end
+
+  it "builds RDV agenda bars as grouped active days" do
+    helper_double.instance_variable_set(:@datedebut, Date.new(2026, 3, 4))
+    helper_double.instance_variable_set(:@datefin, Date.new(2026, 3, 7))
+    helper_double.instance_variable_set(:@timeline_grain, :day)
+    helper_double.instance_variable_set(:@groupedByDateAgendaSite, { "06/03/2026" => 1 })
+    helper_double.instance_variable_set(:@groupedByDateAgendaInterne, { "06/03/2026" => 2 })
+
+    config = payloads.build(:rdv_agenda_timeline)
+    expect(config[:data][:labels]).to eq(%w[06/03])
+    site, interne = config[:data][:datasets]
+    expect(site[:data]).to eq([1])
+    expect(interne[:data]).to eq([2])
+    expect(site[:stack]).to be_nil
+    expect(site[:skipNull]).to eq(true)
+  end
+
 end

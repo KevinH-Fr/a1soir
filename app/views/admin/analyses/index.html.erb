@@ -1,5 +1,7 @@
 <div data-controller="analyses-filters">
   <%= render "dashboard_shell" %>
   <%= render "nav_offcanvas" %>
-  <%= render "filters_offcanvas" %>
+  <% if analyses_visibility_show?(:filters_panel) %>
+    <%= render "filters_offcanvas" %>
+  <% end %>
 </div>

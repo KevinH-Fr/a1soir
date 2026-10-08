@@ -1,0 +1,34 @@
+<% taux = @tauxTransformationRdv %>
+<% taux_label = taux.nil? ? "—" : "#{number_with_precision(taux, precision: 1, strip_insignificant_zeros: true)} %" %>
+<% part = @partCabineRdv %>
+<% part_label = part.nil? ? "—" : "#{number_with_precision(part, precision: 1, strip_insignificant_zeros: true)} %" %>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-2 g-sm-3">
+  <%= render "kpi_card",
+        title: "Demandes du site",
+        value: @nbDemandesRdv,
+        trend_metric: :rdv_demandes_recues,
+        hint: "Date de la demande",
+        hint2: "#{@nbDemandesRdvAvecCabine} cabine · #{@nbDemandesRdvSansCabine} sans" %>
+
+  <%= render "kpi_card",
+        title: "Part cabine",
+        value: part_label,
+        trend_metric: :rdv_part_cabine,
+        hint: "Parmi les demandes (date demande)",
+        hint2: "#{@nbDemandesRdvAvecCabine} / #{@nbDemandesRdv}" %>
+
+  <%= render "kpi_card",
+        title: "Transformation",
+        value: taux_label,
+        trend_metric: :rdv_taux_transformation,
+        hint: "Confirmées sur date de demande",
+        hint2: "#{@nbDemandesRdvTransformees} / #{@nbDemandesRdvConfirmes} confirmées" %>
+
+  <%= render "kpi_card",
+        title: "Calendrier interne",
+        value: @nbAgendaRdv,
+        trend_metric: :rdv_agenda,
+        hint: "Date du rendez-vous",
+        hint2: "#{@nbAgendaRdvSite} site · #{@nbAgendaRdvInterne} internes" %>
+</div>

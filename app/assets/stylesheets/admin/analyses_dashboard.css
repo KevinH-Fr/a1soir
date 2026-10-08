@@ -66,6 +66,11 @@
   --analyses-tone-rgb: 184, 74, 107;
 }
 
+.analyses-tone--rdv {
+  --analyses-tone: #0d9488;
+  --analyses-tone-rgb: 13, 148, 136;
+}
+
 .analyses-tone__icon,
 .analyses-tone__label {
   color: var(--analyses-tone);
@@ -967,6 +972,12 @@
   max-height: min(20rem, 55vh);
 }
 
+/* RDV : petits volumes — hauteur plus basse pour des barres plus présentes. */
+.analyses-chart--rdv-bars {
+  height: 12.5rem;
+  max-height: min(12.5rem, 42vh);
+}
+
 .analyses-chart--equipe-timeline {
   height: 22rem;
   max-height: min(22rem, 60vh);
@@ -1471,5 +1482,86 @@
   line-height: 1;
   color: #1e293b;
   white-space: nowrap;
+}
+
+/* Heatmap RDV : jour × heure (date de la demande). */
+.analyses-rdv-heatmap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.analyses-rdv-heatmap__scroll {
+  overflow-x: auto;
+  scrollbar-gutter: stable;
+}
+
+.analyses-rdv-heatmap__table {
+  width: 100%;
+  min-width: 36rem;
+  border-collapse: separate;
+  border-spacing: 3px;
+  margin: 0;
+}
+
+.analyses-rdv-heatmap__corner,
+.analyses-rdv-heatmap__hour,
+.analyses-rdv-heatmap__day {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #64748b;
+  text-align: center;
+  padding: 0.15rem 0.2rem;
+  white-space: nowrap;
+}
+
+.analyses-rdv-heatmap__day {
+  text-align: right;
+  padding-right: 0.45rem;
+  width: 2.4rem;
+}
+
+.analyses-rdv-heatmap__cell {
+  width: 2.1rem;
+  height: 1.85rem;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 0.68rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #134e4a;
+  border-radius: 0.3rem;
+  background: var(--rdv-heat, transparent);
+}
+
+.analyses-rdv-heatmap__cell--empty {
+  background: rgba(148, 163, 184, 0.12);
+  color: transparent;
+}
+
+.analyses-rdv-heatmap__legend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.55rem;
+  font-size: 0.72rem;
+  color: #64748b;
+  padding: 0 0.15rem;
+}
+
+.analyses-rdv-heatmap__swatch {
+  display: inline-block;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 0.2rem;
+}
+
+.analyses-rdv-heatmap__swatch--low {
+  background: rgba(13, 148, 136, 0.2);
+}
+
+.analyses-rdv-heatmap__swatch--high {
+  background: rgba(13, 148, 136, 0.9);
 }
 

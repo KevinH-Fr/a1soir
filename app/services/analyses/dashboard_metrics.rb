@@ -29,6 +29,8 @@ module Analyses
         assign_catalog_stats
       when "equipe"
         assign_profile_stats(datedebut, datefin, stripe_totals, filter_params)
+      when "rdv"
+        assign_rdv_metrics
       end
     end
 
@@ -570,6 +572,29 @@ module Analyses
     # Alias conservé pour d’éventuels callers / specs.
     def merge_grouped_by_day(*hashes)
       merge_timeline_hashes(*hashes)
+    end
+
+    def assign_rdv_metrics
+      stats = RdvStats.call(debut: datedebut, fin: datefin)
+      ivar_set(:rdv_stats, stats)
+      ivar_set(:timeline_grain, stats[:timeline_grain])
+      ivar_set(:nbDemandesRdv, stats[:demandes_recues])
+      ivar_set(:nbDemandesRdvAvecCabine, stats[:avec_cabine])
+      ivar_set(:nbDemandesRdvSansCabine, stats[:sans_cabine])
+      ivar_set(:partCabineRdv, stats[:part_cabine])
+      ivar_set(:nbDemandesRdvConfirmes, stats[:confirmes])
+      ivar_set(:nbDemandesRdvTransformees, stats[:transformees])
+      ivar_set(:tauxTransformationRdv, stats[:taux_transformation])
+      ivar_set(:rdvByStatut, stats[:by_statut])
+      ivar_set(:rdvByType, stats[:by_type])
+      ivar_set(:groupedByDateRdvRecuesAvec, stats[:timeline_recues_avec])
+      ivar_set(:groupedByDateRdvRecuesSans, stats[:timeline_recues_sans])
+      ivar_set(:rdvDemandeHeatmap, stats[:demande_heatmap])
+      ivar_set(:nbAgendaRdv, stats[:agenda_total])
+      ivar_set(:nbAgendaRdvSite, stats[:agenda_site])
+      ivar_set(:nbAgendaRdvInterne, stats[:agenda_interne])
+      ivar_set(:groupedByDateAgendaSite, stats[:timeline_agenda_site])
+      ivar_set(:groupedByDateAgendaInterne, stats[:timeline_agenda_interne])
     end
   end
 end

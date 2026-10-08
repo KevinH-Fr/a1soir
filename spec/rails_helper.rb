@@ -3,6 +3,8 @@ require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 # Mount e-shop / Stripe routes in test unless explicitly overridden
 ENV['ONLINE_SALES_AVAILABLE'] ||= 'true'
+# Admin self-signup stays closed in test unless a spec sets this before boot.
+ENV['ADMIN_SIGNUP_ENABLED'] ||= 'false'
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?

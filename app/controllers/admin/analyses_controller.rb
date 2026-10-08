@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Dashboard admin Analyses : filtres, onglets (synthèse / CA / catalogue / équipe)
+# Dashboard admin Analyses : filtres, onglets (synthèse / CA / catalogue / équipe / RDV)
 # et délégation des calculs aux services Analyses::*.
 class Admin::AnalysesController < Admin::ApplicationController
   include Admin::ProduitListingFilters
@@ -9,38 +9,43 @@ class Admin::AnalysesController < Admin::ApplicationController
 
   def index
     filter_params = analyses_filter_params
-    scopes = Analyses::DashboardScopes.call(filter_params)
-
-    datedebut = scopes[:datedebut]
-    datefin = scopes[:datefin]
-    @datedebut = datedebut
-    @datefin = datefin
-
-    @commandesFiltres = scopes[:commandes_filtres]
-    @articlesFiltres = scopes[:articles_filtres]
-    @sousArticlesFiltres = scopes[:sous_articles_filtres]
-    @paiementsFiltres = scopes[:paiements_filtres]
-    @remboursementsBoutiqueFiltres = scopes[:remboursements_boutique_filtres]
-    @stripePaymentsPaidFiltres = scopes[:stripe_payments_paid_filtres]
-    @stripePaymentItemsFiltres = scopes[:stripe_payment_items_filtres]
-    @product_dimension_filtered = scopes[:product_dimension_filtered]
-    @analyses_ca_mode = @product_dimension_filtered ? :lignes : :paiements
-    @line_metrics = Analyses::LineMetrics.new(
-      articles_scope: @articlesFiltres,
-      stripe_items_scope: @stripePaymentItemsFiltres
-    )
-
-    stripe_totals = Analyses::StripeTotals.new(
-      datedebut: datedebut,
-      datefin: datefin,
-      stripe_payments_scope: @stripePaymentsPaidFiltres,
-      filtered_produits: scopes[:filtered_produits],
-      product_dimension_filtered: @product_dimension_filtered
-    )
-    @total_stripe_eur = stripe_totals.total_eur
-    @totalRemboursementsEshop = stripe_totals.remboursements_total_eur
-
     @analyses_vue = Analyses::DashboardVisibility.normalize_vue(params[:vue])
+    stripe_totals = nil
+
+    if @analyses_vue == "rdv"
+      @datedebut = Time.zone.parse(filter_params[:debut].to_s)
+      @datefin = Time.zone.parse(filter_params[:fin].to_s)
+      @analyses_ca_mode = :paiements
+    else
+      scopes = Analyses::DashboardScopes.call(filter_params)
+
+      @datedebut = scopes[:datedebut]
+      @datefin = scopes[:datefin]
+      @commandesFiltres = scopes[:commandes_filtres]
+      @articlesFiltres = scopes[:articles_filtres]
+      @sousArticlesFiltres = scopes[:sous_articles_filtres]
+      @paiementsFiltres = scopes[:paiements_filtres]
+      @remboursementsBoutiqueFiltres = scopes[:remboursements_boutique_filtres]
+      @stripePaymentsPaidFiltres = scopes[:stripe_payments_paid_filtres]
+      @stripePaymentItemsFiltres = scopes[:stripe_payment_items_filtres]
+      @product_dimension_filtered = scopes[:product_dimension_filtered]
+      @analyses_ca_mode = @product_dimension_filtered ? :lignes : :paiements
+      @line_metrics = Analyses::LineMetrics.new(
+        articles_scope: @articlesFiltres,
+        stripe_items_scope: @stripePaymentItemsFiltres
+      )
+
+      stripe_totals = Analyses::StripeTotals.new(
+        datedebut: @datedebut,
+        datefin: @datefin,
+        stripe_payments_scope: @stripePaymentsPaidFiltres,
+        filtered_produits: scopes[:filtered_produits],
+        product_dimension_filtered: @product_dimension_filtered
+      )
+      @total_stripe_eur = stripe_totals.total_eur
+      @totalRemboursementsEshop = stripe_totals.remboursements_total_eur
+    end
+
     @analyses_visibility = Analyses::DashboardVisibility.new(
       filter_params,
       ca_mode: @analyses_ca_mode,
@@ -61,7 +66,7 @@ class Admin::AnalysesController < Admin::ApplicationController
     @analyses_kpi_trends = kpi_trends[:trends]
     @analyses_kpi_trend_period_label = kpi_trends[:period_label]
 
-    load_filter_collections
+    load_filter_collections unless @analyses_vue == "rdv"
 
     respond_to do |format|
       format.html
@@ -126,6 +131,13 @@ class Admin::AnalysesController < Admin::ApplicationController
         equipe_devis: stats.sum { |r| r[:devis].to_i },
         top_vendeur_ca: top&.dig(:ca).to_d,
         top_vendeur_profile_id: top&.dig(:profile_id)
+      }
+    when "rdv"
+      {
+        rdv_demandes_recues: @nbDemandesRdv,
+        rdv_part_cabine: @partCabineRdv,
+        rdv_taux_transformation: @tauxTransformationRdv,
+        rdv_agenda: @nbAgendaRdv
       }
     else
       top = @synthese_top_profile

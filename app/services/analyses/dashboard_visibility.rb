@@ -3,7 +3,7 @@
 module Analyses
   # Décide quelles sections / graphiques afficher selon l'onglet et les filtres déjà « épinglés ».
   class DashboardVisibility
-    VUES = %w[synthese ca catalogue equipe].freeze
+    VUES = %w[synthese ca catalogue equipe rdv].freeze
 
     def self.normalize_vue(value)
       VUES.include?(value.to_s) ? value.to_s : "synthese"
@@ -64,6 +64,10 @@ module Analyses
         !dimension_pinned?(:profile)
       when :filter_profile_dropdown
         @vue != "equipe"
+      when :filters_panel
+        @vue != "rdv"
+      when :rdv_section
+        @vue == "rdv"
       else
         true
       end

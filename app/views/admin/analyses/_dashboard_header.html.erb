@@ -16,24 +16,26 @@
   <div class="d-flex align-items-center gap-2 ms-auto flex-shrink-0">
     <%= render "period_dropdown" %>
 
-    <button type="button"
-            class="btn btn-sm btn-outline-secondary position-relative d-inline-flex align-items-center gap-1"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#analysesFiltersOffcanvas"
-            aria-controls="analysesFiltersOffcanvas">
-      <i class="bi bi-funnel" aria-hidden="true"></i>
-      <span class="d-none d-sm-inline">Filtres</span>
-      <% if filters_count.positive? %>
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-primary">
-          <%= filters_count %>
-          <span class="visually-hidden">filtres actifs</span>
-        </span>
-      <% end %>
-    </button>
+    <% if analyses_visibility_show?(:filters_panel) %>
+      <button type="button"
+              class="btn btn-sm btn-outline-secondary position-relative d-inline-flex align-items-center gap-1"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#analysesFiltersOffcanvas"
+              aria-controls="analysesFiltersOffcanvas">
+        <i class="bi bi-funnel" aria-hidden="true"></i>
+        <span class="d-none d-sm-inline">Filtres</span>
+        <% if filters_count.positive? %>
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-primary">
+            <%= filters_count %>
+            <span class="visually-hidden">filtres actifs</span>
+          </span>
+        <% end %>
+      </button>
+    <% end %>
   </div>
 </div>
 
-<% if chips.any? || period_text.present? %>
+<% if period_text.present? || (analyses_visibility_show?(:filters_panel) && chips.any?) %>
   <div class="px-2 pb-2 d-flex flex-nowrap align-items-center gap-2 overflow-auto analyses-header__chips">
     <% if period_text.present? %>
       <span class="badge rounded-pill text-bg-light border text-body fw-normal flex-shrink-0">
@@ -42,8 +44,10 @@
       </span>
     <% end %>
 
-    <% chips.each do |chip| %>
-      <%= render "filter_chip", chip: chip %>
+    <% if analyses_visibility_show?(:filters_panel) %>
+      <% chips.each do |chip| %>
+        <%= render "filter_chip", chip: chip %>
+      <% end %>
     <% end %>
   </div>
 <% end %>

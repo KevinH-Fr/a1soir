@@ -77,6 +77,12 @@ module Analyses
       when :catalog_types_bars_ca then catalog_metric_bars(:type, :ca)
       when :catalog_categories_bars then catalog_metric_bars(:categorie, :qty)
       when :catalog_categories_bars_ca then catalog_metric_bars(:categorie, :ca)
+      when :rdv_recues_timeline then rdv_cabine_timeline
+      when :rdv_statut_doughnut then rdv_statut_doughnut
+      when :rdv_conversion_doughnut then rdv_conversion_doughnut
+      when :rdv_type_bars then rdv_type_bars
+      when :rdv_agenda_origin_doughnut then rdv_agenda_origin_doughnut
+      when :rdv_agenda_timeline then rdv_agenda_timeline
       else
         nil
       end
@@ -685,6 +691,308 @@ module Analyses
       else
         h.instance_variable_get(by_ca ? :@catalog_by_categorie_by_ca : :@catalog_by_categorie) || []
       end
+    end
+
+    SERIES_CABINE = "rgb(13, 148, 136)".freeze
+    SERIES_SANS_CABINE = "rgb(148, 163, 184)".freeze
+
+    RDV_STATUT_COLORS = {
+      "soumis" => "rgb(220, 192, 118)",
+      "confirmé" => SERIES_CABINE,
+      "annulé" => "rgb(176, 184, 196)"
+    }.freeze
+
+    RDV_TYPE_COLORS = [
+      "rgb(74, 132, 176)",
+      "rgb(196, 132, 74)",
+      "rgb(132, 108, 176)",
+      "rgb(74, 148, 110)",
+      "rgb(196, 92, 118)",
+      "rgb(64, 158, 148)"
+    ].freeze
+
+    # Petits volumes (0–2/j) : barres empilées, pas de courbes.
+    def rdv_cabine_timeline
+      avec_hash = h.instance_variable_get(:@groupedByDateRdvRecuesAvec) || {}
+      sans_hash = h.instance_variable_get(:@groupedByDateRdvRecuesSans) || {}
+      labels = timeline_labels(avec_hash, sans_hash)
+
+      rdv_count_bars(
+        labels: labels,
+        series: [
+          ["Avec cabine", values_for_labels(labels, avec_hash, integer: true), SERIES_CABINE],
+          ["Sans cabine", values_for_labels(labels, sans_hash, integer: true), SERIES_SANS_CABINE]
+        ],
+        y_title: "Demandes",
+        stacked: true
+      )
+    end
+
+    def rdv_agenda_origin_doughnut
+      site = h.instance_variable_get(:@nbAgendaRdvSite).to_i
+      interne = h.instance_variable_get(:@nbAgendaRdvInterne).to_i
+      total = site + interne
+      ring_border = "rgb(255, 255, 255)"
+
+      {
+        type: "doughnut",
+        data: {
+          labels: ["Demandes du site", "Calendrier interne"],
+          datasets: [{
+            data: [site, interne],
+            backgroundColor: [SERIES_CABINE, "rgb(74, 132, 176)"],
+            borderWidth: 2,
+            borderColor: ring_border,
+            hoverBorderWidth: 2,
+            hoverBorderColor: ring_border,
+            borderRadius: 4,
+            hoverOffset: 6,
+            spacing: 2
+          }]
+        },
+        options: doughnut_options.merge(cutout: "62%"),
+        _tooltip: "integer",
+        _centerText: [total.to_s, "RDV"]
+      }
+    end
+
+    def rdv_agenda_timeline
+      site_hash = h.instance_variable_get(:@groupedByDateAgendaSite) || {}
+      interne_hash = h.instance_variable_get(:@groupedByDateAgendaInterne) || {}
+      labels = timeline_labels(site_hash, interne_hash)
+
+      rdv_count_bars(
+        labels: labels,
+        series: [
+          ["Demandes du site", values_for_labels(labels, site_hash, integer: true), SERIES_CABINE],
+          ["Calendrier interne", values_for_labels(labels, interne_hash, integer: true), "rgb(74, 132, 176)"]
+        ],
+        y_title: "RDV",
+        stacked: false
+      )
+    end
+
+    # Petits volumes : jours actifs seulement, barres plus épaisses, échelle Y serrée.
+    def rdv_count_bars(labels:, series:, y_title:, stacked:)
+      value_arrays = series.map { |(_, values, _)| Array(values) }
+      labels, value_arrays = densify_rdv_active_buckets(labels, value_arrays)
+      series = series.each_with_index.map { |(lab, _, color), i| [lab, value_arrays[i], color] }
+
+      n = labels.size
+      category_pct = n <= 8 ? 0.62 : (n <= 16 ? 0.72 : 0.82)
+      bar_pct = stacked ? 0.92 : 0.78
+      max_thickness = n <= 6 ? 52 : (n <= 14 ? 38 : 26)
+      data_max = if stacked && value_arrays.any?
+                   value_arrays.transpose.map { |col| col.map(&:to_i).sum }.max.to_i
+                 else
+                   value_arrays.flatten.map(&:to_i).max.to_i
+                 end
+      suggested_max = [data_max + 1, 3].max
+
+      datasets = series.each_with_index.map do |(label, values, color), index|
+        last = index == series.length - 1
+        radius = if stacked
+                   last ? { topLeft: 5, topRight: 5, bottomLeft: 0, bottomRight: 0 } : 0
+                 else
+                   { topLeft: 5, topRight: 5, bottomLeft: 0, bottomRight: 0 }
+                 end
+        dataset = {
+          label: label,
+          data: values,
+          backgroundColor: rgba_fill(color, 0.88),
+          hoverBackgroundColor: rgba_fill(color, 1.0),
+          borderRadius: radius,
+          borderSkipped: false,
+          barPercentage: bar_pct,
+          categoryPercentage: category_pct,
+          maxBarThickness: max_thickness,
+          minBarLength: data_max.positive? ? 3 : 0
+        }
+        if stacked
+          dataset[:borderColor] = "rgb(255, 255, 255)"
+          dataset[:borderWidth] = 1.5
+          dataset[:stack] = "rdv"
+        else
+          dataset[:borderWidth] = 0
+          dataset[:skipNull] = true
+        end
+        dataset
+      end
+
+      rotate = n > 10
+      x_scale = axis_x.merge(
+        stacked: stacked,
+        ticks: axis_x[:ticks].merge(
+          maxTicksLimit: [n, 16].min,
+          autoSkip: n > 16,
+          maxRotation: rotate ? 40 : 0,
+          minRotation: rotate ? 40 : 0,
+          font: { size: 11, weight: "500" }
+        )
+      )
+
+      y_scale = axis_y(title: y_title).merge(
+        stacked: stacked,
+        suggestedMax: suggested_max,
+        ticks: {
+          precision: 0,
+          stepSize: 1,
+          color: TICK_COLOR,
+          font: { size: 11 }
+        },
+        grid: { color: GRID_COLOR, drawBorder: false }
+      )
+
+      {
+        type: "bar",
+        data: { labels: labels, datasets: datasets },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: { padding: { top: 4, right: 4, bottom: 0, left: 0 } },
+          interaction: { mode: "index", intersect: false },
+          plugins: {
+            legend: legend_options.merge(labels: legend_options[:labels].merge(padding: 14))
+          },
+          scales: {
+            x: x_scale,
+            y: y_scale
+          }
+        },
+        _tooltip: "integer",
+        _grain: grain_string
+      }
+    end
+
+    # Sur grain jour : masquer les jours à zéro pour éviter une forêt de barres vides.
+    def densify_rdv_active_buckets(labels, value_arrays)
+      labels = Array(labels)
+      return [labels, value_arrays] unless timeline_grain == :day
+
+      keep = labels.each_index.select do |i|
+        value_arrays.any? { |arr| arr[i].to_i.positive? }
+      end
+      keep = labels.each_index.to_a if keep.empty?
+
+      short_labels = keep.map { |i| shorten_rdv_day_label(labels[i]) }
+      densified = value_arrays.map { |arr| keep.map { |i| arr[i] } }
+      [short_labels, densified]
+    end
+
+    def shorten_rdv_day_label(label)
+      parts = label.to_s.split("/")
+      return label.to_s unless parts.size == 3
+
+      "#{parts[0]}/#{parts[1]}"
+    end
+
+    def rdv_statut_doughnut
+      by_statut = h.instance_variable_get(:@rdvByStatut) || {}
+      labels = Analyses::RdvStats::STATUTS.select { |s| by_statut[s].to_i.positive? }
+      labels = Analyses::RdvStats::STATUTS if labels.empty?
+      values = labels.map { |s| by_statut[s].to_i }
+      colors = labels.map { |s| RDV_STATUT_COLORS.fetch(s, SLATE_MUTED) }
+      total = values.sum
+      ring_border = "rgb(255, 255, 255)"
+
+      {
+        type: "doughnut",
+        data: {
+          labels: labels.map(&:capitalize),
+          datasets: [{
+            data: values,
+            backgroundColor: colors,
+            borderWidth: 2,
+            borderColor: ring_border,
+            hoverBorderWidth: 2,
+            hoverBorderColor: ring_border,
+            borderRadius: 4,
+            hoverOffset: 6,
+            spacing: 2
+          }]
+        },
+        options: doughnut_options.merge(cutout: "62%"),
+        _tooltip: "integer",
+        _centerText: [total.to_s, "demandes"]
+      }
+    end
+
+    # Parmi les confirmées : transformées vs non (centre = taux %).
+    def rdv_conversion_doughnut
+      confirmes = h.instance_variable_get(:@nbDemandesRdvConfirmes).to_i
+      transformees = h.instance_variable_get(:@nbDemandesRdvTransformees).to_i
+      reste = [confirmes - transformees, 0].max
+      taux = h.instance_variable_get(:@tauxTransformationRdv)
+      taux_label = taux.nil? ? "—" : "#{ActiveSupport::NumberHelper.number_to_rounded(taux, precision: 1, strip_insignificant_zeros: true)} %"
+      ring_border = "rgb(255, 255, 255)"
+      values = confirmes.positive? ? [transformees, reste] : [0, 0]
+
+      {
+        type: "doughnut",
+        data: {
+          labels: ["Avec commande", "Sans commande"],
+          datasets: [{
+            data: values,
+            backgroundColor: [SERIES_CABINE, SLATE_MUTED],
+            borderWidth: 2,
+            borderColor: ring_border,
+            hoverBorderWidth: 2,
+            hoverBorderColor: ring_border,
+            borderRadius: 4,
+            hoverOffset: 6,
+            spacing: 2
+          }]
+        },
+        options: doughnut_options.merge(cutout: "62%"),
+        _tooltip: "integer",
+        _centerText: [taux_label, "transformation"]
+      }
+    end
+
+    # Même pattern que catalogue (barres horizontales).
+    def rdv_type_bars
+      by_type = h.instance_variable_get(:@rdvByType) || {}
+      labels = by_type.keys.presence || ["—"]
+      values = labels.map { |k| by_type[k].to_i }
+      colors = labels.each_index.map { |i| RDV_TYPE_COLORS[i % RDV_TYPE_COLORS.length] }
+
+      {
+        type: "bar",
+        data: {
+          labels: labels.map { |label| label.to_s.titleize },
+          datasets: [{
+            label: "Demandes",
+            data: values,
+            backgroundColor: colors.map { |c| rgba_fill(c, 0.75) },
+            hoverBackgroundColor: colors.map { |c| rgba_fill(c, 0.9) },
+            borderRadius: 5,
+            borderSkipped: false,
+            borderWidth: 0,
+            barPercentage: 0.72,
+            categoryPercentage: 0.78
+          }]
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: {
+              beginAtZero: true,
+              border: { display: false },
+              ticks: { precision: 0, color: TICK_COLOR, font: { size: 11 } },
+              grid: { color: GRID_COLOR, drawBorder: false }
+            },
+            y: {
+              ticks: { color: TICK_COLOR, font: { size: 11, weight: "500" } },
+              grid: { display: false },
+              border: { display: false }
+            }
+          }
+        },
+        _tooltip: "integer"
+      }
     end
 
     def timeline_grain

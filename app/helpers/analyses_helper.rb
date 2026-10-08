@@ -13,8 +13,16 @@ module AnalysesHelper
     { vue: "catalogue", label: "Catalogue", icon: "bag", tone: "catalogue",
       description: "Produits et répartitions" },
     { vue: "equipe", label: "Équipe", icon: "people-fill", tone: "equipe",
-      description: "Performance par vendeur" }
+      description: "Performance par vendeur" },
+    { vue: "rdv", label: "Rendez-vous", icon: "calendar-check", tone: "rdv",
+      description: "Demandes du site et calendrier interne",
+      nav_hint: "Site et calendrier" }
   ].freeze
+
+  ANALYSES_COMMERCE_FILTER_KEYS = (
+    Admin::ProduitListingFilters::ADMIN_PRODUIT_FILTER_KEYS +
+    %i[filter_profile filter_locvente filter_eshop filter_propart]
+  ).freeze
 
   def analyses_chart_box_classes(*extras)
     class_names("w-100 mx-auto analyses-chart-box", *extras)
@@ -117,6 +125,9 @@ module AnalysesHelper
   def analyses_tab_path(vue, **extra)
     base = analyses_filter_params(include_dates: true).merge(vue: vue, **extra)
     base.delete(:filter_profile) if vue.to_s == "equipe"
+    if vue.to_s == "rdv"
+      ANALYSES_COMMERCE_FILTER_KEYS.each { |key| base.delete(key) }
+    end
     admin_analyses_index_path(base)
   end
 
@@ -368,6 +379,7 @@ module AnalysesHelper
               when "ca" then "kpi_summary_ca"
               when "catalogue" then "kpi_summary_catalogue"
               when "equipe" then "kpi_summary_equipe"
+              when "rdv" then "kpi_summary_rdv"
               else "kpi_summary"
               end
     content_tag(:div, class: "analyses-tone analyses-tone--#{analyses_vue_meta[:tone]}") do

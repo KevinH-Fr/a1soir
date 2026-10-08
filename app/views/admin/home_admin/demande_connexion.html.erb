@@ -17,9 +17,11 @@
                 <span class="fw-bold">Connexion</span>
               <% end %>
 
-              <%= link_to new_admin_user_registration_url(subdomain: "admin"), class: "btn btn-primary px-3 rounded-pill" do %>
-                <i class="bi bi-person-add me-1"></i>
-                <span class="fw-bold">Nouveau</span>
+              <% if Rails.application.config.x.admin_signup_enabled %>
+                <%= link_to new_admin_user_registration_url(subdomain: "admin"), class: "btn btn-primary px-3 rounded-pill" do %>
+                  <i class="bi bi-person-add me-1"></i>
+                  <span class="fw-bold">Nouveau</span>
+                <% end %>
               <% end %>
             </div>
           <% end %>

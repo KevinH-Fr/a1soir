@@ -4,7 +4,9 @@ class Admin::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
-  layout 'admin'  
+  layout 'admin'
+
+  before_action :reject_unless_signup_enabled
 
   # GET /resource/sign_up
   def new
@@ -46,7 +48,13 @@ class Admin::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
+
+  def reject_unless_signup_enabled
+    return if Rails.application.config.x.admin_signup_enabled
+
+    redirect_to new_admin_user_session_path, alert: "La création de compte est désactivée."
+  end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_sign_up_params

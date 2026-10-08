@@ -350,5 +350,64 @@ RSpec.describe Admin::AnalysesController, type: :controller do
         expect(assigns(:stats_par_profile).size).to eq(1)
       end
     end
+
+    context "with rdv vue" do
+      let!(:type_rdv) { TypeRdv.create!(code: "Découverte analyses rdv", duree_base_minutes: 60) }
+
+      before do
+        calendar = instance_double(
+          GoogleCalendarService,
+          create_event_from_meeting: "evt-test",
+          update_event_from_meeting: true,
+          delete_event: true
+        )
+        allow(GoogleCalendarService).to receive(:new).and_return(calendar)
+        allow(MeetingMailer).to receive_message_chain(:reminder_email, :deliver_now)
+
+        DemandeRdv.create!(
+          prenom: "Ada",
+          nom: "Lovelace",
+          email: "analyses-rdv-#{SecureRandom.hex(4)}@test.com",
+          telephone: "0600000000",
+          date_rdv: Time.zone.local(2026, 3, 10, 10, 0, 0),
+          type_rdv: type_rdv.code,
+          nombre_personnes: 1,
+          evenement: "mariage",
+          date_evenement: Date.new(2026, 6, 1),
+          statut: "soumis",
+          locale: "fr",
+          created_at: Time.zone.local(2026, 3, 5, 11, 0, 0)
+        )
+      end
+
+      it "renders rdv KPIs and charts without commerce filters" do
+        get :index, params: {
+          debut: Date.new(2026, 3, 1),
+          fin: Date.new(2026, 3, 31),
+          vue: "rdv"
+        }
+
+        expect(response).to have_http_status(:ok)
+        expect(assigns(:nbDemandesRdv)).to eq(1)
+        expect(assigns(:nbDemandesRdvSansCabine)).to eq(1)
+        expect(assigns(:nbAgendaRdv)).to eq(0)
+        expect(response.body).to include("Demandes du site et calendrier interne")
+        expect(response.body).to include("Demandes du site")
+        expect(response.body).to include("Part cabine")
+        expect(response.body).to include("Calendrier interne")
+        expect(response.body).to include("analyses-chart-rdv-statut")
+        expect(response.body).to include("analyses-chart-rdv-conversion")
+        expect(response.body).to include("analyses-chart-rdv-recues")
+        expect(response.body).to include("analyses-rdv-heatmap")
+        expect(response.body).to include("moment de prise")
+        expect(response.body).to include("analyses-chart-rdv-agenda")
+        expect(response.body).to include("analyses-chart-rdv-agenda-origin")
+        expect(response.body).to include("analyses-chart-rdv-type")
+        expect(response.body).not_to include('id="analysesFiltersOffcanvas"')
+        expect(response.body).not_to include('data-bs-target="#analysesFiltersOffcanvas"')
+        expect(assigns(:commandesFiltres)).to be_nil
+        expect(assigns(:total_stripe_eur)).to be_nil
+      end
+    end
   end
 end

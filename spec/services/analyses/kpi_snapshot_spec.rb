@@ -19,4 +19,17 @@ RSpec.describe Analyses::KpiSnapshot do
     expect(instance).not_to receive(:equipe_totals)
     instance.call
   end
+
+  it "skips DashboardScopes for rdv-only metrics" do
+    expect(Analyses::DashboardScopes).not_to receive(:call)
+
+    snapshot = described_class.call(
+      period,
+      metrics: %i[rdv_demandes_recues rdv_part_cabine rdv_taux_transformation rdv_agenda]
+    )
+
+    expect(snapshot.keys).to match_array(
+      %i[rdv_demandes_recues rdv_part_cabine rdv_taux_transformation rdv_agenda]
+    )
+  end
 end

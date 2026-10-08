@@ -1,0 +1,52 @@
+<% heatmap = @rdvDemandeHeatmap || {} %>
+<% hours = heatmap[:hours] || [] %>
+<% days = heatmap[:days] || [] %>
+<% counts = heatmap[:counts] || {} %>
+<% max = heatmap[:max].to_i %>
+
+<div class="analyses-rdv-heatmap" role="img" aria-label="Heatmap des demandes du site par jour et heure (date de la demande)">
+  <% if days.blank? || hours.blank? %>
+    <p class="small text-muted mb-0 px-2 py-3">Aucune donnée sur la période.</p>
+  <% else %>
+    <div class="analyses-rdv-heatmap__scroll">
+      <table class="analyses-rdv-heatmap__table">
+        <thead>
+          <tr>
+            <th scope="col" class="analyses-rdv-heatmap__corner">
+              <span class="visually-hidden">Jour</span>
+            </th>
+            <% hours.each do |hour| %>
+              <th scope="col" class="analyses-rdv-heatmap__hour"><%= hour %>h</th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <% days.each do |day| %>
+            <tr>
+              <th scope="row" class="analyses-rdv-heatmap__day"><%= day[:label] %></th>
+              <% hours.each do |hour| %>
+                <% count = counts[[day[:wday], hour]].to_i %>
+                <% intensity = max.positive? ? (count.to_f / max) : 0 %>
+                <% alpha = count.positive? ? (0.12 + (0.78 * intensity)).round(3) : 0 %>
+                <td class="analyses-rdv-heatmap__cell<%= " analyses-rdv-heatmap__cell--empty" if count.zero? %>"
+                    style="<%= count.positive? ? "--rdv-heat: rgba(13, 148, 136, #{alpha})" : nil %>"
+                    title="<%= day[:label] %> <%= hour %>h — <%= count %> demande<%= "s" if count != 1 %>">
+                  <%= count.positive? ? count : "" %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <p class="analyses-rdv-heatmap__legend mb-0">
+      <span class="analyses-rdv-heatmap__swatch analyses-rdv-heatmap__swatch--low" aria-hidden="true"></span>
+      Faible
+      <span class="analyses-rdv-heatmap__swatch analyses-rdv-heatmap__swatch--high" aria-hidden="true"></span>
+      Fort
+      <% if max.positive? %>
+        <span class="text-body-secondary">· max <%= max %>/créneau</span>
+      <% end %>
+    </p>
+  <% end %>
+</div>

@@ -113,10 +113,14 @@ Rails.application.routes.draw do
   constraints subdomain: 'admin' do
     namespace :admin do
 
-      devise_for :users, path: '', path_names: { sign_in: 'login', sign_out: 'logout' }, controllers: {
-        sessions: 'admin/sessions',
-        passwords: 'admin/passwords'
-      }
+      devise_for :users,
+                 path: '',
+                 path_names: { sign_in: 'login', sign_out: 'logout' },
+                 skip: (Rails.application.config.x.admin_signup_enabled ? [] : [:registrations]),
+                 controllers: {
+                   sessions: 'admin/sessions',
+                   passwords: 'admin/passwords'
+                 }
 
       get 'analyses/index'
       
