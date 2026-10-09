@@ -1,4 +1,6 @@
 class Admin::PasswordsController < Devise::PasswordsController
+  prepend_before_action { I18n.locale = :fr }
+
   layout "admin"
 
   prepend_view_path Rails.root.join("app/views/admin/devise")

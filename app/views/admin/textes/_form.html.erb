@@ -1,7 +1,7 @@
 <%= form_with(model: [:admin, texte]) do |form| %>
   <% if texte.errors.any? %>
     <div class="alert alert-danger">
-      <h5><%= pluralize(texte.errors.count, "erreur") %> empêche l'enregistrement:</h5>
+      <h5><%= admin_save_error_title(texte) %></h5>
       <ul class="mb-0">
         <% texte.errors.each do |error| %>
           <li><%= error.full_message %></li>

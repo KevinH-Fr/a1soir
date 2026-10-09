@@ -3,7 +3,7 @@ module IndexModelHelper
 
   def bandeau_entete_simple(title, icon)
     content_tag(:div, class: "card m-2 shadow-sm card-main-model-section") do
-      concat(content_tag(:div, class: "card-header rounded bg-dark text-light d-flex justify-content-between align-items-center py-2") do
+      concat(content_tag(:div, class: "card-header rounded admin-bandeau-header text-light d-flex justify-content-between align-items-center") do
         concat(content_tag(:div, class: "d-flex align-items-center") do
           concat(content_tag(:i, nil, class: "bi bi-xl brand-colored bi-#{icon} ms-1 me-3"))
           concat(content_tag(:div, title, class: "fw-bold text-light fs-6"))
@@ -16,7 +16,7 @@ module IndexModelHelper
     extra_actions = block ? capture(&block) : nil
 
     content_tag(:div, class: [card_class, "card-main-model-section"].compact.join(" ").squish) do
-      concat(content_tag(:div, class: "card-header rounded bg-dark text-light d-flex justify-content-between align-items-center py-2") do
+      concat(content_tag(:div, class: "card-header rounded admin-bandeau-header text-light d-flex justify-content-between align-items-center") do
         concat(content_tag(:div, class: "d-flex align-items-center") do
           concat(content_tag(:i, nil, class: "bi bi-xl brand-colored bi-#{icon} ms-1 me-3"))
           concat(content_tag(:div, title, class: "fw-bold text-light fs-6"))

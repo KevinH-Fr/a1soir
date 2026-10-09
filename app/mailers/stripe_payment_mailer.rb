@@ -8,17 +8,17 @@ class StripePaymentMailer < ApplicationMailer
     @items = stripe_payment.stripe_payment_items.includes(:produit)
     return if @payment.customer_email.blank?
 
-    I18n.locale = @payment.commande&.client&.language || :fr
+    I18n.with_locale(@payment.commande&.client&.language || :fr) do
+      assign_public_url_helpers
 
-    assign_public_url_helpers
+      attach_inline_logo
 
-    attach_inline_logo
+      subject = I18n.t("stripe_payment_mailer.confirmation.subject")
 
-    subject = I18n.t("stripe_payment_mailer.confirmation.subject")
-
-    mail(to: @payment.customer_email, subject: subject) do |format|
-      format.html { render template: "admin/stripe_payment_mailer/confirmation", layout: "mailer" }
-      format.text { render template: "admin/stripe_payment_mailer/confirmation" }
+      mail(to: @payment.customer_email, subject: subject) do |format|
+        format.html { render template: "admin/stripe_payment_mailer/confirmation", layout: "mailer" }
+        format.text { render template: "admin/stripe_payment_mailer/confirmation" }
+      end
     end
   end
 
@@ -31,17 +31,17 @@ class StripePaymentMailer < ApplicationMailer
     @numero_suivi = commande.numero_suivi
     @tracking_url = "https://www.laposte.fr/outils/suivre-vos-envois?code=#{@numero_suivi}" if @numero_suivi.present?
 
-    I18n.locale = commande.client&.language || :fr
+    I18n.with_locale(commande.client&.language || :fr) do
+      assign_public_url_helpers
 
-    assign_public_url_helpers
+      attach_inline_logo
 
-    attach_inline_logo
+      subject = I18n.t("stripe_payment_mailer.expedition.subject")
 
-    subject = I18n.t("stripe_payment_mailer.expedition.subject")
-
-    mail(to: @payment.customer_email, subject: subject) do |format|
-      format.html { render template: "admin/stripe_payment_mailer/expedition", layout: "mailer" }
-      format.text { render template: "admin/stripe_payment_mailer/expedition" }
+      mail(to: @payment.customer_email, subject: subject) do |format|
+        format.html { render template: "admin/stripe_payment_mailer/expedition", layout: "mailer" }
+        format.text { render template: "admin/stripe_payment_mailer/expedition" }
+      end
     end
   end
 
@@ -60,18 +60,18 @@ class StripePaymentMailer < ApplicationMailer
     @include_shipping = include_shipping
     @full_refund = full_refund.nil? ? commande.remboursee_eshop? : full_refund
 
-    I18n.locale = commande.client&.language || :fr
+    I18n.with_locale(commande.client&.language || :fr) do
+      assign_public_url_helpers
 
-    assign_public_url_helpers
+      attach_inline_logo
 
-    attach_inline_logo
+      subject_key = @full_refund ? "subject" : "subject_partial"
+      subject = I18n.t("stripe_payment_mailer.remboursement.#{subject_key}")
 
-    subject_key = @full_refund ? "subject" : "subject_partial"
-    subject = I18n.t("stripe_payment_mailer.remboursement.#{subject_key}")
-
-    mail(to: @payment.customer_email, subject: subject) do |format|
-      format.html { render template: "admin/stripe_payment_mailer/remboursement", layout: "mailer" }
-      format.text { render template: "admin/stripe_payment_mailer/remboursement" }
+      mail(to: @payment.customer_email, subject: subject) do |format|
+        format.html { render template: "admin/stripe_payment_mailer/remboursement", layout: "mailer" }
+        format.text { render template: "admin/stripe_payment_mailer/remboursement" }
+      end
     end
   end
 
@@ -82,20 +82,20 @@ class StripePaymentMailer < ApplicationMailer
     admin_email = ENV["GMAIL_ACCOUNT"]
     return if admin_email.blank?
 
-    I18n.locale = :fr
+    I18n.with_locale(:fr) do
+      assign_public_url_helpers
+      @commande_admin_url = if @payment.commande.present?
+                              admin_commande_url(@payment.commande, **admin_mailer_url_options)
+                            end
 
-    assign_public_url_helpers
-    @commande_admin_url = if @payment.commande.present?
-                            admin_commande_url(@payment.commande, **admin_mailer_url_options)
-                          end
+      attach_inline_logo
 
-    attach_inline_logo
+      subject = I18n.t("stripe_payment_mailer.notification_admin.subject")
 
-    subject = I18n.t("stripe_payment_mailer.notification_admin.subject")
-
-    mail(to: admin_email, bcc: ENV["KH_MAIL"].presence, subject: subject) do |format|
-      format.html { render template: "admin/stripe_payment_mailer/notification_admin", layout: "mailer" }
-      format.text { render template: "admin/stripe_payment_mailer/notification_admin" }
+      mail(to: admin_email, bcc: ENV["KH_MAIL"].presence, subject: subject) do |format|
+        format.html { render template: "admin/stripe_payment_mailer/notification_admin", layout: "mailer" }
+        format.text { render template: "admin/stripe_payment_mailer/notification_admin" }
+      end
     end
   end
 

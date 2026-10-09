@@ -3,7 +3,7 @@
   <%= form_with(model: [:admin, demande_cabine_essayage], data: { turbo: true }) do |form| %>
     <% if demande_cabine_essayage.errors.any? %>
       <div style="color: red">
-        <h2><%= pluralize(demande_cabine_essayage.errors.count, "error") %> prohibited this demande from being saved:</h2>
+        <h2><%= admin_save_error_title(demande_cabine_essayage) %></h2>
 
         <ul>
           <% demande_cabine_essayage.errors.each do |error| %>

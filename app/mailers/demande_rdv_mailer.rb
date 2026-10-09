@@ -5,15 +5,15 @@ class DemandeRdvMailer < ApplicationMailer
     @demande_rdv = demande_rdv
     return unless @demande_rdv&.email.present?
 
-    I18n.locale = @demande_rdv.client_mail_locale
+    I18n.with_locale(@demande_rdv.client_mail_locale) do
+      attach_inline_logo
 
-    attach_inline_logo
+      subject = I18n.t('demande_rdv.confirmation_client.subject')
 
-    subject = I18n.t('demande_rdv.confirmation_client.subject')
-
-    mail(to: @demande_rdv.email, subject: subject) do |format|
-      format.html { render template: "admin/demande_rdv_mailer/confirmation_client", layout: "mailer" }
-      format.text { render template: "admin/demande_rdv_mailer/confirmation_client" }
+      mail(to: @demande_rdv.email, subject: subject) do |format|
+        format.html { render template: "admin/demande_rdv_mailer/confirmation_client", layout: "mailer" }
+        format.text { render template: "admin/demande_rdv_mailer/confirmation_client" }
+      end
     end
   end
 
@@ -24,15 +24,15 @@ class DemandeRdvMailer < ApplicationMailer
     admin_email = ENV['GMAIL_ACCOUNT']
     return unless admin_email.present?
 
-    I18n.locale = :fr
+    I18n.with_locale(:fr) do
+      attach_inline_logo
 
-    attach_inline_logo
+      subject = I18n.t('demande_rdv.notification_admin.subject')
 
-    subject = I18n.t('demande_rdv.notification_admin.subject')
-
-    mail(to: admin_email, bcc: ENV["KH_MAIL"].presence, subject: subject) do |format|
-      format.html { render template: "admin/demande_rdv_mailer/notification_admin", layout: "mailer" }
-      format.text { render template: "admin/demande_rdv_mailer/notification_admin" }
+      mail(to: admin_email, bcc: ENV["KH_MAIL"].presence, subject: subject) do |format|
+        format.html { render template: "admin/demande_rdv_mailer/notification_admin", layout: "mailer" }
+        format.text { render template: "admin/demande_rdv_mailer/notification_admin" }
+      end
     end
   end
 

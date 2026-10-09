@@ -172,12 +172,47 @@ en:
         promotion_remove_error: "Error while removing the promotion"
 
   activerecord:
+    models:
+      doc_edition: "Document edition"
+      avoir_remb: "Credit note or refund"
+      profile: "Profile"
+      meeting: "Appointment"
+      admin_parameter: "Parameter"
+      demande_rdv: "Appointment request"
+      demande_cabine_essayage: "Fitting room request"
+      sousarticle: "Sub-item"
+      categorie_produit: "Product category"
+      type_produit: "Product type"
+      user: "Account"
+    attributes:
+      produit:
+        image1: "Main image"
+        video1: "Video"
+        images: "Image"
+      categorie_produit:
+        image1: "Main image"
+      texte:
+        images: "Image"
     errors:
       models:
         doc_edition:
           attributes:
             doc_type:
               eshop_doc_type: "is not allowed for an e-shop order (invoice only)"
+
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      file_too_big: "is too big (%{max} maximum)."
+      file_invalid_image: "must be a JPG, JPEG, PNG, WEBP or GIF image."
+      file_too_big_named: "\"%{filename}\" is too big (%{max} maximum)."
+      file_invalid_image_named: "\"%{filename}\" must be a JPG, JPEG, PNG, WEBP or GIF image."
+      file_invalid_video: "must be an MP4, WebM or MOV video."
+    template:
+      header:
+        one: "Could not save this %{model}: 1 error"
+        other: "Could not save this %{model}: %{count} errors"
+      body: "Please check the following fields:"
 
   date:
     formats:
@@ -760,6 +795,13 @@ en:
         previous_image: "Previous image"
         next_image: "Next image"
         go_to_slide: "Show image %{number} of %{product}"
+      produit_introuvable:
+        meta_title: "Product not found | Autour D'Un Soir"
+        meta_description: "This product does not exist or is no longer available. Browse the Autour D'Un Soir catalogue."
+        code: "404"
+        title: "Product not found"
+        body: "This product does not exist or is no longer available."
+        all_products: "See all products"
       vous_aimerez_aussi:
         title: "You may also like"
       faq:

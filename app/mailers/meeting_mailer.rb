@@ -15,15 +15,15 @@ class MeetingMailer < ApplicationMailer
       content: ics_content
     }
 
-    I18n.locale = @recipient.language || :fr
-    @subject = I18n.t('reminders.subject')
+    I18n.with_locale(@recipient.language || :fr) do
+      @subject = I18n.t('reminders.subject')
 
-    attach_inline_logo
+      attach_inline_logo
 
-    mail(to:  @recipient.mail, subject: @subject) do |format|
-      format.html { render template: "admin/meeting_mailer/reminder_email", layout: "mailer" }
+      mail(to: @recipient.mail, subject: @subject) do |format|
+        format.html { render template: "admin/meeting_mailer/reminder_email", layout: "mailer" }
+      end
     end
-
   end
 
 

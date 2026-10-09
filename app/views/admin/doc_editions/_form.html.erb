@@ -4,7 +4,7 @@
   <%= form_with(model: doc_edition, url: doc_edition.persisted? ? admin_doc_edition_path(doc_edition) : admin_doc_editions_path, method: doc_edition.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
     <% if doc_edition.errors.any? %>
       <div style="color: red">
-        <h2><%= pluralize(doc_edition.errors.count, "error") %> prohibited this doc_edition from being saved:</h2>
+        <h2><%= admin_save_error_title(doc_edition) %></h2>
 
         <ul>
           <% doc_edition.errors.each do |error| %>

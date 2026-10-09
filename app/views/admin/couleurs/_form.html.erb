@@ -7,7 +7,7 @@
     <%= form_with(model: couleur, url: couleur.persisted? ? admin_couleur_path(couleur) : admin_couleurs_path, method: couleur.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
       <% if couleur.errors.any? %>
         <div style="color: red">
-          <h2><%= pluralize(couleur.errors.count, "error") %> prohibited this couleur from being saved:</h2>
+          <h2><%= admin_save_error_title(couleur) %></h2>
 
           <ul>
             <% couleur.errors.each do |error| %>

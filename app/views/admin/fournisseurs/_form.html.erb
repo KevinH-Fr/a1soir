@@ -8,7 +8,7 @@
     <%= form_with(model: fournisseur, url: fournisseur.persisted? ? admin_fournisseur_path(fournisseur) : admin_fournisseurs_path, method: fournisseur.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
       <% if fournisseur.errors.any? %>
         <div class="alert alert-danger py-2 mb-3" role="alert">
-          <h2 class="h6 mb-2"><%= pluralize(fournisseur.errors.count, "error") %> prohibited this fournisseur from being saved:</h2>
+          <h2 class="h6 mb-2"><%= admin_save_error_title(fournisseur) %></h2>
           <ul class="mb-0 small">
             <% fournisseur.errors.each do |error| %>
               <li><%= error.full_message %></li>

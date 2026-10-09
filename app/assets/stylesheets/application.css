@@ -75,15 +75,52 @@
   overflow-anchor: none;
 }
 
-/* Bandeaux de section : fiche (`card_main_model`) et index (`bandeau_entete` / `bandeau_entete_simple`) — même hauteur de barre titre. */
-.card.card-main-model-section > .card-header {
-  min-height: 3rem;
+/* Bandeaux de section : fiche (`card_main_model`) et index (`bandeau_entete` / `bandeau_entete_simple`). */
+.card.card-main-model-section > .card-header,
+.admin-bandeau-header {
+  min-height: 2.35rem;
+  background-color: #262b30;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+.admin-bandeau-header .btn.btn-sm,
+.card.card-main-model-section > .card-header .btn.btn-sm {
+  padding: 0.12rem 0.45rem;
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.admin-bandeau-header .admin-synthese-kpi-chip,
+.card.card-main-model-section > .card-header .admin-synthese-kpi-chip {
+  padding: 0.12rem 0.45rem !important;
+  gap: 0.35rem !important;
+  border-width: 1px !important;
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.admin-bandeau-header .admin-synthese-kpi-chip .small,
+.admin-bandeau-header .admin-synthese-kpi-chip .fw-bold,
+.admin-bandeau-header .admin-synthese-kpi-chip .fw-semibold,
+.card.card-main-model-section > .card-header .admin-synthese-kpi-chip .small,
+.card.card-main-model-section > .card-header .admin-synthese-kpi-chip .fw-bold,
+.card.card-main-model-section > .card-header .admin-synthese-kpi-chip .fw-semibold {
+  font-size: 0.75rem !important;
+  line-height: 1.2;
+}
+
+.admin-bandeau-header .badge.fs-6 {
+  padding: 0.12rem 0.45rem;
+  font-size: 0.75rem !important;
+  line-height: 1.2;
+  font-weight: 600;
 }
 
 /* Fiche admin (`card_main_model`) : icône du titre un peu plus grande à partir de md */
 @media (min-width: 768px) {
   .card-main-model-header-icon.bi-xl {
-    font-size: 1.3rem;
+    font-size: 1.15rem;
     line-height: 1;
   }
 }
@@ -91,7 +128,7 @@
 /* Bandeau section admin : une ligne compacte sur mobile (fiche commande, etc.) */
 @media (max-width: 767.98px) {
   .card.card-main-model-section > .card-header {
-    min-height: 2.35rem;
+    min-height: 2rem;
   }
 
   .card-main-model-header-icon.bi-xl {
@@ -128,11 +165,11 @@
 
   .admin-synthese-kpi-chip {
     flex-shrink: 0;
-    padding: 0.1rem 0.3rem !important;
-    font-size: 0.68rem;
-    line-height: 1.15;
+    padding: 0.15rem 0.35rem !important;
+    font-size: 0.75rem;
+    line-height: 1.1;
     border-radius: 0.2rem !important;
-    gap: 0.2rem !important;
+    gap: 0.25rem !important;
   }
 
   .admin-synthese-kpi-chip .fw-semibold,

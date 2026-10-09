@@ -3,6 +3,8 @@
 class Admin::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
 
+  prepend_before_action { I18n.locale = :fr }
+
   layout 'admin'  
 
   # GET /resource/sign_in

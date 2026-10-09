@@ -1,0 +1,31 @@
+<% content_for :title, t("public.pages.produit_introuvable.meta_title") %>
+<% content_for :meta_description, t("public.pages.produit_introuvable.meta_description") %>
+<% content_for :robots, "noindex, nofollow, noarchive" %>
+
+<div class="public-main-content">
+  <div class="container py-5 text-center" data-scroll-reveal>
+    <p class="text-light opacity-50 text-uppercase small mb-2">
+      <%= t("public.pages.produit_introuvable.code") %>
+    </p>
+    <h1 class="text-light mb-3" style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem;">
+      <%= t("public.pages.produit_introuvable.title") %>
+    </h1>
+    <p class="text-light opacity-75 mx-auto mb-4" style="max-width: 32rem;">
+      <%= t("public.pages.produit_introuvable.body") %>
+    </p>
+    <%= cta_button(
+          type: "produits",
+          url: produits_index_path,
+          variant: "light",
+          text: t("public.pages.produit_introuvable.all_products")
+        ) %>
+  </div>
+
+  <%= render partial: "public/pages/vous_aimerez_aussi", locals: { produits_similaires: @suggested_produits } %>
+
+  <% if @cabine_cart.any? %>
+    <%= render partial: "public/pages/floating_reservation_button" %>
+  <% else %>
+    <div id="floating_reservation_btn"></div>
+  <% end %>
+</div>

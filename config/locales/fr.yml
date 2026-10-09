@@ -178,6 +178,27 @@ fr:
     unauthorized_action: "Tu n'es pas autorisé(e) à effectuer cette action."
 
   activerecord:
+    models:
+      doc_edition: "Édition de document"
+      avoir_remb: "Avoir ou remboursement"
+      profile: "Profil"
+      meeting: "Rendez-vous"
+      admin_parameter: "Paramètre"
+      demande_rdv: "Demande de rendez-vous"
+      demande_cabine_essayage: "Demande de cabine"
+      sousarticle: "Sous-article"
+      categorie_produit: "Catégorie de produit"
+      type_produit: "Type de produit"
+      user: "Compte"
+    attributes:
+      produit:
+        image1: "Image principale"
+        video1: "Vidéo"
+        images: "Image"
+      categorie_produit:
+        image1: "Image principale"
+      texte:
+        images: "Image"
     errors:
       models:
         doc_edition:
@@ -326,6 +347,11 @@ fr:
       wrong_length:
         one: ne fait pas la bonne longueur (doit comporter un seul caractère)
         other: ne fait pas la bonne longueur (doit comporter %{count} caractères)
+      file_too_big: "est trop volumineuse (%{max} maximum)."
+      file_invalid_image: "doit être une image JPG, JPEG, PNG, WEBP ou GIF."
+      file_too_big_named: "« %{filename} » est trop volumineuse (%{max} maximum)."
+      file_invalid_image_named: "« %{filename} » doit être une image JPG, JPEG, PNG, WEBP ou GIF."
+      file_invalid_video: "doit être une vidéo MP4, WebM ou MOV."
     template:
       body: 'Veuillez vérifier les champs suivants : '
       header:
@@ -980,6 +1006,13 @@ fr:
         previous_image: "Image précédente"
         next_image: "Image suivante"
         go_to_slide: "Afficher l'image %{number} de %{product}"
+      produit_introuvable:
+        meta_title: "Produit introuvable | Autour D'Un Soir"
+        meta_description: "Ce produit n'existe pas ou n'est plus disponible. Parcourez le catalogue Autour D'Un Soir."
+        code: "404"
+        title: "Produit introuvable"
+        body: "Ce produit n'existe pas ou n'est plus disponible."
+        all_products: "Voir tous les produits"
       vous_aimerez_aussi:
         title: "Vous aimerez aussi"
       faq:

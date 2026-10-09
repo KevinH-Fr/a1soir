@@ -329,45 +329,39 @@ class Produit < ApplicationRecord
   end
 
   def image1_is_valid
-    if image1.attached?
-      # Check file size (5MB max)
-      if image1.byte_size > 5.megabytes
-        errors.add(:image1, 'is too big. Maximum size is 5MB.')
-      end
+    return unless image1.attached?
 
-      # Check file type (allow only images)
-      unless image1.content_type.in?(%w[image/jpeg image/png image/gif image/jpg image/webp])
-        errors.add(:image1, 'must be a JPG, JPEG, PNG, WEBP or GIF image.')
-      end
+    if image1.byte_size > 5.megabytes
+      errors.add(:image1, :file_too_big, max: "5 Mo")
+    end
+
+    unless image1.content_type.in?(%w[image/jpeg image/png image/gif image/jpg image/webp])
+      errors.add(:image1, :file_invalid_image)
     end
   end
-  
-  def video1_is_valid
-    if video1.attached?
-      if video1.byte_size > 50.megabytes
-        errors.add(:video1, 'is too big. Maximum size is 50MB.')
-      end
 
-      # Check file type (allow only images)
-      unless video1.content_type.in?(%w[video/mp4 video/webm video/quicktime])
-        errors.add(:video1, 'must be a MP4, WebM or MOV video.')
-      end
+  def video1_is_valid
+    return unless video1.attached?
+
+    if video1.byte_size > 50.megabytes
+      errors.add(:video1, :file_too_big, max: "50 Mo")
+    end
+
+    unless video1.content_type.in?(%w[video/mp4 video/webm video/quicktime])
+      errors.add(:video1, :file_invalid_video)
     end
   end
 
   def images_are_valid
-    # Ensure that there are attached images before running validations
-    if images.attached? && images.any?
-      images.each do |image|
-        # Check file size (5MB max for each image)
-        if image.byte_size > 5.megabytes
-          errors.add(:images, "#{image.filename} is too big. Maximum size is 5MB.")
-        end
-  
-        # Check file type (allow only images)
-        unless image.content_type.in?(%w[image/jpeg image/png image/gif image/jpg image/webp])
-          errors.add(:images, "#{image.filename} must be a JPG, JPEG, PNG, WEBP or GIF image.")
-        end
+    return unless images.attached? && images.any?
+
+    images.each do |image|
+      if image.byte_size > 5.megabytes
+        errors.add(:images, :file_too_big_named, filename: image.filename.to_s, max: "5 Mo")
+      end
+
+      unless image.content_type.in?(%w[image/jpeg image/png image/gif image/jpg image/webp])
+        errors.add(:images, :file_invalid_image_named, filename: image.filename.to_s)
       end
     end
   end

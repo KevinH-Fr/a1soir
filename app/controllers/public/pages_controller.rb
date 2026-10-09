@@ -110,8 +110,10 @@ module Public
     def produit
       @produit = Produit.for_public_listing_cards
                         .includes(:taille, :couleur, :categorie_produits)
-                        .find(params[:id])
-      
+                        .find_by(id: params[:id])
+
+      return render_produit_introuvable unless boutique_produit?(@produit)
+
       expected_slug = @produit.handle.presence || @produit.nom.parameterize
 
       if params[:slug] != expected_slug
@@ -247,6 +249,44 @@ module Public
       return unless texte&.mode_periode_speciale?
       @mode_periode_speciale   = true
       @encart_periode_speciale = I18n.locale == :fr ? texte.encart_periode_speciale_fr : texte.encart_periode_speciale_en
+    end
+
+    def boutique_produit?(produit)
+      produit.present? && produit.actif? && produit.eshop?
+    end
+
+    def render_produit_introuvable
+      @suggested_produits = suggested_produits_for_introuvable
+      @listing_tailles_by_key = ListingPageTaillesService.new(@suggested_produits).call
+      render "produit_introuvable", status: :not_found
+    end
+
+    # Une carte par produit (handle + couleur), comme le catalogue sans filtre taille.
+    def suggested_produits_for_introuvable
+      selected_ids = []
+      seen = {}
+
+      Produit.actif
+             .eshop_diffusion
+             .where(today_availability: true)
+             .public_listing_order
+             .pluck(:id, :handle, :couleur_id)
+             .each do |id, handle, couleur_id|
+        key = [handle, couleur_id]
+        next if seen[key]
+
+        seen[key] = true
+        selected_ids << id
+        break if selected_ids.size == 4
+      end
+
+      return [] if selected_ids.empty?
+
+      Produit.where(id: selected_ids)
+             .for_public_listing_cards
+             .includes(:taille)
+             .public_listing_order
+             .to_a
     end
 
   end

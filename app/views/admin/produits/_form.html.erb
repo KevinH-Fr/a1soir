@@ -10,7 +10,7 @@
 
     <% if produit.errors.any? %>
       <div class="alert alert-danger py-2 mb-3" role="alert">
-        <h2 class="h6 mb-2"><%= pluralize(produit.errors.count, "error") %> prohibited this produit from being saved:</h2>
+        <h2 class="h6 mb-2"><%= admin_save_error_title(produit) %></h2>
         <ul class="mb-0 small">
           <% produit.errors.each do |error| %>
             <li><%= error.full_message %></li>

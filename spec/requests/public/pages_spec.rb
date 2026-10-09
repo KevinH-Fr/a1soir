@@ -350,6 +350,73 @@ RSpec.describe "Public::Pages", type: :request do
       )
       expect(response.body).not_to include("/rails/active_storage/")
     end
+
+    it "returns a product 404 with catalog link and product cards when the product is missing" do
+      get "/fr/produit/inconnu-0"
+
+      expect(response).to have_http_status(:not_found)
+      expect(response.body).to include("Produit introuvable")
+      expect(response.body).to include("plus disponible")
+      expect(response.body).to include("Voir tous les produits")
+      expect(response.body).to include('href="/fr/produits"')
+      expect(response.body).to include("Vous aimerez aussi")
+      expect(response.body).to include("Robe A")
+      expect(response.body).to include('name="robots" content="noindex, nofollow, noarchive"')
+    end
+
+    it "returns the same product 404 in English" do
+      get "/en/produit/inconnu-0"
+
+      expect(response).to have_http_status(:not_found)
+      expect(response.body).to include("Product not found")
+      expect(response.body).to include("See all products")
+      expect(response.body).to include('href="/en/produits"')
+    end
+
+    it "returns a product 404 when the product is inactive" do
+      produit_seo.update!(actif: false)
+
+      get "/fr/produit/robe-seo-#{produit_seo.id}"
+
+      expect(response).to have_http_status(:not_found)
+      expect(response.body).to include("Produit introuvable")
+      expect(response.body).not_to include("Robe SEO")
+    end
+
+    it "returns a product 404 when the product is not published on the shop" do
+      produit_seo.update!(eshop: false)
+
+      get "/fr/produit/robe-seo-#{produit_seo.id}"
+
+      expect(response).to have_http_status(:not_found)
+      expect(response.body).not_to include("Robe SEO")
+    end
+
+    it "suggests one card per product, not one per size" do
+      couleur = Couleur.create!(nom: "noir-404")
+      %w[XS S M L XL].each_with_index do |nom, index|
+        Produit.create!(
+          nom: "Robe 404 variantes",
+          prixvente: 80,
+          stripe_price_id: "price_404_var_#{index}",
+          eshop: true,
+          today_availability: true,
+          quantite: 1,
+          taille: Taille.create!(nom: "404-#{nom}"),
+          couleur: couleur,
+          actif: true,
+          coup_de_coeur: true,
+          coup_de_coeur_position: index
+        )
+      end
+
+      get "/fr/produit/inconnu-0"
+
+      expect(response).to have_http_status(:not_found)
+      expect(response.body).to include("Robe 404 variantes")
+      expect(response.body).to include("Robe A")
+      expect(response.body).to include("Jupe B")
+    end
   end
 
   # -------------------------------------------------------------------------

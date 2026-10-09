@@ -4,7 +4,7 @@
   <%= form_with(model: admin_parameter, url: admin_parameter.persisted? ? admin_admin_parameter_path(admin_parameter) : admin_admin_parameters_path, method: admin_parameter.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
     <% if admin_parameter.errors.any? %>
       <div style="color: red">
-        <h2><%= pluralize(admin_parameter.errors.count, "error") %> prohibited this admin_parameter from being saved:</h2>
+        <h2><%= admin_save_error_title(admin_parameter) %></h2>
 
         <ul>
           <% admin_parameter.errors.each do |error| %>

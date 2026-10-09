@@ -707,7 +707,7 @@ module AdminFlashToast
       flash_target,
       variant: cfg[:variant],
       icon: cfg[:icon],
-      message: I18n.t(cfg[:message_key], **admin_toast_i18n_opts(domain, options)),
+      message: I18n.t(cfg[:message_key], **admin_toast_i18n_opts(domain, options), locale: :fr),
     )
   end
 

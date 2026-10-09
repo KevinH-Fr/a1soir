@@ -8,15 +8,15 @@ class ContactMailer < ApplicationMailer
     admin_email = ENV['GMAIL_ACCOUNT']
     return unless admin_email.present?
 
-    I18n.locale = :fr
+    I18n.with_locale(:fr) do
+      attach_inline_logo
 
-    attach_inline_logo
+      subject = "Nouveau message de contact - #{@contact_message.sujet.presence || 'Sans sujet'}"
 
-    subject = "Nouveau message de contact - #{@contact_message.sujet.presence || 'Sans sujet'}"
-
-    mail(to: admin_email, subject: subject) do |format|
-      format.html { render template: "public/contact_mailer/contact_form", layout: "mailer" }
-      format.text { render template: "public/contact_mailer/contact_form" }
+      mail(to: admin_email, subject: subject) do |format|
+        format.html { render template: "public/contact_mailer/contact_form", layout: "mailer" }
+        format.text { render template: "public/contact_mailer/contact_form" }
+      end
     end
   end
 end

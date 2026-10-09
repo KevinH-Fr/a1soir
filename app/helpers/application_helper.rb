@@ -6,6 +6,10 @@ module ApplicationHelper
   CLOUDINARY_BASE_IMAGE_URL = "https://res.cloudinary.com/dukne3lhz/image/upload".freeze
   CLOUDINARY_BASE_VIDEO_URL = "https://res.cloudinary.com/dukne3lhz/video/upload".freeze
 
+  def admin_save_error_title(record)
+    t("errors.template.header", count: record.errors.count, model: record.model_name.human.downcase)
+  end
+
   def custom_currency_format(amount)
     precision = amount.to_f == amount.to_i ? 0 : 2
     number_to_currency(amount, precision: precision, unit: "€", format: "%n %u", delimiter: " ")

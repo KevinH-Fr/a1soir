@@ -4,6 +4,8 @@ class Admin::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
+  prepend_before_action { I18n.locale = :fr }
+
   layout 'admin'
 
   before_action :reject_unless_signup_enabled

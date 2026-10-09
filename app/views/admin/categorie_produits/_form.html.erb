@@ -7,7 +7,7 @@
   <%= form_with(model: categorie_produit, url: categorie_produit.persisted? ? admin_categorie_produit_path(categorie_produit) : admin_categorie_produits_path, method: categorie_produit.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
     <% if categorie_produit.errors.any? %>
       <div style="color: red">
-        <h2><%= pluralize(categorie_produit.errors.count, "error") %> prohibited this categorie_produit from being saved:</h2>
+        <h2><%= admin_save_error_title(categorie_produit) %></h2>
 
         <ul>
           <% categorie_produit.errors.each do |error| %>

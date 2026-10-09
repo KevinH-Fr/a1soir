@@ -7,7 +7,7 @@
     <%= form_with(model: taille, url: taille.persisted? ? admin_taille_path(taille) : admin_tailles_path, method: taille.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
       <% if taille.errors.any? %>
         <div style="color: red">
-          <h2><%= pluralize(taille.errors.count, "error") %> prohibited this taille from being saved:</h2>
+          <h2><%= admin_save_error_title(taille) %></h2>
 
           <ul>
             <% taille.errors.each do |error| %>

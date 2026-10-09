@@ -7,7 +7,7 @@
   <%= form_with(model: profile, url: profile.persisted? ? admin_profile_path(profile) : admin_profiles_path, method: profile.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
     <% if profile.errors.any? %>
       <div class="alert alert-danger py-2 mb-3" role="alert">
-        <h2 class="h6 mb-2"><%= pluralize(profile.errors.count, "error") %> prohibited this profile from being saved:</h2>
+        <h2 class="h6 mb-2"><%= admin_save_error_title(profile) %></h2>
         <ul class="mb-0 small">
           <% profile.errors.each do |error| %>
             <li><%= error.full_message %></li>

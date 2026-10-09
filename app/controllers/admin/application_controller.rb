@@ -1,5 +1,7 @@
 class Admin::ApplicationController < ActionController::Base
- 
+  # La locale publique (/en) et les mailers restent sur le thread. L'admin est toujours en français.
+  prepend_before_action { I18n.locale = :fr }
+
   before_action :authenticate_vendeur_or_admin! 
    layout 'admin' 
  
