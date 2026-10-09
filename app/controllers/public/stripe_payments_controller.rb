@@ -84,7 +84,7 @@ module Public
         format.turbo_stream do
           streams = [
             turbo_stream.replace(
-              "produit_#{@produit.id}_button",
+              "produit_#{@produit.id}_shop_button",
               partial: "public/pages/cart_buttons/shop_product_button",
               locals: { produit: @produit }
             ),
@@ -118,7 +118,7 @@ module Public
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.replace(
-              "produit_#{@produit.id}_button",
+              "produit_#{@produit.id}_shop_button",
               partial: "public/pages/cart_buttons/shop_product_button",
               locals: { produit: @produit }
             ),

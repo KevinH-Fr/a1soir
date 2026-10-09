@@ -84,6 +84,11 @@ module Analyses
       ivar(:total_stripe_eur)
     end
 
+    def profile_encaissement_ids(profile_id)
+      scope = ivar(:commandesEncaissement) || Commande.none
+      scope.where(profile_id: profile_id).pluck(:id)
+    end
+
     def analyses_ca_mode
       ivar(:analyses_ca_mode)
     end
@@ -303,9 +308,7 @@ module Analyses
                          .merge(Commande.where(profile_id: profile.id))
                          .sum(:montant).to_d
                      end
-      stripe_ids = stripe_payments_paid_filtres.where(
-        commande_id: Commande.where(profile_id: profile.id).select(:id)
-      ).distinct.pluck(:commande_id)
+      stripe_ids = profile_encaissement_ids(profile.id)
       ca = ca_paiements + stripe_totals.total_eur(commande_ids: stripe_ids)
       label = profile.full_name.presence || profile.prenom.presence || "Profil ##{profile.id}"
 

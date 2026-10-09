@@ -78,17 +78,17 @@
               <!-- Your email-related elements go here -->
               <div>
                 <%= form.label :sujet, class: "form-label" %>
-                <%= form.text_field :sujet, value: @sujet, class: "form-control" %>
+                <%= form.text_field :sujet, value: @sujet.presence || doc_edition.sujet, class: "form-control" %>
               </div>
 
               <div>
                 <%= form.label :destinataire, class: "form-label" %>
-                <%= form.text_field :destinataire, value: @destinataire, class: "form-control" %>
+                <%= form.text_field :destinataire, value: @destinataire.presence || doc_edition.destinataire, class: "form-control" %>
               </div>
 
               <div>
                 <%= form.label :message, class: "form-label" %>
-                <%= form.text_area :message, value: @message, class: "form-control" %>
+                <%= form.text_area :message, value: @message.presence || doc_edition.message, class: "form-control" %>
               </div>
 
               <!-- Add any other email-related fields as needed -->

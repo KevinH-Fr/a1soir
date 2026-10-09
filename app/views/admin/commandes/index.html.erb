@@ -2,11 +2,12 @@
   :nom_or_type_locvente_or_typeevent_or_ref_commande_or_client_nom_or_client_prenom_or_profile_nom_or_profile_prenom_cont, admin_commandes_path) do %>
   <%= button_to create_commande_rapide_admin_commandes_path,
         method: :post,
-        class: "btn btn-sm btn-outline-warning d-inline-flex align-items-center gap-1 ms-1",
+        class: "btn btn-sm btn-outline-warning d-inline-flex align-items-center gap-1 ms-1 text-nowrap flex-shrink-0",
+        form: { class: "d-inline flex-shrink-0" },
         title: "Vente rapide",
         aria: { label: "Vente rapide" } do %>
     <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
-    <span class="d-none d-md-inline">Vente rapide</span>
+    <span class="d-none d-md-inline text-nowrap">Vente rapide</span>
   <% end %>
 <% end %>
 

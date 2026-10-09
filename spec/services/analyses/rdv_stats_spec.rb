@@ -159,6 +159,36 @@ RSpec.describe Analyses::RdvStats do
     expect(stats[:agenda_total]).to eq(2)
   end
 
+  describe "transformation pending window" do
+    # « Aujourd'hui » au 25 septembre : le RDV du 20 est < 14 j, celui du 5 est ≥ 14 j.
+    around do |example|
+      travel_to(Time.zone.local(2026, 9, 25, 12, 0, 0)) { example.run }
+    end
+
+    it "splits RDV without commande into en cours (< 14 j) and sans (≥ 14 j)" do
+      recent = create_demande(
+        email: "recent-#{SecureRandom.hex(3)}@test.com",
+        statut: "soumis",
+        date_rdv: Time.zone.local(2026, 9, 20, 10, 0, 0)
+      )
+      confirm!(recent)
+
+      old = create_demande(
+        email: "old-#{SecureRandom.hex(3)}@test.com",
+        statut: "soumis",
+        date_rdv: Time.zone.local(2026, 9, 5, 10, 0, 0)
+      )
+      confirm!(old)
+
+      stats = described_class.call(debut: debut, fin: fin)
+
+      expect(stats[:confirmes]).to eq(2)
+      expect(stats[:transformees]).to eq(0)
+      expect(stats[:transformation_en_cours]).to eq(1)
+      expect(stats[:transformation_sans]).to eq(1)
+    end
+  end
+
   describe "transformation rate" do
     # RDV de septembre : ≥ 14 j → « sans » si pas de commande.
     around do |example|
@@ -203,31 +233,6 @@ RSpec.describe Analyses::RdvStats do
       expect(stats[:transformation_en_cours]).to eq(0)
       expect(stats[:transformation_sans]).to eq(2)
       expect(stats[:taux_transformation]).to eq(0.0)
-    end
-
-    it "splits RDV without commande into en cours (< 14 j) and sans (≥ 14 j)" do
-      travel_to(Time.zone.local(2026, 9, 25, 12, 0, 0)) do
-        recent = create_demande(
-          email: "recent-#{SecureRandom.hex(3)}@test.com",
-          statut: "soumis",
-          date_rdv: Time.zone.local(2026, 9, 20, 10, 0, 0)
-        )
-        confirm!(recent)
-
-        old = create_demande(
-          email: "old-#{SecureRandom.hex(3)}@test.com",
-          statut: "soumis",
-          date_rdv: Time.zone.local(2026, 9, 5, 10, 0, 0)
-        )
-        confirm!(old)
-
-        stats = described_class.call(debut: debut, fin: fin)
-
-        expect(stats[:confirmes]).to eq(2)
-        expect(stats[:transformees]).to eq(0)
-        expect(stats[:transformation_en_cours]).to eq(1)
-        expect(stats[:transformation_sans]).to eq(1)
-      end
     end
 
     it "sums encaissements of linked commandes once, ignoring caution, devis and refunds" do

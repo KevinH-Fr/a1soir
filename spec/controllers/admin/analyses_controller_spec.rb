@@ -38,6 +38,44 @@ RSpec.describe Admin::AnalysesController, type: :controller do
       end
     end
 
+    it "counts an eshop refund dated today even when the payment is outside the window" do
+      allow(GenerateQr).to receive(:call)
+
+      commande = Commande.create!(
+        client: client,
+        profile: profile,
+        nom: "E-shop remb décalé",
+        montant: 110,
+        devis: false,
+        type_locvente: "vente",
+        typeevent: Commande::EVENEMENTS_OPTIONS.first,
+        eshop: true
+      )
+      payment = StripePayment.create!(
+        commande: commande,
+        stripe_payment_id: "pi_ca_shift_#{SecureRandom.hex(6)}",
+        amount: 11_000,
+        currency: "eur",
+        status: "paid"
+      )
+      payment.update_columns(created_at: 1.day.ago, updated_at: 1.day.ago)
+      AvoirRemb.create!(
+        commande: commande,
+        type_avoir_remb: "remboursement",
+        montant: 110,
+        nature: EshopCommandeRemboursementService::NATURE_REMBOURSEMENT,
+        custom_date: Date.current
+      )
+
+      get :index, params: { debut: Date.current.to_s, fin: Date.current.to_s, vue: "synthese" }
+
+      expect(response).to have_http_status(:ok)
+      expect(assigns(:total_stripe_eur)).to eq(-110.to_d)
+      expect(assigns(:totalPrixCaStripe)).to eq(-110.to_d)
+      expect(assigns(:totalRemboursementsEshop)).to eq(110.to_d)
+      expect(response.body).to include("E-shop -110 €")
+    end
+
     it "nets Stripe CA by eshop remboursements" do
       allow(GenerateQr).to receive(:call)
 

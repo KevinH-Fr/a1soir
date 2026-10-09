@@ -36,7 +36,8 @@ module Analyses
           datefin: @datefin,
           stripe_payments_scope: @scopes[:stripe_payments_paid_filtres],
           filtered_produits: @scopes[:filtered_produits],
-          product_dimension_filtered: @product_dimension_filtered
+          product_dimension_filtered: @product_dimension_filtered,
+          encaissement_commandes: @scopes[:commandes_encaissement]
         )
       else
         @datedebut = parse_datetime(@filter_params[:debut])
@@ -142,6 +143,11 @@ module Analyses
       end
     end
 
+    def encaissement_ids_for_profile(profile_id)
+      scope = @scopes[:commandes_encaissement] || Commande.none
+      scope.where(profile_id: profile_id).pluck(:id)
+    end
+
     def boutique_remboursements_total
       @boutique_remboursements_total ||= (@scopes[:remboursements_boutique_filtres] || AvoirRemb.none).sum(:montant).to_d
     end
@@ -201,9 +207,7 @@ module Analyses
                          paiements.only_prix.joins(:commande).where(commandes: { profile_id: profile.id }).sum(:montant).to_d -
                            boutique_remboursements_for_profile(profile.id)
                        end
-        stripe_ids = @scopes[:stripe_payments_paid_filtres]
-                       .where(commande_id: Commande.where(profile_id: profile.id).select(:id))
-                       .distinct.pluck(:commande_id)
+        stripe_ids = encaissement_ids_for_profile(profile.id)
         ca += ca_paiements + @stripe_totals.total_eur(commande_ids: stripe_ids)
       end
 
@@ -235,9 +239,7 @@ module Analyses
                          boutique_remboursements_for_profile(profile_id)
                      end
 
-      stripe_ids = @scopes[:stripe_payments_paid_filtres]
-                     .where(commande_id: Commande.where(profile_id: profile_id).select(:id))
-                     .distinct.pluck(:commande_id)
+      stripe_ids = encaissement_ids_for_profile(profile_id)
       ca_paiements + @stripe_totals.total_eur(commande_ids: stripe_ids)
     end
   end

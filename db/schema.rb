@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_09_25_143000) do
+ActiveRecord::Schema[7.2].define(version: 2026_10_09_130500) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -72,6 +72,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_25_143000) do
     t.text "commentaires"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "annule_at"
     t.index ["commande_id"], name: "index_articles_on_commande_id"
     t.index ["produit_id"], name: "index_articles_on_produit_id"
   end
@@ -489,6 +490,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_25_143000) do
     t.string "shipping_postal_code"
     t.string "shipping_country"
     t.string "customer_phone"
+    t.datetime "frais_livraison_rembourse_at"
     t.index ["commande_id"], name: "index_stripe_payments_on_commande_id"
     t.index ["produit_id"], name: "index_stripe_payments_on_produit_id"
     t.index ["stripe_checkout_session_id"], name: "index_stripe_payments_on_stripe_checkout_session_id", unique: true, where: "stripe_checkout_session_id IS NOT NULL"

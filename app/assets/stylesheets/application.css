@@ -6024,6 +6024,41 @@ button[data-time]:disabled {
   background: #f8f9fa !important;
 }
 
+/* Aujourd'hui sélectionné : le fond blanc de .today écrasait le fond noir
+   de .selected et laissait le chiffre blanc invisible. */
+.flatpickr-day.today.selected,
+.flatpickr-day.today.selected:hover,
+.flatpickr-day.today.selected:focus {
+  background: #000 !important;
+  color: #fff !important;
+  border-color: #000 !important;
+}
+
+/* Page RDV — colonne gauche (étapes + rappel cabine) */
+.rdv-sidebar__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.04);
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 1.15rem;
+}
+
+.rdv-cabine-callout {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+@media (min-width: 992px) {
+  .rdv-sidebar.sticky-lg-top {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
 /* Boutons précédent / suivant */
 .flatpickr-prev-month,
 .flatpickr-next-month {

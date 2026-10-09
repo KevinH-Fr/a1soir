@@ -38,7 +38,7 @@
                 </label>
               <% end %>
             </div>
-            <% if stripe_payment.frais_livraison_centimes.to_i.positive? %>
+            <% if stripe_payment.frais_livraison_centimes.to_i.positive? && !stripe_payment.frais_livraison_remboursee? %>
               <label class="d-flex align-items-start gap-2 border rounded p-2 mb-0 mt-3">
                 <%= hidden_field_tag "refund_shipping", "0" %>
                 <%= check_box_tag "refund_shipping", "1", true, id: "refund-shipping-#{@commande.id}" %>

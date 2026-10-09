@@ -22,7 +22,7 @@ module CabineCartResponder
   def cabine_cart_turbo_stream_payload(produit)
     [
       turbo_stream.replace(
-        "produit_#{produit.id}_button",
+        "produit_#{produit.id}_cabine_button",
         partial: "public/pages/cart_buttons/cabine_product_button",
         locals: { produit: produit }
       ),

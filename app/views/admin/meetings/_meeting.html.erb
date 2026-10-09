@@ -21,9 +21,14 @@
             <% end %>
           <% end %>
 
-          <% if meeting.client %>
+          <% client = meeting.client || meeting.commande&.client %>
+          <% if client %>
             <% unless controller_name == "clients" && action_name == "show" %>
-              <%= custom_badge("", "", "", "", meeting.client.full_name) %>
+              <%= link_to admin_client_path(client),
+                          class: "text-decoration-none text-dark",
+                          data: { turbo: false } do %>
+                <%= custom_badge("", "", "", "", client.full_name) %>
+              <% end %>
             <% end %>
           <% end %>
         </div>

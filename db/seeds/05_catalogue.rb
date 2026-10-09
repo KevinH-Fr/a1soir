@@ -39,13 +39,13 @@ singletons = [
     nom: "Robe cocktail champagne",
     prixvente: 160, prixlocation: 95, quantite: 10,
     type: type.call("robe"), categories: [cat.call("robe")],
-    couleur: couleur.call("champagne"), taille: taille.call("40"), eshop: true
+    couleur: couleur.call("champagne"), taille: taille.call("40"), eshop: false
   },
   {
     nom: "Costume marine classique",
     prixvente: 220, prixlocation: 110, quantite: 8,
     type: type.call("costume"), categories: [cat.call("costume")],
-    couleur: couleur.call("marine"), taille: taille.call("l"), eshop: true
+    couleur: couleur.call("marine"), taille: taille.call("l"), eshop: false
   },
   {
     nom: "Costume bordeaux cérémonie",
@@ -69,13 +69,13 @@ singletons = [
     nom: "Veste smoking anthracite",
     prixvente: 175, prixlocation: 85, quantite: 10,
     type: type.call("veste"), categories: [cat.call("veste")],
-    couleur: couleur.call("gris"), taille: taille.call("l"), eshop: true
+    couleur: couleur.call("gris"), taille: taille.call("l"), eshop: false
   },
   {
     nom: "Escarpins vernis noirs",
     prixvente: 90, prixlocation: 40, quantite: 12,
     type: type.call("chaussures"), categories: [cat.call("chaussures")],
-    couleur: couleur.call("noir"), taille: taille.call("38"), eshop: true
+    couleur: couleur.call("noir"), taille: taille.call("38"), eshop: false
   },
   {
     nom: "Souliers cuir marron",
@@ -99,7 +99,7 @@ singletons = [
     nom: "Robe lavande cocktail",
     prixvente: 130, prixlocation: 75, quantite: 8,
     type: type.call("robe"), categories: [cat.call("robe")],
-    couleur: couleur.call("lavande"), taille: taille.call("36"), eshop: true
+    couleur: couleur.call("lavande"), taille: taille.call("36"), eshop: false
   }
 ]
 
@@ -111,8 +111,9 @@ families = [
     type: "robe", categories: %w[robe],
     prixvente: 240, prixlocation: 125, prixachat: 90,
     ancien_prixvente: 290, poids: 1600,
+    # Familles volumineuses : pas e-shop (évite des dizaines de Price Stripe en local).
     couleurs: %w[noir rouge champagne], tailles: %w[32 34 36 38 40 42 44 46 48 50],
-    quantite: 14, eshop: true, coup_de_coeur: true
+    quantite: 14, eshop: false, coup_de_coeur: true
   },
   {
     nom: "Robe cocktail velours",
@@ -121,7 +122,7 @@ families = [
     prixvente: 145, prixlocation: 80, prixachat: 55,
     poids: 900,
     couleurs: %w[bordeaux vert], tailles: %w[36 38 40],
-    quantite: 12, eshop: true
+    quantite: 12, eshop: false
   },
   {
     nom: "Costume trois pièces",
@@ -130,7 +131,7 @@ families = [
     prixvente: 260, prixlocation: 130, prixachat: 110,
     poids: 2200,
     couleurs: %w[noir marine gris], tailles: %w[44 46 48 50 52 54 56 58 60 62],
-    quantite: 10, eshop: true, coup_de_coeur: true
+    quantite: 10, eshop: false, coup_de_coeur: true
   },
   {
     nom: "Chemise plastron",
@@ -139,7 +140,7 @@ families = [
     prixvente: 70, prixlocation: 28, prixachat: 22,
     poids: 350,
     couleurs: %w[blanc ivoire], tailles: %w[s m l],
-    quantite: 18, eshop: true
+    quantite: 18, eshop: false
   },
   {
     nom: "Pantalon smoking",
@@ -148,7 +149,7 @@ families = [
     prixvente: 95, prixlocation: 40, prixachat: 35,
     poids: 700,
     couleurs: %w[noir marine], tailles: %w[40 42 44],
-    quantite: 12, eshop: true
+    quantite: 12, eshop: false
   },
   {
     nom: "Veste smoking satin",
@@ -166,7 +167,7 @@ families = [
     prixvente: 95, prixlocation: 42, prixachat: 32,
     poids: 600,
     couleurs: %w[noir rose ivoire], tailles: %w[35 36 37 38 39 40 41 42 43 44],
-    quantite: 10, eshop: true
+    quantite: 10, eshop: false
   },
   {
     nom: "Collier perles nacrées",
@@ -175,7 +176,7 @@ families = [
     prixvente: 55, prixlocation: 22, prixachat: 18,
     poids: 120,
     couleurs: %w[blanc or], tailles: %w[unique],
-    quantite: 20, eshop: true
+    quantite: 20, eshop: false
   },
   {
     nom: "Ceinture strass",
@@ -183,6 +184,7 @@ families = [
     type: "ceinture", categories: %w[accessoire],
     prixvente: 35, prixlocation: 14, prixachat: 10,
     poids: 180,
+    # Petite famille e-shop (~6 SKU) pour tester variantes + checkout.
     couleurs: %w[noir or], tailles: %w[s m l],
     quantite: 15, eshop: true
   }
@@ -190,6 +192,21 @@ families = [
 
 upsert_produit = lambda do |attrs|
   produit = Produit.find_or_initialize_by(reffrs: attrs[:reffrs])
+  eshop = attrs[:eshop]
+  # IDs factices (price_seed_…) pour le bouton panier sans API Stripe.
+  # Ne jamais écraser de vrais IDs (prod_/price_ Stripe test). Voir 09_stripe_eshop.
+  seed_slug = attrs[:reffrs].to_s.parameterize(separator: "_")
+  current_price = produit.stripe_price_id.to_s
+  seed_or_blank = current_price.blank? || current_price.start_with?("price_seed_")
+
+  if eshop && seed_or_blank
+    produit.stripe_product_id = "prod_seed_#{seed_slug}"
+    produit.stripe_price_id = "price_seed_#{seed_slug}"
+  elsif !eshop && seed_or_blank
+    produit.stripe_product_id = nil
+    produit.stripe_price_id = nil
+  end
+
   produit.assign_attributes(
     nom: attrs[:nom],
     description: attrs[:description],
@@ -203,7 +220,7 @@ upsert_produit = lambda do |attrs|
     couleur: attrs[:couleur],
     taille: attrs[:taille],
     actif: true,
-    eshop: attrs[:eshop],
+    eshop: eshop,
     poids: attrs[:poids],
     coup_de_coeur: attrs[:coup_de_coeur] || false,
     coup_de_coeur_position: attrs[:coup_de_coeur_position]
@@ -302,7 +319,8 @@ end
   attach_swatch.call(produit) if produit
 end
 
+eshop_with_price = created.count { |p| p.eshop? && p.stripe_price_id.present? }
 Seeds::Helpers.log(
   "05",
-  "#{created.size} SKU (#{created.map(&:handle).uniq.size} modèles, #{created.count { |p| p.quantite.to_i.positive? }} en stock)"
+  "#{created.size} SKU (#{created.map(&:handle).uniq.size} modèles, #{created.count { |p| p.quantite.to_i.positive? }} en stock, #{eshop_with_price} e-shop avec price seed)"
 )

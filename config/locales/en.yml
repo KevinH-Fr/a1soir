@@ -226,6 +226,8 @@ en:
       item_detail: "Qty %{qty} — %{amount}"
       shipping_label: "Shipping"
       shipping_hint: "Uncheck if the parcel is still going out. Included by default for a full cancellation."
+      shipping_refunded: "refunded"
+      article_annule: "Cancelled"
       submit: "Refund selection"
       submit_with_email: "With email"
       submit_without_email: "Without email"
@@ -247,6 +249,7 @@ en:
     livraison:
       label: "Delivery fee"
       offert: "Free"
+      remboursee: "Refunded"
     paiement_stripe:
       moyen: "Stripe"
     mentions:
@@ -561,6 +564,7 @@ en:
       festival_de_cannes: "Cannes Festival"
       services: "Services"
       products: "Products"
+      fitting_room: "Fitting room"
       appointment: "Appointment"
       contact: "Contact"
       follow_us: "Follow us"
@@ -598,6 +602,15 @@ en:
         boutique_section:
           title: "The shop"
           body: "Our Cannes shop in the heart of the French Riviera and its prestigious events."
+        cabine_encart:
+          title: "Fitting room"
+          body: "Build your selection online, then come to the boutique: we prepare your pieces for your appointment."
+          note: "In store, the team can also suggest other pieces."
+          cta: "Compose my selection"
+          steps_aria: "How it works"
+          step_1: "Choose"
+          step_2: "Book"
+          step_3: "Try on"
         hero:
           title: "Wedding and Evening Wear"
           subtitle: "Collections designed to elevate your look"
@@ -628,14 +641,23 @@ en:
         header_subtitle: "Reserve your in-store time slot"
         steps:
           reservation:
-            title: "1. Reservation"
+            title: "Booking"
             description: "Enter your contact details and choose the date that suits you to visit our shop."
           confirmation:
-            title: "2. Confirmation"
+            title: "Confirmation"
             description: "Receive a confirmation email for your appointment or a call from our team."
-          fitting:
-            title: "3. Fitting"
-            description: "Enjoy a personalized moment with our image consultants."
+          visit:
+            title: "In store"
+            description: "Personal advice, browsing our collections, and a fitting."
+        cabine_callout:
+          empty_title: "Want pieces ready to try on?"
+          empty_body: "Add outfits to your fitting room: we prepare them for your visit."
+          empty_cta: "Build my fitting room"
+          filled_title:
+            one: "1 piece in your fitting room"
+            other: "%{count} pieces in your fitting room"
+          filled_body: "They can be prepared for your appointment."
+          filled_cta: "View my fitting room"
       contact:
         header_title: "Contact"
         header_subtitle: "We are here to help"
@@ -730,6 +752,7 @@ en:
         back: "Back"
         view_more_products: "Browse more products"
         rental_info: "Rental is available only in our shop."
+        cabine_hint: "Add up to 10 outfits: the boutique prepares them for your in-store fitting."
         other_sizes_title: "Other available sizes"
         other_colors_title: "Other available colors"
         add_other_products: "Add more products"
@@ -1207,8 +1230,8 @@ en:
         share_native: "Share"
         share_title: "My Autour D'Un Soir selection"
         instore_callout_title: "See these pieces in the shop?"
-        instore_callout_lead: "Would you like to view them in store and try them on at your own pace?"
-        instore_callout_body: "Move your selection to our fitting room flow, pick a date and time that suit you, and we will prepare the pieces before you arrive. You can also print a list to bring with you."
+        instore_callout_lead: "Would you rather see and try them on in the boutique?"
+        instore_callout_body: "Add them to your fitting room, choose a time slot: we prepare your pieces before you arrive."
         transfer_to_cabine_success:
           one: "1 item transferred to your fitting room"
           other: "%{count} items transferred to your fitting room"

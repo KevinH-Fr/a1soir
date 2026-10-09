@@ -550,6 +550,11 @@ module AdminFlashToast
         icon: "trash",
         message_key: "admin.toasts.article.destroyed",
       },
+      annule: {
+        variant: :warning,
+        icon: "x-circle",
+        message_key: "admin.toasts.article.annule",
+      },
     },
     avoir_remb: {
       created: {

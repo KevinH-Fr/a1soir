@@ -477,3 +477,46 @@ Seeds::Helpers.upsert_demo_commande!(
     }
   ]
 )
+
+# E-shop : 100 € d'article + 10 € de livraison. Commande et paiement Stripe hier,
+# remboursement aujourd'hui. La commande reste hors devis.
+eshop_remb_nom = "Commande seed eshop remb livraison"
+eshop_remb = Seeds::Helpers.upsert_demo_commande!(
+  nom: eshop_remb_nom,
+  client: client_sophie,
+  profile: profile_eshop,
+  days_ago: offsets[eshop_remb_nom],
+  type_locvente: "vente",
+  eshop: true,
+  articles: [
+    { produit: robe_soiree, locvente: "vente", prix: 100, total: 100, quantite: 1 }
+  ],
+  stripe: {
+    stripe_payment_id: "pi_seed_eshop_remb_livraison",
+    amount_cents: 11_000,
+    frais_livraison_centimes: 1_000,
+    items: [
+      { produit: robe_soiree, quantity: 1, unit_amount: 10_000 }
+    ]
+  }
+)
+eshop_remb_result = EshopCommandeRemboursementService.new(eshop_remb.reload).call(
+  article: eshop_remb.articles.find_by!(produit: robe_soiree)
+)
+raise "Seed remboursement e-shop échoué: #{eshop_remb_result.error_key}" unless eshop_remb_result.success?
+
+paiement_at = Seeds::Helpers.demo_timestamp(offsets[eshop_remb_nom], name: eshop_remb_nom)
+Seeds::Helpers.touch_commande_timestamps!(eshop_remb.reload, at: paiement_at)
+remb_at = Time.current
+eshop_remb.avoir_rembs.remb_only.find_each do |remb|
+  # custom_date ≠ date de created_at : le recalage des seeds ne ramène pas le remboursement à hier.
+  remb.update_columns(custom_date: Date.current, updated_at: remb_at)
+end
+eshop_remb.stripe_payment.stripe_payment_items.find_each do |item|
+  item.update_columns(refunded_at: remb_at) if item.refunded_at.present?
+end
+Seeds::Helpers.log(
+  "06",
+  "E-shop remboursé #{eshop_remb.ref_commande} : paiement #{paiement_at.to_date} 110 €, " \
+  "remboursement #{Date.current} 110 €, devis=#{eshop_remb.reload.devis?}, articles=#{eshop_remb.articles.count}."
+)

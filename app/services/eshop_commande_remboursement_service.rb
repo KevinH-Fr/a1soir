@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# Annule une commande e-shop côté app : devis (stock), AvoirRemb remboursement.
+# Annule une commande e-shop côté app : ligne Stripe remboursée, article marqué annulé, AvoirRemb.
+# La commande reste une commande (pas un devis) pour que le CA déduise le remboursement.
 # Le remboursement bancaire reste manuel dans le Dashboard Stripe.
 class EshopCommandeRemboursementService
   Result = Struct.new(
@@ -72,11 +73,13 @@ class EshopCommandeRemboursementService
       now = Time.current
       items.each do |item|
         item.update!(refunded_at: now)
-        destroy_articles_for(item)
+        annuler_articles_for(item, at: now)
+      end
+      if include_shipping && shipping_euros.positive?
+        @commande.stripe_payment.update!(frais_livraison_rembourse_at: now)
       end
       create_avoir!(montant) if montant.positive?
       full_refund = stripe_items.not_refunded.reload.none?
-      @commande.update!(devis: true) if full_refund
     end
 
     Result.new(
@@ -89,8 +92,10 @@ class EshopCommandeRemboursementService
     )
   end
 
-  def destroy_articles_for(item)
-    @commande.articles.where(produit_id: item.produit_id).find_each(&:destroy!)
+  def annuler_articles_for(item, at:)
+    @commande.articles.actifs.where(produit_id: item.produit_id).find_each do |article|
+      article.update!(annule_at: at)
+    end
   end
 
   def matching_item(article)
@@ -109,6 +114,8 @@ class EshopCommandeRemboursementService
   end
 
   def shipping_left_euros
+    return 0.to_d if @commande.stripe_payment.frais_livraison_remboursee?
+
     unrefunded_products = stripe_items.not_refunded.sum { |item| line_amount_raw(item) }
     leftover = remaining_euros - unrefunded_products
     leftover.positive? ? leftover : 0.to_d

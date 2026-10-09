@@ -71,25 +71,16 @@ module CommandesHelper
     def compte_articles(commande)
         return unless commande
 
-        if commande.association(:articles).loaded?
-          commande.articles.sum(&:quantite)
-        else
-          commande.articles.sum(:quantite)
-        end
+        articles_actifs(commande).sum { |article| article.quantite.to_i }
     end
 
     def du_prix(commande)
         return unless commande
 
-        if commande.association(:articles).loaded?
-          prix_articles = commande.articles.sum { |a| a.total.to_d }
-          prix_sous_articles = commande.articles.flat_map(&:sousarticles).sum { |s| s.prix.to_d }
-        else
-          prix_articles = commande.articles.sum(:total)
-          prix_sous_articles = commande.articles.joins(:sousarticles).sum("sousarticles.prix")
-        end
-        frais_livraison = commande.stripe_payment&.frais_livraison_centimes.to_d / 100
-        (prix_articles + prix_sous_articles + frais_livraison).round(2)
+        actifs = articles_actifs(commande)
+        prix_articles = actifs.sum { |article| article.total.to_d }
+        prix_sous_articles = actifs.flat_map(&:sousarticles).sum { |sousarticle| sousarticle.prix.to_d }
+        (prix_articles + prix_sous_articles + frais_livraison_dus_euros(commande)).round(2)
     end
 
     def du_prix_ht(commande)
@@ -104,13 +95,9 @@ module CommandesHelper
     def du_caution(commande)
         return unless commande
 
-        if commande.association(:articles).loaded?
-          caution_articles = commande.articles.sum { |a| a.caution.to_d }
-          caution_sous_articles = commande.articles.flat_map(&:sousarticles).sum { |s| s.caution.to_d }
-        else
-          caution_articles = commande.articles.sum(:caution)
-          caution_sous_articles = commande.articles.joins(:sousarticles).sum("sousarticles.caution")
-        end
+        actifs = articles_actifs(commande)
+        caution_articles = actifs.sum { |article| article.caution.to_d }
+        caution_sous_articles = actifs.flat_map(&:sousarticles).sum { |sousarticle| sousarticle.caution.to_d }
         caution_articles + caution_sous_articles
     end
 
@@ -136,6 +123,15 @@ module CommandesHelper
 
     def frais_livraison_stripe_euros(commande)
         commande.stripe_payment&.frais_livraison_centimes.to_d / 100
+    end
+
+    # Livraison encore due. Une livraison déjà remboursée reste visible sur le paiement,
+    # mais ne compte plus dans le prix de la commande.
+    def frais_livraison_dus_euros(commande)
+        payment = commande.stripe_payment
+        return 0.to_d if payment.blank? || payment.frais_livraison_remboursee?
+
+        payment.frais_livraison_centimes.to_d / 100
     end
 
     def pdf_afficher_paiements?(commande)
@@ -183,6 +179,16 @@ module CommandesHelper
     
     def solde_caution(commande)
         du_caution(commande) - recu_caution(commande)
+    end
+
+    private
+
+    def articles_actifs(commande)
+        if commande.association(:articles).loaded?
+          commande.articles.reject(&:annule?)
+        else
+          commande.articles.actifs.includes(:sousarticles).to_a
+        end
     end
 
 end

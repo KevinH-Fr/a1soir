@@ -61,7 +61,7 @@
     <%= render "produits_filtres" %>
 
     <!-- Bouton flottant pour accéder au formulaire -->
-    <% if params[:from_cabine].present? && @cabine_cart.any? %>
+    <% if @cabine_cart.any? %>
         <%= render partial: "public/pages/floating_reservation_button" %>
     <% else %>
         <div id="floating_reservation_btn"></div>

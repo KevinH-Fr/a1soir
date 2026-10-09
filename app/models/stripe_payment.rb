@@ -31,6 +31,10 @@ class StripePayment < ApplicationRecord
     stripe_payment_items.exists? || commande&.articles&.exists?
   end
 
+  def frais_livraison_remboursee?
+    frais_livraison_rembourse_at.present?
+  end
+
   after_commit :update_produits_availability_if_paid, on: :update
 
   private

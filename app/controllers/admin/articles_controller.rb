@@ -106,6 +106,7 @@ class Admin::ArticlesController < Admin::ApplicationController
   # DELETE /articles/1 or /articles/1.json
   def destroy
     @commande = @article.commande
+    refunded_eshop = false
 
     if eshop_ligne_remboursable?(@commande)
       result = EshopCommandeRemboursementService.new(@commande).call(article: @article)
@@ -118,6 +119,8 @@ class Admin::ArticlesController < Admin::ApplicationController
         end
         return
       end
+      refunded_eshop = true
+      @article.reload
     else
       @article.destroy!
     end
@@ -125,11 +128,21 @@ class Admin::ArticlesController < Admin::ApplicationController
     @commande.reload
 
     respond_to do |format|
-      admin_push_domain_toast!(flash.now, :article, :destroyed)
+      if refunded_eshop
+        admin_push_domain_toast!(flash.now, :article, :annule)
+      else
+        admin_push_domain_toast!(flash.now, :article, :destroyed)
+      end
 
       format.turbo_stream do
+        article_stream = if refunded_eshop
+          turbo_stream.replace(@article, partial: "admin/articles/article", locals: { article: @article })
+        else
+          turbo_stream.remove(@article)
+        end
+
         render turbo_stream: [
-          turbo_stream.remove(@article),
+          article_stream,
           turbo_stream.update('synthese-articles',
             partial: "admin/articles/synthese",
             locals: { articles: @commande.articles }),
@@ -142,7 +155,11 @@ class Admin::ArticlesController < Admin::ApplicationController
       end
 
       format.html do
-        admin_push_domain_toast!(flash, :article, :destroyed)
+        if refunded_eshop
+          admin_push_domain_toast!(flash, :article, :annule)
+        else
+          admin_push_domain_toast!(flash, :article, :destroyed)
+        end
         redirect_to admin_commande_url(@commande)
       end
       format.json { head :no_content }

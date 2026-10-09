@@ -24,7 +24,12 @@
           <%= pdf_product_thumb_tag(article.produit.default_image, width: 80, class: "img-fluid rounded pdf-thumb") %>
         </td>
         <td class="align-middle">
-          <div class="fw-bold small"><%= article.produit.nom %></div>
+          <div class="fw-bold small">
+            <span class="<%= "text-decoration-line-through" if article.annule? %>"><%= article.produit.nom %></span>
+            <% if article.annule? %>
+              <span class="badge bg-secondary"><%= t("commandes.eshop_remboursement.article_annule") %></span>
+            <% end %>
+          </div>
           <div class="text-muted" style="font-size:11px;">
             <%= "Couleur : #{article.produit.couleur.nom}" if article.produit.couleur.present? %>
             <%= "&nbsp;·&nbsp; Taille : #{article.produit.taille.nom}".html_safe if article.produit.taille.present? %>
@@ -33,8 +38,8 @@
           </div>
         </td>
         <td class="text-center align-middle"><%= article.quantite %></td>
-        <td class="text-end align-middle"><%= custom_currency_format(article.prix) %></td>
-        <td class="text-end align-middle"><%= custom_currency_format(article.total) %></td>
+        <td class="text-end align-middle <%= "text-decoration-line-through text-muted" if article.annule? %>"><%= custom_currency_format(article.prix) %></td>
+        <td class="text-end align-middle <%= "text-decoration-line-through text-muted" if article.annule? %>"><%= custom_currency_format(article.total) %></td>
         <% unless eshop %>
           <td class="text-end align-middle"><%= custom_currency_format(article.caution) %></td>
         <% end %>
@@ -76,7 +81,10 @@
         <td class="align-middle fw-bold small"><%= t("pdf_commande.livraison.label") %></td>
         <td class="text-center align-middle">1</td>
         <td class="text-end align-middle" colspan="2">
-          <% if livraison_euros.positive? %>
+          <% if @doc_edition.commande.stripe_payment&.frais_livraison_remboursee? %>
+            <span class="text-decoration-line-through text-muted"><%= custom_currency_format(livraison_euros) %></span>
+            <span class="badge bg-secondary"><%= t("pdf_commande.livraison.remboursee") %></span>
+          <% elsif livraison_euros.positive? %>
             <%= custom_currency_format(livraison_euros) %>
           <% else %>
             <span class="badge bg-success"><%= t("pdf_commande.livraison.offert") %></span>

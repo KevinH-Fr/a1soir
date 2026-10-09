@@ -3,12 +3,13 @@
 module Analyses
   # CA Stripe (centimes → euros) net des remboursements e-shop, éventuellement ventilé par lignes produit.
   class StripeTotals
-    def initialize(datedebut:, datefin:, stripe_payments_scope:, filtered_produits: nil, product_dimension_filtered: false)
+    def initialize(datedebut:, datefin:, stripe_payments_scope:, filtered_produits: nil, product_dimension_filtered: false, encaissement_commandes: nil)
       @datedebut = datedebut
       @datefin = datefin
       @stripe_payments_scope = stripe_payments_scope
       @filtered_produits = filtered_produits
       @product_dimension_filtered = product_dimension_filtered
+      @encaissement_commandes = encaissement_commandes
     end
 
     def total_eur(commande_ids: nil)
@@ -118,10 +119,14 @@ module Analyses
         )
       end
       rel = rel.where(commande_id: commande_ids) if commande_ids
-      # Toujours borner aux commandes du scope Stripe (évite un CA Stripe négatif
-      # si un remboursement existe sans paiement paid dans la fenêtre).
+      # Le remboursement compte à sa date, même si l'encaissement Stripe est hors fenêtre.
+      # Filtre produit : on reste sur les commandes dont une ligne payée est dans le périmètre.
       if commande_ids.nil?
-        rel = rel.where(commande_id: @stripe_payments_scope.select(:commande_id))
+        rel = if @product_dimension_filtered || @encaissement_commandes.nil?
+                rel.where(commande_id: @stripe_payments_scope.select(:commande_id))
+              else
+                rel.where(commande_id: @encaissement_commandes.select(:id))
+              end
       end
       rel.sum(:montant).to_d
     end

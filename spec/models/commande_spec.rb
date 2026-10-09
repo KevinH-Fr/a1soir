@@ -31,33 +31,57 @@ RSpec.describe 'Commande' do
 
       let(:profile) { Profile.create!(prenom: "V", nom: "T") }
 
-      it "is true when eshop, devis, and remboursement exist" do
+      it "is true when every stripe line is refunded" do
         commande = Commande.create!(
           client: client,
           profile: profile,
           nom: "x",
           montant: 1,
-          devis: true,
+          devis: false,
           eshop: true,
           type_locvente: "vente"
         )
-        AvoirRemb.create!(
+        payment = StripePayment.create!(
           commande: commande,
-          type_avoir_remb: "remboursement",
-          montant: 10
+          stripe_payment_id: "pi_model_#{SecureRandom.hex(4)}",
+          amount: 1000,
+          currency: "eur",
+          status: "paid"
+        )
+        produit = Produit.create!(nom: "Remb model", prixvente: 10, quantite: 1, eshop: true)
+        StripePaymentItem.create!(
+          stripe_payment: payment,
+          produit: produit,
+          quantity: 1,
+          unit_amount: 1000,
+          refunded_at: Time.current
         )
         expect(commande.remboursee_eshop?).to be(true)
       end
 
-      it "is false without remboursement" do
+      it "is false while a stripe line remains" do
         commande = Commande.create!(
           client: client,
           profile: profile,
           nom: "x",
           montant: 1,
-          devis: true,
+          devis: false,
           eshop: true,
           type_locvente: "vente"
+        )
+        payment = StripePayment.create!(
+          commande: commande,
+          stripe_payment_id: "pi_model_open_#{SecureRandom.hex(4)}",
+          amount: 1000,
+          currency: "eur",
+          status: "paid"
+        )
+        produit = Produit.create!(nom: "Remb model open", prixvente: 10, quantite: 1, eshop: true)
+        StripePaymentItem.create!(
+          stripe_payment: payment,
+          produit: produit,
+          quantity: 1,
+          unit_amount: 1000
         )
         expect(commande.remboursee_eshop?).to be(false)
       end

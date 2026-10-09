@@ -21,26 +21,12 @@ class Admin::DocEditionsController < Admin::ApplicationController
     next_client_meeting = @commande.client&.next_upcoming_meeting
     @next_meeting = [next_commande_meeting, next_client_meeting].compact.min_by(&:datedebut)
   
-    client_locale = @commande.client.language || :fr 
-  
-    I18n.with_locale(client_locale) do
-      doc_type_label = I18n.t("document_types.#{@doc_edition.doc_type}")
-      event_type_label = I18n.t("events.#{@commande.typeevent}")
-  
-      @sujet = I18n.t('commande_email.subject', doc_type: doc_type_label, ref_commande: @commande.ref_commande)
-      @destinataire = @commande.client.mail
-  
-      part_0 = I18n.t('commande_email.body.greeting', client: @commande.client.full_intitule)
-      part_1 = I18n.t('commande_email.body.document_info', doc_type: doc_type_label)
-      part_2 = @commande.typeevent? ? I18n.t('commande_email.body.event_info', event_type: event_type_label) : ""
-      part_3 = @commande.dateevent? ? I18n.t('commande_email.body.date_info', event_date: format_date_in_french(@commande.dateevent)) : ""
-  
-      @message = "#{part_0}\n\n#{part_1}#{part_2}#{part_3}."
-    end
+    prepare_email_draft(@commande)
   end  
 
 
   def edit
+    prepare_email_draft(@doc_edition.commande, prefer_saved: true)
 
     respond_to do |format|
       format.html 
@@ -181,6 +167,39 @@ class Admin::DocEditionsController < Admin::ApplicationController
 
   def set_doc_edition
     @doc_edition = DocEdition.find(params[:id])
+  end
+
+  # Sujet / message du mail dans la langue du client.
+  # À la création, le brouillon est toujours régénéré.
+  # À l'édition directe, on garde le texte déjà enregistré, sinon on le génère.
+  def prepare_email_draft(commande, prefer_saved: false)
+    return unless commande&.client
+
+    if prefer_saved && @doc_edition.sujet.present? && @doc_edition.message.present?
+      @sujet = @doc_edition.sujet
+      @destinataire = @doc_edition.destinataire.presence || commande.client.mail
+      @message = @doc_edition.message
+      return
+    end
+
+    return if @doc_edition.doc_type.blank?
+
+    client_locale = commande.client.language.presence || :fr
+
+    I18n.with_locale(client_locale) do
+      doc_type_label = I18n.t("document_types.#{@doc_edition.doc_type}")
+      event_type_label = I18n.t("events.#{commande.typeevent}")
+
+      @sujet = I18n.t("commande_email.subject", doc_type: doc_type_label, ref_commande: commande.ref_commande)
+      @destinataire = commande.client.mail
+
+      part_0 = I18n.t("commande_email.body.greeting", client: commande.client.full_intitule)
+      part_1 = I18n.t("commande_email.body.document_info", doc_type: doc_type_label)
+      part_2 = commande.typeevent? ? I18n.t("commande_email.body.event_info", event_type: event_type_label) : ""
+      part_3 = commande.dateevent? ? I18n.t("commande_email.body.date_info", event_date: format_date_in_french(commande.dateevent)) : ""
+
+      @message = "#{part_0}\n\n#{part_1}#{part_2}#{part_3}."
+    end
   end
   
   def doc_edition_params

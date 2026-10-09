@@ -92,10 +92,11 @@ RSpec.describe Admin::ArticlesController, type: :controller do
       it "refunds the line via the service" do
         delete :destroy, params: { id: article.id }
 
-        expect(Article.exists?(article.id)).to be(false)
+        expect(article.reload.annule?).to be(true)
         expect(stripe_item.reload.refunded_at).to be_present
         expect(stripe_payment.reload.amount).to eq(4500)
-        expect(commande.reload.devis?).to be(true)
+        expect(commande.reload.devis?).to be(false)
+        expect(commande.remboursee_eshop?).to be(true)
         expect(commande.avoir_rembs.remb_only.sole.montant).to eq(45.0)
       end
     end

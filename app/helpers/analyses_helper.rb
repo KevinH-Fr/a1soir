@@ -478,15 +478,18 @@ module AnalysesHelper
       return { hint: "Montants des articles", hint2: hint2 }
     end
 
+    boutique = @totalPrixCaBoutique.to_d
+    eshop = @totalPrixCaStripe.to_d
     ca_total = @totalPrixCa.to_d
-    boutique_pct = ca_total.positive? ? ((@totalPrixCaBoutique.to_d / ca_total) * 100).round : nil
-    stripe_pct = ca_total.positive? ? ((@totalPrixCaStripe.to_d / ca_total) * 100).round : nil
+    signed = boutique.negative? || eshop.negative?
+    boutique_pct = !signed && ca_total.positive? ? ((boutique / ca_total) * 100).round : nil
+    stripe_pct = !signed && ca_total.positive? ? ((eshop / ca_total) * 100).round : nil
 
-    hint2 = "E-shop #{analyses_donut_amount_label(@totalPrixCaStripe)} €#{stripe_pct ? " · #{stripe_pct} %" : ""}"
+    hint2 = "E-shop #{analyses_donut_amount_label(eshop)} €#{stripe_pct ? " · #{stripe_pct} %" : ""}"
     hint2 = "#{hint2} · remb. #{analyses_donut_amount_label(remb)} €" if remb.positive?
 
     {
-      hint: "Boutique #{analyses_donut_amount_label(@totalPrixCaBoutique)} €#{boutique_pct ? " · #{boutique_pct} %" : ""}",
+      hint: "Boutique #{analyses_donut_amount_label(boutique)} €#{boutique_pct ? " · #{boutique_pct} %" : ""}",
       hint2: hint2
     }
   end
@@ -509,7 +512,15 @@ module AnalysesHelper
     boutique = @totalPrixCaBoutique.to_d
     eshop = @totalPrixCaStripe.to_d
     total = boutique + eshop
-    return "Aucun CA sur la période" if total <= 0
+    return "Aucun CA sur la période" if boutique.zero? && eshop.zero?
+
+    if boutique.negative? || eshop.negative? || total <= 0
+      return [
+        "Total #{analyses_donut_amount_label(total)} €",
+        "Boutique #{analyses_donut_amount_label(boutique)} €",
+        "E-shop #{analyses_donut_amount_label(eshop)} €"
+      ].join(" · ")
+    end
 
     b_pct = ((boutique / total) * 100).round
     e_pct = ((eshop / total) * 100).round

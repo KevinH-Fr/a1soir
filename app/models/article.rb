@@ -8,6 +8,8 @@ class Article < ApplicationRecord
 
   scope :location_only, -> { where(locvente: 'location') }
   scope :vente_only, -> { where(locvente: 'vente') }
+  scope :actifs, -> { where(annule_at: nil) }
+  scope :annules, -> { where.not(annule_at: nil) }
 
   before_validation :force_vente_si_commande_rapide
   before_create :capture_promotion_info
@@ -34,6 +36,10 @@ class Article < ApplicationRecord
 
   def is_vente
     locvente == "vente" ? true : false 
+  end
+
+  def annule?
+    annule_at.present?
   end
 
   private

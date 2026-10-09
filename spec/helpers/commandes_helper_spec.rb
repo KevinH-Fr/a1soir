@@ -48,6 +48,53 @@ RSpec.describe CommandesHelper, type: :helper do
     end
   end
 
+  describe "refunded shipping" do
+    let!(:payment) do
+      StripePayment.create!(
+        commande: eshop_commande,
+        stripe_payment_id: "pi_solde_#{SecureRandom.hex(6)}",
+        amount: 11_000,
+        currency: "eur",
+        status: "paid",
+        frais_livraison_centimes: 1_000,
+        frais_livraison_rembourse_at: Time.current
+      )
+    end
+
+    before do
+      AvoirRemb.create!(
+        commande: eshop_commande,
+        type_avoir_remb: "remboursement",
+        montant: 110,
+        nature: "Stripe e-shop"
+      )
+    end
+
+    it "keeps the historical shipping amount and drops it from the amount due" do
+      expect(helper.frais_livraison_stripe_euros(eshop_commande.reload)).to eq(10)
+      expect(helper.frais_livraison_dus_euros(eshop_commande)).to eq(0)
+      expect(helper.du_prix(eshop_commande)).to eq(0)
+      expect(helper.solde_prix(eshop_commande)).to eq(0)
+    end
+
+    it "keeps a cancelled article visible in history and out of the balance" do
+      produit = Produit.create!(nom: "Helper robe annulee", prixvente: 100, quantite: 1, eshop: true)
+      Article.create!(
+        commande: eshop_commande,
+        produit: produit,
+        quantite: 1,
+        locvente: "vente",
+        prix: 100,
+        total: 100,
+        annule_at: Time.current
+      )
+
+      expect(eshop_commande.articles.count).to eq(1)
+      expect(helper.du_prix(eshop_commande.reload)).to eq(0)
+      expect(helper.solde_prix(eshop_commande)).to eq(0)
+    end
+  end
+
   describe "#pdf_afficher_paiements?" do
     it "is true for e-shop with paid stripe payment and no manual payments" do
       StripePayment.create!(
@@ -68,11 +115,20 @@ RSpec.describe CommandesHelper, type: :helper do
 
   describe "#pdf_afficher_annulation_eshop?" do
     it "is true for facture on remboursee eshop commande" do
-      commande.update!(devis: true)
-      AvoirRemb.create!(
+      payment = StripePayment.create!(
         commande: commande,
-        type_avoir_remb: "remboursement",
-        montant: 60
+        stripe_payment_id: "pi_annul_#{SecureRandom.hex(6)}",
+        amount: 6000,
+        currency: "eur",
+        status: "paid"
+      )
+      produit = Produit.create!(nom: "Helper annulation", prixvente: 60, quantite: 1, eshop: true)
+      StripePaymentItem.create!(
+        stripe_payment: payment,
+        produit: produit,
+        quantity: 1,
+        unit_amount: 6000,
+        refunded_at: Time.current
       )
       doc = DocEdition.new(commande: commande, doc_type: "facture")
 

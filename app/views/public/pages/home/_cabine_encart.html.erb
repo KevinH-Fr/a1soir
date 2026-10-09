@@ -1,0 +1,47 @@
+<section class="home-cabine-encart py-4 py-lg-5" data-scroll-reveal aria-labelledby="home-cabine-encart-heading">
+  <div class="container">
+    <div class="home-cabine-encart__card overflow-hidden">
+      <div class="home-cabine-encart__glow" aria-hidden="true"></div>
+
+      <div class="position-relative home-cabine-encart__inner">
+        <div class="home-cabine-encart__layout">
+          <div class="home-cabine-encart__copy">
+            <h2 id="home-cabine-encart-heading" class="home-cabine-encart__heading">
+              <%= t("public.pages.home.cabine_encart.title") %>
+            </h2>
+
+            <p class="home-cabine-encart__body">
+              <%= t("public.pages.home.cabine_encart.body") %>
+            </p>
+            <p class="home-cabine-encart__note">
+              <%= t("public.pages.home.cabine_encart.note") %>
+            </p>
+
+            <ol class="home-cabine-encart__steps list-unstyled d-none d-md-flex" aria-label="<%= t("public.pages.home.cabine_encart.steps_aria") %>">
+              <li class="home-cabine-encart__step">
+                <span class="home-cabine-encart__step-num" aria-hidden="true">1</span>
+                <span><%= t("public.pages.home.cabine_encart.step_1") %></span>
+              </li>
+              <li class="home-cabine-encart__step-sep" aria-hidden="true"></li>
+              <li class="home-cabine-encart__step">
+                <span class="home-cabine-encart__step-num" aria-hidden="true">2</span>
+                <span><%= t("public.pages.home.cabine_encart.step_2") %></span>
+              </li>
+              <li class="home-cabine-encart__step-sep" aria-hidden="true"></li>
+              <li class="home-cabine-encart__step">
+                <span class="home-cabine-encart__step-num" aria-hidden="true">3</span>
+                <span><%= t("public.pages.home.cabine_encart.step_3") %></span>
+              </li>
+            </ol>
+          </div>
+
+          <%= link_to produits_index_path(from_cabine: true),
+                      class: "btn btn-light btn-lg px-4 px-lg-5 public-btn-border-radius fw-bold home-cabine-encart__cta" do %>
+            <%= t("public.pages.home.cabine_encart.cta") %>
+            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

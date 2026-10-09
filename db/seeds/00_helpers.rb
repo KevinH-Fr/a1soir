@@ -48,6 +48,8 @@ module Seeds
       "Commande seed CA mois dernier 655 espèces" => 40,
       # Remboursement boutique avec moyen à J0 (paiement 120 CB − remb 40 CB = 80).
       "Commande seed remb boutique jour" => 0,
+      # E-shop : commande et paiement Stripe hier, remboursement aujourd'hui.
+      "Commande seed eshop remb livraison" => 1,
       "Devis seed Marie" => 15,
       "Devis seed Paul" => 3,
       "Boutique A" => 5,
@@ -183,14 +185,18 @@ module Seeds
 
       if stripe && !devis
         payment = commande.stripe_payment || commande.build_stripe_payment
-        payment.assign_attributes(
+        payment_attrs = {
           stripe_payment_id: stripe[:stripe_payment_id] || payment.stripe_payment_id || "pi_seed_#{commande.id}",
           amount: stripe[:amount_cents],
           currency: "eur",
           status: "paid",
           created_at: at,
           updated_at: at
-        )
+        }
+        if stripe.key?(:frais_livraison_centimes)
+          payment_attrs[:frais_livraison_centimes] = stripe[:frais_livraison_centimes]
+        end
+        payment.assign_attributes(payment_attrs)
         payment.save!
         payment.stripe_payment_items.destroy_all
         stripe.fetch(:items, []).each do |item|

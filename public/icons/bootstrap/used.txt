@@ -8,7 +8,6 @@ arrow-counterclockwise
 arrow-down
 arrow-down-up
 arrow-left
-arrow-left-right
 arrow-return-left
 arrow-right
 arrow-right-circle
@@ -25,6 +24,7 @@ bag-plus-fill
 bag-x
 balloon
 bell
+book
 bookmark-check
 bookmarks
 box-arrow-in-down
@@ -59,7 +59,6 @@ card-heading
 card-text
 cart
 cart-check
-cash
 cash-stack
 chat-dots
 chat-dots-fill
@@ -67,6 +66,7 @@ chat-left-text
 check-circle
 check-circle-fill
 check-lg
+check-square
 check2
 check2-circle
 chevron-down
@@ -87,6 +87,8 @@ cup-hot-fill
 cup-straw
 currency-euro
 dice-5-fill
+door-closed
+door-open
 envelope
 envelope-at
 envelope-check-fill
@@ -137,6 +139,7 @@ journal-text
 key
 layers
 lightning-charge-fill
+lightning-fill
 link-45deg
 list
 list-ul
@@ -187,6 +190,7 @@ shop-window
 shuffle
 sliders
 sort-up-alt
+square
 star
 star-fill
 star-half

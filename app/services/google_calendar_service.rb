@@ -53,6 +53,8 @@ class GoogleCalendarService
 
     if meeting.commande.present?
       parts << "Commande : #{admin_commande_url(meeting.commande, **admin_url_options)}"
+    else
+      parts << "Rendez-vous : #{admin_meeting_url(meeting, **admin_url_options)}"
     end
 
     parts.compact.join("\n\n")

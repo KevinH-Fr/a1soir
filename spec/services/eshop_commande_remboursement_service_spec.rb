@@ -60,12 +60,12 @@ RSpec.describe EshopCommandeRemboursementService do
   subject(:result) { described_class.new(commande.reload).call(stripe_payment_item_ids: [stripe_item.id], include_shipping: true) }
 
   describe "#call" do
-    it "sets devis, creates remboursement AvoirRemb, marks remboursee_eshop?" do
+    it "keeps the commande, creates remboursement AvoirRemb, marks remboursee_eshop?" do
       expect(result.success?).to be(true)
       expect(result.already_done).to be(false)
 
       commande.reload
-      expect(commande.devis?).to be(true)
+      expect(commande.devis?).to be(false)
       expect(commande.remboursee_eshop?).to be(true)
       expect(result.montant).to eq(65.0)
       expect(result.full_refund).to be(true)
@@ -77,6 +77,7 @@ RSpec.describe EshopCommandeRemboursementService do
       expect(stripe_item.reload.refunded_at).to be_present
       expect(stripe_payment.reload.amount).to eq(6500)
       expect(stripe_payment.status).to eq("paid")
+      expect(stripe_payment.frais_livraison_remboursee?).to be(true)
     end
 
     it "is idempotent on second call" do
@@ -90,7 +91,13 @@ RSpec.describe EshopCommandeRemboursementService do
 
     it "restores today_availability when stock allows" do
       produit.update!(today_availability: false)
-      expect { result }.to change { produit.reload.today_availability? }.from(false).to(true)
+      expect(result.success?).to be(true)
+
+      # La suite désactive les after_commit (spec/rails_helper.rb) pour éviter
+      # les verrous SQLite. On rejoue le callback qui tourne après le commit.
+      stripe_item.reload.send(:update_produit_availability_if_paid)
+
+      expect(produit.reload.today_availability?).to be(true)
     end
 
     context "when not eshop" do
@@ -140,14 +147,15 @@ RSpec.describe EshopCommandeRemboursementService do
       result = described_class.new(commande.reload).call(article: article_a)
 
       expect(result.success?).to be(true)
-      expect(Article.exists?(article_a.id)).to be(false)
-      expect(Article.exists?(article_b.id)).to be(true)
+      expect(article_a.reload.annule?).to be(true)
+      expect(article_b.reload.annule?).to be(false)
 
       expect(stripe_item.reload.refunded_at).to be_present
       expect(stripe_item_b.reload.refunded_at).to be_nil
       expect(StripePayment.exists?(stripe_payment.id)).to be(true)
       expect(stripe_payment.reload.amount).to eq(8500)
       expect(stripe_payment.status).to eq("paid")
+      expect(stripe_payment.frais_livraison_remboursee?).to be(false)
 
       commande.reload
       expect(commande.devis?).to be(false)
@@ -165,21 +173,22 @@ RSpec.describe EshopCommandeRemboursementService do
       result = described_class.new(commande.reload).call(article: article_b.reload)
 
       expect(result.success?).to be(true)
-      expect(Article.exists?(article_b.id)).to be(false)
+      expect(article_b.reload.annule?).to be(true)
       commande.reload
-      expect(commande.devis?).to be(true)
+      expect(commande.devis?).to be(false)
       expect(commande.remboursee_eshop?).to be(true)
       expect(commande.avoir_rembs.remb_only.sum(:montant)).to eq(85.0)
       expect(stripe_item_b.reload.refunded_at).to be_present
       expect(stripe_payment.reload.amount).to eq(8500)
+      expect(stripe_payment.frais_livraison_remboursee?).to be(true)
     end
 
     it "refunds only selected products in a single AvoirRemb" do
       result = described_class.new(commande.reload).call(stripe_payment_item_ids: [stripe_item.id])
 
       expect(result.success?).to be(true)
-      expect(Article.exists?(article_a.id)).to be(false)
-      expect(Article.exists?(article_b.id)).to be(true)
+      expect(article_a.reload.annule?).to be(true)
+      expect(article_b.reload.annule?).to be(false)
       expect(stripe_item.reload.refunded_at).to be_present
       expect(stripe_item_b.reload.refunded_at).to be_nil
       expect(commande.reload.devis?).to be(false)
@@ -197,10 +206,11 @@ RSpec.describe EshopCommandeRemboursementService do
       )
 
       expect(result.success?).to be(true)
-      expect(Article.exists?(article_a.id)).to be(false)
-      expect(Article.exists?(article_b.id)).to be(false)
+      expect(article_a.reload.annule?).to be(true)
+      expect(article_b.reload.annule?).to be(true)
       commande.reload
-      expect(commande.devis?).to be(true)
+      expect(commande.devis?).to be(false)
+      expect(commande.remboursee_eshop?).to be(true)
       expect(commande.avoir_rembs.remb_only.sole.montant).to eq(85.0)
     end
 
@@ -211,9 +221,11 @@ RSpec.describe EshopCommandeRemboursementService do
       )
 
       expect(result.success?).to be(true)
-      expect(Article.exists?(article_b.id)).to be(true)
+      expect(article_a.reload.annule?).to be(true)
+      expect(article_b.reload.annule?).to be(false)
       expect(commande.reload.devis?).to be(false)
       expect(commande.avoir_rembs.remb_only.sole.montant).to eq(65.0)
+      expect(stripe_payment.reload.frais_livraison_remboursee?).to be(true)
     end
 
     it "fails when no product is selected" do

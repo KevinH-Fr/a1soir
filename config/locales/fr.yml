@@ -130,6 +130,7 @@ fr:
         created: "Article créé"
         updated: "Article mis à jour"
         destroyed: "Article supprimé"
+        annule: "Article annulé"
       avoir_remb:
         created: "Avoir / remboursement créé"
         updated: "Avoir / remboursement mis à jour"
@@ -444,6 +445,8 @@ fr:
       item_detail: "Qté %{qty} — %{amount}"
       shipping_label: "Frais de livraison"
       shipping_hint: "Décochez si le colis part encore. Inclus par défaut avec une annulation totale."
+      shipping_refunded: "remboursée"
+      article_annule: "Annulé"
       submit: "Rembourser la sélection"
       submit_with_email: "Avec email"
       submit_without_email: "Sans email"
@@ -465,6 +468,7 @@ fr:
     livraison:
       label: "Frais de livraison"
       offert: "Offert"
+      remboursee: "Remboursée"
     paiement_stripe:
       moyen: "Stripe"
     mentions:
@@ -780,6 +784,7 @@ fr:
       festival_de_cannes: "Festival de Cannes"
       services: "Services"
       products: "Produits"
+      fitting_room: "Cabine d'essayage"
       appointment: "Rendez-vous"
       contact: "Contact"
       follow_us: "Suivez-nous"
@@ -817,6 +822,15 @@ fr:
         boutique_section:
           title: "La boutique"
           body: "Notre boutique de Cannes au cœur de la Côte d'Azur et de tous ses événements prestigieux."
+        cabine_encart:
+          title: "Cabine d'essayage"
+          body: "Composez votre sélection en ligne, puis venez en magasin : nous préparons vos tenues pour votre rendez-vous."
+          note: "En boutique, l'équipe peut aussi vous proposer d'autres tenues."
+          cta: "Composer ma sélection"
+          steps_aria: "Comment ça marche"
+          step_1: "Choisir"
+          step_2: "Réserver"
+          step_3: "Essayer"
         hero:
           title: "Mariage et Tenues de Soirée"
           subtitle: "Des collections pour vous embellir"
@@ -847,14 +861,23 @@ fr:
         header_subtitle: "Réservez votre créneau en boutique"
         steps:
           reservation:
-            title: "1. Réservation"
+            title: "Réservation"
             description: "Indiquez vos coordonnées et choisissez la date qui vous convient pour venir en boutique."
           confirmation:
-            title: "2. Confirmation"
+            title: "Confirmation"
             description: "Recevez un email de confirmation pour votre rendez-vous ou un appel de notre équipe."
-          fitting:
-            title: "3. Essayage"
-            description: "Profitez d'un moment personnalisé avec nos conseillères en image."
+          visit:
+            title: "En boutique"
+            description: "Conseil personnalisé, découverte des collections et essayage."
+        cabine_callout:
+          empty_title: "Préparer des tenues à essayer ?"
+          empty_body: "Ajoutez des pièces à votre cabine d’essayage : nous les préparons pour votre venue."
+          empty_cta: "Composer ma cabine"
+          filled_title:
+            one: "1 pièce dans votre cabine"
+            other: "%{count} pièces dans votre cabine"
+          filled_body: "Elles pourront être préparées pour votre rendez-vous."
+          filled_cta: "Voir ma cabine"
       contact:
         header_title: "Contact"
         header_subtitle: "Nous sommes à votre écoute"
@@ -949,6 +972,7 @@ fr:
         back: "Retour"
         view_more_products: "Voir plus de produits"
         rental_info: "La location se fait uniquement au magasin."
+        cabine_hint: "Ajoutez jusqu’à 10 tenues : la boutique les prépare pour votre essayage en magasin."
         other_sizes_title: "Autres tailles disponibles"
         other_colors_title: "Autres couleurs disponibles"
         add_other_products: "Ajouter d'autres produits"
@@ -1426,8 +1450,8 @@ fr:
         share_native: "Partager"
         share_title: "Ma sélection Autour D'Un Soir"
         instore_callout_title: "Voir ces tenues en boutique ?"
-        instore_callout_lead: "Vous souhaitez les découvrir en magasin et les essayer tranquillement ?"
-        instore_callout_body: "Transférez votre sélection vers notre cabine d’essayage, choisissez la date et l’horaire qui vous conviennent, et notre équipe préparera les articles avant votre venue. Vous pouvez aussi imprimer une liste à apporter en boutique."
+        instore_callout_lead: "Vous préférez les voir et les essayer en boutique ?"
+        instore_callout_body: "Ajoutez-les à votre cabine d’essayage, choisissez un créneau : on prépare vos articles avant votre venue."
         transfer_to_cabine_success:
           one: "1 article transféré dans votre cabine d'essayage"
           other: "%{count} articles transférés dans votre cabine d'essayage"

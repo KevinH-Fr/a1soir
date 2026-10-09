@@ -21,7 +21,7 @@
               <% sous_total_cents = stripe_payment.amount.to_i - stripe_payment.frais_livraison_centimes.to_i %>
               <span class="fw-bold"><%= custom_currency_format(stripe_payment.amount.to_f / 100) %> </span>
               <span class="small text-muted">
-                (<%= custom_currency_format(sous_total_cents.to_f / 100) %> + <%= custom_currency_format(stripe_payment.frais_livraison_centimes.to_f / 100) %> livr.)
+                (<%= custom_currency_format(sous_total_cents.to_f / 100) %> + <%= custom_currency_format(stripe_payment.frais_livraison_centimes.to_f / 100) %> livr.<% if stripe_payment.frais_livraison_remboursee? %> <%= t("commandes.eshop_remboursement.shipping_refunded") %><% end %>)
               </span>
             <% else %>
               <span class="fw-bold"><%= custom_currency_format(stripe_payment.amount.to_f / 100) %> <%= stripe_payment.currency&.upcase %></span>

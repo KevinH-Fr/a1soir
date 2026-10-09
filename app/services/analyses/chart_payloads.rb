@@ -195,7 +195,7 @@ module Analyses
         h.instance_variable_get(:@totalPrixCaCheque),
         h.instance_variable_get(:@totalPrixCaVirement),
         h.instance_variable_get(:@totalPrixCaStripe)
-      ].map { |v| v.to_d.round.to_i }
+      ].map { |v| [v.to_d.round.to_i, 0].max }
 
       {
         type: "doughnut",

@@ -35,12 +35,14 @@ class Admin::AnalysesController < Admin::ApplicationController
         stripe_items_scope: @stripePaymentItemsFiltres
       )
 
+      @commandesEncaissement = scopes[:commandes_encaissement]
       stripe_totals = Analyses::StripeTotals.new(
         datedebut: @datedebut,
         datefin: @datefin,
         stripe_payments_scope: @stripePaymentsPaidFiltres,
         filtered_produits: scopes[:filtered_produits],
-        product_dimension_filtered: @product_dimension_filtered
+        product_dimension_filtered: @product_dimension_filtered,
+        encaissement_commandes: @commandesEncaissement
       )
       @total_stripe_eur = stripe_totals.total_eur
       @totalRemboursementsEshop = stripe_totals.remboursements_total_eur

@@ -43,6 +43,7 @@ module Analyses
         remboursements_boutique_filtres: remboursements_boutique,
         stripe_payments_paid_filtres: stripe_payments,
         stripe_payment_items_filtres: stripe_items,
+        commandes_encaissement: commandes_encaissement,
         product_dimension_filtered: product_dimension_filtered?(@filter_params),
         filtered_produits: produits
       }

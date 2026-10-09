@@ -10,14 +10,19 @@
         </div>
 
         <div class="col-sm-9 ps-2">
-          <h5 class="fw-bold m-1 mb-2"><%= article.produit.nom %></h5>
+          <h5 class="fw-bold m-1 mb-2">
+            <span class="<%= "text-decoration-line-through" if article.annule? %>"><%= article.produit.nom %></span>
+            <% if article.annule? %>
+              <span class="badge bg-secondary ms-1"><%= t("commandes.eshop_remboursement.article_annule") %></span>
+            <% end %>
+          </h5>
           <div class="d-flex flex-wrap gap-2">
             <%= field_with_label("", article.locvente) %>
             <%= field_with_label("couleur", article.produit&.couleur&.nom) %>
             <%= field_with_label("taille", article.produit&.taille&.nom) %>
             <%= field_with_label("qté", article.quantite) %>
-            <%= field_with_label("prix", custom_currency_format(article.prix)) %>
-            <%= field_with_label("total", custom_currency_format(article.total)) %>
+            <%= field_with_label("prix", custom_currency_format(article.prix), extra_class: ("text-decoration-line-through" if article.annule?)) %>
+            <%= field_with_label("total", custom_currency_format(article.total), extra_class: ("text-decoration-line-through" if article.annule?)) %>
 
             <% if article.caution %>
               <%= field_with_label("caution", custom_currency_no_decimals_format(article.caution)) %>
@@ -41,19 +46,21 @@
           <%= admin_collapse_details_button_content %>
         </button>
         <div class="ms-auto">
-          <% if eshop_article_actions_locked?(article) %>
-            <div class="d-flex justify-content-end gap-1 flex-nowrap" title="<%= t("commandes.eshop_remboursement.article_actions_locked") %>">
-              <button type="button" class="btn btn-sm btn-secondary" disabled>
-                <i class="bi bi-pencil-square"></i>
-                <span class="d-none d-lg-inline ms-1">Modifier</span>
-              </button>
-              <button type="button" class="btn btn-sm btn-danger" disabled>
-                <i class="bi bi-trash"></i>
-                <span class="d-none d-lg-inline ms-1">Supprimer</span>
-              </button>
-            </div>
-          <% else %>
-            <%= links_record(article, show: false) %>
+          <% unless article.annule? %>
+            <% if eshop_article_actions_locked?(article) %>
+              <div class="d-flex justify-content-end gap-1 flex-nowrap" title="<%= t("commandes.eshop_remboursement.article_actions_locked") %>">
+                <button type="button" class="btn btn-sm btn-secondary" disabled>
+                  <i class="bi bi-pencil-square"></i>
+                  <span class="d-none d-lg-inline ms-1">Modifier</span>
+                </button>
+                <button type="button" class="btn btn-sm btn-danger" disabled>
+                  <i class="bi bi-trash"></i>
+                  <span class="d-none d-lg-inline ms-1">Supprimer</span>
+                </button>
+              </div>
+            <% else %>
+              <%= links_record(article, show: false) %>
+            <% end %>
           <% end %>
         </div>
       </div>
@@ -73,6 +80,7 @@
 
       <% commande_ref = @commande || article.commande %>
       <% retouche_produit = retouche_service_produit %>
+      <% unless article.annule? %>
       <div class="mt-2 d-flex flex-wrap gap-2">
         <%= link_to admin_selection_produit_path(commande: commande_ref, article: article),
                     class: "btn btn-sm btn-warning fw-bold" do %>
@@ -92,6 +100,7 @@
           <% end %>
         <% end %>
       </div>
+      <% end %>
 
       <% if article.sousarticles.present? %>
         <div class="container-fluid card my-2 p-3">

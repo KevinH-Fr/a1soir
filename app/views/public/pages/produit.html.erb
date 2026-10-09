@@ -99,22 +99,32 @@
             </div>
           <% end %>
 
-          <!-- Cart button -->
+          <!-- Cart / cabine buttons -->
+          <% shop_available = OnlineSales.available? && @produit.eshop? && @produit.stripe_price_id.present? %>
           <div class="py-4">
             <% if session[:from_cabine] %>
-              <%= cart_button_for(@produit, type: :cabine, button_class: "py-2 fs-5 bg-black text-white border-0") %>
-            <% elsif OnlineSales.available? && @produit.eshop? && @produit.stripe_price_id.present? %>
-              <%= cart_button_for(@produit, type: :shop, button_class: "py-2 fs-5 bg-black text-white border-0") %>
+              <%= cart_button_for(@produit, type: :cabine, button_class: "py-2 fs-5 bg-black text-white border-0 rounded-0") %>
+            <% elsif shop_available %>
+              <%= cart_button_for(@produit, type: :shop, button_class: "py-2 fs-5 bg-black text-white border-0 rounded-0") %>
+              <div class="mt-2">
+                <%= cart_button_for(@produit, type: :cabine, button_class: "py-2 fs-5 btn-outline-dark rounded-0") %>
+              </div>
+            <% else %>
+              <%= cart_button_for(@produit, type: :cabine, button_class: "py-2 fs-5 bg-black text-white border-0 rounded-0") %>
             <% end %>
+            <p class="small text-secondary mt-3 mb-0">
+              <%= t("public.pages.produit.cabine_hint") %>
+            </p>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
-  
-  <% if session[:from_cabine] %> <%# && @cabine_cart.any? %>
+
+  <% if @cabine_cart.any? %>
     <%= render partial: "public/pages/floating_reservation_button" %>
+  <% else %>
+    <div id="floating_reservation_btn"></div>
   <% end %>
 
 </div>

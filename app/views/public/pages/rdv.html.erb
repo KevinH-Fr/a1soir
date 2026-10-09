@@ -22,45 +22,81 @@
   <%= render "public/shared/ticker_periode_speciale" %>
 
   <div class="container-fluid">
-    <div class="row g-4 my-5 bg-white">
+    <div class="row g-4 g-lg-5 my-4 my-lg-5 bg-white align-items-start">
       <!-- Process à gauche -->
-      <div class="col-12 col-lg-6 d-flex align-items-center p-4" data-scroll-reveal>
-        <div class="w-100">
-          <div class="d-flex flex-column gap-4">
+      <div class="col-12 col-lg-5 col-xl-4 p-3 p-lg-4 mt-3 mt-lg-4" data-scroll-reveal>
+        <div class="rdv-sidebar sticky-lg-top" style="top: 1.5rem;">
+          <div class="d-flex flex-column gap-3 gap-lg-4">
             <div class="d-flex align-items-start gap-3">
-              <div class="concept-card-icon text-dark flex-shrink-0 bg-light">
-                <i class="bi bi-calendar-check fs-2"></i>
+              <div class="rdv-sidebar__icon flex-shrink-0">
+                <i class="bi bi-calendar-check" aria-hidden="true"></i>
               </div>
               <div>
-                <h5 class="fw-bold mb-2 text-dark"><%= t("public.pages.rdv.steps.reservation.title") %></h5>
+                <h2 class="h6 fw-bold mb-1 text-dark"><%= t("public.pages.rdv.steps.reservation.title") %></h2>
                 <p class="text-dark opacity-75 small mb-0">
                   <%= t("public.pages.rdv.steps.reservation.description") %>
                 </p>
               </div>
             </div>
             <div class="d-flex align-items-start gap-3">
-              <div class="concept-card-icon text-dark flex-shrink-0 bg-light">
-                <i class="bi bi-bell fs-2"></i>
+              <div class="rdv-sidebar__icon flex-shrink-0">
+                <i class="bi bi-bell" aria-hidden="true"></i>
               </div>
               <div>
-                <h5 class="fw-bold mb-2 text-dark"><%= t("public.pages.rdv.steps.confirmation.title") %></h5>
+                <h2 class="h6 fw-bold mb-1 text-dark"><%= t("public.pages.rdv.steps.confirmation.title") %></h2>
                 <p class="text-dark opacity-75 small mb-0">
                   <%= t("public.pages.rdv.steps.confirmation.description") %>
                 </p>
               </div>
             </div>
             <div class="d-flex align-items-start gap-3">
-              <div class="concept-card-icon text-dark flex-shrink-0 bg-light">
-                <i class="bi bi-star-fill fs-2"></i>
+              <div class="rdv-sidebar__icon flex-shrink-0">
+                <i class="bi bi-shop" aria-hidden="true"></i>
               </div>
               <div>
-                <h5 class="fw-bold mb-2 text-dark"><%= t("public.pages.rdv.steps.fitting.title") %></h5>
+                <h2 class="h6 fw-bold mb-1 text-dark"><%= t("public.pages.rdv.steps.visit.title") %></h2>
                 <p class="text-dark opacity-75 small mb-0">
-                  <%= t("public.pages.rdv.steps.fitting.description") %>
+                  <%= t("public.pages.rdv.steps.visit.description") %>
                 </p>
               </div>
             </div>
           </div>
+
+          <% cabine_count = @cabine_cart&.size.to_i %>
+          <div class="rdv-cabine-callout mt-4 p-3 border border-dark-subtle">
+            <% if cabine_count.positive? %>
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-door-open mt-1" aria-hidden="true"></i>
+                <div>
+                  <p class="fw-semibold small mb-1 text-dark">
+                    <%= t("public.pages.rdv.cabine_callout.filled_title", count: cabine_count) %>
+                  </p>
+                  <p class="small text-dark opacity-75 mb-2">
+                    <%= t("public.pages.rdv.cabine_callout.filled_body") %>
+                  </p>
+                  <%= link_to t("public.pages.rdv.cabine_callout.filled_cta"),
+                              cabine_essayage_path,
+                              class: "small fw-semibold text-dark" %>
+                </div>
+              </div>
+            <% else %>
+              <div class="d-flex align-items-start gap-2">
+                <i class="bi bi-door-open mt-1" aria-hidden="true"></i>
+                <div>
+                  <p class="fw-semibold small mb-1 text-dark">
+                    <%= t("public.pages.rdv.cabine_callout.empty_title") %>
+                  </p>
+                  <p class="small text-dark opacity-75 mb-2">
+                    <%= t("public.pages.rdv.cabine_callout.empty_body") %>
+                  </p>
+                  <%= link_to t("public.pages.rdv.cabine_callout.empty_cta"),
+                              cabine_essayage_path,
+                              class: "btn btn-sm btn-dark rounded-0" %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+
           <div class="mt-4">
             <%= render "public/shared/ticker_periode_speciale", variant: :light %>
           </div>
@@ -68,8 +104,8 @@
       </div>
 
       <!-- Formulaire à droite -->
-      <div class="col-12 col-lg-6">
-        <div id="rdv-form" class="p-2 bg-white d-flex flex-column" style="min-height: 500px;">
+      <div class="col-12 col-lg-7 col-xl-8">
+        <div id="rdv-form" class="p-2 p-lg-3 bg-white d-flex flex-column">
           <div style="position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column;">
             <%= render "public/demande_rdv/form", demande_rdv: @demande_rdv || DemandeRdv.new, from_cabine: false %>
           </div>

@@ -132,10 +132,11 @@ module ApplicationHelper
       ])
     end
 
-    def field_with_label(text, value, icon_class: nil)
+    def field_with_label(text, value, icon_class: nil, extra_class: nil)
       if value.present?
         classes = %w[badge lighter-beige-colored text-dark fw-normal fs-6 mb-1]
         classes += %w[d-inline-flex align-items-center] if icon_class.present?
+        classes << extra_class if extra_class.present?
 
         content_tag(:div, class: classes.join(" ")) do
           if icon_class.present?

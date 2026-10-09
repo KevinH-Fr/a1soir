@@ -50,13 +50,15 @@ class Commande < ApplicationRecord
   end
 
   def remboursee_eshop?
-    return false unless eshop? && devis?
+    return false unless eshop?
 
-    if association(:avoir_rembs).loaded?
-      avoir_rembs.any? { |a| a.type_avoir_remb == "remboursement" }
-    else
-      avoir_rembs.remb_only.exists?
-    end
+    payment = stripe_payment
+    return false unless payment&.status == "paid"
+
+    items = payment.stripe_payment_items
+    return false unless items.exists?
+
+    items.not_refunded.none?
   end
 
   # Bouton remboursement : il reste au moins une ligne Stripe non remboursée.
