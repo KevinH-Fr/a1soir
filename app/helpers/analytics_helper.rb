@@ -3,11 +3,11 @@
 module AnalyticsHelper
   GA4_BRAND = "Autour D'Un Soir"
   GA4_CURRENCY = "EUR"
+  GA4_FORM_EVENTS = %w[request_appointment message_send].freeze
 
   def analytics_consent?
     cookies[:analytics_consent] == "yes"
   end
-
   def ga4_item_from_produit(produit, quantity: 1, price: nil)
     return nil if produit.blank?
 
@@ -38,6 +38,19 @@ module AnalyticsHelper
 
   def ga4_add_to_cart_payload(produit)
     ga4_rescue("add_to_cart") do
+      item = ga4_item_from_produit(produit)
+      next nil if item.blank?
+
+      {
+        currency: GA4_CURRENCY,
+        value: item[:price],
+        items: [item]
+      }
+    end
+  end
+
+  def ga4_add_to_wishlist_payload(produit)
+    ga4_rescue("add_to_wishlist") do
       item = ga4_item_from_produit(produit)
       next nil if item.blank?
 
@@ -98,6 +111,27 @@ module AnalyticsHelper
 
     session[:ga4_purchase_tracked_ids] = tracked_ids | [payment.id]
     payload
+  end
+
+  # Formulaires du site : l'événement est mémorisé au succès, puis rendu
+  # une seule fois sur la page de retour (pas de renvoi au rechargement).
+  def ga4_remember_form_event(event_name, session)
+    return unless GA4_FORM_EVENTS.include?(event_name)
+
+    session[:ga4_pending_form_events] = Array(session[:ga4_pending_form_events]) | [event_name]
+  end
+
+  def ga4_consume_form_event(event_name, session)
+    pending = Array(session[:ga4_pending_form_events])
+    return nil unless pending.include?(event_name)
+
+    remaining = pending - [event_name]
+    if remaining.empty?
+      session.delete(:ga4_pending_form_events)
+    else
+      session[:ga4_pending_form_events] = remaining
+    end
+    event_name
   end
 
   def ga4_event_turbo_stream(event_name, payload)

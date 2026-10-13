@@ -56,9 +56,6 @@ module Public
       
       if @demande_rdv.save
         
-        # Notification admin pour toutes les demandes
-        DemandeRdvMailer.notification_admin(@demande_rdv).deliver_later
-        
         # Si le formulaire vient de la cabine d'essayage, créer et associer la demande cabine
         if params[:from_cabine] == "1" && session[:cabine_cart].present?
           
@@ -71,14 +68,16 @@ module Public
           
           
           if @demande_cabine_essayage.save
-            # Recharger la relation pour s'assurer qu'elle est disponible
-            
+            # Notification admin après la cabine : le sujet et la liste des produits en dépendent
+            DemandeRdvMailer.notification_admin(@demande_rdv).deliver_later
+
             # Email de confirmation client uniquement pour les demandes de cabine d'essayage
             # Envoyé APRÈS la création de demande_cabine_essayage pour que la relation soit disponible
             DemandeRdvMailer.confirmation_client(@demande_rdv).deliver_later
             
             # Vider le panier cabine après création réussie
             session[:cabine_cart] = []
+            helpers.ga4_remember_form_event("request_appointment", session)
             redirect_to cabine_essayage_path, notice: t("public.demande_rdv.notice.cabine_sent")
           else
             # Si l'association échoue, supprimer la demande RDV créée
@@ -102,6 +101,8 @@ module Public
             return
           end
         else
+          DemandeRdvMailer.notification_admin(@demande_rdv).deliver_later
+          helpers.ga4_remember_form_event("request_appointment", session)
           redirect_to rdv_path, notice: t("public.demande_rdv.notice.rdv_sent")
         end
       else

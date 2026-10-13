@@ -89,6 +89,7 @@ module Public
       @demande_rdv = DemandeRdv.new
       @demande_rdv.set_type_essayage
       load_periode_speciale_vars
+      @ga4_form_event = helpers.ga4_consume_form_event("request_appointment", session)
     end
 
     def produits
@@ -188,6 +189,7 @@ module Public
       @produit = Produit.find(id)
 
       ensure_cabine_cart_session
+      added_to_cabine = false
 
       if session[:cabine_cart].include?(id)
         flash.now[:notice] = t("public.pages.cabine_essayage.flash.already_in_cart")
@@ -197,11 +199,20 @@ module Public
         flash.now[:alert] = t("public.pages.cabine_essayage.flash.limit_reached")
       else
         session[:cabine_cart] = (session[:cabine_cart] + [id]).uniq
+        added_to_cabine = true
         flash.now[:success] = t("public.pages.cabine_essayage.flash.added", product_name: @produit.nom)
       end
 
       refresh_cabine_cart
-      render_cabine_cart_turbo_stream_for(@produit)
+      streams = []
+      if added_to_cabine && helpers.analytics_consent?
+        stream = helpers.ga4_event_turbo_stream(
+          "add_to_wishlist",
+          helpers.ga4_add_to_wishlist_payload(@produit)
+        )
+        streams << stream if stream
+      end
+      render_cabine_cart_turbo_stream_for(@produit, extra_streams: streams)
     end
 
     def cabine_remove_product
@@ -230,6 +241,7 @@ module Public
     def rdv
       @demande_rdv = DemandeRdv.new
       load_periode_speciale_vars
+      @ga4_form_event = helpers.ga4_consume_form_event("request_appointment", session)
     end
 
     def contact
@@ -240,6 +252,7 @@ module Public
         @texteHoraire = texte.horaire
       end
       @contact_message = ContactMessage.new
+      @ga4_form_event = helpers.ga4_consume_form_event("message_send", session)
     end
 
     private

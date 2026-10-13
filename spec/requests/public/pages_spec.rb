@@ -238,6 +238,35 @@ RSpec.describe "Public::Pages", type: :request do
         expect(flash[:alert].presence || flash.now[:alert].presence).to be_present
       end
     end
+
+    describe "GA4 add_to_wishlist" do
+      let(:turbo_headers) { { "Accept" => "text/vnd.turbo-stream.html, text/html" } }
+      let(:event_attr) { 'data-ga4-event-event-name-value="add_to_wishlist"' }
+
+      before { cookies[:analytics_consent] = "yes" }
+
+      it "is streamed when the product is added" do
+        post "/fr/cabine/add_product/#{produit_a.id}", headers: turbo_headers
+
+        expect(response.body).to include(event_attr)
+        expect(response.body).to include("produit-#{produit_a.id}")
+      end
+
+      it "is not streamed when the product is already in the cabine" do
+        post "/fr/cabine/add_product/#{produit_a.id}", headers: turbo_headers
+        post "/fr/cabine/add_product/#{produit_a.id}", headers: turbo_headers
+
+        expect(response.body).not_to include(event_attr)
+      end
+
+      it "is not streamed without analytics consent" do
+        cookies[:analytics_consent] = "no"
+
+        post "/fr/cabine/add_product/#{produit_a.id}", headers: turbo_headers
+
+        expect(response.body).not_to include(event_attr)
+      end
+    end
   end
 
   # -------------------------------------------------------------------------
@@ -416,6 +445,38 @@ RSpec.describe "Public::Pages", type: :request do
       expect(response.body).to include("Robe 404 variantes")
       expect(response.body).to include("Robe A")
       expect(response.body).to include("Jupe B")
+    end
+
+    describe "GA4 view_item" do
+      let(:event_attr) { 'data-ga4-event-event-name-value="view_item"' }
+      let(:ga4_div) { response.body[/<div[^>]*#{Regexp.escape(event_attr)}[^>]*>/] }
+
+      before { cookies[:analytics_consent] = "yes" }
+
+      it "is sent for a product sold online" do
+        allow(OnlineSales).to receive(:available?).and_return(true)
+
+        get "/fr/produit/robe-seo-#{produit_seo.id}"
+
+        expect(ga4_div).to include("produit-#{produit_seo.id}")
+        expect(ga4_div).to include("&quot;value&quot;:50.0")
+      end
+
+      it "is also sent for a product not sold online" do
+        produit_seo.update!(stripe_price_id: nil)
+
+        get "/fr/produit/robe-seo-#{produit_seo.id}"
+
+        expect(ga4_div).to include("produit-#{produit_seo.id}")
+      end
+
+      it "is not sent without analytics consent" do
+        cookies[:analytics_consent] = "no"
+
+        get "/fr/produit/robe-seo-#{produit_seo.id}"
+
+        expect(response.body).not_to include(event_attr)
+      end
     end
   end
 

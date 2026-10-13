@@ -24,6 +24,7 @@ module Public
 
       if @contact_message.save
         ContactMailer.contact_form(@contact_message).deliver_later
+        helpers.ga4_remember_form_event("message_send", session)
         redirect_to contact_path, notice: "Votre message a bien été envoyé. Nous vous répondrons dans les plus brefs délais."
       else
         respond_to do |format|

@@ -132,7 +132,7 @@
 <%= render partial: "product_gallery_modal", locals: { produit: @produit } %>
 <%= render partial: "public/pages/vous_aimerez_aussi", locals: { produits_similaires: @produits_similaires } %>
 
-<% if analytics_consent? && OnlineSales.available? && @produit.eshop? && @produit.stripe_price_id.present? %>
+<% if analytics_consent? %>
   <% ga4_view_item = ga4_view_item_payload(@produit) %>
   <% if ga4_view_item.present? %>
     <%= render "public/shared/ga4_event",

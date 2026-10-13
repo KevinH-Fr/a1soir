@@ -11,10 +11,10 @@ module CabineCartResponder
     @cabine_cart = Produit.where(id: session[:cabine_cart])
   end
 
-  def render_cabine_cart_turbo_stream_for(produit)
+  def render_cabine_cart_turbo_stream_for(produit, extra_streams: [])
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: cabine_cart_turbo_stream_payload(produit)
+        render turbo_stream: cabine_cart_turbo_stream_payload(produit) + extra_streams
       end
     end
   end

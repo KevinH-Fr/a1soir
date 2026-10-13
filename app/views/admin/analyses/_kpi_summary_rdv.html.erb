@@ -2,13 +2,14 @@
 <% taux_label = taux.nil? ? "—" : "#{number_with_precision(taux, precision: 1, strip_insignificant_zeros: true)} %" %>
 <% part = @partCabineRdv %>
 <% part_label = part.nil? ? "—" : "#{number_with_precision(part, precision: 1, strip_insignificant_zeros: true)} %" %>
+<% messages = @nbMessagesSite.to_i %>
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-2 g-sm-3">
   <%= render "kpi_card",
         title: "Demandes du site",
         value: @nbDemandesRdv,
         trend_metric: :rdv_demandes_recues,
-        hint: "Date de la demande",
+        hint: "Date de la demande · #{messages} #{messages > 1 ? "messages" : "message"} contact",
         hint2: "#{@nbDemandesRdvAvecCabine} cabine · #{@nbDemandesRdvSansCabine} sans" %>
 
   <%= render "kpi_card",

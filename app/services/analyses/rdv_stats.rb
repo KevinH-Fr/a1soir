@@ -3,6 +3,7 @@
 module Analyses
   # Onglet Analyses « Rendez-vous » :
   # - Demandes site (DemandeRdv) : reçues, cabine, statut, type, événement
+  # - Messages site (ContactMessage) : formulaire de contact, date d'envoi
   # - Agenda (Meeting) : RDV prévus sur la période, origine site vs interne
   # - Transformation : RDV site de la période → commande / en cours / sans commande
   # - CA transformé : encaissé TTC des commandes hors devis liées, une fois par commande
@@ -61,6 +62,7 @@ module Analyses
         timeline_recues_avec: timeline_counts(recues_avec, "demande_rdvs.created_at"),
         timeline_recues_sans: timeline_counts(recues_sans, "demande_rdvs.created_at"),
         demande_heatmap: demande_heatmap(recues),
+        messages_site: ContactMessage.where(created_at: @range).count,
         agenda_total: meetings.count,
         agenda_site: from_site.count,
         agenda_interne: interne.count,
@@ -96,6 +98,7 @@ module Analyses
         timeline_recues_avec: {},
         timeline_recues_sans: {},
         demande_heatmap: empty_heatmap,
+        messages_site: 0,
         agenda_total: 0,
         agenda_site: 0,
         agenda_interne: 0,

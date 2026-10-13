@@ -325,6 +325,7 @@ en:
         voir_produit: "View product →"
     notification_admin:
       subject: "📅 New appointment request"
+      subject_cabine: "👗 New fitting room request"
       body:
         title: "New appointment request received."
         demandeur: "Requester"

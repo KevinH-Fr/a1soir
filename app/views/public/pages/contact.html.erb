@@ -17,6 +17,9 @@
 
 <div class="public-main-content">
     <%= render "public/shared/recaptcha_script" %>
+    <% if @ga4_form_event.present? %>
+      <%= render "public/shared/ga4_event", event_name: @ga4_form_event, payload: {} %>
+    <% end %>
     <div class="container-fluid">
     <!-- Introduction -->
     <div class="text-center my-5 px-3" data-scroll-reveal>
@@ -120,7 +123,7 @@
       </div>
     </div>
 
-    <%= render "map" %>
+    <%= render "public/pages/map" %>
 
     <!-- Call to action final -->
     <div class="text-center my-5 py-4" data-scroll-reveal>

@@ -52,6 +52,34 @@ RSpec.describe AnalyticsHelper, type: :helper do
     end
   end
 
+  describe "rendering _gtag partial" do
+    it "declares Consent Mode before configuring the tags" do
+      allow(helper).to receive(:analytics_consent?).and_return(true)
+
+      html = helper.render(partial: "public/shared/gtag")
+
+      expect(html).to include("gtag('consent', 'default'")
+      expect(html).to include("ad_user_data: 'granted'")
+      expect(html.index("gtag('consent'")).to be < html.index("gtag('config'")
+    end
+
+    it "renders nothing without analytics consent" do
+      allow(helper).to receive(:analytics_consent?).and_return(false)
+
+      expect(helper.render(partial: "public/shared/gtag").strip).to be_empty
+    end
+  end
+
+  describe "#ga4_add_to_wishlist_payload" do
+    it "builds the cabine payload like add_to_cart" do
+      payload = helper.ga4_add_to_wishlist_payload(produit)
+
+      expect(payload[:currency]).to eq("EUR")
+      expect(payload[:value]).to eq(695.0)
+      expect(payload[:items].first[:item_id]).to eq("produit-#{produit.id}")
+    end
+  end
+
   describe "#ga4_begin_checkout_payload" do
     it "sums cart value and lists items" do
       produit_b = Produit.create!(
@@ -151,6 +179,34 @@ RSpec.describe AnalyticsHelper, type: :helper do
 
       expect(helper.ga4_track_purchase_event(payment, session)).to be_nil
       expect(session[:ga4_purchase_tracked_ids]).to be_nil
+    end
+  end
+
+  describe "#ga4_consume_form_event" do
+    it "returns the remembered event once" do
+      session = {}
+      helper.ga4_remember_form_event("message_send", session)
+
+      expect(helper.ga4_consume_form_event("message_send", session)).to eq("message_send")
+      expect(helper.ga4_consume_form_event("message_send", session)).to be_nil
+      expect(session).not_to have_key(:ga4_pending_form_events)
+    end
+
+    it "keeps other pending events" do
+      session = {}
+      helper.ga4_remember_form_event("message_send", session)
+      helper.ga4_remember_form_event("request_appointment", session)
+
+      helper.ga4_consume_form_event("message_send", session)
+
+      expect(session[:ga4_pending_form_events]).to eq(["request_appointment"])
+    end
+
+    it "ignores unknown events" do
+      session = {}
+      helper.ga4_remember_form_event("generate_lead", session)
+
+      expect(session).not_to have_key(:ga4_pending_form_events)
     end
   end
 

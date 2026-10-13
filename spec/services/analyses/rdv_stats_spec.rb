@@ -146,6 +146,19 @@ RSpec.describe Analyses::RdvStats do
     expect(heatmap[:hours]).to eq((0..23).to_a)
   end
 
+  it "counts site contact messages by created_at" do
+    ContactMessage.create!(nom: "Doe", email: "in@test.com", message: "Bonjour",
+                           created_at: Time.zone.local(2026, 9, 3, 9, 0, 0))
+    ContactMessage.create!(nom: "Doe", email: "in2@test.com", message: "Bonjour",
+                           created_at: Time.zone.local(2026, 9, 30, 22, 0, 0))
+    ContactMessage.create!(nom: "Doe", email: "out@test.com", message: "Bonjour",
+                           created_at: Time.zone.local(2026, 10, 1, 9, 0, 0))
+
+    stats = described_class.call(debut: debut, fin: fin)
+
+    expect(stats[:messages_site]).to eq(2)
+  end
+
   it "splits agenda meetings between site and interne" do
     demande = create_demande(statut: "soumis")
     confirm!(demande)

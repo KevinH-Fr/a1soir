@@ -27,7 +27,8 @@ class DemandeRdvMailer < ApplicationMailer
     I18n.with_locale(:fr) do
       attach_inline_logo
 
-      subject = I18n.t('demande_rdv.notification_admin.subject')
+      subject_key = @demande_cabine_essayage.present? ? "subject_cabine" : "subject"
+      subject = I18n.t("demande_rdv.notification_admin.#{subject_key}")
 
       mail(to: admin_email, bcc: ENV["KH_MAIL"].presence, subject: subject) do |format|
         format.html { render template: "admin/demande_rdv_mailer/notification_admin", layout: "mailer" }

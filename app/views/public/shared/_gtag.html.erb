@@ -4,6 +4,22 @@
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
+    <% if Rails.env.development? %>
+    var gtagSend = gtag;
+    window.gtag = function() {
+      console.info("[gtag]", ...arguments);
+      gtagSend.apply(this, arguments);
+    };
+    <% end %>
+
+    // Balise chargée uniquement après « Accepter » : Google Ads exige
+    // l'état explicite du consentement (Consent Mode v2) pour l'EEE.
+    gtag('consent', 'default', {
+      ad_storage: 'granted',
+      analytics_storage: 'granted',
+      ad_user_data: 'granted',
+      ad_personalization: 'granted'
+    });
 
     gtag('js', new Date());
 

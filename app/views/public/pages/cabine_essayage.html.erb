@@ -14,6 +14,9 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/
 
 <div class="public-main-content">
   <%= render "public/shared/recaptcha_script" %>
+  <% if @ga4_form_event.present? %>
+    <%= render "public/shared/ga4_event", event_name: @ga4_form_event, payload: {} %>
+  <% end %>
   <div class="container-fluid p-0">
 
     <!-- Process -->

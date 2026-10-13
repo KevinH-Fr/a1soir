@@ -1,4 +1,5 @@
 <% if analytics_consent? %>
+<% Rails.logger.info("[GA4] #{event_name} envoyé au navigateur #{payload.to_json}") if Rails.env.development? %>
 <%= tag.div(
   data: {
     controller: "ga4-event",

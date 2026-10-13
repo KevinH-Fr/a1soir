@@ -431,6 +431,7 @@ RSpec.describe Admin::AnalysesController, type: :controller do
         expect(assigns(:nbAgendaRdv)).to eq(0)
         expect(response.body).to include("Demandes du site et agenda")
         expect(response.body).to include("Demandes du site")
+        expect(response.body).to include("0 message contact")
         expect(response.body).to include("Part cabine")
         expect(response.body).to include("€ encaissés")
         expect(response.body).not_to include("CA transformé")

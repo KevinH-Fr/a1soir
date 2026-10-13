@@ -48,6 +48,9 @@ application.register("produits-search", ProduitsSearchController)
 import Ga4EventController from "./ga4_event_controller"
 application.register("ga4-event", Ga4EventController)
 
+import Ga4OutboundLinksController from "./ga4_outbound_links_controller"
+application.register("ga4-outbound-links", Ga4OutboundLinksController)
+
 import LazyPaginationController from "./lazy_pagination_controller"
 application.register("lazy-pagination", LazyPaginationController)
 

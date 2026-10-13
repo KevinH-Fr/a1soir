@@ -536,6 +536,7 @@ fr:
         voir_produit: "Voir le produit →"
     notification_admin:
       subject: "📅 Nouvelle demande de rendez-vous"
+      subject_cabine: "👗 Nouvelle demande cabine d'essayage"
       body:
         title: "Nouvelle demande de rendez-vous reçue."
         demandeur: "Demandeur"

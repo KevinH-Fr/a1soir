@@ -597,6 +597,7 @@ module Analyses
       ivar_set(:groupedByDateRdvRecuesAvec, stats[:timeline_recues_avec])
       ivar_set(:groupedByDateRdvRecuesSans, stats[:timeline_recues_sans])
       ivar_set(:rdvDemandeHeatmap, stats[:demande_heatmap])
+      ivar_set(:nbMessagesSite, stats[:messages_site])
       ivar_set(:nbAgendaRdv, stats[:agenda_total])
       ivar_set(:nbAgendaRdvSite, stats[:agenda_site])
       ivar_set(:nbAgendaRdvInterne, stats[:agenda_interne])

@@ -18,6 +18,9 @@
 
 <div class="public-main-content">
   <%= render "public/shared/recaptcha_script" %>
+  <% if @ga4_form_event.present? %>
+    <%= render "public/shared/ga4_event", event_name: @ga4_form_event, payload: {} %>
+  <% end %>
 
   <%= render "public/shared/ticker_periode_speciale" %>
 

@@ -52,5 +52,18 @@ RSpec.describe DemandeRdvMailer, type: :mailer do
     ensure
       ENV["GMAIL_ACCOUNT"] = previous
     end
+
+    it "a un sujet cabine quand la demande vient de la cabine d'essayage" do
+      previous = ENV["GMAIL_ACCOUNT"]
+      ENV["GMAIL_ACCOUNT"] = "admin@example.com"
+      demande = build_demande
+      demande.build_demande_cabine_essayage
+
+      mail = described_class.notification_admin(demande)
+
+      expect(mail.subject).to eq("👗 Nouvelle demande cabine d'essayage")
+    ensure
+      ENV["GMAIL_ACCOUNT"] = previous
+    end
   end
 end
