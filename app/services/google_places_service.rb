@@ -1,6 +1,10 @@
 class GooglePlacesService
   CACHE_KEY = "google_places_data_v3"
+  STALE_KEY = "google_places_data_v3_stale"
+  FAILURE_KEY = "google_places_data_v3_failure"
   CACHE_TTL = 24.hours
+  STALE_TTL = 7.days
+  FAILURE_TTL = 30.minutes
   LEGACY_BASE = "https://maps.googleapis.com/maps/api/place/details/json"
   API_BASE    = "https://places.googleapis.com/v1/places"
   MAX_REVIEWS = 5
@@ -8,15 +12,31 @@ class GooglePlacesService
   def self.fetch(referer: nil)
     return nil unless credentials_present?
 
-    cached = Rails.cache.read(CACHE_KEY)
-    return cached if cached.present?
+    fresh = cache.read(CACHE_KEY)
+    return fresh if fresh.present?
+    return cache.read(STALE_KEY) if cache.read(FAILURE_KEY)
+
+    # Une seule requête à la fois : le layout public appelle ce service sur chaque page.
+    return cache.read(STALE_KEY) unless cache.write(FAILURE_KEY, "pending", expires_in: 30.seconds, unless_exist: true)
 
     result = new.call(referer: referer)
     if result.present?
-      Rails.cache.write(CACHE_KEY, result, expires_in: CACHE_TTL)
+      cache.write(CACHE_KEY, result, expires_in: CACHE_TTL)
+      cache.write(STALE_KEY, result, expires_in: STALE_TTL)
+      cache.delete(FAILURE_KEY)
+      result
+    else
+      cache.write(FAILURE_KEY, true, expires_in: FAILURE_TTL)
+      cache.read(STALE_KEY)
     end
+  end
 
-    result
+  # En développement le cache Rails est un NullStore : chaque page rappelait Google
+  # et épuisait le quota partagé avec la production.
+  def self.cache
+    return Rails.cache unless Rails.cache.is_a?(ActiveSupport::Cache::NullStore)
+
+    @file_cache ||= ActiveSupport::Cache::FileStore.new(Rails.root.join("tmp/cache/google_places"))
   end
 
   def call(referer: nil)
@@ -66,14 +86,26 @@ class GooglePlacesService
     request["Referer"] = referer.presence || ENV["GOOGLE_PLACES_REFERRER"].presence
 
     response = http_get(uri, request: request)
-    return nil unless response.is_a?(Net::HTTPSuccess)
+    unless response.is_a?(Net::HTTPSuccess)
+      Rails.logger.warn("[GooglePlacesService] Places API v1 failed (#{response.code}: #{v1_error_message(response)})")
+      return nil
+    end
 
     parse_v1(JSON.parse(response.body)).merge(reviews_sort: "most_relevant")
   end
 
+  def v1_error_message(response)
+    body = JSON.parse(response.body)
+    body.dig("error", "message").to_s.truncate(300)
+  rescue JSON::ParserError
+    response.body.to_s.truncate(300)
+  end
+
   def http_get(uri, request: nil)
     request ||= Net::HTTP::Get.new(uri)
-    Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) { |http| http.request(request) }
+    Net::HTTP.start(uri.hostname, uri.port, use_ssl: true, open_timeout: 5, read_timeout: 8) do |http|
+      http.request(request)
+    end
   end
 
   def parse_legacy(result)
