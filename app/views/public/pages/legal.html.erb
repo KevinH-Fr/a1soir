@@ -490,6 +490,19 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/
             <%= t("public.pages.legal.sections.privacy_policy.data_use_text_html", default: "Les données collectées sont utilisées pour :<br>• Traiter les commandes et réservations<br>• Gérer la relation client<br>• Envoyer des informations commerciales (avec consentement)<br>• Améliorer nos services<br>• Respecter nos obligations légales").html_safe %>
           </p>
 
+          <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.privacy_policy.audience") %></h3>
+          <p class="text-light opacity-75">
+            <%= t(
+              "public.pages.legal.sections.privacy_policy.audience_text_html",
+              google_activity_link: link_to(
+                t("public.pages.legal.sections.privacy_policy.google_activity"),
+                "https://myactivity.google.com/",
+                target: "_blank",
+                rel: "noopener"
+              )
+            ).html_safe %>
+          </p>
+
           <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.privacy_policy.data_protection") %></h3>
           <p class="text-light opacity-75">
             <%= t("public.pages.legal.sections.privacy_policy.data_protection_text", default: "Autour D'Un Soir met en œuvre toutes les mesures techniques et organisationnelles appropriées pour protéger vos données personnelles contre la destruction, la perte, l'altération, la divulgation non autorisée ou l'accès non autorisé.") %>
@@ -507,7 +520,7 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/
 
           <h3 class="h5 fw-bold mt-4 mb-3 text-light"><%= t("public.pages.legal.sections.privacy_policy.data_transfer") %></h3>
           <p class="text-light opacity-75">
-            <%= t("public.pages.legal.sections.privacy_policy.data_transfer_text", default: "Vos données personnelles ne sont pas transférées hors de l'Union Européenne. Elles peuvent être transmises à nos prestataires de services (paiement, livraison) uniquement dans le cadre de l'exécution de nos services.") %>
+            <%= t("public.pages.legal.sections.privacy_policy.data_transfer_text", default: "Vos données peuvent être transmises à nos prestataires (paiement, livraison, mesure d'audience) pour l'exécution de nos services. La mesure d'audience via Google peut impliquer un traitement aux États-Unis, encadré par les clauses contractuelles types et le cadre de protection des données UE–États-Unis.") %>
           </p>
         <% end %>
 
@@ -524,7 +537,7 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/
             <%= t("public.pages.legal.sections.cookies.essential_text", default: "Nécessaires au fonctionnement du site (panier, connexion, sécurité)") %></p>
             
             <p><strong><%= t("public.pages.legal.sections.cookies.performance_title", default: "Cookies de performance") %></strong><br>
-            <%= t("public.pages.legal.sections.cookies.performance_text", default: "Permettent d'analyser l'utilisation du site pour améliorer nos services") %></p>
+            <%= t("public.pages.legal.sections.cookies.performance_text", default: "Google Analytics, uniquement avec votre consentement, pour mesurer l'audience du site. L'association éventuelle à un compte Google est décrite dans la politique de confidentialité.") %></p>
             
             <p><strong><%= t("public.pages.legal.sections.cookies.functionality_title", default: "Cookies de fonctionnalité") %></strong><br>
             <%= t("public.pages.legal.sections.cookies.functionality_text", default: "Mémorisent vos préférences (langue, région, affichage)") %></p>
