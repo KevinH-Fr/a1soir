@@ -5,9 +5,14 @@
       <div class="card-title mb-1">
         <%# Ligne 1 : nom (lien fiche) %>
         <div class="d-flex align-items-center flex-wrap gap-1">
+          <% client = demande_rdv.client %>
           <div data-turbo="false">
-            <%= link_to admin_demande_rdv_path(demande_rdv), class: "text-decoration-none text-dark" do %>
-              <%= custom_badge("", "", "", "fw-bold", demande_rdv.full_name) if demande_rdv.nom.present? %>
+            <% if client && demande_rdv.nom.present? %>
+              <%= link_to admin_client_path(client), class: "text-decoration-none text-dark" do %>
+                <%= custom_badge("", "", "", "fw-bold", demande_rdv.full_name) %>
+              <% end %>
+            <% elsif demande_rdv.nom.present? %>
+              <%= custom_badge("", "", "", "fw-bold", demande_rdv.full_name) %>
             <% end %>
           </div>
         </div>

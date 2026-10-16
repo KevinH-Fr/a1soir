@@ -9,7 +9,7 @@ class Admin::DemandeRdvsController < Admin::ApplicationController
       q:[:nom_or_email_or_telephone_cont])
     @q = DemandeRdv.ransack(search_params[:q])
     demandes = @q.result(distinct: true)
-                 .includes(demande_cabine_essayage: { produits: Produit::CARD_INCLUDES })
+                 .includes(meeting: :client, demande_cabine_essayage: { produits: Produit::CARD_INCLUDES })
                  .order(created_at: :desc)
     @pagy, @demande_rdvs = pagy_countless(demandes, items: 2)
   end

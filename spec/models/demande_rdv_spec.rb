@@ -76,6 +76,32 @@ RSpec.describe DemandeRdv, type: :model do
 
       expect(existing.reload.language).to eq("fr")
       expect(demande.client_mail_locale).to eq(:fr)
+      expect(demande.client).to eq(existing)
+    end
+  end
+
+  describe "#client" do
+    it "retrouve une fiche déjà existante avant confirmation" do
+      existing = Client.create!(
+        prenom: "Jane",
+        nom: "Doe",
+        mail: "fiche-existante@example.com",
+        tel: "0600000000",
+        propart: "particulier",
+        intitule: Client::INTITULE_OPTIONS.first
+      )
+
+      demande = build_demande(email: "fiche-existante@example.com", nom: "Doe", prenom: "Jane")
+      demande.save!
+
+      expect(demande.client).to eq(existing)
+    end
+
+    it "ne renvoie rien tant qu'aucune fiche ne correspond" do
+      demande = build_demande(email: "inconnu@example.com")
+      demande.save!
+
+      expect(demande.client).to be_nil
     end
   end
 end

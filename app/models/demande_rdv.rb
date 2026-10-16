@@ -70,6 +70,12 @@ class DemandeRdv < ApplicationRecord
       .select { |_key, value| value.present? }
   end
 
+  # Fiche client à ouvrir depuis l'admin : celle du rendez-vous confirmé,
+  # sinon une fiche déjà existante (mail + nom, ou prénom + nom).
+  def client
+    meeting&.client || Client.find_existing_from_demande(self)
+  end
+
   # Langue des mails client liés à cette demande.
   # Une fiche existante garde sa langue. Sinon, c'est la locale du site
   # au moment de la demande — celle qui sera écrite sur la nouvelle fiche.
