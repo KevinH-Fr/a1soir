@@ -70,7 +70,16 @@ Rails.application.configure do
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
   # Use Redis cache store in production (recommended on Heroku).
-  config.cache_store = :redis_cache_store, { url: ENV["REDIS_URL"] }
+  # Heroku Redis (rediss://) utilise un certificat auto-signé : sans VERIFY_NONE, chaque accès
+  # au cache échoue et RedisCacheStore l'ignore silencieusement.
+  config.cache_store = :redis_cache_store, {
+    url: ENV["REDIS_URL"],
+    ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE },
+    error_handler: ->(method:, returning:, exception:) {
+      message = exception.message.to_s.gsub(%r{//[^/@\s]+@}, "//[FILTERED]@")
+      Rails.logger.error("[RedisCacheStore] #{method} failed: #{exception.class}: #{message}")
+    }
+  }
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter = :resque
