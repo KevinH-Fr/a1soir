@@ -1183,7 +1183,7 @@ fr:
             data_retention: "Conservation des données"
             data_retention_text: "Vos données sont conservées pendant la durée nécessaire aux finalités pour lesquelles elles sont traitées, et conformément aux obligations légales de conservation."
             data_transfer: "Transfert de données"
-            data_transfer_text: "Vos données peuvent être transmises à nos prestataires (paiement, livraison, mesure d'audience) pour l'exécution de nos services. La mesure d'audience via Google peut impliquer un traitement aux États-Unis, encadré par les clauses contractuelles types et le cadre de protection des données UE–États-Unis."
+            data_transfer_text: "Vos données peuvent être transmises à nos prestataires (paiement, livraison, mesure d'audience, publicité) pour l'exécution de nos services. La mesure d'audience via Google et la publicité via Meta peuvent impliquer un traitement aux États-Unis, encadré par les clauses contractuelles types et le cadre de protection des données UE–États-Unis."
           cookies:
             title: "Politique des Cookies"
             what_is_cookie: "Qu'est-ce qu'un cookie ?"
@@ -1196,7 +1196,7 @@ fr:
             functionality_title: "Cookies de fonctionnalité"
             functionality_text: "Mémorisent vos préférences (langue, région, affichage)"
             advertising_title: "Cookies publicitaires"
-            advertising_text: "Utilisés pour afficher des publicités pertinentes (avec votre consentement)"
+            advertising_text: "Meta Pixel, uniquement avec votre consentement, pour mesurer l'efficacité des publicités et diffuser des annonces pertinentes. Meta peut traiter ces données aux États-Unis."
             management: "Gestion des cookies"
             management_text: "Vous pouvez à tout moment modifier vos préférences en matière de cookies en cliquant sur le bouton \"Gérer les cookies\" en bas de page. Vous pouvez également configurer votre navigateur pour refuser tous les cookies ou pour être averti lorsqu'un cookie est envoyé."
             warning: "Attention : Le refus des cookies essentiels peut affecter le fonctionnement du site"

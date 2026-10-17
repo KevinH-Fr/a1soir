@@ -52,6 +52,26 @@ RSpec.describe AnalyticsHelper, type: :helper do
     end
   end
 
+  describe "rendering _meta_pixel partial" do
+    it "loads the Meta pixel and tracks PageView on turbo visits" do
+      allow(helper).to receive(:analytics_consent?).and_return(true)
+
+      html = helper.render(partial: "public/shared/meta_pixel")
+
+      expect(html).to include("https://connect.facebook.net/en_US/fbevents.js")
+      expect(html).to include("fbq('init', '1754041385657389')")
+      expect(html).to include("fbq('track', 'PageView')")
+      expect(html).to include("turbo:load")
+      expect(html).to include("https://www.facebook.com/tr?id=1754041385657389&ev=PageView&noscript=1")
+    end
+
+    it "renders nothing without analytics consent" do
+      allow(helper).to receive(:analytics_consent?).and_return(false)
+
+      expect(helper.render(partial: "public/shared/meta_pixel").strip).to be_empty
+    end
+  end
+
   describe "rendering _gtag partial" do
     it "declares Consent Mode before configuring the tags" do
       allow(helper).to receive(:analytics_consent?).and_return(true)

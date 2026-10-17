@@ -30,6 +30,54 @@ RSpec.describe GoogleMerchant::FeedFormatting do
     end
   end
 
+  describe ".price_attributes" do
+    it "sends only the current price when the product is not on promotion" do
+      produit = instance_double(Produit, en_promotion?: false, prixvente: 129.5, ancien_prixvente: nil)
+
+      expect(described_class.price_attributes(produit)).to eq(price: "129.50 EUR")
+    end
+
+    it "sends the previous price as price and the current price as sale_price when on promotion" do
+      produit = instance_double(Produit, en_promotion?: true, prixvente: 99, ancien_prixvente: 149)
+
+      expect(described_class.price_attributes(produit)).to eq(
+        price: "149.00 EUR",
+        sale_price: "99.00 EUR"
+      )
+    end
+
+    it "omits sale_price when currency rounding would make both prices equal" do
+      produit = instance_double(
+        Produit,
+        en_promotion?: true,
+        prixvente: BigDecimal("100.001"),
+        ancien_prixvente: BigDecimal("100.004")
+      )
+
+      expect(described_class.price_attributes(produit)).to eq(price: "100.00 EUR")
+    end
+  end
+
+  describe ".write_price_tags" do
+    it "writes g:price and g:sale_price for a product on promotion" do
+      produit = instance_double(Produit, en_promotion?: true, prixvente: 99, ancien_prixvente: 149)
+      xml = Builder::XmlMarkup.new
+
+      described_class.write_price_tags(xml, produit)
+
+      expect(xml.target!).to eq("<g:price>149.00 EUR</g:price><g:sale_price>99.00 EUR</g:sale_price>")
+    end
+
+    it "writes only g:price when the product is not on promotion" do
+      produit = instance_double(Produit, en_promotion?: false, prixvente: 129.5, ancien_prixvente: nil)
+      xml = Builder::XmlMarkup.new
+
+      described_class.write_price_tags(xml, produit)
+
+      expect(xml.target!).to eq("<g:price>129.50 EUR</g:price>")
+    end
+  end
+
   describe ".item_group_id" do
     let(:long_handle) { "harper-robe-longue-fourreau-jersey-plisse-perles-fente" }
 

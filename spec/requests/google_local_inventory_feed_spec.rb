@@ -87,12 +87,51 @@ RSpec.describe "Google local inventory feed", type: :request do
     expect(body).to include("<g:availability>in_stock</g:availability>")
     expect(body).to include("<g:quantity>1</g:quantity>")
     expect(body).to include("<g:price>695.00 EUR</g:price>")
+    expect(body).not_to include("<g:sale_price>")
     expect(body).to include("<g:pickup_method>buy</g:pickup_method>")
     expect(body).to include("<g:pickup_sla>next_day</g:pickup_sla>")
 
     expect(body).not_to include("<g:title>")
     expect(body).not_to include("<g:description>")
     expect(body).not_to include("<g:image_link>")
+  end
+
+  describe "promotion prices" do
+    let!(:produit_en_promotion) do
+      p = Produit.create!(
+        nom: "Robe promo locale",
+        prixvente: 490.0,
+        ancien_prixvente: 695.0,
+        stripe_price_id: "price_local_feed_promo",
+        eshop: true,
+        actif: true,
+        today_availability: true,
+        quantite: 1,
+        handle: "robe-promo-locale",
+        taille: taille_m,
+        couleur: couleur_rouge
+      )
+      p.image1.attach(
+        io: StringIO.new("fake-jpeg-bytes"),
+        filename: "robe-promo.jpg",
+        content_type: "image/jpeg"
+      )
+      p.categorie_produits << categorie_robes_courtes
+      p
+    end
+
+    it "uses the same price and sale_price as the main merchant feed" do
+      get "/google_merchant_feed.xml"
+      main_item = response.body[%r{<item>\s*<g:id>produit-#{produit_en_promotion.id}</g:id>.*?</item>}m]
+
+      get "/google_local_inventory_feed.xml"
+      local_item = response.body[%r{<item>\s*<g:id>produit-#{produit_en_promotion.id}</g:id>.*?</item>}m]
+
+      expect(main_item).to include("<g:price>695.00 EUR</g:price>")
+      expect(main_item).to include("<g:sale_price>490.00 EUR</g:sale_price>")
+      expect(local_item).to include("<g:price>695.00 EUR</g:price>")
+      expect(local_item).to include("<g:sale_price>490.00 EUR</g:sale_price>")
+    end
   end
 
   it "does not include products with today_availability false" do

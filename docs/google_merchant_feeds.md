@@ -85,6 +85,36 @@ fiche produit).
 
 Le flux inventaire local n'exporte pas ces champs.
 
+### Prix et promotions (`g:price`, `g:sale_price`)
+
+Les deux flux passent par `GoogleMerchant::FeedFormatting.price_attributes`.
+Un produit est en promotion quand `Produit#en_promotion?` est vrai :
+`ancien_prixvente` present, superieur a 0, et `prixvente` strictement inferieur.
+
+| Cas | `g:price` | `g:sale_price` |
+|-----|-----------|----------------|
+| Pas en promotion | `prixvente` | absent |
+| En promotion | `ancien_prixvente` (prix barre) | `prixvente` (prix paye) |
+
+Exemple en promotion :
+
+```xml
+<g:price>149.00 EUR</g:price>
+<g:sale_price>99.00 EUR</g:sale_price>
+```
+
+Le prix paye reste `prixvente`. `g:price` ne devient le prix d'origine que lorsque
+`g:sale_price` est aussi envoye. Pas de `g:sale_price_effective_date` : aucune date
+n'est stockee, la promo reste active jusqu'a son retrait.
+
+Si l'arrondi a deux decimales rend les deux montants egaux, `g:sale_price` est omis
+et `g:price` reste `prixvente`. Google rejette un prix promo qui n'est pas strictement
+inferieur au prix.
+
+Le flux local reprend exactement la meme paire. Son `g:price` remplace celui du flux
+principal sur les surfaces magasin : une promo presente dans un seul des deux flux
+produit un ecart de prix.
+
 Verification apres deploy :
 
 ```bash
@@ -116,10 +146,14 @@ Champs attendus par item :
   <g:availability>in_stock</g:availability>
   <g:quantity>1</g:quantity>
   <g:price>695.00 EUR</g:price>
+  <g:sale_price>490.00 EUR</g:sale_price>
   <g:pickup_method>buy</g:pickup_method>
   <g:pickup_sla>next_day</g:pickup_sla>
 </item>
 ```
+
+`g:sale_price` n'est present que pour un produit en promotion. Hors promotion, l'item
+s'arrete a `g:price` = `prixvente`.
 
 Code magasin A1soir Cannes :
 
@@ -143,6 +177,9 @@ Selection recommandee :
   `google_merchant_feed.xml`.
 - Ajouter le filtre `today_availability: true`.
 - Conserver uniquement les produits avec `prixvente > 0`.
+- Reprendre la meme paire `g:price` / `g:sale_price` que le flux principal
+  (`GoogleMerchant::FeedFormatting`). En promotion, `g:price` est `ancien_prixvente`
+  et `g:sale_price` est `prixvente`. Hors promotion, `g:sale_price` est absent.
 
 Mapping simple (produits `today_availability: true` uniquement) :
 

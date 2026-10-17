@@ -52,7 +52,7 @@ module GoogleMerchant
               xm.tag!("g:store_code", @store_code)
               xm.tag!("g:availability", "in_stock")
               xm.tag!("g:quantity", quantity_for(produit))
-              xm.tag!("g:price", FeedFormatting.format_price_eur(produit.prixvente))
+              FeedFormatting.write_price_tags(xm, produit)
               xm.tag!("g:pickup_method", PICKUP_METHOD)
               xm.tag!("g:pickup_sla", PICKUP_SLA)
             end

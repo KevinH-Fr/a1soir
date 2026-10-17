@@ -83,6 +83,7 @@ RSpec.describe "Google Merchant feed", type: :request do
     expect(body).to include("<g:availability>in_stock</g:availability>")
     expect(body).to include("<g:condition>new</g:condition>")
     expect(body).to include("<g:price>129.50 EUR</g:price>")
+    expect(body).not_to include("<g:sale_price>")
     expect(body).to include("<g:brand>Autour D'Un Soir</g:brand>")
     expect(body).to include("<g:shipping_weight>0.5 kg</g:shipping_weight>")
     expect(body).to include("<g:item_group_id>robe-flux-merchant</g:item_group_id>")
@@ -90,6 +91,49 @@ RSpec.describe "Google Merchant feed", type: :request do
     expect(body).to include("<g:color>rouge</g:color>")
     expect(body).to include("<g:gender>female</g:gender>")
     expect(body).to include("<g:age_group>adult</g:age_group>")
+  end
+
+  describe "promotion prices" do
+    let!(:produit_en_promotion) do
+      p = Produit.create!(
+        nom: "Robe en promotion",
+        description: "<p>Prix barre</p>",
+        prixvente: 99.0,
+        ancien_prixvente: 149.0,
+        poids: 400,
+        stripe_price_id: "price_merchant_feed_promo",
+        eshop: true,
+        actif: true,
+        today_availability: true,
+        quantite: 1,
+        handle: "robe-en-promotion",
+        taille: taille_m,
+        couleur: couleur_rouge
+      )
+      p.image1.attach(
+        io: StringIO.new("fake-jpeg-bytes"),
+        filename: "robe-promo.jpg",
+        content_type: "image/jpeg"
+      )
+      p.categorie_produits << categorie_robes_courtes
+      p
+    end
+
+    it "sends the previous price as g:price and the current price as g:sale_price" do
+      get "/google_merchant_feed.xml"
+      item = response.body[%r{<item>\s*<g:id>produit-#{produit_en_promotion.id}</g:id>.*?</item>}m]
+
+      expect(item).to include("<g:price>149.00 EUR</g:price>")
+      expect(item).to include("<g:sale_price>99.00 EUR</g:sale_price>")
+    end
+
+    it "keeps a single g:price on products that are not on promotion" do
+      get "/google_merchant_feed.xml"
+      item = response.body[%r{<item>\s*<g:id>produit-#{produit_in_feed.id}</g:id>.*?</item>}m]
+
+      expect(item).to include("<g:price>129.50 EUR</g:price>")
+      expect(item).not_to include("<g:sale_price>")
+    end
   end
 
   it "does not include products without image1" do

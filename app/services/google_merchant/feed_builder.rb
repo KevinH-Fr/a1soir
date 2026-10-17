@@ -69,7 +69,7 @@ module GoogleMerchant
               xm.tag!("g:availability", availability_for(produit))
               write_excluded_local_destinations(xm, produit)
               xm.tag!("g:condition", "new")
-              xm.tag!("g:price", FeedFormatting.format_price_eur(produit.prixvente))
+              FeedFormatting.write_price_tags(xm, produit)
               xm.tag!("g:brand", FEED_BRAND)
               xm.tag!("g:shipping_weight", self.class.format_shipping_weight_kg(produit.poids.to_i))
               xm.tag!("g:item_group_id", FeedFormatting.item_group_id(produit))

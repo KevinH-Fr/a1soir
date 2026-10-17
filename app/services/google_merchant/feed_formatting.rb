@@ -3,7 +3,7 @@
 require "digest"
 
 module GoogleMerchant
-  # Shared g:id and g:price formatting for all Merchant Center feeds.
+  # Shared g:id, g:price and g:sale_price formatting for all Merchant Center feeds.
   module FeedFormatting
     ITEM_GROUP_ID_MAX = 50
     ITEM_GROUP_ID_HASH_LENGTH = 7
@@ -34,6 +34,26 @@ module GoogleMerchant
     def format_price_eur(amount)
       value = amount.to_d
       format("%.2f EUR", value)
+    end
+
+    # g:price is the regular price. On promotion it becomes the previous price
+    # (ancien_prixvente) and g:sale_price is the price paid (prixvente).
+    # Both Merchant Center feeds must use this pair so online and local prices stay aligned.
+    # sale_price is omitted when rounding would make it equal to price: Google rejects that.
+    def price_attributes(produit)
+      current = format_price_eur(produit.prixvente)
+      return { price: current } unless produit.en_promotion?
+
+      regular = format_price_eur(produit.ancien_prixvente)
+      return { price: current } if regular == current
+
+      { price: regular, sale_price: current }
+    end
+
+    def write_price_tags(xml, produit)
+      attributes = price_attributes(produit)
+      xml.tag!("g:price", attributes[:price])
+      xml.tag!("g:sale_price", attributes[:sale_price]) if attributes[:sale_price]
     end
 
     def image_link_url(blob)
