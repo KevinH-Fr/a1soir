@@ -70,6 +70,13 @@ RSpec.describe AnalyticsHelper, type: :helper do
 
       expect(helper.render(partial: "public/shared/meta_pixel").strip).to be_empty
     end
+
+    it "renders nothing in development" do
+      allow(helper).to receive(:analytics_consent?).and_return(true)
+      allow(Rails.env).to receive(:development?).and_return(true)
+
+      expect(helper.render(partial: "public/shared/meta_pixel").strip).to be_empty
+    end
   end
 
   describe "rendering _gtag partial" do
@@ -243,6 +250,52 @@ RSpec.describe AnalyticsHelper, type: :helper do
     end
   end
 
+  describe "#meta_pixel_track" do
+    it "maps a product view to ViewContent with the catalogue id" do
+      track = helper.meta_pixel_track("view_item", helper.ga4_view_item_payload(produit))
+
+      expect(track[:event_name]).to eq("ViewContent")
+      expect(track[:event_id]).to be_nil
+      expect(track[:payload]).to include(
+        content_ids: ["produit-#{produit.id}"],
+        content_type: "product",
+        content_name: produit.nom,
+        value: 695.0,
+        currency: "EUR"
+      )
+      expect(track[:payload][:contents].first).to include(id: "produit-#{produit.id}", quantity: 1, item_price: 695.0)
+    end
+
+    it "maps cart, cabine and checkout events" do
+      expect(helper.meta_pixel_track("add_to_cart", helper.ga4_add_to_cart_payload(produit))[:event_name]).to eq("AddToCart")
+      expect(helper.meta_pixel_track("add_to_wishlist", helper.ga4_add_to_wishlist_payload(produit))[:event_name]).to eq("AddToWishlist")
+
+      checkout = helper.meta_pixel_track("begin_checkout", helper.ga4_begin_checkout_payload([produit]))
+      expect(checkout[:event_name]).to eq("InitiateCheckout")
+      expect(checkout[:payload][:num_items]).to eq(1)
+    end
+
+    it "maps a purchase and keeps the order id for deduplication" do
+      payload = {
+        transaction_id: "CMD-1",
+        currency: "EUR",
+        value: 695.0,
+        items: [helper.ga4_item_from_produit(produit)]
+      }
+
+      track = helper.meta_pixel_track("purchase", payload)
+
+      expect(track[:event_name]).to eq("Purchase")
+      expect(track[:event_id]).to eq("CMD-1")
+      expect(track[:payload][:content_ids]).to eq(["produit-#{produit.id}"])
+      expect(track[:payload][:num_items]).to eq(1)
+    end
+
+    it "ignores events that are not catalogue events" do
+      expect(helper.meta_pixel_track("message_send", { currency: "EUR", value: 0, items: [] })).to be_nil
+    end
+  end
+
   describe "rendering _ga4_event partial" do
     before do
       allow(helper).to receive(:analytics_consent?).and_return(true)
@@ -256,6 +309,8 @@ RSpec.describe AnalyticsHelper, type: :helper do
 
       expect(html).to include('data-controller="ga4-event"')
       expect(html).to include("view_item")
+      expect(html).to include("ViewContent")
+      expect(html).to include("produit-#{produit.id}")
       expect(html).to include("Veste costume 441100/82")
     end
 

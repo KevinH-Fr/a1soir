@@ -4,6 +4,13 @@ module AnalyticsHelper
   GA4_BRAND = "Autour D'Un Soir"
   GA4_CURRENCY = "EUR"
   GA4_FORM_EVENTS = %w[request_appointment message_send].freeze
+  META_PIXEL_EVENTS = {
+    "view_item" => "ViewContent",
+    "add_to_cart" => "AddToCart",
+    "add_to_wishlist" => "AddToWishlist",
+    "begin_checkout" => "InitiateCheckout",
+    "purchase" => "Purchase"
+  }.freeze
 
   def analytics_consent?
     cookies[:analytics_consent] == "yes"
@@ -134,6 +141,37 @@ module AnalyticsHelper
     event_name
   end
 
+  # Même identifiant que g:id du flux catalogue (produit-123).
+  def meta_pixel_track(ga4_event_name, payload)
+    event_name = META_PIXEL_EVENTS[ga4_event_name.to_s]
+    return nil if event_name.blank? || payload.blank?
+
+    items = Array(payload[:items] || payload["items"])
+    contents = items.filter_map { |item| meta_pixel_content(item) }
+    return nil if contents.empty?
+
+    meta_payload = {
+      content_ids: contents.map { |content| content[:id] },
+      content_type: "product",
+      contents: contents,
+      value: payload[:value] || payload["value"],
+      currency: payload[:currency] || payload["currency"] || GA4_CURRENCY
+    }
+    if contents.one?
+      name = items.first[:item_name] || items.first["item_name"]
+      meta_payload[:content_name] = name if name.present?
+    end
+    if %w[InitiateCheckout Purchase].include?(event_name)
+      meta_payload[:num_items] = contents.sum { |content| content[:quantity] }
+    end
+
+    {
+      event_name: event_name,
+      payload: meta_payload,
+      event_id: (payload[:transaction_id] || payload["transaction_id"]).presence
+    }
+  end
+
   def ga4_event_turbo_stream(event_name, payload)
     return if payload.blank?
 
@@ -153,6 +191,17 @@ module AnalyticsHelper
   rescue StandardError => e
     Rails.logger.warn("[GA4] #{context} skipped: #{e.class} #{e.message}")
     nil
+  end
+
+  def meta_pixel_content(item)
+    id = item[:item_id] || item["item_id"]
+    return nil if id.blank?
+
+    {
+      id: id,
+      quantity: (item[:quantity] || item["quantity"] || 1).to_i,
+      item_price: (item[:price] || item["price"]).to_f
+    }
   end
 
   def ga4_item_category(produit)

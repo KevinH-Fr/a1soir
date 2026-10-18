@@ -87,7 +87,18 @@ heroku run -a a1soir-2 bin/rails google_places:refresh
 heroku run -a a1soir-2 bin/rails runner "d = GooglePlacesService.fetch; puts d ? d.slice(:rating, :user_rating_count) : 'vide'"
 ```
 
-Planification : `heroku addons:open scheduler -a a1soir-2`, commande `bin/rails google_places:refresh`, fréquence **Daily**, horaire de nuit.
+Planification (en place) : job Scheduler `bundle exec rails google_places:refresh`, Standard-1X, **tous les jours à 4:00 AM UTC**. Tableau de bord : `heroku addons:open scheduler -a a1soir-2` (colonne « Last Run »).
+
+```bash
+# Vérifier le passage du Scheduler (heroku logs renvoie 100 lignes par défaut)
+heroku logs -a a1soir-2 --dyno scheduler -n 1500 | grep google_places
+
+# Tester sans attendre, comme le Scheduler (consomme 1 appel Google)
+heroku run:detached -a a1soir-2 bin/rails google_places:refresh
+heroku logs -a a1soir-2 --dyno run.XXXX   # numéro affiché par la commande précédente
+```
+
+Ligne attendue : `[google_places] Note 4.8 sur 216 avis, 5 avis en cache.` puis `Process exited with status 0`.
 
 ### Vérifications Redis (lecture seule)
 

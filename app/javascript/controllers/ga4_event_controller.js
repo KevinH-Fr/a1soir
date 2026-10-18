@@ -1,15 +1,36 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Déclenche un événement GA4 via gtag (page initiale ou Turbo Stream append).
+// Déclenche un événement GA4 via gtag, et l'équivalent Meta si le Pixel est chargé.
+// Par défaut à la connexion (page ou Turbo Stream). Le paiement du panier
+// appelle track au submit, sans l'envoyer à l'affichage.
 export default class extends Controller {
   static values = {
     eventName: String,
-    payload: Object
+    payload: Object,
+    metaEventName: String,
+    metaPayload: Object,
+    metaEventId: String,
+    trackOnConnect: { type: Boolean, default: true }
   }
 
   connect() {
-    if (typeof gtag !== "function") return
+    if (this.trackOnConnectValue) this.track()
+  }
 
-    gtag("event", this.eventNameValue, this.payloadValue)
+  track() {
+    if (typeof gtag === "function") {
+      gtag("event", this.eventNameValue, this.payloadValue)
+    }
+    this.trackMeta()
+  }
+
+  trackMeta() {
+    if (!this.hasMetaEventNameValue || typeof fbq !== "function") return
+
+    if (this.hasMetaEventIdValue && this.metaEventIdValue) {
+      fbq("track", this.metaEventNameValue, this.metaPayloadValue, { eventID: this.metaEventIdValue })
+    } else {
+      fbq("track", this.metaEventNameValue, this.metaPayloadValue)
+    }
   }
 }

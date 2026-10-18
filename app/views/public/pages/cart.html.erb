@@ -142,18 +142,20 @@
                 <%# CTA buttons — primary %>
                 <div class="d-grid gap-2">
                   <% ga4_checkout_payload = analytics_consent? ? ga4_begin_checkout_payload(@cart) : nil %>
+                  <% meta_checkout = ga4_checkout_payload.present? ? meta_pixel_track("begin_checkout", ga4_checkout_payload) : nil %>
+                  <% checkout_data = { turbo: false } %>
                   <% if ga4_checkout_payload.present? %>
-                    <script>
-                      function ga4BeginCheckout() {
-                        if (typeof gtag !== "function") return true;
-                        gtag("event", "begin_checkout", <%= ga4_checkout_payload.to_json.html_safe %>);
-                        return true;
-                      }
-                    </script>
+                    <% checkout_data[:controller] = "ga4-event" %>
+                    <% checkout_data[:action] = "submit->ga4-event#track" %>
+                    <% checkout_data[:ga4_event_event_name_value] = "begin_checkout" %>
+                    <% checkout_data[:ga4_event_payload_value] = ga4_checkout_payload %>
+                    <% checkout_data[:ga4_event_track_on_connect_value] = false %>
+                    <% if meta_checkout.present? %>
+                      <% checkout_data[:ga4_event_meta_event_name_value] = meta_checkout[:event_name] %>
+                      <% checkout_data[:ga4_event_meta_payload_value] = meta_checkout[:payload] %>
+                    <% end %>
                   <% end %>
-                  <%= form_with url: stripe_payments_path, method: :post,
-                      data: { turbo: false },
-                      html: ga4_checkout_payload.present? ? { onsubmit: "return ga4BeginCheckout();", class: "m-0" } : { class: "m-0" } do |f| %>
+                  <%= form_with url: stripe_payments_path, method: :post, class: "m-0", data: checkout_data do |f| %>
                     <div class="form-check mb-2">
                       <input type="checkbox"
                              class="form-check-input"

@@ -59,6 +59,19 @@ RSpec.describe "Public::Pages", type: :request do
         expect(response.body).to include("Robe A")
         expect(response.body).to include("Jupe B")
       end
+
+      it "sends InitiateCheckout with catalogue ids when analytics consent is granted" do
+        cookies[:analytics_consent] = "yes"
+
+        get "/fr/cart"
+
+        expect(response.body).to include("submit-&gt;ga4-event#track")
+        expect(response.body).to include('data-ga4-event-meta-event-name-value="InitiateCheckout"')
+        expect(response.body).to include('data-ga4-event-track-on-connect-value="false"')
+        expect(response.body).to include("produit-#{produit_a.id}")
+        expect(response.body).to include("produit-#{produit_b.id}")
+        expect(response.body).not_to include("ga4BeginCheckout")
+      end
     end
 
     context "with two products of the same type but different taille (variant matrix)" do
@@ -249,6 +262,7 @@ RSpec.describe "Public::Pages", type: :request do
         post "/fr/cabine/add_product/#{produit_a.id}", headers: turbo_headers
 
         expect(response.body).to include(event_attr)
+        expect(response.body).to include("AddToWishlist")
         expect(response.body).to include("produit-#{produit_a.id}")
       end
 
@@ -460,6 +474,7 @@ RSpec.describe "Public::Pages", type: :request do
 
         expect(ga4_div).to include("produit-#{produit_seo.id}")
         expect(ga4_div).to include("&quot;value&quot;:50.0")
+        expect(ga4_div).to include("ViewContent")
       end
 
       it "is also sent for a product not sold online" do

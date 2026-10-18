@@ -1,4 +1,4 @@
-<% if analytics_consent? %>
+<% if analytics_consent? && !Rails.env.development? %>
   <!-- Meta Pixel Code -->
   <script>
   !function(f,b,e,v,n,t,s)

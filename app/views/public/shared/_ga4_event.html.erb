@@ -1,10 +1,15 @@
 <% if analytics_consent? %>
 <% Rails.logger.info("[GA4] #{event_name} envoyé au navigateur #{payload.to_json}") if Rails.env.development? %>
-<%= tag.div(
-  data: {
-    controller: "ga4-event",
-    ga4_event_event_name_value: event_name,
-    ga4_event_payload_value: payload
-  }
-) %>
+<% meta = meta_pixel_track(event_name, payload) %>
+<% data = {
+  controller: "ga4-event",
+  ga4_event_event_name_value: event_name,
+  ga4_event_payload_value: payload
+} %>
+<% if meta %>
+  <% data[:ga4_event_meta_event_name_value] = meta[:event_name] %>
+  <% data[:ga4_event_meta_payload_value] = meta[:payload] %>
+  <% data[:ga4_event_meta_event_id_value] = meta[:event_id] if meta[:event_id].present? %>
+<% end %>
+<%= tag.div(data: data) %>
 <% end %>
