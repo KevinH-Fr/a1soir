@@ -24,7 +24,7 @@ module PublicSeoHelper
   end
 
   def structured_store_logo_url
-    public_static_asset_url("images/autourdunsoir_drapeau.png")
+    public_static_asset_url("images/logo_Autour_d_un_soir.png")
   end
 
   private

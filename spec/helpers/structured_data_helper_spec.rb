@@ -9,7 +9,7 @@ RSpec.describe StructuredDataHelper, type: :helper do
     )
     allow(helper).to receive(:structured_home_url).and_return("https://a1soir.com/fr/home")
     allow(helper).to receive(:structured_site_url).and_return("https://a1soir.com/fr")
-    allow(helper).to receive(:structured_store_logo_url).and_return("https://a1soir.com/images/autourdunsoir_drapeau.png")
+    allow(helper).to receive(:structured_store_logo_url).and_return("https://a1soir.com/images/logo_Autour_d_un_soir.png")
     allow(GooglePlacesService).to receive(:fetch).and_return(nil)
   end
 
@@ -18,7 +18,7 @@ RSpec.describe StructuredDataHelper, type: :helper do
 
     it "uses canonical URLs without locale query params" do
       expect(node["url"]).to eq("https://a1soir.com/fr/home")
-      expect(node["image"]).to eq("https://a1soir.com/images/autourdunsoir_drapeau.png")
+      expect(node["image"]).to eq("https://a1soir.com/images/logo_Autour_d_un_soir.png")
       expect(node["url"]).not_to include("?locale=")
       expect(node["image"]).not_to include("?locale=")
     end

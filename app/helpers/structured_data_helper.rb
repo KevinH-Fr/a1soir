@@ -46,7 +46,7 @@ module StructuredDataHelper
   # Même défaut que Produit#set_default_poids.
   DEFAULT_PRODUCT_WEIGHT_GRAMS = 1000
 
-  FAQ_SECTIONS = [
+   FAQ_SECTIONS = [
     [:general, 5],
     [:location, 7],
     [:sale, 3],
