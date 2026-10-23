@@ -75,6 +75,10 @@ RSpec.describe StructuredDataHelper, type: :helper do
 
       expect(node["openingHours"]).to eq(StoreOpeningHours::FALLBACK)
     end
+
+    it "includes the store price range" do
+      expect(node["priceRange"]).to eq("€50–€1500")
+    end
   end
 
   describe "#faq_page_schema" do
@@ -126,6 +130,7 @@ RSpec.describe StructuredDataHelper, type: :helper do
 
     before do
       allow(helper).to receive(:produit_url).and_return("https://a1soir.com/fr/produit/robe-test-1")
+      allow(helper).to receive(:legal_url) { |anchor:, **| "https://a1soir.com/fr/legal##{anchor}" }
     end
 
     it "includes sku, category, color and size" do
@@ -135,6 +140,68 @@ RSpec.describe StructuredDataHelper, type: :helper do
       expect(schema["category"]).to eq("robes de soirée")
       expect(schema["color"]).to eq("noir")
       expect(schema["size"]).to eq("38")
+    end
+
+    describe "sale offer" do
+      subject(:offer) { helper.product_schema(produit: produit)["offers"] }
+
+      it "uses the sale price" do
+        expect(offer).to include("@type" => "Offer", "price" => "120.00", "priceCurrency" => "EUR")
+      end
+
+      it "includes the 14-day free return policy" do
+        expect(offer["hasMerchantReturnPolicy"]).to include(
+          "@type" => "MerchantReturnPolicy",
+          "applicableCountry" => "FR",
+          "returnPolicyCategory" => "https://schema.org/MerchantReturnFiniteReturnWindow",
+          "merchantReturnDays" => 14,
+          "returnMethod" => "https://schema.org/ReturnByMail",
+          "returnFees" => "https://schema.org/FreeReturn",
+          "refundType" => "https://schema.org/FullRefund",
+          "merchantReturnLink" => "https://a1soir.com/fr/legal#retractation"
+        )
+      end
+
+      it "includes Colissimo shipping to France with the published handling and transit times" do
+        shipping = offer["shippingDetails"]
+
+        expect(shipping["shippingDestination"]).to eq([{ "@type" => "DefinedRegion", "addressCountry" => "FR" }])
+        expect(shipping.dig("deliveryTime", "handlingTime")).to include("minValue" => 0, "maxValue" => 1, "unitCode" => "DAY")
+        expect(shipping.dig("deliveryTime", "transitTime")).to include("minValue" => 2, "maxValue" => 4, "unitCode" => "DAY")
+        expect(shipping["shippingSettingsLink"]).to eq("https://a1soir.com/fr/legal#livraison")
+      end
+
+      it "prices shipping from the product weight" do
+        produit.update!(poids: 2200)
+
+        expect(offer.dig("shippingDetails", "shippingRate")).to include("value" => "11.00", "currency" => "EUR")
+      end
+
+      it "falls back to the default weight when weight is missing" do
+        produit.update_column(:poids, nil)
+        produit.reload.poids = nil
+
+        expect(offer.dig("shippingDetails", "shippingRate", "value")).to eq("9.00")
+      end
+    end
+
+    context "when the product is also for rent" do
+      before { produit.update!(prixlocation: 60) }
+
+      it "exposes only the sale offer" do
+        offers = helper.product_schema(produit: produit)["offers"]
+
+        expect(offers).to be_a(Hash)
+        expect(offers["price"]).to eq("120.00")
+      end
+    end
+
+    context "when the product is rental only" do
+      before { produit.update!(prixvente: 0, prixlocation: 60) }
+
+      it "returns no Product schema" do
+        expect(helper.product_schema(produit: produit)).to be_nil
+      end
     end
   end
 

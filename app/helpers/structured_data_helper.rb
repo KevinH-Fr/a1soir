@@ -34,6 +34,18 @@ module StructuredDataHelper
     { "@type" => "AdministrativeArea", "name" => "Alpes-Maritimes" }
   ].freeze
 
+  STORE_PRICE_RANGE = "€50–€1500".freeze
+
+  RETURN_WINDOW_DAYS = 14
+
+  # Délais typiques des CGV (article « Délais de livraison ») ; le plafond juridique
+  # de 30 jours n'est pas un délai typique et ne figure pas ici.
+  SHIPPING_HANDLING_DAYS = { min: 0, max: 1 }.freeze
+  SHIPPING_TRANSIT_DAYS = { min: 2, max: 4 }.freeze
+
+  # Même défaut que Produit#set_default_poids.
+  DEFAULT_PRODUCT_WEIGHT_GRAMS = 1000
+
   FAQ_SECTIONS = [
     [:general, 5],
     [:location, 7],
@@ -78,8 +90,12 @@ module StructuredDataHelper
     }
   end
 
-  # Schéma Product pour une fiche produit
+  # Schéma Product pour une fiche produit. nil sans prix de vente : un Product sans
+  # offers est une erreur critique pour Google.
   def product_schema(produit:)
+    offer = product_schema_offer(produit)
+    return if offer.nil?
+
     schema = {
       "@context" => "https://schema.org",
       "@type" => "Product",
@@ -107,9 +123,7 @@ module StructuredDataHelper
     size = produit.taille&.nom
     schema["size"] = size if size.present?
 
-    offers = product_schema_offers(produit)
-    schema["offers"] = offers if offers.present?
-
+    schema["offers"] = offer
     schema
   end
 
@@ -274,34 +288,68 @@ module StructuredDataHelper
     "#{produits_index_url(locale: I18n.locale)}?#{CGI.escape(search_param)}={search_term_string}"
   end
 
-  def product_schema_offers(produit)
-    availability = produit.today_availability ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
-    offers = []
+  # Vente uniquement : Google traite toute Offer comme un prix d'achat, et le flux
+  # Merchant n'expose que prixvente. Le prix de location reste affiché sur la page.
+  def product_schema_offer(produit)
+    return unless produit.prixvente.to_d.positive?
 
-    if produit.prixvente.to_d.positive?
-      offers << {
-        "@type" => "Offer",
-        "price" => format("%.2f", produit.prixvente.to_d),
-        "priceCurrency" => "EUR",
-        "availability" => availability,
-        "url" => produit_url(slug: produit.handle, id: produit.id, locale: I18n.locale)
-      }
-    end
+    {
+      "@type" => "Offer",
+      "price" => format("%.2f", produit.prixvente.to_d),
+      "priceCurrency" => "EUR",
+      "availability" => produit.today_availability ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      "url" => produit_url(slug: produit.handle, id: produit.id, locale: I18n.locale),
+      "hasMerchantReturnPolicy" => product_schema_return_policy,
+      "shippingDetails" => product_schema_shipping_details(produit)
+    }
+  end
 
-    if produit.prixlocation.to_d.positive?
-      offers << {
-        "@type" => "Offer",
-        "name" => "Location",
-        "price" => format("%.2f", produit.prixlocation.to_d),
-        "priceCurrency" => "EUR",
-        "availability" => availability,
-        "url" => produit_url(slug: produit.handle, id: produit.id, locale: I18n.locale)
-      }
-    end
+  # Aligné sur les CGV, section « Droit de rétractation ».
+  def product_schema_return_policy
+    {
+      "@type" => "MerchantReturnPolicy",
+      "applicableCountry" => STORE_ADDRESS[:country],
+      "returnPolicyCategory" => "https://schema.org/MerchantReturnFiniteReturnWindow",
+      "merchantReturnDays" => RETURN_WINDOW_DAYS,
+      "returnMethod" => "https://schema.org/ReturnByMail",
+      "returnLabelSource" => "https://schema.org/ReturnLabelInBox",
+      "returnFees" => "https://schema.org/FreeReturn",
+      "refundType" => "https://schema.org/FullRefund",
+      "merchantReturnLink" => legal_url(anchor: "retractation", locale: I18n.locale)
+    }
+  end
 
-    return offers.first if offers.one?
+  # Tarif pour ce seul produit ; le checkout additionne le poids du panier.
+  def product_schema_shipping_details(produit)
+    fee_cents = ShippingCostService.fee_cents_for((produit.poids || DEFAULT_PRODUCT_WEIGHT_GRAMS).to_i)
 
-    offers.presence
+    {
+      "@type" => "OfferShippingDetails",
+      "shippingRate" => {
+        "@type" => "MonetaryAmount",
+        "value" => format("%.2f", fee_cents / 100.0),
+        "currency" => "EUR"
+      },
+      "shippingDestination" => Rails.application.config.x.stripe_eshop_checkout_shipping_countries.map do |country|
+        { "@type" => "DefinedRegion", "addressCountry" => country }
+      end,
+      "deliveryTime" => {
+        "@type" => "ShippingDeliveryTime",
+        "handlingTime" => {
+          "@type" => "QuantitativeValue",
+          "minValue" => SHIPPING_HANDLING_DAYS[:min],
+          "maxValue" => SHIPPING_HANDLING_DAYS[:max],
+          "unitCode" => "DAY"
+        },
+        "transitTime" => {
+          "@type" => "QuantitativeValue",
+          "minValue" => SHIPPING_TRANSIT_DAYS[:min],
+          "maxValue" => SHIPPING_TRANSIT_DAYS[:max],
+          "unitCode" => "DAY"
+        }
+      },
+      "shippingSettingsLink" => legal_url(anchor: "livraison", locale: I18n.locale)
+    }
   end
 
   def clothing_store_node
@@ -324,7 +372,8 @@ module StructuredDataHelper
         "longitude" => STORE_GEO[:longitude]
       },
       "areaServed" => AREA_SERVED,
-      "sameAs" => STORE_SAME_AS
+      "sameAs" => STORE_SAME_AS,
+      "priceRange" => STORE_PRICE_RANGE
     }
 
     google_data = GooglePlacesService.fetch

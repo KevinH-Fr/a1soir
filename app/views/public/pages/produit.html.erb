@@ -4,9 +4,11 @@
 <% content_for :og_type, "product" %>
 
 <% content_for :structured_data do %>
-  <script type="application/ld+json">
-    <%= product_schema(produit: @produit).to_json.html_safe %>
-  </script>
+  <% if (product_json_ld = product_schema(produit: @produit)) %>
+    <script type="application/ld+json">
+      <%= product_json_ld.to_json.html_safe %>
+    </script>
+  <% end %>
   <script type="application/ld+json">
     <%= breadcrumb_schema(product_breadcrumbs(produit: @produit)).to_json.html_safe %>
   </script>
