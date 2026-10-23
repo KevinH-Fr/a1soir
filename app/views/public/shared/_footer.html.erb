@@ -35,9 +35,9 @@
       <!-- Logo et Informations -->
       <div class="col-12 col-md-4 mb-4 mb-md-0">
         <%= link_to home_path, class: "d-inline-block mb-3" do %>
-          <%= image_tag('/images/a1soirlogo2.png', class: 'mb-0', width: 200, height: 25, alt: "Autour d'un Soir") %>
+          <%= image_tag("/images/logo_Autour_d_un_soir.png", class: "object-fit-cover mb-0", width: 150, height: 92, alt: "Autour d'un Soir") %>
         <% end %>
-        
+
         <% if @footer_texte_adresse.present? %>
           <div class="mb-3 d-flex align-items-start text-light">
             <i class="bi bi-geo-alt-fill me-2 small" style="flex-shrink: 0; margin-top: 2px;"></i>
@@ -49,7 +49,7 @@
             <% end %>
           </div>
         <% end %>
-        
+
         <% if @footer_texte_horaire.present? %>
           <div class="mb-3 d-flex align-items-start text-light">
             <i class="bi bi-clock-fill me-2 small" style="flex-shrink: 0; margin-top: 2px;"></i>
