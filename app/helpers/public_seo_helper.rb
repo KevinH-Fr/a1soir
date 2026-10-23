@@ -6,7 +6,7 @@ module PublicSeoHelper
   end
 
   def public_page_url(locale: I18n.locale)
-    url_for(public_page_path_params.merge(locale: locale, only_path: false))
+    seo_show_page_url(locale) || url_for(public_page_path_params.merge(locale: locale, only_path: false))
   end
 
   # Absolute URL for files under public/ (no ?locale= query — unlike root_url).
@@ -25,5 +25,23 @@ module PublicSeoHelper
 
   def structured_store_logo_url
     public_static_asset_url("images/autourdunsoir_drapeau.png")
+  end
+
+  private
+
+  # guides/:slug et :slug partagent seo_pages#show. url_for prend la première
+  # route et canonise à tort les landings locales vers /guides/:slug, qui 301.
+  def seo_show_page_url(locale)
+    return unless controller.controller_path == "public/seo_pages" && controller.action_name == "show"
+
+    page = instance_variable_get(:@page)
+    return unless page.is_a?(Hash)
+
+    slug = page[:slug].presence
+    scope = page[:scope].to_s
+    return if slug.blank? || scope.blank?
+
+    options = { slug: slug, locale: locale, only_path: false }
+    scope == "guides" ? seo_guide_url(options) : seo_page_url(options)
   end
 end

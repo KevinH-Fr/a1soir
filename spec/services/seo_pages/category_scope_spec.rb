@@ -38,6 +38,20 @@ RSpec.describe SeoPages::CategoryScope do
     expect(described_class.call(page)).to contain_exactly(robes_courtes, robes_longues)
   end
 
+  it "does not add evening dresses to the tuxedo rental guide" do
+    page = SeoPages::Registry.find("location-smoking-costume-cannes", scope: "guides")
+
+    expect(described_class.call(page)).to contain_exactly(costume, smokings)
+    expect(described_class.call(page)).not_to include(robes_soiree_courtes, robes_soiree_longues)
+  end
+
+  it "keeps evening dresses on the buy-or-rent evening wear guide" do
+    page = SeoPages::Registry.find("achat-ou-location-tenue-soiree", scope: "guides")
+
+    expect(described_class.call(page)).to include(robes_soiree_courtes, robes_soiree_longues)
+    expect(described_class.call(page)).not_to include(costume, smokings)
+  end
+
   it "keeps only accessory categories on the shoes and accessories guide" do
     page = SeoPages::Registry.find("chaussures-accessoires-soiree", scope: "guides")
 

@@ -13,6 +13,12 @@ RSpec.describe "Public::SeoPages", type: :request do
       get "/fr/robe-de-mariee-cannes"
 
       expect(response).to have_http_status(:ok)
+      expect(response.body).to include(%(<link rel="canonical" href="http://www.example.com/fr/robe-de-mariee-cannes">))
+      expect(response.body).to include(%(<link rel="alternate" hreflang="fr" href="http://www.example.com/fr/robe-de-mariee-cannes">))
+      expect(response.body).to include(%(<link rel="alternate" hreflang="en" href="http://www.example.com/en/robe-de-mariee-cannes">))
+      expect(response.body).to include(%(<link rel="alternate" hreflang="x-default" href="http://www.example.com/fr/robe-de-mariee-cannes">))
+      expect(response.body).to include(%(property="og:url" content="http://www.example.com/fr/robe-de-mariee-cannes"))
+      expect(response.body).not_to include("/guides/robe-de-mariee-cannes")
       expect(response.body).to include("Robe de mariée à Cannes")
       expect(response.body).not_to include("page-header-container")
       expect(response.body).to include("Nice")
@@ -31,6 +37,31 @@ RSpec.describe "Public::SeoPages", type: :request do
       expect(response).to have_http_status(:ok)
       expect(response.body).not_to include("translation missing")
       expect(response.body).to include("Essayage robe de mariée à Cannes")
+      expect(response.body).to include(%(<link rel="canonical" href="http://www.example.com/fr/essayage-robe-de-mariee-cannes">))
+      expect(response.body).not_to include("/guides/essayage-robe-de-mariee-cannes")
+    end
+  end
+
+  describe "GET /fr/costume-mariage-cannes" do
+    it "canonicalizes the local landing, not the guide path" do
+      get "/fr/costume-mariage-cannes"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(%(<link rel="canonical" href="http://www.example.com/fr/costume-mariage-cannes">))
+      expect(response.body).to include(%(<link rel="alternate" hreflang="en" href="http://www.example.com/en/costume-mariage-cannes">))
+      expect(response.body).not_to include("/guides/costume-mariage-cannes")
+    end
+  end
+
+  describe "GET /en/robe-de-mariee-cannes" do
+    it "canonicalizes the English local landing and points x-default to French" do
+      get "/en/robe-de-mariee-cannes"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(%(<link rel="canonical" href="http://www.example.com/en/robe-de-mariee-cannes">))
+      expect(response.body).to include(%(<link rel="alternate" hreflang="fr" href="http://www.example.com/fr/robe-de-mariee-cannes">))
+      expect(response.body).to include(%(<link rel="alternate" hreflang="x-default" href="http://www.example.com/fr/robe-de-mariee-cannes">))
+      expect(response.body).not_to include("/guides/robe-de-mariee-cannes")
     end
   end
 
@@ -93,6 +124,7 @@ RSpec.describe "Public::SeoPages", type: :request do
       expect(response).to have_http_status(:ok)
       expect(response.body).not_to include("translation missing")
       expect(response.body).to include("Location smoking et costume à Cannes")
+      expect(response.body).to include(%(<link rel="canonical" href="http://www.example.com/fr/guides/location-smoking-costume-cannes">))
     end
   end
 

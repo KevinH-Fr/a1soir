@@ -10,7 +10,7 @@ module SeoPages
         "robes de mariée longues"
       ],
       /costume|smoking/ => %w[costume smokings],
-      /soiree|soirée|gala|invitee|location|achat/ => [
+      /soiree|soirée|gala|invitee|achat/ => [
         "robes courtes",
         "robes longues"
       ]
