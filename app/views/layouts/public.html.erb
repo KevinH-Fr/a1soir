@@ -20,16 +20,18 @@
     <%# Données structurées spécifiques à certaines pages (WebPage, BreadcrumbList, etc.) %>
     <%= yield :structured_data %>
     <!-- Open Graph -->
+    <% og_image = content_for?(:og_image) ? yield(:og_image) : default_og_image_url %>
+    <meta property="og:site_name" content="Autour D'Un Soir">
     <meta property="og:title" content="<%= meta_title %>">
     <meta property="og:description" content="<%= meta_description %>">
     <meta property="og:type" content="<%= content_for?(:og_type) ? yield(:og_type) : 'website' %>">
     <meta property="og:url" content="<%= public_page_url %>">
-    <meta property="og:image" content="<%= content_for?(:og_image) ? yield(:og_image) : structured_store_logo_url %>">
+    <meta property="og:image" content="<%= og_image %>">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<%= meta_title %>">
     <meta name="twitter:description" content="<%= meta_description %>">
-    <meta name="twitter:image" content="<%= content_for?(:og_image) ? yield(:og_image) : structured_store_logo_url %>">
+    <meta name="twitter:image" content="<%= og_image %>">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 

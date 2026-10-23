@@ -27,6 +27,10 @@ module PublicSeoHelper
     public_static_asset_url("images/logo_Autour_d_un_soir.png")
   end
 
+  def default_og_image_url
+    public_static_asset_url("images/autour_d_un_soir_og.png")
+  end
+
   private
 
   # guides/:slug et :slug partagent seo_pages#show. url_for prend la première

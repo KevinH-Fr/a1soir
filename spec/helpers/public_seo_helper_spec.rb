@@ -36,4 +36,18 @@ RSpec.describe PublicSeoHelper, type: :helper do
       )
     end
   end
+
+  describe "#default_og_image_url" do
+    before do
+      allow(helper).to receive(:request).and_return(
+        instance_double(ActionDispatch::Request, base_url: "https://a1soir.com")
+      )
+    end
+
+    it "points at the wide share image" do
+      expect(helper.default_og_image_url).to eq(
+        "https://a1soir.com/images/autour_d_un_soir_og.png"
+      )
+    end
+  end
 end
