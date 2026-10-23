@@ -7,10 +7,10 @@ fr:
         description: Conseils robes de mariée, tenues de soirée et costumes à Cannes. Guides pratiques par Autour D'Un Soir.
       robe_de_mariee_cannes:
         title: Robe de mariée à Cannes | Boutique mariage depuis 1980
-        description: 'Boutique de mariage à Cannes depuis 1980 : robes de mariée, essayage en cabine, retouches atelier et collections courtes et longues. Autour D''Un Soir, 29 bd Carnot.'
+        description: 'Boutique de mariage à Cannes depuis 1980 : robes de mariée, essayage en cabine, retouches atelier et collections courtes et longues. Autour D''Un Soir, 27 bd Carnot.'
       essayage_robe_mariee_cannes:
         title: Essayage robe de mariée Cannes - Autour D'Un Soir
-        description: 'Essayage robe de mariée à Cannes : cabine privée, sélection préparée et conseil depuis 1980. Réservez chez Autour D''Un Soir, 29 bd Carnot.'
+        description: 'Essayage robe de mariée à Cannes : cabine privée, sélection préparée et conseil depuis 1980. Réservez chez Autour D''Un Soir, 27 bd Carnot.'
       costume_mariage_cannes:
         title: Costume mariage Cannes - Smokings & cérémonie
         description: Costumes et smokings de mariage à Cannes. Location et vente en boutique — accessible depuis Nice, Antibes et Monaco.
@@ -104,7 +104,7 @@ fr:
             body_html: "<p>À l'ouverture de la boutique en 1980, les mariées privilégiaient souvent les robes longues classiques, dentelles et traînes marquées. Au fil des décennies, nous avons vu arriver les coupes princesse, les lignes sirène, puis l'essor du style bohème et des mariages en extérieur sur la Côte d'Azur.</p><p>Cette expérience nous permet de vous orienter avec discernement : nous connaissons ce qui photographie bien en lumière méditerranéenne, ce qui convient à une cérémonie en domaine provençal ou à une réception en soirée à Cannes. Chaque collection est choisie pour allier élégance, confort et finitions soignées.</p>"
           boutique:
             title: Une adresse de référence à Cannes
-            body_html: '<p>Notre boutique du 29 boulevard Carnot accueille les mariées en rendez-vous personnalisé. Vous n''êtes pas seule face à un rail de robes : une conseillère prépare une sélection selon vos envies, votre morphologie et la date de votre mariage.</p><p>L''essayage se déroule en cabine spacieuse ; vous pouvez venir accompagnée de proches. Nos couturières assurent ensuite les retouches (longueur, buste, bretelles) pour un tombé impeccable. En savoir plus sur <a href="/fr/la_boutique">notre boutique et notre équipe</a>.</p>'
+            body_html: '<p>Notre boutique du 27 boulevard Carnot accueille les mariées en rendez-vous personnalisé. Vous n''êtes pas seule face à un rail de robes : une conseillère prépare une sélection selon vos envies, votre morphologie et la date de votre mariage.</p><p>L''essayage se déroule en cabine spacieuse ; vous pouvez venir accompagnée de proches. Nos couturières assurent ensuite les retouches (longueur, buste, bretelles) pour un tombé impeccable. En savoir plus sur <a href="/fr/la_boutique">notre boutique et notre équipe</a>.</p>'
           collections:
             title: Des collections pour chaque style
             body_html: "<p>Nous proposons des robes de mariée courtes et longues, en crêpe, satin, tulle ou dentelle. Les silhouettes vont du fourreau épuré à la robe princesse volumineuse, en passant par la sirène et les modèles bohème à manches fluides.</p><p>Toutes nos robes de mariée sont <strong>vendues en boutique</strong> : vous repartez avec une pièce ajustée à votre morphologie, et non une location standardisée. Parcourez une sélection en ligne, puis affinez votre choix lors de l'essayage.</p>"
@@ -117,7 +117,7 @@ fr:
         faq:
           q1:
             question: Où essayer une robe de mariée à Cannes ?
-            answer_html: "<p>Chez Autour D'Un Soir, 29 boulevard Carnot à Cannes. Prenez rendez-vous en ligne ou par téléphone au 04 93 45 17 17.</p>"
+            answer_html: "<p>Chez Autour D'Un Soir, 27 boulevard Carnot à Cannes. Prenez rendez-vous en ligne ou par téléphone au 04 93 45 17 17.</p>"
           q2:
             question: Proposez-vous la location de robes de mariée ?
             answer_html: "<p>Non. Nos robes de mariée sont proposées à la vente uniquement, afin de garantir des retouches définitives et une coupe parfaitement adaptée à votre silhouette.</p>"
@@ -148,7 +148,7 @@ fr:
             body_html: '<p>Une fois la robe choisie, notre atelier planifie les retouches : ourlets, pinces, bretelles, traîne. Un second rendez-vous valide le tombé après travaux.</p><p>Les robes de mariée sont vendues en boutique — pas en location — pour garantir un ajustement définitif. Découvrez nos collections sur la page <a href="/fr/robe-de-mariee-cannes">robe de mariée Cannes</a>.</p>'
           acces:
             title: Venir en boutique
-            body_html: "<p>29 boulevard Carnot, 5 minutes de la gare de Cannes. Parking à proximité. Environ 30 min depuis Nice, 20 min depuis Antibes, 45 min depuis Monaco.</p><p>Réservez votre créneau en ligne ou par téléphone, surtout de mars à septembre, haute saison mariage sur la Riviera.</p>"
+            body_html: "<p>27 boulevard Carnot, 5 minutes de la gare de Cannes. Parking à proximité. Environ 30 min depuis Nice, 20 min depuis Antibes, 45 min depuis Monaco.</p><p>Réservez votre créneau en ligne ou par téléphone, surtout de mars à septembre, haute saison mariage sur la Riviera.</p>"
         faq:
           q1:
             question: Le rendez-vous est-il obligatoire ?
@@ -180,7 +180,7 @@ fr:
             body_html: "<p>Garçons d'honneur et enfants du cortège : costumes adaptés, couleurs harmonisées avec le marié. Location ou vente selon modèles.</p><p>Un essayage groupé famille simplifie les couleurs et les photos officielles.</p>"
           acces:
             title: Boutique à Cannes
-            body_html: "<p>29 boulevard Carnot, proche de la gare. Environ 30 min depuis Nice, 20 min depuis Antibes, 45 min depuis Monaco. Parkings publics à proximité.</p>"
+            body_html: "<p>27 boulevard Carnot, proche de la gare. Environ 30 min depuis Nice, 20 min depuis Antibes, 45 min depuis Monaco. Parkings publics à proximité.</p>"
         faq:
           q1:
             question: Puis-je essayer un costume si je viens de Nice ou Antibes ?
@@ -267,7 +267,7 @@ fr:
             answer_html: <p>Le bohème s'adapte à plusieurs silhouettes grâce aux coupes fluides et aux ceintures. Consultez notre guide <a href="/fr/guides/robe-de-mariee-morphologie">morphologie</a> puis confirmez en cabine.</p>
           q4:
             question: Où essayer une robe de mariée bohème à Cannes ?
-            answer_html: <p>Chez Autour D'Un Soir, 29 boulevard Carnot. Réservez un essayage sur la page <a href="/fr/robe-de-mariee-cannes">robe de mariée Cannes</a>.</p>
+            answer_html: <p>Chez Autour D'Un Soir, 27 boulevard Carnot. Réservez un essayage sur la page <a href="/fr/robe-de-mariee-cannes">robe de mariée Cannes</a>.</p>
       robe_de_mariee_morphologie:
         link_title: Robe de mariée morphologie
         header_title: Quelle robe selon sa morphologie ?
@@ -298,7 +298,7 @@ fr:
             answer_html: "<p>Le volume part de la taille : bien choisi, il structure sans alourdir. La hauteur de ceinture et le décolleté font la différence.</p>"
           q3:
             question: Où essayer selon ma morphologie à Cannes ?
-            answer_html: "<p>Autour D'Un Soir, 29 boulevard Carnot. Réservez un essayage pour une sélection ciblée.</p>"
+            answer_html: "<p>Autour D'Un Soir, 27 boulevard Carnot. Réservez un essayage pour une sélection ciblée.</p>"
       smoking_ou_costume_mariage:
         link_title: Smoking ou costume mariage
         header_title: Smoking ou costume de mariage ?
@@ -326,7 +326,7 @@ fr:
             answer_html: "<p>Si le dress code est black tie, oui. Sinon un costume très habillé foncé peut suffire — vérifiez avec les mariés.</p>"
           q3:
             question: Où essayer smoking et costume à Cannes ?
-            answer_html: "<p>Autour D'Un Soir, 29 boulevard Carnot, sur rendez-vous.</p>"
+            answer_html: "<p>Autour D'Un Soir, 27 boulevard Carnot, sur rendez-vous.</p>"
       robe_invitee_mariage:
         link_title: Robe invitée mariage
         header_title: Tenue invitée de mariage
@@ -354,7 +354,7 @@ fr:
             answer_html: "<p>Selon le dress code et l'heure : cocktail pour un après-midi, longue souvent pour le soir ou black tie.</p>"
           q3:
             question: Où louer une robe d'invitée à Cannes ?
-            answer_html: "<p>Autour D'Un Soir, 29 boulevard Carnot, sur rendez-vous avec essayage.</p>"
+            answer_html: "<p>Autour D'Un Soir, 27 boulevard Carnot, sur rendez-vous avec essayage.</p>"
       tenue_gala_ceremonie:
         link_title: Tenue gala & cérémonie
         header_title: Tenue de gala et cérémonie
@@ -397,7 +397,7 @@ fr:
             body_html: "<p><strong>Louez</strong> si : un seul événement, budget serré, envie de variété. <strong>Achetez</strong> si : événements récurrents, tenue de référence, retouches personnalisées importantes.</p><p>En cas de doute, nos conseillers comparent le coût total (location répétée vs achat) lors de l'essayage.</p>"
           boutique:
             title: Essayage à Cannes
-            body_html: <p>La location et l'achat se font en boutique, pas en ligne — pour valider taille, confort et style. 29 boulevard Carnot.</p><p>Voir <a href="/fr/guides/location-smoking-costume-cannes">location smoking</a> pour les hommes et <a href="/fr/guides/robe-invitee-mariage">robe invitée</a> pour les femmes.</p>
+            body_html: <p>La location et l'achat se font en boutique, pas en ligne — pour valider taille, confort et style. 27 boulevard Carnot.</p><p>Voir <a href="/fr/guides/location-smoking-costume-cannes">location smoking</a> pour les hommes et <a href="/fr/guides/robe-invitee-mariage">robe invitée</a> pour les femmes.</p>
         faq:
           q1:
             question: Peut-on louer en ligne ?
@@ -434,7 +434,7 @@ fr:
             body_html: "<p>La location convient à un événement ponctuel (mariage invité, gala, Festival). L'achat devient intéressant si vous portez régulièrement une tenue de cérémonie. Nos conseillers comparent les deux options sans vous orienter à la légère.</p><p>Depuis 1980 à Cannes, nous habillons mariés, témoins et invités : cette expertise guide nos recommandations sur la coupe, la couleur et les accessoires.</p>"
           acces:
             title: Boutique à Cannes
-            body_html: '<p>29 boulevard Carnot, 5 minutes à pied de la gare de Cannes. En voiture : environ 30 min depuis Nice, 20 min depuis Antibes, 45 min depuis Monaco. Parkings publics à proximité.</p><p>Réservation en boutique avec acompte de 30 % pour confirmer la location. Découvrez aussi nos <a href="/fr/costume-mariage-cannes">costumes de mariage à Cannes</a>.</p>'
+            body_html: '<p>27 boulevard Carnot, 5 minutes à pied de la gare de Cannes. En voiture : environ 30 min depuis Nice, 20 min depuis Antibes, 45 min depuis Monaco. Parkings publics à proximité.</p><p>Réservation en boutique avec acompte de 30 % pour confirmer la location. Découvrez aussi nos <a href="/fr/costume-mariage-cannes">costumes de mariage à Cannes</a>.</p>'
         faq:
           q1:
             question: Peut-on louer un smoking sans l'acheter ?
@@ -469,7 +469,7 @@ fr:
             body_html: "<p>Palette cohérente : métal des bijoux (or ou argent), teinte des chaussures, ton du sac. Deux couleurs dominantes + un accent suffisent souvent. Les accessoires servent à créer un rappel, pas à ajouter une nouvelle idée à chaque détail.</p><p>Pensez aussi à la photographie : les matières brillantes captent les flashs, les pastels très clairs peuvent se rapprocher du blanc, les métaux trop mélangés donnent parfois une impression moins nette. La tenue complète doit rester lisible de près comme de loin.</p>"
           boutique:
             title: Retrouver nos collections à Cannes
-            body_html: "<p>29 boulevard Carnot. Essayage sur place pour finaliser la tenue avant le jour J. Idéal en complément d'une robe choisie chez nous ou apportée pour harmonisation.</p>"
+            body_html: "<p>27 boulevard Carnot. Essayage sur place pour finaliser la tenue avant le jour J. Idéal en complément d'une robe choisie chez nous ou apportée pour harmonisation.</p>"
         faq:
           q1:
             question: Peut-on acheter ou louer chaussures et accessoires ?
@@ -501,7 +501,7 @@ fr:
         faq:
           q1:
             question: Depuis quand Autour D'Un Soir existe-t-il ?
-            answer_html: "<p>L'histoire d'Autour D'Un Soir commence en 1980. Aujourd'hui, la boutique vous accueille au 29 boulevard Carnot à Cannes.</p>"
+            answer_html: "<p>L'histoire d'Autour D'Un Soir commence en 1980. Aujourd'hui, la boutique vous accueille au 27 boulevard Carnot à Cannes.</p>"
           q2:
             question: Quelles activités la boutique propose-t-elle ?
             answer_html: "<p>Robes de mariée (vente), tenues de soirée (location et vente), costumes, costumes d'époque, retouches atelier et prestations pour entreprises et audiovisuel.</p>"
@@ -557,7 +557,7 @@ fr:
             answer_html: "<p>Après le choix du modèle, idéalement 2 à 3 mois avant le mariage pour laisser le temps des passages en atelier.</p>"
           q3:
             question: Où se déroule l'essayage à Cannes ?
-            answer_html: <p>Chez Autour D'Un Soir, 29 boulevard Carnot. Voir la page <a href="/fr/essayage-robe-de-mariee-cannes">essayage robe de mariée</a>.</p>
+            answer_html: <p>Chez Autour D'Un Soir, 27 boulevard Carnot. Voir la page <a href="/fr/essayage-robe-de-mariee-cannes">essayage robe de mariée</a>.</p>
       costumes_epoque_histoire_mode:
         link_title: Costumes d'époque
         header_title: 'Costumes d''époque : voyage dans l''histoire'
@@ -732,4 +732,4 @@ fr:
             answer_html: "<p>Oui, robes de soirée, smokings et accessoires en location ou à l'achat.</p>"
           q3:
             question: Où se trouve la boutique ?
-            answer_html: "<p>29 boulevard Carnot, 06400 Cannes, à quelques minutes du Palais des Festivals.</p>"
+            answer_html: "<p>27 boulevard Carnot, 06400 Cannes, à quelques minutes du Palais des Festivals.</p>"

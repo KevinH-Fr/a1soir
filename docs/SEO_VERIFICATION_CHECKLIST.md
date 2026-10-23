@@ -48,7 +48,7 @@ curl -s https://a1soir.com/fr/produit/louana-robe-longue-bustier-drape-satin-fen
 
 Attendu :
 - `"@type":"Product"`
-- `"sku":"4111"` (id produit, pas ref fournisseur)
+- `"sku":"produit-4111"` (identique au `g:id` du flux Merchant, pas ref fournisseur)
 - `"category"`, `"size":"42"`, `"color"` si renseignés en base
 
 ---

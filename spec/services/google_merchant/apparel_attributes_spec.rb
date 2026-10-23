@@ -84,4 +84,26 @@ RSpec.describe GoogleMerchant::ApparelAttributes do
       expect(described_class.gender_for(produit)).to eq("unisex")
     end
   end
+
+  describe ".google_product_category_for" do
+    it "returns Wedding Dresses for wedding dress categories" do
+      produit = produit_with_categories("robes de mariée longues")
+      expect(described_class.google_product_category_for(produit)).to eq(5329)
+    end
+
+    it "returns Tuxedos for a smoking also tagged costume" do
+      produit = produit_with_categories("costume", "smokings")
+      expect(described_class.google_product_category_for(produit)).to eq(1580)
+    end
+
+    it "returns Dresses for evening dresses" do
+      produit = produit_with_categories("robes courtes")
+      expect(described_class.google_product_category_for(produit)).to eq(2271)
+    end
+
+    it "returns nil when no category is mapped" do
+      produit = Produit.create!(nom: "Sans catégorie", prixvente: 10)
+      expect(described_class.google_product_category_for(produit)).to be_nil
+    end
+  end
 end

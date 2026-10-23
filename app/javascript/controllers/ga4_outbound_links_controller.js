@@ -4,7 +4,7 @@ import { Controller } from "@hotwired/stimulus"
 // l'événement GA4 part directement au clic (si gtag est chargé).
 const OUTBOUND_EVENTS = [
   { selector: 'a[href^="tel:"]', eventName: "phone_call" },
-  { selector: 'a[href^="https://www.google.com/maps/"]', eventName: "get_directions" }
+  { selector: 'a[href^="https://www.google.com/maps/"], a[href^="https://maps.google.com/"]', eventName: "get_directions" }
 ]
 
 export default class extends Controller {

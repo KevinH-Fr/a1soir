@@ -23,7 +23,25 @@ module GoogleMerchant
     KIDS_CATEGORY = "enfants"
     CHAUSSURES_CATEGORY = "chaussures"
 
+    # Google product taxonomy IDs, most specific first: a smoking also tagged
+    # "costume" must resolve to Tuxedos.
+    GOOGLE_PRODUCT_CATEGORIES = [
+      [["robes de mariée courtes", "robes de mariée longues"], 5329], # Wedding Dresses
+      [["smokings"], 1580],                                           # Suits > Tuxedos
+      [["combinaisons"], 5250],                                       # Jumpsuits & Rompers
+      [["ensembles pantalons"], 7313],                                # Outfit Sets
+      [["robes courtes", "robes longues"], 2271],                     # Dresses
+      [["costume", "enfants"], 1594],                                 # Suits
+      [["chaussures"], 187],                                          # Shoes
+      [["accessoires", "accessoires femmes"], 167]                    # Clothing Accessories
+    ].freeze
+
     class << self
+      def google_product_category_for(produit)
+        names = category_names(produit)
+        GOOGLE_PRODUCT_CATEGORIES.find { |categories, _id| (names & categories).any? }&.last
+      end
+
       def age_group_for(produit)
         category_names(produit).include?(KIDS_CATEGORY) ? "kids" : "adult"
       end

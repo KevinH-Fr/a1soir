@@ -9,7 +9,7 @@ module Chatbot
       name: "Autour D'Un Soir",
       phone_display: "04 93 45 17 17",
       phone_link: "+33493451717",
-      address: "27-29 Boulevard Carnot, 06400 Cannes",
+      address: "27 Boulevard Carnot, 06400 Cannes",
       parking: ["Parking Mozart", "Parking St Nicolas", "Parking Vauban"]
     }.freeze
 

@@ -91,6 +91,9 @@ RSpec.describe "Google Merchant feed", type: :request do
     expect(body).to include("<g:color>rouge</g:color>")
     expect(body).to include("<g:gender>female</g:gender>")
     expect(body).to include("<g:age_group>adult</g:age_group>")
+    expect(body).to include("<g:identifier_exists>no</g:identifier_exists>")
+    expect(body).to include("<g:google_product_category>2271</g:google_product_category>")
+    expect(body).not_to include("<g:gtin>")
   end
 
   describe "promotion prices" do

@@ -17,7 +17,7 @@ Checklist pour enrichir les pages du registre `config/seo_pages.yml`. Contenu da
 | RDV | Fortement recommandé (essayage, retouches) |
 | Location | 4 jours standard (retrait J-2, retour J+2) — distinct de l'essayage/retouches (avant retrait) |
 | Réservation location | En boutique, acompte 30 % (aligné FAQ / CGL) |
-| Adresse | 29 boulevard Carnot, 06400 Cannes |
+| Adresse | 27 boulevard Carnot, 06400 Cannes |
 | Fondation | Depuis **1980** |
 
 ## Géo

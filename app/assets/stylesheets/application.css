@@ -869,6 +869,25 @@ footer .bi-facebook:hover {
   border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
+/* Bandeau cookies (z-index 1080) : le bouton panier / réservation reste au-dessus,
+   sur une dernière ligne réservée du bandeau pour ne pas masquer Accepter / Refuser.
+   Limité à ce cas pour que la barre ne passe pas devant les modales (1055). */
+body:has(.public-floating-bar) [data-cookie-consent-target="banner"] {
+  padding-bottom: 4rem;
+}
+
+body:has([data-cookie-consent-target="banner"]:not(.d-none)) .public-floating-bar {
+  z-index: 1085 !important;
+  background: transparent !important;
+  border-top: 0;
+  box-shadow: none !important;
+  pointer-events: none;
+}
+
+body:has([data-cookie-consent-target="banner"]:not(.d-none)) .public-floating-bar__btn {
+  pointer-events: auto;
+}
+
 .public-floating-bar__btn {
   padding-left: 2.5rem;
   padding-right: 2.5rem;
@@ -886,6 +905,10 @@ footer .bi-facebook:hover {
 @media (max-width: 576px) {
   .public-floating-bar {
     padding: 0.5rem 0.75rem !important;
+  }
+
+  body:has(.public-floating-bar) [data-cookie-consent-target="banner"] {
+    padding-bottom: 3.5rem;
   }
 
   .public-floating-bar__btn {

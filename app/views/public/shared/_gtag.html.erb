@@ -25,5 +25,22 @@
 
     gtag('config', 'G-3MGQ64HTFR');
     gtag('config', 'AW-615893168');
+
+    // Les config ci-dessus comptent le premier affichage. GA4 suit déjà les
+    // visites Turbo via l'historique : seul le tag Ads doit revoir l'URL.
+    (function() {
+      var firstLoad = true;
+      document.addEventListener('turbo:load', function() {
+        if (firstLoad) {
+          firstLoad = false;
+          return;
+        }
+        gtag('event', 'page_view', {
+          send_to: 'AW-615893168',
+          page_location: window.location.href,
+          page_title: document.title
+        });
+      });
+    })();
   </script>
 <% end %>

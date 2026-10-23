@@ -25,9 +25,16 @@ RSpec.describe StructuredDataHelper, type: :helper do
 
     it "includes address and geo coordinates" do
       expect(node["telephone"]).to eq("+33493451717")
-      expect(node.dig("address", "streetAddress")).to eq("29 Boulevard Carnot")
+      expect(node.dig("address", "streetAddress")).to eq("27 Boulevard Carnot")
       expect(node.dig("address", "postalCode")).to eq("06400")
       expect(node.dig("geo", "latitude")).to eq(43.5523)
+    end
+
+    it "links the official social profiles" do
+      expect(node["sameAs"]).to eq([
+        "https://www.instagram.com/autourdunsoir/",
+        "https://www.facebook.com/autourdunsoir/"
+      ])
     end
 
     it "includes area served" do
@@ -124,7 +131,7 @@ RSpec.describe StructuredDataHelper, type: :helper do
     it "includes sku, category, color and size" do
       schema = helper.product_schema(produit: produit)
 
-      expect(schema["sku"]).to eq(produit.id.to_s)
+      expect(schema["sku"]).to eq("produit-#{produit.id}")
       expect(schema["category"]).to eq("robes de soirée")
       expect(schema["color"]).to eq("noir")
       expect(schema["size"]).to eq("38")

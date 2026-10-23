@@ -90,6 +90,18 @@ RSpec.describe AnalyticsHelper, type: :helper do
       expect(html.index("gtag('consent'")).to be < html.index("gtag('config'")
     end
 
+    it "sends Turbo page views to the Ads tag only, without a conversion" do
+      allow(helper).to receive(:analytics_consent?).and_return(true)
+
+      html = helper.render(partial: "public/shared/gtag")
+
+      expect(html).to include("turbo:load")
+      expect(html).to include("send_to: 'AW-615893168'")
+      expect(html).not_to include("send_to: 'G-3MGQ64HTFR'")
+      expect(html).not_to include("'conversion'")
+      expect(html).not_to include("AW-615893168/")
+    end
+
     it "renders nothing without analytics consent" do
       allow(helper).to receive(:analytics_consent?).and_return(false)
 

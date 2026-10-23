@@ -229,7 +229,7 @@ en:
       greeting: "Don't forget your upcoming appointment at Autour D'Un Soir"
       appointment_details: "on %{date} for %{name}."
       location_label: "Meeting Location:"
-      location_boutique: "Autour D'un Soir Boutique, 27-29 Boulevard Carnot 06400 Cannes."
+      location_boutique: "Autour D'un Soir Boutique, 27 Boulevard Carnot 06400 Cannes."
       alternative_location: "If you can't make it, please contact us by replying to this email or by phone at 04.93.45.17.17."
 
   commande_email:
@@ -926,7 +926,7 @@ en:
           legal_notices:
             title: "Legal notice"
             publisher_title: "Website publisher"
-            publisher_text_html: "<strong>Autour D'Un Soir</strong><br>Legal form: LLC<br>Share capital: 75,000.00 EUR<br>Registered office: 29 Boulevard Carnot 06400 Cannes<br>Trade register: 880 559 414 R.C.S. Cannes<br>SIRET: 88055941400011<br>VAT number: FR42880559414<br>Email: (%{contact_form_link})<br>Phone: 04 93 45 17 17"
+            publisher_text_html: "<strong>Autour D'Un Soir</strong><br>Legal form: LLC<br>Share capital: 75,000.00 EUR<br>Registered office: 27-29 Boulevard Carnot 06400 Cannes<br>Trade register: 880 559 414 R.C.S. Cannes<br>SIRET: 88055941400011<br>VAT number: FR42880559414<br>Email: (%{contact_form_link})<br>Phone: 04 93 45 17 17"
             publication_director_title: "Publication director"
             publication_director_name: "Sophie Glasman"
             hosting_title: "Hosting"
@@ -1088,7 +1088,7 @@ en:
             a2: { title: "Severability", content: "If any provision of these terms is held invalid, void, or unenforceable, that provision is severable and does not affect validity or enforceability of remaining provisions." }
             a3: { title: "Registered trademarks", content: "Autour D'Un Soir and brands sold on the website are registered trademarks." }
           informations_legales:
-            a1: { title: "Website publisher", content: "The Website is published by Autour D'Un Soir, a limited liability company with share capital of EUR 75,000, registered office at 29 boulevard Carnot, 06400 Cannes, France, registered with the Cannes Trade and Companies Register under number 880 559 414, phone +33 (0)4.93.45.17.17." }
+            a1: { title: "Website publisher", content: "The Website is published by Autour D'Un Soir, a limited liability company with share capital of EUR 75,000, registered office at 27-29 boulevard Carnot, 06400 Cannes, France, registered with the Cannes Trade and Companies Register under number 880 559 414, phone +33 (0)4.93.45.17.17." }
             a2: { title: "Contact", content_html: "You can contact customer service via the Contact section on the online boutique (%{contact_link}). By phone Tuesday to Friday from 10:00 to 12:00 and 15:00 to 19:00, and Saturday from 10:00 to 16:00 at: 04 93 45 17 17." }
       nos_autres_activites:
         header_title: "Our other activities"

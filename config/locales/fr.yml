@@ -439,7 +439,7 @@ fr:
       greeting: "N'oubliez pas votre rendez-vous prochain chez Autour D'Un Soir"
       appointment_details: "le %{date} pour %{name}."
       location_label: "Lieu du RDV :"
-      location_boutique: "Boutique Autour D'un Soir, 27-29 Boulevard Carnot 06400 Cannes."
+      location_boutique: "Boutique Autour D'un Soir, 27 Boulevard Carnot 06400 Cannes."
       alternative_location: "Si vous avez un empêchement, contactez-nous en répondant à ce mail ou par téléphone au 04.93.45.17.17."
 
   commande_email:
@@ -1137,7 +1137,7 @@ fr:
           legal_notices:
             title: "Mentions légales"
             publisher_title: "Éditeur du site"
-            publisher_text_html: "<strong>Autour D'Un Soir</strong><br>Forme juridique : SARL<br>Capital social : 75 000,00 Euros<br>Siège social : 29 Boulevard Carnot 06400 Cannes<br>RCS : 880 559 414 R.C.S. Cannes<br>SIRET : 88055941400011<br>TVA intracommunautaire : FR42880559414<br>Email : (%{contact_form_link})<br>Téléphone : 04 93 45 17 17"
+            publisher_text_html: "<strong>Autour D'Un Soir</strong><br>Forme juridique : SARL<br>Capital social : 75 000,00 Euros<br>Siège social : 27-29 Boulevard Carnot 06400 Cannes<br>RCS : 880 559 414 R.C.S. Cannes<br>SIRET : 88055941400011<br>TVA intracommunautaire : FR42880559414<br>Email : (%{contact_form_link})<br>Téléphone : 04 93 45 17 17"
             publication_director_title: "Directeur de la publication"
             publication_director_name: "Sophie Glasman"
             hosting_title: "Hébergement"
@@ -1269,7 +1269,7 @@ fr:
             a4: { title: "Soin des produits", content: "Nous vous demandons de prendre soin des produits pendant qu'ils sont en votre possession et de nous les retourner à l'adresse indiquée aux présentes, sans retard excessif et au plus tard dans les quatorze (14) jours suivants l'exercice de votre droit de rétractation. Veuillez prendre acte du fait que si vous ne prenez pas soin des produits, ou si vous ne nous les retournez pas en respectant les conditions prévues au présent article, vous ne pourrez pas réclamer le remboursement des produits." }
           garanties:
             a1: { title: "Champ d'application", content: "Vous bénéficiez des garanties énumérées au présent article 12 uniquement dans la mesure où les produits ont été achetés directement sur le Site Web." }
-            a2: { title: "Garantie légale de conformité", content_html: "Vous bénéficiez des garanties légales suivantes : La garantie légale de conformité (articles L.217-4 et suivants du Code de la consommation), Si vos produits sont non conformes (par exemple s'ils ne correspondent pas à la description donnée sur le site ou à votre commande), vous bénéficiez d'un délai de deux ans à compter de la délivrance du bien pour contacter notre Service Clientèle par courriel via le formulaire de contact %{contact_link}, ou par courrier postal à l'adresse suivante : Autour d'Un Soir, 29 Boulevard Carnot, 06400 Cannes, France, et nous retourner les produits non conformes. Nous vous renverrons alors des produits de remplacement, lorsque ceux-ci sont disponibles. Si nous ne sommes pas en mesure de remplacer les produits non conformes dans un délai de trente (30) jours, vous pouvez : demander un remboursement intégral des produits non conformes ou conserver les produits non conformes et nous demander une réduction d'une partie du prix, qui sera déterminé au cas par cas." }
+            a2: { title: "Garantie légale de conformité", content_html: "Vous bénéficiez des garanties légales suivantes : La garantie légale de conformité (articles L.217-4 et suivants du Code de la consommation), Si vos produits sont non conformes (par exemple s'ils ne correspondent pas à la description donnée sur le site ou à votre commande), vous bénéficiez d'un délai de deux ans à compter de la délivrance du bien pour contacter notre Service Clientèle par courriel via le formulaire de contact %{contact_link}, ou par courrier postal à l'adresse suivante : Autour d'Un Soir, 27-29 Boulevard Carnot, 06400 Cannes, France, et nous retourner les produits non conformes. Nous vous renverrons alors des produits de remplacement, lorsque ceux-ci sont disponibles. Si nous ne sommes pas en mesure de remplacer les produits non conformes dans un délai de trente (30) jours, vous pouvez : demander un remboursement intégral des produits non conformes ou conserver les produits non conformes et nous demander une réduction d'une partie du prix, qui sera déterminé au cas par cas." }
             a3: { title: "Preuve du défaut", content: "Vous êtes dispensés de rapporter la preuve de l'existence du défaut de conformité du produit durant les vingt-quatre (24) mois suivant la délivrance du bien." }
             a4: { title: "Indépendance des garanties", content: "Cette garantie légale de conformité s'applique indépendamment de toute garantie commerciale éventuellement souscrite et ainsi que de la nature du produit." }
             a5: { title: "Garantie contre les vices cachés", content: "La garantie légale contre les vices cachés (articles 1641 et suivants du Code civil). Si vous parvenez à prouver le vice caché d'un produit, nous sommes légalement tenus de réparer toutes les conséquences d'un tel vice caché (articles 1641 et suivants du Code civil). Vous pourrez alors choisir entre la résolution de la vente ou une réduction du prix (conformément à l'article 1644 du code civil)." }
@@ -1299,7 +1299,7 @@ fr:
             a2: { title: "Divisibilité des stipulations", content: "Si l'une quelconque des stipulations des présentes CGV est jugée invalide, nulle ou inapplicable pour quelque raison que ce soit, cette stipulation sera considérée comme divisible du reste des CGV et n'affectera pas la validité et l'applicabilité des autres stipulations des CGV." }
             a3: { title: "Marques déposées", content: "Autour D'Un Soir ainsi que les marques qui y sont vendues sur le site sont des marques déposées." }
           informations_legales:
-            a1: { title: "Éditeur du site", content: "Le Site Web est édité par Autour D'Un Soir, Société à responsabilité limitée au capital social de 75 000,00 Euro, ayant son siège social au 29 boulevard Carnot, 06400 Cannes, France, immatriculée au Registre du Commerce et des Sociétés de Cannes sous le numéro 880 559 414, tél. 0033 (0)4.93.45.17.17" }
+            a1: { title: "Éditeur du site", content: "Le Site Web est édité par Autour D'Un Soir, Société à responsabilité limitée au capital social de 75 000,00 Euro, ayant son siège social au 27-29 Boulevard Carnot, 06400 Cannes, France, immatriculée au Registre du Commerce et des Sociétés de Cannes sous le numéro 880 559 414, tél. 0033 (0)4.93.45.17.17" }
             a2: { title: "Contact", content_html: "Vous pouvez écrire à notre service client via la rubrique « Contacts » sur la Boutique en ligne (%{contact_link}). Par téléphone du mardi au vendredi de 10h à 12h et de 15h à 19h et le samedi de 10h à 16h au numéro suivant : 04 93 45 17 17." }
       nos_autres_activites:
         header_title: "Nos autres activités"

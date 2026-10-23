@@ -71,6 +71,10 @@ module GoogleMerchant
               xm.tag!("g:condition", "new")
               FeedFormatting.write_price_tags(xm, produit)
               xm.tag!("g:brand", FEED_BRAND)
+              # Aucun GTIN en base : envoyer g:gtin à la place dès qu'un code fabricant est saisi.
+              xm.tag!("g:identifier_exists", "no")
+              google_category = ApparelAttributes.google_product_category_for(produit)
+              xm.tag!("g:google_product_category", google_category) if google_category
               xm.tag!("g:shipping_weight", self.class.format_shipping_weight_kg(produit.poids.to_i))
               xm.tag!("g:item_group_id", FeedFormatting.item_group_id(produit))
               xm.tag!("g:size", produit.taille.nom) if produit.taille&.nom.present?

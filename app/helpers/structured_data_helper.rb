@@ -1,6 +1,6 @@
 module StructuredDataHelper
   STORE_ADDRESS = {
-    street: "29 Boulevard Carnot",
+    street: "27 Boulevard Carnot",
     locality: "Cannes",
     postal_code: "06400",
     country: "FR"
@@ -12,6 +12,11 @@ module StructuredDataHelper
   }.freeze
 
   STORE_PHONE = "+33493451717".freeze
+
+  STORE_SAME_AS = [
+    "https://www.instagram.com/autourdunsoir/",
+    "https://www.facebook.com/autourdunsoir/"
+  ].freeze
 
   AREA_SERVED = [
     { "@type" => "City", "name" => "Cannes" },
@@ -242,7 +247,7 @@ module StructuredDataHelper
 
     I18n.t(
       key,
-      address: "29 Boulevard Carnot, 06400 Cannes",
+      address: "27 Boulevard Carnot, 06400 Cannes",
       hours: I18n.t("meta_tags.faq_schema.hours_fallback"),
       phone: "04 93 45 17 17",
       contact_link: I18n.t("public.pages.faq.sections.general.q1.contact_form")
@@ -257,7 +262,7 @@ module StructuredDataHelper
   end
 
   def product_schema_sku(produit)
-    produit.id.to_s
+    GoogleMerchant::FeedFormatting.item_id(produit)
   end
 
   def product_schema_category(produit)
@@ -318,7 +323,8 @@ module StructuredDataHelper
         "latitude" => STORE_GEO[:latitude],
         "longitude" => STORE_GEO[:longitude]
       },
-      "areaServed" => AREA_SERVED
+      "areaServed" => AREA_SERVED,
+      "sameAs" => STORE_SAME_AS
     }
 
     google_data = GooglePlacesService.fetch
