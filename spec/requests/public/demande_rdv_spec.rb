@@ -78,10 +78,37 @@ RSpec.describe "Public::DemandeRdv", type: :request do
       follow_redirect!
 
       expect(response.body).to include(event_attr)
+      expect(response.body).to include('data-ga4-event-meta-event-name-value="Schedule"')
+      expect(response.body).to include("Rendez-vous boutique")
+      expect(response.body).to include("appointment")
       expect(response.body).not_to include("visite-fr@example.com")
 
       get "/fr/rdv"
       expect(response.body).not_to include(event_attr)
+      expect(response.body).not_to include('data-ga4-event-meta-event-name-value="Schedule"')
+    end
+
+    it "envoie Schedule pour une demande cabine" do
+      produit = Produit.create!(
+        nom: "Robe cabine meta",
+        prixvente: 50,
+        eshop: true,
+        today_availability: true,
+        quantite: 1
+      )
+      post "/fr/cabine/add_product/#{produit.id}",
+           headers: { "Accept" => "text/vnd.turbo-stream.html, text/html" }
+
+      post_demande("fr", "from_cabine" => "1")
+      follow_redirect!
+
+      expect(response.body).to include(event_attr)
+      expect(response.body).to include('data-ga4-event-meta-event-name-value="Schedule"')
+      expect(response.body).to include("Rendez-vous boutique")
+
+      get "/fr/cabine_essayage"
+      expect(response.body).not_to include(event_attr)
+      expect(response.body).not_to include('data-ga4-event-meta-event-name-value="Schedule"')
     end
 
     it "n'est pas rendu si la demande est invalide" do

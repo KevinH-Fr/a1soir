@@ -289,6 +289,18 @@ RSpec.describe AnalyticsHelper, type: :helper do
     end
   end
 
+  describe "#meta_appointment_track" do
+    it "maps the boutique appointment to Meta Schedule" do
+      expect(helper.meta_appointment_track).to eq(
+        event_name: "Schedule",
+        payload: {
+          content_name: "Rendez-vous boutique",
+          content_category: "appointment"
+        }
+      )
+    end
+  end
+
   describe "#meta_pixel_track" do
     it "maps a product view to ViewContent with the catalogue id" do
       track = helper.meta_pixel_track("view_item", helper.ga4_view_item_payload(produit))
@@ -405,6 +417,28 @@ RSpec.describe AnalyticsHelper, type: :helper do
       expect(html).to include("produit-#{produit.id}")
       expect(html).to include("Veste costume 441100/82")
       expect(html).to include('data-ga4-event-tiktok-event-name-value="ViewContent"')
+    end
+
+    it "attaches Meta Schedule for an appointment request" do
+      html = helper.render(
+        partial: "public/shared/ga4_event",
+        locals: { event_name: "request_appointment", payload: {} }
+      )
+
+      expect(html).to include('data-ga4-event-event-name-value="request_appointment"')
+      expect(html).to include('data-ga4-event-meta-event-name-value="Schedule"')
+      expect(html).to include("Rendez-vous boutique")
+      expect(html).to include("appointment")
+    end
+
+    it "leaves other form events without a Meta event" do
+      html = helper.render(
+        partial: "public/shared/ga4_event",
+        locals: { event_name: "message_send", payload: {} }
+      )
+
+      expect(html).to include('data-ga4-event-event-name-value="message_send"')
+      expect(html).not_to include("Schedule")
     end
 
     it "renders nothing without analytics consent" do

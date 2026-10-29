@@ -148,6 +148,18 @@ module AnalyticsHelper
     event_name
   end
 
+  # Conversion Meta « Planifier », envoyée avec GA4 request_appointment
+  # dès que le client enregistre sa demande (boutique ou cabine).
+  def meta_appointment_track
+    {
+      event_name: "Schedule",
+      payload: {
+        content_name: "Rendez-vous boutique",
+        content_category: "appointment"
+      }
+    }
+  end
+
   # Même identifiant que g:id du flux catalogue (produit-123).
   def meta_pixel_track(ga4_event_name, payload)
     event_name = META_PIXEL_EVENTS[ga4_event_name.to_s]

@@ -1,6 +1,7 @@
 <% if analytics_consent? %>
 <% Rails.logger.info("[GA4] #{event_name} envoyé au navigateur #{payload.to_json}") if Rails.env.development? %>
-<% meta = meta_pixel_track(event_name, payload) %>
+<% meta = local_assigns[:meta].presence || meta_pixel_track(event_name, payload) %>
+<% meta = meta_appointment_track if meta.blank? && event_name == "request_appointment" %>
 <% tiktok = tiktok_pixel_track(event_name, payload) %>
 <% data = {
   controller: "ga4-event",
