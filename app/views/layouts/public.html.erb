@@ -19,6 +19,7 @@
     </script>
     <%# Données structurées spécifiques à certaines pages (WebPage, BreadcrumbList, etc.) %>
     <%= yield :structured_data %>
+    <meta name="facebook-domain-verification" content="2qi5qnv6b3a8eqf4ey43w98eyvhj1x">
     <!-- Open Graph -->
     <% og_image = content_for?(:og_image) ? yield(:og_image) : default_og_image_url %>
     <meta property="og:site_name" content="Autour D'Un Soir">
