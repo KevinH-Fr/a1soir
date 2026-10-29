@@ -143,6 +143,7 @@
                 <div class="d-grid gap-2">
                   <% ga4_checkout_payload = analytics_consent? ? ga4_begin_checkout_payload(@cart) : nil %>
                   <% meta_checkout = ga4_checkout_payload.present? ? meta_pixel_track("begin_checkout", ga4_checkout_payload) : nil %>
+                  <% tiktok_checkout = ga4_checkout_payload.present? ? tiktok_pixel_track("begin_checkout", ga4_checkout_payload) : nil %>
                   <% checkout_data = { turbo: false } %>
                   <% if ga4_checkout_payload.present? %>
                     <% checkout_data[:controller] = "ga4-event" %>
@@ -153,6 +154,10 @@
                     <% if meta_checkout.present? %>
                       <% checkout_data[:ga4_event_meta_event_name_value] = meta_checkout[:event_name] %>
                       <% checkout_data[:ga4_event_meta_payload_value] = meta_checkout[:payload] %>
+                    <% end %>
+                    <% if tiktok_checkout.present? %>
+                      <% checkout_data[:ga4_event_tiktok_event_name_value] = tiktok_checkout[:event_name] %>
+                      <% checkout_data[:ga4_event_tiktok_payload_value] = tiktok_checkout[:payload] %>
                     <% end %>
                   <% end %>
                   <%= form_with url: stripe_payments_path, method: :post, class: "m-0", data: checkout_data do |f| %>

@@ -1,6 +1,7 @@
 <% if analytics_consent? %>
 <% Rails.logger.info("[GA4] #{event_name} envoyé au navigateur #{payload.to_json}") if Rails.env.development? %>
 <% meta = meta_pixel_track(event_name, payload) %>
+<% tiktok = tiktok_pixel_track(event_name, payload) %>
 <% data = {
   controller: "ga4-event",
   ga4_event_event_name_value: event_name,
@@ -10,6 +11,11 @@
   <% data[:ga4_event_meta_event_name_value] = meta[:event_name] %>
   <% data[:ga4_event_meta_payload_value] = meta[:payload] %>
   <% data[:ga4_event_meta_event_id_value] = meta[:event_id] if meta[:event_id].present? %>
+<% end %>
+<% if tiktok %>
+  <% data[:ga4_event_tiktok_event_name_value] = tiktok[:event_name] %>
+  <% data[:ga4_event_tiktok_payload_value] = tiktok[:payload] %>
+  <% data[:ga4_event_tiktok_event_id_value] = tiktok[:event_id] if tiktok[:event_id].present? %>
 <% end %>
 <%= tag.div(data: data) %>
 <% end %>

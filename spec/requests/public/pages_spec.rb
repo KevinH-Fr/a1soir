@@ -67,6 +67,7 @@ RSpec.describe "Public::Pages", type: :request do
 
         expect(response.body).to include("submit-&gt;ga4-event#track")
         expect(response.body).to include('data-ga4-event-meta-event-name-value="InitiateCheckout"')
+        expect(response.body).to include('data-ga4-event-tiktok-event-name-value="InitiateCheckout"')
         expect(response.body).to include('data-ga4-event-track-on-connect-value="false"')
         expect(response.body).to include("produit-#{produit_a.id}")
         expect(response.body).to include("produit-#{produit_b.id}")

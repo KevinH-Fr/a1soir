@@ -79,6 +79,33 @@ RSpec.describe AnalyticsHelper, type: :helper do
     end
   end
 
+  describe "rendering _tiktok_pixel partial" do
+    it "loads the TikTok pixel and tracks page views on turbo visits" do
+      allow(helper).to receive(:analytics_consent?).and_return(true)
+
+      html = helper.render(partial: "public/shared/tiktok_pixel")
+
+      expect(html).to include("https://analytics.tiktok.com/i18n/pixel/events.js")
+      expect(html).to include("ttq.load('DBHORHJC77U8I4RJ1L3G')")
+      expect(html).to include("ttq.page()")
+      expect(html).to include("turbo:load")
+      expect(html.index("ttq.load")).to be < html.index("turbo:load")
+    end
+
+    it "renders nothing without analytics consent" do
+      allow(helper).to receive(:analytics_consent?).and_return(false)
+
+      expect(helper.render(partial: "public/shared/tiktok_pixel").strip).to be_empty
+    end
+
+    it "renders nothing in development" do
+      allow(helper).to receive(:analytics_consent?).and_return(true)
+      allow(Rails.env).to receive(:development?).and_return(true)
+
+      expect(helper.render(partial: "public/shared/tiktok_pixel").strip).to be_empty
+    end
+  end
+
   describe "rendering _gtag partial" do
     it "declares Consent Mode before configuring the tags" do
       allow(helper).to receive(:analytics_consent?).and_return(true)
@@ -308,6 +335,59 @@ RSpec.describe AnalyticsHelper, type: :helper do
     end
   end
 
+  describe "#tiktok_pixel_track" do
+    it "maps a product view to ViewContent with the catalogue id" do
+      track = helper.tiktok_pixel_track("view_item", helper.ga4_view_item_payload(produit))
+
+      expect(track[:event_name]).to eq("ViewContent")
+      expect(track[:event_id]).to be_nil
+      expect(track[:payload]).to include(
+        content_id: "produit-#{produit.id}",
+        content_type: "product",
+        content_name: produit.nom,
+        value: 695.0,
+        currency: "EUR",
+        quantity: 1,
+        price: 695.0
+      )
+      expect(track[:payload][:contents].first).to include(
+        content_id: "produit-#{produit.id}",
+        content_type: "product",
+        content_name: produit.nom,
+        quantity: 1,
+        price: 695.0
+      )
+    end
+
+    it "maps cart, cabine and checkout events" do
+      expect(helper.tiktok_pixel_track("add_to_cart", helper.ga4_add_to_cart_payload(produit))[:event_name]).to eq("AddToCart")
+      expect(helper.tiktok_pixel_track("add_to_wishlist", helper.ga4_add_to_wishlist_payload(produit))[:event_name]).to eq("AddToWishlist")
+
+      checkout = helper.tiktok_pixel_track("begin_checkout", helper.ga4_begin_checkout_payload([produit]))
+      expect(checkout[:event_name]).to eq("InitiateCheckout")
+      expect(checkout[:payload][:quantity]).to eq(1)
+    end
+
+    it "maps a purchase to Purchase and keeps the order id" do
+      payload = {
+        transaction_id: "CMD-1",
+        currency: "EUR",
+        value: 695.0,
+        items: [helper.ga4_item_from_produit(produit)]
+      }
+
+      track = helper.tiktok_pixel_track("purchase", payload)
+
+      expect(track[:event_name]).to eq("Purchase")
+      expect(track[:event_id]).to eq("CMD-1")
+      expect(track[:payload][:content_id]).to eq("produit-#{produit.id}")
+    end
+
+    it "ignores events that are not catalogue events" do
+      expect(helper.tiktok_pixel_track("message_send", { currency: "EUR", value: 0, items: [] })).to be_nil
+    end
+  end
+
   describe "rendering _ga4_event partial" do
     before do
       allow(helper).to receive(:analytics_consent?).and_return(true)
@@ -324,6 +404,7 @@ RSpec.describe AnalyticsHelper, type: :helper do
       expect(html).to include("ViewContent")
       expect(html).to include("produit-#{produit.id}")
       expect(html).to include("Veste costume 441100/82")
+      expect(html).to include('data-ga4-event-tiktok-event-name-value="ViewContent"')
     end
 
     it "renders nothing without analytics consent" do

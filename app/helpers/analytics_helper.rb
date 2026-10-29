@@ -11,6 +11,13 @@ module AnalyticsHelper
     "begin_checkout" => "InitiateCheckout",
     "purchase" => "Purchase"
   }.freeze
+  TIKTOK_PIXEL_EVENTS = {
+    "view_item" => "ViewContent",
+    "add_to_cart" => "AddToCart",
+    "add_to_wishlist" => "AddToWishlist",
+    "begin_checkout" => "InitiateCheckout",
+    "purchase" => "Purchase"
+  }.freeze
 
   def analytics_consent?
     cookies[:analytics_consent] == "yes"
@@ -172,6 +179,37 @@ module AnalyticsHelper
     }
   end
 
+  # Mêmes événements catalogue que Meta. Depuis mars 2025 TikTok nomme l'achat Purchase
+  # (CompletePayment reste accepté, mais converti côté TikTok).
+  # content_id reprend g:id du flux catalogue (produit-123).
+  def tiktok_pixel_track(ga4_event_name, payload)
+    event_name = TIKTOK_PIXEL_EVENTS[ga4_event_name.to_s]
+    return nil if event_name.blank? || payload.blank?
+
+    items = Array(payload[:items] || payload["items"])
+    contents = items.filter_map { |item| tiktok_pixel_content(item) }
+    return nil if contents.empty?
+
+    tiktok_payload = {
+      contents: contents,
+      content_type: "product",
+      value: payload[:value] || payload["value"],
+      currency: payload[:currency] || payload["currency"] || GA4_CURRENCY,
+      quantity: contents.sum { |content| content[:quantity] }
+    }
+    if contents.one?
+      tiktok_payload[:content_id] = contents.first[:content_id]
+      tiktok_payload[:content_name] = contents.first[:content_name] if contents.first[:content_name].present?
+      tiktok_payload[:price] = contents.first[:price]
+    end
+
+    {
+      event_name: event_name,
+      payload: tiktok_payload,
+      event_id: (payload[:transaction_id] || payload["transaction_id"]).presence
+    }
+  end
+
   def ga4_event_turbo_stream(event_name, payload)
     return if payload.blank?
 
@@ -191,6 +229,21 @@ module AnalyticsHelper
   rescue StandardError => e
     Rails.logger.warn("[GA4] #{context} skipped: #{e.class} #{e.message}")
     nil
+  end
+
+  def tiktok_pixel_content(item)
+    id = item[:item_id] || item["item_id"]
+    return nil if id.blank?
+
+    content = {
+      content_id: id,
+      content_type: "product",
+      quantity: (item[:quantity] || item["quantity"] || 1).to_i,
+      price: (item[:price] || item["price"]).to_f
+    }
+    name = item[:item_name] || item["item_name"]
+    content[:content_name] = name if name.present?
+    content
   end
 
   def meta_pixel_content(item)

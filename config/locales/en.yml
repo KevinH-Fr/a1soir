@@ -972,7 +972,7 @@ en:
             data_retention: "Data retention"
             data_retention_text: "Your data is retained for the period necessary for the purposes for which it is processed, and in accordance with legal retention obligations."
             data_transfer: "Data transfer"
-            data_transfer_text: "Your data may be shared with our service providers (payment, delivery, audience measurement, advertising) for the performance of our services. Audience measurement via Google and advertising via Meta may involve processing in the United States, covered by standard contractual clauses and the EU–US Data Privacy Framework."
+            data_transfer_text: "Your data may be shared with our service providers (payment, delivery, audience measurement, advertising) for the performance of our services. Audience measurement via Google and advertising via Meta and TikTok may involve processing in the United States, covered by standard contractual clauses and the EU–US Data Privacy Framework."
           cookies:
             title: "Cookies Policy"
             what_is_cookie: "What is a cookie?"
@@ -985,7 +985,7 @@ en:
             functionality_title: "Functionality cookies"
             functionality_text: "Remember your preferences (language, region, display)"
             advertising_title: "Advertising cookies"
-            advertising_text: "Meta Pixel, only with your consent, to measure ad performance and show relevant ads. Meta may process this data in the United States."
+            advertising_text: "Meta Pixel and the TikTok pixel, only with your consent, to measure ad performance and show relevant ads. Meta and TikTok may process this data in the United States."
             management: "Cookie management"
             management_text: "You can change your cookie preferences at any time by clicking the \"Manage cookies\" button at the bottom of the page. You can also configure your browser to reject all cookies or to alert you when a cookie is sent."
             warning: "Warning: refusing essential cookies may affect website functionality"
