@@ -62,6 +62,14 @@ module GoogleMerchant
       "#{ApplicationHelper::CLOUDINARY_BASE_IMAGE_URL}/q_auto,f_auto,w_1200/#{blob.key}"
     end
 
+    # TikTok coupe g:additional_image_link à la première virgule. Les transformations
+    # Cloudinary sont donc chaînées par des slashs. g:image_link garde les virgules.
+    def additional_image_link_url(blob)
+      return nil unless blob
+
+      "#{ApplicationHelper::CLOUDINARY_BASE_IMAGE_URL}/q_auto/f_auto/w_1200/#{blob.key}"
+    end
+
     def additional_image_link_urls(produit)
       return [] unless produit.images.attached?
 
@@ -70,7 +78,7 @@ module GoogleMerchant
         .uniq(&:key)
         .reject { |blob| blob.key == primary_key }
         .first(MAX_ADDITIONAL_IMAGES)
-        .map { |blob| image_link_url(blob) }
+        .map { |blob| additional_image_link_url(blob) }
     end
 
     def video_link_url(produit)

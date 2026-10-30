@@ -233,7 +233,11 @@ RSpec.describe "Google Merchant feed", type: :request do
       get "/google_merchant_feed.xml"
       item = response.body[%r{<item>\s*<g:id>produit-#{produit_with_media.id}</g:id>.*?</item>}m]
 
-      expect(item).to match(%r{<g:additional_image_link>https://res\.cloudinary\.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/[^<]+</g:additional_image_link>})
+      expect(item).to match(%r{<g:additional_image_link>https://res\.cloudinary\.com/dukne3lhz/image/upload/q_auto/f_auto/w_1200/[^<]+</g:additional_image_link>})
+      expect(item).to match(%r{<g:image_link>https://res\.cloudinary\.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/[^<]+</g:image_link>})
+      additional_links = item.scan(%r{<g:additional_image_link>[^<]+</g:additional_image_link>})
+      expect(additional_links).not_to be_empty
+      expect(additional_links.join).not_to include(",")
       expect(item).to match(%r{<g:video_link>https://res\.cloudinary\.com/dukne3lhz/video/upload/q_auto,w_1200,f_mp4/[^<]+\.mp4</g:video_link>})
     end
 

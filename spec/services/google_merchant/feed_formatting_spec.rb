@@ -166,9 +166,10 @@ RSpec.describe GoogleMerchant::FeedFormatting do
         urls = described_class.additional_image_link_urls(produit)
 
         expect(urls).to eq([
-          "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/gallery-a",
-          "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/gallery-b"
+          "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto/f_auto/w_1200/gallery-a",
+          "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto/f_auto/w_1200/gallery-b"
         ])
+        expect(urls.join).not_to include(",")
       end
 
       it "excludes blobs with the same key as image1" do
@@ -178,7 +179,7 @@ RSpec.describe GoogleMerchant::FeedFormatting do
         urls = described_class.additional_image_link_urls(produit)
 
         expect(urls).to eq([
-          "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/gallery-a"
+          "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto/f_auto/w_1200/gallery-a"
         ])
       end
     end
