@@ -3,6 +3,7 @@
 <% meta = local_assigns[:meta].presence || meta_pixel_track(event_name, payload) %>
 <% meta = meta_appointment_track if meta.blank? && event_name == "request_appointment" %>
 <% tiktok = tiktok_pixel_track(event_name, payload) %>
+<% tiktok = tiktok_appointment_track if tiktok.blank? && event_name == "request_appointment" %>
 <% data = {
   controller: "ga4-event",
   ga4_event_event_name_value: event_name,

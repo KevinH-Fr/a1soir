@@ -79,6 +79,7 @@ RSpec.describe "Public::DemandeRdv", type: :request do
 
       expect(response.body).to include(event_attr)
       expect(response.body).to include('data-ga4-event-meta-event-name-value="Schedule"')
+      expect(response.body).to include('data-ga4-event-tiktok-event-name-value="Schedule"')
       expect(response.body).to include("Rendez-vous boutique")
       expect(response.body).to include("appointment")
       expect(response.body).not_to include("visite-fr@example.com")
@@ -86,6 +87,7 @@ RSpec.describe "Public::DemandeRdv", type: :request do
       get "/fr/rdv"
       expect(response.body).not_to include(event_attr)
       expect(response.body).not_to include('data-ga4-event-meta-event-name-value="Schedule"')
+      expect(response.body).not_to include('data-ga4-event-tiktok-event-name-value="Schedule"')
     end
 
     it "envoie Schedule pour une demande cabine" do
@@ -104,11 +106,13 @@ RSpec.describe "Public::DemandeRdv", type: :request do
 
       expect(response.body).to include(event_attr)
       expect(response.body).to include('data-ga4-event-meta-event-name-value="Schedule"')
+      expect(response.body).to include('data-ga4-event-tiktok-event-name-value="Schedule"')
       expect(response.body).to include("Rendez-vous boutique")
 
       get "/fr/cabine_essayage"
       expect(response.body).not_to include(event_attr)
       expect(response.body).not_to include('data-ga4-event-meta-event-name-value="Schedule"')
+      expect(response.body).not_to include('data-ga4-event-tiktok-event-name-value="Schedule"')
     end
 
     it "n'est pas rendu si la demande est invalide" do

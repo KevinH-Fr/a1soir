@@ -301,6 +301,18 @@ RSpec.describe AnalyticsHelper, type: :helper do
     end
   end
 
+  describe "#tiktok_appointment_track" do
+    it "maps the boutique appointment to TikTok Schedule" do
+      expect(helper.tiktok_appointment_track).to eq(
+        event_name: "Schedule",
+        payload: {
+          content_name: "Rendez-vous boutique",
+          description: "appointment"
+        }
+      )
+    end
+  end
+
   describe "#meta_pixel_track" do
     it "maps a product view to ViewContent with the catalogue id" do
       track = helper.meta_pixel_track("view_item", helper.ga4_view_item_payload(produit))
@@ -427,6 +439,7 @@ RSpec.describe AnalyticsHelper, type: :helper do
 
       expect(html).to include('data-ga4-event-event-name-value="request_appointment"')
       expect(html).to include('data-ga4-event-meta-event-name-value="Schedule"')
+      expect(html).to include('data-ga4-event-tiktok-event-name-value="Schedule"')
       expect(html).to include("Rendez-vous boutique")
       expect(html).to include("appointment")
     end

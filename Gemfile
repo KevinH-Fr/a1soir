@@ -69,6 +69,7 @@ gem 'stringio'
 
 group :development do
   gem 'derailed_benchmarks'
+  gem 'rubyXL', require: false
 end
 
 #gem 'scout_apm'

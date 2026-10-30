@@ -160,6 +160,17 @@ module AnalyticsHelper
     }
   end
 
+  # Même conversion côté TikTok : événement standard Schedule, sans produit ni prix.
+  def tiktok_appointment_track
+    {
+      event_name: "Schedule",
+      payload: {
+        content_name: "Rendez-vous boutique",
+        description: "appointment"
+      }
+    }
+  end
+
   # Même identifiant que g:id du flux catalogue (produit-123).
   def meta_pixel_track(ga4_event_name, payload)
     event_name = META_PIXEL_EVENTS[ga4_event_name.to_s]
