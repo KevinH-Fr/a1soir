@@ -191,9 +191,12 @@ RSpec.describe GoogleMerchant::FeedFormatting do
       video1 = double(attached?: true, blob: blob)
       produit = double(video1: video1)
 
-      expect(described_class.video_link_url(produit)).to eq(
-        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_1200,f_mp4/video-key.mp4"
+      url = described_class.video_link_url(produit)
+
+      expect(url).to eq(
+        "https://res.cloudinary.com/dukne3lhz/video/upload/q_auto/w_1200/f_mp4/video-key.mp4"
       )
+      expect(url).not_to include(",")
     end
 
     it "returns nil when video1 is not attached" do

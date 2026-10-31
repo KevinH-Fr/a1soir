@@ -238,7 +238,8 @@ RSpec.describe "Google Merchant feed", type: :request do
       additional_links = item.scan(%r{<g:additional_image_link>[^<]+</g:additional_image_link>})
       expect(additional_links).not_to be_empty
       expect(additional_links.join).not_to include(",")
-      expect(item).to match(%r{<g:video_link>https://res\.cloudinary\.com/dukne3lhz/video/upload/q_auto,w_1200,f_mp4/[^<]+\.mp4</g:video_link>})
+      expect(item).to match(%r{<g:video_link>https://res\.cloudinary\.com/dukne3lhz/video/upload/q_auto/w_1200/f_mp4/[^<]+\.mp4</g:video_link>})
+      expect(item[%r{<g:video_link>[^<]+</g:video_link>}]).not_to include(",")
     end
 
     it "does not export media tags for products without gallery or video" do

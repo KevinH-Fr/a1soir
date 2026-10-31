@@ -70,14 +70,18 @@ Exemple XML :
 
 ```xml
 <g:image_link>https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/primary-key</g:image_link>
-<g:additional_image_link>https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/gallery-key</g:additional_image_link>
-<g:video_link>https://res.cloudinary.com/dukne3lhz/video/upload/q_auto,w_1200,f_mp4/video-key.mp4</g:video_link>
+<g:additional_image_link>https://res.cloudinary.com/dukne3lhz/image/upload/q_auto/f_auto/w_1200/gallery-key</g:additional_image_link>
+<g:video_link>https://res.cloudinary.com/dukne3lhz/video/upload/q_auto/w_1200/f_mp4/video-key.mp4</g:video_link>
 ```
 
 Les URLs image reprennent la meme transformation que le site (`q_auto,f_auto,w_1200`).
-La video utilise `q_auto,w_1200,f_mp4` + extension `.mp4` (format MP4 attendu par Google
+La video utilise `q_auto/w_1200/f_mp4` + extension `.mp4` (format MP4 attendu par Google
 Merchant, plafond 1200 px comme les pages SEO produit), distinct du helper carousel site
 (`f_auto`).
+
+TikTok lit ce meme flux et coupe `g:additional_image_link` et `g:video_link` a la premiere
+virgule. Ces deux champs enchainent donc les transformations Cloudinary avec des slashs.
+`g:image_link` garde les virgules.
 
 Aucun filtre applicatif sur duree, resolution ou format : si le media est attache, il est
 exporte. Google Merchant Center valide ensuite la conformite (rejet eventuel sans impact sur la

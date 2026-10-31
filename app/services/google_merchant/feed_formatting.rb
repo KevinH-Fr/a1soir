@@ -81,11 +81,12 @@ module GoogleMerchant
         .map { |blob| additional_image_link_url(blob) }
     end
 
+    # Même contrainte TikTok que g:additional_image_link : pas de virgule dans l'URL.
     def video_link_url(produit)
       return nil unless produit.video1.attached?
 
       key = produit.video1.blob.key
-      "#{ApplicationHelper::CLOUDINARY_BASE_VIDEO_URL}/q_auto,w_1200,f_mp4/#{key}.mp4"
+      "#{ApplicationHelper::CLOUDINARY_BASE_VIDEO_URL}/q_auto/w_1200/f_mp4/#{key}.mp4"
     end
   end
 end
