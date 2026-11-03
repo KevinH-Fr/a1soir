@@ -9,6 +9,9 @@ application.register("autohide", AutohideController)
 import BoutiqueTextScrollController from "./boutique_text_scroll_controller"
 application.register("boutique-text-scroll", BoutiqueTextScrollController)
 
+import CabineStepsController from "./cabine_steps_controller"
+application.register("cabine-steps", CabineStepsController)
+
 import CalendarPickerController from "./calendar_picker_controller"
 application.register("calendar-picker", CalendarPickerController)
 

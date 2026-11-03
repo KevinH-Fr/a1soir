@@ -108,6 +108,7 @@
   font-size: 0.82rem;
   letter-spacing: 0.02em;
   color: rgba(255, 255, 255, 0.72);
+  opacity: 0;
 }
 
 .home-cabine-encart__step-num {
@@ -120,12 +121,92 @@
   font-size: 0.7rem;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.9);
+  transform-origin: center;
 }
 
 .home-cabine-encart__step-sep {
   width: 1.25rem;
   height: 1px;
   background: rgba(255, 255, 255, 0.28);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+@keyframes cabine-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cabine-num-pop {
+  0% {
+    transform: scale(0.45);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+
+  60% {
+    transform: scale(1.22);
+    box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.16);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+@keyframes cabine-sep-draw {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+.home-cabine-encart__steps.is-steps-in .home-cabine-encart__step {
+  animation: cabine-step-in 0.55s ease both;
+}
+
+.home-cabine-encart__steps.is-steps-in .home-cabine-encart__step-num {
+  animation: cabine-num-pop 0.7s ease both;
+}
+
+.home-cabine-encart__steps.is-steps-in .home-cabine-encart__step:nth-child(1),
+.home-cabine-encart__steps.is-steps-in .home-cabine-encart__step:nth-child(1) .home-cabine-encart__step-num {
+  animation-delay: 0.12s;
+}
+
+.home-cabine-encart__steps.is-steps-in .home-cabine-encart__step:nth-child(3),
+.home-cabine-encart__steps.is-steps-in .home-cabine-encart__step:nth-child(3) .home-cabine-encart__step-num {
+  animation-delay: 0.48s;
+}
+
+.home-cabine-encart__steps.is-steps-in .home-cabine-encart__step:nth-child(5),
+.home-cabine-encart__steps.is-steps-in .home-cabine-encart__step:nth-child(5) .home-cabine-encart__step-num {
+  animation-delay: 0.84s;
+}
+
+.home-cabine-encart__steps.is-steps-in .home-cabine-encart__step-sep {
+  animation: cabine-sep-draw 0.4s ease both;
+}
+
+.home-cabine-encart__steps.is-steps-in .home-cabine-encart__step-sep:nth-child(2) {
+  animation-delay: 0.34s;
+}
+
+.home-cabine-encart__steps.is-steps-in .home-cabine-encart__step-sep:nth-child(4) {
+  animation-delay: 0.7s;
 }
 
 .home-cabine-encart__cta {
@@ -145,5 +226,17 @@
 
   .home-cabine-encart__card:hover {
     transform: none;
+  }
+
+  .home-cabine-encart__step,
+  .home-cabine-encart__step-num,
+  .home-cabine-encart__step-sep,
+  .home-cabine-encart__steps.is-steps-in .home-cabine-encart__step,
+  .home-cabine-encart__steps.is-steps-in .home-cabine-encart__step-num,
+  .home-cabine-encart__steps.is-steps-in .home-cabine-encart__step-sep {
+    opacity: 1;
+    transform: none;
+    box-shadow: none;
+    animation: none;
   }
 }

@@ -195,7 +195,7 @@ module PagesHelper
     card_classes = ["collection-card", "position-relative", "overflow-hidden"]
     card_classes << "collection-card--category" if category_layout
 
-    link_to url, class: "text-decoration-none collection-card-link" do
+    content_tag :div, class: "collection-card-link" do
       content_tag :div, class: card_classes.join(" "), style: "height: #{height}px;",
                         data: { controller: "collection-card-reveal" } do
         # Image de fond (absolute pour remplir le cadre sans déformer le ratio)
@@ -243,8 +243,8 @@ module PagesHelper
         end
 
         cta = unless category_layout
-          content_tag :span, class: "cc-cta",
-                                    data: { collection_card_reveal_target: "cta" } do
+          link_to url, class: "cc-cta",
+                       data: { collection_card_reveal_target: "cta" } do
             content_tag(:span, t("public.helpers.collection_card.discover"), class: "cc-cta-label") +
             content_tag(:span, " \u2192".html_safe, class: "cc-cta-arrow")
           end
@@ -267,7 +267,9 @@ module PagesHelper
           end
         end
 
-        image_section + overlay
+        stretched_link = link_to("", url, class: "collection-card-stretched-link", aria: { label: title })
+
+        image_section + stretched_link + overlay
       end
     end
   end
@@ -276,10 +278,7 @@ module PagesHelper
     label, item_url = collection_card_item_link_data(item)
 
     if item_url.present?
-      content_tag(:span, label,
-        class: "cc-tag cc-tag--link",
-        role: "link",
-        data: { url: item_url, action: "click->collection-card-reveal#visitTag" })
+      link_to(label, item_url, class: "cc-tag cc-tag--link")
     else
       content_tag(:span, label, class: "cc-tag")
     end
@@ -481,7 +480,7 @@ module PagesHelper
 
   # Helper pour construire les URLs de filtres produits
   # category_names peut être un String ou un Array de Strings
-  def produits_filter_url(category_names: nil, taille_name: nil, couleur_id: nil, prixmax: nil, type: nil, search: nil)
+  def produits_filter_url(category_names: nil, taille_name: nil, couleur_id: nil, prixmax: nil, type: nil, type_produit_name: nil, search: nil)
     # Gérer à la fois un string et un tableau de strings
     category_names = [category_names] if category_names.is_a?(String)
     
@@ -501,6 +500,10 @@ module PagesHelper
     filter_params[:couleur] = couleur_id if couleur_id
     filter_params[:prixmax] = prixmax if prixmax
     filter_params[:type] = type if type
+    if type_produit_name.present?
+      type_produit_id = TypeProduit.find_by(nom: type_produit_name.downcase)&.id
+      filter_params[:type_produit] = type_produit_id if type_produit_id
+    end
     if search.present?
       filter_params[:q] = {
         nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont: search

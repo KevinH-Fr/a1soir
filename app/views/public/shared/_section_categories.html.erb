@@ -21,7 +21,7 @@
         { label: "Longues", category_name: "robes longues" },
         { label: "Courtes", category_name: "robes courtes" },
         { label: "Ensembles pantalon", category_name: "ensembles pantalons" },
-        { label: "Combinaisons", category_name: "combinaisons" }
+        { label: "Combinaisons", url: produits_filter_url(category_names: "ensembles pantalons", type_produit_name: "combinaison pantalon") }
       ],
       url: produits_filter_url(category_names: ["robes courtes", "robes longues", "ensembles pantalons"]),
       image: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_800/2di2ab4sh1coa0pq6ps712ps416i",
@@ -34,11 +34,11 @@
     <%= collection_card(
       title: t("public.pages.home.categories.suits.title"),
       items: [
-        { label: "Smokings", category_name: "smokings" },
+        { label: "Smokings", url: produits_filter_url(category_names: "costume", search: "smoking") },
         { label: "Cérémonies", category_name: "costume" },
         { label: "Enfant", category_name: "enfants" }
       ],
-      url: produits_filter_url(category_names: "costume"),
+      url: produits_filter_url(category_names: ["costume", "enfants"]),
       image: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/jihlhi1p1jx6puuwi18k1spxoieg",
       subtitle: t("public.pages.home.categories.suits.subtitle"),
       image_position: "top"

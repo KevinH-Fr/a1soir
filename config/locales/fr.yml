@@ -716,7 +716,7 @@ fr:
         sale: "Vente"
         rental: "Location"
       collection_card:
-        discover: "Découvrir"
+        discover: "Tout découvrir"
       cart_buttons:
         remove_from_fitting_room: "Retirer de la cabine"
         fitting_room_limit_reached: "Limite atteinte (10 produits max)"

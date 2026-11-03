@@ -4689,18 +4689,28 @@ section {
   isolation: isolate;
 }
 
+.collection-card-stretched-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
 .collection-card-image {
   transition: transform 0.6s ease;
   transform-origin: center center;
   object-fit: cover;
 }
 
-.collection-card-link:hover .collection-card-image {
-  transform: scale(1.08);
+@media (hover: hover) {
+  .collection-card-link:hover .collection-card-image {
+    transform: scale(1.08);
+  }
 }
 
+/* Le calque laisse passer les clics vers le lien étiré ; seuls pastilles et CTA les captent. */
 .cc-overlay {
   z-index: 2;
+  pointer-events: none;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -4719,11 +4729,11 @@ section {
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-/* Les .cc-tag individuels sont cachés/révélés par le controller JS */
+/* Les .cc-tag individuels sont cachés/révélés par le controller JS.
+   Fondu seul : une pastille qui bouge sous le curseur fait tomber le clic sur le lien de la carte. */
 .cc-tag {
   opacity: 0;
-  transform: translateY(1.5rem) scale(0.82);
-  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: opacity 0.4s ease;
 }
 
 /* Mobile touch : le controller JS gère les animations — on réinitialise */
@@ -4791,6 +4801,8 @@ section {
 
 .cc-tag--link {
   cursor: pointer;
+  text-decoration: none;
+  pointer-events: auto;
 }
 
 .cc-tag--link:hover {
@@ -4807,6 +4819,12 @@ section {
   font-size: 0.82rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  text-decoration: none;
+  pointer-events: auto;
+}
+
+.cc-cta:hover {
+  color: #fff;
 }
 
 .cc-cta-label {
@@ -4817,8 +4835,10 @@ section {
   transition: transform 0.35s ease;
 }
 
-.collection-card-link:hover .cc-cta-arrow {
-  transform: translateX(4px);
+@media (hover: hover) {
+  .collection-card-link:hover .cc-cta-arrow {
+    transform: translateX(4px);
+  }
 }
 
 .collection-card-title {
@@ -4849,9 +4869,11 @@ section {
   opacity: 0.7;
 }
 
-.collection-card-link:hover .collection-card-title::after {
-  width: 100%;
-  opacity: 1;
+@media (hover: hover) {
+  .collection-card-link:hover .collection-card-title::after {
+    width: 100%;
+    opacity: 1;
+  }
 }
 
 /* Mobile/touch : collection-card-reveal controller gère les animations sur les

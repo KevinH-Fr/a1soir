@@ -40,9 +40,9 @@ export default class extends Controller {
   }
 
   hideTag(el) {
-    el.style.opacity    = "0"
-    el.style.transform  = "translateY(12px) scale(0.82)"
-    el.style.transition = "opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)"
+    el.style.opacity       = "0"
+    el.style.pointerEvents = "none"
+    el.style.transition    = "opacity 0.4s ease"
   }
 
   show(el, delay = 0) {
@@ -55,8 +55,8 @@ export default class extends Controller {
 
   showTag(el, delay = 0) {
     this.timers.push(setTimeout(() => {
-      el.style.opacity   = "1"
-      el.style.transform = "translateY(0) scale(1)"
+      el.style.opacity       = "1"
+      el.style.pointerEvents = ""
     }, delay))
   }
 
@@ -118,13 +118,6 @@ export default class extends Controller {
       { root: null, rootMargin: "0px", threshold: 0.1 }
     )
     this.observer.observe(this.element)
-  }
-
-  visitTag(event) {
-    event.preventDefault()
-    event.stopPropagation()
-    const url = event.currentTarget.dataset.url
-    if (url) window.location.href = url
   }
 
   disconnect() {
