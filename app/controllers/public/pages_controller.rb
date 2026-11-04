@@ -240,6 +240,8 @@ module Public
 
     def rdv
       @demande_rdv = DemandeRdv.new
+      evenement = params[:evenement].to_s
+      @demande_rdv.evenement = evenement if DemandeRdv.evenements.key?(evenement)
       load_periode_speciale_vars
       @ga4_form_event = helpers.ga4_consume_form_event("request_appointment", session)
     end

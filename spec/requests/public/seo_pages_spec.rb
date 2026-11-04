@@ -53,6 +53,43 @@ RSpec.describe "Public::SeoPages", type: :request do
     end
   end
 
+  describe "GET /fr/robe-de-soiree-cannes" do
+    before do
+      CategorieProduit.find_or_create_by!(nom: "robes courtes")
+      CategorieProduit.find_or_create_by!(nom: "robes longues")
+      CategorieProduit.find_or_create_by!(nom: "ensembles pantalons")
+    end
+
+    it "returns the local landing with hreflang and a soirée appointment link" do
+      get "/fr/robe-de-soiree-cannes"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).not_to include("translation missing")
+      expect(response.body).to include(%(<link rel="canonical" href="http://www.example.com/fr/robe-de-soiree-cannes">))
+      expect(response.body).to include(%(<link rel="alternate" hreflang="fr" href="http://www.example.com/fr/robe-de-soiree-cannes">))
+      expect(response.body).to include(%(<link rel="alternate" hreflang="en" href="http://www.example.com/en/robe-de-soiree-cannes">))
+      expect(response.body).to include(%(<link rel="alternate" hreflang="x-default" href="http://www.example.com/fr/robe-de-soiree-cannes">))
+      expect(response.body).not_to include("/guides/robe-de-soiree-cannes")
+      expect(response.body).to include("Robe de soirée à Cannes")
+      expect(response.body).to include("evenement=soiree#rdv-form")
+      expect(response.body).to include("FAQPage")
+    end
+  end
+
+  describe "GET /en/robe-de-soiree-cannes" do
+    it "canonicalizes the English local landing and keeps the soirée appointment link" do
+      get "/en/robe-de-soiree-cannes"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).not_to include("translation missing")
+      expect(response.body).to include(%(<link rel="canonical" href="http://www.example.com/en/robe-de-soiree-cannes">))
+      expect(response.body).to include(%(<link rel="alternate" hreflang="fr" href="http://www.example.com/fr/robe-de-soiree-cannes">))
+      expect(response.body).to include(%(<link rel="alternate" hreflang="x-default" href="http://www.example.com/fr/robe-de-soiree-cannes">))
+      expect(response.body).to include("Evening dress in Cannes")
+      expect(response.body).to include("evenement=soiree#rdv-form")
+    end
+  end
+
   describe "GET /en/robe-de-mariee-cannes" do
     it "canonicalizes the English local landing and points x-default to French" do
       get "/en/robe-de-mariee-cannes"
@@ -102,6 +139,7 @@ RSpec.describe "Public::SeoPages", type: :request do
       expect(response.body).to include("seo-hub-card")
       expect(response.body).to include("Lire le guide")
       expect(response.body).to include("robe-de-mariee-cannes")
+      expect(response.body).to include("robe-de-soiree-cannes")
       expect(response.body).to include("tenue-gala-ceremonie")
       expect(response.body).to include("location-smoking-costume-cannes")
     end

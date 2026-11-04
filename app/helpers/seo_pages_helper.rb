@@ -30,13 +30,22 @@ module SeoPagesHelper
     Array(page[:includes]).include?(feature.to_s)
   end
 
+  def seo_page_rdv_url(page)
+    evenement = page[:rdv_evenement].presence
+    if evenement.present? && DemandeRdv.evenements.key?(evenement.to_s)
+      "#{rdv_path(evenement: evenement)}#rdv-form"
+    else
+      "#{rdv_path}#rdv-form"
+    end
+  end
+
   def seo_page_breadcrumbs(page)
     crumbs = [
-      { name: structured_breadcrumb_name(:home), url: structured_home_url },
-      { name: I18n.t("public.seo_pages.hub.title"), url: seo_guides_hub_url }
+      { name: structured_breadcrumb_name(:home), url: structured_home_url }
     ]
 
     if page[:scope] == "guides"
+      crumbs << { name: I18n.t("public.seo_pages.hub.title"), url: seo_guides_hub_url }
       crumbs << {
         name: I18n.t("public.seo_pages.hub.groups.#{page[:hub_group]}"),
         url: "#{seo_guides_hub_url}##{page[:hub_group]}"

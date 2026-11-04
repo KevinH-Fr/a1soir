@@ -14,6 +14,9 @@ fr:
       costume_mariage_cannes:
         title: Costume mariage Cannes - Smokings & cérémonie
         description: Costumes et smokings de mariage à Cannes. Location et vente en boutique — accessible depuis Nice, Antibes et Monaco.
+      robe_de_soiree_cannes:
+        title: Robe de soirée à Cannes | Location et vente
+        description: "Location et vente de robes de soirée à Cannes : cocktail, longue, gala. Essayage en cabine, retouches d'atelier et rendez-vous. Autour D'Un Soir, 27 bd Carnot."
       guide_choisir_robe_mariee:
         title: Comment choisir sa robe de mariée - Guide Autour D'Un Soir
         description: 'Guide pratique : style, budget, délais, essayage et erreurs à éviter. Conseils de la boutique Autour D''Un Soir à Cannes depuis 1980.'
@@ -191,6 +194,38 @@ fr:
           q3:
             question: Proposez-vous des smokings pour le Festival de Cannes ?
             answer_html: "<p>Oui, avec essayage et réservation anticipée recommandés en mai.</p>"
+      robe_de_soiree_cannes:
+        link_title: Robe de soirée Cannes
+        header_title: Robe de soirée à Cannes
+        header_subtitle: Location et vente de robes de soirée à Cannes
+        intro_html: '<p>Cocktail, robe longue, cérémonie ou gala : <strong>Autour D''Un Soir</strong> habille la soirée à Cannes depuis 1980. Robes courtes, robes longues et ensembles se choisissent en <strong>location ou en vente</strong>, avec essayage en cabine et retouches d''atelier.</p><p>La location standard dure 4 jours : retrait deux jours avant l''événement, retour deux jours après, acompte de 30 % en boutique. Les robes de mariée, elles, sont vendues uniquement. Pour trancher, lisez <a href="/fr/guides/achat-ou-location-tenue-soiree">achat ou location</a>.</p>'
+        cta_title: Réservez votre essayage à Cannes
+        sections:
+          univers:
+            title: Cocktail, longue, gala ou invitée
+            body_html: '<p>Le dress code décide de la longueur. Une soirée cocktail appelle souvent une robe courte ou un ensemble. Un gala ou un black tie oriente vers la robe longue. Pour un mariage, le guide <a href="/fr/guides/robe-invitee-mariage">tenue invitée</a> précise les couleurs à éviter.</p><p>Les galas et cérémonies sont détaillés dans <a href="/fr/guides/tenue-gala-ceremonie">tenue de gala</a>. Pendant le Festival, voir <a href="/fr/festival-de-cannes">nos tenues Festival</a>.</p>'
+          location_ou_achat:
+            title: Louer ou acheter
+            body_html: '<p>Louez si la tenue sert une fois : pressing inclus, budget contenu, formule 4 jours. Achetez si vous enchaînez mariages et galas, ou si vous voulez garder une pièce retouchée.</p><p>Le choix se fait en boutique. Nos conseillères comparent le coût d''une location répétée et d''un achat pendant l''essayage. Le détail est dans le guide <a href="/fr/guides/achat-ou-location-tenue-soiree">achat ou location de tenue de soirée</a>.</p>'
+          essayage_retouches:
+            title: Essayage et retouches
+            body_html: '<p>Le rendez-vous est fortement recommandé : une conseillère prépare la cabine selon l''heure, le lieu et le code de la soirée. Apportez les chaussures du jour J pour juger la longueur.</p><p>L''atelier ajuste ourlet, buste et bretelles avant le retrait. Pour les finitions, voir <a href="/fr/guides/chaussures-accessoires-soiree">chaussures et accessoires</a>.</p>'
+          acces:
+            title: Venir en boutique
+            body_html: "<p>La boutique est au 27 boulevard Carnot, à deux pas de la gare de Cannes. En voiture depuis Nice : environ 30 minutes. Depuis Antibes : 20 minutes ; depuis Monaco : 45 minutes.</p><p>En train, le TER Nice–Cannes vous dépose à 5 minutes à pied. Réservez votre créneau à l'avance, surtout en mai pendant le Festival.</p>"
+        faq:
+          q1:
+            question: Où louer une robe de soirée à Cannes ?
+            answer_html: "<p>Chez Autour D'Un Soir, 27 boulevard Carnot. Prenez rendez-vous en ligne ou par téléphone au 04 93 45 17 17.</p>"
+          q2:
+            question: Quelle est la durée de location ?
+            answer_html: "<p>4 jours : retrait deux jours avant l'événement, retour deux jours après. L'acompte de réservation est de 30 %, versé en boutique.</p>"
+          q3:
+            question: Peut-on louer une robe de mariée ?
+            answer_html: "<p>Non. Les robes de mariée sont vendues, pour des retouches définitives. Les robes de soirée se louent ou s'achètent.</p>"
+          q4:
+            question: Faut-il prendre rendez-vous ?
+            answer_html: "<p>Oui. Le rendez-vous est fortement recommandé pour l'essayage et les retouches : il garantit une conseillère et une cabine préparée.</p>"
       comment_choisir_sa_robe_de_mariee:
         link_title: Comment choisir sa robe de mariée
         header_title: Comment choisir sa robe de mariée ?
@@ -331,7 +366,7 @@ fr:
         link_title: Robe invitée mariage
         header_title: Tenue invitée de mariage
         header_subtitle: Élégante sans voler la vedette
-        intro_html: '<p>Invitée à un mariage, vous cherchez l''équilibre entre élégance et discrétion : éviter le blanc et les tons trop proches de la mariée, tout en assumant votre style. Robe cocktail, longue ou ensemble chic : le dress code de l''invitation est votre première référence.</p><p>À Cannes, Autour D''Un Soir propose robes courtes et longues en <strong>location ou vente</strong>, avec essayage. Voir aussi <a href="/fr/guides/achat-ou-location-tenue-soiree">achat ou location</a> et <a href="/fr/guides/chaussures-accessoires-soiree">accessoires</a>.</p>'
+        intro_html: '<p>Invitée à un mariage, vous cherchez l''équilibre entre élégance et discrétion : éviter le blanc et les tons trop proches de la mariée, tout en assumant votre style. Robe cocktail, longue ou ensemble chic : le dress code de l''invitation est votre première référence.</p><p>À Cannes, Autour D''Un Soir propose robes courtes et longues en <strong>location ou vente</strong>, avec essayage. Voir aussi <a href="/fr/guides/achat-ou-location-tenue-soiree">achat ou location</a> et <a href="/fr/guides/chaussures-accessoires-soiree">accessoires</a>. La page <a href="/fr/robe-de-soiree-cannes">robe de soirée à Cannes</a> rassemble location, vente et rendez-vous.</p>'
         sections:
           dresscode:
             title: Lire le dress code
@@ -359,7 +394,7 @@ fr:
         link_title: Tenue gala & cérémonie
         header_title: Tenue de gala et cérémonie
         header_subtitle: Galas, baptêmes, remises de diplômes et soirées habillées
-        intro_html: '<p>Galas, baptêmes, remises de diplômes ou soirées pendant le Festival de Cannes : chaque occasion a son niveau de formalité. Une tenue réussie respecte le code sans être ostentatoire, car l''élégance dépend autant du contexte que de la pièce portée.</p><p>Les codes de soirée viennent d''une longue tradition mondaine : robe longue pour les événements les plus habillés, smoking pour le black tie, cocktail pour les moments moins protocolaires. Comparez <a href="/fr/guides/robe-invitee-mariage">tenue invitée</a> pour les mariages et <a href="/fr/guides/location-smoking-costume-cannes">location smoking</a> pour les hommes.</p>'
+        intro_html: '<p>Galas, baptêmes, remises de diplômes ou soirées pendant le Festival de Cannes : chaque occasion a son niveau de formalité. Une tenue réussie respecte le code sans être ostentatoire, car l''élégance dépend autant du contexte que de la pièce portée.</p><p>Les codes de soirée viennent d''une longue tradition mondaine : robe longue pour les événements les plus habillés, smoking pour le black tie, cocktail pour les moments moins protocolaires. Comparez <a href="/fr/guides/robe-invitee-mariage">tenue invitée</a> pour les mariages et <a href="/fr/guides/location-smoking-costume-cannes">location smoking</a> pour les hommes. Pour réserver en boutique, passez par <a href="/fr/robe-de-soiree-cannes">robe de soirée à Cannes</a>.</p>'
         sections:
           femmes:
             title: Pour les femmes
@@ -384,7 +419,7 @@ fr:
         link_title: Achat ou location tenue de soirée
         header_title: Achat ou location de tenue de soirée ?
         header_subtitle: Le guide pour faire le bon choix
-        intro_html: "<p>Invitée à un mariage, gala, soirée d'entreprise ou Festival de Cannes : faut-il louer ou acheter sa tenue ? La réponse dépend de la fréquence, du budget et de l'envie de garder une pièce signature.</p><p>Chez Autour D'Un Soir, robes de soirée, smokings et costumes sont disponibles en <strong>location (4 jours)</strong> ou en vente — robes de mariée en vente uniquement. Essayage en boutique à Cannes.</p>"
+        intro_html: "<p>Invitée à un mariage, gala, soirée d'entreprise ou Festival de Cannes : faut-il louer ou acheter sa tenue ? La réponse dépend de la fréquence, du budget et de l'envie de garder une pièce signature.</p><p>Chez Autour D'Un Soir, robes de soirée, smokings et costumes sont disponibles en <strong>location (4 jours)</strong> ou en vente — robes de mariée en vente uniquement. Essayage en boutique à Cannes. Voir la page <a href=\"/fr/robe-de-soiree-cannes\">robe de soirée à Cannes</a>.</p>"
         sections:
           location:
             title: Les avantages de la location

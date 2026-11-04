@@ -27,6 +27,13 @@ RSpec.describe "Public::DemandeRdv", type: :request do
     allow(RecaptchaVerifier).to receive(:verify).and_return(true)
   end
 
+  it "préremplit l'événement soirée quand le lien de la landing le demande" do
+    get "/fr/rdv", params: { evenement: "soiree" }
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include('value="soiree" selected="selected"').or include('selected="selected" value="soiree"')
+  end
+
   it "enregistre la locale EN de la page sur la demande" do
     post_demande("en")
 

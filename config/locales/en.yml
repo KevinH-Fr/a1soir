@@ -1380,6 +1380,7 @@ en:
           title: "Your fashion destination during the Festival"
           description_1: "Autour D'Un Soir supports you during Cannes Festival with a premium selection of evening dresses, cocktail dresses, suits, tuxedos and accessories."
           description_2: "Our team advises you in-store to find the ideal outfit."
+          evening_dresses_link: "See also the evening dresses in Cannes page."
         offers:
           title: "Festival packages — evening dresses and tuxedos"
           alt: "Festival promotional visual %{num}"

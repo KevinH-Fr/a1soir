@@ -10,6 +10,7 @@ RSpec.describe SeoPages::CategoryImages do
   let!(:robes_soiree_courtes) { CategorieProduit.create!(nom: "robes courtes") }
   let!(:robes_soiree_longues) { CategorieProduit.create!(nom: "robes longues") }
   let!(:enfants) { CategorieProduit.create!(nom: "enfants") }
+  let!(:ensembles_pantalons) { CategorieProduit.create!(nom: "ensembles pantalons") }
 
   def create_product(name:, categories:, image_bytes: nil, video_bytes: nil, description: nil)
     product = Produit.create!(
@@ -136,6 +137,22 @@ RSpec.describe SeoPages::CategoryImages do
 
       expect(result["delais"]).to be_present
       expect(result.dig("delais", :image)).to be_attached
+    end
+
+    it "prefers evening dresses for the soirée landing sections" do
+      cocktail = create_product(name: "Robe cocktail soirée", categories: [robes_soiree_longues], image_bytes: "cocktail")
+      longue = create_product(name: "Robe longue de soirée", categories: [robes_soiree_longues], image_bytes: "longue")
+      courte = create_product(name: "Robe courte cocktail", categories: [robes_soiree_courtes], image_bytes: "courte")
+      ensemble = create_product(name: "Ensemble pantalon lin", categories: [ensembles_pantalons], image_bytes: "ensemble")
+      smoking = create_product(name: "Smoking noir cérémonie", categories: [smokings], image_bytes: "smoking-soiree")
+
+      page = SeoPages::Registry.find("robe-de-soiree-cannes", scope: "local")
+      result = described_class.call(page, section_keys: %w[univers location_ou_achat essayage_retouches])
+
+      ids = result.values.map { |section| section[:product_id] }
+      expect(ids).to all(be_in([cocktail.id, longue.id, courte.id]))
+      expect(ids).not_to include(ensemble.id, smoking.id)
+      expect(ids.uniq.size).to eq(3)
     end
 
     it "never reuses the same image blob across sections on robe invitee mariage" do

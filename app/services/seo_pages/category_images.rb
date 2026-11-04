@@ -48,7 +48,10 @@ module SeoPages
       "expertise" => %w[cannes boutique],
       "accessoires_homme" => %w[papillon pochette ceinture cravate],
       "bustier" => %w[bustier corsage dos],
-      "acces" => %w[boutique cannes]
+      "acces" => %w[boutique cannes],
+      "univers" => %w[robe cocktail longue soirée],
+      "location_ou_achat" => %w[robe cocktail longue soirée],
+      "essayage_retouches" => %w[robe cocktail longue soirée]
     }.freeze
 
     SLUG_KEYWORDS = [

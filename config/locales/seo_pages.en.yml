@@ -14,6 +14,9 @@ en:
       costume_mariage_cannes:
         title: Wedding suit Cannes - Tuxedos & ceremony wear
         description: Wedding suits and tuxedos in Cannes. Rental and sales in store — accessible from Nice, Antibes and Monaco.
+      robe_de_soiree_cannes:
+        title: Evening dress in Cannes | Rental and sale
+        description: "Rent or buy an evening dress in Cannes: cocktail, long gown and gala. In-store fitting, workshop alterations and an appointment. Autour D'Un Soir, 27 bd Carnot."
       guide_choisir_robe_mariee:
         title: How to choose your wedding dress - Autour D'Un Soir guide
         description: 'Practical guide: style, budget, timeline, fitting and mistakes to avoid. Tips from Autour D''Un Soir in Cannes since 1980.'
@@ -191,6 +194,38 @@ en:
           q3:
             question: Do you offer tuxedos for Cannes Festival?
             answer_html: "<p>Yes, with fitting and early booking recommended in May.</p>"
+      robe_de_soiree_cannes:
+        link_title: Evening dress Cannes
+        header_title: Evening dress in Cannes
+        header_subtitle: Rental and sale of evening dresses in Cannes
+        intro_html: '<p>Cocktail, long gown, ceremony or gala: <strong>Autour D''Un Soir</strong> has dressed evenings in Cannes since 1980. Short dresses, long dresses and sets are available for <strong>rental or purchase</strong>, with a fitting and workshop alterations.</p><p>Standard rental lasts 4 days: pick up two days before the event, return two days after, with a 30% deposit in store. Wedding dresses are sold only. To decide, read <a href="/en/guides/achat-ou-location-tenue-soiree">buy or rent</a>.</p>'
+        cta_title: Book your fitting in Cannes
+        sections:
+          univers:
+            title: Cocktail, long, gala or guest
+            body_html: '<p>The dress code sets the length. A cocktail evening often calls for a short dress or a set. A gala or black tie points to a long gown. For a wedding, the <a href="/en/guides/robe-invitee-mariage">guest outfit</a> guide spells out the colours to avoid.</p><p>Galas and ceremonies are covered in <a href="/en/guides/tenue-gala-ceremonie">gala wear</a>. During the Festival, see <a href="/en/festival-de-cannes">our Festival outfits</a>.</p>'
+          location_ou_achat:
+            title: Rent or buy
+            body_html: '<p>Rent if you will wear the outfit once: pressing included, a contained budget, a 4-day package. Buy if you go from wedding to gala, or if you want to keep an altered piece.</p><p>The choice is made in store. Our advisors compare the cost of repeat rentals and a purchase during the fitting. The detail is in the <a href="/en/guides/achat-ou-location-tenue-soiree">buy or rent evening wear</a> guide.</p>'
+          essayage_retouches:
+            title: Fitting and alterations
+            body_html: '<p>An appointment is strongly recommended: an advisor prepares the fitting room for the time, the venue and the evening''s dress code. Bring the shoes you will wear so the length is right.</p><p>The workshop adjusts hem, bodice and straps before pick-up. For the finishing touches, see <a href="/en/guides/chaussures-accessoires-soiree">shoes and accessories</a>.</p>'
+          acces:
+            title: Coming to the shop
+            body_html: "<p>The shop is at 27 boulevard Carnot, a short walk from Cannes station. By car from Nice: about 30 minutes. From Antibes: 20 minutes; from Monaco: 45 minutes.</p><p>By train, the Nice–Cannes TER drops you five minutes away on foot. Book your slot ahead, especially in May during the Festival.</p>"
+        faq:
+          q1:
+            question: Where can I rent an evening dress in Cannes?
+            answer_html: "<p>At Autour D'Un Soir, 27 boulevard Carnot. Book online or call 04 93 45 17 17.</p>"
+          q2:
+            question: How long is a rental?
+            answer_html: "<p>4 days: pick up two days before the event, return two days after. The booking deposit is 30%, paid in store.</p>"
+          q3:
+            question: Can I rent a wedding dress?
+            answer_html: "<p>No. Wedding dresses are sold, so alterations can be permanent. Evening dresses can be rented or bought.</p>"
+          q4:
+            question: Do I need an appointment?
+            answer_html: "<p>Yes. An appointment is strongly recommended for the fitting and alterations: it reserves an advisor and a prepared fitting room.</p>"
       comment_choisir_sa_robe_de_mariee:
         link_title: How to choose your wedding dress
         header_title: How to choose your wedding dress?
@@ -331,7 +366,7 @@ en:
         link_title: Wedding guest dress
         header_title: Wedding guest outfit
         header_subtitle: Elegant without stealing the spotlight
-        intro_html: '<p>As a wedding guest you want balance between elegance and discretion: avoid white and shades too close to the bride while expressing your style. Cocktail, long dress or chic set: the invitation dress code is your first reference.</p><p>In Cannes, Autour D''Un Soir offers short and long dresses for <strong>rental or purchase</strong>, with fitting. See also <a href="/en/guides/achat-ou-location-tenue-soiree">buy or rent</a> and <a href="/en/guides/chaussures-accessoires-soiree">accessories</a>.</p>'
+        intro_html: '<p>As a wedding guest you want balance between elegance and discretion: avoid white and shades too close to the bride while expressing your style. Cocktail, long dress or chic set: the invitation dress code is your first reference.</p><p>In Cannes, Autour D''Un Soir offers short and long dresses for <strong>rental or purchase</strong>, with fitting. See also <a href="/en/guides/achat-ou-location-tenue-soiree">buy or rent</a> and <a href="/en/guides/chaussures-accessoires-soiree">accessories</a>. Our <a href="/en/robe-de-soiree-cannes">evening dresses in Cannes</a> page brings rental, purchase and appointments together.</p>'
         sections:
           dresscode:
             title: Read the dress code
@@ -359,7 +394,7 @@ en:
         link_title: Gala & ceremony outfit
         header_title: Gala and ceremony outfit
         header_subtitle: Galas, christenings, graduations and formal evenings
-        intro_html: '<p>Galas, christenings, graduations or evenings during Cannes Festival: each occasion has its formality level. A successful outfit respects the code without being showy, because elegance depends on context as much as on the piece itself.</p><p>Evening dress codes come from a long social tradition: long dress for the most formal events, tuxedo for black tie, cocktail wear for less protocol-heavy moments. Compare <a href="/en/guides/robe-invitee-mariage">wedding guest wear</a> and <a href="/en/guides/location-smoking-costume-cannes">tuxedo rental</a> for men.</p>'
+        intro_html: '<p>Galas, christenings, graduations or evenings during Cannes Festival: each occasion has its formality level. A successful outfit respects the code without being showy, because elegance depends on context as much as on the piece itself.</p><p>Evening dress codes come from a long social tradition: long dress for the most formal events, tuxedo for black tie, cocktail wear for less protocol-heavy moments. Compare <a href="/en/guides/robe-invitee-mariage">wedding guest wear</a> and <a href="/en/guides/location-smoking-costume-cannes">tuxedo rental</a> for men. To book in store, go through <a href="/en/robe-de-soiree-cannes">evening dresses in Cannes</a>.</p>'
         sections:
           femmes:
             title: For women
@@ -384,7 +419,7 @@ en:
         link_title: Buy or rent evening wear
         header_title: Buy or rent evening wear?
         header_subtitle: The guide to making the right choice
-        intro_html: "<p>Wedding guest, gala, corporate evening or Cannes Festival: should you rent or buy? It depends on frequency, budget and whether you want a signature piece to keep.</p><p>At Autour D'Un Soir, evening dresses, tuxedos and suits are available for <strong>4-day rental</strong> or purchase — wedding dresses are purchase only. Fitting in store in Cannes.</p>"
+        intro_html: "<p>Wedding guest, gala, corporate evening or Cannes Festival: should you rent or buy? It depends on frequency, budget and whether you want a signature piece to keep.</p><p>At Autour D'Un Soir, evening dresses, tuxedos and suits are available for <strong>4-day rental</strong> or purchase — wedding dresses are purchase only. Fitting in store in Cannes. See the <a href=\"/en/robe-de-soiree-cannes\">evening dresses in Cannes</a> page.</p>"
         sections:
           location:
             title: Benefits of renting

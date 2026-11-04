@@ -36,6 +36,7 @@ RSpec.describe SeoPagesHelper, type: :helper do
 
       expect(groups.map(&:first)).to eq(%w[bride guest costume])
       expect(groups.assoc("guest").last.map { |p| p[:slug] }).to eq(%w[
+        robe-de-soiree-cannes
         robe-invitee-mariage
         tenue-gala-ceremonie
         achat-ou-location-tenue-soiree
@@ -45,6 +46,37 @@ RSpec.describe SeoPagesHelper, type: :helper do
         smoking-ou-costume-mariage
         location-smoking-costume-cannes
         chaussures-accessoires-soiree
+      ])
+    end
+  end
+
+  describe "#seo_page_breadcrumbs" do
+    before do
+      allow(helper).to receive(:public_page_url).and_return("http://www.example.com/fr/page")
+      allow(helper).to receive(:structured_home_url).and_return("http://www.example.com/fr/home")
+      allow(helper).to receive(:seo_guides_hub_url).and_return("http://www.example.com/fr/guides")
+    end
+
+    it "keeps a local landing directly under the home page" do
+      page = SeoPages::Registry.find("robe-de-soiree-cannes", scope: "local")
+      crumbs = helper.seo_page_breadcrumbs(page)
+
+      expect(crumbs.map { |crumb| crumb[:name] }).to eq([
+        helper.structured_breadcrumb_name(:home),
+        "Robe de soirée à Cannes"
+      ])
+      expect(crumbs.map { |crumb| crumb[:url] }).not_to include("http://www.example.com/fr/guides")
+    end
+
+    it "keeps a guide under the guides hub" do
+      page = SeoPages::Registry.find("tenue-gala-ceremonie", scope: "guides")
+      names = helper.seo_page_breadcrumbs(page).map { |crumb| crumb[:name] }
+
+      expect(names).to eq([
+        helper.structured_breadcrumb_name(:home),
+        I18n.t("public.seo_pages.hub.title"),
+        I18n.t("public.seo_pages.hub.groups.events"),
+        "Tenue de gala et cérémonie"
       ])
     end
   end

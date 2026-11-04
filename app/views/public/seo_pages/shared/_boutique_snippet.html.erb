@@ -8,7 +8,7 @@
     <% end %>
     <div class="d-flex gap-3 flex-wrap">
       <%= link_to t("public.footer.shop"), la_boutique_path, class: "btn btn-light public-btn-border-radius" %>
-      <%= link_to t("public.footer.appointment"), "#{rdv_path}#rdv-form", class: "btn btn-outline-light public-btn-border-radius" %>
+      <%= link_to t("public.footer.appointment"), seo_page_rdv_url(@page), class: "btn btn-outline-light public-btn-border-radius" %>
     </div>
   </div>
 </section>

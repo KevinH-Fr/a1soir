@@ -87,6 +87,39 @@ pages:
       - slug: robe-de-mariee-cannes
         scope: local
 
+  robe-de-soiree-cannes:
+    slug: robe-de-soiree-cannes
+    scope: local
+    type: local_landing
+    meta_key: robe_de_soiree_cannes
+    hub_group: local
+    footer_group: guest
+    footer_order: 0
+    sitemap:
+      changefreq: weekly
+      priority: 0.85
+    product_filters:
+      category_names:
+        - robes courtes
+        - robes longues
+        - ensembles pantalons
+    includes:
+      - boutique_snippet
+      - reviews
+      - map
+      - rdv
+      - products
+    rdv_evenement: soiree
+    related_pages:
+      - slug: achat-ou-location-tenue-soiree
+        scope: guides
+      - slug: tenue-gala-ceremonie
+        scope: guides
+      - slug: robe-invitee-mariage
+        scope: guides
+      - slug: festival-de-cannes
+        scope: redirect
+
   comment-choisir-sa-robe-de-mariee:
     slug: comment-choisir-sa-robe-de-mariee
     scope: guides
@@ -192,6 +225,8 @@ pages:
         - robes courtes
         - robes longues
     related_pages:
+      - slug: robe-de-soiree-cannes
+        scope: local
       - slug: tenue-gala-ceremonie
         scope: guides
       - slug: achat-ou-location-tenue-soiree
@@ -215,6 +250,8 @@ pages:
         - costume
         - smokings
     related_pages:
+      - slug: robe-de-soiree-cannes
+        scope: local
       - slug: robe-invitee-mariage
         scope: guides
       - slug: achat-ou-location-tenue-soiree
@@ -238,6 +275,8 @@ pages:
         - robes courtes
         - robes longues
     related_pages:
+      - slug: robe-de-soiree-cannes
+        scope: local
       - slug: robe-invitee-mariage
         scope: guides
       - slug: location-smoking-costume-cannes
