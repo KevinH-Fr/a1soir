@@ -78,6 +78,37 @@ class Produit < ApplicationRecord
   scope :by_couleur, ->(couleur) { where(couleur: couleur) }
   scope :by_fournisseur, ->(fournisseur) { where(fournisseur: fournisseur) }
 
+  # Catalogue public : chaque mot matche un champ, accents pliés, ordre libre.
+  PUBLIC_SEARCH_FIELD = :nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont
+  PUBLIC_SEARCH_COLUMNS = %w[
+    produits.nom
+    produits.description
+    categorie_produits.nom
+    type_produits.nom
+    couleurs.nom
+    tailles.nom
+  ].freeze
+
+  # Méthode de classe (pas un scope) pour pouvoir appeler le sous-select privé.
+  # `all` reprend la relation en cours quand on chaîne : Produit.actif.matching_public_search("robe").
+  def self.matching_public_search(term)
+    words = AccentFold.words(term)
+    return all if words.empty?
+
+    words.reduce(all) do |relation, word|
+      relation.where(id: public_search_ids_for_word(word))
+    end
+  end
+
+  def self.public_search_ids_for_word(word)
+    pattern = "%#{sanitize_sql_like(word)}%"
+    clauses = PUBLIC_SEARCH_COLUMNS.map { |column| "#{AccentFold.sql(column)} LIKE ? ESCAPE '\\'" }
+    unscoped
+      .left_joins(:categorie_produits, :type_produit, :couleur, :taille)
+      .where(clauses.join(" OR "), *Array.new(clauses.size, pattern))
+      .select(:id)
+  end
+  private_class_method :public_search_ids_for_word
 
   # Filtre prix max : tient compte du type (Vente → prixvente, Location → prixlocation).
   scope :by_prixmax, ->(prixmax, type = nil) {

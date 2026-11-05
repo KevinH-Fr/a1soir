@@ -86,7 +86,7 @@ module ProduitsFilterable
   # Utilisée par produits_with_filters et update_filters_turbo
   def load_filtered_and_paginated_produits
     search_params = params.permit(:format, :page,
-      q: [:nom_or_description_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_cont],
+      q: [Produit::PUBLIC_SEARCH_FIELD],
       id: []
     )
 
@@ -96,7 +96,7 @@ module ProduitsFilterable
 
     produits_scope = filtered_produits_scope
     @q = produits_scope.ransack(search_params[:q])
-    searched_produits = @q.result
+    searched_produits = produits_matching_search(produits_scope, search_params[:q])
   
     # ✅ Filtre de disponibilité utilisant le champ today_availability
     # Ce champ est calculé et mis à jour :
@@ -215,13 +215,21 @@ module ProduitsFilterable
 
   def available_scope_for_filter(excluded_filter, search_params)
     filtered_scope = filtered_produits_scope(excluded_filter: excluded_filter)
-    search_scope = filtered_scope.ransack(search_params[:q]).result
+    search_scope = produits_matching_search(filtered_scope, search_params[:q])
     available_ids = search_scope.where(today_availability: true)
                                 .reorder(nil)
                                 .pluck(:id)
                                 .uniq
 
     Produit.where(id: available_ids)
+  end
+
+  # @q garde la saisie d'origine pour le formulaire. Le filtre texte passe par le scope.
+  def produits_matching_search(scope, q_params)
+    term = q_params&.[](Produit::PUBLIC_SEARCH_FIELD)
+    return scope if term.blank?
+
+    scope.matching_public_search(term)
   end
 
   def filtered_produits_scope(excluded_filter: nil)
