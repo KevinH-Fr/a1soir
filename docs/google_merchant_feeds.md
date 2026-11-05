@@ -126,6 +126,31 @@ curl -sL https://a1soir.com/google_merchant_feed.xml | grep -c 'additional_image
 curl -sL https://a1soir.com/google_merchant_feed.xml | grep -c 'video_link'
 ```
 
+## Flux Catalogue Meta
+
+URL publique :
+
+```txt
+https://a1soir.com/meta_catalog_feed.xml
+```
+
+Commerce Manager lit cette URL. Google Merchant Center continue de lire
+`/google_merchant_feed.xml`. Ne pas ajouter le flux Meta comme seconde source
+dans le catalogue qui importe deja le flux Google : le dernier import ecrase
+l'autre. Remplacer l'URL de la source existante.
+
+Le XML est le meme que le flux principal (`GoogleMerchant::StaticFeed`), avec
+un seul filtre en plus : `today_availability: true`. Les variantes en rupture
+n'y figurent pas. Leurs `g:id` (`produit-{id}`) et `g:item_group_id` restent
+ceux du flux Google pour les variantes encore en stock. Une taille qui revient
+en stock reapparait au prochain import avec le meme identifiant.
+
+Planning de la source : **Remplacer** (defaut d'un flux planifie). En mode
+Mettre a jour, Meta ignore les lignes absentes et les ruptures restent dans
+le catalogue.
+
+Un modele dont toutes les variantes sont en rupture n'est pas dans ce flux.
+
 ## Flux Inventaire Local
 
 URL publique :

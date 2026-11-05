@@ -10,6 +10,11 @@ class GoogleMerchantFeedsController < ActionController::Base
     render body: xml, content_type: "application/xml; charset=utf-8"
   end
 
+  def meta_catalog
+    xml = GoogleMerchant::StaticFeed.meta_catalog_to_xml
+    render body: xml, content_type: "application/xml; charset=utf-8"
+  end
+
   def local_inventory
     xml = GoogleMerchant::LocalInventoryFeed.to_xml
     render body: xml, content_type: "application/xml; charset=utf-8"

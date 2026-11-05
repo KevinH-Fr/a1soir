@@ -71,7 +71,8 @@ RSpec.describe "Public::SeoPages", type: :request do
       expect(response.body).to include(%(<link rel="alternate" hreflang="x-default" href="http://www.example.com/fr/robe-de-soiree-cannes">))
       expect(response.body).not_to include("/guides/robe-de-soiree-cannes")
       expect(response.body).to include("Robe de soirée à Cannes")
-      expect(response.body).to include("evenement=soiree#rdv-form")
+      expect(response.body).to include("Venir en boutique")
+      expect(response.body.scan("evenement=soiree#rdv-form").size).to eq(3)
       expect(response.body).to include("FAQPage")
     end
   end

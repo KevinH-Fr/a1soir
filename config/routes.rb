@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   post "/webhooks/stripe", to: "webhooks/stripe#create"
 
   get "/google_merchant_feed.xml", to: "google_merchant_feeds#show", as: :google_merchant_feed
+  get "/meta_catalog_feed.xml", to: "google_merchant_feeds#meta_catalog", as: :meta_catalog_feed
   get "/google_local_inventory_feed.xml", to: "google_merchant_feeds#local_inventory", as: :google_local_inventory_feed
   get "/sitemap.xml.gz", to: "sitemaps#show", as: :sitemap
 

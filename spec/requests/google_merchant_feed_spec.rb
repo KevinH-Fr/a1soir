@@ -283,4 +283,50 @@ RSpec.describe "Google Merchant feed", type: :request do
     expect(response.body).to include("<g:item_group_id>#{expected}</g:item_group_id>")
     expect(response.body).not_to include("<g:item_group_id>#{long_handle}</g:item_group_id>")
   end
+
+  describe "meta catalog feed" do
+    let!(:taille_s) { Taille.create!(nom: "s") }
+
+    let!(:variante_en_rupture) do
+      p = Produit.create!(
+        nom: "Robe flux merchant",
+        description: "<p>Taille en rupture</p>",
+        prixvente: 129.5,
+        poids: 500,
+        stripe_price_id: "price_merchant_feed_meta_oos",
+        eshop: true,
+        actif: true,
+        today_availability: false,
+        quantite: 0,
+        handle: "robe-flux-merchant",
+        taille: taille_s,
+        couleur: couleur_rouge
+      )
+      p.image1.attach(
+        io: StringIO.new("fake-jpeg-bytes"),
+        filename: "robe-meta-oos.jpg",
+        content_type: "image/jpeg"
+      )
+      p.categorie_produits << categorie_robes_courtes
+      p.update_column(:today_availability, false)
+      p
+    end
+
+    it "omits out-of-stock variants and still lists them as out_of_stock in the Google feed" do
+      get "/meta_catalog_feed.xml"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.content_type).to include("application/xml")
+      expect(response.body).to include("<g:id>produit-#{produit_in_feed.id}</g:id>")
+      expect(response.body).to include("<g:availability>in_stock</g:availability>")
+      expect(response.body).to include("<g:item_group_id>robe-flux-merchant</g:item_group_id>")
+      expect(response.body).not_to include("produit-#{variante_en_rupture.id}")
+
+      get "/google_merchant_feed.xml"
+      item = response.body[%r{<item>\s*<g:id>produit-#{variante_en_rupture.id}</g:id>.*?</item>}m]
+
+      expect(item).to include("<g:availability>out_of_stock</g:availability>")
+      expect(response.body).to include("<g:id>produit-#{produit_in_feed.id}</g:id>")
+    end
+  end
 end

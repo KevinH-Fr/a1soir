@@ -3,6 +3,13 @@
   <% title = seo_page_t(@page, "sections.#{section_key}.title") %>
   <% body = seo_page_t(@page, "sections.#{section_key}.body_html") %>
   <% reverse = section_media&.dig(:reverse) == true || (seo_page_section_has_media?(section_media) && index.odd?) %>
+  <% section_rdv_cta = capture do %>
+    <% if section_key == "acces" && @page[:rdv_evenement].present? %>
+      <div class="mt-4">
+        <%= cta_button(type: "rdv", url: seo_page_rdv_url(@page), variant: "light") %>
+      </div>
+    <% end %>
+  <% end %>
 
   <section class="container px-3 mb-5 seo-page-section" data-scroll-reveal>
     <% if seo_page_section_has_media?(section_media) %>
@@ -24,6 +31,7 @@
           <div class="text-light opacity-85 seo-section-body seo-page-prose">
             <%= seo_page_html(body) %>
           </div>
+          <%= section_rdv_cta %>
         </div>
       </div>
     <% else %>
@@ -35,6 +43,7 @@
       <div class="text-light opacity-85 seo-section-body seo-page-prose">
         <%= seo_page_html(body) %>
       </div>
+      <%= section_rdv_cta %>
     <% end %>
   </section>
 <% end %>
