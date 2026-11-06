@@ -2,8 +2,13 @@ class Produit < ApplicationRecord
   include ProduitCardPreloadable   # admin: Produit::CARD_INCLUDES
   include PublicProduitPreloadable # public: for_public_listing_cards, for_public_cart_thumbnail
 
+  CATALOGUE_TENUES_MARIAGE_SOIREE = "tenues_mariage_soiree"
+  CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS = "costume_epoque_deguisements"
+  CATALOGUES = [CATALOGUE_TENUES_MARIAGE_SOIREE, CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS].freeze
+
   has_and_belongs_to_many :categorie_produits
-    
+  has_and_belongs_to_many :rubrique_costumes, join_table: "produits_rubrique_costumes"
+
   belongs_to :type_produit, optional: true
 
   belongs_to :fournisseur, optional: true
@@ -12,6 +17,7 @@ class Produit < ApplicationRecord
   belongs_to :taille, optional: true
 
   validates :nom, presence: true
+  validates :catalogue, inclusion: { in: CATALOGUES }
   validates :stripe_price_id,   uniqueness: true, allow_nil: true
   validates :stripe_product_id, uniqueness: true, allow_nil: true
 
@@ -35,6 +41,8 @@ class Produit < ApplicationRecord
   has_many :demande_cabine_essayage_items, dependent: :restrict_with_exception
   has_many :demande_cabine_essayages, through: :demande_cabine_essayage_items
 
+  before_validation :assign_default_catalogue
+  before_validation :sync_catalogue_associations
   before_validation :generate_handle
 
   before_validation :fix_quantity_for_service
@@ -76,6 +84,11 @@ class Produit < ApplicationRecord
   scope :by_categories, ->(categories_ids) { joins(:categorie_produits).where(categorie_produits: { id: categories_ids }).distinct }
   scope :by_taille, ->(taille) { where(taille: taille) }
   scope :by_couleur, ->(couleur) { where(couleur: couleur) }
+  scope :tenues_mariage_soiree, -> { where(catalogue: CATALOGUE_TENUES_MARIAGE_SOIREE) }
+  scope :costume_epoque_deguisements, -> { where(catalogue: CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS) }
+  scope :by_rubriques, ->(rubrique_ids) {
+    joins(:rubrique_costumes).where(rubrique_costumes: { id: rubrique_ids }).distinct
+  }
   scope :by_fournisseur, ->(fournisseur) { where(fournisseur: fournisseur) }
 
   # Catalogue public : chaque mot matche un champ, accents pliés, ordre libre.
@@ -87,6 +100,7 @@ class Produit < ApplicationRecord
     type_produits.nom
     couleurs.nom
     tailles.nom
+    rubrique_costumes.nom
   ].freeze
 
   # Méthode de classe (pas un scope) pour pouvoir appeler le sous-select privé.
@@ -104,8 +118,9 @@ class Produit < ApplicationRecord
     pattern = "%#{sanitize_sql_like(word)}%"
     clauses = PUBLIC_SEARCH_COLUMNS.map { |column| "#{AccentFold.sql(column)} LIKE ? ESCAPE '\\'" }
     unscoped
-      .left_joins(:categorie_produits, :type_produit, :couleur, :taille)
+      .left_joins(:categorie_produits, :type_produit, :couleur, :taille, :rubrique_costumes)
       .where(clauses.join(" OR "), *Array.new(clauses.size, pattern))
+      .distinct
       .select(:id)
   end
   private_class_method :public_search_ids_for_word
@@ -142,8 +157,25 @@ class Produit < ApplicationRecord
 
   
   
+  def costume_epoque_deguisements?
+    catalogue == CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+  end
+
   def full_name
     nom
+  end
+
+  def assign_default_catalogue
+    self.catalogue = CATALOGUE_TENUES_MARIAGE_SOIREE if catalogue.blank?
+  end
+
+  # Une pièce d'époque ne porte pas les catégories mariage. Une tenue de mariage ne porte pas de rubrique.
+  def sync_catalogue_associations
+    if costume_epoque_deguisements?
+      self.categorie_produit_ids = [] if categorie_produit_ids.any?
+    elsif rubrique_costume_ids.any?
+      self.rubrique_costume_ids = []
+    end
   end
 
   def full_name_and_taille

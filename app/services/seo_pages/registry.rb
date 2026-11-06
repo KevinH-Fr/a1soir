@@ -100,6 +100,7 @@ module SeoPages
 
         candidate_pools.flatten
           .uniq { |entry| page_key(entry[:slug], entry[:scope]) }
+          .select { |entry| same_catalog_family?(entry, page) }
           .reject { |entry| excluded_keys.include?(page_key(entry[:slug], entry[:scope])) }
       end
 
@@ -123,6 +124,10 @@ module SeoPages
           .sort_by { |entry| related_sort_key(entry) }
       end
 
+      def same_catalog_family?(entry, page)
+        (entry[:hub_group] == "costume_epoque_deguisements") == (page[:hub_group] == "costume_epoque_deguisements")
+      end
+
       def pool_all_pages
         all
           .reject { |entry| entry[:scope] == "redirect" }
@@ -134,7 +139,7 @@ module SeoPages
         [hub_rank, entry[:footer_order] || 999, entry[:slug]]
       end
 
-      SEO_HUB_GROUP_ORDER = %w[local guides events services].freeze
+      SEO_HUB_GROUP_ORDER = %w[local guides events services costume_epoque_deguisements].freeze
 
       def load_pages
         @pages ||= begin

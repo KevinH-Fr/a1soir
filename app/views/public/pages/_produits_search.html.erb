@@ -2,7 +2,7 @@
   <%= search_form_for @q,
       url: produits_listing_search_url,
       html: {
-        class: "d-flex align-items-center w-100 position-relative",
+        class: "produits-search-form d-flex align-items-center position-relative",
         data: {
           controller: "produits-search",
           turbo_stream: true,

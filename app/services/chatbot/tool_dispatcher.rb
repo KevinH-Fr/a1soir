@@ -134,13 +134,14 @@ module Chatbot
       end
 
       relation = relation.where(actif: true) if Produit.column_names.include?("actif")
+      relation = relation.tenues_mariage_soiree if Produit.column_names.include?("catalogue")
       relation = relation.distinct.order("produits.nom ASC").limit(8)
 
       helpers = Rails.application.routes.url_helpers
       products = relation.map { |p| format_product(p, base_url: base_url, locale: locale, helpers: helpers) }
 
       if products.empty?
-        fallback = Produit
+        fallback = Produit.tenues_mariage_soiree
                    .where(actif: true, eshop: true)
                    .where(today_availability: true)
                    .includes(:couleur, :taille, :type_produit, :categorie_produits)

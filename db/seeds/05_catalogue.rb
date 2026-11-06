@@ -223,12 +223,19 @@ upsert_produit = lambda do |attrs|
     eshop: eshop,
     poids: attrs[:poids],
     coup_de_coeur: attrs[:coup_de_coeur] || false,
-    coup_de_coeur_position: attrs[:coup_de_coeur_position]
+    coup_de_coeur_position: attrs[:coup_de_coeur_position],
+    catalogue: attrs.fetch(:catalogue, Produit::CATALOGUE_TENUES_MARIAGE_SOIREE)
   )
+  produit.rubrique_costumes = attrs[:rubriques] if attrs.key?(:rubriques)
   produit.save!
-  attrs[:categories].each do |categorie|
-    produit.categorie_produits << categorie unless produit.categorie_produits.include?(categorie)
+  if produit.costume_epoque_deguisements?
+    produit.categorie_produits.clear
+  else
+    attrs[:categories].each do |categorie|
+      produit.categorie_produits << categorie unless produit.categorie_produits.include?(categorie)
+    end
   end
+  produit.update_today_availability if produit.costume_epoque_deguisements?
   produit
 end
 
@@ -249,6 +256,49 @@ rescue StandardError => e
   Seeds::Helpers.log("05", "Image ignorée (#{produit.reffrs}): #{e.message}")
 end
 
+rubrique = ->(nom) { RubriqueCostume.find_by!(nom: nom) }
+
+# Catalogue costumes : pas de catégorie mariage. Une pièce peut porter plusieurs rubriques.
+# eshop + stock pour qu'elles sortent sur /produits_costumes_deguisements.
+costumes = [
+  {
+    nom: "Habit de marquise démo",
+    description: "Robe de cour, panier et corsage.",
+    prixvente: 180, prixlocation: 95, quantite: 4,
+    type: type.call("costume"),
+    couleur: couleur.call("ivoire"), taille: taille.call("38"),
+    eshop: true,
+    rubriques: [rubrique.call("Marquis et marquise"), rubrique.call("XVIIIe siècle")]
+  },
+  {
+    nom: "Habit de marquise démo",
+    description: "Robe de cour, panier et corsage.",
+    prixvente: 180, prixlocation: 95, quantite: 3,
+    type: type.call("costume"),
+    couleur: couleur.call("bordeaux"), taille: taille.call("40"),
+    eshop: true,
+    rubriques: [rubrique.call("Marquis et marquise"), rubrique.call("XVIIIe siècle")]
+  },
+  {
+    nom: "Habit de pirate démo",
+    description: "Veste, gilet et ceinture, personnage de pirate.",
+    prixvente: 140, prixlocation: 70, quantite: 5,
+    type: type.call("costume"),
+    couleur: couleur.call("noir"), taille: taille.call("m"),
+    eshop: true,
+    rubriques: [rubrique.call("Pirate")]
+  },
+  {
+    nom: "Costume carnaval démo",
+    description: "Tenue colorée pour le carnaval.",
+    prixvente: 110, prixlocation: 55, quantite: 6,
+    type: type.call("costume"),
+    couleur: couleur.call("rouge"), taille: taille.call("l"),
+    eshop: true,
+    rubriques: [rubrique.call("Carnaval")]
+  }
+]
+
 created = []
 
 # QR déjà skippé sur le volume historique : ici aussi, sinon ~70 PNG Cloudinary.
@@ -257,6 +307,16 @@ begin
   singletons.each do |attrs|
     created << upsert_produit.call(
       attrs.merge(reffrs: "SEED-#{attrs[:nom].parameterize}")
+    )
+  end
+
+  costumes.each do |attrs|
+    created << upsert_produit.call(
+      attrs.merge(
+        reffrs: "SEED-#{attrs[:nom].parameterize}-#{attrs[:couleur].nom}-#{attrs[:taille].nom}",
+        catalogue: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS,
+        categories: []
+      )
     )
   end
 

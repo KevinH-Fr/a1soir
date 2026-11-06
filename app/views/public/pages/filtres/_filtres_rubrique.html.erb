@@ -1,0 +1,34 @@
+<div id="filtres-rubrique">
+    <%
+      selected_ids = Array(params[:rubrique]).compact_blank.map(&:to_i)
+      display_text = if selected_ids.empty?
+        t("public.pages.produits.filters.rubrique.all_label")
+      elsif selected_ids.size == 1
+        Array(@toutes_rubriques).find { |rubrique| rubrique.id == selected_ids.first }&.nom ||
+          t("public.pages.produits.filters.rubrique.all_label")
+      else
+        t("public.pages.produits.filters.rubrique.selected_count", count: selected_ids.size)
+      end
+    %>
+
+    <div class="dropdown position-relative">
+        <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="rubriqueDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-bookmark"></i>
+            <span class="ms-1 d-none d-md-inline"><%= display_text %></span>
+        </button>
+
+        <div class="dropdown-menu overflow-y-auto" aria-labelledby="rubriqueDropdown" style="max-height: 18rem">
+            <%= button_to t("public.pages.produits.filters.rubrique.all_button"),
+                update_produits_filters_path(rubrique: nil),
+                class: "dropdown-item text-nowrap #{'fw-bold' if selected_ids.empty?}" %>
+            <% Array(@toutes_rubriques).group_by(&:groupe).each do |groupe, rubriques| %>
+                <h6 class="dropdown-header"><%= groupe %></h6>
+                <% rubriques.each do |rubrique| %>
+                    <%= button_to rubrique.nom,
+                        update_produits_filters_path(rubrique: rubrique.id),
+                        class: "dropdown-item text-nowrap #{'fw-bold' if selected_ids.include?(rubrique.id)}" %>
+                <% end %>
+            <% end %>
+        </div>
+    </div>
+</div>

@@ -91,6 +91,11 @@ fr:
         updated: "Profil mis à jour"
         destroyed: "Profil supprimé"
         destroy_blocked: "Impossible de supprimer ce profil : des commandes y sont encore liées, ou il s'agit du profil technique e-shop."
+      rubrique_costume:
+        created: "Rubrique créée"
+        updated: "Rubrique mise à jour"
+        destroyed: "Rubrique supprimée"
+        destroy_blocked: "Impossible de supprimer cette rubrique : des produits y sont encore liés."
       type_produit:
         created: "Type de produit créé"
         updated: "Type de produit mis à jour"
@@ -647,6 +652,12 @@ fr:
       nos_autres_activites:
         title: "Nos autres activités - Autour D'Un Soir"
         description: "Découvrez les autres activités et services de la boutique."
+      costumes_depoque:
+        title: "Costumes d'époque et déguisements - Autour D'Un Soir"
+        description: "Location de costumes d'époque et de déguisements à Cannes : Renaissance, XVIIIe siècle, marquis et marquise, carnaval."
+      produits_costumes_deguisements:
+        title: "Costumes d'époque et déguisements - Catalogue"
+        description: "Parcourez les costumes d'époque et déguisements disponibles à la location et à la vente chez Autour D'Un Soir à Cannes."
       festival_de_cannes:
         title: "Festival de Cannes - Location & vente tenues de soirée | Autour D'Un Soir"
         description: "Pendant le Festival de Cannes, découvrez en boutique la location et la vente de robes de soirée, robes cocktail, costumes, smokings et accessoires."
@@ -990,11 +1001,24 @@ fr:
           couleur:
             fallback: "Couleur"
             all_button: "Toutes"
+          rubrique:
+            all_label: "Thème"
+            all_button: "Tous"
+            selected_count:
+              one: "%{count} thème"
+              other: "%{count} thèmes"
           prix:
             fallback: "Prix"
             promo_label: "En promotion"
             all_button: "Tous"
             promo_button: "En promotion"
+      costumes_depoque:
+        header_title: "Costumes d'époque et déguisements"
+        header_subtitle: "Une collection à part, pour le théâtre, le cinéma et les fêtes"
+        intro: "Robes de cour, habits historiques et déguisements sont réunis ici, en dehors des tenues de mariage et de soirée. Choisissez une époque, un personnage, ou parcourez toute la collection."
+        collection_cta: "Voir tous les costumes et déguisements"
+      produits_costumes_deguisements:
+        listing_heading: "Costumes et déguisements"
       produit:
         back: "Retour"
         view_more_products: "Voir plus de produits"
@@ -1325,6 +1349,7 @@ fr:
             "7": "Années 1970-1980"
             "8": "Costumes sur mesure"
           ideal_for: "Idéal pour : Mariages thématiques, fêtes costumées, théâtre, cinéma, reconstitutions historiques"
+          cta: "Voir les costumes et déguisements"
         business_services:
           title: "Prestations Entreprises & Groupes"
           description: "Professionnels et organisateurs d'événements, nous vous proposons des solutions sur mesure pour habiller vos équipes et participants. Bénéficiez de tarifs préférentiels et d'un accompagnement personnalisé pour vos projets de groupe."

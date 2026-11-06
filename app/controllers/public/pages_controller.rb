@@ -6,7 +6,7 @@ module Public
     #layout 'public' 
 
     def home
-      @coups_de_coeur = Produit.where(today_availability: true).coups_de_coeur.eshop_diffusion.actif.for_public_listing_cards.limit(8)
+      @coups_de_coeur = coups_de_coeur_boutique
       load_periode_speciale_vars
     end
 
@@ -23,13 +23,13 @@ module Public
     end
 
     def nos_collections
-      @coups_de_coeur = Produit.where(today_availability: true).coups_de_coeur.eshop_diffusion.actif.for_public_listing_cards.limit(8)
+      @coups_de_coeur = coups_de_coeur_boutique
       session[:from_cabine] = false if session[:cabine_cart].blank?
     end
 
     def categories
       @categories = CategorieProduit.not_service.includes(image1_attachment: :blob).order(:nom)
-      @coups_de_coeur = Produit.where(today_availability: true).coups_de_coeur.eshop_diffusion.actif.for_public_listing_cards.limit(8)
+      @coups_de_coeur = coups_de_coeur_boutique
       session[:from_cabine] = false if session[:cabine_cart].blank?
     end
 
@@ -37,6 +37,13 @@ module Public
     end
 
     def nos_autres_activites
+    end
+
+    def costumes_depoque
+      @rubriques_par_groupe = RubriqueCostume
+        .present_on_catalogue(Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS)
+        .group_by(&:groupe)
+      @related_pages = Array(SeoPages::Registry.grouped_for_hub["costume_epoque_deguisements"])
     end
 
     def festival_de_cannes
@@ -50,23 +57,21 @@ module Public
       offer_sheets =
         if I18n.locale == :en
           {
-            offer_sheet_1_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.15.31_2_fifemk.jpg"),
-            offer_sheet_2_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.15.31_3_ubusx0.jpg")
+            offer_sheet_1_url: helpers.cloudinary_static_image_url("festival-cannes-2026-offre-en-1"),
+            offer_sheet_2_url: helpers.cloudinary_static_image_url("festival-cannes-2026-offre-en-2")
           }
         else
           {
-            offer_sheet_1_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.15.31_x7htic.jpg"),
-            offer_sheet_2_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.15.31_1_vdv9ww.jpg")
+            offer_sheet_1_url: helpers.cloudinary_static_image_url("festival-cannes-2026-offre-fr-1"),
+            offer_sheet_2_url: helpers.cloudinary_static_image_url("festival-cannes-2026-offre-fr-2")
           }
         end
 
       @festival_media = offer_sheets.merge(
-        header_image_1_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.15.31_5_iy6io3.jpg"),
-        header_image_2_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.16.35_xyakfo.jpg"),
-        social_proof_image_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.15.31_5_iy6io3.jpg"),
+        header_image_1_url: helpers.cloudinary_static_image_url("festival-cannes-2026-header-1"),
+        header_image_2_url: helpers.cloudinary_static_image_url("festival-cannes-2026-header-2"),
         video_url: helpers.cloudinary_video_url("Festival_2026_Reel_Instagram_xgmvwd", width: 800, format: "mp4"),
-        video_poster_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.16.35_xyakfo.jpg"),
-        whatsapp_visual_url: helpers.cloudinary_static_image_url("WhatsApp_Image_2026-05-10_at_16.16.01_2_osynga.jpg")
+        video_poster_url: helpers.cloudinary_static_image_url("festival-cannes-2026-header-2")
       )
 
       load_periode_speciale_vars
@@ -93,6 +98,7 @@ module Public
     end
 
     def produits
+      @listing_catalogue = Produit::CATALOGUE_TENUES_MARIAGE_SOIREE
       session[:from_cabine] = params[:from_cabine].present?
       produits_with_filters
 
@@ -101,6 +107,24 @@ module Public
         format.turbo_stream do
           if request.headers["Turbo-Frame"] == "pagination"
             render :produits
+          else
+            render turbo_stream: produits_listing_turbo_streams(include_search: false)
+          end
+        end
+      end
+    end
+
+    def produits_costumes_deguisements
+      @listing_catalogue = Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+      session[:from_cabine] = false
+      produits_with_filters
+
+      respond_to do |format|
+        format.html
+        format.turbo_stream do
+          if request.headers["Turbo-Frame"] == "pagination"
+            # Même défilement que la liste mariage : le flux Turbo ne dépend pas du catalogue.
+            render template: "public/pages/produits"
           else
             render turbo_stream: produits_listing_turbo_streams(include_search: false)
           end
@@ -131,10 +155,10 @@ module Public
       end
       
       # Utiliser la back_url de la session ou une valeur par défaut
-      @back_url = session[:produit_back_url] || produits_index_path
-      
+      @back_url = session[:produit_back_url] || default_produit_back_path(@produit)
+
       @meme_produit_meme_couleur_autres_tailles = Produit
-        .where(handle: @produit.handle, couleur_id: @produit.couleur_id)
+        .where(handle: @produit.handle, couleur_id: @produit.couleur_id, catalogue: @produit.catalogue)
         .where.not(id: @produit.id)
         .where(today_availability: true)
         .includes(:taille)
@@ -142,7 +166,7 @@ module Public
         .order("tailles.nom")
 
       @meme_produit_meme_taille_autres_couleurs = Produit
-        .where(handle: @produit.handle, taille_id: @produit.taille_id)
+        .where(handle: @produit.handle, taille_id: @produit.taille_id, catalogue: @produit.catalogue)
         .where.not(id: @produit.id)
         .where(today_availability: true)
         .includes(:couleur)
@@ -153,7 +177,14 @@ module Public
 
     
     def update_filters
+      @listing_catalogue = Produit::CATALOGUE_TENUES_MARIAGE_SOIREE
       session[:from_cabine] = params[:from_cabine].present?
+      update_filters_turbo
+    end
+
+    def update_filtres_costumes
+      @listing_catalogue = Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+      session[:from_cabine] = false
       update_filters_turbo
     end
     
@@ -259,6 +290,14 @@ module Public
 
     private
 
+    def coups_de_coeur_boutique
+      Produit.tenues_mariage_soiree.where(today_availability: true).coups_de_coeur.eshop_diffusion.actif.for_public_listing_cards.limit(8)
+    end
+
+    def default_produit_back_path(produit)
+      produit.costume_epoque_deguisements? ? produits_costumes_deguisements_path : produits_index_path
+    end
+
     def load_periode_speciale_vars
       texte = current_texte
       return unless texte&.mode_periode_speciale?
@@ -282,6 +321,7 @@ module Public
       seen = {}
 
       Produit.actif
+             .tenues_mariage_soiree
              .eshop_diffusion
              .where(today_availability: true)
              .public_listing_order

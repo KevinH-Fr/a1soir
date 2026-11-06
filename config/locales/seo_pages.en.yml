@@ -56,9 +56,18 @@ en:
       guide_costumes_epoque_histoire:
         title: 'Period costumes: a journey through fashion history'
         description: 'From the Renaissance to the 1980s: understanding period costume and its place in fashion history.'
-      guide_mariage_theme_epoque:
-        title: 'Period-themed wedding: tips and consistency'
-        description: 'Planning a historical or costume wedding: advice on visual consistency from Autour D''Un Soir in Cannes.'
+      guide_location_costume_epoque:
+        title: Period costume rental in Cannes
+        description: 'Rent a period costume in Cannes: Renaissance, 18th century, Belle Époque. Stock kept apart from wedding wear, fittings on boulevard Carnot.'
+      guide_location_deguisement:
+        title: Fancy dress rental in Cannes
+        description: 'Fancy dress and characters in Cannes: marquess, pirate, masked ball, carnival. A catalogue separate from evening wear.'
+      guide_carnaval_nice:
+        title: Costume for Nice Carnival
+        description: 'Prepare a costume or fancy dress for Nice Carnival. Rental in Cannes at Autour D''Un Soir.'
+      guide_marquis_marquise:
+        title: Marquess and marchioness costumes
+        description: 'Court dress, marquess and marchioness costumes for rent in Cannes. 18th-century silhouettes, outside the wedding catalogue.'
       guide_costumes_cinema_tv:
         title: Film and TV costumes in Cannes
         description: 'Dressing film and television: the costume designer''s role, behind the scenes and Autour D''Un Soir on the Riviera.'
@@ -85,6 +94,7 @@ en:
           guides: Wedding dresses
           events: Occasions & events
           services: Services & rental
+          costume_epoque_deguisements: Period costumes and fancy dress
       shared:
         products_title: Our selection
         categories_title: Our collections
@@ -607,7 +617,7 @@ en:
             body_html: "<p>Embroidery, lace, buttons, caps and hats complete the silhouette. Accessories are often what makes a period recognisable: a headpiece, cravat, braid, gloves or jewellery immediately guides the reading.</p><p>Consistency also depends on fabrics. A fabric that is too contemporary, too shiny or too stretchy can break the historical illusion, even if the general cut looks right.</p>"
           usages:
             title: Theatre, film and themed weddings
-            body_html: <p>Our period costumes serve stage productions, shoots and private events. For a themed wedding see <a href="/en/guides/costume-epoque-mariage-theme">period wedding</a> or our <a href="/en/nos_autres_activites">other activities</a>.</p>
+            body_html: <p>Our period costumes serve stage productions, shoots and private events. See <a href="/en/guides/location-costume-epoque-cannes">period costume rental</a> and the <a href="/en/costumes-depoque">costumes and fancy dress</a> page.</p>
         faq:
           q1:
             question: Can period costumes be rented?
@@ -618,31 +628,106 @@ en:
           q3:
             question: Which periods are available?
             answer_html: "<p>From the Renaissance to the 1980s, with an evolving stock. The shop guides you according to your project.</p>"
-      costume_epoque_mariage_theme:
-        link_title: Period-themed wedding
-        header_title: Planning a period-themed wedding
-        header_subtitle: Historical consistency and elegance
-        intro_html: "<p>A costume wedding can be magical — if you aim for consistency rather than fancy dress. The chosen era, venue, light and level of historical accuracy must work together.</p><p>Autour D'Un Soir regularly supports themed wedding projects on the French Riviera. Here is our advice to move forward with confidence.</p>"
+      location_costume_epoque_cannes:
+        link_title: Period costume rental
+        header_title: Rent a period costume in Cannes
+        header_subtitle: Stage, screen, re-enactment and parties
+        intro_html: "<p>Renting a period costume is not the same as choosing an evening dress. Silhouette, period and use — stage, shoot or party — matter as much as size.</p><p>Autour D'Un Soir keeps this stock apart from the wedding catalogue, at 27 boulevard Carnot in Cannes.</p>"
         sections:
-          choix:
-            title: Choosing an era
-            body_html: "<p>Belle Époque, 1920s, Renaissance: each choice implies different constraints for guests. Belle Époque suggests long dresses, bodices, hats and promenade elegance; the 1920s favour straighter lines, pearls, fringe and short hairstyles; Renaissance themes require more theatrical volume.</p><p>A clear direction with shared visual references works better than a vague theme. An « old-fashioned » theme without a precise period often creates a mix that is hard to harmonise in photos.</p>"
-          coherence:
-            title: Silhouette consistency
-            body_html: "<p>Bride, groom, witnesses and guests: define a common level of expectation. You can aim for loose historical inspiration or a stricter re-enactment, but that needs deciding before fittings.</p><p>A very accurate period costume next to a modern outfit can create photo imbalance. Conversely, a coherent palette, a few well-chosen accessories and compatible silhouettes can sometimes create the atmosphere without constraining every guest.</p>"
-          boutique:
-            title: The shop's role
-            body_html: <p>We advise on available pieces, required alterations and feasibility by date. Discover our collection on <a href="/en/guides/costumes-epoque-histoire-mode">period costumes</a>.</p>
+          choisir:
+            title: Choosing the period
+            body_html: "<p>Renaissance, 18th century, Napoleonic era, Belle Époque or twentieth-century decades: each theme groups different cuts. One garment can belong to several themes, for example 18th century and marquess.</p>"
+          location:
+            title: How rental works
+            body_html: "<p>Rental is prepared in the shop: fitting, workshop alterations if needed, and the dates of the project. For a shoot or a group, a quote sets the pieces and the lead time.</p>"
+          collection:
+            title: See the stock
+            body_html: <p>The catalogue is on the <a href="/en/produits_costumes_deguisements">costumes and fancy dress</a> page. The visit can also start from <a href="/en/costumes-depoque">the collection introduction</a>.</p>
         faq:
           q1:
-            question: Can you mix a modern dress with a period theme?
-            answer_html: "<p>Yes, with a clear aesthetic direction — for example a contemporary dress inspired by an era rather than strict re-enactment.</p>"
+            question: Are period costumes in the wedding catalogue?
+            answer_html: "<p>No. They have their own list, with their own themes, sizes and colours.</p>"
           q2:
-            question: Should guests be warned early?
-            answer_html: "<p>Yes, especially if they need to source or rent specific outfits.</p>"
+            question: Can they be rented for a shoot?
+            answer_html: "<p>Yes, on quote, depending on pieces and dates.</p>"
           q3:
-            question: Does the shop dress the groom too?
-            answer_html: "<p>Yes, suits, tuxedos and period costume for men are available in store.</p>"
+            question: Do you make pieces to order?
+            answer_html: "<p>The workshop can create or adapt a piece for a specific project. Made-to-order is requested in store; it is not a catalogue filter.</p>"
+      location_deguisement_cannes:
+        link_title: Fancy dress rental
+        header_title: Rent fancy dress in Cannes
+        header_subtitle: Characters, parties and balls
+        intro_html: "<p>Fancy dress is not a historical costume. Pirate, fairytale, masked ball or court character: the piece plays a role, not only a date.</p><p>These outfits sit with the period costumes, and stay separate from wedding gowns and ceremony tuxedos.</p>"
+        sections:
+          personnages:
+            title: Characters and worlds
+            body_html: "<p>The Theme filter groups entries by family: period, character or world. Marquess and marchioness, pirate, fairytale, carnival or masked ball are starting points. The shop adds others when the stock exists.</p>"
+          fete:
+            title: For a party or a show
+            body_html: "<p>Birthday, costume party, show or carnival: size and colour filter the same list. One piece can carry several themes and appear in each.</p>"
+          boutique:
+            title: In the Cannes shop
+            body_html: <p>Fittings at 27 boulevard Carnot. The full list is on <a href="/en/produits_costumes_deguisements">costumes and fancy dress</a>.</p>
+        faq:
+          q1:
+            question: Do you stock Halloween or superhero costumes?
+            answer_html: "<p>Only when the piece is in stock. Those rails are not created in advance: a theme is added when the costumes exist.</p>"
+          q2:
+            question: Can fancy dress also be period dress?
+            answer_html: "<p>Yes. A marchioness gown can be filed both as a character and as 18th century.</p>"
+          q3:
+            question: Is rental completed online?
+            answer_html: "<p>Choice and fitting happen in the shop. The online catalogue is there to prepare the visit.</p>"
+      costume_carnaval_nice:
+        link_title: Nice Carnival
+        header_title: Costume and fancy dress for Nice Carnival
+        header_subtitle: Preparing an outfit before the two weeks in February
+        intro_html: "<p>Nice Carnival is the main local demand for fancy dress. Outfits have to cope with crowds, movement and sometimes rain, without losing a readable silhouette.</p><p>Autour D'Un Soir, in Cannes, prepares these projects alongside the wedding business, not inside it.</p>"
+        sections:
+          choisir:
+            title: What to wear to parade or go out
+            body_html: "<p>A heavily built stage costume photographs well, but it tires quickly in the street. To follow the floats or a battle of flowers, a more mobile silhouette, with a recognisable headdress or mask, is often the better choice.</p>"
+          themes:
+            title: Themes that come back
+            body_html: "<p>Carnival, masked ball, court characters or loud decades: the Theme filter starts from an idea without mixing these pieces into evening wear.</p>"
+          dates:
+            title: Book before February
+            body_html: <p>Fittings bunch up in the weeks before carnival. Write to the shop or start from the <a href="/en/produits_costumes_deguisements">costume list</a>.</p>
+        faq:
+          q1:
+            question: Do you dress performers on the floats?
+            answer_html: "<p>On quote, depending on the number of outfits, the dates and the year's theme.</p>"
+          q2:
+            question: Can we come from Nice?
+            answer_html: "<p>Yes. The shop is in Cannes, boulevard Carnot, a short distance from Nice.</p>"
+          q3:
+            question: Does carnival require a historical costume?
+            answer_html: "<p>No. Carnival welcomes character, mask and colour. Period is only one possible theme.</p>"
+      costume_marquis_marquise:
+        link_title: Marquess and marchioness
+        header_title: Marquess and marchioness costumes
+        header_subtitle: Court dress and 18th-century silhouettes
+        intro_html: "<p>Marquess and marchioness costumes are a large part of the stock. They are not generic 18th-century outfits: wig, pannier, embroidered coat and robe à la française read immediately as court dress.</p><p>They are rented for a ball, a shoot, a party or a scene, from the Cannes shop.</p>"
+        sections:
+          silhouette:
+            title: What makes a marquess or a marchioness
+            body_html: "<p>For women: skirt volume, bodice, sleeves and hair. For men: coat, waistcoat, breeches and shoes rather than a contemporary three-piece suit. Accessories often make the photograph.</p>"
+          usages:
+            title: Ball, stage and image
+            body_html: "<p>These pieces serve masked balls, court scenes and portraits. They can be filed both under Marquess and marchioness and under the 18th century, so they appear in both filters.</p>"
+          voir:
+            title: See these costumes
+            body_html: <p>The selection is on <a href="/en/produits_costumes_deguisements">the costume catalogue</a>, filtered to this theme as soon as pieces are online.</p>
+        faq:
+          q1:
+            question: Is a marchioness gown a wedding dress?
+            answer_html: "<p>No. It stays in the costume and fancy dress catalogue, even if it is worn for a dressed-up party.</p>"
+          q2:
+            question: Are there different sizes?
+            answer_html: "<p>Yes. The size filter on this list only shows sizes present on costumes, not wedding-dress sizes.</p>"
+          q3:
+            question: Can we try them in the shop?
+            answer_html: "<p>Yes, at 27 boulevard Carnot in Cannes. The workshop adjusts a piece when the project needs it.</p>"
       costumes_cinema_television_cannes:
         link_title: Film & TV costumes
         header_title: Dressing film and television
@@ -657,7 +742,7 @@ en:
             body_html: "<p>The Riviera attracts varied productions thanks to its settings: seaside, hotels, villas, old streets, ports and places associated with the Festival. Cannes also concentrates an image culture that can make requests very fast-moving.</p><p>In that context, a varied stock is useful because a shoot may need a contemporary silhouette, a tuxedo, an evening gown or a period costume on a short timeline. Availability is not enough: the piece also has to work on screen.</p>"
           stock:
             title: A wardrobe built for the image
-            body_html: '<p>Period costume, tuxedos, evening gowns, uniforms: diversity covers varied silhouettes and styles. See also <a href="/en/nos_autres_activites">our corporate and audiovisual services</a>.</p>'
+            body_html: '<p>Period costume, characters and uniforms: the stock serves the image, not the wedding rail. See the <a href="/en/produits_costumes_deguisements">costume and fancy dress catalogue</a>.</p>'
         faq:
           q1:
             question: Does the shop lend costumes for shoots?

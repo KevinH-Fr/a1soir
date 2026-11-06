@@ -6,6 +6,7 @@ class SimilarProductsService
 
   def call
     return Produit.none if @limit <= 0
+    return costume_similar if @produit.costume_epoque_deguisements?
 
     categorie_ids = @produit.categorie_produits.pluck(:id)
     couleur_id = @produit.couleur_id
@@ -42,27 +43,49 @@ class SimilarProductsService
       results.concat(priority_3)
     end
 
+    finalize(results)
+  end
+
+  private
+
+  def costume_similar
+    results = []
+    excluded_ids = []
+    rubrique_ids = @produit.rubrique_costumes.pluck(:id)
+    couleur_id = @produit.couleur_id
+
+    if rubrique_ids.any?
+      priority = base_scope.by_rubriques(rubrique_ids).limit(@limit)
+      results.concat(priority)
+      excluded_ids.concat(priority.pluck(:id))
+    end
+
+    if couleur_id.present? && results.size < @limit
+      results.concat(
+        base_scope.by_couleur(couleur_id).where.not(id: excluded_ids).limit(@limit - results.size)
+      )
+    end
+
+    finalize(results)
+  end
+
+  def finalize(results)
     return Produit.none if results.empty?
 
-    # Dédupliquer par reffrs : ne garder qu'un seul produit par référence
     unique_results = deduplicate_by_reffrs(results)
-
     return Produit.none if unique_results.empty?
 
-    # Préserver l'ordre de priorité avec CASE WHEN
     ordered_ids = unique_results.map(&:id)
-    order_sql = ordered_ids.map.with_index { |id, idx| "WHEN id = #{id} THEN #{idx}" }.join(' ')
-    
+    order_sql = ordered_ids.map.with_index { |id, idx| "WHEN id = #{id} THEN #{idx}" }.join(" ")
+
     Produit
       .where(id: ordered_ids)
       .order(Arel.sql("CASE #{order_sql} END"))
   end
 
-  private
-
   def base_scope
     Produit
-      .where(actif: true)
+      .where(actif: true, catalogue: @produit.catalogue)
       .where(today_availability: true)
       .eshop_diffusion
       .where.not(id: @produit.id)

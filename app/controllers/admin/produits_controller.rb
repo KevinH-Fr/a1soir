@@ -11,12 +11,13 @@ class Admin::ProduitsController < Admin::ApplicationController
   
     search_params = params.permit(
       :format, :page, :subdomain,
-      :filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_prix,
+      :filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_prix, :filter_catalogue,
       q: [:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont, :id_eq]
     )
   
     produits = Produit.all
-  
+    produits = apply_catalogue_filter(produits, search_params[:filter_catalogue])
+
     produits = apply_taille_filter(produits, search_params[:filter_taille])
     produits = apply_couleur_filter(produits, search_params[:filter_couleur])
     produits = apply_categorie_filter(produits, search_params[:filter_categorie])
@@ -656,7 +657,9 @@ class Admin::ProduitsController < Admin::ApplicationController
         :caution, :handle, :reffrs, :quantite, :fournisseur_id, :dateachat, :prixachat, :actif,
         :image1, :video1, :couleur_id, :taille_id, :eshop, :poids,
         :coup_de_coeur, :coup_de_coeur_position, :ancien_prixvente,
-        categorie_produit_ids: [])
+        :catalogue,
+        categorie_produit_ids: [],
+        rubrique_costume_ids: [])
     end
 
 

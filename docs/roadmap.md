@@ -8,6 +8,7 @@ ok - mettre en place stripe eshop
 à surveiller:
 ______________
 
+- apres deploiement : verifier les images de /fr/festival-de-cannes et /en/festival-de-cannes. Le code pointe vers les copies Cloudinary festival-cannes-2026-offre-fr-1, offre-fr-2, offre-en-1, offre-en-2, header-1, header-2. Les fichiers WhatsApp_Image_… d'origine sont encore ceux servis en prod tant que ce code n'est pas déployé. Contrôler que les visuels s'affichent et que le HTML ne contient plus WhatsApp_Image.
 - verifier sitemap ok suite au renommage - jours semaines
 - verifier flux merchant se met bien à jour aussi - jours semaines
    ok - fix group item id

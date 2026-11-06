@@ -3,9 +3,11 @@ module ProduitsFilterable
 
   # Méthode pour charger toutes les données nécessaires aux filtres
   # Si produits_scope est fourni, calcule les options dynamiquement
-  def load_data(produits_scope: nil, categories_scope: nil, tailles_scope: nil, couleurs_scope: nil, types_scope: nil, types_produits_scope: nil, prix_scope: nil)
-    if produits_scope.present?
-      # Calculer les options disponibles à partir des produits filtrés
+  def load_data(produits_scope: nil, categories_scope: nil, tailles_scope: nil, couleurs_scope: nil, types_scope: nil, types_produits_scope: nil, prix_scope: nil, rubriques_scope: nil)
+    if produits_scope.present? || costume_listing?
+      # Une relation vide est "blank" : sur le catalogue costume, on garde
+      # quand même les facettes (rubriques, tailles, couleurs) calculées
+      # sans le filtre courant. La boutique conserve le repli sur tout le référentiel.
       load_dynamic_filter_options(
         produits_scope,
         categories_scope: categories_scope,
@@ -13,7 +15,8 @@ module ProduitsFilterable
         couleurs_scope: couleurs_scope,
         types_scope: types_scope,
         types_produits_scope: types_produits_scope,
-        prix_scope: prix_scope
+        prix_scope: prix_scope,
+        rubriques_scope: rubriques_scope
       )
     else
       # Charger toutes les options (comportement par défaut)
@@ -23,6 +26,7 @@ module ProduitsFilterable
       @tranches_prix = [50, 100, 200, 500, 1000]
       @types = ["Vente", "Location"]
       @types_produits = TypeProduit.all.order(nom: :asc)
+      @toutes_rubriques = RubriqueCostume.none
     end
   end
 
@@ -46,31 +50,39 @@ module ProduitsFilterable
   # Rafraîchit filtres + résultats (+ recherche si include_search).
   # Ne pas remplacer le champ recherche pendant la saisie (curseur / focus).
   def produits_listing_turbo_streams(include_search: true)
-    streams = [
-      turbo_stream.update("filtres-categorie",
-        partial: "public/pages/filtres/filtres_categorie"),
-
-      turbo_stream.update("filtres-type-produit",
-        partial: "public/pages/filtres/filtres_type_produit"),
-
-      turbo_stream.update("filtres-taille",
-        partial: "public/pages/filtres/filtres_taille"),
-
-      turbo_stream.update("filtres-couleur",
-        partial: "public/pages/filtres/filtres_couleur"),
-
-      turbo_stream.update("filtres-prix",
-        partial: "public/pages/filtres/filtres_prix"),
-
-      turbo_stream.update("filtres-type",
-        partial: "public/pages/filtres/filtres_type"),
-
-      turbo_stream.update("filtres-actifs",
-        partial: "public/pages/filtres/filtres_actifs"),
-
-      turbo_stream.update("produits-filtres",
-        partial: "public/pages/produits_filtres")
-    ]
+    streams = if costume_listing?
+      [
+        turbo_stream.update("filtres-rubrique",
+          partial: "public/pages/filtres/filtres_rubrique"),
+        turbo_stream.update("filtres-taille",
+          partial: "public/pages/filtres/filtres_taille"),
+        turbo_stream.update("filtres-couleur",
+          partial: "public/pages/filtres/filtres_couleur"),
+        turbo_stream.update("filtres-actifs",
+          partial: "public/pages/filtres/filtres_actifs"),
+        turbo_stream.update("produits-filtres",
+          partial: "public/pages/produits_filtres")
+      ]
+    else
+      [
+        turbo_stream.update("filtres-categorie",
+          partial: "public/pages/filtres/filtres_categorie"),
+        turbo_stream.update("filtres-type-produit",
+          partial: "public/pages/filtres/filtres_type_produit"),
+        turbo_stream.update("filtres-taille",
+          partial: "public/pages/filtres/filtres_taille"),
+        turbo_stream.update("filtres-couleur",
+          partial: "public/pages/filtres/filtres_couleur"),
+        turbo_stream.update("filtres-prix",
+          partial: "public/pages/filtres/filtres_prix"),
+        turbo_stream.update("filtres-type",
+          partial: "public/pages/filtres/filtres_type"),
+        turbo_stream.update("filtres-actifs",
+          partial: "public/pages/filtres/filtres_actifs"),
+        turbo_stream.update("produits-filtres",
+          partial: "public/pages/produits_filtres")
+      ]
+    end
 
     if include_search
       streams.insert(-1, turbo_stream.update("produits-search",
@@ -122,6 +134,7 @@ module ProduitsFilterable
     types_scope = available_scope_for_filter(:type, search_params)
     types_produits_scope = available_scope_for_filter(:type_produit, search_params)
     prix_scope = available_scope_for_filter(:prix, search_params)
+    rubriques_scope = available_scope_for_filter(:rubrique, search_params)
 
     # 🔁 Charger les options de filtres dynamiquement à partir des produits disponibles
     load_data(
@@ -131,7 +144,8 @@ module ProduitsFilterable
       couleurs_scope: couleurs_scope,
       types_scope: types_scope,
       types_produits_scope: types_produits_scope,
-      prix_scope: prix_scope
+      prix_scope: prix_scope,
+      rubriques_scope: rubriques_scope
     )
 
     # Scope pour la pagination avec ORDER BY (requête simple sans DISTINCT)
@@ -157,7 +171,7 @@ module ProduitsFilterable
   # Calcule les options de filtres disponibles à partir d'un scope de produits
   # Chaque scope optionnel permet de calculer une facette avec tous les autres filtres actifs,
   # sauf la facette en question.
-  def load_dynamic_filter_options(produits_scope, categories_scope: nil, tailles_scope: nil, couleurs_scope: nil, types_scope: nil, types_produits_scope: nil, prix_scope: nil)
+  def load_dynamic_filter_options(produits_scope, categories_scope: nil, tailles_scope: nil, couleurs_scope: nil, types_scope: nil, types_produits_scope: nil, prix_scope: nil, rubriques_scope: nil)
     # Catégories disponibles
     scope_pour_categories = categories_scope || produits_scope
     categorie_ids = scope_pour_categories
@@ -211,6 +225,13 @@ module ProduitsFilterable
     @types = []
     @types << "Vente" if has_vente
     @types << "Location" if has_location
+
+    scope_pour_rubriques = rubriques_scope || produits_scope
+    rubrique_ids = scope_pour_rubriques
+                     .joins(:rubrique_costumes)
+                     .distinct
+                     .pluck("rubrique_costumes.id")
+    @toutes_rubriques = RubriqueCostume.where(id: rubrique_ids).ordered
   end
 
   def available_scope_for_filter(excluded_filter, search_params)
@@ -240,16 +261,29 @@ module ProduitsFilterable
     type_param = excluded_filter == :type ? nil : params[:type]
     type_produit_param = excluded_filter == :type_produit ? nil : params[:type_produit]
     en_promotion_param = excluded_filter == :prix ? nil : params[:en_promotion]
+    rubrique_param = costume_listing? && excluded_filter != :rubrique ? params[:rubrique] : nil
 
+    # Catalogue costumes : taille, couleur et rubrique seulement.
+    # Catégorie, prix, vente/location, type et promotion restent ceux du mariage.
     FiltersProduitsService.new(
-      categorie_param,
+      costume_listing? ? nil : categorie_param,
       taille_param,
       couleur_param,
-      prix_param,
-      type_param,
-      type_produit_param,
-      en_promotion_param
+      costume_listing? ? nil : prix_param,
+      costume_listing? ? nil : type_param,
+      costume_listing? ? nil : type_produit_param,
+      costume_listing? ? nil : en_promotion_param,
+      catalogue: listing_catalogue,
+      rubrique_ids: rubrique_param
     ).call
+  end
+
+  def listing_catalogue
+    @listing_catalogue.presence || Produit::CATALOGUE_TENUES_MARIAGE_SOIREE
+  end
+
+  def costume_listing?
+    listing_catalogue == Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
   end
 end
 

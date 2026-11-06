@@ -30,6 +30,9 @@ Rails.application.routes.draw do
       get 'nos_collections', to: 'pages#nos_collections'
       get 'le_concept', to: 'pages#le_concept'
       get 'nos_autres_activites', to: 'pages#nos_autres_activites'
+      get 'costumes-depoque', to: 'pages#costumes_depoque', as: :costumes_depoque
+      get 'produits_costumes_deguisements', to: 'pages#produits_costumes_deguisements', as: :produits_costumes_deguisements
+      post 'update_filtres_costumes', to: 'pages#update_filtres_costumes', as: :update_filtres_costumes
       get 'festival-de-cannes', to: 'pages#festival_de_cannes', as: :festival_de_cannes
       get 'legal', to: 'pages#legal'
       get 'faq', to: 'pages#faq'
@@ -40,6 +43,7 @@ Rails.application.routes.draw do
       get 'categories', to: 'pages#categories'
 
       get 'guides', to: 'seo_pages#hub', as: :seo_guides_hub
+      get 'guides/costume-epoque-mariage-theme', to: redirect { |params, _| "/#{params[:locale] || 'fr'}/guides/costumes-epoque-histoire-mode" }
       get 'guides/:slug', to: 'seo_pages#show', as: :seo_guide, defaults: { scope: 'guides' }
       get 'tenue-festival-de-cannes', to: redirect { |params, _| "/#{params[:locale] || 'fr'}/festival-de-cannes" }
 
@@ -155,6 +159,12 @@ Rails.application.routes.draw do
       end
       
       resources :type_produits do 
+        member do
+          post :edit
+        end
+      end
+
+      resources :rubrique_costumes do
         member do
           post :edit
         end

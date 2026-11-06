@@ -1,6 +1,7 @@
 <div id="filtres-actifs">
   <% has_active_filters = params[:id].present? || params[:type_produit].present? || params[:taille].present? ||
                           params[:couleur].present? || params[:type].present? || params[:prixmax].present? ||
+                          params[:rubrique].present? ||
                           ActiveModel::Type::Boolean.new.cast(params[:en_promotion]) %>
 
   <% if has_active_filters %>

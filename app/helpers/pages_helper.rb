@@ -533,19 +533,36 @@ module PagesHelper
 
   # Paramètres de listing public partagés entre filtres Turbo, recherche et back_url fiche produit.
   # Les overrides permettent de remplacer ou effacer une valeur (ex. taille: nil).
+  # Vrai seulement sur la liste costumes d'époque et déguisements.
+  def costume_listing?
+    @listing_catalogue.to_s == Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+  end
+
   def produits_active_params(**overrides)
-    {
-      id: params[:id],
-      slug: params[:slug],
-      taille: params[:taille],
-      couleur: params[:couleur],
-      prixmax: params[:prixmax],
-      type: params[:type],
-      type_produit: params[:type_produit],
-      en_promotion: params[:en_promotion],
-      from_cabine: params[:from_cabine],
-      q: produits_search_params_from_request
-    }.merge(overrides).each_with_object({}) do |(key, value), result|
+    # Costumes : thème, taille, couleur, recherche. Le mariage garde ses filtres d'origine.
+    base = if costume_listing?
+      {
+        rubrique: params[:rubrique],
+        taille: params[:taille],
+        couleur: params[:couleur],
+        q: produits_search_params_from_request
+      }
+    else
+      {
+        id: params[:id],
+        slug: params[:slug],
+        taille: params[:taille],
+        couleur: params[:couleur],
+        prixmax: params[:prixmax],
+        type: params[:type],
+        type_produit: params[:type_produit],
+        en_promotion: params[:en_promotion],
+        from_cabine: params[:from_cabine],
+        q: produits_search_params_from_request
+      }
+    end
+
+    base.merge(overrides).each_with_object({}) do |(key, value), result|
       next if value.nil?
       next if value.respond_to?(:empty?) && value.empty?
 
@@ -555,6 +572,9 @@ module PagesHelper
 
   # URL propre pour réinitialiser filtres + recherche (redirect GET, pas de params résiduels).
   def produits_reset_path
+    # Réinitialiser reste sur la liste costumes, sans renvoyer vers /produits.
+    return produits_costumes_deguisements_path if costume_listing?
+
     reset_params = {}
     reset_params[:from_cabine] = true if params[:from_cabine].present? || session[:from_cabine]
     produits_index_path(**reset_params)
@@ -562,12 +582,33 @@ module PagesHelper
 
   # Route POST des dropdowns filtres : conserve recherche + autres filtres actifs.
   def update_produits_filters_path(**overrides)
-    update_filters_path(**produits_active_params(**overrides))
+    path_params = produits_active_params(**overrides)
+    # POST séparé : un paramètre de la liste mariage ne peut pas changer le catalogue.
+    if costume_listing?
+      update_filtres_costumes_path(**path_params)
+    else
+      update_filters_path(**path_params)
+    end
+  end
+
+  # Pagination, retour et liens de la liste : même URL, catalogue compris.
+  def produits_listing_page_path(**extra)
+    path_params = produits_active_params.merge(extra)
+    if costume_listing?
+      produits_costumes_deguisements_path(**path_params)
+    elsif params[:id].present? && !params[:id].is_a?(Array)
+      produits_path(**path_params)
+    else
+      produits_index_path(**path_params)
+    end
   end
 
   # URL cible du formulaire de recherche (catégorie courante + filtres, sans q).
   def produits_listing_search_url
     path_params = produits_active_params.except(:q)
+    # La recherche costumes reste sur sa page.
+    return produits_costumes_deguisements_path(**path_params) if costume_listing?
+
     single_category = params[:id].present? && !params[:id].is_a?(Array)
 
     if single_category
@@ -581,8 +622,9 @@ module PagesHelper
   def produits_search_filter_hidden_fields
     safe_join(
       produits_active_params.except(:q).flat_map do |key, value|
-        if key == :id && value.is_a?(Array)
-          value.map { |category_id| hidden_field_tag("id[]", category_id) }
+        # id[] (catégories mariage) et rubrique[] (thèmes costumes) quand plusieurs valeurs.
+        if %i[id rubrique].include?(key) && value.is_a?(Array)
+          value.map { |item_id| hidden_field_tag("#{key}[]", item_id) }
         else
           [hidden_field_tag(key, value)]
         end
@@ -592,14 +634,7 @@ module PagesHelper
 
   # Helper pour construire l'URL de retour vers la page produits avec tous les paramètres actifs
   def produits_back_url
-    listing_params = produits_active_params
-    single_category = params[:id].present? && !params[:id].is_a?(Array)
-
-    if single_category
-      produits_path(**listing_params)
-    else
-      produits_index_path(**listing_params)
-    end
+    produits_listing_page_path
   end
 
   # back_url des cartes produit : listing → filtres courants ; fiche produit → session préservée

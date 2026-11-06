@@ -5,7 +5,7 @@ module Public
     helper_method :seo_meta_key
 
     def hub
-      @pages_by_group = SeoPages::Registry.grouped_for_hub
+      @pages_by_group = SeoPages::Registry.grouped_for_hub.except("costume_epoque_deguisements")
       @seo_meta_key = :seo_guides_hub
     end
 

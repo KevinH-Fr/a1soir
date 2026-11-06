@@ -1,0 +1,7 @@
+<%= bandeau_entete_simple("Nouvelle rubrique costume", "bookmarks") %>
+
+<%= render "form", rubrique_costume: @rubrique_costume %>
+
+<br>
+
+<%= return_model_index_button("Rubriques costumes", admin_rubrique_costumes_path) %>

@@ -182,6 +182,13 @@
   }
 }
 
+/* Recherche catalogue : pleine largeur sur mobile, plafonnée sur grand écran. */
+.produits-search-form {
+  width: 100%;
+  max-width: 32rem;
+  margin-inline: auto;
+}
+
 /* Override Bootstrap blue focus for dark inputs */
 .form-control.bg-dark:focus {
   border-color: rgba(255, 255, 255, 0.5) !important;

@@ -179,6 +179,15 @@ module SeoPagesHelper
   end
 
   def seo_page_products_collection_url(page)
+    if page.dig(:product_filters, :catalogue).to_s == Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+      names = Array(page.dig(:product_filters, :rubrique_names))
+      if names.one?
+        rubrique = RubriqueCostume.where("LOWER(nom) = ?", names.first.to_s.downcase).first
+        return produits_costumes_deguisements_url(rubrique: rubrique.id) if rubrique
+      end
+      return produits_costumes_deguisements_url
+    end
+
     categories = seo_page_categories(page)
     produits_filter_url(
       category_names: categories.map(&:nom),
@@ -209,13 +218,14 @@ module SeoPagesHelper
     end
   end
 
-  SEO_HUB_GROUP_ORDER = %w[local guides events services].freeze
+  SEO_HUB_GROUP_ORDER = %w[local guides events services costume_epoque_deguisements].freeze
 
   SEO_HUB_GROUP_ICONS = {
     "local" => "geo-alt-fill",
     "guides" => "heart-fill",
     "events" => "stars",
-    "services" => "bag-heart"
+    "services" => "bag-heart",
+    "costume_epoque_deguisements" => "clock-history"
   }.freeze
 
   def seo_hub_groups_sorted(pages_by_group)

@@ -196,6 +196,10 @@ module MetaTagsHelper
       :contact
     when 'pages#produits'
       :produits
+    when 'pages#produits_costumes_deguisements'
+      :produits_costumes_deguisements
+    when 'pages#costumes_depoque'
+      :costumes_depoque
     when 'pages#nos_autres_activites'
       :nos_autres_activites
     when 'pages#festival_de_cannes'

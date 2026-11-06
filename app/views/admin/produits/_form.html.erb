@@ -118,7 +118,30 @@
               [:actif, :check_box],
               [:eshop, :check_box]
             ) %>
-            <div class="input-group mb-1">
+            <div data-controller="produit-catalogue"
+                 data-produit-catalogue-costume-value="<%= Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS %>"
+                 data-produit-catalogue-confirm-costume-value="Passer ce produit au catalogue Costumes d'époque et déguisements ? Les catégories seront retirées à l'enregistrement. La fiche n'est pas enregistrée maintenant."
+                 data-produit-catalogue-confirm-boutique-value="Revenir au catalogue Tenues de mariage et soirée ? Les rubriques seront retirées à l'enregistrement. La fiche n'est pas enregistrée maintenant.">
+            <% selected_catalogue = produit.catalogue.presence || Produit::CATALOGUE_TENUES_MARIAGE_SOIREE %>
+            <div class="mb-2">
+              <div class="form-label fw-bold mb-1">Catalogue</div>
+              <div class="d-flex flex-wrap gap-3">
+                <% [
+                  ["Tenues de mariage et soirée", Produit::CATALOGUE_TENUES_MARIAGE_SOIREE],
+                  ["Costumes d'époque et déguisements", Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS]
+                ].each do |label, value| %>
+                  <div class="form-check">
+                    <%= form.radio_button :catalogue, value,
+                          class: "form-check-input",
+                          checked: selected_catalogue == value,
+                          data: { produit_catalogue_target: "option", action: "change->produit-catalogue#change" } %>
+                    <%= form.label :catalogue, label, value: value, class: "form-check-label" %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+            <% costume_catalogue = produit.catalogue == Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS %>
+            <div id="produit-categories-boutique" data-produit-catalogue-target="categories" <%= "hidden" if costume_catalogue %>>
               <%= form.label :categorie_produit_ids, "Catégories", class: "form-label fw-bold" %>
               <div class="form-check">
                 <%= form.collection_check_boxes :categorie_produit_ids, @categorie_produits.order(:nom), :id, :nom do |b| %>
@@ -128,6 +151,19 @@
                   </div>
                 <% end %>
               </div>
+            </div>
+            <div id="produit-rubriques-costume" data-produit-catalogue-target="rubriques" <%= "hidden" unless costume_catalogue %>>
+              <%= form.label :rubrique_costume_ids, "Rubriques", class: "form-label fw-bold" %>
+              <% RubriqueCostume.ordered.group_by(&:groupe).each do |groupe, rubriques| %>
+                <div class="small fw-semibold text-secondary mt-2"><%= groupe %></div>
+                <%= form.collection_check_boxes :rubrique_costume_ids, rubriques, :id, :nom do |b| %>
+                  <div class="form-check form-check-inline">
+                    <%= b.check_box class: "form-check-input" %>
+                    <%= b.label class: "form-check-label" %>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
             </div>
           </section>
 

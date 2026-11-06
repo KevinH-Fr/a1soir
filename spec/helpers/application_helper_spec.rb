@@ -21,8 +21,8 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe "#cloudinary_static_image_url" do
     it "builds an optimized URL for a static public_id" do
-      expect(helper.cloudinary_static_image_url("WhatsApp_Image_example.jpg", width: 1200)).to eq(
-        "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/WhatsApp_Image_example.jpg"
+      expect(helper.cloudinary_static_image_url("page-banner", width: 1200)).to eq(
+        "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/page-banner"
       )
     end
   end

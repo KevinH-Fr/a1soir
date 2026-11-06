@@ -8,6 +8,7 @@ module ProduitCardPreloadable
     :taille,
     :fournisseur,
     :categorie_produits,
+    :rubrique_costumes,
     { image1_attachment: :blob },
     { images_attachments: :blob },
     { qr_code_attachment: :blob }

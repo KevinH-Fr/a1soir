@@ -25,6 +25,8 @@ module SeoPages
     end
 
     def call
+      return [] if @page.dig(:product_filters, :catalogue).to_s == Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+
       names = Array(@page.dig(:product_filters, :category_names)).map { |name| name.to_s.downcase }
       slug = @page[:slug].to_s
 

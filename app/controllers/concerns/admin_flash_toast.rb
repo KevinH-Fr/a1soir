@@ -380,6 +380,28 @@ module AdminFlashToast
         message_key: "admin.toasts.profile.destroy_blocked",
       },
     },
+    rubrique_costume: {
+      created: {
+        variant: :success,
+        icon: "bookmarks",
+        message_key: "admin.toasts.rubrique_costume.created",
+      },
+      updated: {
+        variant: :info,
+        icon: "pencil-square",
+        message_key: "admin.toasts.rubrique_costume.updated",
+      },
+      destroyed: {
+        variant: :danger,
+        icon: "trash",
+        message_key: "admin.toasts.rubrique_costume.destroyed",
+      },
+      destroy_blocked: {
+        variant: :warning,
+        icon: "link-45deg",
+        message_key: "admin.toasts.rubrique_costume.destroy_blocked",
+      },
+    },
     type_produit: {
       created: {
         variant: :success,

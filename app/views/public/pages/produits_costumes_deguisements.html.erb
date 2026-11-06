@@ -1,0 +1,56 @@
+<% content_for :structured_data do %>
+  <script type="application/ld+json">
+    <%= webpage_schema(
+          name: meta_title,
+          description: meta_description,
+          url: public_page_url
+        ).to_json.html_safe %>
+  </script>
+
+  <% breadcrumbs = [
+       { name: structured_breadcrumb_name(:home), url: structured_home_url },
+       { name: t("public.pages.costumes_depoque.header_title"), url: costumes_depoque_url },
+       { name: t("public.pages.produits_costumes_deguisements.listing_heading"), url: public_page_url }
+     ] %>
+
+  <script type="application/ld+json">
+    <%= breadcrumb_schema(breadcrumbs).to_json.html_safe %>
+  </script>
+
+  <% if @produits.present? %>
+    <script type="application/ld+json">
+      <%= item_list_schema(produits: @produits).to_json.html_safe %>
+    </script>
+  <% end %>
+<% end %>
+
+<div class="public-main-content">
+
+    <div class="p-4">
+        <h1 class="h3 text-light text-center mb-3">
+          <%= t("public.pages.produits_costumes_deguisements.listing_heading") %>
+        </h1>
+
+        <%= render partial: "public/pages/produits_search" %>
+
+    </div>
+
+    <div class="container-fluid d-flex flex-wrap gap-1 justify-content-center">
+        <%= render partial: "public/pages/filtres/filtres_rubrique" %>
+        <%= render partial: "public/pages/filtres/filtres_taille" %>
+        <%= render partial: "public/pages/filtres/filtres_couleur" %>
+    </div>
+
+    <%= render partial: "public/pages/filtres/filtres_actifs" %>
+
+    <%= render "produits_filtres" %>
+
+    <% if @cabine_cart.any? %>
+        <%= render partial: "public/pages/floating_reservation_button" %>
+    <% else %>
+        <div id="floating_reservation_btn"></div>
+    <% end %>
+
+    <%= render partial: "public/pages/scroll_to_top_button" %>
+
+</div>

@@ -1,57 +1,19 @@
 
 <div id="produits-filtres">
- <% 
-   # Déterminer si on a une seule catégorie ou plusieurs
-   is_single_category = params[:id].present? && !params[:id].is_a?(Array)
-   is_multiple_categories = params[:id].is_a?(Array)
- %>
-
- 
   <div class="container-fluid mt-4 m-0">
 
     <%= turbo_frame_tag :results, data: {turbo_action: 'advance'} do %>
       <div id="produits" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 m-0 justify-content-center">
-        <%# Render first page directly server-side %>
         <%= render partial: "public/pages/produit/produit", collection: @produits %>
       </div>
 
-      <%# Only load next pages lazily if there are more %>
       <% if @pagy.next.present? %>
         <%= turbo_frame_tag :pagination, loading: :lazy,
             data: { controller: "lazy-pagination" },
-            src: if is_single_category
-              produits_path(
-                id: params[:id], 
-                slug: params[:slug], 
-                taille: params[:taille], 
-                couleur: params[:couleur],
-                prixmax: params[:prixmax],
-                type: params[:type],
-                en_promotion: params[:en_promotion],
-                format: :turbo_stream, 
-                page: @pagy.next,
-                q: params[:q]&.to_unsafe_h,
-                from_cabine: params[:from_cabine],
-                type_produit: params[:type_produit])
-            else
-              produits_index_path(
-                id: params[:id],
-                taille: params[:taille], 
-                couleur: params[:couleur],
-                prixmax: params[:prixmax],
-                type: params[:type],
-                en_promotion: params[:en_promotion],
-                format: :turbo_stream,
-                page: @pagy.next, 
-                q: params[:q]&.to_unsafe_h,
-                from_cabine: params[:from_cabine],
-                type_produit: params[:type_produit])
-            end %>
-        <% end %>
+            src: produits_listing_page_path(format: :turbo_stream, page: @pagy.next) %>
       <% end %>
+    <% end %>
 
   </div>
-
-
 </div>
 

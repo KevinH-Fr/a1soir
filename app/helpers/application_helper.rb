@@ -232,7 +232,7 @@ module ApplicationHelper
     "#{CLOUDINARY_BASE_IMAGE_URL}/#{transformation}/#{blob.key}"
   end
 
-  # URL Cloudinary pour un public_id statique (pages, WhatsApp, etc.).
+  # URL Cloudinary pour un public_id statique.
   def cloudinary_static_image_url(public_id, width: 1200)
     return if public_id.blank?
 

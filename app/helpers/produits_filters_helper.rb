@@ -6,7 +6,7 @@ module ProduitsFiltersHelper
 
   FILTER_PARAM_KEYS = %i[
     filter_taille filter_couleur filter_categorie filter_type_produit
-    filter_statut filter_fournisseur filter_mode filter_prix
+    filter_statut filter_fournisseur filter_mode filter_prix filter_catalogue
   ].freeze
 
   # Lit les filtres depuis la query string
@@ -55,6 +55,8 @@ module ProduitsFiltersHelper
       end
     elsif selected_value.present? && param_key == :filter_mode
       selected_value == "analyse" ? "analyse" : "défaut"
+    elsif selected_value.present? && param_key == :filter_catalogue
+      selected_value == Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS ? "Costumes d'époque et déguisements" : "Tenues de mariage et soirée"
     elsif selected_value.present? && param_key == :filter_prix
       if selected_value == "na"
         "NA"
@@ -121,6 +123,23 @@ module ProduitsFiltersHelper
               { value: "défaut", label: "Défaut" }
             ].each do |option|
               active = selected_value == option[:value]
+              concat(
+                content_tag(:li) do
+                  link_to(
+                    option[:label],
+                    url_for(current_params.merge(param_key => option[:value])),
+                    **item_opts.call(class: produits_filter_dropdown_item_class(active))
+                  )
+                end
+              )
+            end
+          elsif param_key == :filter_catalogue
+            [
+              { value: nil, label: "Tous" },
+              { value: Produit::CATALOGUE_TENUES_MARIAGE_SOIREE, label: "Tenues de mariage et soirée" },
+              { value: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS, label: "Costumes d'époque et déguisements" }
+            ].each do |option|
+              active = selected_value.to_s == option[:value].to_s
               concat(
                 content_tag(:li) do
                   link_to(

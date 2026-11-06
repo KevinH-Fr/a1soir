@@ -92,6 +92,11 @@ en:
         updated: "Profile updated"
         destroyed: "Profile deleted"
         destroy_blocked: "Unable to delete this profile: orders are still linked, or it is the e-shop technical profile."
+      rubrique_costume:
+        created: "Theme created"
+        updated: "Theme updated"
+        destroyed: "Theme deleted"
+        destroy_blocked: "Unable to delete this theme: products are still linked."
       type_produit:
         created: "Product type created"
         updated: "Product type updated"
@@ -436,6 +441,12 @@ en:
       nos_autres_activites:
         title: "Our other activities - Autour D'Un Soir"
         description: "Discover the other activities and services of the shop."
+      costumes_depoque:
+        title: "Period costumes and fancy dress - Autour D'Un Soir"
+        description: "Period costume and fancy dress rental in Cannes: Renaissance, 18th century, marquess and marchioness, carnival."
+      produits_costumes_deguisements:
+        title: "Period costumes and fancy dress - Catalogue"
+        description: "Browse period costumes and fancy dress for rental and sale at Autour D'Un Soir in Cannes."
       festival_de_cannes:
         title: "Cannes Festival - Evening wear rental & sales | Autour D'Un Soir"
         description: "During Cannes Festival, discover in-store rental and sales of evening dresses, cocktail dresses, suits, tuxedos and accessories."
@@ -779,11 +790,24 @@ en:
           couleur:
             fallback: "Color"
             all_button: "All"
+          rubrique:
+            all_label: "Theme"
+            all_button: "All"
+            selected_count:
+              one: "%{count} theme"
+              other: "%{count} themes"
           prix:
             fallback: "Price"
             promo_label: "On sale"
             all_button: "All"
             promo_button: "On sale"
+      costumes_depoque:
+        header_title: "Period costumes and fancy dress"
+        header_subtitle: "A separate collection for stage, screen and parties"
+        intro: "Court dress, historical costume and fancy dress live here, apart from wedding and evening wear. Choose a period, a character, or browse the whole collection."
+        collection_cta: "See all costumes and fancy dress"
+      produits_costumes_deguisements:
+        listing_heading: "Costumes and fancy dress"
       produit:
         back: "Back"
         view_more_products: "Browse more products"
@@ -1114,6 +1138,7 @@ en:
             "7": "1970s-1980s"
             "8": "Custom costumes"
           ideal_for: "Ideal for: themed weddings, costume parties, theater, cinema, historical reenactments"
+          cta: "See costumes and fancy dress"
         business_services:
           title: "Corporate & group services"
           description: "For professionals and event organizers, we provide tailored solutions to outfit your teams and participants. Benefit from preferential rates and personalized support for your group projects."

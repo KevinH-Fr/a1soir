@@ -11,6 +11,7 @@ module GoogleMerchant
     class << self
       def feed_scope
         scope = Produit.actif
+          .tenues_mariage_soiree
           .eshop_diffusion
           .joins(:image1_attachment)
           .where("produits.prixvente > 0")

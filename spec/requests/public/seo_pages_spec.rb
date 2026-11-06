@@ -140,6 +140,8 @@ RSpec.describe "Public::SeoPages", type: :request do
       expect(response.body).to include("seo-hub-card")
       expect(response.body).to include("Lire le guide")
       expect(response.body).to include("robe-de-mariee-cannes")
+      expect(response.body).not_to include("costumes-epoque-histoire-mode")
+      expect(response.body).not_to include("costume-marquis-marquise")
       expect(response.body).to include("robe-de-soiree-cannes")
       expect(response.body).to include("tenue-gala-ceremonie")
       expect(response.body).to include("location-smoking-costume-cannes")

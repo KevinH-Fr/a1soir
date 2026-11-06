@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_10_09_130500) do
+ActiveRecord::Schema[7.2].define(version: 2026_11_06_120000) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -423,6 +423,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_09_130500) do
     t.boolean "coup_de_coeur", default: false, null: false
     t.integer "coup_de_coeur_position"
     t.decimal "ancien_prixvente"
+    t.string "catalogue", default: "tenues_mariage_soiree", null: false
+    t.index ["catalogue"], name: "index_produits_on_catalogue"
     t.index ["categorie_produit_id"], name: "index_produits_on_categorie_produit_id"
     t.index ["couleur_id"], name: "index_produits_on_couleur_id"
     t.index ["coup_de_coeur", "coup_de_coeur_position"], name: "index_produits_on_coup_de_coeur_and_coup_de_coeur_position"
@@ -434,11 +436,29 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_09_130500) do
     t.index ["type_produit_id"], name: "index_produits_on_type_produit_id"
   end
 
+  create_table "produits_rubrique_costumes", id: false, force: :cascade do |t|
+    t.integer "produit_id", null: false
+    t.integer "rubrique_costume_id", null: false
+    t.index ["produit_id", "rubrique_costume_id"], name: "index_produits_rubriques_on_produit_and_rubrique", unique: true
+    t.index ["produit_id"], name: "index_produits_rubrique_costumes_on_produit_id"
+    t.index ["rubrique_costume_id"], name: "index_produits_rubrique_costumes_on_rubrique_costume_id"
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.string "prenom"
     t.string "nom"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "rubrique_costumes", force: :cascade do |t|
+    t.string "nom", null: false
+    t.string "groupe", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["groupe", "position"], name: "index_rubrique_costumes_on_groupe_and_position"
+    t.index ["nom"], name: "index_rubrique_costumes_on_nom", unique: true
   end
 
   create_table "sousarticles", force: :cascade do |t|

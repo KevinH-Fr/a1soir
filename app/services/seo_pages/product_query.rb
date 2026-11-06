@@ -28,16 +28,8 @@ module SeoPages
     end
 
     def call
-      categories = CategoryScope.call(@page)
-      return Produit.none if categories.empty?
-
-      base = Produit.actif
-                    .eshop_diffusion
-                    .where(today_availability: true)
-                    .for_public_listing_cards
-                    .includes(:categorie_produits)
-                    .by_categories(categories.map(&:id))
-                    .public_listing_order
+      base = costume_catalogue_page? ? costume_base : boutique_base
+      return [] if base.nil?
 
       scoped = apply_keywords(base)
       scoped = base if scoped.none? && ProductKeywords.call(@page).present?
@@ -61,6 +53,42 @@ module SeoPages
     end
 
     private
+
+    def costume_catalogue_page?
+      @page.dig(:product_filters, :catalogue).to_s == Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+    end
+
+    def boutique_base
+      categories = CategoryScope.call(@page)
+      return nil if categories.empty?
+
+      Produit.actif
+             .tenues_mariage_soiree
+             .eshop_diffusion
+             .where(today_availability: true)
+             .for_public_listing_cards
+             .includes(:categorie_produits)
+             .by_categories(categories.map(&:id))
+             .public_listing_order
+    end
+
+    def costume_base
+      base = Produit.actif
+                    .costume_epoque_deguisements
+                    .eshop_diffusion
+                    .where(today_availability: true)
+                    .for_public_listing_cards
+                    .includes(:rubrique_costumes)
+                    .public_listing_order
+
+      names = Array(@page.dig(:product_filters, :rubrique_names)).map { |name| name.to_s.downcase }
+      return base if names.empty?
+
+      ids = RubriqueCostume.where("LOWER(nom) IN (?)", names).pluck(:id)
+      return nil if ids.empty?
+
+      base.by_rubriques(ids)
+    end
 
     def apply_keywords(scope)
       ProductKeywords.apply(scope, @page)

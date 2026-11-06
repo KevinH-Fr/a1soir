@@ -708,12 +708,13 @@ RSpec.describe "Public::Pages", type: :request do
   end
 
   describe "GET /fr/festival-de-cannes" do
-    it "serves WhatsApp images with Cloudinary transforms" do
+    it "serves festival images with Cloudinary transforms" do
       get "/fr/festival-de-cannes"
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("q_auto,f_auto,w_1200/WhatsApp_Image")
-      expect(response.body).not_to include("image/upload/v177842")
+      expect(response.body).to include("q_auto,f_auto,w_1200/festival-cannes-2026-offre-fr-1")
+      expect(response.body).to include("q_auto,f_auto,w_1200/festival-cannes-2026-header-1")
+      expect(response.body).not_to include("WhatsApp_Image")
     end
   end
 end

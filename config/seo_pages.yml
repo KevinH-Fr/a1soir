@@ -395,54 +395,105 @@ pages:
     scope: guides
     type: style_guide
     meta_key: guide_costumes_epoque_histoire
-    hub_group: events
+    hub_group: costume_epoque_deguisements
     sitemap:
       changefreq: monthly
       priority: 0.7
     product_filters:
-      category_names:
-        - costume
+      catalogue: costume_epoque_deguisements
     related_pages:
-      - slug: costume-epoque-mariage-theme
+      - slug: location-costume-epoque-cannes
         scope: guides
       - slug: costumes-cinema-television-cannes
         scope: guides
 
-  costume-epoque-mariage-theme:
-    slug: costume-epoque-mariage-theme
+  location-costume-epoque-cannes:
+    slug: location-costume-epoque-cannes
     scope: guides
     type: event_guide
-    meta_key: guide_mariage_theme_epoque
-    hub_group: events
+    meta_key: guide_location_costume_epoque
+    hub_group: costume_epoque_deguisements
     sitemap:
       changefreq: monthly
       priority: 0.7
     product_filters:
-      category_names:
-        - costume
+      catalogue: costume_epoque_deguisements
     related_pages:
       - slug: costumes-epoque-histoire-mode
         scope: guides
-      - slug: robe-de-mariee-cannes
-        scope: local
+      - slug: costume-marquis-marquise
+        scope: guides
+
+  location-deguisement-cannes:
+    slug: location-deguisement-cannes
+    scope: guides
+    type: event_guide
+    meta_key: guide_location_deguisement
+    hub_group: costume_epoque_deguisements
+    sitemap:
+      changefreq: monthly
+      priority: 0.7
+    product_filters:
+      catalogue: costume_epoque_deguisements
+    related_pages:
+      - slug: costume-carnaval-nice
+        scope: guides
+      - slug: costume-marquis-marquise
+        scope: guides
+
+  costume-carnaval-nice:
+    slug: costume-carnaval-nice
+    scope: guides
+    type: event_guide
+    meta_key: guide_carnaval_nice
+    hub_group: costume_epoque_deguisements
+    sitemap:
+      changefreq: monthly
+      priority: 0.7
+    product_filters:
+      catalogue: costume_epoque_deguisements
+      rubrique_names:
+        - Carnaval
+    related_pages:
+      - slug: location-deguisement-cannes
+        scope: guides
+      - slug: location-costume-epoque-cannes
+        scope: guides
+
+  costume-marquis-marquise:
+    slug: costume-marquis-marquise
+    scope: guides
+    type: event_guide
+    meta_key: guide_marquis_marquise
+    hub_group: costume_epoque_deguisements
+    sitemap:
+      changefreq: monthly
+      priority: 0.75
+    product_filters:
+      catalogue: costume_epoque_deguisements
+      rubrique_names:
+        - Marquis et marquise
+    related_pages:
+      - slug: location-costume-epoque-cannes
+        scope: guides
+      - slug: costumes-epoque-histoire-mode
+        scope: guides
 
   costumes-cinema-television-cannes:
     slug: costumes-cinema-television-cannes
     scope: guides
     type: event_guide
     meta_key: guide_costumes_cinema_tv
-    hub_group: services
+    hub_group: costume_epoque_deguisements
     sitemap:
       changefreq: monthly
       priority: 0.7
     product_filters:
-      category_names:
-        - costume
-        - smokings
+      catalogue: costume_epoque_deguisements
     related_pages:
-      - slug: habiller-evenement-entreprise-gala
+      - slug: location-costume-epoque-cannes
         scope: guides
-      - slug: festival-de-cannes-histoire-tenues
+      - slug: costumes-epoque-histoire-mode
         scope: guides
 
   habiller-evenement-entreprise-gala:
@@ -462,7 +513,7 @@ pages:
     related_pages:
       - slug: tenue-gala-ceremonie
         scope: guides
-      - slug: costumes-cinema-television-cannes
+      - slug: festival-de-cannes-histoire-tenues
         scope: guides
 
   histoire-robe-de-mariee-traditions:

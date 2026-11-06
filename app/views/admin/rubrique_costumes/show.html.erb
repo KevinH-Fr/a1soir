@@ -1,0 +1,14 @@
+<%= card_main_model("Rubrique costume", "bookmarks") %>
+
+<div class="<%= admin_list_stack_classes %>">
+  <%= render partial: "admin/rubrique_costumes/rubrique_costume", locals: { rubrique_costume: @rubrique_costume } %>
+</div>
+
+<div id="produits" class="<%= admin_list_stack_classes %>">
+  <%= render "produits" %>
+</div>
+
+<% if @pagy.next.present? %>
+  <%= turbo_frame_tag :pagination, loading: :lazy,
+                      src: admin_rubrique_costume_path(@rubrique_costume, format: :turbo_stream, page: @pagy.next) %>
+<% end %>

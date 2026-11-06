@@ -42,6 +42,12 @@ module Admin
       end
     end
 
+    def apply_catalogue_filter(scope, value)
+      return scope unless Produit::CATALOGUES.include?(value.to_s)
+
+      scope.where(catalogue: value.to_s)
+    end
+
     def apply_statut_filter(scope, value)
       return scope unless value.present?
 

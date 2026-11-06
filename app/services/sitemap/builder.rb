@@ -21,6 +21,8 @@ module Sitemap
       ["/contact", "monthly", 0.7],
       ["/rdv", "weekly", 0.8],
       ["/produits", "daily", 0.6],
+      ["/costumes-depoque", "weekly", 0.7],
+      ["/produits_costumes_deguisements", "daily", 0.6],
       ["/categories", "weekly", 0.7],
       ["/faq", "monthly", 0.7],
       ["/legal", "yearly", 0.4],

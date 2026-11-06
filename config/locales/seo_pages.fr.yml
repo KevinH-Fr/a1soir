@@ -56,9 +56,18 @@ fr:
       guide_costumes_epoque_histoire:
         title: 'Costumes d''époque : voyage dans l''histoire de la mode'
         description: 'De la Renaissance aux années 80 : comprendre les costumes d''époque et leur place dans l''histoire vestimentaire.'
-      guide_mariage_theme_epoque:
-        title: 'Mariage à thème d''époque : conseils et cohérence'
-        description: 'Organiser un mariage historique ou costumé : conseils de cohérence vestimentaire par Autour D''Un Soir à Cannes.'
+      guide_location_costume_epoque:
+        title: Location de costumes d'époque à Cannes
+        description: 'Louer un costume d''époque à Cannes : Renaissance, XVIIIe siècle, Belle Époque. Stock séparé du mariage, essayage boulevard Carnot.'
+      guide_location_deguisement:
+        title: Location de déguisements à Cannes
+        description: 'Déguisements et personnages à Cannes : marquis, pirate, bal masqué, carnaval. Catalogue à part des tenues de soirée.'
+      guide_carnaval_nice:
+        title: Costume pour le Carnaval de Nice
+        description: 'Préparer un costume ou un déguisement pour le Carnaval de Nice. Location à Cannes, chez Autour D''Un Soir.'
+      guide_marquis_marquise:
+        title: Costumes de marquis et de marquise
+        description: 'Habits de cour, marquis et marquises, à louer à Cannes. Silhouettes du XVIIIe siècle, hors catalogue mariage.'
       guide_costumes_cinema_tv:
         title: Costumes cinéma et télévision à Cannes
         description: 'Habiller le cinéma et la TV : le rôle du costumier, les coulisses et l''expérience d''Autour D''Un Soir sur la Riviera.'
@@ -85,6 +94,7 @@ fr:
           guides: Robes de mariée
           events: Occasions & événements
           services: Services & location
+          costume_epoque_deguisements: Costumes d'époque et déguisements
       shared:
         products_title: Notre sélection
         categories_title: Nos collections
@@ -607,7 +617,7 @@ fr:
             body_html: "<p>Broderies, dentelles, boutons, coiffes et chapeaux complètent la silhouette. Les accessoires sont souvent ce qui rend une époque reconnaissable : une coiffe, une cravate, une ganse, une paire de gants ou un bijou orientent immédiatement la lecture.</p><p>La cohérence passe aussi par les matières. Un tissu trop contemporain, trop brillant ou trop extensible peut casser l'illusion historique, même si la coupe générale paraît correcte.</p>"
           usages:
             title: Théâtre, cinéma et mariages thématiques
-            body_html: <p>Nos costumes d'époque servent des productions scéniques, des tournages et des événements privés. Pour un mariage à thème, voir aussi <a href="/fr/guides/costume-epoque-mariage-theme">mariage d'époque</a> ou nos <a href="/fr/nos_autres_activites">autres activités</a>.</p>
+            body_html: <p>Nos costumes d'époque servent des productions scéniques, des tournages et des événements privés. Voir la <a href="/fr/guides/location-costume-epoque-cannes">location de costumes d'époque</a> et la page <a href="/fr/costumes-depoque">costumes et déguisements</a>.</p>
         faq:
           q1:
             question: Peut-on louer un costume d'époque ?
@@ -618,31 +628,106 @@ fr:
           q3:
             question: Quelles périodes sont disponibles ?
             answer_html: "<p>De la Renaissance aux années 80, avec un stock évolutif. La boutique vous oriente selon votre projet.</p>"
-      costume_epoque_mariage_theme:
-        link_title: Mariage à thème d'époque
-        header_title: Organiser un mariage à thème d'époque
-        header_subtitle: Cohérence historique et élégance
-        intro_html: "<p>Un mariage costumé peut être magique — à condition de viser la cohérence plutôt que le déguisement. L'époque choisie, le lieu, la lumière et le niveau de fidélité historique doivent dialoguer.</p><p>Autour D'Un Soir accompagne régulièrement des projets de mariage thématique sur la Côte d'Azur : voici nos conseils pour avancer sereinement.</p>"
+      location_costume_epoque_cannes:
+        link_title: Location costumes d'époque
+        header_title: Louer un costume d'époque à Cannes
+        header_subtitle: Théâtre, cinéma, reconstitution et fête
+        intro_html: "<p>La location d'un costume d'époque ne se choisit pas comme une robe de soirée. La silhouette, la période et l'usage — scène, tournage ou soirée — comptent autant que la taille.</p><p>Autour D'Un Soir tient ce stock à part du catalogue mariage, au 27 boulevard Carnot à Cannes.</p>"
         sections:
-          choix:
-            title: Choisir une époque
-            body_html: "<p>Belle Époque, années 20, Renaissance : chaque choix implique des contraintes différentes pour les invités. La Belle Époque évoque robes longues, corsages, chapeaux et élégance de promenade ; les années 20 privilégient lignes plus droites, perles, franges et coiffures courtes ; la Renaissance demande des volumes plus théâtraux.</p><p>Mieux vaut une direction claire et quelques références visuelles partagées qu'un thème trop vague. Un thème « ancien » sans période précise produit souvent un mélange difficile à harmoniser sur les photos.</p>"
-          coherence:
-            title: Cohérence des silhouettes
-            body_html: "<p>Mariée, marié, témoins et invités : définissez un niveau d'exigence commun. Vous pouvez viser une inspiration historique souple ou une reconstitution plus stricte, mais il faut le décider avant les essayages.</p><p>Un costume d'époque très fidèle à côté d'une tenue moderne peut créer un décalage sur les photos. À l'inverse, une palette de couleurs cohérente, quelques accessoires bien choisis et des silhouettes compatibles suffisent parfois à créer l'atmosphère sans contraindre tous les invités.</p>"
-          boutique:
-            title: Le rôle de la boutique
-            body_html: <p>Nous conseillons sur les pièces disponibles, les retouches nécessaires et la faisabilité selon la date. Découvrez notre collection sur <a href="/fr/guides/costumes-epoque-histoire-mode">costumes d'époque</a>.</p>
+          choisir:
+            title: Choisir la période
+            body_html: "<p>Renaissance, XVIIIe siècle, époque napoléonienne, Belle Époque ou décennies du XXe siècle : chaque rubrique regroupe des coupes différentes. Un habit peut appartenir à plusieurs rubriques, par exemple XVIIIe siècle et marquis.</p>"
+          location:
+            title: Comment se passe la location
+            body_html: "<p>La location se prépare en boutique : essayage, retouches d'atelier si besoin, et dates du projet. Pour un tournage ou un groupe, un devis précise les pièces et le délai.</p>"
+          collection:
+            title: Voir le stock
+            body_html: <p>Le catalogue est sur la page <a href="/fr/produits_costumes_deguisements">costumes et déguisements</a>. Le parcours commence aussi depuis <a href="/fr/costumes-depoque">la présentation de la collection</a>.</p>
         faq:
           q1:
-            question: Peut-on combiner robe moderne et thème d'époque ?
-            answer_html: "<p>Oui, avec une direction esthétique claire — par exemple une robe contemporaine inspirée d'une époque plutôt qu'une reconstitution stricte.</p>"
+            question: Les costumes d'époque sont-ils dans le catalogue mariage ?
+            answer_html: "<p>Non. Ils ont leur propre liste, avec leurs thèmes, tailles et couleurs.</p>"
           q2:
-            question: Faut-il prévenir les invités longtemps à l'avance ?
-            answer_html: "<p>Oui, surtout s'ils doivent se procurer ou louer des tenues spécifiques.</p>"
+            question: Peut-on louer pour un tournage ?
+            answer_html: "<p>Oui, sur devis, selon les pièces et les dates.</p>"
           q3:
-            question: La boutique habille-t-elle aussi le marié ?
-            answer_html: "<p>Oui, costumes, smokings et costumes d'époque pour hommes sont disponibles en boutique.</p>"
+            question: Faites-vous du sur mesure ?
+            answer_html: "<p>L'atelier peut créer ou adapter une pièce pour un projet précis. Le sur mesure se demande en boutique, ce n'est pas un filtre du catalogue.</p>"
+      location_deguisement_cannes:
+        link_title: Location de déguisements
+        header_title: Louer un déguisement à Cannes
+        header_subtitle: Personnages, fêtes et bals
+        intro_html: "<p>Un déguisement n'est pas un costume historique. Pirate, conte, bal masqué ou personnage de cour : la pièce raconte un rôle, pas seulement une date.</p><p>Ces tenues sont au même endroit que les costumes d'époque, et restent séparées des robes de mariée et des smokings de cérémonie.</p>"
+        sections:
+          personnages:
+            title: Personnages et univers
+            body_html: "<p>Le filtre Thème regroupe les rubriques par famille : époque, personnage ou univers. Marquis et marquise, pirate, conte et féerie, carnaval ou bal masqué sont des points d'entrée. L'atelier en ajoute d'autres quand le stock le permet.</p>"
+          fete:
+            title: Pour une fête ou un spectacle
+            body_html: "<p>Anniversaire, soirée costumée, spectacle ou carnaval : la taille et la couleur se filtrent sur la même liste. Une pièce peut porter plusieurs thèmes, et sortir dans chacun.</p>"
+          boutique:
+            title: En boutique à Cannes
+            body_html: <p>Essayage au 27 boulevard Carnot. La liste complète est sur <a href="/fr/produits_costumes_deguisements">costumes et déguisements</a>.</p>
+        faq:
+          q1:
+            question: Proposez-vous des déguisements d'Halloween ou de super-héros ?
+            answer_html: "<p>Seulement si la pièce est au stock. Ces rayons ne sont pas créés d'avance : la boutique ajoute une rubrique quand elle a les costumes.</p>"
+          q2:
+            question: Un déguisement peut-il aussi être d'époque ?
+            answer_html: "<p>Oui. Un habit de marquise peut être classé à la fois en personnage et au XVIIIe siècle.</p>"
+          q3:
+            question: La location se fait-elle en ligne ?
+            answer_html: "<p>Le choix et l'essayage se font en boutique. Le catalogue en ligne sert à préparer la visite.</p>"
+      costume_carnaval_nice:
+        link_title: Carnaval de Nice
+        header_title: Costume et déguisement pour le Carnaval de Nice
+        header_subtitle: Préparer une tenue avant les deux semaines de février
+        intro_html: "<p>Le Carnaval de Nice est la grande demande locale de déguisement. Les tenues doivent supporter la foule, le mouvement et parfois la pluie, sans pour autant renoncer à une silhouette lisible.</p><p>Autour D'Un Soir, à Cannes, prépare ces projets à côté, pas dans le rayon mariage.</p>"
+        sections:
+          choisir:
+            title: Quelle tenue pour défiler ou sortir
+            body_html: "<p>Un costume de scène très construit photographie bien, mais il fatigue vite dans la rue. Pour suivre les chars ou une bataille de fleurs, une silhouette plus mobile, avec une coiffe ou un masque reconnaissable, est souvent plus juste.</p>"
+          themes:
+            title: Thèmes qui reviennent
+            body_html: "<p>Carnaval, bal masqué, personnages de cour ou décennies voyantes : le filtre Thème permet de partir d'une idée sans mélanger ces pièces aux robes de soirée.</p>"
+          dates:
+            title: Réserver avant février
+            body_html: <p>Les essayages se concentrent dans les semaines qui précèdent le carnaval. Écrivez à la boutique ou partez de la <a href="/fr/produits_costumes_deguisements">liste des costumes</a>.</p>
+        faq:
+          q1:
+            question: Habillez-vous les comédiens des chars ?
+            answer_html: "<p>Sur devis, selon le nombre de tenues, les dates et le thème de l'année.</p>"
+          q2:
+            question: Peut-on venir depuis Nice ?
+            answer_html: "<p>Oui. La boutique est à Cannes, boulevard Carnot, à une courte distance de Nice.</p>"
+          q3:
+            question: Faut-il un costume historique pour le carnaval ?
+            answer_html: "<p>Non. Le carnaval accepte le personnage, le masque et la couleur. L'époque n'est qu'une des rubriques possibles.</p>"
+      costume_marquis_marquise:
+        link_title: Marquis et marquise
+        header_title: Costumes de marquis et de marquise
+        header_subtitle: Habits de cour et silhouettes du XVIIIe siècle
+        intro_html: "<p>Marquis et marquises forment une part importante du stock. Ce ne sont pas de simples costumes du XVIIIe siècle : la perruque, le panier, l'habit brodé et la robe à la française se lisent tout de suite comme une cour.</p><p>On les loue pour un bal, un tournage, une fête ou une scène, depuis la boutique de Cannes.</p>"
+        sections:
+          silhouette:
+            title: Ce qui fait un marquis ou une marquise
+            body_html: "<p>Côté femme : volume de jupe, corsage, manches et coiffure. Côté homme : habit, gilet, culotte et souliers plutôt qu'un costume trois-pièces contemporain. Les accessoires font souvent la différence sur une photo.</p>"
+          usages:
+            title: Bal, scène et image
+            body_html: "<p>Ces pièces servent les bals masqués, les scènes de cour et les portraits. Elles peuvent être rangées à la fois dans la rubrique Marquis et marquise et dans le XVIIIe siècle, pour les retrouver des deux façons.</p>"
+          voir:
+            title: Voir ces costumes
+            body_html: <p>La sélection est sur <a href="/fr/produits_costumes_deguisements">le catalogue costumes</a>, filtrée sur cette rubrique dès qu'elle a des pièces en ligne.</p>
+        faq:
+          q1:
+            question: Une robe de marquise est-elle une robe de mariée ?
+            answer_html: "<p>Non. Elle reste dans le catalogue costumes et déguisements, même si on la porte pour une fête habillée.</p>"
+          q2:
+            question: Avez-vous des tailles différentes ?
+            answer_html: "<p>Oui. Le filtre taille de cette liste ne montre que les tailles présentes sur les costumes, pas celles des robes de mariée.</p>"
+          q3:
+            question: Peut-on essayer en boutique ?
+            answer_html: "<p>Oui, au 27 boulevard Carnot à Cannes. L'atelier ajuste la pièce si le projet le demande.</p>"
       costumes_cinema_television_cannes:
         link_title: Costumes cinéma & TV
         header_title: Habiller le cinéma et la télévision
@@ -657,7 +742,7 @@ fr:
             body_html: "<p>La Riviera attire des productions variées grâce à ses décors : bord de mer, hôtels, villas, rues anciennes, ports et lieux associés au Festival. Cannes concentre aussi une culture de l'image qui rend les demandes parfois très rapides.</p><p>Dans ce contexte, un stock varié est utile parce qu'un tournage peut avoir besoin d'une silhouette contemporaine, d'un smoking, d'une robe de gala ou d'un costume d'époque dans des délais courts. La disponibilité ne suffit pas : il faut aussi que la pièce fonctionne à l'écran.</p>"
           stock:
             title: Un stock pensé pour l'image
-            body_html: '<p>Costumes d''époque, smokings, robes de soirée, uniformes : la diversité permet de couvrir des silhouettes et des styles variés. Découvrez aussi <a href="/fr/nos_autres_activites">nos prestations entreprises et audiovisuelles</a>.</p>'
+            body_html: '<p>Costumes d''époque, personnages et uniformes : le stock sert l''image, pas le rayon mariage. Voir le <a href="/fr/produits_costumes_deguisements">catalogue costumes et déguisements</a>.</p>'
         faq:
           q1:
             question: La boutique prête des costumes pour des tournages ?

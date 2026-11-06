@@ -1,0 +1,12 @@
+<%= bandeau_entete("Rubriques costumes", "bookmarks", @count_rubrique_costumes,
+:nom_cont, admin_rubrique_costumes_path) %>
+
+<%= bloc_nouveau(RubriqueCostume) %>
+
+<%= turbo_frame_tag :results, data: { turbo_action: "advance" } do %>
+  <div id="rubrique_costumes" class="<%= admin_list_stack_classes %>"></div>
+
+  <%= turbo_frame_tag :pagination, loading: :lazy,
+                        src: admin_rubrique_costumes_path(format: :turbo_stream,
+                        q: params[:q]&.to_unsafe_h) %>
+<% end %>

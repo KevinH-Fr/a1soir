@@ -3,6 +3,17 @@
 
 <div class="min-w-0">
   <%= filter_dropdown(
+        label: "Catalogue",
+        icon: "bi bi-shop",
+        param_key: :filter_catalogue,
+        current_params: listing_params_with_search(produits_filter_params(exclude: :filter_catalogue)),
+        id_suffix: id_suffix,
+        always_show_label: always_show_label
+      ) %>
+</div>
+
+<div class="min-w-0">
+  <%= filter_dropdown(
         label: "Catégorie",
         icon: "bi bi-layers",
         param_key: :filter_categorie,
