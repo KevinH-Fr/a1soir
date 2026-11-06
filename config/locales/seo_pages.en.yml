@@ -612,9 +612,9 @@ en:
         sections:
           collection:
             title: A collection apart from bridal wear
-            body_html: '<p>A court suit is not a ceremony tuxedo, and a pannier gown is not a wedding dress. Mixing them in the same rail confuses the search. That is why these pieces have their own page, their own themes and their own catalogue.</p><p>Three families organise the stock. A period places a silhouette in time. A character tells a role. A setting groups a use, such as carnival or a masked ball. The guide <a href="/en/guides/location-deguisement-cannes">fancy dress rental</a> explains that difference.</p>'
+            body_html: '<p>A court suit is not a ceremony tuxedo, and a pannier gown is not a wedding dress. Mixing them in the same rail confuses the search. That is why these pieces have their own page, their own themes and their own catalogue.</p><p>Themes sit in one list: a century, a character, a carnival or a masked ball. A piece can carry several. The guide <a href="/en/guides/location-deguisement-cannes">fancy dress rental</a> explains that difference.</p>'
           themes:
-            title: Period, character or setting
+            title: Themes
             body_html: '<p>One piece can carry several themes. An eighteenth-century court suit appears both in its century and under Marquess and marchioness. Starting from the theme avoids walking the whole stock when the project is already clear: a reenactment, a ball, a show or a party.</p><p>The themes complete each other. The <a href="/en/guides/costume-marquis-marquise">marquess and marchioness guide</a> details one silhouette; the <a href="/en/guides/costume-carnaval-nice">Nice Carnival</a> guide describes another, easier to wear in the street.</p>'
           essayage:
             title: Fitting, rental and the workshop
@@ -696,7 +696,7 @@ en:
         sections:
           personnages:
             title: Characters and worlds
-            body_html: "<p>The Theme filter groups entries by family: period, character or world. Marquess and marchioness, pirate, fairytale, carnival or masked ball are starting points. The shop adds others when the stock exists.</p>"
+            body_html: "<p>The Theme filter lists the themes. Marquess and marchioness, pirate, fairytale, carnival or masked ball are starting points. The shop adds others when the stock exists.</p>"
           fete:
             title: For a party or a show
             body_html: "<p>Birthday, costume party, show or carnival: size and colour filter the same list. One piece can carry several themes and appear in each.</p>"

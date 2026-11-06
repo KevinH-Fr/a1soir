@@ -21,13 +21,10 @@
             <%= button_to t("public.pages.produits.filters.rubrique.all_button"),
                 update_produits_filters_path(rubrique: nil),
                 class: "dropdown-item text-nowrap #{'fw-bold' if selected_ids.empty?}" %>
-            <% Array(@toutes_rubriques).group_by(&:groupe).each do |groupe, rubriques| %>
-                <h6 class="dropdown-header"><%= groupe %></h6>
-                <% rubriques.each do |rubrique| %>
-                    <%= button_to rubrique.nom,
-                        update_produits_filters_path(rubrique: rubrique.id),
-                        class: "dropdown-item text-nowrap #{'fw-bold' if selected_ids.include?(rubrique.id)}" %>
-                <% end %>
+            <% Array(@toutes_rubriques).each do |rubrique| %>
+                <%= button_to rubrique.nom,
+                    update_produits_filters_path(rubrique: rubrique.id),
+                    class: "dropdown-item text-nowrap #{'fw-bold' if selected_ids.include?(rubrique.id)}" %>
             <% end %>
         </div>
     </div>

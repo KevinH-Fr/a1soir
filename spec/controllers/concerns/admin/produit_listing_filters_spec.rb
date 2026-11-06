@@ -39,4 +39,76 @@ RSpec.describe Admin::ProduitListingFilters do
       expect(scoped).to include(produit_a, produit_b)
     end
   end
+
+  describe "#apply_statut_filter" do
+    let!(:actif_eshop_dispo) do
+      Produit.create!(nom: "Actif eshop dispo", prixvente: 10, quantite: 1, actif: true, eshop: true)
+    end
+    let!(:archive_boutique) do
+      produit = Produit.create!(nom: "Archive boutique", prixvente: 10, quantite: 0, actif: false, eshop: false)
+      produit.update_column(:today_availability, false)
+      produit
+    end
+
+    it "keeps active products published on the eshop and available today" do
+      scoped = host.apply_statut_filter(Produit.all, %w[actif eshop dispo])
+
+      expect(scoped).to include(actif_eshop_dispo)
+      expect(scoped).not_to include(archive_boutique)
+    end
+
+    it "keeps archived products that are neither on the eshop nor available" do
+      scoped = host.apply_statut_filter(Produit.all, %w[archive pas_eshop pas_dispo])
+
+      expect(scoped).to contain_exactly(archive_boutique)
+    end
+
+    it "accepts the legacy actif value" do
+      scoped = host.apply_statut_filter(Produit.all, "true")
+
+      expect(scoped).to include(actif_eshop_dispo)
+      expect(scoped).not_to include(archive_boutique)
+    end
+  end
+
+  describe "#apply_catalogue_filter" do
+    let!(:mariage) { Produit.create!(nom: "Robe mariage", prixvente: 10, quantite: 1) }
+    let!(:costume) do
+      Produit.create!(
+        nom: "Habit epoque",
+        prixvente: 10,
+        quantite: 1,
+        catalogue: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+      )
+    end
+
+    let!(:les_deux) do
+      Produit.create!(
+        nom: "Robe des deux",
+        prixvente: 10,
+        quantite: 1,
+        catalogue: Produit::CATALOGUE_LES_DEUX
+      )
+    end
+
+    it "keeps the wedding catalogue and products in both" do
+      scoped = host.apply_catalogue_filter(Produit.all, Produit::CATALOGUE_TENUES_MARIAGE_SOIREE)
+
+      expect(scoped).to include(mariage, les_deux)
+      expect(scoped).not_to include(costume)
+    end
+
+    it "keeps the costume catalogue and products in both" do
+      scoped = host.apply_catalogue_filter(Produit.all, Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS)
+
+      expect(scoped).to include(costume, les_deux)
+      expect(scoped).not_to include(mariage)
+    end
+
+    it "keeps every catalogue when the value is tous" do
+      scoped = host.apply_catalogue_filter(Produit.all, described_class::CATALOGUE_FILTER_ALL)
+
+      expect(scoped).to include(mariage, costume, les_deux)
+    end
+  end
 end

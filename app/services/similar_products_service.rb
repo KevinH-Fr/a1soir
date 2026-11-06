@@ -83,9 +83,17 @@ class SimilarProductsService
       .order(Arel.sql("CASE #{order_sql} END"))
   end
 
+  def similar_catalogue
+    if @produit.costume_epoque_deguisements?
+      Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+    else
+      Produit::CATALOGUE_TENUES_MARIAGE_SOIREE
+    end
+  end
+
   def base_scope
     Produit
-      .where(actif: true, catalogue: @produit.catalogue)
+      .where(actif: true, catalogue: Produit.catalogue_values_for(similar_catalogue))
       .where(today_availability: true)
       .eshop_diffusion
       .where.not(id: @produit.id)

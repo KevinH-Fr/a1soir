@@ -21,15 +21,6 @@
       <%= form.text_field :nom, class: "form-control" %>
     </div>
     <div class="input-group mb-1">
-      <%= form.label :groupe, "Groupe", class: "input-group-text" %>
-      <%= form.text_field :groupe, class: "form-control", list: "rubrique-costume-groupes" %>
-      <datalist id="rubrique-costume-groupes">
-        <% RubriqueCostume.distinct.order(:groupe).pluck(:groupe).each do |groupe| %>
-          <option value="<%= groupe %>"></option>
-        <% end %>
-      </datalist>
-    </div>
-    <div class="input-group mb-1">
       <%= form.label :position, "Position", class: "input-group-text" %>
       <%= form.number_field :position, class: "form-control" %>
     </div>

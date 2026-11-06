@@ -5,7 +5,7 @@ module ProduitsFiltersHelper
   ].freeze
 
   FILTER_PARAM_KEYS = %i[
-    filter_taille filter_couleur filter_categorie filter_type_produit
+    filter_taille filter_couleur filter_categorie filter_rubrique filter_type_produit
     filter_statut filter_fournisseur filter_mode filter_prix filter_catalogue
   ].freeze
 
@@ -14,21 +14,31 @@ module ProduitsFiltersHelper
   def produits_filter_params(exclude: nil, include_sort: false)
     keys = FILTER_PARAM_KEYS.dup
     keys << :sort if include_sort
-    keys -= [exclude.to_sym] if exclude.present?
+    keys -= Array(exclude).map(&:to_sym) if exclude.present?
+    if params[:filter_catalogue].to_s == Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+      keys -= [:filter_categorie]
+    else
+      keys -= [:filter_rubrique]
+    end
     request.query_parameters.symbolize_keys.slice(*keys)
   end
 
   FILTER_DROPDOWN_ITEM_NAME_LENGTH = 40
 
   def produits_active_filters_count
-    FILTER_PARAM_KEYS.count { |k| params[k].present? }
+    produits_filter_params.keys.count { |key| params[key].present? }
   end
 
   def filter_dropdown(label:, icon:, param_key:, collection: nil, model: nil, current_params: {}, all_label: nil, columns: nil,
                       always_show_label: false, id_suffix: nil, link_data: {}, multiple: false, keep_label: nil)
     keep_label = multiple if keep_label.nil?
-    selected_values = Admin::ProduitListingFilters.normalize_filter_values(params[param_key])
-    selected_value = multiple ? selected_values.first : params[param_key]
+    selected_values =
+      if param_key == :filter_statut
+        Admin::ProduitListingFilters.normalize_statut_filter_values(params[param_key])
+      else
+        Admin::ProduitListingFilters.normalize_filter_values(params[param_key])
+      end
+    selected_value = multiple || param_key == :filter_statut ? selected_values.first : params[param_key]
     item_opts = ->(**html) do
       if link_data.present?
         html[:data] = (html[:data] || {}).merge(link_data)
@@ -36,7 +46,9 @@ module ProduitsFiltersHelper
       html
     end
     selected_label =
-    if multiple && selected_values.size > 1
+    if param_key == :filter_statut && selected_values.any?
+      selected_values.map { |value| Admin::ProduitListingFilters.statut_filter_label(value) }.join(", ")
+    elsif multiple && selected_values.size > 1
       "#{label} · #{selected_values.size}"
     elsif selected_value.present? && model
       case param_key
@@ -46,17 +58,10 @@ module ProduitsFiltersHelper
         filter_dropdown_record_label(model, selected_value)
       end
     
-    elsif selected_value.present? && param_key == :filter_statut
-      case selected_value
-      when "true" then "actif"
-      when "false" then "archivé"
-      when "na" then "sans statut"
-      else selected_value.to_s
-      end
     elsif selected_value.present? && param_key == :filter_mode
       selected_value == "analyse" ? "analyse" : "défaut"
-    elsif selected_value.present? && param_key == :filter_catalogue
-      selected_value == Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS ? "Costumes d'époque et déguisements" : "Tenues de mariage et soirée"
+    elsif param_key == :filter_catalogue
+      catalogue_filter_label(selected_value)
     elsif selected_value.present? && param_key == :filter_prix
       if selected_value == "na"
         "NA"
@@ -80,7 +85,7 @@ module ProduitsFiltersHelper
       # Button
       concat(
         content_tag(:button,
-          class: "btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center gap-1 min-w-0",
+          class: "btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center gap-1 min-w-0#{' py-0 px-2' unless always_show_label}",
           type: "button",
           id: toggle_id,
           data: toggle_data,
@@ -90,9 +95,17 @@ module ProduitsFiltersHelper
           button_parts << tag.i(class: "#{icon} flex-shrink-0", aria: { hidden: true })
 
           if selected_label.present? && !keep_label
+            # Hors panneau mobile : coupe le libellé. Le catalogue (premier bouton) est le plus long.
+            truncate_width = if always_show_label
+              nil
+            elsif param_key == :filter_catalogue
+              "6.5rem"
+            else
+              "8.5rem"
+            end
             button_parts << content_tag(:span, selected_label,
               class: "text-truncate text-start",
-              style: "max-width: 11rem")
+              style: ("max-width: #{truncate_width}" if truncate_width))
           else
             label_span_class = always_show_label ? "text-start" : "text-start d-none d-md-inline"
             button_label =
@@ -135,16 +148,20 @@ module ProduitsFiltersHelper
             end
           elsif param_key == :filter_catalogue
             [
-              { value: nil, label: "Tous" },
-              { value: Produit::CATALOGUE_TENUES_MARIAGE_SOIREE, label: "Tenues de mariage et soirée" },
+              { value: Admin::ProduitListingFilters::CATALOGUE_FILTER_ALL, label: "Tous" },
+              { value: nil, label: "Tenues de mariage et soirée", selected: Produit::CATALOGUE_TENUES_MARIAGE_SOIREE },
               { value: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS, label: "Costumes d'époque et déguisements" }
             ].each do |option|
-              active = selected_value.to_s == option[:value].to_s
+              active = catalogue_filter_value(selected_value) == (option[:selected] || option[:value])
+              link_params = current_params.except(:filter_categorie, :filter_rubrique)
+              if option[:value] == Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+                link_params = current_params.except(:filter_categorie)
+              end
               concat(
                 content_tag(:li) do
                   link_to(
                     option[:label],
-                    url_for(current_params.merge(param_key => option[:value])),
+                    url_for(link_params.merge(param_key => option[:value])),
                     **item_opts.call(class: produits_filter_dropdown_item_class(active))
                   )
                 end
@@ -235,21 +252,7 @@ module ProduitsFiltersHelper
             end
           
           elsif param_key == :filter_statut
-            [
-              { value: "true", label: "actif" },
-              { value: "false", label: "archivé" }
-            ].each do |option|
-              active = selected_value == option[:value]
-              concat(
-                content_tag(:li) do
-                  link_to(
-                    option[:label],
-                    url_for(current_params.merge(param_key => option[:value])),
-                    **item_opts.call(class: produits_filter_dropdown_item_class(active))
-                  )
-                end
-              )
-            end
+            concat statut_filter_menu(current_params, param_key, selected_values, item_opts)
           end
         end
       )
@@ -302,25 +305,14 @@ module ProduitsFiltersHelper
     content_tag(:div, class: "dropdown") do
       concat(
         button_tag(
-          class: "btn btn-sm btn-outline-primary dropdown-toggle d-inline-flex align-items-center gap-1 min-w-0",
+          class: "btn btn-sm btn-outline-primary dropdown-toggle d-inline-flex align-items-center gap-1 min-w-0 py-0 px-2",
           type: "button",
           id: "sortDropdown",
           data: { bs_toggle: "dropdown" },
-          aria: { expanded: false },
-          title: (current_label.presence)
+          aria: { expanded: false, label: (current_label.presence || "Trier") },
+          title: (current_label.presence || "Trier")
         ) do
-          parts = []
-          parts << tag.i(class: "bi bi-sort-up-alt flex-shrink-0", aria: { hidden: true })
-
-          if current_label
-            parts << content_tag(:span, current_label,
-              class: "text-truncate text-start",
-              style: "max-width: 11rem")
-          else
-            parts << content_tag(:span, "Trier", class: "text-start d-none d-md-inline")
-          end
-
-          safe_join(parts)
+          tag.i(class: "bi bi-sort-up-alt flex-shrink-0", aria: { hidden: true })
         end
       )
 
@@ -355,6 +347,21 @@ module ProduitsFiltersHelper
 
   private
 
+  def catalogue_filter_value(value)
+    value.presence || Produit::CATALOGUE_TENUES_MARIAGE_SOIREE
+  end
+
+  def catalogue_filter_label(value)
+    case catalogue_filter_value(value)
+    when Admin::ProduitListingFilters::CATALOGUE_FILTER_ALL
+      "Tous"
+    when Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+      "Costumes d'époque et déguisements"
+    else
+      "Tenues de mariage et soirée"
+    end
+  end
+
   def produits_filter_dropdown_item_class(active)
     ["dropdown-item", "small", ("active" if active)].compact.join(" ")
   end
@@ -382,6 +389,41 @@ module ProduitsFiltersHelper
     else
       url_for(current_params.merge(param_key => item))
     end
+  end
+
+  def statut_filter_menu(current_params, param_key, selected_values, item_opts)
+    groups = Admin::ProduitListingFilters::STATUT_FILTER_OPTIONS.group_by { |option| option[:group] }.values
+    items = []
+
+    items << content_tag(:li) do
+      link_to(
+        "Tous",
+        url_for(current_params.merge(param_key => nil)),
+        **item_opts.call(class: produits_filter_dropdown_item_class(selected_values.empty?))
+      )
+    end
+
+    groups.each_with_index do |options, index|
+      if index.positive?
+        items << content_tag(:li) { tag.hr(class: "dropdown-divider") }
+      end
+
+      options.each do |option|
+        active = selected_values.include?(option[:value])
+        next_values = Admin::ProduitListingFilters.statut_filter_toggle_values(selected_values, option[:value])
+        items << content_tag(:li) do
+          filter_dropdown_choice_link(
+            label: option[:label],
+            url: url_for(current_params.merge(param_key => next_values.presence)),
+            active: active,
+            multiple: true,
+            item_opts: item_opts
+          )
+        end
+      end
+    end
+
+    safe_join(items)
   end
 
   def filter_dropdown_choice_link(label:, url:, active:, multiple:, item_opts:, title: nil)

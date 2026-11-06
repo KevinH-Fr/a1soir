@@ -45,9 +45,8 @@ module Public
     def costumes_depoque
       @listing_catalogue = Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
       session[:from_cabine] = false
-      @rubriques_par_groupe = RubriqueCostume
+      @rubriques_costumes = RubriqueCostume
         .present_on_catalogue(Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS)
-        .group_by(&:groupe)
       @related_pages = Array(SeoPages::Registry.grouped_for_hub["costume_epoque_deguisements"])
       @page = costume_landing_page
       section_keys = I18n.t("public.seo_pages.costumes_depoque.sections", default: {}).keys.map(&:to_s)

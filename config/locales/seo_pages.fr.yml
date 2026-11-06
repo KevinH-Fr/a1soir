@@ -612,9 +612,9 @@ fr:
         sections:
           collection:
             title: Une collection à part du mariage
-            body_html: '<p>Un habit de cour n''est pas un smoking de cérémonie, et une robe à panier n''est pas une robe de mariée. Les mélanger dans le même rayon brouille le choix : la cliente qui cherche une tenue de soirée ne doit pas tomber sur un costume de scène, et l''inverse est vrai. C''est pour cela que ces pièces ont leur page, leurs thèmes et leur catalogue.</p><p>On y trouve trois familles. L''époque situe une silhouette dans le temps. Le personnage raconte un rôle. L''univers regroupe un usage, comme le carnaval ou le bal masqué. Le guide <a href="/fr/guides/location-deguisement-cannes">location de déguisements</a> précise cette différence.</p>'
+            body_html: '<p>Un habit de cour n''est pas un smoking de cérémonie, et une robe à panier n''est pas une robe de mariée. Les mélanger dans le même rayon brouille le choix : la cliente qui cherche une tenue de soirée ne doit pas tomber sur un costume de scène, et l''inverse est vrai. C''est pour cela que ces pièces ont leur page, leurs thèmes et leur catalogue.</p><p>Les thèmes forment une seule liste : un siècle, un personnage, un carnaval ou un bal masqué. Une pièce peut en porter plusieurs. Le guide <a href="/fr/guides/location-deguisement-cannes">location de déguisements</a> précise cette différence.</p>'
           themes:
-            title: Époque, personnage ou univers
+            title: Les thèmes
             body_html: '<p>Une même pièce peut porter plusieurs thèmes. Un habit de cour du XVIIIe siècle sort à la fois dans son siècle et dans Marquis et marquise. Partir du thème évite de parcourir tout le stock quand le projet est déjà précis : une reconstitution, un bal, un spectacle ou une fête.</p><p>Les rubriques se complètent, elles ne se remplacent pas. Le <a href="/fr/guides/costume-marquis-marquise">guide marquis et marquise</a> détaille une silhouette ; le <a href="/fr/guides/costume-carnaval-nice">Carnaval de Nice</a> en décrit une autre, plus mobile, pensée pour la rue.</p>'
           essayage:
             title: Essayage, location et atelier
@@ -696,7 +696,7 @@ fr:
         sections:
           personnages:
             title: Personnages et univers
-            body_html: "<p>Le filtre Thème regroupe les rubriques par famille : époque, personnage ou univers. Marquis et marquise, pirate, conte et féerie, carnaval ou bal masqué sont des points d'entrée. L'atelier en ajoute d'autres quand le stock le permet.</p>"
+            body_html: "<p>Le filtre Thème liste les rubriques. Marquis et marquise, pirate, conte et féerie, carnaval ou bal masqué sont des points d'entrée. L'atelier en ajoute d'autres quand le stock le permet.</p>"
           fete:
             title: Pour une fête ou un spectacle
             body_html: "<p>Anniversaire, soirée costumée, spectacle ou carnaval : la taille et la couleur se filtrent sur la même liste. Une pièce peut porter plusieurs thèmes, et sortir dans chacun.</p>"

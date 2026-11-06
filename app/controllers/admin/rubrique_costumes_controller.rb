@@ -150,6 +150,6 @@ class Admin::RubriqueCostumesController < Admin::ApplicationController
   end
 
   def rubrique_costume_params
-    params.require(:rubrique_costume).permit(:nom, :groupe, :position)
+    params.require(:rubrique_costume).permit(:nom, :position)
   end
 end

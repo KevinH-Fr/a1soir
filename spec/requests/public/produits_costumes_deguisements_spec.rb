@@ -11,9 +11,9 @@ RSpec.describe "Costumes et déguisements", type: :request do
   let!(:type_mariee) { TypeProduit.create!(nom: "robe ceremonie") }
   let!(:type_costume) { TypeProduit.create!(nom: "habit de cour") }
   let!(:categorie) { CategorieProduit.create!(nom: "robes de mariee spec") }
-  let!(:epoque) { RubriqueCostume.create!(nom: "XVIIIe siècle", groupe: "Époque", position: 1) }
-  let!(:marquis) { RubriqueCostume.create!(nom: "Marquis et marquise", groupe: "Personnage", position: 2) }
-  let!(:pirate) { RubriqueCostume.create!(nom: "Pirate", groupe: "Personnage", position: 3) }
+  let!(:epoque) { RubriqueCostume.create!(nom: "XVIIIe siècle", position: 1) }
+  let!(:marquis) { RubriqueCostume.create!(nom: "Marquis et marquise", position: 2) }
+  let!(:pirate) { RubriqueCostume.create!(nom: "Pirate", position: 3) }
 
   let!(:robe) do
     Produit.create!(
@@ -106,13 +106,79 @@ RSpec.describe "Costumes et déguisements", type: :request do
     habit.update!(catalogue: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS, rubrique_costume_ids: [marquis.id], categorie_produit_ids: [categorie.id])
     expect(habit.reload.categorie_produits).to be_empty
     expect(habit.rubrique_costumes).to contain_exactly(marquis)
+
+    habit.update!(
+      catalogue: Produit::CATALOGUE_LES_DEUX,
+      rubrique_costume_ids: [marquis.id],
+      categorie_produit_ids: [categorie.id]
+    )
+    expect(habit.reload.categorie_produits).to contain_exactly(categorie)
+    expect(habit.rubrique_costumes).to contain_exactly(marquis)
+    expect(habit.dans_catalogue_mariage?).to be true
+    expect(habit.dans_catalogue_costume?).to be true
+  end
+
+  it "publie une fiche des deux catalogues sur les deux listes" do
+    taille_partagee = Taille.create!(nom: "T40PART")
+    partage = Produit.create!(
+      nom: "Robe bal masque",
+      prixvente: 90,
+      eshop: true,
+      actif: true,
+      today_availability: true,
+      quantite: 1,
+      catalogue: Produit::CATALOGUE_LES_DEUX,
+      taille: taille_partagee,
+      couleur: couleur,
+      type_produit: type_mariee,
+      categorie_produit_ids: [categorie.id],
+      rubrique_costume_ids: [marquis.id]
+    )
+
+    get "/fr/produits"
+    expect(response.body).to include("Robe bal masque")
+    expect(response.body).to include("Robe mariee catalogue")
+    expect(response.body).not_to include("Habit de marquise")
+
+    get "/fr/produits_costumes_deguisements"
+    expect(response.body).to include("Robe bal masque")
+    expect(response.body).to include("Habit de marquise")
+    expect(response.body).not_to include("Robe mariee catalogue")
+
+    get "/fr/produits_costumes_deguisements", params: { rubrique: marquis.id }
+    expect(response.body).to include("Robe bal masque")
+
+    expect(robe.similar_products.map(&:id)).to include(partage.id)
+    expect(partage.similar_products.map(&:id)).to include(robe.id)
+    expect(partage.similar_products.map(&:id)).not_to include(habit.id)
+    expect(habit.similar_products.map(&:id)).to include(partage.id)
+
+    get "/fr/produit/#{partage.handle}-#{partage.id}"
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include('href="/fr/produits"')
+
+    get "/fr/produit/#{partage.handle}-#{partage.id}", params: { back_url: "/fr/produits_costumes_deguisements" }
+    expect(response.body).to include('href="/fr/produits_costumes_deguisements"')
   end
 
   it "exclut le costume du flux marchand" do
     attach_image(robe)
     attach_image(habit)
 
+    partage = Produit.create!(
+      nom: "Robe des deux flux",
+      prixvente: 70,
+      eshop: true,
+      actif: true,
+      today_availability: true,
+      quantite: 1,
+      catalogue: Produit::CATALOGUE_LES_DEUX,
+      categorie_produit_ids: [categorie.id]
+    )
+    attach_image(partage)
+
     expect(GoogleMerchant::FeedBuilder.feed_scope.where(id: robe.id)).to exist
+    expect(GoogleMerchant::FeedBuilder.feed_scope.where(id: partage.id)).to exist
     expect(GoogleMerchant::FeedBuilder.feed_scope.where(id: habit.id)).to be_empty
   end
 
@@ -133,9 +199,7 @@ RSpec.describe "Costumes et déguisements", type: :request do
     expect(response).to have_http_status(:ok)
     expect(response.body).to include("seo-page-hero")
     expect(response.body).not_to include("page-header-container")
-    expect(response.body).to include("Époque")
     expect(response.body).to include("XVIIIe siècle")
-    expect(response.body).to include("Personnage")
     expect(response.body).to include("Marquis et marquise")
     expect(response.body).not_to include("Pirate")
     expect(response.body).to include("Habit de marquise")

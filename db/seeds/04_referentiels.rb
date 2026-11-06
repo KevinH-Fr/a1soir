@@ -44,31 +44,22 @@ end
 end
 
 [
-  ["Époque", [
-    "Renaissance",
-    "XVIIIe siècle",
-    "Époque napoléonienne",
-    "Belle Époque",
-    "Années 1920-1930",
-    "Années 1950-1960",
-    "Années 1970-1980"
-  ]],
-  ["Personnage", [
-    "Marquis et marquise",
-    "Pirate",
-    "Conte et féerie"
-  ]],
-  ["Univers", [
-    "Carnaval",
-    "Bal masqué"
-  ]]
-].each_with_index do |(groupe, noms), group_index|
-  noms.each_with_index do |nom, index|
-    rubrique = RubriqueCostume.find_or_initialize_by(nom: nom)
-    rubrique.groupe = groupe
-    rubrique.position = (group_index * 100) + index + 1
-    rubrique.save!
-  end
+  "Renaissance",
+  "XVIIIe siècle",
+  "Époque napoléonienne",
+  "Belle Époque",
+  "Années 1920-1930",
+  "Années 1950-1960",
+  "Années 1970-1980",
+  "Marquis et marquise",
+  "Pirate",
+  "Conte et féerie",
+  "Carnaval",
+  "Bal masqué"
+].each_with_index do |nom, index|
+  rubrique = RubriqueCostume.find_or_initialize_by(nom: nom)
+  rubrique.position = index + 1
+  rubrique.save!
 end
 
 Fournisseur.find_or_create_by!(nom: "Fournisseur démo") do |f|

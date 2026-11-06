@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_11_06_120000) do
+ActiveRecord::Schema[7.2].define(version: 2026_11_06_183000) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -453,11 +453,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_11_06_120000) do
 
   create_table "rubrique_costumes", force: :cascade do |t|
     t.string "nom", null: false
-    t.string "groupe", null: false
     t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["groupe", "position"], name: "index_rubrique_costumes_on_groupe_and_position"
     t.index ["nom"], name: "index_rubrique_costumes_on_nom", unique: true
   end
 

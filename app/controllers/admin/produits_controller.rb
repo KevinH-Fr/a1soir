@@ -8,19 +8,24 @@ class Admin::ProduitsController < Admin::ApplicationController
   def index
 
     @count_produits = Produit.count
-  
+    params[:filter_statut] = Array(params[:filter_statut]) if params[:filter_statut].is_a?(String)
+
     search_params = params.permit(
       :format, :page, :subdomain,
-      :filter_taille, :filter_couleur, :filter_categorie, :filter_type_produit, :filter_statut, :filter_fournisseur, :filter_prix, :filter_catalogue,
+      :filter_taille, :filter_couleur, :filter_categorie, :filter_rubrique, :filter_type_produit, :filter_fournisseur, :filter_prix, :filter_catalogue,
+      filter_statut: [],
       q: [:nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont, :id_eq]
     )
   
     produits = Produit.all
-    produits = apply_catalogue_filter(produits, search_params[:filter_catalogue])
+    catalogue_filter = search_params[:filter_catalogue].presence || Produit::CATALOGUE_TENUES_MARIAGE_SOIREE
+    @costume_catalogue = catalogue_filter == Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+    produits = apply_catalogue_filter(produits, catalogue_filter)
 
     produits = apply_taille_filter(produits, search_params[:filter_taille])
     produits = apply_couleur_filter(produits, search_params[:filter_couleur])
-    produits = apply_categorie_filter(produits, search_params[:filter_categorie])
+    produits = apply_categorie_filter(produits, search_params[:filter_categorie]) unless @costume_catalogue
+    produits = apply_rubrique_filter(produits, search_params[:filter_rubrique]) if @costume_catalogue
     produits = apply_type_produit_filter(produits, search_params[:filter_type_produit])
     produits = apply_statut_filter(produits, search_params[:filter_statut])
     produits = apply_fournisseur_filter(produits, search_params[:filter_fournisseur])
@@ -73,6 +78,7 @@ class Admin::ProduitsController < Admin::ApplicationController
     @pagy, @produits = pagy_countless(produits, items: 2)
   
     @categorie_produits = CategorieProduit.order(:nom)
+    @rubrique_costumes = RubriqueCostume.ordered if @costume_catalogue
     @type_produits = TypeProduit.order(:nom)
     @couleurs = Couleur.order(:nom)
     @tailles = Taille.order(:nom)
@@ -224,8 +230,8 @@ class Admin::ProduitsController < Admin::ApplicationController
       else
 
         format.turbo_stream do
-          render turbo_stream: turbo_stream.update(@produit, 
-                    partial: 'admin/produits/form', 
+          render turbo_stream: turbo_stream.update(@produit,
+                    partial: 'admin/produits/form',
                     locals: { produit: @produit, admin_form_row_embedded: true })
         end
 

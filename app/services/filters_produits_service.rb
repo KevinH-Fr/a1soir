@@ -25,7 +25,7 @@ class FiltersProduitsService
   end
 
   def call
-    produits = Produit.actif.includes([:couleur]).eshop_diffusion.where(catalogue: @catalogue)
+    produits = Produit.actif.includes([:couleur]).eshop_diffusion.where(catalogue: Produit.catalogue_values_for(@catalogue))
 
     produits = produits.by_categories(@categories_ids) if @categories_ids.present?
     produits = produits.by_rubriques(@rubrique_ids) if @catalogue == Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS && @rubrique_ids.present?

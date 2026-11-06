@@ -3,7 +3,7 @@
     <div class="card-body p-2 d-flex flex-row flex-wrap align-items-center justify-content-between gap-2">
       <div data-turbo="false">
         <%= link_to admin_rubrique_costume_path(rubrique_costume), class: "text-decoration-none text-dark" do %>
-          <%= custom_badge("", "", "", "fw-bold", "#{rubrique_costume.groupe} · #{rubrique_costume.nom}") %>
+          <%= custom_badge("", "", "", "fw-bold", rubrique_costume.nom) %>
         <% end %>
       </div>
       <%= links_record(rubrique_costume) %>

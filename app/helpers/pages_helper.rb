@@ -537,7 +537,7 @@ module PagesHelper
   end
 
   def selection_includes_costume?(produits)
-    Array(produits).any?(&:costume_epoque_deguisements?)
+    Array(produits).any?(&:dans_catalogue_costume?)
   end
 
   # Paramètres de listing public partagés entre filtres Turbo, recherche et back_url fiche produit.

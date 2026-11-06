@@ -55,18 +55,17 @@
     </section>
   <% end %>
 
-  <section class="container px-3 mb-5">
-    <% @rubriques_par_groupe.each do |groupe, rubriques| %>
-      <h2 class="h4 text-light fw-bold text-center mb-4"><%= groupe %></h2>
-      <div class="d-flex flex-wrap gap-2 justify-content-center mb-5">
-        <% rubriques.each do |rubrique| %>
+  <% if @rubriques_costumes.any? %>
+    <section class="container px-3 mb-5">
+      <div class="d-flex flex-wrap gap-2 justify-content-center">
+        <% @rubriques_costumes.each do |rubrique| %>
           <%= link_to rubrique.nom,
                       produits_costumes_deguisements_path(rubrique: rubrique.id),
                       class: "btn btn-outline-light public-btn-border-radius px-4" %>
         <% end %>
       </div>
-    <% end %>
-  </section>
+    </section>
+  <% end %>
 
   <%= render "public/seo_pages/shared/sections" %>
   <%= render "public/seo_pages/shared/faq" %>

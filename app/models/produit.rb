@@ -4,7 +4,12 @@ class Produit < ApplicationRecord
 
   CATALOGUE_TENUES_MARIAGE_SOIREE = "tenues_mariage_soiree"
   CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS = "costume_epoque_deguisements"
-  CATALOGUES = [CATALOGUE_TENUES_MARIAGE_SOIREE, CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS].freeze
+  CATALOGUE_LES_DEUX = "les_deux"
+  CATALOGUES = [
+    CATALOGUE_TENUES_MARIAGE_SOIREE,
+    CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS,
+    CATALOGUE_LES_DEUX
+  ].freeze
 
   has_and_belongs_to_many :categorie_produits
   has_and_belongs_to_many :rubrique_costumes, join_table: "produits_rubrique_costumes"
@@ -84,8 +89,8 @@ class Produit < ApplicationRecord
   scope :by_categories, ->(categories_ids) { joins(:categorie_produits).where(categorie_produits: { id: categories_ids }).distinct }
   scope :by_taille, ->(taille) { where(taille: taille) }
   scope :by_couleur, ->(couleur) { where(couleur: couleur) }
-  scope :tenues_mariage_soiree, -> { where(catalogue: CATALOGUE_TENUES_MARIAGE_SOIREE) }
-  scope :costume_epoque_deguisements, -> { where(catalogue: CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS) }
+  scope :tenues_mariage_soiree, -> { where(catalogue: catalogue_values_for(CATALOGUE_TENUES_MARIAGE_SOIREE)) }
+  scope :costume_epoque_deguisements, -> { where(catalogue: catalogue_values_for(CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS)) }
   scope :by_rubriques, ->(rubrique_ids) {
     joins(:rubrique_costumes).where(rubrique_costumes: { id: rubrique_ids }).distinct
   }
@@ -157,8 +162,42 @@ class Produit < ApplicationRecord
 
   
   
+  def self.catalogue_values_for(catalogue)
+    case catalogue.to_s
+    when CATALOGUE_TENUES_MARIAGE_SOIREE
+      [CATALOGUE_TENUES_MARIAGE_SOIREE, CATALOGUE_LES_DEUX]
+    when CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+      [CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS, CATALOGUE_LES_DEUX]
+    else
+      [catalogue.to_s]
+    end
+  end
+
   def costume_epoque_deguisements?
     catalogue == CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+  end
+
+  def les_deux?
+    catalogue == CATALOGUE_LES_DEUX
+  end
+
+  def dans_catalogue_mariage?
+    catalogue.in?([CATALOGUE_TENUES_MARIAGE_SOIREE, CATALOGUE_LES_DEUX])
+  end
+
+  def dans_catalogue_costume?
+    catalogue.in?([CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS, CATALOGUE_LES_DEUX])
+  end
+
+  def catalogue_label
+    case catalogue
+    when CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+      "Costumes d'époque et déguisements"
+    when CATALOGUE_LES_DEUX
+      "Les deux"
+    else
+      "Tenues de mariage et soirée"
+    end
   end
 
   def full_name
@@ -169,8 +208,12 @@ class Produit < ApplicationRecord
     self.catalogue = CATALOGUE_TENUES_MARIAGE_SOIREE if catalogue.blank?
   end
 
-  # Une pièce d'époque ne porte pas les catégories mariage. Une tenue de mariage ne porte pas de rubrique.
+  # Une pièce d'époque seule ne porte pas les catégories mariage.
+  # Une tenue de mariage seule ne porte pas de rubrique.
+  # Une fiche des deux catalogues garde les deux.
   def sync_catalogue_associations
+    return if les_deux?
+
     if costume_epoque_deguisements?
       self.categorie_produit_ids = [] if categorie_produit_ids.any?
     elsif rubrique_costume_ids.any?

@@ -12,20 +12,37 @@
       ) %>
 </div>
 
-<div class="min-w-0">
-  <%= filter_dropdown(
-        label: "Catégorie",
-        icon: "bi bi-layers",
-        param_key: :filter_categorie,
-        collection: @categorie_produits,
-        model: CategorieProduit,
-        current_params: listing_params_with_search(produits_filter_params(exclude: :filter_categorie)),
-        all_label: "Toutes les catégories",
-        columns: 2,
-        id_suffix: id_suffix,
-        always_show_label: always_show_label
-      ) %>
-</div>
+<% if @costume_catalogue %>
+  <div class="min-w-0">
+    <%= filter_dropdown(
+          label: "Rubrique",
+          icon: "bi bi-bookmark",
+          param_key: :filter_rubrique,
+          collection: @rubrique_costumes,
+          model: RubriqueCostume,
+          current_params: listing_params_with_search(produits_filter_params(exclude: :filter_rubrique)),
+          all_label: "Toutes les rubriques",
+          columns: 2,
+          id_suffix: id_suffix,
+          always_show_label: always_show_label
+        ) %>
+  </div>
+<% else %>
+  <div class="min-w-0">
+    <%= filter_dropdown(
+          label: "Catégorie",
+          icon: "bi bi-layers",
+          param_key: :filter_categorie,
+          collection: @categorie_produits,
+          model: CategorieProduit,
+          current_params: listing_params_with_search(produits_filter_params(exclude: :filter_categorie)),
+          all_label: "Toutes les catégories",
+          columns: 2,
+          id_suffix: id_suffix,
+          always_show_label: always_show_label
+        ) %>
+  </div>
+<% end %>
 
 <div class="min-w-0">
   <%= filter_dropdown(
@@ -79,7 +96,9 @@
         param_key: :filter_statut,
         current_params: listing_params_with_search(produits_filter_params(exclude: :filter_statut)),
         id_suffix: id_suffix,
-        always_show_label: always_show_label
+        always_show_label: always_show_label,
+        multiple: true,
+        keep_label: false
       ) %>
 </div>
 
@@ -108,13 +127,3 @@
       ) %>
 </div>
 
-<div class="min-w-0">
-  <%= filter_dropdown(
-        label: "Mode",
-        icon: "bi bi-zoom-in",
-        param_key: :filter_mode,
-        current_params: listing_params_with_search(produits_filter_params(exclude: :filter_mode)),
-        id_suffix: id_suffix,
-        always_show_label: always_show_label
-      ) %>
-</div>

@@ -6,7 +6,9 @@
              compact: produit_compact_collapse,
              embedded: produit_embedded
            } do %>
-  <%= form_with(model: produit, url: produit.persisted? ? admin_produit_path(produit) : admin_produits_path, method: produit.persisted? ? :patch : :post, data: { turbo: true }) do |form| %>
+  <%# Dans la liste, le formulaire est dans turbo-frame#results. La réponse est un
+      turbo stream (carte + flash), sans cette frame : Turbo afficherait « Content missing ». %>
+  <%= form_with(model: produit, url: produit.persisted? ? admin_produit_path(produit) : admin_produits_path, method: produit.persisted? ? :patch : :post, data: { turbo: true, turbo_frame: (produit_embedded ? "_top" : nil) }.compact) do |form| %>
 
     <% if produit.errors.any? %>
       <div class="alert alert-danger py-2 mb-3" role="alert">
@@ -120,6 +122,7 @@
             ) %>
             <div data-controller="produit-catalogue"
                  data-produit-catalogue-costume-value="<%= Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS %>"
+                 data-produit-catalogue-both-value="<%= Produit::CATALOGUE_LES_DEUX %>"
                  data-produit-catalogue-confirm-costume-value="Passer ce produit au catalogue Costumes d'époque et déguisements ? Les catégories seront retirées à l'enregistrement. La fiche n'est pas enregistrée maintenant."
                  data-produit-catalogue-confirm-boutique-value="Revenir au catalogue Tenues de mariage et soirée ? Les rubriques seront retirées à l'enregistrement. La fiche n'est pas enregistrée maintenant.">
             <% selected_catalogue = produit.catalogue.presence || Produit::CATALOGUE_TENUES_MARIAGE_SOIREE %>
@@ -128,7 +131,8 @@
               <div class="catalogue-choice-list">
                 <% [
                   ["Tenues de mariage et soirée", Produit::CATALOGUE_TENUES_MARIAGE_SOIREE],
-                  ["Costumes d'époque et déguisements", Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS]
+                  ["Costumes d'époque et déguisements", Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS],
+                  ["Les deux", Produit::CATALOGUE_LES_DEUX]
                 ].each do |label, value| %>
                   <label class="catalogue-choice-item">
                     <%= form.radio_button :catalogue, value,
@@ -140,8 +144,9 @@
                 <% end %>
               </div>
             </div>
-            <% costume_catalogue = produit.catalogue == Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS %>
-            <div id="produit-categories-boutique" data-produit-catalogue-target="categories" <%= "hidden" if costume_catalogue %>>
+            <% costume_only = selected_catalogue == Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS %>
+            <% show_rubriques = selected_catalogue != Produit::CATALOGUE_TENUES_MARIAGE_SOIREE %>
+            <div id="produit-categories-boutique" data-produit-catalogue-target="categories" <%= "hidden" if costume_only %>>
               <%= form.label :categorie_produit_ids, "Catégories", class: "form-label fw-bold" %>
               <div class="form-check">
                 <%= form.collection_check_boxes :categorie_produit_ids, @categorie_produits.order(:nom), :id, :nom do |b| %>
@@ -152,17 +157,16 @@
                 <% end %>
               </div>
             </div>
-            <div id="produit-rubriques-costume" data-produit-catalogue-target="rubriques" <%= "hidden" unless costume_catalogue %>>
+            <div id="produit-rubriques-costume" data-produit-catalogue-target="rubriques" <%= "hidden" unless show_rubriques %>>
               <%= form.label :rubrique_costume_ids, "Rubriques", class: "form-label fw-bold" %>
-              <% RubriqueCostume.ordered.group_by(&:groupe).each do |groupe, rubriques| %>
-                <div class="small fw-semibold text-secondary mt-2"><%= groupe %></div>
-                <%= form.collection_check_boxes :rubrique_costume_ids, rubriques, :id, :nom do |b| %>
+              <div class="form-check">
+                <%= form.collection_check_boxes :rubrique_costume_ids, RubriqueCostume.ordered, :id, :nom do |b| %>
                   <div class="form-check form-check-inline">
                     <%= b.check_box class: "form-check-input" %>
                     <%= b.label class: "form-check-label" %>
                   </div>
                 <% end %>
-              <% end %>
+              </div>
             </div>
             </div>
           </section>

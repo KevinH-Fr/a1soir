@@ -27,7 +27,15 @@
             
             <div class="card-text">
               <div>
-                <% if produit.costume_epoque_deguisements? %>
+                <% if produit.les_deux? %>
+                  <%= custom_badge("", "", "", "", "Les deux") %>
+                  <% produit.categorie_produits.each do |categorie| %>
+                    <%= custom_badge("", "", "", "", categorie.nom) %>
+                  <% end %>
+                  <% produit.rubrique_costumes.each do |rubrique| %>
+                    <%= custom_badge("", "", "", "", rubrique.nom) %>
+                  <% end %>
+                <% elsif produit.costume_epoque_deguisements? %>
                   <%= custom_badge("", "", "", "", "Costumes et déguisements") %>
                   <% produit.rubrique_costumes.each do |rubrique| %>
                     <%= custom_badge("", "", "", "", rubrique.nom) %>
@@ -134,7 +142,7 @@
 
               <!-- Badges infos -->
               <div class="d-flex flex-wrap gap-1 align-items-center">
-                <%= custom_badge("", "catalogue:", "", "", produit.costume_epoque_deguisements? ? "Costumes d'époque et déguisements" : "Tenues de mariage et soirée") %>
+                <%= custom_badge("", "catalogue:", "", "", produit.catalogue_label) %>
                 <%= custom_badge("", "caution", "", "", custom_currency_no_decimals_format(produit.caution)) if produit.caution %>
                 <%= custom_badge("", "handle:", "", "", produit.handle) if produit.handle %>
                 <%= custom_badge("", "ref. fournisseur:", "", "", produit.reffrs) if produit.reffrs %>
