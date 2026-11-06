@@ -214,4 +214,56 @@ RSpec.describe "Costumes et déguisements", type: :request do
     expect(response.body).to include("/fr/guides/costume-marquis-marquise")
     expect(response.body).to include("Tous les guides")
   end
+
+  it "met un costume d'époque avant un déguisement sur la landing" do
+    habit.update!(catalogue: Produit::CATALOGUE_TENUES_MARIAGE_SOIREE)
+
+    deguisement = Produit.create!(
+      nom: "Costume pirate",
+      prixvente: 70,
+      eshop: true,
+      actif: true,
+      today_availability: true,
+      quantite: 1,
+      catalogue: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS,
+      taille: taille_costume,
+      couleur: couleur,
+      type_produit: type_costume,
+      rubrique_costume_ids: [pirate.id]
+    )
+    epoque_produit = Produit.create!(
+      nom: "Robe de cour",
+      prixvente: 90,
+      eshop: true,
+      actif: true,
+      today_availability: true,
+      quantite: 1,
+      catalogue: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS,
+      taille: taille_costume,
+      couleur: couleur,
+      type_produit: type_costume,
+      rubrique_costume_ids: [epoque.id]
+    )
+    autre_epoque = Produit.create!(
+      nom: "Habit renaissance",
+      prixvente: 90,
+      eshop: true,
+      actif: true,
+      today_availability: true,
+      quantite: 1,
+      catalogue: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS,
+      taille: taille_costume,
+      couleur: couleur,
+      type_produit: type_costume,
+      rubrique_costume_ids: [epoque.id]
+    )
+    deguisement.image1.attach(io: StringIO.new("pirate"), filename: "pirate-landing.jpg", content_type: "image/jpeg")
+    epoque_produit.image1.attach(io: StringIO.new("epoque"), filename: "epoque-landing.jpg", content_type: "image/jpeg")
+
+    get "/fr/costumes-depoque"
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body.index(epoque_produit.image1.blob.key)).to be < response.body.index(deguisement.image1.blob.key)
+    expect(response.body.index("Habit renaissance")).to be < response.body.index("Costume pirate")
+  end
 end

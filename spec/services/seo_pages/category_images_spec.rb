@@ -278,6 +278,34 @@ RSpec.describe SeoPages::CategoryImages do
       expect(hero[:image]).to be_attached
     end
 
+    it "keeps a fancy dress photo behind period costumes on the costumes landing" do
+      pirate_rubrique = RubriqueCostume.create!(nom: "Pirate", position: 9)
+      epoque_rubrique = RubriqueCostume.create!(nom: "XVIIIe siècle", position: 2)
+      pirate = create_product(name: "Costume pirate", categories: [costume], image_bytes: "pirate")
+      premiere = create_product(name: "Habit de cour", categories: [costume], image_bytes: "cour")
+      seconde = create_product(name: "Robe renaissance", categories: [costume], image_bytes: "renaissance")
+      [pirate, premiere, seconde].each { |product| product.update!(catalogue: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS) }
+      pirate.rubrique_costumes << pirate_rubrique
+      premiere.rubrique_costumes << epoque_rubrique
+      seconde.rubrique_costumes << epoque_rubrique
+
+      page = {
+        slug: "costumes-depoque",
+        scope: "local",
+        product_filters: {
+          catalogue: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS,
+          prefer_epoque_media: true
+        }
+      }
+
+      assets = described_class.resolve(page, section_keys: %w[collection])
+      epoque_ids = [premiere.id, seconde.id]
+
+      expect(epoque_ids).to include(assets.dig(:hero, :product_id))
+      expect(epoque_ids).to include(assets.dig(:sections, "collection", :product_id))
+      expect(assets.dig(:sections, "collection", :product_id)).not_to eq(assets.dig(:hero, :product_id))
+    end
+
     it "falls back to image when no product with video matches" do
       create_product(name: "Robe sans vidéo", categories: [robes_courtes], image_bytes: "image-only")
 

@@ -10,6 +10,30 @@ class RubriqueCostume < ApplicationRecord
 
   scope :ordered, -> { order(:position, :nom) }
 
+  # Noms des rubriques seed, sans accents. Une pièce d'époque passe avant un déguisement.
+  EPOQUE_MARKERS = %w[renaissance xviiie napoleon belle\ epoque annees marquis marquise medieval moyen\ age epoque].freeze
+  DEGUISEMENT_MARKERS = %w[pirate feerie carnaval masque deguisement halloween clown sorcier].freeze
+  EPOQUE_NAME = /renaissance|\bxviii|\b18e|\b18eme|napoleon|belle epoque|marquis|marquise|medieval|moyen age|\bepoque\b|annees 19|annees 20|\b19[2-8]0\b/.freeze
+  DEGUISEMENT_NAME = /deguisement|carnaval|pirate|\bmasque\b|feerie|halloween|clown|sorcier/.freeze
+
+  # 0 époque, 1 sans signal, 2 déguisement. L'époque gagne si les deux signaux sont présents.
+  def self.media_priority(product)
+    noms = product.rubrique_costumes.map { |rubrique| fold(rubrique.nom) }
+    titre = fold(product.nom)
+    return 0 if noms.any? { |nom| marker?(nom, EPOQUE_MARKERS) } || titre.match?(EPOQUE_NAME)
+    return 2 if noms.any? { |nom| marker?(nom, DEGUISEMENT_MARKERS) } || titre.match?(DEGUISEMENT_NAME)
+
+    1
+  end
+
+  def self.fold(value)
+    I18n.transliterate(value.to_s).downcase.strip
+  end
+
+  def self.marker?(folded_nom, markers)
+    markers.any? { |marker| folded_nom.include?(marker) }
+  end
+
   # Rubriques présentes sur les produits publiés de ce catalogue.
   def self.present_on_catalogue(catalogue)
     ids = Produit.actif.eshop_diffusion

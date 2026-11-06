@@ -215,6 +215,7 @@ module SeoPages
           !used_product_ids.include?(product.id) &&
           media_available?(product, used_blob_ids)
       end
+      pool = narrow_to_preferred_costume_tier(pool)
       return nil if pool.empty?
 
       sorted = pool.sort_by { |product| fallback_sort_key(product, used_category_ids) }
@@ -229,6 +230,7 @@ module SeoPages
     end
 
     def pick_product(products, keywords, used_blob_ids, used_product_ids, used_category_ids, section_key: nil)
+      products = prefer_available_costume_products(products, used_product_ids)
       product = pick_product_for_section(
         products, keywords, used_blob_ids, used_product_ids, used_category_ids, section_key: section_key
       )
@@ -281,6 +283,7 @@ module SeoPages
       end
       return nil if pool.empty?
 
+      pool = narrow_to_preferred_costume_tier(pool)
       sorted = pool.sort_by { |product| fallback_sort_key(product, used_category_ids) }
       sorted[stable_section_index(section_key, sorted.size)]
     end
@@ -348,6 +351,9 @@ module SeoPages
     end
 
     def choose_varied_product(pool, keywords, used_category_ids, section_key)
+      pool = narrow_to_preferred_costume_tier(pool)
+      return nil if pool.empty?
+
       scored = pool.map { |product| [product, score_product(product, keywords, used_category_ids, section_key: section_key)] }
       max_score = scored.map(&:last).max
       if max_score.to_i.zero?
@@ -371,6 +377,26 @@ module SeoPages
       return 0 if size <= 1
 
       Zlib.crc32("#{@page[:slug]}-#{section_key}") % size
+    end
+
+    def prefer_epoque_media?
+      ActiveModel::Type::Boolean.new.cast(@page.dig(:product_filters, :prefer_epoque_media))
+    end
+
+    # Tant qu'il reste un costume d'époque, les déguisements ne sont pas candidats.
+    def prefer_available_costume_products(products, used_product_ids)
+      return products unless prefer_epoque_media?
+
+      remaining = products.reject { |product| used_product_ids.include?(product.id) }
+      narrow_to_preferred_costume_tier(remaining)
+    end
+
+    def narrow_to_preferred_costume_tier(pool)
+      return pool unless prefer_epoque_media?
+      return pool if pool.blank?
+
+      best = pool.map { |product| RubriqueCostume.media_priority(product) }.min
+      pool.select { |product| RubriqueCostume.media_priority(product) == best }
     end
 
     def product_matches_section?(product, section_terms, section_key: nil)

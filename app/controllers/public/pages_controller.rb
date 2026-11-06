@@ -54,7 +54,7 @@ module Public
       @seo_hero_image = assets[:hero]
       @seo_section_images = assets[:sections]
       hero_id = @seo_hero_image&.dig(:product_id)
-      preview = apercu_costumes(limit: hero_id ? 7 : 6).to_a
+      preview = apercu_costumes(limit: hero_id ? 7 : 6, prefer_epoque: true).to_a
       preview.reject! { |produit| produit.id == hero_id } if hero_id
       @apercu_costumes = preview.first(6)
     end
@@ -308,22 +308,28 @@ module Public
     end
 
     # Quelques pièces disponibles, une par modèle et couleur.
-    def apercu_costumes(limit: 6)
+    # prefer_epoque : costumes d'époque d'abord, puis pièces sans thème, puis déguisements.
+    def apercu_costumes(limit: 6, prefer_epoque: false)
       scope = Produit.costume_epoque_deguisements.actif.eshop_diffusion.where(today_availability: true)
-      ids = scope.group_by { |produit| [produit.handle, produit.couleur_id] }
-                 .map { |_, variantes| variantes.min_by(&:id).id }
-                 .sort
-                 .first(limit)
+      scope = scope.includes(:rubrique_costumes) if prefer_epoque
+      variantes = scope.group_by { |produit| [produit.handle, produit.couleur_id] }
+                       .map { |_, groupe| groupe.min_by(&:id) }
+      variantes.sort_by! { |produit| prefer_epoque ? [RubriqueCostume.media_priority(produit), produit.id] : [produit.id] }
+      ids = variantes.first(limit).map(&:id)
       return Produit.none if ids.empty?
 
-      Produit.where(id: ids).for_public_listing_cards.order(:id)
+      relation = Produit.where(id: ids).for_public_listing_cards
+      prefer_epoque ? relation.in_order_of(:id, ids) : relation.order(:id)
     end
 
     def costume_landing_page
       {
         slug: "costumes-depoque",
         scope: "local",
-        product_filters: { catalogue: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS }
+        product_filters: {
+          catalogue: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS,
+          prefer_epoque_media: true
+        }
       }
     end
 
