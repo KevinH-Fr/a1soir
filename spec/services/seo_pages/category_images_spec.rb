@@ -249,6 +249,35 @@ RSpec.describe SeoPages::CategoryImages do
       expect(result.dig("boutique", :image)).to be_attached
     end
 
+    it "keeps the hero product out of the sections" do
+      hero_candidate = create_product(name: "Robe mariée hero", categories: [robes_longues], image_bytes: "hero")
+      other = create_product(name: "Robe mariée suite", categories: [robes_longues], image_bytes: "suite")
+
+      page = SeoPages::Registry.find("robe-de-mariee-cannes", scope: "local")
+      assets = described_class.resolve(page, section_keys: %w[boutique])
+
+      expect(assets.dig(:hero, :media_type)).to eq(:image)
+      expect([hero_candidate.id, other.id]).to include(assets.dig(:hero, :product_id))
+      expect(assets.dig(:sections, "boutique", :product_id)).not_to eq(assets.dig(:hero, :product_id))
+    end
+
+    it "picks a costume catalogue photo for the costumes landing" do
+      habit = create_product(name: "Habit de marquise", categories: [robes_longues], image_bytes: "marquise")
+      habit.update!(catalogue: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS)
+      create_product(name: "Robe mariée hors catalogue", categories: [robes_longues], image_bytes: "robe")
+
+      page = {
+        slug: "costumes-depoque",
+        scope: "local",
+        product_filters: { catalogue: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS }
+      }
+
+      hero = described_class.hero_for(page)
+
+      expect(hero[:product_id]).to eq(habit.id)
+      expect(hero[:image]).to be_attached
+    end
+
     it "falls back to image when no product with video matches" do
       create_product(name: "Robe sans vidéo", categories: [robes_courtes], image_bytes: "image-only")
 

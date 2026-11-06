@@ -9,6 +9,12 @@ RSpec.describe SeoPages::Registry do
       expect(page[:type]).to eq("local_landing")
       expect(page[:meta_key]).to eq("robe_de_mariee_cannes")
       expect(page.dig(:product_filters, :category_names)).to include("robes de mariée courtes")
+      expect(described_class.product_button(page)).to be_nil
+    end
+
+    it "uses the fitting-room button on the wedding fitting page" do
+      page = described_class.find("essayage-robe-de-mariee-cannes", scope: "local")
+      expect(described_class.product_button(page)).to eq("cabine")
     end
 
     it "returns a guide page" do

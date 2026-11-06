@@ -603,6 +603,41 @@ fr:
           q3:
             question: Où se déroule l'essayage à Cannes ?
             answer_html: <p>Chez Autour D'Un Soir, 27 boulevard Carnot. Voir la page <a href="/fr/essayage-robe-de-mariee-cannes">essayage robe de mariée</a>.</p>
+      costumes_depoque:
+        link_title: Costumes d'époque et déguisements
+        header_title: Costumes d'époque et déguisements
+        header_subtitle: Une collection à part, pour le théâtre, le cinéma et les fêtes
+        intro_html: '<p>Robes de cour, habits historiques et déguisements sont réunis ici, en dehors des tenues de mariage et de soirée. Cette page présente la collection : à qui elle sert, comment les thèmes se lisent, et comment se prépare un essayage à Cannes. La liste des pièces, avec tailles et couleurs, est sur <a href="/fr/produits_costumes_deguisements">le catalogue</a>.</p><p>Le stock couvre plusieurs siècles et plusieurs rôles. Pour le détail d''une période, le guide <a href="/fr/guides/costumes-epoque-histoire-mode">costumes d''époque et histoire de la mode</a> reprend les silhouettes une à une.</p>'
+        cta_title: Voir les produits
+        sections:
+          collection:
+            title: Une collection à part du mariage
+            body_html: '<p>Un habit de cour n''est pas un smoking de cérémonie, et une robe à panier n''est pas une robe de mariée. Les mélanger dans le même rayon brouille le choix : la cliente qui cherche une tenue de soirée ne doit pas tomber sur un costume de scène, et l''inverse est vrai. C''est pour cela que ces pièces ont leur page, leurs thèmes et leur catalogue.</p><p>On y trouve trois familles. L''époque situe une silhouette dans le temps. Le personnage raconte un rôle. L''univers regroupe un usage, comme le carnaval ou le bal masqué. Le guide <a href="/fr/guides/location-deguisement-cannes">location de déguisements</a> précise cette différence.</p>'
+          themes:
+            title: Époque, personnage ou univers
+            body_html: '<p>Une même pièce peut porter plusieurs thèmes. Un habit de cour du XVIIIe siècle sort à la fois dans son siècle et dans Marquis et marquise. Partir du thème évite de parcourir tout le stock quand le projet est déjà précis : une reconstitution, un bal, un spectacle ou une fête.</p><p>Les rubriques se complètent, elles ne se remplacent pas. Le <a href="/fr/guides/costume-marquis-marquise">guide marquis et marquise</a> détaille une silhouette ; le <a href="/fr/guides/costume-carnaval-nice">Carnaval de Nice</a> en décrit une autre, plus mobile, pensée pour la rue.</p>'
+          essayage:
+            title: Essayage, location et atelier
+            body_html: '<p>Le choix se fait en boutique, pas par un paiement en ligne. On regarde la période, l''usage et la taille, puis l''atelier ajuste si le projet le demande : ourlet, corsage, habit ou accessoire. La location se cale sur les dates du spectacle, du tournage ou de la fête, avec un devis quand plusieurs pièces partent ensemble.</p><p>Le déroulement est repris dans le guide <a href="/fr/guides/location-costume-epoque-cannes">louer un costume d''époque à Cannes</a>. Le sur mesure, création ou réplique, se demande au même endroit : ce n''est pas un filtre du catalogue.</p>'
+          scene:
+            title: Théâtre, cinéma et fêtes
+            body_html: '<p>Ces costumes servent la scène, l''image et la fête. Une production a besoin d''une silhouette lisible à la caméra, parfois en plusieurs exemplaires. Un bal ou un carnaval demande plutôt une tenue que l''on peut porter longtemps, avec une coiffe ou un masque reconnaissable. Le stock est pensé pour ces deux usages, pas pour le rayon mariage.</p><p>Pour un tournage ou une équipe, le guide <a href="/fr/guides/costumes-cinema-television-cannes">habiller le cinéma et la télévision</a> explique le travail de coulisse. Pour une fête, le catalogue suffit à préparer la visite.</p>'
+          acces:
+            title: Venir en boutique à Cannes
+            body_html: '<p>La boutique est au 27 boulevard Carnot, à quelques minutes de la gare de Cannes. En voiture, comptez environ 30 minutes depuis Nice, 20 minutes depuis Antibes et 45 minutes depuis Monaco. Le TER Nice–Cannes dépose à cinq minutes à pied.</p><p>Mieux vaut écrire avant de venir, surtout avant le carnaval ou un tournage groupé. Les pièces en ligne se parcourent sur <a href="/fr/produits_costumes_deguisements">le catalogue costumes et déguisements</a>.</p>'
+        faq:
+          q1:
+            question: Cette page est-elle la liste des costumes ?
+            answer_html: '<p>Non. Elle présente la collection. Les pièces, les tailles et les couleurs sont sur <a href="/fr/produits_costumes_deguisements">le catalogue</a>.</p>'
+          q2:
+            question: Peut-on louer pour un tournage ou un groupe ?
+            answer_html: "<p>Oui, sur devis, selon les pièces, les dates et le nombre de tenues. L'atelier prévoit les retouches et, si besoin, des doublons.</p>"
+          q3:
+            question: Faut-il prendre rendez-vous ?
+            answer_html: "<p>C'est fortement recommandé, pour qu'une conseillère prépare les pièces du projet. Sans rendez-vous, l'accueil dépend de l'affluence.</p>"
+          q4:
+            question: Proposez-vous des costumes sur mesure ?
+            answer_html: "<p>Oui. L'atelier crée ou adapte une pièce pour un projet précis. Cela se demande en boutique, au 27 boulevard Carnot.</p>"
       costumes_epoque_histoire_mode:
         link_title: Costumes d'époque
         header_title: 'Costumes d''époque : voyage dans l''histoire'

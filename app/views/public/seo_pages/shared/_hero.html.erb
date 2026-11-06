@@ -1,14 +1,60 @@
-<% og_image = seo_page_og_image_url(@page) %>
-<% content_for :og_image, og_image if og_image.present? %>
+<%
+  title = local_assigns[:title].presence || seo_page_t(@page, :header_title)
+  subtitle = local_assigns.key?(:subtitle) ? local_assigns[:subtitle] : seo_page_t(@page, :header_subtitle, default: nil)
+  hero = local_assigns.key?(:hero_image) ? local_assigns[:hero_image] : @seo_hero_image
+  image_url = seo_page_hero_image_url(hero)
+  show_dev_placeholder = image_url.blank? && Rails.env.development?
+  display_url = show_dev_placeholder ? "/images/no_photo_white.png" : image_url
+  position = hero&.dig(:position).presence || "center top"
+  if local_assigns[:cta_url].present?
+    cta_url = local_assigns[:cta_url]
+    cta_label = local_assigns[:cta_label]
+    cta_type = local_assigns[:cta_type].presence || "produits"
+  elsif @page.present?
+    cta_url = seo_page_rdv_url(@page)
+    cta_label = seo_page_t(@page, :cta_title, default: t("public.seo_pages.shared.cta_title_default"))
+    cta_type = "rdv"
+  end
+%>
+<% if image_url.present? %>
+  <% content_for :og_image, image_url %>
+  <% content_for :hero_preload do %>
+    <link rel="preload" href="<%= image_url %>" as="image" fetchpriority="high">
+  <% end %>
+<% elsif @page.present? %>
+  <% og_image = seo_page_og_image_url(@page) %>
+  <% content_for :og_image, og_image if og_image.present? %>
+<% end %>
 
-<div class="container-fluid text-start w-100 py-5 mb-4" data-scroll-reveal>
-  <div class="container px-3">
-    <h1 class="text-white fw-bold mb-3" style="font-family: 'Playfair Display', serif; font-size: 2.5rem;">
-      <%= seo_page_t(@page, :header_title) %>
-    </h1>
-    <% subtitle = seo_page_t(@page, :header_subtitle, default: nil) %>
+<section class="seo-page-hero">
+  <div class="container seo-page-hero-layout<%= " seo-page-hero--with-media" if display_url.present? %>">
+  <% if display_url.present? %>
+    <div class="seo-page-hero-media">
+      <%= image_tag(
+            display_url,
+            class: "seo-page-hero-image",
+            alt: (show_dev_placeholder ? "" : title),
+            width: 900,
+            height: 1125,
+            loading: "eager",
+            fetchpriority: (show_dev_placeholder ? nil : "high"),
+            style: "object-position: #{position};"
+          ) %>
+      <% if show_dev_placeholder %>
+        <span class="seo-page-hero-dev-note">Aperçu sans photo</span>
+      <% end %>
+    </div>
+  <% end %>
+  <div class="seo-page-hero-copy">
+    <h1 class="text-white fw-bold mb-3 seo-page-hero-title"><%= title %></h1>
     <% if subtitle.present? %>
-      <p class="text-white-50 fs-5 mb-0" style="line-height: 1.7;"><%= subtitle %></p>
+      <p class="text-white-50 fs-5 mb-0 seo-page-hero-subtitle"><%= subtitle %></p>
+    <% end %>
+    <% if cta_url.present? %>
+      <div class="seo-page-hero-cta">
+        <%= cta_button(type: cta_type, url: cta_url, variant: "light", text: cta_label) %>
+      </div>
     <% end %>
   </div>
-</div>
+  </div>
+</section>

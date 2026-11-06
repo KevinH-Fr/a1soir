@@ -37,13 +37,27 @@ module Public
     end
 
     def nos_autres_activites
+      @listing_catalogue = Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+      session[:from_cabine] = false
+      @apercu_costumes = apercu_costumes(limit: 3)
     end
 
     def costumes_depoque
+      @listing_catalogue = Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+      session[:from_cabine] = false
       @rubriques_par_groupe = RubriqueCostume
         .present_on_catalogue(Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS)
         .group_by(&:groupe)
       @related_pages = Array(SeoPages::Registry.grouped_for_hub["costume_epoque_deguisements"])
+      @page = costume_landing_page
+      section_keys = I18n.t("public.seo_pages.costumes_depoque.sections", default: {}).keys.map(&:to_s)
+      assets = SeoPages::CategoryImages.resolve(@page, section_keys: section_keys)
+      @seo_hero_image = assets[:hero]
+      @seo_section_images = assets[:sections]
+      hero_id = @seo_hero_image&.dig(:product_id)
+      preview = apercu_costumes(limit: hero_id ? 7 : 6).to_a
+      preview.reject! { |produit| produit.id == hero_id } if hero_id
+      @apercu_costumes = preview.first(6)
     end
 
     def festival_de_cannes
@@ -116,7 +130,7 @@ module Public
 
     def produits_costumes_deguisements
       @listing_catalogue = Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
-      session[:from_cabine] = false
+      session[:from_cabine] = params[:from_cabine].present?
       produits_with_filters
 
       respond_to do |format|
@@ -184,7 +198,7 @@ module Public
 
     def update_filtres_costumes
       @listing_catalogue = Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
-      session[:from_cabine] = false
+      session[:from_cabine] = params[:from_cabine].present?
       update_filters_turbo
     end
     
@@ -292,6 +306,26 @@ module Public
 
     def coups_de_coeur_boutique
       Produit.tenues_mariage_soiree.where(today_availability: true).coups_de_coeur.eshop_diffusion.actif.for_public_listing_cards.limit(8)
+    end
+
+    # Quelques pièces disponibles, une par modèle et couleur.
+    def apercu_costumes(limit: 6)
+      scope = Produit.costume_epoque_deguisements.actif.eshop_diffusion.where(today_availability: true)
+      ids = scope.group_by { |produit| [produit.handle, produit.couleur_id] }
+                 .map { |_, variantes| variantes.min_by(&:id).id }
+                 .sort
+                 .first(limit)
+      return Produit.none if ids.empty?
+
+      Produit.where(id: ids).for_public_listing_cards.order(:id)
+    end
+
+    def costume_landing_page
+      {
+        slug: "costumes-depoque",
+        scope: "local",
+        product_filters: { catalogue: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS }
+      }
     end
 
     def default_produit_back_path(produit)

@@ -53,15 +53,16 @@ Un fichier par modèle, 10 produits TikTok au maximum chacun :
 | `accessoires.xlsx` | Ceintures, Gants | type `ceinture`, ou « ceinture » / « gant » dans le nom | 20-200 EUR |
 | `hommes.xlsx` | Chemises, Costumes et accessoires | catégorie ou type `chemise` / `costume` | 20-200 EUR |
 | `jupons.xlsx` | Jupons gainants | « jupon » dans le nom | 20-200 EUR |
+| `chaussures.xlsx` | Chaussures à talons | type ou catégorie `chaussures`, ou « chaussure » / « escarpin » / « sandale » dans le nom | 20-200 EUR |
 
 Priorité de classement : type de produit, puis catégorie Rails, puis mots du nom. Les autres accessoires (nœuds, étoles, bijoux...) sont exclus avec le motif « modèle à télécharger » : ajouter le modèle Seller Center correspondant et une entrée dans `MODELES`.
 
-Les modèles téléchargés après la déclaration GPSR (`hommes`, `jupons`) proposent la valeur « Autour D'Un Soir (ID: ...) », reprise telle quelle ; les plus anciens (`robes`, `accessoires`) reçoivent l'identifiant seul.
+Les modèles téléchargés après la déclaration GPSR (`hommes`, `jupons`, `chaussures`) proposent la valeur « Autour D'Un Soir (ID: ...) », reprise telle quelle ; les plus anciens (`robes`, `accessoires`) reçoivent l'identifiant seul.
 
 ### Prérequis Seller Center
 
 - Créer le **fabricant** et la **personne responsable** (GPSR), reporter leurs identifiants dans le script.
-- Modèles téléchargés : accessoires (gants, ceintures, ensembles d'accessoires) et robes (soirée, invitées). Les **chemises homme** demandent un troisième modèle.
+- Modèles téléchargés : accessoires (gants, ceintures, ensembles d'accessoires), robes (soirée, invitées), chemises et costumes homme, jupons, chaussures à talons.
 - La marque « Autour D'Un Soir » n'est pas enregistrée : les produits partent en « Aucune marque ».
 
 ---

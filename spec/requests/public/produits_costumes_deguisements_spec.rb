@@ -72,6 +72,7 @@ RSpec.describe "Costumes et déguisements", type: :request do
     get "/fr/produits_costumes_deguisements"
 
     expect(response).to have_http_status(:ok)
+    expect(response.body).to include("Catalogue des costumes et déguisements")
     expect(response.body).to include("Habit de marquise")
     expect(response.body).not_to include("Robe mariee catalogue")
     expect(response.body).to include("T54COST")
@@ -81,6 +82,7 @@ RSpec.describe "Costumes et déguisements", type: :request do
     expect(response.body).not_to include("Pirate")
     expect(response.body).not_to include("filtres-categorie")
     expect(response.body).not_to include("filtres-type-produit")
+    expect(response.body.index("/fr/guides/costumes-epoque-histoire-mode")).to be < response.body.index("/fr/robe-de-mariee-cannes")
   end
 
   it "retrouve un costume dans chacune de ses rubriques" do
@@ -129,11 +131,19 @@ RSpec.describe "Costumes et déguisements", type: :request do
     get "/fr/costumes-depoque"
 
     expect(response).to have_http_status(:ok)
+    expect(response.body).to include("seo-page-hero")
+    expect(response.body).not_to include("page-header-container")
     expect(response.body).to include("Époque")
     expect(response.body).to include("XVIIIe siècle")
     expect(response.body).to include("Personnage")
     expect(response.body).to include("Marquis et marquise")
     expect(response.body).not_to include("Pirate")
+    expect(response.body).to include("Habit de marquise")
+    expect(response.body).to include("Quelques pièces")
+    expect(response.body).to include("Une collection à part du mariage")
+    expect(response.body).to include("Cette page est-elle la liste des costumes ?")
+    expect(response.body).to include("Voir les produits")
+    expect(response.body).not_to include("Voir tous les costumes")
     expect(response.body).to include("/fr/produits_costumes_deguisements?rubrique=#{epoque.id}")
     expect(response.body).to include("/fr/produits_costumes_deguisements")
     expect(response.body).to include("/fr/guides/costumes-epoque-histoire-mode")

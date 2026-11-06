@@ -654,7 +654,7 @@ fr:
         description: "Découvrez les autres activités et services de la boutique."
       costumes_depoque:
         title: "Costumes d'époque et déguisements - Autour D'Un Soir"
-        description: "Location de costumes d'époque et de déguisements à Cannes : Renaissance, XVIIIe siècle, marquis et marquise, carnaval."
+        description: "La collection de costumes d'époque et de déguisements d'Autour D'Un Soir à Cannes : thèmes, essayage et atelier. Les pièces se consultent dans le catalogue."
       produits_costumes_deguisements:
         title: "Costumes d'époque et déguisements - Catalogue"
         description: "Parcourez les costumes d'époque et déguisements disponibles à la location et à la vente chez Autour D'Un Soir à Cannes."
@@ -838,6 +838,7 @@ fr:
         bride: "Mariée à Cannes"
         guest: "Invité & soirée"
         costume: "Costume & accessoires"
+        costume_epoque: "Costumes d'époque et déguisements"
     pages:
       home:
         collections_title: "Nos collections"
@@ -1016,9 +1017,11 @@ fr:
         header_title: "Costumes d'époque et déguisements"
         header_subtitle: "Une collection à part, pour le théâtre, le cinéma et les fêtes"
         intro: "Robes de cour, habits historiques et déguisements sont réunis ici, en dehors des tenues de mariage et de soirée. Choisissez une époque, un personnage, ou parcourez toute la collection."
-        collection_cta: "Voir tous les costumes et déguisements"
+        preview_title: "Quelques pièces"
+        hero_cta: "Voir les produits"
+        catalogue_heading: "Le catalogue"
       produits_costumes_deguisements:
-        listing_heading: "Costumes et déguisements"
+        listing_heading: "Catalogue des costumes et déguisements"
       produit:
         back: "Retour"
         view_more_products: "Voir plus de produits"
@@ -1349,7 +1352,8 @@ fr:
             "7": "Années 1970-1980"
             "8": "Costumes sur mesure"
           ideal_for: "Idéal pour : Mariages thématiques, fêtes costumées, théâtre, cinéma, reconstitutions historiques"
-          cta: "Voir les costumes et déguisements"
+          cta: "Découvrir la collection"
+          catalogue_cta: "Voir les produits"
         business_services:
           title: "Prestations Entreprises & Groupes"
           description: "Professionnels et organisateurs d'événements, nous vous proposons des solutions sur mesure pour habiller vos équipes et participants. Bénéficiez de tarifs préférentiels et d'un accompagnement personnalisé pour vos projets de groupe."

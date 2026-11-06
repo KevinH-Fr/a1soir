@@ -14,9 +14,10 @@
         <% end %>
       </div>
 
+      <% footer_groups = seo_footer_groups %>
       <div class="row g-4">
-        <% seo_footer_groups.each do |group, pages| %>
-          <div class="col-12 col-md-4">
+        <% footer_groups.each do |group, pages| %>
+          <div class="<%= footer_groups.size > 3 ? "col-12 col-md-6 col-xl-3" : "col-12 col-md-4" %>">
             <h3 class="h6 text-uppercase mb-4 text-light"><%= t("public.footer.seo_groups.#{group}") %></h3>
             <ul class="list-unstyled">
               <% pages.each do |page| %>

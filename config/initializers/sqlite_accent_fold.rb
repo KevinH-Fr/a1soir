@@ -2,6 +2,8 @@
 
 # PostgreSQL plie les accents dans le SQL. SQLite appelle AccentFold.fold.
 ActiveSupport.on_load(:active_record) do
+  require "active_record/connection_adapters/sqlite3_adapter"
+
   ActiveRecord::ConnectionAdapters::SQLite3Adapter.set_callback(:checkout, :after) do
     raw = raw_connection
     next if raw.instance_variable_defined?(:@accent_fold)

@@ -185,6 +185,11 @@
                   <%= link_to t("public.pages.cart.continue_shopping"),
                       produits_index_url,
                       class: "btn btn-outline-light public-btn-border-radius border-opacity-20 opacity-80" %>
+                  <% if selection_includes_costume?(@cart) %>
+                    <%= link_to t("public.pages.produits_costumes_deguisements.listing_heading"),
+                        produits_costumes_deguisements_path,
+                        class: "btn btn-link text-light text-decoration-underline opacity-75 p-0" %>
+                  <% end %>
                 </div>
 
               </div>

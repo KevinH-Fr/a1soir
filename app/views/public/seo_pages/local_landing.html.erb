@@ -6,12 +6,21 @@
 
 <div class="public-main-content">
   <%= render "public/seo_pages/shared/intro" %>
-  <%= render "public/seo_pages/shared/category_links" %>
-  <%= render "public/seo_pages/shared/sections" %>
 
   <% if seo_page_includes?(@page, :products) %>
     <%= render "public/seo_pages/shared/product_grid" %>
   <% end %>
+
+  <% if SeoPages::Registry.product_button(@page) == "cabine" %>
+    <% if @cabine_cart.any? %>
+      <%= render "public/pages/floating_reservation_button" %>
+    <% else %>
+      <div id="floating_reservation_btn"></div>
+    <% end %>
+  <% end %>
+
+  <%= render "public/seo_pages/shared/category_links" %>
+  <%= render "public/seo_pages/shared/sections" %>
 
   <% if seo_page_includes?(@page, :boutique_snippet) %>
     <%= render "public/seo_pages/shared/boutique_snippet" %>

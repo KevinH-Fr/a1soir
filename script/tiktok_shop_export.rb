@@ -72,6 +72,20 @@ MODELES = {
     regles: [
       { tiktok: "Sous-vêtements pour femmes/Vêtements de forme/Jupons gainants", mots: %w[jupon jupons] }
     ]
+  },
+  "chaussures" => {
+    fichier: "chaussures.xlsx",
+    limite: 10,
+    prix: 20..200,
+    colis_cm: [35, 22, 12],
+    regles: [
+      {
+        tiktok: "Chaussures pour femmes/Chaussures à talons",
+        categories: %w[chaussures],
+        types: %w[chaussures],
+        mots: %w[chaussure chaussures escarpin escarpins sandale sandales]
+      }
+    ]
   }
 }.freeze
 

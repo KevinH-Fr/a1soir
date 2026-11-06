@@ -48,6 +48,18 @@ RSpec.describe SeoPagesHelper, type: :helper do
         chaussures-accessoires-soiree
       ])
     end
+
+    it "lists period costume guides before the other groups on costume pages" do
+      allow(helper).to receive(:params).and_return(ActionController::Parameters.new(controller: "public/pages", action: "produits_costumes_deguisements"))
+
+      groups = helper.seo_footer_groups
+
+      expect(groups.map(&:first)).to eq(%w[costume_epoque bride guest costume])
+      expect(groups.first.last.map { |page| page[:slug] }).to include(
+        "costumes-epoque-histoire-mode",
+        "location-deguisement-cannes"
+      )
+    end
   end
 
   describe "#seo_page_breadcrumbs" do

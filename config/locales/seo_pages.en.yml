@@ -603,6 +603,41 @@ en:
           q3:
             question: Where is the fitting in Cannes?
             answer_html: <p>At Autour D'Un Soir, 27 boulevard Carnot. See <a href="/en/essayage-robe-de-mariee-cannes">wedding dress fitting</a>.</p>
+      costumes_depoque:
+        link_title: Period costumes and fancy dress
+        header_title: Period costumes and fancy dress
+        header_subtitle: A separate collection for stage, screen and parties
+        intro_html: '<p>Court dress, historical costume and fancy dress live here, apart from wedding and evening wear. This page introduces the collection: who it is for, how the themes work, and how a fitting is prepared in Cannes. The pieces, with sizes and colours, are on <a href="/en/produits_costumes_deguisements">the catalogue</a>.</p><p>The stock spans several centuries and several roles. For the detail of one period, the guide <a href="/en/guides/costumes-epoque-histoire-mode">period costumes and the history of dress</a> takes the silhouettes one by one.</p>'
+        cta_title: See the products
+        sections:
+          collection:
+            title: A collection apart from bridal wear
+            body_html: '<p>A court suit is not a ceremony tuxedo, and a pannier gown is not a wedding dress. Mixing them in the same rail confuses the search. That is why these pieces have their own page, their own themes and their own catalogue.</p><p>Three families organise the stock. A period places a silhouette in time. A character tells a role. A setting groups a use, such as carnival or a masked ball. The guide <a href="/en/guides/location-deguisement-cannes">fancy dress rental</a> explains that difference.</p>'
+          themes:
+            title: Period, character or setting
+            body_html: '<p>One piece can carry several themes. An eighteenth-century court suit appears both in its century and under Marquess and marchioness. Starting from the theme avoids walking the whole stock when the project is already clear: a reenactment, a ball, a show or a party.</p><p>The themes complete each other. The <a href="/en/guides/costume-marquis-marquise">marquess and marchioness guide</a> details one silhouette; the <a href="/en/guides/costume-carnaval-nice">Nice Carnival</a> guide describes another, easier to wear in the street.</p>'
+          essayage:
+            title: Fitting, rental and the workshop
+            body_html: '<p>The choice is made in the shop, not through an online payment. We look at the period, the use and the size, then the workshop adjusts the piece if the project needs it. Rental follows the dates of the show, the shoot or the party, with a quote when several pieces leave together.</p><p>The steps are set out in the guide <a href="/en/guides/location-costume-epoque-cannes">renting a period costume in Cannes</a>. Made-to-measure work, a new piece or a replica, is asked for in the same place: it is not a filter on the catalogue.</p>'
+          scene:
+            title: Stage, screen and parties
+            body_html: '<p>These costumes serve the stage, the camera and the party. A production needs a silhouette that reads on screen, sometimes in more than one copy. A ball or a carnival needs a costume that can be worn for hours, with a headdress or a mask that is easy to recognise. The stock is built for those uses, not for the bridal rail.</p><p>For a shoot or a crew, the guide <a href="/en/guides/costumes-cinema-television-cannes">dressing film and television</a> explains the backstage work. For a party, the catalogue is enough to prepare the visit.</p>'
+          acces:
+            title: Visiting the shop in Cannes
+            body_html: '<p>The shop is at 27 boulevard Carnot, a few minutes from Cannes station. By car, allow about 30 minutes from Nice, 20 minutes from Antibes and 45 minutes from Monaco. The Nice–Cannes train stops a five-minute walk away.</p><p>It is better to write before coming, especially before carnival or a group shoot. The pieces online are on <a href="/en/produits_costumes_deguisements">the costume and fancy dress catalogue</a>.</p>'
+        faq:
+          q1:
+            question: Is this page the costume list?
+            answer_html: '<p>No. It introduces the collection. The pieces, sizes and colours are on <a href="/en/produits_costumes_deguisements">the catalogue</a>.</p>'
+          q2:
+            question: Can a costume be rented for a shoot or a group?
+            answer_html: "<p>Yes, on a quote, depending on the pieces, the dates and the number of outfits. The workshop plans alterations and, when needed, duplicates.</p>"
+          q3:
+            question: Do we need an appointment?
+            answer_html: "<p>It is strongly recommended, so an advisor can prepare the pieces for the project. Without an appointment, welcome depends on how busy the shop is.</p>"
+          q4:
+            question: Do you make costumes to measure?
+            answer_html: "<p>Yes. The workshop creates or adapts a piece for a specific project. Ask in the shop, at 27 boulevard Carnot.</p>"
       costumes_epoque_histoire_mode:
         link_title: Period costumes
         header_title: 'Period costumes: a journey through history'

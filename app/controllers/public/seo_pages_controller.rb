@@ -57,9 +57,15 @@ module Public
         default: {}
       ).keys.map(&:to_s)
 
-      @seo_section_images = SeoPages::CategoryImages.call(@page, section_keys: section_keys)
+      assets = SeoPages::CategoryImages.resolve(@page, section_keys: section_keys)
+      @seo_hero_image = assets[:hero]
+      @seo_section_images = assets[:sections]
       used_product_ids = @seo_section_images.values.filter_map { |section| section[:product_id] }
-      @produits = SeoPages::ProductScope.call(@page, exclude_product_ids: used_product_ids)
+      hero_id = @seo_hero_image&.dig(:product_id)
+      @produits = SeoPages::ProductScope.call(
+        @page,
+        exclude_product_ids: (used_product_ids + [hero_id]).compact.uniq
+      )
     end
 
     def load_boutique_context

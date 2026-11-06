@@ -2,7 +2,9 @@
   <% section_media = seo_page_section_image(@page, section_key) %>
   <% title = seo_page_t(@page, "sections.#{section_key}.title") %>
   <% body = seo_page_t(@page, "sections.#{section_key}.body_html") %>
-  <% reverse = section_media&.dig(:reverse) == true || (seo_page_section_has_media?(section_media) && index.odd?) %>
+  <% has_media = seo_page_section_has_media?(section_media) %>
+  <% show_dev_placeholder = !has_media && Rails.env.development? %>
+  <% reverse = section_media&.dig(:reverse) == true || ((has_media || show_dev_placeholder) && index.odd?) %>
   <% section_rdv_cta = capture do %>
     <% if section_key == "acces" && @page[:rdv_evenement].present? %>
       <div class="mt-4">
@@ -12,14 +14,26 @@
   <% end %>
 
   <section class="container px-3 mb-5 seo-page-section" data-scroll-reveal>
-    <% if seo_page_section_has_media?(section_media) %>
+    <% if has_media || show_dev_placeholder %>
       <div class="row g-4 g-lg-5 align-items-center <%= reverse ? 'flex-lg-row-reverse' : '' %>">
         <div class="col-lg-5">
           <div class="seo-section-image-wrap">
-            <%= render "public/seo_pages/shared/section_media",
-                       section_media: section_media,
-                       title: title,
-                       position: section_media[:position] %>
+            <% if has_media %>
+              <%= render "public/seo_pages/shared/section_media",
+                         section_media: section_media,
+                         title: title,
+                         position: section_media[:position] %>
+            <% else %>
+              <%= image_tag(
+                    "/images/no_photo_white.png",
+                    class: "seo-section-image w-100",
+                    alt: "",
+                    width: 1200,
+                    height: 900,
+                    loading: "lazy"
+                  ) %>
+              <span class="seo-page-hero-dev-note">Aperçu sans photo</span>
+            <% end %>
           </div>
         </div>
         <div class="col-lg-7">

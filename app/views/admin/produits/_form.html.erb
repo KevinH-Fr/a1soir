@@ -123,20 +123,20 @@
                  data-produit-catalogue-confirm-costume-value="Passer ce produit au catalogue Costumes d'époque et déguisements ? Les catégories seront retirées à l'enregistrement. La fiche n'est pas enregistrée maintenant."
                  data-produit-catalogue-confirm-boutique-value="Revenir au catalogue Tenues de mariage et soirée ? Les rubriques seront retirées à l'enregistrement. La fiche n'est pas enregistrée maintenant.">
             <% selected_catalogue = produit.catalogue.presence || Produit::CATALOGUE_TENUES_MARIAGE_SOIREE %>
-            <div class="mb-2">
+            <div class="catalogue-choice mb-2">
               <div class="form-label fw-bold mb-1">Catalogue</div>
-              <div class="d-flex flex-wrap gap-3">
+              <div class="catalogue-choice-list">
                 <% [
                   ["Tenues de mariage et soirée", Produit::CATALOGUE_TENUES_MARIAGE_SOIREE],
                   ["Costumes d'époque et déguisements", Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS]
                 ].each do |label, value| %>
-                  <div class="form-check">
+                  <label class="catalogue-choice-item">
                     <%= form.radio_button :catalogue, value,
-                          class: "form-check-input",
+                          class: "catalogue-choice-input",
                           checked: selected_catalogue == value,
                           data: { produit_catalogue_target: "option", action: "change->produit-catalogue#change" } %>
-                    <%= form.label :catalogue, label, value: value, class: "form-check-label" %>
-                  </div>
+                    <span><%= label %></span>
+                  </label>
                 <% end %>
               </div>
             </div>

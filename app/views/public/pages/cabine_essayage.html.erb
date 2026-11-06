@@ -97,10 +97,16 @@ image2: "https://res.cloudinary.com/dukne3lhz/image/upload/q_auto,f_auto,w_1200/
                         wrapper_class: "d-flex align-items-center gap-1" %>
                 <% end %>
               </div>
-              <!-- Bouton Ajouter -->
-              <%= link_to produits_index_path(from_cabine: true), class: "btn btn-dark btn-lg px-4 rounded-0" do %>
-                <i class="bi bi-plus-circle me-2"></i><%= t("public.pages.cabine_essayage.add_products") %>
-              <% end %>
+              <div class="d-flex flex-column align-items-stretch align-items-sm-end gap-2">
+                <%= link_to produits_index_path(from_cabine: true), class: "btn btn-dark btn-lg px-4 rounded-0" do %>
+                  <i class="bi bi-plus-circle me-2"></i><%= t("public.pages.cabine_essayage.add_products") %>
+                <% end %>
+                <% if selection_includes_costume?(@cabine_cart) %>
+                  <%= link_to t("public.pages.produits_costumes_deguisements.listing_heading"),
+                      produits_costumes_deguisements_path(from_cabine: true),
+                      class: "small text-dark text-center text-sm-end" %>
+                <% end %>
+              </div>
             </div>
           </div>
 

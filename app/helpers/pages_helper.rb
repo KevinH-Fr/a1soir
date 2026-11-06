@@ -531,13 +531,17 @@ module PagesHelper
     LISTING_CARD_TAILLES_MAX
   end
 
-  # Paramètres de listing public partagés entre filtres Turbo, recherche et back_url fiche produit.
-  # Les overrides permettent de remplacer ou effacer une valeur (ex. taille: nil).
   # Vrai seulement sur la liste costumes d'époque et déguisements.
   def costume_listing?
     @listing_catalogue.to_s == Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
   end
 
+  def selection_includes_costume?(produits)
+    Array(produits).any?(&:costume_epoque_deguisements?)
+  end
+
+  # Paramètres de listing public partagés entre filtres Turbo, recherche et back_url fiche produit.
+  # Les overrides permettent de remplacer ou effacer une valeur (ex. taille: nil).
   def produits_active_params(**overrides)
     # Costumes : thème, taille, couleur, recherche. Le mariage garde ses filtres d'origine.
     base = if costume_listing?
@@ -545,6 +549,7 @@ module PagesHelper
         rubrique: params[:rubrique],
         taille: params[:taille],
         couleur: params[:couleur],
+        from_cabine: params[:from_cabine],
         q: produits_search_params_from_request
       }
     else
@@ -573,7 +578,11 @@ module PagesHelper
   # URL propre pour réinitialiser filtres + recherche (redirect GET, pas de params résiduels).
   def produits_reset_path
     # Réinitialiser reste sur la liste costumes, sans renvoyer vers /produits.
-    return produits_costumes_deguisements_path if costume_listing?
+    if costume_listing?
+      reset_params = {}
+      reset_params[:from_cabine] = true if params[:from_cabine].present? || session[:from_cabine]
+      return produits_costumes_deguisements_path(**reset_params)
+    end
 
     reset_params = {}
     reset_params[:from_cabine] = true if params[:from_cabine].present? || session[:from_cabine]

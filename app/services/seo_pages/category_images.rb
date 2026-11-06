@@ -76,18 +76,48 @@ module SeoPages
     # Sections éditoriales : pas de filtre strict sur le nom produit (évite les sections vides).
     EDITORIAL_SECTION_KEYS = %w[delais budget conseils histoire deroulement].freeze
 
-    def self.call(page, section_keys: [])
-      new(page, section_keys: section_keys).call
+    def self.call(page, section_keys: [], exclude_product_ids: [])
+      new(page, section_keys: section_keys, exclude_product_ids: exclude_product_ids).call
     end
 
-    def initialize(page, section_keys: [])
+    def self.hero_for(page)
+      new(page, section_keys: []).hero_media
+    end
+
+    def self.resolve(page, section_keys: [])
+      builder = new(page, section_keys: section_keys)
+      hero = builder.hero_media
+      builder.exclude!(hero[:product_id]) if hero
+      { hero: hero, sections: builder.call }
+    end
+
+    def initialize(page, section_keys: [], exclude_product_ids: [])
       @page = page
       @section_keys = Array(section_keys).map(&:to_s)
+      @exclude_product_ids = Array(exclude_product_ids)
+    end
+
+    def exclude!(product_id)
+      @exclude_product_ids << product_id if product_id
+    end
+
+    def hero_media
+      products = load_product_pool.select { |product| product.image1.attached? }
+      return nil if products.empty?
+
+      product = choose_varied_product(products, keywords_for_slug(@page[:slug].to_s), [], "hero")
+      return nil unless product
+
+      {
+        media_type: :image,
+        image: product.image1,
+        position: section_position_for(product),
+        product_id: product.id
+      }
     end
 
     def call
-      categories = load_categories
-      products = load_products(categories)
+      products = load_product_pool
       return {} if products.empty?
 
       build_sections(products)
@@ -99,10 +129,8 @@ module SeoPages
       CategoryScope.call(@page)
     end
 
-    def load_products(categories)
-      return [] if categories.empty?
-
-      ProductQuery.scope_for(
+    def load_product_pool
+      @product_pool ||= ProductQuery.scope_for(
         @page,
         limit: PRODUCT_POOL_LIMIT,
         require_image: true,
@@ -113,7 +141,7 @@ module SeoPages
     def build_sections(products)
       slug_keywords = keywords_for_slug(@page[:slug].to_s)
       used_blob_ids = []
-      used_product_ids = []
+      used_product_ids = Array(@exclude_product_ids).dup
       used_category_ids = []
 
       result = @section_keys.each_with_object({}) do |section_key, memo|
@@ -460,11 +488,17 @@ module SeoPages
     end
 
     def section_position_for(product)
+      return "center top" if costume_catalogue_page?
+
       normalized = product.categorie_produits.first&.nom.to_s.downcase
       return "center top" if normalized.match?(/mariée|mariee/)
       return "top" if normalized.match?(/costume|smoking/)
 
       "center"
+    end
+
+    def costume_catalogue_page?
+      @page.dig(:product_filters, :catalogue).to_s == Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
     end
   end
 end

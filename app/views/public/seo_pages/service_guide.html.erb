@@ -6,12 +6,13 @@
 
 <div class="public-main-content">
   <%= render "public/seo_pages/shared/intro" %>
-  <%= render "public/seo_pages/shared/sections" %>
-  <%= render "public/seo_pages/shared/faq" %>
 
   <% if seo_page_includes?(@page, :products) || @page[:product_filters].present? %>
     <%= render "public/seo_pages/shared/product_grid" %>
   <% end %>
+
+  <%= render "public/seo_pages/shared/sections" %>
+  <%= render "public/seo_pages/shared/faq" %>
 
   <% if seo_page_includes?(@page, :boutique_snippet) %>
     <%= render "public/seo_pages/shared/boutique_snippet" %>

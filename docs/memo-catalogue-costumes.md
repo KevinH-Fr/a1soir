@@ -106,53 +106,121 @@ Des annonces pour les costumes d’époque demanderaient un second flux, pas cel
 
 ---
 
-## À vérifier après la mise en production
+## Checklist du 6 novembre 2026
 
-Aucun produit n’est reclassé tout seul. Tant qu’une fiche n’a pas été passée à la main sur **Costumes d'époque et déguisements**, elle reste sur `/produits`.
+À cocher à la main. Partie A en local, avant le push. Partie B demain, après le déploiement.
 
-**Catalogue**
+Les seeds locaux ont déjà quelques pièces costumes. En production, aucune fiche n’est reclassée toute seule : la liste costumes reste vide tant qu’une pièce n’est pas passée à la main.
 
-- Les deux radios s’affichent. Le défaut des fiches déjà en ligne est **Tenues de mariage et soirée**.
-- Changer de radio demande confirmation. Annuler ne change rien et n’enregistre pas.
-- Enregistrer vers Costumes d'époque et déguisements vide les catégories. L’inverse vide les rubriques.
-- La fiche admin, y compris le détail replié, affiche le catalogue. Une pièce costumes affiche aussi ses rubriques.
-- La catégorie « costume et déguisement » est toujours là. Ne pas la supprimer.
-- La carte « Costumes » de l’accueil mène encore au costume de cérémonie.
+Pièce témoin à préparer en local : une tenue de mariage connue (noter son nom, son type, ses catégories) et une pièce seed costumes (marquis / XVIIIe).
 
-**Listes**
+---
 
-- `/fr/produits` et `/en/produits` : mêmes filtres qu’avant (catégorie, type, taille, couleur, prix, vente/location). Aucun produit costumes.
-- `/fr/produits_costumes_deguisements` et la version anglaise : seulement thème, taille, couleur. Aucune tenue de mariage.
-- Un filtre thème sans résultat garde les menus thème, taille et couleur de ce catalogue.
-- La barre de recherche reste limitée en largeur sur les deux listes.
-- Le retour d’une fiche ouverte depuis une liste ramène à cette liste, filtres compris. Une fiche costumes ouverte directement ramène à la liste costumes.
-- Les coups de cœur de l’accueil, des collections et des catégories restent des tenues de mariage et soirée.
-- Les flux Google et Meta ne contiennent pas les pièces costumes.
+### A. Local, avant le push — 6 novembre
 
-**Pages et guides**
+**Admin, bascule de catalogue**
 
-- Autres activités : le bouton « Voir les costumes et déguisements » est visible et mène à `/costumes-depoque`.
-- Cette landing affiche les rubriques des pièces costumes en ligne et en stock, groupées comme dans l’admin. Le bloc « À lire aussi » montre les guides costumes. « Tous les guides » ne les liste pas.
-- `/fr/guides/costume-epoque-mariage-theme` redirige vers `/fr/guides/costumes-epoque-histoire-mode`.
-- Les guides Carnaval et Marquis n’affichent que les produits de la rubrique du même nom.
+- [ ] Nouveau produit : radio par défaut **Tenues de mariage et soirée**. Les catégories sont visibles, les rubriques sont cachées.
+- [ ] Passer le radio sur **Costumes d'époque et déguisements**. Une confirmation s’affiche. Annuler : le radio revient, rien n’est enregistré.
+- [ ] Confirmer : les catégories se cachent, les rubriques s’affichent. La fiche n’est toujours pas enregistrée.
+- [ ] Enregistrer. Rouvrir la fiche : plus de catégories mariage, y compris « costume et déguisement ». Le type de produit est inchangé.
+- [ ] La carte admin et le détail replié affichent **Costumes d'époque et déguisements**, plus les badges de rubriques cochées.
+- [ ] Revenir au radio **Tenues de mariage et soirée**. Annuler laisse la fiche en costumes. Confirmer puis enregistrer : les rubriques sont vidées, les catégories réapparaissent et sont à recocher. Le type est toujours le même.
+- [ ] La catégorie « costume et déguisement » est toujours dans **Cat. produits**. Ne pas la supprimer. La catégorie cérémonie `costume` est toujours là.
 
-**Cabine**
+**Admin, rubriques et filtre de liste**
 
-- Depuis la liste costumes, les cartes n’ouvrent pas le mode cabine.
-- Sur la fiche d’une pièce costumes, le bouton cabine est toujours là.
+- [ ] **Rubriques costumes** (à côté de Cat. produits) : liste, création, modification. Champs nom, groupe, position. Le nom garde ses majuscules et « XVIIIe ».
+- [ ] Deux rubriques cochées sur une même fiche : les deux badges sont là après enregistrement.
+- [ ] Une rubrique liée à un produit ne se supprime pas. Une rubrique sans produit se supprime.
+- [ ] Filtre **Catalogue** de la liste admin : Tous / Tenues de mariage et soirée / Costumes d'époque et déguisements. Il retrouve les fiches, il ne les reclasse pas.
+- [ ] Les autres filtres admin (catégorie, type, taille, couleur, statut) marchent encore sur la liste mariage.
 
-**Recherche, sur `/produits` et sur `/produits_costumes_deguisements`**
+**Public, les deux listes et leurs filtres**
 
-Chaque mot doit être trouvé. L’ordre ne compte pas. Les accents sont ignorés dans les deux sens (`robe` = `robé`, `ceremonie` = `cérémonie`, `coeur` = `cœur`). La recherche regarde le nom, la description, la catégorie, le type, la couleur, la taille et le nom de rubrique. Elle reste dans le catalogue de la page.
+- [ ] `/fr/produits` : la pièce costumes n’y est pas. La tenue témoin y est, avec ses catégories.
+- [ ] Filtres mariage toujours là : catégorie, type, taille, couleur, prix, vente/location. En combiner deux, puis tout réinitialiser. La pagination charge la suite.
+- [ ] `/fr/produits_costumes_deguisements` : la tenue mariage n’y est pas. La pièce costumes y est.
+- [ ] Filtres de cette liste : seulement Thème, Taille, Couleur. Pas de catégorie, type, prix, vente/location, promo.
+- [ ] Cocher un thème : la pièce qui a cette rubrique sort, même si elle en a une autre. Cocher l’autre rubrique de la même pièce : elle sort aussi.
+- [ ] Un thème sans pièce garde les menus Thème, Taille et Couleur.
+- [ ] Taille + couleur ensemble, puis pastilles actives, puis reset : retour à la liste costumes complète.
+- [ ] La barre de recherche garde sa largeur sur les deux listes.
+- [ ] `/en/produits` et `/en/produits_costumes_deguisements` ouvrent les mêmes listes en anglais.
 
-- `robe soiree` et `soiree robe` retrouvent la même tenue.
-- `robe chapeau` ne sort pas une robe qui n’a pas « chapeau ».
-- Une recherche sur `/produits` ne montre pas un costume d’époque, et l’inverse.
-- `XVIIIe` ou `marquis` sur la liste costumes retrouve les pièces de ces rubriques.
-- `100%` reste le caractère pour cent, pas un joker.
+**Public, passage d’un catalogue à l’autre**
 
-**Images Festival**
+- [ ] Depuis `/fr/produits` avec un filtre, ouvrir une fiche, revenir : même liste, mêmes filtres.
+- [ ] Depuis la liste costumes avec un thème, ouvrir une fiche, revenir : liste costumes, même thème.
+- [ ] Ouvrir une fiche costumes par son URL directe, puis revenir : la liste costumes, pas `/produits`.
+- [ ] Les produits similaires d’une fiche restent dans son catalogue.
+- [ ] Une collection et une catégorie mariage n’affichent pas la pièce costumes. Leurs filtres ne proposent pas une catégorie ou un type qui n’existerait plus que par cette pièce.
 
-- `/fr/festival-de-cannes` et `/en/festival-de-cannes` : les visuels s’affichent.
-- Les adresses utilisent `festival-cannes-2026-offre-fr-1`, `offre-fr-2`, `offre-en-1`, `offre-en-2`, `header-1`, `header-2`.
-- Le HTML ne contient plus `WhatsApp_Image`.
+**Recherche — SQLite, sur les deux listes**
+
+Chaque mot doit être trouvé. L’ordre est libre. Les accents passent dans les deux sens. Colonnes : nom, description, catégorie, type, couleur, taille, nom de rubrique. La recherche reste dans le catalogue de la page.
+
+- [ ] `robe soiree` et `soiree robe` retrouvent la même tenue.
+- [ ] `robe` et `robé` retrouvent la même pièce. Idem `ceremonie` / `cérémonie` et `coeur` / `cœur`.
+- [ ] `robe chapeau` ne sort pas une robe dont le texte n’a pas « chapeau ».
+- [ ] Une recherche sur `/fr/produits` ne montre pas la pièce costumes. La même recherche sur la liste costumes ne montre pas la tenue de mariage.
+- [ ] `XVIIIe` et `marquis` sur la liste costumes retrouvent les pièces de ces rubriques.
+- [ ] `100%` reste le caractère pour cent. Il ne devient pas un joker.
+
+**Pages, guides, accueil, cabine**
+
+- [ ] Autres activités : le bouton mène à `/fr/costumes-depoque`. La liste de périodes de la carte reste du texte, dont « Costumes sur mesure ».
+- [ ] La landing groupe les rubriques comme dans l’admin (Époque, Personnage, Univers, ou un groupe créé à la main). Une rubrique sans pièce en stock et en e-shop n’a pas de bouton.
+- [ ] « À lire aussi » sur la landing montre les six guides costumes. `/fr/guides` (« Tous les guides ») ne les liste pas.
+- [ ] `/fr/guides/costume-epoque-mariage-theme` redirige vers `/fr/guides/costumes-epoque-histoire-mode`.
+- [ ] `/fr/guides/costume-carnaval-nice` et `/fr/guides/costume-marquis-marquise` n’affichent que les produits de la rubrique du même nom.
+- [ ] La carte « Costumes » de l’accueil mène encore au costume de cérémonie, pas à la liste costumes.
+- [ ] Coups de cœur : accueil, collections, catégories. Que des tenues de mariage et soirée.
+- [ ] Liste costumes : les cartes n’ouvrent pas le mode cabine. Sur la fiche, le bouton cabine est là.
+- [ ] Depuis la cabine, « voir les produits » va vers `/produits?from_cabine=true`, le catalogue mariage.
+
+**Images Festival, en local**
+
+- [ ] `/fr/festival-de-cannes` et `/en/festival-de-cannes` : les visuels s’affichent.
+- [ ] Le HTML utilise `festival-cannes-2026-…` (`offre-fr-1`, `offre-fr-2`, `offre-en-1`, `offre-en-2`, `header-1`, `header-2`). Il ne contient plus `WhatsApp_Image`.
+
+---
+
+### B. Production, après le déploiement — 7 novembre
+
+La colonne `catalogue` n’existe pas encore. Les deux migrations tournent avec le code. Toutes les fiches passent à **Tenues de mariage et soirée**. Aucune ne devient un costume d’époque.
+
+**Juste après le déploiement**
+
+- [ ] L’admin s’ouvre. Une fiche existante a le radio **Tenues de mariage et soirée**, ses catégories, son type.
+- [ ] `/fr/produits` et `/en/produits` montrent les mêmes tenues qu’avant. Les filtres catégorie, type, taille, couleur, prix, vente/location répondent.
+- [ ] `/fr/produits_costumes_deguisements` n’a pas de produits. La landing `/fr/costumes-depoque` n’a pas de boutons de rubrique : texte, lien vers la liste, guides.
+- [ ] La catégorie « costume et déguisement » est toujours là. Ne pas la supprimer.
+- [ ] La carte « Costumes » de l’accueil mène encore au costume de cérémonie.
+- [ ] `/fr/guides/costume-epoque-mariage-theme` redirige vers le guide histoire et mode.
+- [ ] « Tous les guides » ne liste pas les guides costumes. La landing les montre dans « À lire aussi ».
+- [ ] Sitemap : `/fr/costumes-depoque` et `/fr/produits_costumes_deguisements` (et les URLs `/en/`).
+
+**Recherche — PostgreSQL, à refaire**
+
+Le pliage des accents en prod passe par `translate`, pas par la fonction SQLite du local. Refaire sur `/fr/produits`, puis sur la liste costumes une fois une pièce reclassée.
+
+- [ ] `robe` et `robé`. `ceremonie` et `cérémonie`. `coeur` et `cœur`.
+- [ ] `robe soiree` et `soiree robe` : même résultat.
+- [ ] Un mot absent exclut la pièce.
+- [ ] `100%` ne devient pas un joker.
+- [ ] Après avoir passé une pièce en costumes : elle disparaît de `/produits` et de sa recherche, et elle apparaît sur la liste costumes.
+
+**Une pièce passée à la main**
+
+- [ ] Ouvrir une fiche, radio **Costumes d'époque et déguisements**, confirmer, cocher une ou deux rubriques, enregistrer.
+- [ ] Les catégories mariage de cette fiche sont vidées. Le type est inchangé.
+- [ ] Elle sort sur `/fr/produits_costumes_deguisements`. Les filtres Thème, Taille, Couleur la retrouvent. La landing affiche les rubriques de cette pièce, groupées comme dans l’admin.
+- [ ] Elle n’est plus sur `/produits`, ni dans une collection, ni dans une catégorie, ni dans les coups de cœur.
+- [ ] Revenir au catalogue mariage, enregistrer : les rubriques sont vidées, les catégories sont à recocher, la pièce revient sur `/produits`.
+
+**Flux et Festival**
+
+- [ ] `https://a1soir.com/google_merchant_feed.xml` et `https://a1soir.com/meta_catalog_feed.xml` contiennent les tenues de mariage et soirée. La pièce passée en costumes n’y est pas.
+- [ ] `/fr/festival-de-cannes` et `/en/festival-de-cannes` : les visuels s’affichent.
+- [ ] Adresses `festival-cannes-2026-offre-fr-1`, `offre-fr-2`, `offre-en-1`, `offre-en-2`, `header-1`, `header-2`. Le HTML ne contient plus `WhatsApp_Image`.

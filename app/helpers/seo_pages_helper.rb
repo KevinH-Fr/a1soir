@@ -84,13 +84,24 @@ module SeoPagesHelper
     cloudinary_attachment_url(image, width: 1200)
   end
 
-  def seo_page_image_source(image)
+  def seo_page_image_source(image, width: 1200)
     return nil unless image.present? && image.attached?
 
-    cloudinary_attachment_url(image, width: 1200)
+    cloudinary_attachment_url(image, width: width)
+  end
+
+  def seo_page_hero_image_url(hero = @seo_hero_image)
+    return nil if hero.blank? || hero[:image].blank?
+
+    seo_page_image_source(hero[:image], width: 900)
   end
 
   def seo_page_og_image_url(page)
+    if page_matches_controller_page?(page)
+      hero_url = seo_page_hero_image_url
+      return hero_url if hero_url.present?
+    end
+
     image = resolved_images(page).values.find do |section|
       section[:image].present? && section[:image].attached?
     end&.dig(:image)
@@ -210,12 +221,23 @@ module SeoPagesHelper
   end
 
   SEO_FOOTER_GROUP_ORDER = %w[bride guest costume].freeze
+  COSTUME_THEME_FOOTER_ACTIONS = %w[nos_autres_activites produits_costumes_deguisements costumes_depoque].freeze
 
   def seo_footer_groups
-    SEO_FOOTER_GROUP_ORDER.filter_map do |group|
+    groups = SEO_FOOTER_GROUP_ORDER.filter_map do |group|
       pages = seo_footer_pages(group)
       [group, pages] if pages.any?
     end
+    return groups unless costume_theme_footer?
+
+    costume_pages = SeoPages::Registry.all.select { |page| page[:hub_group] == "costume_epoque_deguisements" }
+    return groups if costume_pages.empty?
+
+    [["costume_epoque", costume_pages]] + groups
+  end
+
+  def costume_theme_footer?
+    params[:controller] == "public/pages" && COSTUME_THEME_FOOTER_ACTIONS.include?(params[:action])
   end
 
   SEO_HUB_GROUP_ORDER = %w[local guides events services costume_epoque_deguisements].freeze

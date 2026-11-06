@@ -69,6 +69,10 @@ module SeoPages
         page[:slug].to_s.tr("-", "_")
       end
 
+      def product_button(page)
+        page[:product_button].to_s.presence
+      end
+
       def reload!
         @all = nil
         @local_slugs = nil

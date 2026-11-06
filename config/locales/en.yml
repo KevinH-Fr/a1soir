@@ -443,7 +443,7 @@ en:
         description: "Discover the other activities and services of the shop."
       costumes_depoque:
         title: "Period costumes and fancy dress - Autour D'Un Soir"
-        description: "Period costume and fancy dress rental in Cannes: Renaissance, 18th century, marquess and marchioness, carnival."
+        description: "The period costume and fancy dress collection at Autour D'Un Soir in Cannes: themes, fitting and the workshop. The pieces are listed in the catalogue."
       produits_costumes_deguisements:
         title: "Period costumes and fancy dress - Catalogue"
         description: "Browse period costumes and fancy dress for rental and sale at Autour D'Un Soir in Cannes."
@@ -627,6 +627,7 @@ en:
         bride: "Bride in Cannes"
         guest: "Guest & evening"
         costume: "Suits & accessories"
+        costume_epoque: "Period costumes and fancy dress"
     pages:
       home:
         collections_title: "Our collections"
@@ -805,9 +806,11 @@ en:
         header_title: "Period costumes and fancy dress"
         header_subtitle: "A separate collection for stage, screen and parties"
         intro: "Court dress, historical costume and fancy dress live here, apart from wedding and evening wear. Choose a period, a character, or browse the whole collection."
-        collection_cta: "See all costumes and fancy dress"
+        preview_title: "A few pieces"
+        hero_cta: "See the products"
+        catalogue_heading: "The catalogue"
       produits_costumes_deguisements:
-        listing_heading: "Costumes and fancy dress"
+        listing_heading: "Costume and fancy dress catalogue"
       produit:
         back: "Back"
         view_more_products: "Browse more products"
@@ -1138,7 +1141,8 @@ en:
             "7": "1970s-1980s"
             "8": "Custom costumes"
           ideal_for: "Ideal for: themed weddings, costume parties, theater, cinema, historical reenactments"
-          cta: "See costumes and fancy dress"
+          cta: "Discover the collection"
+          catalogue_cta: "See the products"
         business_services:
           title: "Corporate & group services"
           description: "For professionals and event organizers, we provide tailored solutions to outfit your teams and participants. Benefit from preferential rates and personalized support for your group projects."

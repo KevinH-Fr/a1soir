@@ -57,7 +57,7 @@
         <% end %>
       </p>
 
-      <% if session[:from_cabine] %>
+      <% if session[:from_cabine] || local_assigns[:button_type].to_s == "cabine" %>
         <%= render partial: "public/pages/cart_buttons/cabine_product_button", locals: { produit: produit } %>
       <% elsif OnlineSales.available? && produit.eshop? && produit.stripe_price_id.present? %>
         <%= render partial: "public/pages/cart_buttons/shop_product_button", locals: { produit: produit } %>

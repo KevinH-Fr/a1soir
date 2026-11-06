@@ -20,6 +20,9 @@ RSpec.describe "Public::SeoPages", type: :request do
       expect(response.body).to include(%(property="og:url" content="http://www.example.com/fr/robe-de-mariee-cannes"))
       expect(response.body).not_to include("/guides/robe-de-mariee-cannes")
       expect(response.body).to include("Robe de mariée à Cannes")
+      expect(response.body).to include("seo-page-hero")
+      expect(response.body).to include("Réservez votre essayage à Cannes")
+      expect(response.body).not_to match(/class="seo-page-hero[^"]*scroll-reveal/)
       expect(response.body).not_to include("page-header-container")
       expect(response.body).to include("Nice")
       expect(response.body).to include("Robes De Mariée Courtes")
@@ -39,6 +42,35 @@ RSpec.describe "Public::SeoPages", type: :request do
       expect(response.body).to include("Essayage robe de mariée à Cannes")
       expect(response.body).to include(%(<link rel="canonical" href="http://www.example.com/fr/essayage-robe-de-mariee-cannes">))
       expect(response.body).not_to include("/guides/essayage-robe-de-mariee-cannes")
+    end
+
+    it "shows fitting-room buttons on product cards" do
+      allow(OnlineSales).to receive(:available?).and_return(true)
+      category = CategorieProduit.find_or_create_by!(nom: "robes de mariée longues")
+
+      8.times do |index|
+        product = Produit.create!(
+          nom: "Robe essayage #{index}",
+          prixvente: 100,
+          stripe_price_id: "price_essayage_#{index}",
+          eshop: true,
+          actif: true,
+          today_availability: true,
+          quantite: 1,
+          handle: "robe-essayage-#{index}"
+        )
+        product.categorie_produits << category
+        product.image1.attach(
+          io: StringIO.new("robe-essayage-#{index}"),
+          filename: "robe-essayage-#{index}.jpg",
+          content_type: "image/jpeg"
+        )
+      end
+
+      get "/fr/essayage-robe-de-mariee-cannes"
+
+      expect(response.body).to include("Ajouter à la cabine")
+      expect(response.body).not_to include("Ajouter au panier")
     end
   end
 
@@ -72,7 +104,7 @@ RSpec.describe "Public::SeoPages", type: :request do
       expect(response.body).not_to include("/guides/robe-de-soiree-cannes")
       expect(response.body).to include("Robe de soirée à Cannes")
       expect(response.body).to include("Venir en boutique")
-      expect(response.body.scan("evenement=soiree#rdv-form").size).to eq(3)
+      expect(response.body.scan("evenement=soiree#rdv-form").size).to eq(4)
       expect(response.body).to include("FAQPage")
     end
   end

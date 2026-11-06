@@ -49,6 +49,7 @@ pages:
       category_names:
         - robes de mariée courtes
         - robes de mariée longues
+    product_button: cabine
     includes:
       - boutique_snippet
       - reviews
