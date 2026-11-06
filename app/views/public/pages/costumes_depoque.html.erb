@@ -71,10 +71,11 @@
   <%= render "public/seo_pages/shared/faq" %>
   <%= render "public/seo_pages/shared/related_pages" %>
 
-  <div class="text-center my-5 py-4">
-    <h2 class="mb-4 text-light h4"><%= t("public.pages.costumes_depoque.catalogue_heading") %></h2>
-    <%= link_to t("public.pages.costumes_depoque.hero_cta"),
-                produits_costumes_deguisements_path,
-                class: "btn btn-light public-btn-border-radius" %>
+  <div class="text-center my-5 py-4" data-scroll-reveal>
+    <h3 class="mb-4 text-light"><%= t("public.pages.costumes_depoque.catalogue_heading") %></h3>
+    <div class="d-flex gap-3 justify-content-center flex-wrap">
+      <%= cta_button(type: "produits", url: produits_costumes_deguisements_path, variant: "light", text: t("public.pages.costumes_depoque.hero_cta")) %>
+      <%= cta_button(type: "rdv", url: "#{rdv_path}#rdv-form", variant: "dark", outline: "light") %>
+    </div>
   </div>
 </div>
