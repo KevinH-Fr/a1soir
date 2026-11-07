@@ -306,6 +306,37 @@ RSpec.describe SeoPages::CategoryImages do
       expect(assets.dig(:sections, "collection", :product_id)).not_to eq(assets.dig(:hero, :product_id))
     end
 
+    it "matches costumes landing sections to the subject of the text" do
+      carnaval = RubriqueCostume.create!(nom: "Carnaval", position: 9)
+      marquis = RubriqueCostume.create!(nom: "Marquis et marquise", position: 2)
+      deguisement = create_product(name: "Tenue de carnaval", categories: [costume], image_bytes: "carnaval")
+      marquise = create_product(name: "Habit de marquise", categories: [costume], image_bytes: "marquise")
+      cour = create_product(name: "Robe de cour", categories: [costume], image_bytes: "cour")
+      xviiie = create_product(name: "Robe XVIIIe", categories: [costume], image_bytes: "xviiie")
+      [deguisement, marquise, cour, xviiie].each { |product| product.update!(catalogue: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS) }
+      deguisement.rubrique_costumes << carnaval
+      marquise.rubrique_costumes << marquis
+      cour.rubrique_costumes << marquis
+      xviiie.rubrique_costumes << marquis
+
+      page = {
+        slug: "costumes-depoque",
+        scope: "local",
+        product_filters: {
+          catalogue: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS,
+          prefer_epoque_media: true
+        }
+      }
+
+      assets = described_class.resolve(page, section_keys: %w[collection themes scene])
+      epoque_ids = [marquise.id, cour.id, xviiie.id]
+
+      expect(epoque_ids).to include(assets.dig(:hero, :product_id))
+      expect(epoque_ids).to include(assets.dig(:sections, "collection", :product_id))
+      expect(epoque_ids).to include(assets.dig(:sections, "themes", :product_id))
+      expect(assets.dig(:sections, "scene", :product_id)).to eq(deguisement.id)
+    end
+
     it "falls back to image when no product with video matches" do
       create_product(name: "Robe sans vidéo", categories: [robes_courtes], image_bytes: "image-only")
 

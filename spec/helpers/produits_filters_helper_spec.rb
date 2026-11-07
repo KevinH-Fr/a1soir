@@ -53,4 +53,17 @@ RSpec.describe ProduitsFiltersHelper, type: :helper do
       expect(html).to include("is-selected")
     end
   end
+
+  describe "#admin_produits_search_hidden_fields" do
+    it "keeps the costume catalogue in the search form" do
+      catalogue = Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS
+      allow(helper).to receive(:params).and_return(ActionController::Parameters.new(filter_catalogue: catalogue))
+      allow(helper.request).to receive(:query_parameters).and_return("filter_catalogue" => catalogue)
+
+      html = helper.admin_produits_search_hidden_fields
+
+      expect(html).to include('name="filter_catalogue"')
+      expect(html).to include(%(value="#{catalogue}"))
+    end
+  end
 end

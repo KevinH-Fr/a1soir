@@ -259,6 +259,17 @@ module ProduitsFiltersHelper
     end
   end
 
+  # Le formulaire de recherche est en GET : il n'envoie que ses champs.
+  def admin_produits_search_hidden_fields
+    safe_join(
+      produits_filter_params(include_sort: true).flat_map do |key, value|
+        values = Array(value)
+        name = value.is_a?(Array) ? "#{key}[]" : key
+        values.map { |item| hidden_field_tag(name, item) }
+      end
+    )
+  end
+
   def listing_params_with_search(base_params)
     merged_params = base_params.to_h
 

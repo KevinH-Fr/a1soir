@@ -12,7 +12,7 @@ module IndexModelHelper
     end
   end
 
-  def bandeau_entete(title, icon, counter, champs_recherche, search_path, card_class: "card m-2 shadow-sm", show_new_record_button: true, &block)
+  def bandeau_entete(title, icon, counter, champs_recherche, search_path, card_class: "card m-2 shadow-sm", show_new_record_button: true, search_hidden_fields: nil, &block)
     extra_actions = block ? capture(&block) : nil
 
     content_tag(:div, class: [card_class, "card-main-model-section"].compact.join(" ").squish) do
@@ -32,7 +32,7 @@ module IndexModelHelper
       if champs_recherche.present?
         concat(content_tag(:div, class: "card-body p-1 light-beige-colored") do
           concat(content_tag(:div, class: "d-flex align-items-center") do
-            concat(index_search_form(@q, search_path, champs_recherche))
+            concat(index_search_form(@q, search_path, champs_recherche, search_hidden_fields: search_hidden_fields))
 
             if show_new_record_button
               concat(content_tag(:button, class: "btn btn-sm btn-warning d-inline-flex align-items-center gap-1", type: "button",
@@ -50,8 +50,12 @@ module IndexModelHelper
     end
   end
   
-  def index_search_form(q, chemin_recherche, champs_recherche)
-    render partial: 'admin/shared/search_form', locals: {chemin_recherche: chemin_recherche, champs_recherche: champs_recherche }
+  def index_search_form(q, chemin_recherche, champs_recherche, search_hidden_fields: nil)
+    render partial: "admin/shared/search_form", locals: {
+      chemin_recherche: chemin_recherche,
+      champs_recherche: champs_recherche,
+      search_hidden_fields: search_hidden_fields
+    }
   end
 
   # Ne pas mettre de padding sur l’élément .collapse (twbs/bootstrap#12093). Espacement : `admin_collapse_nouveau_inner_classes`.

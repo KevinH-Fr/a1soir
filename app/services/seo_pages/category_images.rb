@@ -76,6 +76,18 @@ module SeoPages
     # Sections éditoriales : pas de filtre strict sur le nom produit (évite les sections vides).
     EDITORIAL_SECTION_KEYS = %w[delais budget conseils histoire deroulement].freeze
 
+    # Landing costumes : le héros et chaque section suivent le sujet du texte,
+    # pas le mot « costume » du slug (qui ramenait aussi les smokings).
+    COSTUME_LANDING_HERO_KEYWORDS = %w[cour xviiie marquise marquis renaissance epoque habit historique].freeze
+    COSTUME_LANDING_SECTION_KEYWORDS = {
+      "collection" => %w[cour xviiie marquise renaissance epoque habit historique],
+      "themes" => %w[marquis marquise xviiie],
+      "essayage" => %w[cour habit epoque robe],
+      "scene" => %w[carnaval masque deguisement bal pirate feerie],
+      "acces" => %w[cour habit epoque robe]
+    }.freeze
+    COSTUME_LANDING_DEGUISEMENT_SECTIONS = %w[scene].freeze
+
     def self.call(page, section_keys: [], exclude_product_ids: [])
       new(page, section_keys: section_keys, exclude_product_ids: exclude_product_ids).call
     end
@@ -223,14 +235,23 @@ module SeoPages
     end
 
     def section_search_terms(section_key, slug_keywords)
-      terms = SECTION_KEYWORDS[section_key.to_s]
+      terms = section_keyword_list(section_key)
       return slug_keywords if terms.blank?
 
       terms
     end
 
+    def section_keyword_list(section_key)
+      if costume_landing?
+        landing_terms = COSTUME_LANDING_SECTION_KEYWORDS[section_key.to_s]
+        return landing_terms if landing_terms.present?
+      end
+
+      SECTION_KEYWORDS[section_key.to_s]
+    end
+
     def pick_product(products, keywords, used_blob_ids, used_product_ids, used_category_ids, section_key: nil)
-      products = prefer_available_costume_products(products, used_product_ids)
+      products = prefer_available_costume_products(products, used_product_ids) unless skip_epoque_preference?(section_key)
       product = pick_product_for_section(
         products, keywords, used_blob_ids, used_product_ids, used_category_ids, section_key: section_key
       )
@@ -253,7 +274,7 @@ module SeoPages
       pool = available_products(products, used_blob_ids, used_product_ids)
       return nil if pool.empty?
 
-      section_terms = SECTION_KEYWORDS[section_key.to_s]
+      section_terms = section_keyword_list(section_key)
       if section_terms.present? && !editorial_section?(section_key)
         pool = pool.select { |product| product_matches_section?(product, section_terms, section_key: section_key) }
         pool = load_section_products(section_terms, used_blob_ids, used_product_ids) if pool.empty?
@@ -351,7 +372,7 @@ module SeoPages
     end
 
     def choose_varied_product(pool, keywords, used_category_ids, section_key)
-      pool = narrow_to_preferred_costume_tier(pool)
+      pool = narrow_to_preferred_costume_tier(pool) unless skip_epoque_preference?(section_key)
       return nil if pool.empty?
 
       scored = pool.map { |product| [product, score_product(product, keywords, used_category_ids, section_key: section_key)] }
@@ -379,6 +400,15 @@ module SeoPages
       Zlib.crc32("#{@page[:slug]}-#{section_key}") % size
     end
 
+    def costume_landing?
+      @page[:slug].to_s == "costumes-depoque"
+    end
+
+    # La section « scène » parle de carnaval, de masque et de fête : un déguisement y est le bon visuel.
+    def skip_epoque_preference?(section_key)
+      costume_landing? && COSTUME_LANDING_DEGUISEMENT_SECTIONS.include?(section_key.to_s)
+    end
+
     def prefer_epoque_media?
       ActiveModel::Type::Boolean.new.cast(@page.dig(:product_filters, :prefer_epoque_media))
     end
@@ -401,7 +431,7 @@ module SeoPages
 
     def product_matches_section?(product, section_terms, section_key: nil)
       searchable = section_searchable_text(product, section_key)
-      section_terms.any? { |term| searchable.include?(term.to_s.downcase) }
+      section_terms.any? { |term| searchable.include?(search_term(term)) }
     end
 
     def section_searchable_text(product, section_key)
@@ -417,11 +447,19 @@ module SeoPages
     end
 
     def product_searchable_text(product)
-      [
+      parts = [
         product.nom,
         product.description,
         *product.categorie_produits.map(&:nom)
-      ].compact.join(" ").downcase
+      ]
+      parts.concat(product.rubrique_costumes.map(&:nom)) if costume_catalogue_page?
+      text = parts.compact.join(" ")
+      costume_catalogue_page? ? RubriqueCostume.fold(text) : text.downcase
+    end
+
+    def search_term(term)
+      value = term.to_s
+      costume_catalogue_page? ? RubriqueCostume.fold(value) : value.downcase
     end
 
     def load_section_products(section_terms, used_blob_ids, used_product_ids)
@@ -496,7 +534,7 @@ module SeoPages
         product_searchable_text(product)
       end
       page_terms = ProductKeywords.call(@page).flat_map { |term| ProductKeywords.variants_for(term) }
-      terms = (keywords + page_terms).map(&:to_s).map(&:downcase).uniq
+      terms = (keywords + page_terms).map { |term| search_term(term) }.uniq
 
       term_score = terms.count { |keyword| searchable.include?(keyword) }
       category_bonus = product.categorie_produits.none? { |category| used_category_ids.include?(category.id) } ? 2 : 0
@@ -506,6 +544,8 @@ module SeoPages
     end
 
     def keywords_for_slug(slug)
+      return COSTUME_LANDING_HERO_KEYWORDS if slug == "costumes-depoque"
+
       patterns = slug.match?(ACCESSORY_PAGE_PATTERN) ? ACCESSORY_SLUG_KEYWORDS : SLUG_KEYWORDS
 
       patterns.filter_map do |pattern, keywords|

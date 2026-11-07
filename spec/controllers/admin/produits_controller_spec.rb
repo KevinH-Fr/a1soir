@@ -36,6 +36,20 @@ RSpec.describe Admin::ProduitsController, type: :controller do
       )
     end
 
+    it "searches the costume catalogue only when that catalogue is selected" do
+      search = {
+        nom_or_reffrs_or_handle_or_categorie_produits_nom_or_type_produit_nom_or_couleur_nom_or_taille_nom_or_fournisseur_nom_cont: "Habit epoque"
+      }
+
+      get :index, params: { q: search }
+
+      expect(assigns(:produits).map(&:id)).not_to include(costume.id)
+
+      get :index, params: { filter_catalogue: Produit::CATALOGUE_COSTUME_EPOQUE_DEGUISEMENTS, q: search }
+
+      expect(assigns(:produits).map(&:id)).to contain_exactly(costume.id)
+    end
+
     it "opens on the wedding catalogue" do
       get :index
 
