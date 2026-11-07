@@ -50,9 +50,14 @@ module Public
       @related_pages = Array(SeoPages::Registry.grouped_for_hub["costume_epoque_deguisements"])
       @page = costume_landing_page
       section_keys = I18n.t("public.seo_pages.costumes_depoque.sections", default: {}).keys.map(&:to_s)
-      assets = SeoPages::CategoryImages.resolve(@page, section_keys: section_keys)
+      assets = SeoPages::CategoryImages.resolve(@page, section_keys: section_keys - ["acces"])
       @seo_hero_image = assets[:hero]
       @seo_section_images = assets[:sections]
+      @seo_section_images["acces"] = {
+        media_type: :image,
+        image_url: helpers.cloudinary_static_image_url("dessin1b_vqkxwg", width: 1200),
+        position: "center"
+      }
       hero_id = @seo_hero_image&.dig(:product_id)
       preview = apercu_costumes(limit: hero_id ? 7 : 6, prefer_epoque: true).to_a
       preview.reject! { |produit| produit.id == hero_id } if hero_id

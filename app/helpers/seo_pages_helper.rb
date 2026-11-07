@@ -68,7 +68,8 @@ module SeoPagesHelper
   def seo_page_section_has_media?(section)
     return false if section.blank?
 
-    section[:media_type] == :video && section[:video].present? && section[:video].attached? ||
+    section[:image_url].present? ||
+      section[:media_type] == :video && section[:video].present? && section[:video].attached? ||
       section[:image].present? && section[:image].attached?
   end
 

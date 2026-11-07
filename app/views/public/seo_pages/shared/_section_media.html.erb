@@ -13,6 +13,16 @@
     style="object-fit: cover; object-position: <%= position.presence || 'center' %>;">
     <source src="<%= video_src %>" type="<%= section_media[:video].content_type %>">
   </video>
+<% elsif section_media[:image_url].present? %>
+  <%= image_tag(
+        section_media[:image_url],
+        class: "seo-section-image w-100",
+        alt: title,
+        width: 1200,
+        height: 900,
+        loading: "lazy",
+        style: "object-fit: cover; object-position: #{position.presence || 'center'};"
+      ) %>
 <% elsif section_media[:image].present? && section_media[:image].attached? %>
   <%= image_tag(
         seo_page_image_source(section_media[:image]),

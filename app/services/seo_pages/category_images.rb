@@ -83,8 +83,7 @@ module SeoPages
       "collection" => %w[cour xviiie marquise renaissance epoque habit historique],
       "themes" => %w[marquis marquise xviiie],
       "essayage" => %w[cour habit epoque robe],
-      "scene" => %w[carnaval masque deguisement bal pirate feerie],
-      "acces" => %w[cour habit epoque robe]
+      "scene" => %w[carnaval masque deguisement bal pirate feerie]
     }.freeze
     COSTUME_LANDING_DEGUISEMENT_SECTIONS = %w[scene].freeze
 

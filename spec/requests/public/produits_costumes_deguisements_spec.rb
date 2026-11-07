@@ -205,6 +205,7 @@ RSpec.describe "Costumes et déguisements", type: :request do
     expect(response.body).to include("Habit de marquise")
     expect(response.body).to include("Quelques pièces")
     expect(response.body).to include("Des siècles, des rôles, des fêtes")
+    expect(response.body).to include("dessin1b_vqkxwg")
     expect(response.body).to include("Cette page est-elle la liste des costumes ?")
     expect(response.body).to include("Voir les produits")
     expect(response.body).to include("Prêt à voir les costumes ?")
