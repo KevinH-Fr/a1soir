@@ -30,6 +30,11 @@ module SeoPagesHelper
     Array(page[:includes]).include?(feature.to_s)
   end
 
+  def boutique_itinerary_url
+    query = CGI.escape("autour d'un soir 06400 cannes")
+    "https://www.google.com/maps/search/?api=1&query=#{query}"
+  end
+
   def seo_page_rdv_url(page)
     evenement = page[:rdv_evenement].presence
     if evenement.present? && DemandeRdv.evenements.key?(evenement.to_s)

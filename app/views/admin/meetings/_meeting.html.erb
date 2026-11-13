@@ -36,6 +36,26 @@
           <%= links_record(meeting) %>
         </div>
       </div>
+
+      <% produits_cabine = meeting.produits_cabine %>
+      <% if produits_cabine&.any? %>
+        <% cabine_collapse_id = "collapseCabine#{dom_id(meeting)}" %>
+        <div class="mt-1">
+          <a class="small text-muted text-decoration-none d-inline-flex align-items-center ms-1"
+             data-bs-toggle="collapse"
+             href="#<%= cabine_collapse_id %>"
+             role="button"
+             aria-expanded="false"
+             aria-controls="<%= cabine_collapse_id %>">
+            <%= admin_collapse_details_button_content(label: "Articles") %>
+          </a>
+        </div>
+        <div class="collapse" id="<%= cabine_collapse_id %>">
+          <div class="pt-2 px-2">
+            <%= render "admin/demande_cabine_essayages/produits", produits: produits_cabine %>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 

@@ -20,10 +20,13 @@ module CtaHelper
     },
     "appeler" => {
       icon: "telephone"
+    },
+    "itineraire" => {
+      icon: "geo-alt"
     }
   }.freeze
 
-  def cta_button(type:, url:, variant: "light", outline: false, text: nil)
+  def cta_button(type:, url:, variant: "light", outline: false, text: nil, target: nil)
     type_key = type.to_s
     config = CTA_CONFIG[type_key] || raise(ArgumentError, "Type inconnu: #{type}")
 
@@ -41,7 +44,13 @@ module CtaHelper
       btn_class = "btn btn-#{variant} btn-lg px-3 public-btn-border-radius"
     end
         
-    link_to(url, class: btn_class) do
+    link_options = { class: btn_class }
+    if target.present?
+      link_options[:target] = target
+      link_options[:rel] = "noopener noreferrer"
+    end
+
+    link_to(url, **link_options) do
       content_tag(:i, "", class: "bi bi-#{icon} me-2") +
       content_tag(:span, text, class: "fw-bold text-uppercase small")
     end

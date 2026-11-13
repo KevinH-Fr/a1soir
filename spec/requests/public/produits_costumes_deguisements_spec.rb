@@ -210,6 +210,8 @@ RSpec.describe "Costumes et déguisements", type: :request do
     expect(response.body).to include("Voir les produits")
     expect(response.body).to include("Prêt à voir les costumes ?")
     expect(response.body).to include("Prendre rendez-vous")
+    expect(response.body).to include("Itinéraire")
+    expect(response.body).to include("https://www.google.com/maps/search/")
     expect(response.body).not_to include("Voir tous les costumes")
     expect(response.body).to include("/fr/produits_costumes_deguisements?rubrique=#{epoque.id}")
     expect(response.body).to include("/fr/produits_costumes_deguisements")

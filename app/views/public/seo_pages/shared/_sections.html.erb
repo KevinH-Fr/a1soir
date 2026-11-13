@@ -6,9 +6,12 @@
   <% show_dev_placeholder = !has_media && Rails.env.development? %>
   <% reverse = section_media&.dig(:reverse) == true || ((has_media || show_dev_placeholder) && index.odd?) %>
   <% section_rdv_cta = capture do %>
-    <% if section_key == "acces" && @page[:rdv_evenement].present? %>
-      <div class="mt-4">
+    <% if section_key == "acces" && (@page[:rdv_evenement].present? || @page[:slug].to_s == "costumes-depoque") %>
+      <div class="d-flex gap-3 flex-wrap mt-4">
         <%= cta_button(type: "rdv", url: seo_page_rdv_url(@page), variant: "light") %>
+        <% if @page[:slug].to_s == "costumes-depoque" %>
+          <%= cta_button(type: "itineraire", url: boutique_itinerary_url, variant: "dark", outline: "light", target: "_blank") %>
+        <% end %>
       </div>
     <% end %>
   <% end %>

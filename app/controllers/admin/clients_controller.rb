@@ -143,9 +143,13 @@ class Admin::ClientsController < Admin::ApplicationController
 
     def set_client
       @client = Client.includes(
-        :meetings,
+        { meetings: Meeting.cabine_produits_includes },
         { mensuration: [:mensuration_invitation, { photo_pied_attachment: :blob }] },
-        commandes: [:client, :profile, :stripe_payment, :meetings, :avoir_rembs, { qr_code_attachment: :blob }]
+        commandes: [
+          :client, :profile, :stripe_payment, :avoir_rembs,
+          { qr_code_attachment: :blob },
+          { meetings: Meeting.cabine_produits_includes }
+        ]
       ).find(params[:id])
     end
 

@@ -88,6 +88,15 @@ class Meeting < ApplicationRecord
     ["client", "commande", "demande_rdv"]
   end
 
+  # Produits de la cabine d'essayage liée à la demande d'origine.
+  def self.cabine_produits_includes
+    { demande_rdv: { demande_cabine_essayage: { produits: Produit::CARD_INCLUDES } } }
+  end
+
+  def produits_cabine
+    demande_rdv&.demande_cabine_essayage&.produits
+  end
+
   private
   
   def add_calendar_event

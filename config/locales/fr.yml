@@ -800,6 +800,7 @@ fr:
       produits: "Voir nos produits"
       ecrire: "Nous écrire"
       appeler: "Nous appeler"
+      itineraire: "Itinéraire"
     navbar:
       book_appointment: "Prendre rendez-vous"
       home: "Accueil"
