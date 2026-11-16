@@ -20,7 +20,9 @@
       
       <!-- Lien de retour -->
       <div class="mb-1">
-        <%= link_to @back_url, class: "text-secondary text-decoration-none d-inline-flex align-items-center btn btn-link p-0" do %>
+        <%= link_to @back_url,
+              class: "text-secondary text-decoration-none d-inline-flex align-items-center btn btn-link p-0",
+              data: { controller: "product-back", action: "click->product-back#back" } do %>
           <i class="bi bi-arrow-left me-2 fs-5"></i>
           <span><%= t("public.pages.produit.back") %></span>
         <% end %>

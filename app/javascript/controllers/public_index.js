@@ -21,6 +21,9 @@ application.register("carousel", CarouselController)
 import ChatController from "./chat_controller"
 application.register("chat", ChatController)
 
+import ProductBackController from "./product_back_controller"
+application.register("product-back", ProductBackController)
+
 import ProductGalleryModalController from "./product_gallery_modal_controller"
 application.register("product-gallery-modal", ProductGalleryModalController)
 
@@ -56,6 +59,9 @@ application.register("ga4-outbound-links", Ga4OutboundLinksController)
 
 import LazyPaginationController from "./lazy_pagination_controller"
 application.register("lazy-pagination", LazyPaginationController)
+
+import ListingScrollController from "./listing_scroll_controller"
+application.register("listing-scroll", ListingScrollController)
 
 import ScrollToTopController from "./scroll_to_top_controller"
 application.register("scroll-to-top", ScrollToTopController)

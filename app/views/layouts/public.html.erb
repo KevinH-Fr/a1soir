@@ -69,7 +69,7 @@
     
     <%= render "public/shared/navbar" %>
 
-    <div class="public-scroll flex-grow-1 overflow-auto" data-controller="scroll-reveal">
+    <div class="public-scroll flex-grow-1 overflow-auto" data-controller="scroll-reveal<%= " listing-scroll" if content_for?(:listing_scroll) %>">
       <main class="public-content">
         <div id="flash" data-turbo-temporary>
           <%= render partial: "public/shared/flash" %>

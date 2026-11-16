@@ -1,3 +1,4 @@
+<% content_for :listing_scroll, "1" %>
 <% if @current_category.present? %>
   <% content_for :title, category_meta_title(@current_category) %>
   <% content_for :meta_description, category_meta_description(@current_category) %>
