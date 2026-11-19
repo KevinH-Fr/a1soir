@@ -52,12 +52,24 @@ module Seeds
       "Commande seed eshop remb livraison" => 1,
       "Devis seed Marie" => 15,
       "Devis seed Paul" => 3,
+      # Créés dans la fenêtre, convertis ensuite : comptent dans le nombre et le taux.
+      "Devis seed transformé vente Marie" => 12,
+      "Devis seed transformé location Paul" => 6,
+      # Créé avant la fenêtre, converti dedans : compte dans le nombre, pas dans le taux.
+      "Devis seed transformé mixte Marie" => 40,
       "Boutique A" => 5,
       "Boutique B" => 24,
       "Location jour 8" => 18,
       "E-shop C" => 7,
       "Hors période" => 50,
       "Devis A" => 12
+    }.freeze
+
+    # Jours avant aujourd'hui pour converti_le (recalé à chaque seed, comme created_at).
+    DEMO_DEVIS_CONVERTI_OFFSETS = {
+      "Devis seed transformé vente Marie" => 8,
+      "Devis seed transformé location Paul" => 2,
+      "Devis seed transformé mixte Marie" => 5
     }.freeze
 
     # Heure déterministe 10h–18h dérivée du nom (pas Hash Ruby randomisé).
@@ -118,10 +130,19 @@ module Seeds
 
         touch_commande_timestamps!(commande, at: demo_timestamp(days_ago, name: nom))
       end
+      DEMO_DEVIS_CONVERTI_OFFSETS.each do |nom, days_ago|
+        commande = Commande.find_by(nom: nom)
+        next unless commande
+
+        commande.update_columns(
+          devis: false,
+          converti_le: demo_timestamp(days_ago, name: "#{nom} converti")
+        )
+      end
       log("align", "Commandes démo étalées sur les #{DEMO_COMMANDE_OFFSETS.values.max} derniers jours (heures 10h–18h)")
     end
 
-    def upsert_demo_commande!(nom:, client:, profile:, days_ago:, devis: false, eshop: false, type_locvente: "vente", statutarticles: "retiré", articles: [], paiements: [], remboursements: [], stripe: nil)
+    def upsert_demo_commande!(nom:, client:, profile:, days_ago:, devis: false, eshop: false, type_locvente: "vente", statutarticles: "retiré", articles: [], paiements: [], remboursements: [], stripe: nil, converti_days_ago: nil)
       at = demo_timestamp(days_ago, name: nom)
       commande = Commande.find_or_initialize_by(nom: nom)
       commande.assign_attributes(
@@ -211,6 +232,12 @@ module Seeds
       end
 
       touch_commande_timestamps!(commande, at: at)
+      if converti_days_ago
+        commande.update_columns(
+          devis: false,
+          converti_le: demo_timestamp(converti_days_ago, name: "#{nom} converti")
+        )
+      end
       commande
     end
 

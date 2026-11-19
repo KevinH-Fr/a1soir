@@ -73,6 +73,7 @@ module Analyses
       when :profiles_ca_transactions then profiles_ca_transactions
       when :profiles_ca_doughnut then profiles_ca_doughnut
       when :profiles_ca_timeline then profiles_ca_timeline
+      when :profiles_devis_transformation then profiles_devis_transformation
       when :catalog_types_bars then catalog_metric_bars(:type, :qty)
       when :catalog_types_bars_ca then catalog_metric_bars(:type, :ca)
       when :catalog_categories_bars then catalog_metric_bars(:categorie, :qty)
@@ -627,6 +628,75 @@ module Analyses
         _tooltip: "money",
         _grain: grain_string
       }
+    end
+
+    # Devis créés sur la période : encore devis, ou déjà transformés en commande.
+    def profiles_devis_transformation
+      stats = (h.instance_variable_get(:@stats_par_profile) || [])
+                .select { |row| row[:devis_cohorte].to_i.positive? }
+                .sort_by { |row| [-row[:devis_cohorte].to_i, row[:profile].to_s] }
+      labels = stats.map { |row| row[:profile] }
+      labels = ["—"] if labels.empty?
+
+      series = [
+        ["Transformé", ->(row) { row[:devis_cohorte_transformes].to_i }, BLUE],
+        ["Devis", ->(row) { devis_encore_ouverts(row) }, SLATE_MUTED]
+      ]
+
+      datasets = series.each_with_index.map do |(label, reader, color), index|
+        last = index == series.length - 1
+        {
+          label: label,
+          data: stats.empty? ? [0] : stats.map { |row| reader.call(row) },
+          backgroundColor: rgba_fill(color, 0.88),
+          hoverBackgroundColor: rgba_fill(color, 1.0),
+          borderColor: "rgb(255, 255, 255)",
+          borderWidth: 1.5,
+          borderRadius: (last ? { topRight: 5, bottomRight: 5, topLeft: 0, bottomLeft: 0 } : 0),
+          borderSkipped: false,
+          barPercentage: 0.72,
+          categoryPercentage: 0.78,
+          stack: "devis"
+        }
+      end
+
+      {
+        type: "bar",
+        data: { labels: labels, datasets: datasets },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: { legend: legend_options },
+          scales: {
+            x: {
+              stacked: true,
+              beginAtZero: true,
+              border: { display: false },
+              title: {
+                display: true,
+                text: "Devis",
+                color: TICK_COLOR,
+                font: { size: 11, weight: "500" }
+              },
+              ticks: { precision: 0, color: TICK_COLOR, font: { size: 11 } },
+              grid: { color: GRID_COLOR, drawBorder: false }
+            },
+            y: {
+              stacked: true,
+              ticks: { color: TICK_COLOR, font: { size: 11, weight: "500" } },
+              grid: { display: false },
+              border: { display: false }
+            }
+          }
+        },
+        _tooltip: "integer"
+      }
+    end
+
+    def devis_encore_ouverts(row)
+      [row[:devis_cohorte].to_i - row[:devis_cohorte_transformes].to_i, 0].max
     end
 
     # Une métrique à la fois (bascule Quantité / CA) — lisible en colonne étroite.

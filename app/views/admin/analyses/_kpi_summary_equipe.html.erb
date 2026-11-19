@@ -21,7 +21,7 @@
         value: totals[:devis],
         trend_metric: :equipe_devis,
         hint: "Créés sur la période",
-        hint2: (totals[:conversion_pct] ? "Conv. #{totals[:conversion_pct]} %" : nil) %>
+        hint2: analyses_devis_transformes_phrase(totals[:devis_transformes], taux: totals[:taux_transformation_devis]) %>
 
   <%= render "kpi_card",
         title: (totals[:vendeurs] == 1 ? "Vendeur" : "Meilleur CA"),

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_11_06_183000) do
+ActiveRecord::Schema[7.2].define(version: 2026_11_19_180000) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -170,7 +170,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_11_06_183000) do
     t.boolean "eshop", default: false, null: false
     t.string "numero_suivi"
     t.datetime "expedie_le"
+    t.datetime "converti_le"
     t.index ["client_id"], name: "index_commandes_on_client_id"
+    t.index ["converti_le"], name: "index_commandes_on_converti_le"
     t.index ["profile_id"], name: "index_commandes_on_profile_id"
   end
 

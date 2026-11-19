@@ -15,7 +15,10 @@ class Commande < ApplicationRecord
 
   after_create :after_commande_create
   after_create :generate_qr
-  
+
+  # Date le passage devis → commande. Recocher le devis annule cette conversion.
+  before_save :stamp_devis_conversion
+
   # Callback pour mettre à jour la disponibilité des produits quand
   # les dates de location ou le statut devis changent.
   after_update :update_produits_availability_if_stock_inputs_changed
@@ -139,6 +142,18 @@ class Commande < ApplicationRecord
 
   def after_commande_create
     self.update(statutarticles: "non-retiré")
+  end
+
+  # true → false : pose converti_le ; retour à devis : l'efface.
+  def stamp_devis_conversion
+    return unless will_save_change_to_devis?
+
+    from, to = devis_change_to_be_saved
+    if from == true && to == false
+      self.converti_le = Time.current
+    elsif to == true
+      self.converti_le = nil
+    end
   end
 
   # Met à jour la disponibilité des produits concernés par la commande

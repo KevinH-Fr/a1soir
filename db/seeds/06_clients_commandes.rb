@@ -299,6 +299,55 @@ Seeds::Helpers.upsert_demo_commande!(
 )
 
 Seeds::Helpers.upsert_demo_commande!(
+  nom: "Devis seed transformé vente Marie",
+  client: client_sophie,
+  profile: profile_marie,
+  days_ago: offsets["Devis seed transformé vente Marie"],
+  converti_days_ago: Seeds::Helpers::DEMO_DEVIS_CONVERTI_OFFSETS["Devis seed transformé vente Marie"],
+  type_locvente: "vente",
+  statutarticles: "retiré",
+  articles: [
+    { produit: robe_cocktail, locvente: "vente", prix: 70, total: 70 }
+  ],
+  paiements: [
+    { typepaiement: "prix", montant: 70, moyen: "carte bleue" }
+  ]
+)
+
+Seeds::Helpers.upsert_demo_commande!(
+  nom: "Devis seed transformé location Paul",
+  client: client_martin,
+  profile: profile_paul,
+  days_ago: offsets["Devis seed transformé location Paul"],
+  converti_days_ago: Seeds::Helpers::DEMO_DEVIS_CONVERTI_OFFSETS["Devis seed transformé location Paul"],
+  type_locvente: "location",
+  statutarticles: "non-retiré",
+  articles: [
+    { produit: robe_soiree, locvente: "location", prix: 60, total: 60 }
+  ],
+  paiements: [
+    { typepaiement: "prix", montant: 60, moyen: "espèces" }
+  ]
+)
+
+Seeds::Helpers.upsert_demo_commande!(
+  nom: "Devis seed transformé mixte Marie",
+  client: client_sophie,
+  profile: profile_marie,
+  days_ago: offsets["Devis seed transformé mixte Marie"],
+  converti_days_ago: Seeds::Helpers::DEMO_DEVIS_CONVERTI_OFFSETS["Devis seed transformé mixte Marie"],
+  type_locvente: "mixte",
+  statutarticles: "retiré",
+  articles: [
+    { produit: robe_soiree, locvente: "location", prix: 50, total: 50 },
+    { produit: costume, locvente: "vente", prix: 40, total: 40 }
+  ],
+  paiements: [
+    { typepaiement: "prix", montant: 90, moyen: "carte bleue" }
+  ]
+)
+
+Seeds::Helpers.upsert_demo_commande!(
   nom: "Commande seed veille",
   client: client_sophie,
   profile: profile_marie,

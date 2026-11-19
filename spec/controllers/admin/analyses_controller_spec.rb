@@ -246,6 +246,9 @@ RSpec.describe Admin::AnalysesController, type: :controller do
         expect(assigns(:totalPrixCaCb)).to eq(expected[:total_prix_ca_cb])
         expect(assigns(:totalPrixCaEspeces)).to eq(expected[:total_prix_ca_especes])
         expect(assigns(:analyses_ca_mode)).to eq(:paiements)
+        expect(assigns(:nbDevisTransformes)).to eq(0)
+        expect(assigns(:devisTransformesParType)).to eq("vente" => 0, "location" => 0, "mixte" => 0)
+        expect(response.body).to include("0 transformés")
       end
 
       it "renders catalogue vue with toggleable locvente doughnut and ranking charts" do
@@ -386,6 +389,11 @@ RSpec.describe Admin::AnalysesController, type: :controller do
         get :index, params: period.merge(vue: "equipe", filter_profile: data[:profile_a].id)
 
         expect(assigns(:stats_par_profile).size).to eq(1)
+        expect(assigns(:stats_par_profile).first[:devis_transformes]).to eq(0)
+        expect(response.body).to include("0 transformés")
+        expect(response.body).to include("analyses-chart-equipe-devis")
+        expect(response.body).to include("col-12 col-lg-8")
+        expect(response.body).to include("col-12 col-lg-4")
       end
     end
 

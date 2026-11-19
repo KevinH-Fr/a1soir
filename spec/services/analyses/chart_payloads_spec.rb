@@ -230,6 +230,42 @@ RSpec.describe Analyses::ChartPayloads do
     expect(config[:_centerText].last).to eq("CA équipe")
   end
 
+  it "builds stacked devis transformation bars for the created cohort" do
+    helper_double.instance_variable_set(
+      :@stats_par_profile,
+      [
+        {
+          profile: "Alice",
+          devis_cohorte: 3,
+          devis_cohorte_transformes: 2
+        },
+        {
+          profile: "Bob",
+          devis_cohorte: 1,
+          devis_cohorte_transformes: 0
+        },
+        {
+          profile: "Carla",
+          devis_cohorte: 0,
+          devis_cohorte_transformes: 0
+        }
+      ]
+    )
+
+    config = payloads.build(:profiles_devis_transformation)
+    labels = config[:data][:datasets].map { |dataset| dataset[:label] }
+
+    expect(config[:type]).to eq("bar")
+    expect(config[:options][:indexAxis]).to eq("y")
+    expect(config[:options][:scales][:x][:stacked]).to eq(true)
+    expect(config[:data][:labels]).to eq(%w[Alice Bob])
+    expect(labels).to eq(["Transformé", "Devis"])
+    expect(config[:data][:datasets].map { |dataset| dataset[:data] }).to eq([
+      [2, 0],
+      [1, 1]
+    ])
+  end
+
   it "builds profiles CA timeline as bars when ≤2 day labels" do
     config = payloads.build(:profiles_ca_timeline)
     expect(config[:type]).to eq("bar")

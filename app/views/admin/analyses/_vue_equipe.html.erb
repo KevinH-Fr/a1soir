@@ -6,6 +6,7 @@
   <% header_notice = analyses_visibility_show?(:profiles_comparison) ? nil : "Un seul vendeur sélectionné — comparaison multi-vendeurs masquée." %>
   <% show_comparison = analyses_visibility_show?(:profiles_comparison) %>
   <% show_timeline = (@stats_par_profile || []).any? { |r| r[:ca_by_day].present? } %>
+  <% show_devis_chart = (@stats_par_profile || []).any? { |r| r[:devis_cohorte].to_i.positive? } %>
 
   <% if header_notice.present? %>
     <%= analyses_info_alert(header_notice, extra_class: "mb-3") %>
@@ -34,20 +35,44 @@
       </div>
     </div>
 
-    <% if show_timeline %>
-      <%= analyses_full_bleed_chart do %>
-        <%= analyses_chart_card do %>
-          <%= analyses_chart_heading(
-                show_comparison ? "Évolution du CA par vendeur" : "Évolution du CA"
-              ) %>
-          <%= render_analyses_chart(
-                :profiles_ca_timeline,
-                chart_id: "analyses-chart-profiles-timeline",
-                extra_class: "analyses-chart--fill analyses-chart--equipe-timeline",
-                aria_label: show_comparison ? "Évolution du CA par vendeur" : "Évolution du CA du vendeur"
-              ) %>
+    <% if show_timeline || show_devis_chart %>
+      <div class="<%= AnalysesHelper::ANALYSES_CONTENT_ROW %>">
+        <% if show_timeline %>
+          <div class="<%= show_devis_chart ? "col-12 col-lg-8" : "col-12" %> min-w-0">
+            <%= analyses_chart_card do %>
+              <%= analyses_chart_heading(
+                    show_comparison ? "Évolution du CA par vendeur" : "Évolution du CA"
+                  ) %>
+              <%= render_analyses_chart(
+                    :profiles_ca_timeline,
+                    chart_id: "analyses-chart-profiles-timeline",
+                    extra_class: "analyses-chart--fill analyses-chart--equipe-timeline",
+                    aria_label: show_comparison ? "Évolution du CA par vendeur" : "Évolution du CA du vendeur"
+                  ) %>
+            <% end %>
+          </div>
         <% end %>
-      <% end %>
+        <% if show_devis_chart %>
+          <div class="<%= show_timeline ? "col-12 col-lg-4" : "col-12" %> min-w-0">
+            <%= analyses_chart_card do %>
+              <% devis_totals = analyses_equipe_kpi_totals %>
+              <%= analyses_chart_heading(
+                    "Transformation des devis",
+                    meta: analyses_devis_transformes_phrase(
+                      devis_totals[:devis_transformes],
+                      taux: devis_totals[:taux_transformation_devis]
+                    )
+                  ) %>
+              <%= render_analyses_chart(
+                    :profiles_devis_transformation,
+                    chart_id: "analyses-chart-equipe-devis",
+                    extra_class: "analyses-chart--fill analyses-chart--equipe-timeline",
+                    aria_label: "Devis encore ouverts ou transformés"
+                  ) %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
     <% end %>
   </div>
 <% end %>

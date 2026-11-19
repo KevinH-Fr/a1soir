@@ -95,6 +95,61 @@ RSpec.describe 'Commande' do
         end
     end
 
+    describe "conversion d'un devis" do
+      let(:client) do
+        Client.create!(
+          nom: "Devis",
+          prenom: "Conv",
+          propart: "particulier",
+          intitule: Client::INTITULE_OPTIONS.first,
+          mail: "devis-conv-#{SecureRandom.hex(4)}@test.com"
+        )
+      end
+      let(:profile) { Profile.create!(prenom: "V", nom: "Devis") }
+
+      def create_commande(devis:)
+        Commande.create!(
+          client: client,
+          profile: profile,
+          nom: "Conv",
+          montant: 10,
+          devis: devis,
+          type_locvente: "location"
+        )
+      end
+
+      it "date le passage d'un devis à une commande" do
+        commande = create_commande(devis: true)
+        expect(commande.converti_le).to be_nil
+
+        travel_to Time.zone.local(2026, 11, 19, 15, 0, 0) do
+          commande.update!(devis: false)
+        end
+
+        expect(commande.reload.converti_le).to eq(Time.zone.local(2026, 11, 19, 15, 0, 0))
+      end
+
+      it "efface la date si le devis est recoché" do
+        commande = create_commande(devis: true)
+        commande.update!(devis: false)
+        expect(commande.converti_le).to be_present
+
+        commande.update!(devis: true)
+
+        expect(commande.reload.converti_le).to be_nil
+        expect(commande.devis).to be(true)
+      end
+
+      it "ne date pas une commande créée hors devis" do
+        commande = create_commande(devis: false)
+
+        expect(commande.converti_le).to be_nil
+
+        commande.update!(nom: "Toujours commande")
+        expect(commande.reload.converti_le).to be_nil
+      end
+    end
+
     describe "commande rapide" do
       it "marks a_completer when client or profile is technical" do
         commande = Commande.create!(

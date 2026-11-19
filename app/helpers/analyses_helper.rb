@@ -445,7 +445,9 @@ module AnalysesHelper
     commandes = stats.sum { |r| r[:commandes].to_i }
     devis = stats.sum { |r| r[:devis].to_i }
     articles = stats.sum { |r| r[:articles].to_i }
-    conv_base = commandes + devis
+    devis_transformes = stats.sum { |r| r[:devis_transformes].to_i }
+    cohorte = stats.sum { |r| r[:devis_cohorte].to_i }
+    cohorte_transformes = stats.sum { |r| r[:devis_cohorte_transformes].to_i }
 
     {
       ca: ca,
@@ -455,8 +457,25 @@ module AnalysesHelper
       vendeurs: stats.size,
       panier: (commandes.positive? ? (ca / commandes).round(2) : nil),
       articles_par_commande: (commandes.positive? ? (articles.to_d / commandes).round(1) : nil),
-      conversion_pct: (conv_base.positive? ? ((commandes.to_d / conv_base) * 100).round : nil)
+      devis_transformes: devis_transformes,
+      taux_transformation_devis: (cohorte.positive? ? ((cohorte_transformes.to_d / cohorte) * 100).round : nil)
     }
+  end
+
+  def analyses_devis_transformes_phrase(count, par_type: nil, taux: nil)
+    n = count.to_i
+    label = "#{n} transformé#{'s' unless n == 1}"
+    details = []
+    if par_type.present?
+      %w[vente location mixte].each do |type|
+        qty = par_type[type].to_i
+        details << "#{qty} #{type}" if qty.positive?
+      end
+    end
+    details << "#{taux} %" unless taux.nil?
+    return label if details.empty?
+
+    "#{label} · #{details.join(' · ')}"
   end
 
   def analyses_equipe_top_ca_row

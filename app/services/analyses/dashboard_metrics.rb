@@ -13,14 +13,14 @@ module Analyses
 
       case vue
       when "synthese"
-        assign_commande_metrics
+        assign_commande_metrics(filter_params)
         assign_article_metrics
         assign_ca_metrics(stripe_totals, datedebut, datefin)
         assign_catalog_stats
         assign_profile_stats(datedebut, datefin, stripe_totals, filter_params)
         assign_synthese_top_profile_from_stats
       when "ca"
-        assign_commande_metrics
+        assign_commande_metrics(filter_params)
         assign_article_metrics
         assign_ca_metrics(stripe_totals, datedebut, datefin)
         assign_transaction_metrics(stripe_totals, datedebut, datefin)
@@ -105,12 +105,13 @@ module Analyses
       @c.instance_variable_set(:"@#{name}", value)
     end
 
-    def assign_commande_metrics
+    def assign_commande_metrics(filter_params = {})
       ivar_set(:nbTotal, commandes_filtres.count)
       ivar_set(:nbRetire, commandes_filtres.retire.count)
       ivar_set(:nbNonRetire, commandes_filtres.non_retire.count)
       ivar_set(:nbRendu, commandes_filtres.rendu.count)
       ivar_set(:nbDevisPeriode, devis_dans_periode(datedebut, datefin).count)
+      assign_devis_transformation(filter_params)
 
       if timeline_grain == :hour
         rows = commandes_filtres.pluck(:created_at).map { |at| [at, 1] }
@@ -254,17 +255,52 @@ module Analyses
                           Commande.est_devis.all
                         end
 
+      transformation = devis_transformation(filter_params)
+
       ivar_set(:stats_par_profile, profiles.map.with_index do |profile, index|
         row = profile_kpi_row(profile, stripe_totals)
         commande_ids = row[:commande_ids]
+        devis_row = transformation[:by_profile][profile.id] || empty_devis_transformation
         row.merge(
           devis: commandes_devis.where(profile_id: profile.id).count,
+          devis_transformes: devis_row[:transformes],
+          devis_transformes_par_type: devis_row[:par_type],
+          devis_cohorte: devis_row[:cohorte],
+          devis_cohorte_par_type: devis_row[:cohorte_par_type],
+          devis_cohorte_transformes: devis_row[:cohorte_transformes],
+          taux_transformation_devis: devis_row[:taux],
           articles: profile_articles_lignes_count(commande_ids),
           transactions: profile_transactions(commande_ids, stripe_totals),
           couleur: ChartPayloads.equipe_pastel_color(index),
           ca_by_day: profile_ca_by_day(profile.id, commande_ids, datedebut, datefin)
         ).except(:commande_ids)
       end)
+    end
+
+    def assign_devis_transformation(filter_params)
+      stats = devis_transformation(filter_params)
+      ivar_set(:nbDevisTransformes, stats[:transformes])
+      ivar_set(:devisTransformesParType, stats[:par_type])
+      ivar_set(:tauxTransformationDevis, stats[:taux])
+    end
+
+    def devis_transformation(filter_params)
+      @devis_transformation ||= DevisTransformation.call(
+        datedebut: datedebut,
+        datefin: datefin,
+        profile_id: filter_params[:filter_profile]
+      )
+    end
+
+    def empty_devis_transformation
+      {
+        transformes: 0,
+        par_type: DevisTransformation::TYPES.index_with(0),
+        cohorte: 0,
+        cohorte_par_type: DevisTransformation::TYPES.index_with(0),
+        cohorte_transformes: 0,
+        taux: nil
+      }
     end
 
     def profile_transactions(commandes_ids, stripe_totals)
